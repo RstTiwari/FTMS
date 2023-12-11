@@ -11,9 +11,6 @@ import salesRoutes from  "./routes/sales.js"
 import generalRoutes from  "./routes/general.js"
 import managmentRoutes from  "./routes/managment.js"
 
-const Port =  process.env.PORT || 5001
-
-
 
 /**
  * Configration
@@ -28,6 +25,8 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(cors())
 
+
+
 /**
  * Configratrions of Routes
  */
@@ -40,6 +39,7 @@ app.use("/genral", generalRoutes);
 /**
  * Mongoose Connection to Data base
  */
+const Port =  process.env.PORT || 5001
 
 mongoose
     .connect(process.env.MDURl, {

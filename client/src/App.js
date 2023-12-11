@@ -17,8 +17,8 @@ function App() {
             <CssBaseline />
             <Routes>
               <Route element = {<Layout/>}>
-                <Route path='/'  element = {<Navigate  to = "/dashbord"  replace />} />
-                <Route path='/dashbord'  element = {<Dashbord />} />
+                <Route path='/'  element = {<Navigate  to = "/dashboard"  replace />} />
+                <Route path='/dashboard'  element = {<Dashbord />} />
               </Route>
             </Routes>
           </ThemeProvider>
