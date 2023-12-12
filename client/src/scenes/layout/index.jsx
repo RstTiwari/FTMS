@@ -4,32 +4,31 @@ import { Outlet } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import   Navbar from "components/Navbar"
 import Sidebar from "components/Sidebar"
+import { useGetUserQuery } from 'state/api'
 const Layout = () => {
-  const isNonMobile = useMediaQuery("(min-width:600px)")
-  const [isSidebarOpen,setIsSidbarOpen]  = useState(true);
+  const isLaptop = useMediaQuery("(min-width:600px)")
+  const [isSidebarOpen,setIsSidebarOpen]  = useState(true);
+  const userId = useSelector((state)=>state.global.userId)
+  const {data} = useGetUserQuery(userId)
 
    return (
-    <Box 
-    display={isNonMobile ? "flext": "block"}
-    width={"100%"}
-    height={"100%"}
-    >
-      <Sidebar
-      isNonMobile = {isNonMobile}
-      drawerWidth = "250px"
-      isSidebarOpen = {isSidebarOpen}
-      setIsSidbarOpen = {setIsSidbarOpen } 
-      />
-    <Box>
-        <Navbar
-             isSidebarOpen = {isSidebarOpen}
-             setIsSidbarOpen = {setIsSidbarOpen } 
-        />
-        <Outlet />
-    </Box>
-
-    </Box>
-  )
+       <Box   display={isLaptop ? "flex":"block"} width="100%" height="100%" >
+           <Sidebar
+               isLaptop={isLaptop}
+               drawerWidth="250px"
+               isSidebarOpen={isSidebarOpen}
+               setIsSidebarOpen={setIsSidebarOpen}
+           /> 
+           <Box flexGrow={1} >
+               <Navbar
+                   isSidebarOpen={isSidebarOpen}
+                   setIsSidebarOpen={setIsSidebarOpen}
+                   isLaptop ={isLaptop}
+               />
+               <Outlet />
+           </Box>
+       </Box>
+   );
 }
 
 export default Layout

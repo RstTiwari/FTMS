@@ -34,8 +34,15 @@ app.use(cors())
 app.use("/client", clientRoutes);
 app.use("/sales", salesRoutes);
 app.use("/mangament", managmentRoutes);
-app.use("/genral", generalRoutes);
+app.use("/general", generalRoutes);
 
+
+/*
+* Importing my Data 
+*/
+
+import User from "./models/User.js"
+import { dataUser } from "./data/index.js"
 /**
  * Mongoose Connection to Data base
  */
@@ -49,6 +56,8 @@ mongoose
         app.listen(Port, () => {
             console.log(` Server is running on the port ${Port}`);
         });
+        /**Only add Data at once */
+        //User.insertMany(dataUser)
     })
     .catch((e) => {
         console.log("Data base connection failed" + e);
