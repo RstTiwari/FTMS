@@ -35,6 +35,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
 
 const Sidebar = ({
+    user ,
     drawerWidth,
     isSidebarOpen,
     setIsSidebarOpen,
@@ -113,7 +114,7 @@ const Sidebar = ({
                 <Drawer
                     open={isSidebarOpen}
                     onClose={() => setIsSidebarOpen(false)}
-                    variant="persistant"
+                    variant="permanent"
                     anchor="left"
                     sx={{
                         width: drawerWidth,

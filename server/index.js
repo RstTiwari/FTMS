@@ -41,8 +41,9 @@ app.use("/general", generalRoutes);
 * Importing my Data 
 */
 
-import User from "./models/User.js"
-import { dataUser } from "./data/index.js"
+import Product from "./models/Product.js"
+import ProductStats from "./models/ProductStats.js"
+import { dataProduct,dataProductStat } from "./data/index.js"
 /**
  * Mongoose Connection to Data base
  */
@@ -56,8 +57,11 @@ mongoose
         app.listen(Port, () => {
             console.log(` Server is running on the port ${Port}`);
         });
+
         /**Only add Data at once */
-        //User.insertMany(dataUser)
+    //     Product.insertMany(dataProduct)
+    //    ProductStats.insertMany(dataProductStat)
+
     })
     .catch((e) => {
         console.log("Data base connection failed" + e);

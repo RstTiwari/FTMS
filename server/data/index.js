@@ -2541,7 +2541,6 @@ export const dataAffiliateStat = [
   
   export const dataProductStat = [
     {
-      _id: "6371259df03239e680000035",
       productId: "63701d24f03239c72c00018e",
       yearlySalesTotal: 7152,
       yearlyTotalSoldUnits: 1414,
@@ -2883,7 +2882,6 @@ export const dataAffiliateStat = [
       ],
     },
     {
-      _id: "6371259ef032398675000198",
       productId: "63701d24f03239c72c00018f",
       yearlySalesTotal: 2192,
       yearlyTotalSoldUnits: 1169,
@@ -3567,7 +3565,6 @@ export const dataAffiliateStat = [
       ],
     },
     {
-      _id: "6371259df03239444100035a",
       productId: "63701d24f03239c72c000191",
       yearlySalesTotal: 9976,
       yearlyTotalSoldUnits: 3579,

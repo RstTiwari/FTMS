@@ -5,7 +5,7 @@ import App from './App';
 import {configureStore} from "@reduxjs/toolkit"
 import globalReducer from "state/index"
 import { Provider } from 'react-redux';
-import {api} from "state/api"
+import {api,api2} from "state/api"
 import { setupListeners } from '@reduxjs/toolkit/query';
 
 
@@ -13,9 +13,10 @@ const store = configureStore({
     reducer: {
         global: globalReducer,
         [api.reducerPath]: api.reducer,
+        [api2.reducerPath]: api2.reducer,
 
     },
-    middleware: (global) => global().concat(api.middleware)
+    middleware: (global) => global().concat(api.middleware,api2.middleware)
 });
 
 setupListeners(store.dispatch)
