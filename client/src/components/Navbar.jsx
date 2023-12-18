@@ -156,9 +156,7 @@ const NavBar = ({user,isSidebarOpen,setIsSidebarOpen,isLaptop}) => {
                               }}
                           >
                               <MenuItem
-                                  onClick={console.log(
-                                      "fu"
-                                  )}
+                                  onClick={"new"}
                               >
                                   <FlexBetween>
                                       <IconButton>
