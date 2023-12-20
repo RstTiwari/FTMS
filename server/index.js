@@ -43,7 +43,8 @@ app.use("/general", generalRoutes);
 
 import Product from "./models/Product.js"
 import ProductStats from "./models/ProductStats.js"
-import { dataProduct,dataProductStat } from "./data/index.js"
+import { dataProduct,dataProductStat ,dataTransaction} from "./data/index.js"
+import Transaction from "./models/Transaction.js"
 /**
  * Mongoose Connection to Data base
  */
@@ -61,6 +62,7 @@ mongoose
         /**Only add Data at once */
     //     Product.insertMany(dataProduct)
     //    ProductStats.insertMany(dataProductStat)
+          //Transaction.insertMany(dataTransaction)
 
     })
     .catch((e) => {
