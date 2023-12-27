@@ -85,7 +85,7 @@ const Products = () => {
         const isLaptop = useMediaQuery("(min-width:1000px)")
   return (
       <Box m="1.5rem 2rem">
-          <Headers title={"PRODUCTS"} subTitle={"See Your List of Products"} />
+          <Headers title={"PRODUCTS"} subTitle={"List of  all Products"}  backLink={"/dashboard"} addNewLink ={"/addProduct"}/>
           {data && !isLoading ? (
               <Box
                   mt={"20px"}

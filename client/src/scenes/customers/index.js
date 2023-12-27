@@ -1,5 +1,5 @@
 import React from 'react'
-import {Box ,Button,IconButton,useTheme}  from "@mui/material"
+import {Box ,Button,IconButton,useMediaQuery,useTheme}  from "@mui/material"
 import { useGetCoustomersQuery } from 'state/api'
 import Headers from "../../components/Header"
 import {DataGrid,GridActionsCellItem} from "@mui/x-data-grid"
@@ -7,6 +7,8 @@ import {EditIcon} from "@mui/icons-material"
 
 const Customers = () => {
     const { data, isLoading } = useGetCoustomersQuery();
+    const isLaptop = useMediaQuery("(min-width:1000px)")
+    console.log(isLaptop)
     const theme = useTheme();
     const columns = [
         {
@@ -49,28 +51,10 @@ const Customers = () => {
             field: "role",
             headerName: "Role",
             flex: 0.5,
-        },
-        {
-          field:"",
-          headerName:"Action",
-          type:"Action",
-          flex:0.5,
-          getActions:()=>{
-            return (
-            <>
-            <IconButton>
-              <button>
-                New
-              </button>
-            </IconButton>
-            </>
-                
-            )
-          }
         }
     ];
     return (
-        <Box m={"1.rem 2rem"}>
+        <Box m={"1.5rem 2rem"}>
             <Headers title={"Coustomer"} subTitle={"All Coustomers"} />
             <Box
                 mt={"40px"}

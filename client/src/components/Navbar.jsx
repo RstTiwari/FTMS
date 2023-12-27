@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState ,useEffect} from 'react'
 import {
     LightModeOutlined,
     DarkModeOutlined,
@@ -7,6 +7,7 @@ import {
     SettingsOutlined,
     ArrowDropDownOutlined,
     LoginOutlined,
+    SupervisedUserCircle,
 
 } from "@mui/icons-material";
 import FlexBetween from './FlexBetween';
@@ -24,14 +25,16 @@ import {
     Menu,
     Box,
     MenuItem,
+    Avatar
 } from "@mui/material";
  import { theme } from '@mui/material';
 // import profileImage from  "assets/"
-const profileImage = "https://res.cloudinary.com/drkxpdxr5/image/upload/v1702446552/samples/smile.jpg"
+const icon = "https://res.cloudinary.com/drkxpdxr5/image/upload/v1702446552/samples/smile.jpg"
 
 const NavBar = ({user,isSidebarOpen,setIsSidebarOpen,isLaptop}) => {
     const dispatch = useDispatch()
     const theme = useTheme()
+    const [profileImage,setProfileImage] = useState("")
     const [anchorEl,setAnchorEl] = useState(null);
     const [isOpen,setIsopen] = useState(false)
     const handleClick = (event) => {
@@ -41,34 +44,28 @@ const NavBar = ({user,isSidebarOpen,setIsSidebarOpen,isLaptop}) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+    useEffect(() => {
+         setProfileImage(icon)
+      return () => {
+        
+      }
+    }, [profileImage])
+    
   return (
       <AppBar
           sx={{
               position: "static",
-              background: "none",
-              boxShadow: "none",
           }}
       >
           <Toolbar sx={{ justifyContent: "space-between " }}>
               {/**Left Side Off Navbar */}
               <FlexBetween>
-                  <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-                      <MenuIcon />
-                  </IconButton>
-
-                  {isLaptop ? (
-                      <FlexBetween
-                          backgroundColor={theme.palette.background.alt}
-                          borderRadius={"9px"}
-                          gap={"3px"}
-                          p={"0.1rem 1.5rem"}
+                  {!isLaptop ? (
+                      <IconButton
+                          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                       >
-                          <InputBase placeholder="Search ...">
-                              <IconButton>
-                                  <Search />
-                              </IconButton>
-                          </InputBase>
-                      </FlexBetween>
+                          <MenuIcon />
+                      </IconButton>
                   ) : (
                       ""
                   )}
@@ -95,14 +92,7 @@ const NavBar = ({user,isSidebarOpen,setIsSidebarOpen,isLaptop}) => {
               )}
 
               {/**Right Side of Navbar */}
-              <FlexBetween gap={"1.5rem"}>
-                  <IconButton onClick={() => dispatch(setMode())}>
-                      {theme.palette.mode === "dark" ? (
-                          <DarkModeOutlined sx={{ fontSize: "25px" }} />
-                      ) : (
-                          <LightModeOutlined sx={{ fontSize: "25px" }} />
-                      )}
-                  </IconButton>
+              <FlexBetween gap={"2rem"}>
                   <IconButton>
                       <SettingsOutlined sx={{ fontSize: "25px" }} />
                   </IconButton>
@@ -114,20 +104,24 @@ const NavBar = ({user,isSidebarOpen,setIsSidebarOpen,isLaptop}) => {
                               justifyContent: "space-between",
                               alignItems: "center",
                               textTransform: "none",
-                              gap: "1rem",
                           }}
                       >
-                          <Box
-                              component="img"
-                              alt="profile"
-                              src={profileImage}
-                              height="30px"
-                              weidth="30px"
-                              borderRadius="60px"
-                              sx={{
-                                  objectFit: "cover",
-                              }}
-                          />
+                          {profileImage ? (
+                              <Box
+                                  component="img"
+                                  alt="profile"
+                                  src={profileImage}
+                                  height="30px"
+                                  weidth="30px"
+                                  borderRadius="60px"
+                                  sx={{
+                                      objectFit: "cover",
+                                  }}
+                              />
+                          ) : (
+                              <Avatar sx={{ backgroundColor: "#fff" }} />
+                          )}
+
                           <Box sx={{ textAlign: "left" }}>
                               <Typography
                                   fontWeight={"bold"}
@@ -156,13 +150,18 @@ const NavBar = ({user,isSidebarOpen,setIsSidebarOpen,isLaptop}) => {
                               }}
                           >
                               <MenuItem
-                                  onClick={"new"}
+                                  onClick={() => {
+                                      console.log("love me thoda");
+                                  }}
+                                  sx={{width:"200px", paddingRight:"20px"}}
+                               
                               >
                                   <FlexBetween>
                                       <IconButton>
                                           <LoginOutlined />
                                       </IconButton>
-                                      <Typography >LogOut</Typography>
+                                      <Typography>LogOut</Typography>
+
                                   </FlexBetween>
                               </MenuItem>
                           </Menu>

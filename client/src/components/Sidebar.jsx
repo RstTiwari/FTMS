@@ -144,7 +144,7 @@ const Sidebar = ({
                                 {!isLaptop && (
                                     <IconButton
                                         onClick={() =>
-                                            setIsSidebarOpen(false)
+                                            setIsSidebarOpen(!isSidebarOpen)
                                         }
                                     >
                                         <ChevronLeft />
