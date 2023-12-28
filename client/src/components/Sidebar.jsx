@@ -29,6 +29,8 @@ import {
     TrendingUpOutlined,
     PieChartOutlined,
     AdminPanelSettingsOutlined,
+    Leaderboard,
+    RequestQuote,
 } from "@mui/icons-material";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -55,16 +57,32 @@ const Sidebar = ({
             icon: <HomeOutlined />,
         },
         {
+            text: "Sales & Marketing",
+            icon: null,
+        },
+        {
+            text: "Overview",
+            icon: <Leaderboard />,
+        },
+        {
+            text: "Lead",
+            icon: < PointOfSaleOutlined />,
+        },
+        {
+            text: "Quotation",
+            icon: <RequestQuote />,
+        },
+        {
+            text: "Customers",
+            icon: <Groups2Outlined />,
+        },
+        {
             text: "Client Facing",
             icon: null,
         },
         {
             text: "Products",
             icon: <ShoppingCartOutlined />,
-        },
-        {
-            text: "Customers",
-            icon: <Groups2Outlined />,
         },
         {
             text: "Transactions",
@@ -74,26 +92,7 @@ const Sidebar = ({
             text: "Geography",
             icon: <PublicOutlined />,
         },
-        {
-            text: "Sales",
-            icon: null,
-        },
-        {
-            text: "Overview",
-            icon: <PointOfSaleOutlined />,
-        },
-        {
-            text: "Daily",
-            icon: <TodayOutlined />,
-        },
-        {
-            text: "Monthly",
-            icon: <CalendarMonthOutlined />,
-        },
-        {
-            text: "Breakdown",
-            icon: <PieChartOutlined />,
-        },
+ 
         {
             text: "Management",
             icon: null,
@@ -158,7 +157,7 @@ const Sidebar = ({
                                     return (
                                         <Typography
                                             key={text}
-                                            sx={{ m: "1rem 0 1rem 2rem" }}
+                                            sx={{ m: "1rem  1rem 2rem" }}
                                         >
                                             {text}
                                         </Typography>

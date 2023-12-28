@@ -1,6 +1,6 @@
 import Product from "../models/Product.js";
 import ProductStats from "../models/ProductStats.js";
-import User from "../models/User.js"
+import User from "../models/coreModels/User.js"
 import Transaction from "../models/Transaction.js";
 
 export const getProduct = async (req, res) => {
