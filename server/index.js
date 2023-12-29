@@ -10,6 +10,7 @@ import clientRoutes from  "./routes/client.js"
 import salesRoutes from  "./routes/sales.js"
 import generalRoutes from  "./routes/general.js"
 import managmentRoutes from  "./routes/managment.js"
+import authRoutes from "./routes/auth.js"
 
 
 /**
@@ -31,6 +32,7 @@ app.use(cors())
  * Configratrions of Routes
  */
 
+app.use("/auth" ,authRoutes)
 app.use("/client", clientRoutes);
 app.use("/sales", salesRoutes);
 app.use("/mangament", managmentRoutes);

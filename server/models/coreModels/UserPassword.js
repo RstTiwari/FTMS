@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+import bcrypt from "bcryptjs"
 const Schema = mongoose.Schema;
 
-const bcrypt = require('bcryptjs');
 
 const UserPaswordSchema = new Schema ({
     removed: {
@@ -17,8 +17,8 @@ const UserPaswordSchema = new Schema ({
         type: String,
         required: true,
       },
-      emailToken: String,
-      resetToken: String,
+      emailOtp: Number,
+      resetOtp: Number,
       emailVerified: {
         type: Boolean,
         default: false,
@@ -41,4 +41,4 @@ UserPaswordSchema.method.validPassword = function (salt,userPassword){
    return bcrypt.compareSync(salt +userPassword , this.password)
 }
 
-module.exports = mongoose.model("UserPassword", UserPaswordSchema)
+export default  mongoose.model("UserPassword", UserPaswordSchema)

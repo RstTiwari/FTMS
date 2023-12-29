@@ -1,4 +1,4 @@
-import User from "../models/coreModels/User";
+import User from "../models/coreModels/User.js";
 
 export const getUser = async (req, res) => {
     try {
@@ -8,4 +8,4 @@ export const getUser = async (req, res) => {
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
-};
+}
