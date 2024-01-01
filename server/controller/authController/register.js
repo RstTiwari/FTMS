@@ -6,8 +6,9 @@ import UserPassword from "../../models/coreModels/UserPassword.js";
 import sendEmail from "../authController/sendEmail.js";
 
 
-const register = async (req, res) => {
+const register = async (req, res,next, userDb,userPasswordDb) => {
     const { name, email, password } = req.body;
+    
     //validate input parameters
     const ObjectSchema = Joi.object({
         name: Joi.string().required(),
@@ -25,7 +26,7 @@ const register = async (req, res) => {
             message: "Invalid/Missing credentials",
         });
     }
-    const existingUser = await User.findOne({ email: email, removed: false });
+    const existingUser = await userDb.findOne({ email: email, removed: false });
     if (existingUser) {
         return res.status(409).json({
             success: 0,
@@ -38,7 +39,7 @@ const register = async (req, res) => {
     const hashedPassword = bcrypt.hashSync(salt+ password)
     const randomOtp = Math.floor(Math.random()*9000)
     const savedUser = await User.create({email,name});
-    const registrationDone = await UserPassword.create({
+    const registrationDone = await userPasswordDb.create({
         user: savedUser._id,
         password: hashedPassword,
         salt: salt,

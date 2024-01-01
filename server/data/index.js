@@ -1806,7 +1806,7 @@ export const dataAffiliateStat = [
     },
   ];
   
-  export const dataOverallStat = [
+export const dataOverallStat = [
     {
       totalCustomers: 5251,
       yearlySalesTotal: 65152,
