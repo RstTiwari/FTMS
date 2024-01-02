@@ -3,6 +3,8 @@ import register from "../../controller/authController/register.js";
 import login from "../../controller/authController/login.js";
 import userPassword from "../../models/coreModels/UserPassword.js";
 import user from "../../models/coreModels/User.js";
+import isValidAuthtoken from '../../controller/authController/isValidAuthtoken.js';
+
 
 const createAuthmiddleware = () => {
     let authMethods = {};
@@ -13,8 +15,11 @@ const createAuthmiddleware = () => {
         register(req, res, next, user, userPassword);
     };
     authMethods.login  = (req, res, next) => {
-        login(req, res, user, userPassword);
+        login(req, res,next, user, userPassword);
     };
+    authMethods.isValidAuthtoken = (req,res,next)=>{
+        isValidAuthtoken(req,res,next,user,userPassword)
+    }
     return authMethods;
 };
 

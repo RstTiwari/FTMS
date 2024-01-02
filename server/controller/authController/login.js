@@ -1,6 +1,7 @@
 import joi from "joi"
 import bcrypt from "bcryptjs"
 import sendEmail from "./sendEmail.js";
+import jwt  from "jsonwebtoken";
 
 /**
  * 
@@ -24,7 +25,7 @@ const login = async (req, res, next, userDb, userPassworDb) => {
         password: joi.string().required(),
     });
 
-    const { error, value } = ObjectSchema.validate(email, password);
+    const { error, value } = ObjectSchema.validate({email, password});
     if (error) {
         return res.status(409).json({
             sucess: 0,
@@ -43,7 +44,7 @@ const login = async (req, res, next, userDb, userPassworDb) => {
         });
     }
 
-    const userPassword = await userPassword.findOne({
+    const userPassword = await userPassworDb.findOne({
         user: user._id,
         removed: false,
     });

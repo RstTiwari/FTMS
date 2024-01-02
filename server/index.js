@@ -5,13 +5,15 @@ import helmet from "helmet"
 import morgan from "morgan"
 import mongoose from "mongoose"
 import dotenv from "dotenv"
+import  cookieParser from 'cookie-parser'
+
 
 import clientRoutes from  "./routes/client.js"
 import salesRoutes from  "./routes/sales.js"
 import generalRoutes from  "./routes/general.js"
 import managmentRoutes from  "./routes/managment.js"
 import auth from "./routes/auth.js"
-
+import adminAuth from "./controller/authController/index.js"
 
 /**
  * Configration
@@ -25,6 +27,9 @@ app.use(morgan("common"))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(cors())
+app.use(cookieParser())
+
+
 
 
 
@@ -33,8 +38,8 @@ app.use(cors())
  */
 
 app.use("/auth", auth)
-app.use("/client", clientRoutes);
-app.use("/sales", salesRoutes);
+app.use("/client",adminAuth.isValidAuthtoken, clientRoutes);
+app.use("/sales",salesRoutes);
 app.use("/mangament", managmentRoutes);
 app.use("/general", generalRoutes);
 
