@@ -4,13 +4,17 @@ import PageLoader from "pages/PageLoader";
 import SideContent from "module/AuthModule/SideContent";
 import { LoginForm } from "Forms/LoginForm";
 import {useGetUserLoginQuery} from "state/api"
+import { useAuth } from "../../state/AuthProvider";
 const Login = () => {
     const [login, setLogin] = useState("");
     const handleLoginChange = (value) => {
         setLogin(value);
     };
+    const {logoutUser,loginUser } = useAuth()
     const { data, isLoading } = useGetUserLoginQuery({ login });
+    console.log(data,"login");
     if (data && data.success) {
+          loginUser()
     } else {
         console.log("data");
     }

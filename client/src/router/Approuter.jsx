@@ -8,7 +8,8 @@ import Transaction from "scenes/transaction";
 import NotFound from "pages/Notfound";
 const Approuter = () => {
     return (
-        <Routes>
+        <BrowserRouter>
+         <Routes>
             <Route element={<Layout />}>
                 <Route
                     path="/"
@@ -22,6 +23,8 @@ const Approuter = () => {
 
             </Route>
         </Routes>
+        </BrowserRouter>
+       
     );
 };
 

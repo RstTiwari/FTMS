@@ -1,13 +1,12 @@
 import { createContext, useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    const login = (data) => {
-        if (data.success) {
+    const loginUser = (data) => {
             const auth_state = {
-                current: data.result,
                 isLoggedIn: true,
                 isLoading: false,
                 isSuccess: true,
@@ -15,16 +14,17 @@ export const AuthProvider = ({ children }) => {
             window.localStorage.setItem("auth", JSON.stringify(auth_state));
             window.localStorage.removeItem("isLogout");
             setIsLoggedIn(true);
+            window.location.replace("/dashboard")
         }
-    };
 
-    const logout = () => {
+    const logoutUser = () => {
         window.localStorage.removeItem("auth");
         setIsLoggedIn(false);
+        window.location.replace("/login")
     };
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+        <AuthContext.Provider value={{ isLoggedIn, loginUser, logoutUser }}>
             {children}
         </AuthContext.Provider>
     );

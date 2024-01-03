@@ -10,10 +10,10 @@ const DefaultApp = () => {
     </Suspense>;
 };
 export default function Myfac8ry() {
-    const { isLoggedIn, login, logout } = useAuth();
+    const  isLoggedIn  = JSON.parse(window.localStorage.getItem("auth"));
     if (!isLoggedIn) {
         return <AuthRouter />;
     } else {
-        <DefaultApp />;
+        <Approuter />;
     }
 }
