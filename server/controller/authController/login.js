@@ -15,7 +15,7 @@ import jwt  from "jsonwebtoken";
 
 const login = async (req, res, next, userDb, userPassworDb) => {
     const { email, password } = req.body;
-
+    console.log(req.body);
     // validate the input values
     const ObjectSchema = joi.object({
         email: joi

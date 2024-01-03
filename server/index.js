@@ -38,7 +38,7 @@ app.use(cookieParser())
  */
 
 app.use("/auth", auth)
-app.use("/client",adminAuth.isValidAuthtoken, clientRoutes);
+app.use("/client", clientRoutes);
 app.use("/sales",salesRoutes);
 app.use("/mangament", managmentRoutes);
 app.use("/general", generalRoutes);

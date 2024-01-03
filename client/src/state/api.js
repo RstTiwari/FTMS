@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const api = createApi({
     baseQuery: fetchBaseQuery({ baseUrl:process.env.REACT_APP_URL }),
     reducerPath: "adminApi",
-    tagTypes: ["User","Client","Coustomers","Transaction"],
+    tagTypes: ["User","Client","Coustomers","Transaction","Login"],
     endpoints: (build) => ({
         getUser: build.query({
             query: (id) => `general/user/${id}`,
@@ -24,7 +24,18 @@ export const api = createApi({
                headers:{},
                providesTags:["Transaction"]
           })
-        })
+        }),
+        getUserLogin :build.query ({
+          query:({login})=>({
+               url:"auth/login",
+               method:"POST",
+               headers:{},
+               body:login,
+               providesTags:["Login"]
+          })
+        }),
+
+
     }),
 });
 
@@ -36,4 +47,5 @@ export const {
   useGetProductsQuery,
   useGetCoustomersQuery,
   useGetTransactionQuery,
+  useGetUserLoginQuery
 } = api;
