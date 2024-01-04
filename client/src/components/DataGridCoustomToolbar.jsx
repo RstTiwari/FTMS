@@ -10,7 +10,6 @@ import {
 import FlexBetween from "./FlexBetween";
 
 const DataGridCoustomToolbar = ({searchInput,setSearchInput,setSearch}) => {
-    console.log(searchInput,setSearch,setSearchInput);
     return (
         <GridToolbarContainer>
             <FlexBetween width={"100%"}>

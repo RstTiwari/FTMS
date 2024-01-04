@@ -1,19 +1,21 @@
 import { lazy, Suspense } from "react";
 import PageLoader from "pages/PageLoader";
-import AuthRouter from "./AuthRouter";
-import Approuter from "./Approuter";
 import { useAuth } from "../state/AuthProvider";
 
-const DefaultApp = () => {
-    <Suspense fallback={PageLoader}>
-        <Approuter />
-    </Suspense>;
-};
-export default function Myfac8ry() {
-    const  isLoggedIn  = JSON.parse(window.localStorage.getItem("auth"));
-    if (!isLoggedIn) {
-        return <AuthRouter />;
-    } else {
-        <Approuter />;
-    }
+
+const  Myfac8ry = ()=> {
+    const  isToken  = window.localStorage.getItem("auth");
+    const Approuter = lazy(()=> import("./Approuter"))
+    const AuthRouter = lazy(()=> import("./AuthRouter"))
+    return(
+        <Suspense fallback= {<PageLoader/>}>
+        {
+            isToken ? (<Approuter/>):(<AuthRouter/>)
+        }
+        </Suspense>
+    )
+
+    
 }
+
+export default Myfac8ry

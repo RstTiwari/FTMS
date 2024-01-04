@@ -12,7 +12,6 @@ const Login = () => {
     };
     const {logoutUser,loginUser } = useAuth()
     const { data, isLoading } = useGetUserLoginQuery({ login });
-    console.log(data,"login");
     if (data && data.success) {
           loginUser()
     } else {

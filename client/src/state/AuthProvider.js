@@ -1,5 +1,4 @@
 import { createContext, useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -11,7 +10,7 @@ export const AuthProvider = ({ children }) => {
                 isLoading: false,
                 isSuccess: true,
             };
-            window.localStorage.setItem("auth", JSON.stringify(auth_state));
+            window.localStorage.setItem("auth", true);
             window.localStorage.removeItem("isLogout");
             setIsLoggedIn(true);
             window.location.replace("/dashboard")

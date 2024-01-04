@@ -8,7 +8,6 @@ export const LoginForm = ({handleLoginChange}) => {
         password: "",
         remeber: false,
     });
-console.log(process.env.REACT_APP_URL,"react")
 
 
     const handleLoginClick = () => {

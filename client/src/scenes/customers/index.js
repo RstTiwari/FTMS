@@ -8,7 +8,6 @@ import {EditIcon} from "@mui/icons-material"
 const Customers = () => {
     const { data, isLoading } = useGetCoustomersQuery();
     const isLaptop = useMediaQuery("(min-width:1000px)")
-    console.log(isLaptop)
     const theme = useTheme();
     const columns = [
         {
