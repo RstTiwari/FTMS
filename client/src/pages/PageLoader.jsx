@@ -1,18 +1,24 @@
-import React from 'react';
-import { Spin } from 'antd';
+import React from "react";
+import { Alert, ConfigProvider, Spin } from "antd";
 
-const PageLoader = () => {
-  return (
-    <div style={{
-      display:"flex",
-      justifyContent:"center",
-      alignItems: "center",
-      height:"100vh",
-      top:"50%",
-      left:"50%"
-    }}>
-      <Spin size="large" />
-    </div>
-  );
+const PageLoader = ({text}) => {
+    return (
+        <div>
+            <ConfigProvider theme={{
+              token:{
+                colorBgContainer:"#0000ffff"
+              },
+              components:{
+                Spin:{
+                  dotSizeLG:50
+                }
+              }
+            }}>
+                <Spin size="large" fullscreen>
+                  <Alert message = {text}/>
+                </Spin>
+            </ConfigProvider>
+        </div>
+    );
 };
 export default PageLoader;

@@ -28,6 +28,7 @@ import {
     Avatar
 } from "@mui/material";
  import { theme } from '@mui/material';
+import { useAuth } from 'state/AuthProvider';
 // import profileImage from  "assets/"
 const icon = "https://res.cloudinary.com/drkxpdxr5/image/upload/v1702446552/samples/smile.jpg"
 
@@ -41,6 +42,7 @@ const NavBar = ({user,isSidebarOpen,setIsSidebarOpen,isLaptop}) => {
         setAnchorEl(event.currentTarget);
         setIsopen(!isOpen)
     };
+
     const handleClose = () => {
         setAnchorEl(null);
     };
@@ -50,7 +52,7 @@ const NavBar = ({user,isSidebarOpen,setIsSidebarOpen,isLaptop}) => {
         
       }
     }, [profileImage])
-    
+    const {isLoggedIn,loginUser,logoutUser} = useAuth()  
   return (
       <AppBar
           sx={{
@@ -79,14 +81,14 @@ const NavBar = ({user,isSidebarOpen,setIsSidebarOpen,isLaptop}) => {
                           src={
                               "https://res.cloudinary.com/drkxpdxr5/image/upload/v1702446560/cld-sample-3.jpg"
                           }
-                          height="30px"
-                          weidth="30px"
-                          borderRadius="60px"
+                          height="20px"
+                          weidth="20px"
+                          borderRadius="25%"
                           sx={{
                               objectFit: "cover",
                           }}
                       />
-                      <Typography>HKB DEVELOPMENT PVT LTD</Typography>
+                      <Typography>Myfac8ry.com</Typography>
                   </FlexBetween>
               ) : (
                   ""
@@ -112,9 +114,9 @@ const NavBar = ({user,isSidebarOpen,setIsSidebarOpen,isLaptop}) => {
                                   component="img"
                                   alt="profile"
                                   src={profileImage}
-                                  height="30px"
-                                  weidth="30px"
-                                  borderRadius="60px"
+                                  height="20px"
+                                  weidth="20px"
+                                  borderRadius="25%"
                                   sx={{
                                       objectFit: "cover",
                                   }}
@@ -151,9 +153,7 @@ const NavBar = ({user,isSidebarOpen,setIsSidebarOpen,isLaptop}) => {
                               }}
                           >
                               <MenuItem
-                                  onClick={() => {
-                                      console.log("love me thoda");
-                                  }}
+                                  onClick={() => logoutUser()}
                                   sx={{width:"200px", paddingRight:"20px"}}
                                
                               >

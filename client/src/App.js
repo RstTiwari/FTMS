@@ -17,7 +17,7 @@ function App() {
     return (
         <div className="app">
             <BrowserRouter>
-                <Suspense fallback={<PageLoader />}>
+                <Suspense fallback={<PageLoader text={"Please Wait Setting up For You"} />}>
                     <ThemeProvider theme={theme}>
                         <CssBaseline />
                         <AuthProvider>

@@ -15,7 +15,7 @@ const Login = () => {
     if (data && data.success) {
           loginUser()
     } else {
-        console.log("data");
+        
     }
 
     return (

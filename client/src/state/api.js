@@ -34,6 +34,15 @@ export const api = createApi({
                providesTags:["Login"]
           })
         }),
+        getDashbordData :build.query ({
+          query:({})=>({
+               url:"auth/dashbordData",
+               method:"POST",
+               headers:{},
+               body:{},
+               providesTags:["Dashbord"]
+          })
+        }),
 
 
     }),
@@ -47,5 +56,6 @@ export const {
   useGetProductsQuery,
   useGetCoustomersQuery,
   useGetTransactionQuery,
-  useGetUserLoginQuery
+  useGetUserLoginQuery,
+  useGetDashbordDataQuery
 } = api;

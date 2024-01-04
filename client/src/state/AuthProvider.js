@@ -2,18 +2,13 @@ import { createContext, useContext, useState } from "react";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(null);
 
     const loginUser = (data) => {
-            const auth_state = {
-                isLoggedIn: true,
-                isLoading: false,
-                isSuccess: true,
-            };
             window.localStorage.setItem("auth", true);
             window.localStorage.removeItem("isLogout");
-            setIsLoggedIn(true);
             window.location.replace("/dashboard")
+            setIsLoggedIn(true);
         }
 
     const logoutUser = () => {
