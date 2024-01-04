@@ -37,7 +37,6 @@ export const getTransaction = async (req,res)=>{
     try {
         //sort shoild look like this  {filed:userId, sort:"desc"}
         const {page = 1,pageSize = 20, sort  = null ,search = ""} = req.query;
-        console.log(sort,search,"---");
 
         // formatted sort should look like this  {userId:-1};
 
