@@ -17,6 +17,8 @@ import {
 import { useGetDashbordDataQuery } from "state/api";
 import OverviewChart from "components/OverviewChart";
 import { Flex ,Row,Col} from "antd";
+import SummaryCard from "./SummaryCard";
+
 
 const Dashbord = () => {
     const theme = useTheme();
@@ -24,49 +26,97 @@ const Dashbord = () => {
     const { data, isLoading } = useGetDashbordDataQuery();
     const columns = [
         {
-          field: "_id",
-          headerName: "ID",
-          flex: 1,
+            field: "_id",
+            headerName: "ID",
+            flex: 1,
         },
         {
-          field: "userId",
-          headerName: "User ID",
-          flex: 1,
+            field: "userId",
+            headerName: "User ID",
+            flex: 1,
         },
         {
-          field: "createdAt",
-          headerName: "CreatedAt",
-          flex: 1,
+            field: "createdAt",
+            headerName: "CreatedAt",
+            flex: 1,
         },
         {
-          field: "products",
-          headerName: "# of Products",
-          flex: 0.5,
-          sortable: false,
-          renderCell: (params) => params.value.length,
+            field: "products",
+            headerName: "# of Products",
+            flex: 0.5,
+            sortable: false,
+            renderCell: (params) => params.value.length,
         },
         {
-          field: "cost",
-          headerName: "Cost",
-          flex: 1,
-          renderCell: (params) => `$${Number(params.value).toFixed(2)}`,
+            field: "cost",
+            headerName: "Cost",
+            flex: 1,
+            renderCell: (params) => `$${Number(params.value).toFixed(2)}`,
         },
-      ];
+    ];
+    const entityData = [
+        {
+            result: 100,
+            isLoading: false,
+            entity: "lead",
+            title: "Lead Genrated",
+            icon :<PointOfSaleOutlined/>
+        },
+        {
+            result: 12334,
+            isLoading: false,
+            entity: "quote",
+            title: "Quotes Send",
+            icon:<RequestQuote/>
+        },
+        {
+            result: 1234,
+            isLoading: false,
+            entity: "invoice",
+            title: "Invoices ",
+            icon:<AccountBoxOutlined/>
+        },
+
+        {
+            result: 1200000,
+            isLoading: false,
+            entity: "payment",
+            title: "Payments Due",
+            icon:<PaymentOutlined/>
+        },
+    ];
+    const cards = entityData.map((item, index)=>{
+      if(item.entity === 'payment'){
+          item.result = `${item.result}Rs`
+      }
+      return (
+        
+          <SummaryCard
+              key={index}
+              title={item.title}
+              cardContent={item.result}
+              prefix={"This Month"}
+              tagColor={
+                  item.entity === "invoice"
+                      ? "cyan"
+                      : item.entity === "quote"
+                      ? "purple"
+                      : item.entity === "lead"
+                      ? "green"
+                      : "blue"
+              }
+              icon={item.icon}
+              isLoading={item.isLoading}
+          />
+      );
+    })
     return (
-        <Flex  vertical  style={{margin:'1rem'}}>
-            <Row gutter={{
-        xs: 8,
-        sm: 16,
-        md: 24,
-        lg: 32,
-      }} justify={"center"}>
-            <Col style={{background:"red" , textAlign:"center"}} xs={24} sm={24} lg={8} xl={8}  > col</Col>
-                <Col style={{background:"green"}}xs={24} sm={24} lg={8} xl={8}>col</Col>
+        <Flex vertical style={{ margin: "1rem" }} gap={"large"}>
+            <Row align={"middle"} gutter={[32,10]}>
+                {cards}
             </Row>
-            <Row gutter={1}>
-                <Col style={{background:"white"}} xs={24} sm={24} lg={8} xl={8} >col</Col>
-                <Col style={{background:"grey"}} xs={24} sm={24} lg={8} xl={8}>col</Col>
-                <Col style={{background:"red"}} xs={24} sm={24} lg={8} xl={8}>col</Col>
+            <Row align={"middle"} gutter={[32,10]} >
+              <OverviewChart />
             </Row>
         </Flex>
     );

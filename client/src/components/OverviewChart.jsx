@@ -1,75 +1,90 @@
-import { ResponsiveLine } from '@nivo/line'
+import { Col } from "antd";
+import React from "react";
+import {
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+    ResponsiveContainer,
+} from "recharts";
+
 const OverviewChart = () => {
     const data = [
-        // ... (your data)
+        {
+            name: "AUG-23",
+            Lead: 4000,
+            Project: 2400,
+            Completed: 2400,
+        },
+        {
+            name: "SEP-23",
+            Lead: 4000,
+            Project: 2400,
+            Completed: 2400,
+        },
+        {
+            name: "OCT-23",
+            Lead: 3000,
+            Project: 1398,
+            Completed: 2210,
+        },
+        {
+            name: "NOV-23",
+            Lead: 2000,
+            Project: 9800,
+            Completed: 2290,
+        },
+        {
+            name: "DEC-23",
+            Lead: 2780,
+            Project: 3908,
+            Completed: 2000,
+        },
+        {
+            name: "JAN-24",
+            Lead: 1890,
+            Project: 4800,
+            Completed: 2181,
+        },
     ];
-
+    
     return (
-        <div>
-            <ResponsiveLine
+        <ResponsiveContainer>
+        <Col
+            xs={{ span: 24 }}
+            sm={{ span: 24 }}
+            md={{ span: 24 }}
+            lg={{ span: 18 }}
+            style={{ backgroundColor: "white",  margin:"1rem"} }
+        >
+           <LineChart
+                width={700}
+                height={300}
                 data={data}
-                margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-                xScale={{ type: "point" }}
-                yScale={{
-                    type: "linear",
-                    min: "auto",
-                    max: "auto",
-                    stacked: true,
-                    reverse: false,
-                }}
-                yFormat=" >-.2f"
-                axisTop={null}
-                axisRight={null}
-                axisBottom={{
-                    tickSize: 5,
-                    tickPadding: 5,
-                    tickRotation: 0,
-                    legend: "transportation",
-                    legendOffset: 36,
-                    legendPosition: "middle",
-                }}
-                axisLeft={{
-                    tickSize: 5,
-                    tickPadding: 5,
-                    tickRotation: 0,
-                    legend: "count",
-                    legendOffset: -40,
-                    legendPosition: "middle",
-                }}
-                pointSize={10}
-                pointColor={{ theme: "background" }}
-                pointBorderWidth={2}
-                pointBorderColor={{ from: "serieColor" }}
-                pointLabelYOffset={-12}
-                useMesh={true}  
-                legends={[
-                    {
-                        anchor: "bottom-right",
-                        direction: "column",
-                        justify: false,
-                        translateX: 100,
-                        translateY: 0,
-                        itemsSpacing: 0,
-                        itemDirection: "left-to-right",
-                        itemWidth: 80,
-                        itemHeight: 20,
-                        itemOpacity: 0.75,
-                        symbolSize: 12,
-                        symbolShape: "circle",
-                        symbolBorderColor: "rgba(0, 0, 0, .5)",
-                        effects: [
-                            {
-                                on: "hover",
-                                style: {
-                                    itemBackground: "rgba(0, 0, 0, .03)",
-                                    itemOpacity: 1,
-                                },
-                            },
-                        ],
-                    },
-                ]}
-            />
-        </div>
+               
+            >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line
+                    type="monotone"
+                    dataKey="Lead"
+                    stroke="#8884d8"
+                />
+                <Line
+                    type="monotone"
+                    dataKey="Project"
+                    stroke="#82ca9d"
+                />
+            </LineChart>
+        </Col>
+        </ResponsiveContainer>
+
     );
 };
 

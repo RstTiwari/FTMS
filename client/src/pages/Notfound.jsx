@@ -9,7 +9,8 @@ export default function NotFound({ entity = '' }) {
     <Result
       status="404"
       title={'error_404'}
-      subTitle={'Sorry the Page you requested does not exist'}
+      subTitle='Sorry the Page you requested does not exist'
+      style={{backgroundColor:"grey"}}
       extra={
         <Button
           type="primary"
