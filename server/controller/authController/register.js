@@ -6,6 +6,7 @@ import UserPassword from "../../models/coreModels/UserPassword.js";
 import sendEmail from "../authController/sendEmail.js";
 
 
+
 const register = async (req, res,next, userDb,userPasswordDb) => {
     const { name, email, password } = req.body;
     
@@ -37,13 +38,13 @@ const register = async (req, res,next, userDb,userPasswordDb) => {
 
     const salt = uniqueId()
     const hashedPassword = bcrypt.hashSync(salt+ password)
-    const randomOtp = Math.floor(Math.random()*9000)
+    const emailToken = uniqueId();
     const savedUser = await User.create({email,name});
     const registrationDone = await userPasswordDb.create({
         user: savedUser._id,
         password: hashedPassword,
         salt: salt,
-        emailOtp: randomOtp,
+        emailToken: emailToken,
     });
 
     if(!registrationDone){
@@ -55,8 +56,11 @@ const register = async (req, res,next, userDb,userPasswordDb) => {
         })
     }
 
+    const url = process.env.myfac8ry_base_url;
+
+    const link = url + '/verify/' + savedUser._id + '/' + emailToken;
     const myfac8ryEmail = process.env.email
-    await sendEmail({email, name,randomOtp , myfac8ryEmail})
+    await sendEmail({email, name,link})
 
 
     return res.status(200).json({

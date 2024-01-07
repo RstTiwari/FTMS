@@ -6,8 +6,9 @@ import NotFound from 'pages/Notfound';
 export default function AuthRouter() {
   return (
     <Routes>
+      
       <Route element={<Login />} path="/login" />
-      <Route path="*" element={<NotFound  entity='login'/>} />
+      <Route path="*" element={ <Navigate   to='/login' /> } replace />
     </Routes>
   );
 }

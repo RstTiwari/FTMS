@@ -1,17 +1,17 @@
 import Joi from "joi";
-import User from "../../models/coreModels/User.js";
 import Jwt from "jsonwebtoken";
-import UserPassword from "../../models/coreModels/UserPassword.js";
 
-const verify = async (req, res) => {
+const verify = async (req, res,user,userPassword) => {
    try {
-       const { userId, otp } = req.body;
+    const { userId, emailToken } = req.params;
+          console.log(userId,emailToken,"called");
+          debugger;
        const ObjectSchema = Joi.object({
            userId: Joi.string().required(),
-           otp: Joi.number().required(),
+           emailToken: Joi.number().required(),
        });
 
-       const { error, value } = ObjectSchema.validate({userId,otp});
+       const { error, value } = ObjectSchema.validate({userId,emailToken});
 
        if (error) {
            return res.status(409).json({
@@ -21,7 +21,7 @@ const verify = async (req, res) => {
            });
        }
 
-       const userPasswordResult = await UserPassword.findOne({
+       const userPasswordResult = await userPassword.findOne({
            user: userId,
            removed: false,
        });
@@ -41,15 +41,19 @@ const verify = async (req, res) => {
             });
         }
 
-       const isMatch = otp === userPasswordResult.emailOtp;
-
-       if (!isMatch || !userPasswordResult.emailOtp) {
-           return res.status(403).json({
-               success: 0,
-               result: null,
-               message: "Invalid Otp ",
-           });
-       }
+        const isMatch = emailToken === userPasswordResult.emailToken;
+        if (
+          !isMatch ||
+          userPasswordResult.emailToken === undefined ||
+          userPasswordResult.emailToken === null
+        )
+          return res.status(403).json({
+            success: 0,
+            result: null,
+            message: 'Invalid verify token',
+          });
+      
+ 
 
        const token = Jwt.sign({ userId: userId }, process.env.JWT_SECRET, {
            expiresIn: "24h",
@@ -59,7 +63,7 @@ const verify = async (req, res) => {
            { user: userId },
            { $push: { loggedSessions: token }, emailVerified: true, },
            { new: true }
-       );
+       ).exec();
 
        const user = await User.findOneAndUpdate(
            { _id: userId },
