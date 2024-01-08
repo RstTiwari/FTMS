@@ -13,7 +13,6 @@ import salesRoutes from  "./routes/sales.js"
 import generalRoutes from  "./routes/general.js"
 import managmentRoutes from  "./routes/managment.js"
 import auth from "./routes/auth.js"
-import adminAuth from "./controller/authController/index.js"
 
 /**
  * Configration
