@@ -1,7 +1,7 @@
 import Joi from "joi";
 import Jwt from "jsonwebtoken";
 
-const verify = async (req, res,user,userPassword) => {
+const verify = async (req, res,userDb,userPasswordDb) => {
    try {
     const { userId, emailToken } = req.params;
           console.log(userId,emailToken,"called");
@@ -59,37 +59,22 @@ const verify = async (req, res,user,userPassword) => {
            expiresIn: "24h",
        });
 
-       await UserPassword.findOneAndUpdate(
+       await userPasswordDb.findOneAndUpdate(
            { user: userId },
            { $push: { loggedSessions: token }, emailVerified: true, },
            { new: true }
        ).exec();
 
-       const user = await User.findOneAndUpdate(
+       const user = await userDb.findOneAndUpdate(
            { _id: userId },
            { enabled: true },
            { new: true }
        ).exec();
        
-       res.status(200)
-           .cookie(token, {
-               maxAge: 24 * 60 * 60 * 1000,
-               sameSite: "Lax",
-               httpOnly: true,
-               secure: false,
-               domain: req.hostname,
-               path: "/",
-               Partitioned: true,
-           })
-           .json({
+       res.status(200).json({
                success: 1,
-               result: {
-                   userId: user._id,
-                   name: user.name,
-                   role: user.role,
-                   email: user.email,
-                   photo: user.photo,
-               },
+               message:"Email Verified Please Login to Dashbord",
+             
            });
    } catch (error) {
        return res.status(404).json({

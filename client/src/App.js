@@ -7,6 +7,7 @@ import { Suspense, lazy, useEffect, useMemo, useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import PageLoader from "pages/PageLoader";
 import { AuthProvider } from "./state/AuthProvider";
+import { CookiesProvider } from "react-cookie";
 
 
 function App() {
@@ -17,12 +18,18 @@ function App() {
     return (
         <div className="app">
             <BrowserRouter>
-                <Suspense fallback={<PageLoader text={"Please Wait Setting up For You"} />}>
+                <Suspense
+                    fallback={
+                        <PageLoader text={"Please Wait Setting up For You"} />
+                    }
+                >
                     <ThemeProvider theme={theme}>
                         <CssBaseline />
-                        <AuthProvider>
-                            <Myfac8ry />
-                        </AuthProvider>
+                        <CookiesProvider defaultSetOptions={{ path: "/" }}>
+                            <AuthProvider>
+                                <Myfac8ry />
+                            </AuthProvider>
+                        </CookiesProvider>
                     </ThemeProvider>
                 </Suspense>
             </BrowserRouter>

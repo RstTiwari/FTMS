@@ -1,24 +1,33 @@
 import { createContext, useContext, useState } from "react";
+import { useCookies } from "react-cookie";
+import { authApi } from "./apiFunction";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(null);
+    const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
     const loginUser = (data) => {
-            window.localStorage.setItem("auth", true);
-            window.localStorage.removeItem("isLogout");
-            window.location.replace("/dashboard")
-            setIsLoggedIn(true);
-        }
+        window.location.replace("/dashboard");
+        setCookie("token", data);
+    };
 
     const logoutUser = () => {
-        window.localStorage.removeItem("auth");
-        setIsLoggedIn(false);
-        window.location.replace("/login")
+        removeCookie("token");
+        window.location.replace("/login");
+    };
+    const verifyToken = async() => {
+        let token =
+            cookies.token && cookies.token.token ? cookies.token.token : null; // setting token value
+        let response =  await authApi("isValidAuthtoken", token, {});
+        console.log(response)
+        if (response.success === 0) {
+            removeCookie("token");
+            window.location.replace("/login");
+        }
     };
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, loginUser, logoutUser }}>
+        <AuthContext.Provider value={{ loginUser, logoutUser, verifyToken }}>
             {children}
         </AuthContext.Provider>
     );

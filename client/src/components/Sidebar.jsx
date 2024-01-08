@@ -35,6 +35,8 @@ import {
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
+import { useCookies } from "react-cookie";
+import { useAuth } from "state/AuthProvider";
 
 const Sidebar = ({
     user ,
@@ -50,6 +52,7 @@ const Sidebar = ({
     useEffect(() => {
         setActive(pathname.substring(1));
     }, [pathname]);
+
 
     const navItems = [
         {

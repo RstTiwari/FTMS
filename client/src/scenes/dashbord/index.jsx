@@ -23,7 +23,7 @@ import SummaryCard from "./SummaryCard";
 const Dashbord = () => {
     const theme = useTheme();
     const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
-    const { data, isLoading } = useGetDashbordDataQuery();
+    // const { data, isLoading } = useGetDashbordDataQuery();
     const columns = [
         {
             field: "_id",

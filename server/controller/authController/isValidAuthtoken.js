@@ -6,7 +6,8 @@ import jwt from "jsonwebtoken";
  */
 const isValidAuthtoken = async (req, res, next, userDb, userPasswordDb ) => {
     try {
-        const token = req.cookies.token;
+        const token = req.headers.token;
+        console.log(token)
         if (!token) {
             return res.status(401).json({
                 success: 0,

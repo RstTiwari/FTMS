@@ -1,13 +1,12 @@
-import joi from "joi"
-import bcrypt from "bcryptjs"
-import sendEmail from "./sendEmail.js";
-import jwt  from "jsonwebtoken";
+import joi from "joi";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 /**
- * 
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
+ *
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
  * @param {*} userDb  // userDatabase
  * @param {*} passworDb // userpasswordDatabse
  * @returns  {sucess:1, userId:string , name:string}
@@ -24,7 +23,7 @@ const login = async (req, res, next, userDb, userPassworDb) => {
         password: joi.string().required(),
     });
 
-    const { error, value } = ObjectSchema.validate({email, password});
+    const { error, value } = ObjectSchema.validate({ email, password });
     if (error) {
         return res.status(409).json({
             sucess: 0,
@@ -74,29 +73,19 @@ const login = async (req, res, next, userDb, userPassworDb) => {
             { new: true }
         )
         .exec();
-
-    res.status(200)
-        .cookie("token", token, {
-            maxAge: req.body.remember ? 365 * 24 * 60 * 60 * 1000 : null,
-            sameSite: "Lax",
-            httpOnly: true,
-            secure: false,
-            domain: req.hostname,
-            path: "/",
-            Partitioned: true,
-        })
-        .json({
-            success: true,
-            result: {
-                _id: user._id,
-                name: user.name,
-                surname: user.surname,
-                role: user.role,
-                email: user.email,
-                photo: user.photo,
-            },
-            message: "Successfully login user",
-        });
+    res.status(200).json({
+        success: 1,
+        result: {
+            _id: user._id,
+            name: user.name,
+            surname: user.surname,
+            role: user.role,
+            email: user.email,
+            photo: user.photo,
+            token:token
+        },
+        message: "Successfully login user",
+    });
 };
 
 export default login;
