@@ -8,19 +8,13 @@ export const AuthProvider = ({ children }) => {
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
     const loginUser = (result) => {
-        setTimeout(()=>{
-            setCookie("token",result.token)
-            window.location.replace("/dashboard");
-        },2500)
-        
+        setCookie("token", result.token);
+        window.location.replace("/dashboard");
     };
 
     const logoutUser = () => {
-        setTimeout(()=>{
-            removeCookie("token")
-            window.location.replace("/login");
-        },2500)
-       
+        removeCookie("token");
+        window.location.replace("/login");
     };
 
     const axiosCall = async (path,data)=>{

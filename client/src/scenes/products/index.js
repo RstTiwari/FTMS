@@ -15,6 +15,7 @@ import {
 import { useGetProductsQuery } from 'state/api';
 import Headers from "components/Header"
 import { useCookies } from 'react-cookie';
+import PageLoader from 'pages/PageLoader';
 
 const Products = () => {
     const [cookies,setCookie] = useState([])
@@ -86,8 +87,8 @@ const Products = () => {
     const {data,isLoading} = useGetProductsQuery()
         const isLaptop = useMediaQuery("(min-width:1000px)")
   return (
-      <Box m="1.5rem 2rem">
-          <Headers title={"PRODUCTS"} subTitle={"List of  all Products"}  backLink={"/dashboard"} addNewLink ={"/addProduct"}/>
+      <Box m="1.5rem 2rem" p={"1.5rem"}  sx={{backgroundColor:"#ffffff"}}>
+          <Headers title={"PRODUCTS LIST"} subTitle={"ADD NEW"}/>
           {data && !isLoading ? (
               <Box
                   mt={"20px"}
@@ -120,7 +121,7 @@ const Products = () => {
                 })}
               </Box>
           ) : (
-              "...LODING....."
+              <PageLoader />
           )}
       </Box>
   );

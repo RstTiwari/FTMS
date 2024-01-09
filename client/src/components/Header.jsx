@@ -1,49 +1,34 @@
 import React from "react";
-import { Box, useTheme, Typography, IconButton, Button, } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { IconButton } from "@mui/material";
 import { ArrowBackOutlined , AddOutlined } from "@mui/icons-material";
-import FlexBetween from "./FlexBetween";
+import {Row,Col,Typography,Button} from "antd"
 
-const Header = ({ title, subTitle,backLink,addNewLink }) => {
-    const theme = useTheme();
-    const navigate = useNavigate()
-    const handleBackClick = () => {
-        navigate(`${backLink}`);
-    };
-    const handleAddClick = () => {
-        navigate(`${addNewLink}`);
-    };
+
+const Header = ({ title, subTitle }) => { 
+    const onBackClick = ()=>{
+        window.history.back()
+    }
     return (
-        <Box>
-            <FlexBetween>
-                <Typography>
-                    <IconButton onClick={handleBackClick}>
-                        <ArrowBackOutlined  />
-                        Back
-                    </IconButton>                 
-                </Typography> 
-                <Typography
-                    variant="h3"
-                    color={theme.palette.secondary[100]}
-                    fontWeight={"bold"}
-                    sx={{ mb: "5px" }}
-                >
-                    {title}
-                    <Typography
-                        variant="h5"
-                        color={theme.palette.secondary[300]}
-                        fontWeight={"bold"}
-                        sx={{ mb: "5px" }}
-                    >
-                        {subTitle}
-                    </Typography>
-                </Typography>
-                <IconButton onClick={handleAddClick}>
-                    <AddOutlined />
-                    Add
-                </IconButton>
-            </FlexBetween>
-        </Box>
+        <Row align={"middle"} gutter={20}>
+            <Col xs={4}  sm={12} md ={12} lg={9} style={{color:"#000000"}}>
+            <ArrowBackOutlined onClick = {onBackClick} />
+            </Col>
+           <Col xs={10}  sm={12} md ={12} lg={9} style={{color:"#000000", fontSize:"1rem"}} >
+            {title}
+           </Col>
+           <Col xs={12} sm={12} md={6} lg={3}>
+           <Button >
+            Refresh
+           </Button>
+           </Col>
+         
+           <Col xs={12} sm={12} md={6} lg={3}>
+           <Button type="primary">
+            {subTitle}
+           </Button>
+           </Col>
+        </Row>
     );
 };
 
