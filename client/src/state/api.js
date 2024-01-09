@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+let token = document.cookie.split("=")[1] // token from cookies
 export const api = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_URL }),
     reducerPath: "adminApi",
@@ -9,8 +10,15 @@ export const api = createApi({
             providesTags: ["User"],
         }),
         getProducts: build.query({
-            query: () => `client/products`,
-            providesTags: ["Client"],
+            query: () => ({
+                url: "client/products",
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    token: token ? token : null,
+                },
+                providesTags: ["Client"],
+            }),
         }),
         getCoustomers: build.query({
             query: () => "client/coustomers",

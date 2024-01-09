@@ -14,8 +14,10 @@ import {
 } from "@mui/material";
 import { useGetProductsQuery } from 'state/api';
 import Headers from "components/Header"
+import { useCookies } from 'react-cookie';
 
 const Products = () => {
+    const [cookies,setCookie] = useState([])
     const Product = ({
         _id,
         name,

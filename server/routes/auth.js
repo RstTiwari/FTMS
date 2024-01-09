@@ -11,7 +11,4 @@ router.post("/isValidAuthtoken" , authMethod.isValidAuthtoken)
 
 
 
-
-
-
 export default router;

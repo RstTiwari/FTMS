@@ -6,14 +6,13 @@ import Approuter from "./Approuter";
 import AuthRouter from "./AuthRouter";
 
 const  Myfac8ry = ()=> {
-    const [cookie,setCookie] = useCookies(["token"]);
-    
+    const [cookies,setCookie] = useCookies(["token"])
     return(
-        <Suspense fallback= {<PageLoader  text={"Please Wait Setting up For You"}/>}>
+        <div>
         {
-             cookie.token? (<Approuter/>):(<AuthRouter/>)
+            cookies["token"] ? (<Approuter/>):(<AuthRouter/>)
         }
-        </Suspense>
+        </div>
     )
 
     

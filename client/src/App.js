@@ -9,7 +9,6 @@ import PageLoader from "pages/PageLoader";
 import { AuthProvider } from "./state/AuthProvider";
 import { CookiesProvider } from "react-cookie";
 
-
 function App() {
     const mode = useSelector((state) => state.global.mode);
     const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);

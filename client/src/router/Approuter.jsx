@@ -8,7 +8,7 @@ import Transaction from "scenes/transaction";
 import NotFound from "pages/Notfound";
 const Approuter = () => {
     return (
-         <Routes>
+        <Routes>
             <Route element={<Layout />}>
                 <Route
                     path="/"
@@ -20,14 +20,13 @@ const Approuter = () => {
                 <Route path="/transactions" element={<Transaction />} />
                 <Route path="*" element={<NotFound />} />
 
-                                {/**In case some one acess login page after being logged in */}
-                                <Route
+                {/**In case some one acess login page after being logged in */}
+                <Route
                     path="/login"
-                    element={<Navigate to="/dashboard" replace />}  
+                    element={<Navigate to="/dashboard" replace />}
                 />
             </Route>
         </Routes>
-       
     );
 };
 

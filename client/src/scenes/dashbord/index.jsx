@@ -1,5 +1,5 @@
 import StatBox from "components/StateBox";
-import React from "react";
+import React, { useEffect } from "react";
 import {
     PointOfSaleOutlined,
     RequestQuote,
@@ -18,9 +18,11 @@ import { useGetDashbordDataQuery } from "state/api";
 import OverviewChart from "components/OverviewChart";
 import { Flex ,Row,Col} from "antd";
 import SummaryCard from "./SummaryCard";
+import { useAuth } from "state/AuthProvider";
 
 
 const Dashbord = () => {
+    const {verifyToken}  = useAuth()
     const theme = useTheme();
     const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
     // const { data, isLoading } = useGetDashbordDataQuery();

@@ -7,7 +7,6 @@ import jwt from "jsonwebtoken";
 const isValidAuthtoken = async (req, res, next, userDb, userPasswordDb ) => {
     try {
         const token = req.headers.token;
-        console.log(token)
         if (!token) {
             return res.status(401).json({
                 success: 0,
@@ -48,7 +47,7 @@ const isValidAuthtoken = async (req, res, next, userDb, userPasswordDb ) => {
         const { loggedSessions } = userPassword;
         if (!loggedSessions.includes(token)) {
             return res.status(401).json({
-                success: false,
+                success: 0,
                 result: null,
                 message:
                     "User is already logout try to login, authorization denied.",
@@ -60,7 +59,7 @@ const isValidAuthtoken = async (req, res, next, userDb, userPasswordDb ) => {
         }
     } catch (error) {
         return res.status(503).json({
-            status: false,
+            status: 0,
             result: null,
             message: error.message,
             error: error,
