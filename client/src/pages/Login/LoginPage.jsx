@@ -3,23 +3,19 @@ import "./Login.css";
 import PageLoader from "pages/PageLoader";
 import SideContent from "module/AuthModule/SideContent";
 import { LoginForm } from "Forms/LoginForm";
-import {useGetUserLoginQuery} from "state/api"
-import {authApi} from "state/apiFunction.js";
 import { useAuth } from "../../state/AuthProvider";
-import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
+    const navigate = useNavigate()
     const [login, setLogin] = useState("");
-    const {logoutUser,loginUser } = useAuth()
-    const [cookie,setCookie] = useCookies(["token"])
-    let token = cookie && cookie.token.token
+    const {logoutUser,loginUser,axiosCall } = useAuth()
     
     const handleLoginChange = async (value) => {
         setLogin(value);
-        let response = await authApi("login",token, value);
+        let response = await axiosCall("login", value);
         if (response.success === 1) {
             loginUser(response.result);
-        }else{
-
+        } else {
         }
     };
     return (
