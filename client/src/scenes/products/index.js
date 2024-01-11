@@ -87,7 +87,7 @@ const Products = () => {
     const {data,isLoading} = useGetProductsQuery()
         const isLaptop = useMediaQuery("(min-width:1000px)")
   return (
-      <Box m="1.5rem 2rem" p={"1.5rem"}  sx={{backgroundColor:"#ffffff"}}>
+      <Box m="1.5rem 2rem" p={"1rem"}  sx={{backgroundColor:"#ffffff"}}>
           <Headers title={"PRODUCTS LIST"} subTitle={"ADD NEW"}/>
           {data && !isLoading ? (
               <Box
