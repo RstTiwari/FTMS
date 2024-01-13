@@ -75,7 +75,7 @@ const LeadForm = () => {
           >
               <Select options={leadStatus} />
           </Form.Item>
-          <Form.Item label="Add Comment" name="addComment">
+          <Form.Item label="Add Remark" name="addComment">
               <Input.TextArea />
           </Form.Item>
           <Form.Item>

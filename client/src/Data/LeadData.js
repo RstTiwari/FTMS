@@ -79,6 +79,7 @@ export const leadColumns = [
     {
         title: "SrNo",
         dataIndex: "srNo",
+        width:"100px",
         key: "srno",
     },
     {
@@ -102,9 +103,9 @@ export const leadColumns = [
         key: "status",
     },
     {
-      title: "Comments",
-      dataIndex: "comments",
-      key: "comment",
+      title: "Remark",
+      dataIndex: "remark",
+      key: "remark",
       render: (_,record) => (
         <>
              <Space>
@@ -114,11 +115,14 @@ export const leadColumns = [
                   return(
                       <div>
                       <Text code>
-                        {comment.date}
+                       DATE: {comment.date}
                       </Text>
+                      <Space style={{margin:"0.3rem"}}>
                       <Text type="success">
                         {comment.comment}
                       </Text>
+                      </Space>
+                 
                       </div>
                      
                   )
@@ -158,6 +162,10 @@ export const leadColumns = [
       recivedDate:"21-1-23",
       comments:[
         {
+          date: '23-1-23',
+          comment: "Quote Sended",
+        },
+        {
           date: '21-1-23',
           comment: "Called Him For Detialsd",
         },
@@ -165,6 +173,48 @@ export const leadColumns = [
           date: '21-1-23',
           comment: "Lead Reviced",
         },
-      ]
+            ]
+     },
+     {
+      srNo:2,
+      source:"Just Dial",
+      company:"Arihant Play",
+      status:"Draft",
+      recivedDate:"21-1-23",
+      comments:[
+        {
+          date: '23-1-23',
+          comment: "Quote Sended",
+        },
+        {
+          date: '21-1-23',
+          comment: "Called Him For Detialsd",
+        },
+        {
+          date: '21-1-23',
+          comment: "Lead Reviced",
+        },
+            ]
+     },
+     {
+      srNo:3,
+      source:"salesAgent",
+      company:"Adani Foundation",
+      status:"Draft",
+      recivedDate:"21-1-23",
+      comments:[
+        {
+          date: '23-1-23',
+          comment: "Quote Sended",
+        },
+        {
+          date: '21-1-23',
+          comment: "Called Him For Detialsd",
+        },
+        {
+          date: '21-1-23',
+          comment: "Lead Reviced",
+        },
+            ]
      }
  ]

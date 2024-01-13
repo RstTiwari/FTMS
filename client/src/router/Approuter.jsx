@@ -1,5 +1,5 @@
 import React, { lazy } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Dashbord from "scenes/dashbord"
 import Layout from "scenes/layout";
 import Products from "scenes/products";
@@ -8,6 +8,9 @@ import Transaction from "scenes/transaction";
 import NotFound from "pages/Notfound";
 import Lead  from "scenes/Lead"
 import NewLead from "pages/Lead/NewLead";
+import Quote  from "scenes/Quote"
+import NewQuote from "pages/Quote/NewQuote"
+
 const Approuter = () => {
     return (
         <Routes>
@@ -19,8 +22,8 @@ const Approuter = () => {
                 <Route path="/dashboard" element={<Dashbord />} />
                 <Route path="/lead" element={<Lead />} />
                 <Route path="/lead/create" element={<NewLead />} />
-
-
+                <Route path="/quotation" element={<Quote />} />
+                <Route path="/quotation/create" element={<NewQuote />} />
                 <Route path="/products" element={<Products />} />
                 <Route path="/customers" element={<Customers />} />
                 <Route path="/transactions" element={<Transaction />} />

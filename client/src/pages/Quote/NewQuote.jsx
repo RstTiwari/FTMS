@@ -1,7 +1,7 @@
 import React from 'react'
-import { Flex ,Form, Select,Row,Col} from 'antd'
-import LeadForm from 'Forms/LeadForm'
+import { Flex ,Form, Select} from 'antd'
 import Header from 'components/Header'
+import QuotationForm from "../../Forms/QuotationForm.js"
 
 
 const NewLead = () => {
@@ -16,13 +16,14 @@ const NewLead = () => {
     }}
     >
         <Form 
-        name='leadForm'
+        name='qouteForm'
         labelCol={{span:8}}
         wrapperCol={{span:8}}
         initialValues={{remeber:true}}
+        layout='horizontal'
         > 
-        <Header  title ={"New Lead" }  subTitle={"Save"} cancelRoute={"lead"}/>
-        <LeadForm />
+        <Header  title ={"New Quotation" }  subTitle={"Save"} cancelRoute={"quotation"}/>
+        <QuotationForm />
         </Form>
     </Flex >
   )

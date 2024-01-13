@@ -16,9 +16,9 @@ const Index = () => {
             }}
         >
             <Header
-                title={"Lead List"}
-                subTitle={"ADD LEAD"}
-                addRoute={"lead/create"}
+                title={"Quotation List"}
+                subTitle={"ADD QUOTE"}
+                addRoute={"quotation/create"}
             />
             <Table
                 columns={leadColumns}

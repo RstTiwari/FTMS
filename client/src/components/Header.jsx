@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { IconButton } from "@mui/material";
-import { ArrowBackOutlined , AddOutlined ,CancelOutlined} from "@mui/icons-material";
-import {Row,Col,Typography,Button} from "antd"
+import { ArrowBackOutlined } from "@mui/icons-material";
+import CloseIcon from '@mui/icons-material/Close';
+import {Row,Col,Button} from "antd"
 
 
 const Header = ({ title, subTitle , addRoute ,cancelRoute}) => { 
@@ -20,7 +20,7 @@ const Header = ({ title, subTitle , addRoute ,cancelRoute}) => {
 
     return (
         <Row align={"middle"} gutter={20}>
-            <Col xs={4} sm={12} md={12} lg={9} style={{ color: "#000000" }}>
+            <Col xs={4} sm={12} md={12} lg={9} style={{ color: "#000000" ,cursor:"pointer"}}>
                 <ArrowBackOutlined onClick={onBackClick} />
             </Col>
             <Col
@@ -35,12 +35,7 @@ const Header = ({ title, subTitle , addRoute ,cancelRoute}) => {
             <Col xs={12} sm={12} md={6} lg={3}>
                 {cancelRoute ? (
                     <>
-                        <Button
-                            type="primary"
-                            icon={<CancelOutlined />}
-                            onClick={ onCancelClick}
-                        >
-                        </Button>
+                        <CloseIcon onClick ={onCancelClick}  style={{cursor:"pointer"}}/>
                     </>
                 ) : (
                     <Button>Refresh</Button>
