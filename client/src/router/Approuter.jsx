@@ -7,6 +7,7 @@ import Customers from "scenes/customers";
 import Transaction from "scenes/transaction";
 import NotFound from "pages/Notfound";
 import Lead  from "scenes/Lead"
+import NewLead from "pages/Lead/NewLead";
 const Approuter = () => {
     return (
         <Routes>
@@ -17,6 +18,8 @@ const Approuter = () => {
                 />
                 <Route path="/dashboard" element={<Dashbord />} />
                 <Route path="/lead" element={<Lead />} />
+                <Route path="/lead/create" element={<NewLead />} />
+
 
                 <Route path="/products" element={<Products />} />
                 <Route path="/customers" element={<Customers />} />
