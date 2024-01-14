@@ -41,7 +41,7 @@ export const companyDetails = [
      },
      {
         label:"TOho play Equipment",
-        vlaue :"9890232280"
+        value :"9890232280"
      }
 ]
 
@@ -64,7 +64,7 @@ export const leadStatus = [
      }
 ]
 
-const items = [
+export const items = [
     {
         key: "1",
         label: "Edit",

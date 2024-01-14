@@ -21,7 +21,7 @@ const NewLead = () => {
         wrapperCol={{span:8}}
         initialValues={{remeber:true}}
         > 
-        <Header  title ={"New Lead" }  subTitle={"Save"} cancelRoute={"lead"}/>
+        <Header  title ={"New Lead" }  cancelRoute={"lead"}/>
         <LeadForm />
         </Form>
     </Flex >

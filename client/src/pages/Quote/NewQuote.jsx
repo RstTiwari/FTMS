@@ -3,14 +3,12 @@ import { Flex ,Form, Select} from 'antd'
 import Header from 'components/Header'
 import QuotationForm from "../../Forms/QuotationForm.js"
 import { epochConveter } from 'Helper/EpochConveter.js'
+import { quoteMessage } from 'Data/QuotationData.js'
 
 
 const NewLead = () => {
   const [quoteNo,setQuoteNo] = useState("123456")
-  const quoteMessage= "Kindly find attached Quote for the Play Equipments / Outdoor Gym Equipments / Rubber Flooring / Benches / Dustbins.Terms & Conditions for Supply, Installation, Services and Warranty are as follows"
   const onQuoteFormFinish =(value)=>{
-   console.log(value);
-
    let epochQuoteDate = epochConveter(value.quoteDate.$d)
    let epochExpiryDate = epochConveter(value.quoteDate.$d)
    value.quoteDate = epochQuoteDate
@@ -34,7 +32,7 @@ const NewLead = () => {
         onFinish={onQuoteFormFinish}
         layout='horizontal'
         > 
-        <Header  title ={"New Quotation" }  subTitle={"Save"} cancelRoute={"quotation"}/>
+        <Header  title ={"New Quotation" }   cancelRoute={"quotation"} />
         <QuotationForm />
         </Form>
     </Flex >

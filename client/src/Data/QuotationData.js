@@ -1,3 +1,9 @@
+import {Space,Flex,Dropdown, Typography} from "antd"
+import {DownOutlined} from "@ant-design/icons"
+import { items } from "./LeadData";
+import DropDownCoustom from "components/DropDownCoustom";
+const {Text} = Typography
+
 export const quotationColumn = [
     {
         title: "SrNo",
@@ -75,3 +81,31 @@ export const quotationColumn = [
         ),
     },
 ];
+
+export const quoteMessage= "Kindly find attached Quote for the Play Equipments / Outdoor Gym Equipments / Rubber Flooring / Benches / Dustbins.Terms & Conditions for Supply, Installation, Services and Warranty are as follows"
+const handleItemInputChange = ()=>{
+    
+}
+export const quoteAddProductColumn = [
+   {
+    title:"SrNo",
+    dataIndex:"srNo",
+    key:"srNo"
+   },
+   {
+    title:"ITem Details",
+    dataIndex:"items",
+    key:"item",
+    render:(_,menu) =>(
+        <>
+        <DropDownCoustom 
+        option ={menu}
+        placeHolder={"Select ITtem"}
+        buttonName={"ADD New Item"}
+        onInputChange={handleItemInputChange}
+
+        />
+        </>
+    )
+   }
+]

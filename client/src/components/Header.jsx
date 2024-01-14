@@ -6,8 +6,7 @@ import {Row,Col,Button} from "antd"
 
 
 const Header = ({ title, subTitle , addRoute ,cancelRoute}) => { 
-    console.log(addRoute,"--");
-    const onBackClick = ()=>{
+    const onCloseClick = ()=>{
         window.history.back()
     }
     const naviogate = useNavigate()
@@ -20,32 +19,56 @@ const Header = ({ title, subTitle , addRoute ,cancelRoute}) => {
 
     return (
         <Row align={"middle"} gutter={20}>
-            <Col xs={4} sm={12} md={12} lg={9} style={{ color: "#000000" ,cursor:"pointer"}}>
+            {/* <Col
+                xs={4}
+                sm={12}
+                md={12}
+                lg={9}
+                style={{ color: "#000000", cursor: "pointer" }}
+            >
                 <ArrowBackOutlined onClick={onBackClick} />
-            </Col>
+            </Col> */}
+
             <Col
                 xs={10}
                 sm={12}
                 md={12}
-                lg={9}
-                style={{ color: "#000000", fontSize: "1rem" }}
+                lg={15}
+                style={{ color: "#000000", fontSize: "1.5rem" }}
             >
                 {title}
             </Col>
-            <Col xs={12} sm={12} md={6} lg={3}>
-                {cancelRoute ? (
-                    <>
-                        <CloseIcon onClick ={onCancelClick}  style={{cursor:"pointer"}}/>
-                    </>
-                ) : (
-                    <Button>Refresh</Button>
-                )}
-            </Col>
-
-            <Col xs={12} sm={12} md={6} lg={3}>
-                <Button onClick={onAddClick} type="primary">
-                    {subTitle}
-                </Button>
+            {subTitle ? (
+                <>
+                     <Col xs={12} sm={12} md={6} lg={3}>
+                        <Button
+                            onClick={() => {
+                                window.location.reload();
+                            }}
+                        >
+                            Reresh
+                        </Button>
+                    </Col>
+                    <Col xs={12} sm={12} md={6} lg={3}>
+                        <Button onClick={onAddClick} type="primary">
+                            {subTitle}
+                        </Button>
+                    </Col>
+               
+                </>
+            ) : (
+                ""
+            )}
+                <Col xs={12} sm={12} md={6} lg={3}>
+                        <CloseIcon
+                            onClick={onCloseClick}
+                            style={{
+                                cursor: "pointer",
+                                fontSize: "2rem",
+                                color: "red",
+                            }}
+                        />
+                
             </Col>
         </Row>
     );

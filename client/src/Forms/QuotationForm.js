@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { Form ,Select,Divider,Space,Input,Button,Row,Col, DatePicker} from 'antd'
+import { Form ,Select,Divider,Space,Input,Button,Row,Col, DatePicker,Table} from 'antd'
 import {PlusOutlined}  from "@ant-design/icons"
 import DropDownCoustom from 'components/DropDownCoustom'
 import TextArea from 'antd/es/input/TextArea'
-import {companyDetails}  from "../Data/LeadData"
+import {companyDetails,items}  from "../Data/LeadData"
+
 
 const QuotationForm = () => {
   const [compnayDetails ,setCompanyDetails]  = useState([])
@@ -112,6 +113,9 @@ const QuotationForm = () => {
               <Input.TextArea  
               style={{width:"100%"}}
               />
+            </Form.Item>
+            <Form.Item>
+                <Table />
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit">
