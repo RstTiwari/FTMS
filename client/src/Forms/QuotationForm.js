@@ -6,8 +6,6 @@ import TextArea from 'antd/es/input/TextArea'
 import {companyDetails}  from "../Data/LeadData"
 
 const QuotationForm = () => {
-  const [quoteNo,setQuoteNo] = useState("123456")
-  const quoteMessage= "Kindly find attached Quote for the Play Equipments / Outdoor Gym Equipments / Rubber Flooring / Benches / Dustbins.Terms & Conditions for Supply, Installation, Services and Warranty are as follows"
   const [compnayDetails ,setCompanyDetails]  = useState([])
   const handleInputChange = async (value) => {
       setCompanyDetails(companyDetails);
@@ -43,7 +41,7 @@ const QuotationForm = () => {
             </Form.Item>
             <Form.Item
                 label={"Quote#"}
-                name={"quote"}
+                name={"quoteNo"}
                 labelAlign="left"
                 labelCol={{ span: 6 }}
                 rules={[
@@ -53,7 +51,7 @@ const QuotationForm = () => {
                     },
                 ]}
             >
-                <Input defaultValue={quoteNo} />
+                <Input  />
             </Form.Item>
             <Row>
                 <Col xs={24} sm={24} md={12} lg={12}>
@@ -113,7 +111,6 @@ const QuotationForm = () => {
             >
               <Input.TextArea  
               style={{width:"100%"}}
-              value={quoteMessage}
               />
             </Form.Item>
             <Form.Item>
