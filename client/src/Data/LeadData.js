@@ -79,18 +79,20 @@ export const leadColumns = [
     {
         title: "SrNo",
         dataIndex: "srNo",
-        width:"100px",
         key: "srno",
+        width:"75px"
     },
     {
         title: "Source",
         dataIndex: "source",
         key: "source",
+        
     },
     {
-        title: "Company",
+        title: "Client",
         dataIndex: "company",
         key: "company",
+
     },
     {
         title: "Recived Date",
@@ -106,6 +108,7 @@ export const leadColumns = [
       title: "Remark",
       dataIndex: "remark",
       key: "remark",
+      responsive:["lg"],
       render: (_,record) => (
         <>
              <Space>
@@ -153,7 +156,7 @@ export const leadColumns = [
     },
 ];
 
- export const leadDataSource = [
+export const leadDataSource = [
      {
       srNo:1,
       source:"indiamart",
@@ -218,3 +221,5 @@ export const leadColumns = [
             ]
      }
  ]
+
+ 

@@ -1,4 +1,4 @@
-import {Space,Flex,Dropdown, Typography} from "antd"
+import {Space,Flex,Dropdown, Typography,Form,Input} from "antd"
 import {DownOutlined} from "@ant-design/icons"
 import { items } from "./LeadData";
 import DropDownCoustom from "components/DropDownCoustom";
@@ -86,26 +86,62 @@ export const quoteMessage= "Kindly find attached Quote for the Play Equipments /
 const handleItemInputChange = ()=>{
     
 }
-export const quoteAddProductColumn = [
-   {
-    title:"SrNo",
-    dataIndex:"srNo",
-    key:"srNo"
-   },
-   {
-    title:"ITem Details",
-    dataIndex:"items",
-    key:"item",
-    render:(_,menu) =>(
-        <>
-        <DropDownCoustom 
-        option ={menu}
-        placeHolder={"Select ITtem"}
-        buttonName={"ADD New Item"}
-        onInputChange={handleItemInputChange}
-
-        />
-        </>
-    )
-   }
-]
+// export const quoteAddProductColumn = [
+//    {
+//     title:"SrNo",
+//     dataIndex:"srNo",
+//     key:"srNo"
+//    },
+//    {
+//     title:"Item Detials",
+//     dataIndex:"items",
+//     key:"item",
+//     render:(_,menu) =>(
+//         <>
+//         <DropDownCoustom 
+//         option ={menu}
+//         placeHolder={"Select ITtem"}
+//         buttonName={"ADD New Item"}
+//         onInputChange={handleItemInputChange}
+//         />
+//         </>
+//     )
+//    },
+//    {
+//     title:"Rate",
+//     dataIndex:"rate",
+//     key:"rate",
+//     render:(_,data)=>(
+//        <>
+//         <Form.Item  name={"rate"}>
+//             <Input/>
+//         </Form.Item>
+//        </>
+//     )
+//    },
+//    {
+//     title:"Discount %",
+//     dataIndex:"discount",
+//     key:"rate",
+//     render:(_,data)=>(
+//        <>
+//         <Form.Item  name={"discount"}>
+//             <Input/>
+//         </Form.Item>
+//        </>
+//     )
+//    },
+//    {
+//     title:"Discount %",
+//     dataIndex:"discount",
+//     key:"rate",
+//     render:(_,data)=>(
+//        <>
+//         <Form.Item  name={"discount"}>
+//             <Input/>
+//         </Form.Item>
+//        </>
+//     )
+//    }
+   
+// ]

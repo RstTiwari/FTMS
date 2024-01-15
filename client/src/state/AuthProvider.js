@@ -29,7 +29,6 @@ export const AuthProvider = ({ children }) => {
                      token : token ? token : null
                    
                 },
-                withCredetials:true,
                 data: data,
             };
             let response = await axios(axiosConfig);

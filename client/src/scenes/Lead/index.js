@@ -24,6 +24,7 @@ const Index = () => {
                 columns={leadColumns}
                 dataSource={leadDataSource}
                 scroll={{ x: true, y: 400 }}
+                showSorterTooltip = {true}
                 
             />
         </Flex>

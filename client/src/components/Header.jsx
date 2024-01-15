@@ -16,7 +16,7 @@ const Header = ({ title, subTitle , addRoute ,cancelRoute}) => {
     const onCancelClick =()=>{
         naviogate(`/${cancelRoute}`)
     }
-
+     const titleSpane =  subTitle ? 15 : addRoute ? 15 :21
     return (
         <Row align={"middle"} gutter={20}>
             {/* <Col
@@ -30,17 +30,17 @@ const Header = ({ title, subTitle , addRoute ,cancelRoute}) => {
             </Col> */}
 
             <Col
-                xs={10}
+                xs={6}
                 sm={12}
                 md={12}
-                lg={15}
+                lg={titleSpane}
                 style={{ color: "#000000", fontSize: "1.5rem" }}
             >
                 {title}
             </Col>
             {subTitle ? (
                 <>
-                     <Col xs={12} sm={12} md={6} lg={3}>
+                     <Col xs={6} sm={12} md={6} lg={3}>
                         <Button
                             onClick={() => {
                                 window.location.reload();
@@ -49,7 +49,7 @@ const Header = ({ title, subTitle , addRoute ,cancelRoute}) => {
                             Reresh
                         </Button>
                     </Col>
-                    <Col xs={12} sm={12} md={6} lg={3}>
+                    <Col xs={6} sm={12} md={6} lg={3}>
                         <Button onClick={onAddClick} type="primary">
                             {subTitle}
                         </Button>
@@ -59,7 +59,7 @@ const Header = ({ title, subTitle , addRoute ,cancelRoute}) => {
             ) : (
                 ""
             )}
-                <Col xs={12} sm={12} md={6} lg={3}>
+                <Col xs={6} sm={12} md={6} lg={3}>
                         <CloseIcon
                             onClick={onCloseClick}
                             style={{
