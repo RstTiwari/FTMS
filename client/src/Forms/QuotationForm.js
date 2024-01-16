@@ -156,15 +156,15 @@ const QuotationForm = () => {
                                     >
                                         <Select
                                             style={{
-                                                width: "100%",
+                                                width: 300,
                                             }}  
                                         />
                                     </Form.Item>
                                 </Col>
                                 <Col span={3}>
                                     <Form.Item name={[subField.name, "rate"]}>
-                                        <InputNumber
-                                            style={{ width: "100%" }}
+                                        <Input
+                                            style={{ width: 100 }}
                                         />
                                     </Form.Item>
                                 </Col>
@@ -175,26 +175,26 @@ const QuotationForm = () => {
                                             "percentDiscount",
                                         ]}
                                     >
-                                        <Input />
+                                        <Input style={{ width: 100 }} />
                                     </Form.Item>
                                 </Col>
                                 <Col span={3}>
                                     <Form.Item
                                         name={[subField.key, "bestOffer"]}
                                     >
-                                        <Input />
+                                        <Input  style={{ width: 100 }} />
                                     </Form.Item>
                                 </Col>
                                 <Col span={3}>
                                     <Form.Item name={[subField.key, "qty"]}>
-                                        <Input />
+                                        <Input style={{ width: 100 }} />
                                     </Form.Item>
                                 </Col>
                                 <Col span={3}>
                                     <Form.Item
                                         name={[subField.key, "finalAmount"]}
                                     >
-                                        <Input />
+                                        <Input  style={{ width: 100 }}/>
                                     </Form.Item>
                                 </Col>
                                <Form.Item>
