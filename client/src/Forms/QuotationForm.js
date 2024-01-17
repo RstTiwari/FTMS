@@ -30,16 +30,16 @@ const QuotationForm = ({current}) => {
   const onRateChange = async (value, subField) => {
     const formData = current.getFieldValue("items")
     const items = [...formData]
-    const rowManipulated = formData[subField.key-1]
-    console.log(formData);
+    const rowManipulated = items[subField.key]
+    console.log(rowManipulated);
     // const discountPercent =
     //     current.getFieldValue(["items", subField.name, "percentDiscount"]) || 0;
     // const qty = current.getFieldValue(["items", subField.name, "qty"]) || 0;
-    // const discountAmount = Math.floor((value * discountPercent) / 100);
-    // const bestOffer = value - discountAmount;
-    // const finalAmount = bestOffer * qty;
+      const discountAmount = Math.floor((value * rowManipulated.percentDiscount) / 100);
+      rowManipulated.bestOffer = value - discountAmount;
+    //  rowManipulated.finalAmount = bestOffer * rowManipulated.qty;
     // console.log(rowManipulated,bestOffer,finalAmount);
-    // rowManipulated.finalAmount = finalAmount
+    // // rowManipulated.finalAmount = finalAmount
     // rowManipulated.bestOffer = bestOffer
     // allItems[subField.key -1] = rowManipulated
     // console.log(items);
@@ -181,7 +181,7 @@ const QuotationForm = ({current}) => {
                 </Col>
             </Row>
 
-            <Form.List name={"items"}  initialValue={[{bestOffer:0,finalAmount:0}]} >
+            <Form.List name={"items"}  initialValue={[{bestOffer:0,finalAmount:0,qty:1,rate:0,percentDiscount:0}]} >
                 {(subFields, subOpt) => (
                     <div>
                         {subFields.map((subField) => (
