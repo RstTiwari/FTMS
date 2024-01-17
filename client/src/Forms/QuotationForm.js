@@ -28,17 +28,26 @@ const QuotationForm = ({current}) => {
        setCompanyName(productOption)
   }
   const onRateChange = async (value, subField) => {
-    const discountPercent =
-        current.getFieldValue(["items", subField.name, "percentDiscount"]) || 0;
-    const qty = current.getFieldValue(["items", subField.name, "qty"]) || 0;
-    const discountAmount = Math.floor((value * discountPercent) / 100);
-    const bestOffer = value - discountAmount;
-    const finalAmount = bestOffer * qty;
+    const formData = current.getFieldValue("items")
+    const items = [...formData]
+    const rowManipulated = formData[subField.key-1]
+    console.log(formData);
+    // const discountPercent =
+    //     current.getFieldValue(["items", subField.name, "percentDiscount"]) || 0;
+    // const qty = current.getFieldValue(["items", subField.name, "qty"]) || 0;
+    // const discountAmount = Math.floor((value * discountPercent) / 100);
+    // const bestOffer = value - discountAmount;
+    // const finalAmount = bestOffer * qty;
+    // console.log(rowManipulated,bestOffer,finalAmount);
+    // rowManipulated.finalAmount = finalAmount
+    // rowManipulated.bestOffer = bestOffer
+    // allItems[subField.key -1] = rowManipulated
+    // console.log(items);
 
-    form.setFieldsValue({
-        [`items[${subField.name}].finalAmount`]: finalAmount,
-        [`items[${subField.name}].bestOffer`]: bestOffer,
-    });
+    // form.setFieldsValue({
+    //     [`items[${subField.name}].finalAmount`]: finalAmount,
+    //     [`items[${subField.name}].bestOffer`]: bestOffer,
+    // });
 };
 
 
@@ -172,7 +181,7 @@ const QuotationForm = ({current}) => {
                 </Col>
             </Row>
 
-            <Form.List name={"items"}  initialValue={[{bestOffer:0}]} >
+            <Form.List name={"items"}  initialValue={[{bestOffer:0,finalAmount:0}]} >
                 {(subFields, subOpt) => (
                     <div>
                         {subFields.map((subField) => (
@@ -187,7 +196,7 @@ const QuotationForm = ({current}) => {
                                     >
                                         <Select
                                             style={{
-                                                width: 300,
+                                                width: 250,
                                             }}
                                             options={producName}
                                             dropdownRender={(menu) => (
@@ -271,7 +280,7 @@ const QuotationForm = ({current}) => {
                         <Button
                             type="primary"
                             onClick={() => {
-                                subOpt.add(); // Use srNo instead of srN
+                                subOpt.add({bestOffer:0,finalAmount:0}); // Use srNo instead of srN
                             }}
                             icon={<PlusOutlined />}
                             style={{
@@ -285,7 +294,7 @@ const QuotationForm = ({current}) => {
                     </div>
                 )}
             </Form.List>
-            <Col className="gutter-row" span={5}>
+            <Col className="gutter-row">
                 <Form.Item>
                     <Button
                         type="primary"
