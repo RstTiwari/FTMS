@@ -10,12 +10,12 @@ const DropDownCoustom = ({option, placeHolder, buttonName,onInputChange}) => {
             <>
                 <Divider
                     style={{
-                        margin: "8px 0",
+                        margin: "4px 0",
                     }}
                 />
                 <Space
                     style={{
-                        padding: "0 8px 4px",
+                        padding: "0 2px 2px",
                     }}
                 >
                     <Input

@@ -33,6 +33,46 @@ const QuotationForm = ({current}) => {
   const handleItemInputChange = async ()=>{
        setCompanyName(productOption)
   }
+
+  const onDescriptionChange = (value, label, subField) => {
+      const formData = current.getFieldValue("items");
+      const items = [...formData];
+      const rowManipulated = items[subField.key];
+      rowManipulated.rate = label.rate;
+      const discountAmount = Math.floor(
+          (rowManipulated.rate * rowManipulated.percentDiscount) / 100
+      );
+      rowManipulated.bestOffer = rowManipulated.rate - discountAmount;
+      rowManipulated.finalAmount =
+          rowManipulated.bestOffer * rowManipulated.qty;
+      items[subField.key] = rowManipulated;
+      setBestOffer(rowManipulated.bestOffer);
+      setFinalAmount(rowManipulated.finalAmount);
+
+      current.setFieldsValue({ items: items });
+
+      // now updataing grossTotal ,grandTotal
+      let { grossTotal, grandTotal, taxPercent, transPortAmount } =
+          current.getFieldsValue([
+              "grossTotal",
+              "grandTotal",
+              "taxPercent",
+              "transPortAmount",
+          ]);
+      const grossSum = items.reduce(
+          (accumulator, currentValue) => accumulator + currentValue.finalAmount,
+          0
+      );
+
+      setGrossAmount(grossSum);
+      const taxAmount = Math.floor((grossSum * taxPercent) / 100);
+      const grandSum = grossSum + taxAmount + transPortAmount;
+      setGrandAmount(grandSum);
+      console.log(grandSum, taxAmount, transPortAmount);
+      current.setFieldsValue({ grossTotal: grossSum });
+      current.setFieldsValue({ grandTotal: grandSum });
+  };
+  
   const onRateChange = async (value, subField) => {
       const formData = current.getFieldValue("items");
       const items = [...formData];
@@ -184,6 +224,7 @@ const QuotationForm = ({current}) => {
             >
                 <Select
                     options={company}
+                    showSearch
                     dropdownRender={(menu) => (
                         <>
                             <DropDownCoustom
@@ -193,6 +234,7 @@ const QuotationForm = ({current}) => {
                                 onInputChange={handleInputChange}
                             />
                         </>
+                        
                     )}
                 />
             </Form.Item>
@@ -335,6 +377,7 @@ const QuotationForm = ({current}) => {
                                                     }
                                                 />
                                             )}
+                                            onChange={(value,option)=>{onDescriptionChange(value,option,subField)}}
                                         />
                                     </Form.Item>
                                 </Col>
