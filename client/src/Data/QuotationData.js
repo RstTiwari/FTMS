@@ -83,9 +83,12 @@ export const quotationColumn = [
 ];
 
 export const quoteMessage= "Kindly find attached Quote for the Play Equipments / Outdoor Gym Equipments / Rubber Flooring / Benches / Dustbins.Terms & Conditions for Supply, Installation, Services and Warranty are as follows"
-const handleItemInputChange = ()=>{
-    
-}
+export const  deliveryCondition = "Delivery shall be made within 10/25 days after receiving confirmed Purchase Order along with Advance Payment as per terms and conditions."
+export const validityCondition = "This Quotation shall be valid for 10 / 15 days Only."
+export const paymentsCondition = "Advance with PO 50% & against Delivery 50 % . After Instoletion % Cheque should be drawn in favour of vipplay"
+export const cancellationCondition = "Order once placed will not be cancelled in any circumstances."
+export const installationCondition = "Civil materials such as cement, metal, sand, water, electricity along with unskilled labours to be arranged by Client."
+export const facilityCondition = "Proper storage space will be provided by the client for safety & security of materials at site upon delivery. Security of materials delivered st site shall be responsibility ofclient only"
 // export const quoteAddProductColumn = [
 //    {
 //     title:"SrNo",

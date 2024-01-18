@@ -30,6 +30,10 @@ const Approuter = () => {
                 <Route path="*" element={<NotFound />} />
 
                 {/**In case some one acess login page after being logged in */}
+                <Route
+                    path="/login"
+                    element={<Navigate to="/dashboard" replace />}
+                />
              
             </Route>
         </Routes>
