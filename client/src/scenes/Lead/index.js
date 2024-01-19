@@ -11,8 +11,9 @@ const Index = () => {
             vertical
             style={{
                 margin: "1.5rem 2rem",
-                padding: "1rem",
+                padding: "2rem",
                 backgroundColor: "#ffffff",
+                borderRadius:"1rem"
             }}
         >
             <Header

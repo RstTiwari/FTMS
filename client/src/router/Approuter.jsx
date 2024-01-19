@@ -3,13 +3,14 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Dashbord from "scenes/dashbord"
 import Layout from "scenes/layout";
 import Products from "scenes/products";
-import Customers from "scenes/customers";
 import Transaction from "scenes/transaction";
 import NotFound from "pages/Notfound";
 import Lead  from "scenes/Lead"
 import NewLead from "pages/Lead/NewLead";
 import Quote  from "scenes/Quote"
 import NewQuote from "pages/Quote/NewQuote"
+import Coustomer from "scenes/customers"
+import NewCoustomer from "pages/Customer/NewCustomer";
 
 const Approuter = () => {
     return (
@@ -24,8 +25,9 @@ const Approuter = () => {
                 <Route path="/lead/create" element={<NewLead />} />
                 <Route path="/quotation" element={<Quote />} />
                 <Route path="/quotation/create" element={<NewQuote />} />
+                <Route path="/customers" element ={<Coustomer/>}/>
+                <Route path="/customers/create" element ={<NewCoustomer/>}/>
                 <Route path="/products" element={<Products />} />
-                <Route path="/customers" element={<Customers />} />
                 <Route path="/transactions" element={<Transaction />} />
                 <Route path="*" element={<NotFound />} />
 

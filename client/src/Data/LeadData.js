@@ -67,12 +67,16 @@ export const leadStatus = [
 export const items = [
     {
         key: "1",
-        label: "Edit",
+        label: "SHOW",
     },
     {
         key: "2",
-        label: "Download",
+        label: "EDIT",
     },
+    {
+      key: "3",
+      label: "DOWNLOAD",
+  },
 ];
 
 export const leadColumns = [
@@ -200,6 +204,89 @@ export const leadDataSource = [
             ]
      },
      {
+      srNo:3,
+      source:"salesAgent",
+      company:"Adani Foundation",
+      status:"Draft",
+      recivedDate:"21-1-23",
+      comments:[
+        {
+          date: '23-1-23',
+          comment: "Quote Sended",
+        },
+        {
+          date: '21-1-23',
+          comment: "Called Him For Detialsd",
+        },
+        {
+          date: '21-1-23',
+          comment: "Lead Reviced",
+        },
+            ]
+     },
+     {
+      srNo:3,
+      source:"salesAgent",
+      company:"Adani Foundation",
+      status:"Draft",
+      recivedDate:"21-1-23",
+      comments:[
+        {
+          date: '23-1-23',
+          comment: "Quote Sended",
+        },
+        {
+          date: '21-1-23',
+          comment: "Called Him For Detialsd",
+        },
+        {
+          date: '21-1-23',
+          comment: "Lead Reviced",
+        },
+            ]
+     },
+     {
+      srNo:3,
+      source:"salesAgent",
+      company:"Adani Foundation",
+      status:"Draft",
+      recivedDate:"21-1-23",
+      comments:[
+        {
+          date: '23-1-23',
+          comment: "Quote Sended",
+        },
+        {
+          date: '21-1-23',
+          comment: "Called Him For Detialsd",
+        },
+        {
+          date: '21-1-23',
+          comment: "Lead Reviced",
+        },
+            ]
+     },
+     {
+      srNo:3,
+      source:"salesAgent",
+      company:"Adani Foundation",
+      status:"Draft",
+      recivedDate:"21-1-23",
+      comments:[
+        {
+          date: '23-1-23',
+          comment: "Quote Sended",
+        },
+        {
+          date: '21-1-23',
+          comment: "Called Him For Detialsd",
+        },
+        {
+          date: '21-1-23',
+          comment: "Lead Reviced",
+        },
+            ]
+     },  {
       srNo:3,
       source:"salesAgent",
       company:"Adani Foundation",

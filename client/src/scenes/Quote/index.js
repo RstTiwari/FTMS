@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Flex, Form, Select, Table } from "antd";
 import Header from "components/Header";
-import { leadColumns,leadDataSource } from "Data/LeadData";
+import { quotationColumn,quotationDataSource } from "Data/QuotationData";
 
 const Index = () => {
 
@@ -13,6 +13,7 @@ const Index = () => {
                 margin: "1.5rem 2rem",
                 padding: "1rem",
                 backgroundColor: "#ffffff",
+                borderRadius: "1rem",
             }}
         >
             <Header
@@ -21,10 +22,9 @@ const Index = () => {
                 addRoute={"quotation/create"}
             />
             <Table
-                columns={leadColumns}
-                dataSource={leadDataSource}
+                columns={quotationColumn}
+                dataSource={quotationDataSource}
                 scroll={{ x: true, y: 400 }}
-                
             />
         </Flex>
     );

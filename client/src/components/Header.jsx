@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useMediaQuery } from "@mui/material";
 import { ArrowBackOutlined } from "@mui/icons-material";
 import CloseIcon from '@mui/icons-material/Close';
 import {Row,Col,Button} from "antd"
@@ -16,25 +17,18 @@ const Header = ({ title, subTitle , addRoute ,cancelRoute}) => {
     const onCancelClick =()=>{
         naviogate(`/${cancelRoute}`)
     }
-     const titleSpane =  subTitle ? 15 : addRoute ? 15 :21
+     const titleSpane =  subTitle ? 15 : addRoute ? 15 :21;
+     const isLaptop = useMediaQuery("(min-width:1000px)")
+     const fontSize = isLaptop ? "1.3rem":"0.7rem"
+     
     return (
         <Row align={"middle"} gutter={20}>
-            {/* <Col
-                xs={4}
-                sm={12}
-                md={12}
-                lg={9}
-                style={{ color: "#000000", cursor: "pointer" }}
-            >
-                <ArrowBackOutlined onClick={onBackClick} />
-            </Col> */}
-
             <Col
                 xs={6}
                 sm={12}
                 md={12}
                 lg={titleSpane}
-                style={{ color: "#000000", fontSize: "1.5rem" }}
+                style={{ color: "#000000", fontSize: fontSize }}
             >
                 {title}
             </Col>
@@ -46,7 +40,7 @@ const Header = ({ title, subTitle , addRoute ,cancelRoute}) => {
                                 window.location.reload();
                             }}
                         >
-                            Reresh
+                            Refresh
                         </Button>
                     </Col>
                     <Col xs={6} sm={12} md={6} lg={3}>
@@ -64,7 +58,7 @@ const Header = ({ title, subTitle , addRoute ,cancelRoute}) => {
                             onClick={onCloseClick}
                             style={{
                                 cursor: "pointer",
-                                fontSize: "2rem",
+                                fontSize: fontSize,
                                 color: "red",
                             }}
                         />

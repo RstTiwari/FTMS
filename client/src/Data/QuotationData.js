@@ -6,64 +6,41 @@ const {Text} = Typography
 
 export const quotationColumn = [
     {
-        title: "SrNo",
-        dataIndex: "srNo",
+        title: "Number",
+        dataIndex: "quoteNumber",
         width:"100px",
         key: "srno",
     },
     {
-        title: "Source",
-        dataIndex: "source",
+        title: "Client",
+        dataIndex: "client",
         key: "source",
     },
     {
-        title: "Company",
-        dataIndex: "company",
+        title: "Recived Date",
+        dataIndex: "quoteRecivedDate",
         key: "company",
     },
     {
-        title: "Recived Date",
-        dataIndex: "recivedDate",
-        key: "recivedDate",
+        title: "Expired Date",
+        dataIndex: "quoteExpiredDate",
+        key: "quoteExpiredDate",
+    },
+    {
+        title: "Gross Total",
+        dataIndex: "grossTotal",
+        key: "subTotal",
+    },
+    {
+        title: "Grand Total",
+        dataIndex: "grandTotal",
+        key: "subTotal",
     },
     {
         title: "Status",
         dataIndex: "status",
-        key: "status",
+        key: "subTotal",
     },
-    {
-      title: "Remark",
-      dataIndex: "remark",
-      key: "remark",
-      render: (_,record) => (
-        <>
-             <Space>
-              <Flex vertical>
-              {
-                record.comments.map((comment)=>{
-                  return(
-                      <div>
-                      <Text code>
-                       DATE: {comment.date}
-                      </Text>
-                      <Space style={{margin:"0.3rem"}}>
-                      <Text type="success">
-                        {comment.comment}
-                      </Text>
-                      </Space>
-                 
-                      </div>
-                     
-                  )
-                })
-               }
-              </Flex>
-             
-             </Space>
-        </>
-      ),
-  },
-
     {
         fixed: "right",
         render: () => (
@@ -148,3 +125,51 @@ export const facilityCondition = "Proper storage space will be provided by the c
 //    }
    
 // ]
+
+export const quotationDataSource = [
+    {
+        quoteNumber:"10",
+        client:"BHEL Corporation",
+        quoteRecivedDate:"31-1-23",
+        quoteExpiredDate:"12-3-23",
+        grossTotal:2899,
+        grandTotal:3100,
+        status:"SEND"
+    },
+    {
+        quoteNumber:"23",
+        client:"SBI Park ASAM",
+        quoteRecivedDate:"3-1-23",
+        quoteExpiredDate:"1-3-23",
+        grossTotal:28990,
+        grandTotal:31000,
+        status:"DRAFT"
+    },
+    {
+        quoteNumber:"22",
+        client:"GOderej Corporation",
+        quoteRecivedDate:"1-1-23",
+        quoteExpiredDate:"1-3-23",
+        grossTotal:2899,
+        grandTotal:3100,
+        status:"SEND"
+    },
+    {
+        quoteNumber:"15",
+        client:"SAIL Corporation",
+        quoteRecivedDate:"01-1-23",
+        quoteExpiredDate:"2-3-23",
+        grossTotal:2899,
+        grandTotal:3100,
+        status:"SEND"
+    },
+    {
+        quoteNumber:"10",
+        client:"BHEL Corporation",
+        quoteRecivedDate:"31-1-23",
+        quoteExpiredDate:"12-3-23",
+        grossTotal:2899,
+        grandTotal:3100,
+        status:"SEND"
+    }
+]

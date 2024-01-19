@@ -63,10 +63,10 @@ const Sidebar = ({
             text: "Sales & Marketing",
             icon: null,
         },
-        {
-            text: "Overview",
-            icon: <Leaderboard />,
-        },
+        // {
+        //     text: "Overview",
+        //     icon: <Leaderboard />,
+        // },
         {
             text: "Lead",
             icon: < PointOfSaleOutlined />,
