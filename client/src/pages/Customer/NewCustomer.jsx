@@ -1,10 +1,15 @@
-import { Flex, Form } from "antd";
+import { Flex, Form ,Col,Button} from "antd";
 import Header from "components/Header";
 import React from "react";
 import CoustomerForm from "../../Forms/CoustomersForm.js"
+import {PlusOutlined}  from "@ant-design/icons"
+
 
 const NewCustomer = () => {
     const [form] = Form.useForm()
+    const handelCustomerFormFinis =(value)=>{
+        console.log(value,"Click");
+    }
     return (
         <Flex
             gap={"middle"}
@@ -17,8 +22,20 @@ const NewCustomer = () => {
             }}
         >
             <Header title={"New Customers"} subTitle={""} /> 
-            <Form>
+            <Form name="coustomerForm" form={form} initialValues={{shippinStreet:""}} onFinish={handelCustomerFormFinis}>
                 <CoustomerForm  current ={form} />
+                <Col className="gutter-row" span={6}>
+                <Form.Item>
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                        icon={<PlusOutlined />}
+                        block
+                    >
+                        Save
+                    </Button>
+                </Form.Item>
+            </Col>
             </Form>
         </Flex>
     );

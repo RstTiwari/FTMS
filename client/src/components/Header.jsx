@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "@mui/material";
 import { ArrowBackOutlined } from "@mui/icons-material";
 import CloseIcon from '@mui/icons-material/Close';
-import {Row,Col,Button} from "antd"
+import {Row,Col,Button, Divider} from "antd"
 
 
 const Header = ({ title, subTitle , addRoute ,cancelRoute}) => { 
@@ -28,7 +28,7 @@ const Header = ({ title, subTitle , addRoute ,cancelRoute}) => {
                 sm={12}
                 md={12}
                 lg={titleSpane}
-                style={{ color: "#000000", fontSize: fontSize }}
+                style={{ color: "black", fontSize: fontSize }}
             >
                 {title}
             </Col>
@@ -44,7 +44,7 @@ const Header = ({ title, subTitle , addRoute ,cancelRoute}) => {
                         </Button>
                     </Col>
                     <Col xs={6} sm={12} md={6} lg={3}>
-                        <Button onClick={onAddClick} type="primary">
+                        <Button onClick={onAddClick} type="primary" style={{fontSize:"0.7rem"}}>
                             {subTitle}
                         </Button>
                     </Col>
@@ -53,7 +53,7 @@ const Header = ({ title, subTitle , addRoute ,cancelRoute}) => {
             ) : (
                 ""
             )}
-                <Col xs={6} sm={12} md={6} lg={3}>
+                <Col xs={6} sm={12} md={6} lg={3}   push ={2}>
                         <CloseIcon
                             onClick={onCloseClick}
                             style={{
@@ -64,6 +64,7 @@ const Header = ({ title, subTitle , addRoute ,cancelRoute}) => {
                         />
                 
             </Col>
+            <Divider/>
         </Row>
     );
 };

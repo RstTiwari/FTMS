@@ -21,7 +21,7 @@ const Customers = () => {
             borderRadius:"1rem"
         }} 
          >
-            <Headers title={"Coustomer"} subTitle={"All Coustomers"} addRoute={"customers/create"} />
+            <Headers title={"COUSTOMER LIST"} subTitle={"ADD COUSTOMER"} addRoute={"customers/create"} />
             <Table columns={coustomerColumns} dataSource={coustomerDataSource}/>
         
         </Flex>
