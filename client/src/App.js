@@ -19,7 +19,7 @@ function App() {
             <BrowserRouter>
                 <Suspense
                     fallback={
-                        <PageLoader text={"Please Wait Setting up For You"} />
+                        <PageLoader text={"Please Wait While We make Everythinh Perfect For You"} />
                     }
                 >
                     <ThemeProvider theme={theme}>
