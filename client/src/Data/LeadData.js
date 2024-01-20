@@ -1,5 +1,6 @@
 import {Space,Dropdown,Flex,Typography } from "antd"
 import {DownOutlined} from "@ant-design/icons"
+import {TableAction} from "components/TableAction";
 const { Text, Link } = Typography;
 export const LeadOption =  [
     {
@@ -145,17 +146,7 @@ export const leadColumns = [
     {
         fixed: "right",
         render: () => (
-            <Space size="middle">
-                <Dropdown
-                    menu={{
-                        items,
-                    }}
-                >
-                    <a>
-                        <DownOutlined />
-                    </a>
-                </Dropdown>
-            </Space>
+            <TableAction/>
         ),
     },
 ];

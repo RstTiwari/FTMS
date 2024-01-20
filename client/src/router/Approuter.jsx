@@ -11,6 +11,8 @@ import Quote  from "scenes/Quote"
 import NewQuote from "pages/Quote/NewQuote"
 import Coustomer from "scenes/customers"
 import NewCoustomer from "pages/Customer/NewCustomer";
+import Invoice from "scenes/Invoice"
+import NewInvoice from "pages/Invoice/NewInvoice"
 
 const Approuter = () => {
     return (
@@ -27,6 +29,9 @@ const Approuter = () => {
                 <Route path="/quotation/create" element={<NewQuote />} />
                 <Route path="/customers" element ={<Coustomer/>}/>
                 <Route path="/customers/create" element ={<NewCoustomer/>}/>
+                <Route path="/invoice" element ={<Invoice/>}/>
+                <Route path="/invoice/create" element ={<NewInvoice/>}/>
+
                 <Route path="/products" element={<Products />} />
                 <Route path="/transactions" element={<Transaction />} />
                 <Route path="*" element={<NotFound />} />

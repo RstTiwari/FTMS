@@ -2,6 +2,7 @@ import { items } from "./LeadData"
 import {Space,Dropdown}  from "antd"
 
 import {DownOutlined}  from "@ant-design/icons"
+import {TableAction} from "components/TableAction"
 
 export const coustomerColumns = [
     {
@@ -32,17 +33,7 @@ export const coustomerColumns = [
     {
         fixed: "right",
         render: () => (
-            <Space size="middle">
-                <Dropdown
-                    menu={{
-                        items,
-                    }}
-                >
-                    <a>
-                        <DownOutlined />
-                    </a>
-                </Dropdown>
-            </Space>
+          <TableAction/>
         ),
     },
 ]

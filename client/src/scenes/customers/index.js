@@ -14,12 +14,12 @@ const Customers = () => {
         <Flex
         gap={"middle"}
         vertical
+        vertical
         style={{
-            margin: "1.5rem 2rem",
             padding: "2rem",
             backgroundColor: "#ffffff",
             borderRadius:"1rem"
-        }} 
+        }}
          >
             <Headers title={"COUSTOMER LIST"} subTitle={"ADD COUSTOMER"} addRoute={"customers/create"} />
             <Table columns={coustomerColumns} dataSource={coustomerDataSource}/>

@@ -1,17 +1,21 @@
 import React from 'react';
-import { Spin } from 'antd';
+import { Spin,Row,Col } from 'antd';
 
-const PageLoader = () => {
+const PageLoader = ({text}) => {
   return (
-    <div style={{
-      textAlign:"center",
-      alignItems: "center",
-      height: "100vh",
-      top:50,
-      left:50
-    }}>
-      <Spin size="large" />
-    </div>
+      <div
+          style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+          }}
+      >
+          <Row>
+              <Spin size="large" />
+          </Row>
+          <Row> {text}</Row>
+      </div>
   );
 };
 export default PageLoader;

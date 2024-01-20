@@ -1,7 +1,7 @@
 import {Space,Flex,Dropdown, Typography,Form,Input} from "antd"
 import {DownOutlined} from "@ant-design/icons"
 import { items } from "./LeadData";
-import DropDownCoustom from "components/DropDownCoustom";
+import {TableAction} from "components/TableAction";
 const {Text} = Typography
 
 export const quotationColumn = [
@@ -44,17 +44,7 @@ export const quotationColumn = [
     {
         fixed: "right",
         render: () => (
-            <Space size="middle">
-                <Dropdown
-                    menu={{
-                        items,
-                    }}
-                >
-                    <a>
-                        <DownOutlined />
-                    </a>
-                </Dropdown>
-            </Space>
+            <TableAction/>
         ),
     },
 ];

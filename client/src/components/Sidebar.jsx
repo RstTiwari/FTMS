@@ -31,12 +31,14 @@ import {
     AdminPanelSettingsOutlined,
     Leaderboard,
     RequestQuote,
+    AccountBalance,
 } from "@mui/icons-material";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
 import { useCookies } from "react-cookie";
 import { useAuth } from "state/AuthProvider";
+import { AccountBookFilled, MoneyCollectFilled } from "@ant-design/icons";
 
 const Sidebar = ({
     user ,
@@ -78,6 +80,18 @@ const Sidebar = ({
         {
             text: "Customers",
             icon: <Groups2Outlined />,
+        },
+        {
+            text: "Accounts",
+            icon: null,
+        },
+        {
+            text:"Invoice",
+            icon:<MoneyCollectFilled/>
+        },
+        {
+            text:"Payements",
+            icon:<AccountBalance/>
         },
         {
             text: "Client Facing",

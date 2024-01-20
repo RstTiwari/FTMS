@@ -30,7 +30,7 @@ const Header = ({ title, subTitle , addRoute ,cancelRoute}) => {
                 lg={titleSpane}
                 style={{ color: "black", fontSize: fontSize }}
             >
-                {title}
+                {title.toUpperCase()}
             </Col>
             {subTitle ? (
                 <>
