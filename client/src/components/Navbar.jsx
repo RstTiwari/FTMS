@@ -1,4 +1,5 @@
 import React, { useState ,useEffect} from 'react'
+import { useNavigate } from 'react-router-dom';
 import {
     LightModeOutlined,
     DarkModeOutlined,
@@ -34,6 +35,7 @@ const icon = "https://res.cloudinary.com/drkxpdxr5/image/upload/v1702446552/samp
 
 const NavBar = ({user,isSidebarOpen,setIsSidebarOpen,isLaptop}) => {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const theme = useTheme()
     const [profileImage,setProfileImage] = useState("")
     const [anchorEl,setAnchorEl] = useState(null);
@@ -52,7 +54,10 @@ const NavBar = ({user,isSidebarOpen,setIsSidebarOpen,isLaptop}) => {
         
       }
     }, [profileImage])
-    const {isLoggedIn,loginUser,logoutUser} = useAuth()  
+    const {isLoggedIn,loginUser,logoutUser} = useAuth();
+    const logOut = ()=>{
+        navigate("/login")
+    }
   return (
       <AppBar
           sx={{

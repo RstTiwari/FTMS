@@ -15,6 +15,7 @@ const Login = () => {
         let response = await axiosCall("login", value);
         if (response.success === 1) {
             loginUser(response.result);
+            navigate("/dashboard")
         } else {
         }
     };

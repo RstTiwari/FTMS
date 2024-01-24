@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
 
     const loginUser = (result) => {
         setCookie("token", result.token);
-        window.location.replace("/dashboard");
+        // window.location.replace("/dashboard");
     };
 
     const logoutUser = () => {
