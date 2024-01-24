@@ -1,10 +1,13 @@
-import { Flex, Form } from "antd";
+import { Flex, Form,Button } from "antd";
 import Header from "components/Header";
-import React from "react";
+import {React} from "react";
 import InvoiceFrom from "../../Forms/Invoice";
 
 const NewInvoice = () => {
     const [form] = Form.useForm();
+    const handleInvoiceFormFinish =(value)=>{
+
+    }
     return (
         <Flex
             gap={"middle"}
@@ -19,8 +22,11 @@ const NewInvoice = () => {
             wrapperCol={{ span: 8 }}
         >
             <Header title={"NEW INVOICE"} />
-            <Form name="newInvoiceForm" form={form} layout="horizontal">
+            <Form name="newInvoiceForm" form={form} layout="horizontal" onFinish={handleInvoiceFormFinish}>
                 <InvoiceFrom current={form} />
+                <Button  type="primary" htmlType="form">
+                    Save
+                </Button>
             </Form>
         </Flex>
     );

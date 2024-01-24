@@ -37,28 +37,126 @@ const Invoice = ({ current }) => {
             rowManipulated.igstPercent,
             rowManipulated.taxableAmount
         );
-        
+
         items[subField.key] = rowManipulated;
         current.setFieldsValue({ items: items });
+
+        let amountBeforeTax = items.reduce((a, b) => a + b.taxableAmount, 0);
+        let amountAfterTax = items.reduce((a, b) => a + b.finalAmount, 0);
+        const totalTaxAmount = amountAfterTax - amountBeforeTax;
+        current.setFieldsValue({ grossTotal: amountBeforeTax });
+        current.setFieldsValue({ grandTotal: amountBeforeTax });
+        current.setFieldsValue({ taxAmount: totalTaxAmount });
     };
 
-    const onRateChange = (value,subField) => {
+    const onRateChange = (value, subField) => {
         const formData = current.getFieldValue("items");
         const items = [...formData];
         const rowManipulated = items[subField.key];
-        rowManipulated.rate =value;
-        rowManipulated.taxableAmount = rowManipulated.rate*rowManipulated.qty
+        rowManipulated.rate = value;
+        rowManipulated.taxableAmount = rowManipulated.rate * rowManipulated.qty;
+        rowManipulated.finalAmount = getFinalAmount(
+            rowManipulated.sgstPercent,
+            rowManipulated.cgstPercent,
+            rowManipulated.igstPercent,
+            rowManipulated.taxableAmount
+        );
+
         current.setFieldsValue({ items: items });
+        
+        let amountBeforeTax = items.reduce((a, b) => a + b.taxableAmount, 0);
+        let amountAfterTax = items.reduce((a, b) => a + b.finalAmount, 0);
+        const totalTaxAmount = amountAfterTax - amountBeforeTax;
+        current.setFieldsValue({ grossTotal: amountBeforeTax });
+        current.setFieldsValue({ grandTotal: amountAfterTax });
+        current.setFieldsValue({ totalTaxAmount: totalTaxAmount });
     };
-    const onQtyChange = (value,subField) =>{
+
+    const onQtyChange = (value, subField) => {
         const formData = current.getFieldValue("items");
         const items = [...formData];
         const rowManipulated = items[subField.key];
-        rowManipulated.qty =value;
-        rowManipulated.taxableAmount = rowManipulated.rate*rowManipulated.qty
+        rowManipulated.qty = value;
+        rowManipulated.taxableAmount = rowManipulated.rate * rowManipulated.qty;
+        rowManipulated.finalAmount = getFinalAmount(
+            rowManipulated.sgstPercent,
+            rowManipulated.cgstPercent,
+            rowManipulated.igstPercent,
+            rowManipulated.taxableAmount
+        );
         current.setFieldsValue({ items: items });
-    }
+        
+        let amountBeforeTax = items.reduce((a, b) => a + b.taxableAmount, 0);
+        let amountAfterTax = items.reduce((a, b) => a + b.finalAmount, 0);
+        const totalTaxAmount = amountAfterTax - amountBeforeTax;
+        current.setFieldsValue({ grossTotal: amountBeforeTax });
+        current.setFieldsValue({ grandTotal: amountAfterTax });
+        current.setFieldsValue({ totalTaxAmount: totalTaxAmount });
+    };
 
+    const onSgstChange = (value, subField) => {
+        const formData = current.getFieldValue("items");
+        const items = [...formData];
+        const rowManipulated = items[subField.key];
+        rowManipulated.sgstPercent = value;
+        rowManipulated.finalAmount = getFinalAmount(
+            rowManipulated.sgstPercent,
+            rowManipulated.cgstPercent,
+            rowManipulated.igstPercent,
+            rowManipulated.taxableAmount
+        );
+        current.setFieldsValue({ items: items });
+        
+        let amountBeforeTax = items.reduce((a, b) => a + b.taxableAmount, 0);
+        let amountAfterTax = items.reduce((a, b) => a + b.finalAmount, 0);
+        const totalTaxAmount = amountAfterTax - amountBeforeTax;
+        current.setFieldsValue({ grossTotal: amountBeforeTax });
+        current.setFieldsValue({ grandTotal: amountAfterTax });
+        current.setFieldsValue({ totalTaxAmount: totalTaxAmount });
+    };
+    const onCgstChange = (value, subField) => {
+        const formData = current.getFieldValue("items");
+        const items = [...formData];
+        const rowManipulated = items[subField.key];
+        rowManipulated.cgstPercent = value;
+        rowManipulated.finalAmount = getFinalAmount(
+            rowManipulated.sgstPercent,
+            rowManipulated.cgstPercent,
+            rowManipulated.igstPercent,
+            rowManipulated.taxableAmount
+        );
+        current.setFieldsValue({ items: items });
+        
+        let amountBeforeTax = items.reduce((a, b) => a + b.taxableAmount, 0);
+        let amountAfterTax = items.reduce((a, b) => a + b.finalAmount, 0);
+        const totalTaxAmount = amountAfterTax - amountBeforeTax;
+        current.setFieldsValue({ grossTotal: amountBeforeTax });
+        current.setFieldsValue({ grandTotal: amountAfterTax });
+        current.setFieldsValue({ totalTaxAmount: totalTaxAmount });
+    };
+    const onIgstChange = (value, subField) => {
+        const formData = current.getFieldValue("items");
+        const items = [...formData];
+        const rowManipulated = items[subField.key];
+        rowManipulated.igstPercent = value;
+        rowManipulated.finalAmount = getFinalAmount(
+            rowManipulated.sgstPercent,
+            rowManipulated.cgstPercent,
+            rowManipulated.igstPercent,
+            rowManipulated.taxableAmount
+        );
+        current.setFieldsValue({ items: items });
+
+        
+        let amountBeforeTax = items.reduce((a, b) => a + b.taxableAmount, 0);
+        let amountAfterTax = items.reduce((a, b) => a + b.finalAmount, 0);
+        const totalTaxAmount = amountAfterTax - amountBeforeTax;
+        current.setFieldsValue({ grossTotal: amountBeforeTax });
+        current.setFieldsValue({ grandTotal: amountAfterTax });
+        current.setFieldsValue({ totalTaxAmount: totalTaxAmount });
+    };
+
+    /**Function for Calculating the Final Amount */
     const getFinalAmount = (sgst, cgst, igst, taxableAmount) => {
         let sgstAmount = Math.floor((sgst * taxableAmount) / 100);
         let cgstAmount = Math.floor((cgst * taxableAmount) / 100);
@@ -250,8 +348,13 @@ const Invoice = ({ current }) => {
                                                     }
                                                 />
                                             )}
-                                            onChange={(value,option)=>{onDescriptionChange(value,option,subField)}} 
-
+                                            onChange={(value, option) => {
+                                                onDescriptionChange(
+                                                    value,
+                                                    option,
+                                                    subField
+                                                );
+                                            }}
                                         />
                                     </Form.Item>
                                 </Col>
@@ -264,12 +367,22 @@ const Invoice = ({ current }) => {
                                 </Col>
                                 <Col span={2}>
                                     <Form.Item name={[subField.name, "rate"]}>
-                                        <InputNumber style={{ width: 75 }} onChange={(value)=>onRateChange(value,subField)} />
+                                        <InputNumber
+                                            style={{ width: 75 }}
+                                            onChange={(value) =>
+                                                onRateChange(value, subField)
+                                            }
+                                        />
                                     </Form.Item>
                                 </Col>
                                 <Col span={2}>
                                     <Form.Item name={[subField.name, "qty"]}>
-                                        <InputNumber style={{ width: 75 }} />
+                                        <InputNumber
+                                            style={{ width: 75 }}
+                                            onChange={(value) =>
+                                                onQtyChange(value, subField)
+                                            }
+                                        />
                                     </Form.Item>
                                 </Col>
                                 <Col span={2}>
@@ -289,7 +402,12 @@ const Invoice = ({ current }) => {
                                     <Form.Item
                                         name={[subField.name, "sgstPercent"]}
                                     >
-                                        <InputNumber style={{ width: 75 }} />
+                                        <InputNumber
+                                            style={{ width: 75 }}
+                                            onChange={(value) =>
+                                                onSgstChange(value, subField)
+                                            }
+                                        />
                                     </Form.Item>
                                 </Col>
                                 <Col span={2}>
@@ -297,11 +415,12 @@ const Invoice = ({ current }) => {
                                         name={[subField.name, "cgstPercent"]}
                                     >
                                         <InputNumber
-                                            readOnly
                                             className="moneyInput"
                                             min={0}
-                                            controls={false}
                                             style={{ width: 75 }}
+                                            onChange={(value) =>
+                                                onCgstChange(value, subField)
+                                            }
                                         />
                                     </Form.Item>
                                 </Col>
@@ -310,11 +429,12 @@ const Invoice = ({ current }) => {
                                         name={[subField.name, "igstPercent"]}
                                     >
                                         <InputNumber
-                                            readOnly
                                             className="moneyInput"
                                             min={0}
-                                            controls={false}
                                             style={{ width: 75 }}
+                                            onChange={(value) =>
+                                                onIgstChange(value, subField)
+                                            }
                                         />
                                     </Form.Item>
                                 </Col>
@@ -369,6 +489,54 @@ const Invoice = ({ current }) => {
                     </div>
                 )}
             </Form.List>
+            <Row align={"middle"} justify={"end"}>
+                <Col span={8}>
+                    <Form.Item
+                        label="Gross Total"
+                        name={"grossTotal"}
+                        labelAlign="center"
+                    >
+                        <InputNumber
+                            readOnly
+                            className="moneyInput"
+                            style={{ width: 150 }}
+                            controls ={false}
+                        />
+                    </Form.Item>
+                </Col>
+            </Row>
+            <Row align={"middle"} justify={"end"}>
+                <Col span={8}>
+                    <Form.Item
+                        label="Tax Amount"
+                        name={"totalTaxAmount"}
+                        labelAlign="center"
+                    >
+                        <InputNumber
+                            readOnly
+                            className="moneyInput"
+                            style={{ width: 150 }}
+                            controls ={false}
+                        />
+                    </Form.Item>
+                </Col>
+            </Row>
+            <Row align={"middle"} justify={"end"}>
+                <Col span={8}>
+                    <Form.Item
+                        label="Grand Total"
+                        name={"grandTotal"}
+                        labelAlign="center"
+                    >
+                        <InputNumber
+                            readOnly
+                            className="moneyInput"
+                            style={{ width: 150 }}
+                            controls ={false}
+                        />
+                    </Form.Item>
+                </Col>
+            </Row>
         </div>
     );
 };
