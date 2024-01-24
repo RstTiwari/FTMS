@@ -6,7 +6,7 @@ import InvoiceFrom from "../../Forms/Invoice";
 const NewInvoice = () => {
     const [form] = Form.useForm();
     const handleInvoiceFormFinish =(value)=>{
-
+      console.log(value)
     }
     return (
         <Flex
