@@ -3,6 +3,7 @@ import Header from "components/Header";
 import React from "react";
 import CoustomerForm from "../../Forms/CoustomersForm.js"
 import {PlusOutlined}  from "@ant-design/icons"
+import { useAddDataQuery } from "state/api.js";
 
 
 const NewCustomer = () => {
@@ -32,10 +33,10 @@ const NewCustomer = () => {
         return { entity: "customer", value };
 
     }
-    const handelCustomerFormFinis =(value)=>{
+    const handelCustomerFormFinish =(value)=>{
     let payload = fomulatePayload(value)
-    console.log(payload);
     }
+
     return (
         <Flex
             gap={"middle"}
@@ -48,7 +49,7 @@ const NewCustomer = () => {
             }}
         >
             <Header title={"New Customers"} subTitle={""} /> 
-            <Form name="coustomerForm" form={form} initialValues={{shippinStreet:""}} onFinish={handelCustomerFormFinis}>
+            <Form name="coustomerForm" form={form} initialValues={{shippinStreet:""}} onFinish={handelCustomerFormFinish}>
                 <CoustomerForm  current ={form} />
                 <Col className="gutter-row" span={6}>
                 <Form.Item>
