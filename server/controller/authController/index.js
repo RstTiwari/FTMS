@@ -6,7 +6,7 @@ import userDb from "../../models/coreModels/User.js";
 import isValidAuthtoken from './isValidAuthtoken.js';
 
 
-const authMethod = {
+const authRoutes = {
     verify: (req, res, next) => {
         verify(req, res, next, userDb, userPasswordDb);
     },
@@ -21,4 +21,4 @@ const authMethod = {
     },
 };
 
-export default authMethod;
+export default authRoutes;

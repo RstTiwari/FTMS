@@ -7,8 +7,34 @@ import {PlusOutlined}  from "@ant-design/icons"
 
 const NewCustomer = () => {
     const [form] = Form.useForm()
+    const fomulatePayload = (value)=>{
+        value["billingAddress"] = {
+            address: value.billingStreet,
+            city: value.billingCity,
+            state: value.billingState,
+            pinCode: value.billingPincode,
+        };
+        value["shippingAddress"] = {
+            address: value.shippingStreet,
+            city: value.shippingCity,
+            state: value.shippingState,
+            pinCode: value.shippingPincode,
+        };
+
+        delete value.shippingStreet
+        delete value.shippingState
+        delete value.shippingCity
+        delete value.shippingPincode
+        delete value.billingStreet
+        delete value.billingState
+        delete value.billingCity
+        delete value.billingPincode
+        return { entity: "customer", value };
+
+    }
     const handelCustomerFormFinis =(value)=>{
-        console.log(value,"Click");
+    let payload = fomulatePayload(value)
+    console.log(payload);
     }
     return (
         <Flex

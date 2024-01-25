@@ -5,9 +5,9 @@ import InvoiceFrom from "../../Forms/Invoice";
 
 const NewInvoice = () => {
     const [form] = Form.useForm();
-    const handleInvoiceFormFinish =(value)=>{
-      console.log(value)
-    }
+    const handleInvoiceFormFinish = (value) => {
+   
+    };
     return (
         <Flex
             gap={"middle"}

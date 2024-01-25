@@ -55,7 +55,7 @@ const CoustomersForm = ({ current }) => {
             <Form.Item
                 label={"Customer Phone"}
                 labelAlign="left"
-                name="workNo"
+                name="customerPhone"
                 labelCol={{ span: 3 }}
                 rules={[
                     {

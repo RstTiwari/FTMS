@@ -12,6 +12,7 @@ import salesRoutes from "./routes/sales.js";
 import generalRoutes from "./routes/general.js";
 import managmentRoutes from "./routes/managment.js";
 import auth from "./routes/auth.js";
+import appRoutes from "./routes/appRoutes.js";
 
 /**
  * Configration
@@ -41,6 +42,8 @@ app.use(cookieParser());
  */
 
 app.use("/auth", auth);
+app.use("/app", appRoutes);
+
 app.use("/client", clientRoutes);
 app.use("/sales", salesRoutes);
 app.use("/mangament", managmentRoutes);

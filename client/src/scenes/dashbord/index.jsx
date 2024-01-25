@@ -59,7 +59,7 @@ const Dashbord = () => {
     const entityData = [
         {
             result: 100,
-            isLoading: true,
+            isLoading: false,
             entity: "lead",
             title: "Lead Genrated",
             icon :<PointOfSaleOutlined/>

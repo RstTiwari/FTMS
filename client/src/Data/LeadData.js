@@ -82,12 +82,6 @@ export const items = [
 
 export const leadColumns = [
     {
-        title: "SrNo",
-        dataIndex: "srNo",
-        key: "srno",
-        width:"75px"
-    },
-    {
         title: "Source",
         dataIndex: "source",
         key: "source",
@@ -110,9 +104,9 @@ export const leadColumns = [
         key: "status",
     },
     {
-      title: "Remark",
-      dataIndex: "remark",
-      key: "remark",
+      title: "Comments",
+      dataIndex: "comments",
+      key: "comments",
       responsive:["lg"],
       render: (_,record) => (
         <>
@@ -153,7 +147,6 @@ export const leadColumns = [
 
 export const leadDataSource = [
      {
-      srNo:1,
       source:"indiamart",
       company:"Reliance Nippon",
       status:"Draft",
@@ -174,7 +167,6 @@ export const leadDataSource = [
             ]
      },
      {
-      srNo:2,
       source:"Just Dial",
       company:"Arihant Play",
       status:"Draft",
@@ -195,7 +187,6 @@ export const leadDataSource = [
             ]
      },
      {
-      srNo:3,
       source:"salesAgent",
       company:"Adani Foundation",
       status:"Draft",
@@ -216,7 +207,6 @@ export const leadDataSource = [
             ]
      },
      {
-      srNo:3,
       source:"salesAgent",
       company:"Adani Foundation",
       status:"Draft",
@@ -237,7 +227,6 @@ export const leadDataSource = [
             ]
      },
      {
-      srNo:3,
       source:"salesAgent",
       company:"Adani Foundation",
       status:"Draft",
@@ -258,7 +247,6 @@ export const leadDataSource = [
             ]
      },
      {
-      srNo:3,
       source:"salesAgent",
       company:"Adani Foundation",
       status:"Draft",
@@ -278,7 +266,6 @@ export const leadDataSource = [
         },
             ]
      },  {
-      srNo:3,
       source:"salesAgent",
       company:"Adani Foundation",
       status:"Draft",

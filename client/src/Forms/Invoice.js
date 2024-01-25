@@ -332,6 +332,12 @@ const Invoice = ({ current }) => {
                                 <Col className="gutter-row" span={5}>
                                     <Form.Item
                                         name={[subField.name, "description"]}
+                                        rules={[
+                                            {
+                                                required:true,
+                                                message:"Please Select the description"
+                                            }
+                                        ]}
                                     >
                                         <Select
                                             style={{
