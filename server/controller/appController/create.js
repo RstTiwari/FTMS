@@ -1,7 +1,7 @@
 const create = async (req, res, next, dataBase) => {
     try {
         let {entity,value} = req.body;
-        let newData = new dataBase();
+        let newData = new dataBase(value);
         let savedata = await newData.save();
         if (!savedata) {
             throw new Error(`Failed to Create new ${req.entity} data`);

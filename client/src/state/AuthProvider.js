@@ -17,17 +17,16 @@ export const AuthProvider = ({ children }) => {
         window.location.replace("/login");
     };
 
-    const axiosCall = async (path,data)=>{
+    const authApiCall = async (path, data) => {
         try {
-        let token = cookies["token"]
+            let token = cookies["token"];
 
             let axiosConfig = {
                 url: myfac8ryBaseUrl + `auth/${path}`,
                 method: "post",
                 headers: {
                     "Content-Type": "application/json",
-                     token : token ? token : null
-                   
+                    token: token ? token : null,
                 },
                 data: data,
             };
@@ -42,7 +41,32 @@ export const AuthProvider = ({ children }) => {
             };
             return response;
         }
-    }
+    };
+
+    const appApiCall = async (method, path, payload) => {
+        let token = cookies["token"];
+        let axiosConfig = {
+            url: myfac8ryBaseUrl + `app/${path}`,
+            method: method,
+            headers: {
+                "Content-Type": "application/json",
+                token: token ? token : null,
+            },
+            data: payload,
+        };
+        try {
+            let response = await axios(axiosConfig);
+            return response.data;
+        } catch (error) {
+            let response = {
+                success: 0,
+                result: null,
+                message: "axios call Failed",
+                error: error.message,
+            };
+            return response;
+        }
+    };
 
     const verifyToken = async () => {
         try {
@@ -59,10 +83,10 @@ export const AuthProvider = ({ children }) => {
                 data: {},
             };
             let response = await axios(axiosConfig);
-             if (response && !response.data.success) {
-                 removeCookie("token");
-                 window.location.replace("/login");
-             }
+            if (response && !response.data.success) {
+                removeCookie("token");
+                window.location.replace("/login");
+            }
         } catch (error) {
             let response = {
                 success: 0,
@@ -75,7 +99,9 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ loginUser, logoutUser,axiosCall, verifyToken }}>
+        <AuthContext.Provider
+            value={{ loginUser, logoutUser, authApiCall, appApiCall }}
+        >
             {children}
         </AuthContext.Provider>
     );

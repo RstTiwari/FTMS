@@ -29,7 +29,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
 
-console.log(process.env.myfac8ryFronendUrl);
 app.use(
     cors({
         origin: process.env.myfac8ryFronendUrl,

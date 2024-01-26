@@ -1,12 +1,13 @@
 import { Flex, Form ,Col,Button} from "antd";
 import Header from "components/Header";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CoustomerForm from "../../Forms/CoustomersForm.js"
 import {PlusOutlined}  from "@ant-design/icons"
 import { useAddDataQuery } from "state/api.js";
 
 
 const NewCustomer = () => {
+    const [payload,setPayload] = useState("")
     const [form] = Form.useForm()
     const fomulatePayload = (value)=>{
         value["billingAddress"] = {
@@ -33,9 +34,12 @@ const NewCustomer = () => {
         return { entity: "customer", value };
 
     }
+
     const handelCustomerFormFinish =(value)=>{
-    let payload = fomulatePayload(value)
+      setPayload(fomulatePayload(value)) 
     }
+    const {data,isLoading} = useAddDataQuery({payload})
+
 
     return (
         <Flex

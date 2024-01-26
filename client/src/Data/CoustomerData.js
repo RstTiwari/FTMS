@@ -7,8 +7,8 @@ import {TableAction} from "components/TableAction"
 export const coustomerColumns = [
     {
         title:"Company Name",
-        dataIndex:"companyName",
-        key:"companyName"
+        dataIndex:"customerName",
+        key:"customerName"
     },
     {
         title:"GST NO",
@@ -18,17 +18,17 @@ export const coustomerColumns = [
     {
         title:"PAN NO",
         dataIndex:"panNo",
-        key:"gstNo"
+        key:"panNo"
     },
     {
         title:"PHONE NO",
-        dataIndex:"phoneNo",
-        key:"phoneNo"
+        dataIndex:"customerPhone",
+        key:"customerPhone"
     },
     {
         title:"Email Id",
-        dataIndex:"email",
-        key:"phoneNo"
+        dataIndex:"customerEmail",
+        key:"customerEmail"
     },
     {
         fixed: "right",

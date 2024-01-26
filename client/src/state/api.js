@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-let token = document.cookie.split("=")[1] // token from cookies
+const token = window.document.cookie.split("=")[1];
 export const api = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_URL }),
     reducerPath: "adminApi",
-    tagTypes: ["User", "Client", "Coustomers", "Transaction", "Login"],
+    tagTypes: ["User", "Client", "Coustomers", "Transaction", "Login","GETLIST"],
     endpoints: (build) => ({
         getUser: build.query({
             query: (id) => `general/user/${id}`,
@@ -50,28 +50,38 @@ export const api = createApi({
             }),
         }),
         addData: build.query({
-            query: (payload) => ({
+            query: ({payload}) => ({
                 url: "app/create",
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    withCredentials: true,
+                     token:token
                 },
                 body: payload,
                 providesTags: ["Dashbord"],
             }),
         }),
+        getListData: build.query({
+            query: ({payload}) => ({
+                url: "app/getList",
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                     token:token
+                },
+                body:payload,
+                providesTags: ["GETLIST"],
+            }),
+        }),
     }),
 });
 
-
-
-
 export const {
-  useGetUserQuery,
-  useGetProductsQuery,
-  useGetCoustomersQuery,
-  useGetTransactionQuery,
-  useGetUserLoginQuery,
-  useAddDataQuery
+    useGetUserQuery,
+    useGetProductsQuery,
+    useGetCoustomersQuery,
+    useGetTransactionQuery,
+    useGetUserLoginQuery,
+    useAddDataQuery,
+    useGetListDataQuery
 } = api;
