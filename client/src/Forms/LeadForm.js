@@ -1,15 +1,23 @@
 import React, { useState } from 'react'
 import { Form ,Select,Divider,Space,Input,Button} from 'antd'
 import { LeadOption ,companyDetails,leadStatus} from 'Data/LeadData'
-import {PlusOutlined}  from "@ant-design/icons"
 import DropDownCoustom from 'components/DropDownCoustom'
-import TextArea from 'antd/es/input/TextArea'
-const LeadForm = () => {
+import {GetDropDownData} from 'Helper/ApiHelper'
+const LeadForm = ({current}) => {
     const [compnayDetails ,setCompanyDetails]  = useState([])
     const handleInputChange = async (value) => {
-        setCompanyDetails(companyDetails);
-    };
+          
+    }
+    const handelDropDownClick = async()=>{
+        let entity ="customer"
+        let data = await GetDropDownData(entity)
+        setCompanyDetails(data)
+    }
     
+    const handleCustomerChange = (value, option) => {
+        const { customer } = current.getFieldsValue(["customer"]);
+        current.setFieldsValue({ customer: option.value });
+    };
   return (
       <div>
           <Form.Item
@@ -38,13 +46,13 @@ const LeadForm = () => {
               </Select>
           </Form.Item>
           <Form.Item
-              label={"Select Company"}
-              name={"company"}
+              label={"Select Customer"}
+              name={"customer"}
               hasFeedback
               rules={[
                   {
                       required: true,
-                      message: "Plese Select Company",
+                      message: "Plese Select Customer",
                   },
               ]}
           >
@@ -52,6 +60,8 @@ const LeadForm = () => {
                   labelInValue
                   allowClear={true}
                   options={compnayDetails}
+                  onClick={handelDropDownClick}
+                  onChange={handleCustomerChange}
                   dropdownRender={(menu) => (
                       <DropDownCoustom
                           option={menu}

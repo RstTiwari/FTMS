@@ -10,17 +10,24 @@ const coustomerSchema = new mongoose.Schema({
     customerPhone: {
         type: Number,
         require: true,
+        unique:true
     },
     customerEmail: {
         type: String,
         require: true,
+        unique:true
+
     },
     panNo: {
         type: String,
+        unique:true
+
     },
     gstNo: {
         type: String,
-        require: true
+        require: true,
+        unique:true
+
     },
     billingAddress: {
         address: String,

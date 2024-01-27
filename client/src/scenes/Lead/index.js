@@ -1,10 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Flex, Form, Select, Table } from "antd";
 import Header from "components/Header";
-import { leadColumns,leadDataSource } from "Data/LeadData";
+import { leadColumns } from "Data/LeadData";
+import { getTableData } from "Helper/ApiHelper";
 
 const Index = () => {
-
+    const [tableData, setTableData] = useState([]);
+    const [isLoading,setIsLoading] = useState(true)
+    let entity = "lead";
+    useEffect(() => {
+        const fetchData = async () => {
+            const { success, result, message } = await getTableData(entity);
+            if (success === 1) {
+                setIsLoading(false)
+                setTableData(result);
+            }
+        };
+        fetchData();
+    },[]);
     return (
         <Flex
             gap={"middle"}
@@ -12,7 +25,7 @@ const Index = () => {
             style={{
                 padding: "2rem",
                 backgroundColor: "#ffffff",
-                borderRadius:"1rem"
+                borderRadius: "1rem",
             }}
         >
             <Header
@@ -22,10 +35,10 @@ const Index = () => {
             />
             <Table
                 columns={leadColumns}
-                dataSource={leadDataSource}
+                loading={isLoading}
+                dataSource={tableData}
                 scroll={{ x: true, y: 400 }}
-                showSorterTooltip = {true}
-                
+                showSorterTooltip={true}
             />
         </Flex>
     );

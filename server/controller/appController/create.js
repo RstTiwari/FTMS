@@ -13,6 +13,11 @@ const create = async (req, res, next, dataBase) => {
         });
     } catch (error) {
         console.error(error.message);
+        res.send({
+            success: 0,
+            result: [],
+            message:error.message
+        });
     }
 };
 

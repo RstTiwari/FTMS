@@ -61,8 +61,7 @@ export const AuthProvider = ({ children }) => {
             let response = {
                 success: 0,
                 result: null,
-                message: "axios call Failed",
-                error: error.message,
+                message: error.message
             };
             return response;
         }

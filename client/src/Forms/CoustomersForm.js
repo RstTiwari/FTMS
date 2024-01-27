@@ -57,10 +57,15 @@ const CoustomersForm = ({ current }) => {
                 labelAlign="left"
                 name="customerPhone"
                 labelCol={{ span: 3 }}
+                
                 rules={[
                     {
                         required: true,
                         message: "Please Provide Customer Phone",
+                    },
+                    {
+                        max: 10,
+                        message: "Phone must be at most 10 characters",
                     },
                 ]}
             >

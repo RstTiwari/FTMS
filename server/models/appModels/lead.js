@@ -1,4 +1,5 @@
-import mongoose, { model } from "mongoose";
+import mongoose from "mongoose";
+import mongooseAutoPopulate from "mongoose-autopopulate";
 
 const leadSchema = new mongoose.Schema({
     removed: {
@@ -13,8 +14,14 @@ const leadSchema = new mongoose.Schema({
         type: String,
         require: true,
     },
-    company: {
-        type: mongoose.Schema.ObjectId, ref: 'coustomer', autopopulate: true ,
+    status: {
+        type: String,
+        require: true,
+    },
+    customer: {
+        type: mongoose.Schema.ObjectId,
+        ref: "customer",
+        autopopulate: true,
         require: true,
     },
     recivedDate: {
@@ -29,4 +36,5 @@ const leadSchema = new mongoose.Schema({
     ],
 });
 
- export default mongoose.model("lead",leadSchema)
+leadSchema.plugin(mongooseAutoPopulate);
+export default mongoose.model("lead",leadSchema)

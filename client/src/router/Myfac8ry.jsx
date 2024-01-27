@@ -4,15 +4,18 @@ import { useAuth } from "../state/AuthProvider";
 import { useCookies } from "react-cookie";
 import Approuter from "./Approuter";
 import AuthRouter from "./AuthRouter";
+import { App } from "antd";
+
 
 const  Myfac8ry = ()=> {
     const [cookies,setCookie] = useCookies(["token"])
     return(
-        <div>
+        <App>
+
         {
             cookies["token"] ? (<Approuter/>):(<AuthRouter/>)
         }
-        </div>
+        </App>
     )
 
     

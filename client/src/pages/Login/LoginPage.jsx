@@ -8,11 +8,11 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
     const navigate = useNavigate()
     const [login, setLogin] = useState("");
-    const {logoutUser,loginUser,axiosCall } = useAuth()
+    const {logoutUser,loginUser,authApiCall } = useAuth()
     
     const handleLoginChange = async (value) => {
         setLogin(value);
-        let response = await axiosCall("login", value);
+        let response = await authApiCall("login", value);
         if (response.success === 1) {
             loginUser(response.result);
             navigate("/dashboard")

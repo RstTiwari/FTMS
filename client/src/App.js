@@ -8,7 +8,6 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import PageLoader from "pages/PageLoader";
 import { AuthProvider } from "./state/AuthProvider";
 import { CookiesProvider } from "react-cookie";
-
 function App() {
     const mode = useSelector((state) => state.global.mode);
     const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
@@ -19,14 +18,18 @@ function App() {
             <BrowserRouter>
                 <Suspense
                     fallback={
-                        <PageLoader text={"Please Wait While We make Everythinh Perfect For You"} />
+                        <PageLoader
+                            text={
+                                "Please Wait While We make Everythinh Perfect For You"
+                            }
+                        />
                     }
                 >
                     <ThemeProvider theme={theme}>
                         <CssBaseline />
                         <CookiesProvider defaultSetOptions={{ path: "/" }}>
                             <AuthProvider>
-                                <Myfac8ry />
+                                    <Myfac8ry />
                             </AuthProvider>
                         </CookiesProvider>
                     </ThemeProvider>
