@@ -7,25 +7,24 @@ const quotationSchema = new mongoose.Schema({
         require: true,
         autopopulate: true,
     },
-    quoteNo: {
+    invoiceNo: {
         type: String,
         require: true,
         unique: true,
     },
-    quoteDate: {
+    orderNo: {
+        type: String,
+        require: true,
+        unique: true,
+    },
+    invoiceDate: {
         type: Number,
         require: true,
     },
-    quoteExpiryDate: {
+    invoiceExpiredDate: {
         type: Number,
     },
-    attenPerson: {
-        type: String,
-    },
-    subject: {
-        type: String,
-    },
-    message: {
+    salesPerson: {
         type: String,
     },
     items: [
@@ -35,54 +34,43 @@ const quotationSchema = new mongoose.Schema({
                 ref: "product",
                 require: true,
             },
+            hsnCode:{
+                type:String
+            },
             rate: {
-                type: Number,
-            },
-            percentDiscount: {
-                type: Number,
-            },
-            bestOffer: {
                 type: Number,
             },
             qty: {
                 type: Number,
             },
-            finalAmount: {
+            taxableAmount:{
+                type:Number
+            },
+            sgstPercent: {
                 type: Number,
             },
+            cgstPercent: {
+                type: Number,
+            },
+            igstPercent: {
+                type: Number,
+            },
+            finalAmount: {
+                type: Number,
+            }
         },
     ],
     grossTotal: {
         type: Number,
     },
-    taxPercent: {
+    totalTaxAmount: {
         type: Number,
     },
-    transPortAmount: {
-        type: Number,
-    },
+
     grandTotal: {
         type: Number,
-    },
-    deliveryCondition: {
-        type: String,
-    },
-    validityCondition: {
-        type: String,
-    },
-    paymentsCondition: {
-        type: String,
-    },
-    cancellationCondition: {
-        type: String,
-    },
-    installationCondition: {
-        type: String,
-    },
-    facilityCondition: {
-        type: String,
     },
 });
 
 quotationSchema.plugin(mongooseAutoPopulate);
-export default mongoose.model("quotation", quotationSchema);
+export default mongoose.model("invoice", quotationSchema);

@@ -1,4 +1,7 @@
 import {TableAction} from "components/TableAction";
+import {Space,Flex,Dropdown, Typography,Form,Input} from "antd"
+import { convertUnixTimestampToDate } from "Helper/EpochConveter";
+const {Text} = Typography
 
 export const invoiceColumns = [
     {
@@ -10,17 +13,34 @@ export const invoiceColumns = [
         title:"Customer",
         dataIndex:"customer",
         key:"customer",
+        render:(_,record)=>(
+            <>
+            <Text type="success">
+                {record.customer.customerName}
+            </Text>
+            </>
+        )
 
     },
     {
         title:"Date",
         dataIndex:"invoiceDate",
-        key:"customer",  
+        key:"customer", 
+        render:(_,record)=>(
+            <>
+                {convertUnixTimestampToDate(record.invoiceDate)}
+            </>
+        ) 
     },
     {
         title:"Exipred Date",
         dataIndex:"invoiceExpiredDate",
         key:"customer",  
+        render:(_,record)=>(
+            <>
+                {convertUnixTimestampToDate(record.invoiceExpiredDate)}
+            </>
+        ) 
     },
     {
         title:"Gross Total",
@@ -30,11 +50,6 @@ export const invoiceColumns = [
     {
         title:"Grand Total",
         dataIndex:"grandTotal",
-        key:"grandTotal",  
-    },
-    {
-        title:"Status",
-        dataIndex:"status",
         key:"grandTotal",  
     },
     {

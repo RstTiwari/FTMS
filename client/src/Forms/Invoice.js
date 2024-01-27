@@ -14,22 +14,39 @@ import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import DropDownCoustom from "components/DropDownCoustom";
 import { companyDetails } from "Data/LeadData";
 import { productOption } from "Data/ProductData";
+import { GetDropDownData } from "Helper/ApiHelper";
 
 const Invoice = ({ current }) => {
     const [company, setCompany] = useState([]);
     const [proudcts, setProduct] = useState([]);
-    const handleCustomerInputChange = async (value) => {
-        setCompany(companyDetails);
+
+    const handleCustomerClcik = async ()=>{
+        let entity = "customer"
+        let fieldName ="customerName"
+        let data = await GetDropDownData(entity,fieldName)
+        setCompany(data)
+    }
+    const handleDescriptionClick = async ()=>{
+        let entity = "product"
+        let fieldName ="productName"
+        let data = await GetDropDownData(entity,fieldName)
+        setProduct(data)
+    }
+    const handleCustomerChange = async (value,label) => {
+        console.log(value);
+        current.setFieldsValue({ customer: value });
     };
     const handleItemInputChange = (value) => {
         setProduct(productOption);
     };
 
     const onDescriptionChange = (value, label, subField) => {
+        console.log(label);
         const formData = current.getFieldValue("items");
         const items = [...formData];
         const rowManipulated = items[subField.key];
         rowManipulated.rate = label.rate;
+        rowManipulated.hsnCode = label.hsnCode
         rowManipulated.taxableAmount = rowManipulated.rate * rowManipulated.qty;
         rowManipulated.finalAmount = getFinalAmount(
             rowManipulated.sgstPercent,
@@ -168,7 +185,7 @@ const Invoice = ({ current }) => {
         <div>
             <Form.Item
                 label={"Select Coustomer"}
-                name={"coustomer"}
+                name={"customer"}
                 labelAlign="left"
                 labelCol={{ span: 6 }}
                 rules={[
@@ -188,10 +205,12 @@ const Invoice = ({ current }) => {
                                     option={menu}
                                     placeHolder={"Search Coustomer"}
                                     buttonName={"Add New"}
-                                    onInputChange={handleCustomerInputChange}
+                                    onInputChange={handleCustomerChange}
                                 />
                             </>
                         )}
+                        onChange={handleCustomerChange}
+                        onClick={handleCustomerClcik}
                     />
                 </Col>
             </Form.Item>
@@ -208,7 +227,7 @@ const Invoice = ({ current }) => {
                 ]}
             >
                 <Col span={10}>
-                    <Input />
+                    <Input/>
                 </Col>
             </Form.Item>
             <Form.Item
@@ -225,7 +244,7 @@ const Invoice = ({ current }) => {
                 <Col xs={24} sm={24} md={12} lg={12}>
                     <Form.Item
                         label={"Invoice Date"}
-                        name={"invoiceNo"}
+                        name={"invoiceDate"}
                         rules={[
                             {
                                 required: true,
@@ -361,6 +380,7 @@ const Invoice = ({ current }) => {
                                                     subField
                                                 );
                                             }}
+                                            onClick = {handleDescriptionClick}
                                         />
                                     </Form.Item>
                                 </Col>

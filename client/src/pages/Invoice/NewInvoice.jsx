@@ -1,12 +1,20 @@
-import { Flex, Form,Button } from "antd";
+import { Flex, Form,Button,Col } from "antd";
 import Header from "components/Header";
 import {React} from "react";
+import { PlusOutlined } from "@ant-design/icons";
 import InvoiceFrom from "../../Forms/Invoice";
+import { epochConveter } from "Helper/EpochConveter";
+import { createData } from "Helper/ApiHelper";
 
 const NewInvoice = () => {
     const [form] = Form.useForm();
-    const handleInvoiceFormFinish = (value) => {
-   
+    const handleInvoiceFormFinish = async (value) => {
+        let epochQuoteDate = epochConveter(value.invoiceDate.$d);
+        let epochExpiryDate = epochConveter(value.invoiceExpiredDate.$d);
+        value.invoiceDate = epochQuoteDate;
+        value.invoiceExpiredDate = epochExpiryDate;
+        let payload = { entity: "invoice", value };
+        const { success, result, message } = await createData(payload);
     };
     return (
         <Flex
@@ -24,9 +32,18 @@ const NewInvoice = () => {
             <Header title={"NEW INVOICE"} />
             <Form name="newInvoiceForm" form={form} layout="horizontal" onFinish={handleInvoiceFormFinish}>
                 <InvoiceFrom current={form} />
-                <Button  type="primary" htmlType="form">
-                    Save
-                </Button>
+                <Col className="gutter-row" span={6}>
+                    <Form.Item>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            icon={<PlusOutlined />}
+                            block
+                        >
+                            Save
+                        </Button>
+                    </Form.Item>
+                </Col>
             </Form>
         </Flex>
     );

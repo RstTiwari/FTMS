@@ -2,12 +2,13 @@ import {Space,Flex,Dropdown, Typography,Form,Input} from "antd"
 import {DownOutlined} from "@ant-design/icons"
 import { items } from "./LeadData";
 import {TableAction} from "components/TableAction";
+import { convertUnixTimestampToDate } from "Helper/EpochConveter";
 const {Text} = Typography
 
 export const quotationColumn = [
     {
         title: "Number",
-        dataIndex: "quoteNumber",
+        dataIndex: "quoteNo",
         width:"100px",
         key: "srno",
     },
@@ -15,16 +16,38 @@ export const quotationColumn = [
         title: "Client",
         dataIndex: "client",
         key: "source",
+        width:250,
+        render:(_,record)=>(
+            <>
+            <Text type="success">
+                {record.customer.customerName}
+            </Text>
+            </>
+        )
     },
     {
         title: "Recived Date",
         dataIndex: "quoteRecivedDate",
         key: "company",
+        responsive: ["lg"],
+        render:(_,record)=>(
+            <>
+            {convertUnixTimestampToDate(record.quoteDate)}
+            </>
+        )
+
     },
     {
         title: "Expired Date",
         dataIndex: "quoteExpiredDate",
         key: "quoteExpiredDate",
+        responsive: ["lg"],
+        render:(_,record)=>(
+            <>
+            {convertUnixTimestampToDate(record.quoteExpiryDate)}
+            </>
+        )
+
     },
     {
         title: "Gross Total",
@@ -36,11 +59,7 @@ export const quotationColumn = [
         dataIndex: "grandTotal",
         key: "subTotal",
     },
-    {
-        title: "Status",
-        dataIndex: "status",
-        key: "subTotal",
-    },
+  
     {
         fixed: "right",
         render: () => (

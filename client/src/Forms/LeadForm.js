@@ -10,7 +10,8 @@ const LeadForm = ({current}) => {
     }
     const handelDropDownClick = async()=>{
         let entity ="customer"
-        let data = await GetDropDownData(entity)
+        let fieldName ="customerName"
+        let data = await GetDropDownData(entity,fieldName)
         setCompanyDetails(data)
     }
     

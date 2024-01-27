@@ -1,22 +1,27 @@
 export const productOption = [
     {
-        label:"Laptop Bag",
-        value:"11111",
-        rate:1000
-    },
-    {
-        label:"Plastic water Bottel",
-        value:"22222",
-        rate:2000,
-    },
-    {
-        label:"Coffe Mug Dispenser",
-        value:"3333",
+        _id:"623gt23v23v23vg23vg2v2",
+        productName:"Laptop Bag",
+        hsnCode:"11111",
         rate:1000,
+        image:""
     },
     {
-        label:"Box of Of Parker Pen ",
-        value:"44444",
-        rate:1000
+        productName:"Plastic water Bottel",
+        hsnCode:"22222",
+        rate:2000,
+        image:""
+    },
+    {
+        productName:"Coffe Mug Dispenser",
+        hsnCode:"3333",
+        rate:1000,
+        image:""
+    },
+    {
+        productName:"Box of Of Parker Pen ",
+        hsnCode:"44444",
+        rate:1000,
+        image:""
     }
 ]
