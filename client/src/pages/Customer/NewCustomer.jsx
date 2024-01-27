@@ -38,7 +38,7 @@ const NewCustomer = () => {
         setIntialFormValue(value);
         setPayload(fomulatePayload(value));
         const { success, result, message } = await createData(payload);
-        console.log(success,result);
+        console.log(success, result);
     };
 
     return (
