@@ -62,7 +62,7 @@ import Transaction from "./models/Transaction.js";
 const Port = process.env.PORT || 5001;
 
 mongoose
-    .connect(process.env.MDURl, {
+    .connect(process.env.MDURL, {
         useUnifiedTopology: true,
     })
     .then(() => {
