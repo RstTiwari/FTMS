@@ -1,7 +1,15 @@
 import { createContext, useContext, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
-let myfac8ryBaseUrl = process.env.REACT_APP_URL;
+
+const REACT_APP_LOCAL_URL = "http://localhost:5001/";
+const REACT_APP_PRODUCTION_URL = "http://195.88.27.17:5001/";
+let myfac8ryBaseUrl = REACT_APP_PRODUCTION_URL;
+
+if (process.env.NODE_ENV === "development") {
+    myfac8ryBaseUrl = REACT_APP_LOCAL_URL;
+}
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
