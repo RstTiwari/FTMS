@@ -29,6 +29,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
 
+app.use(
+    cors({
+        origin: process.env.myfac8ryFronendUrl,
+    })
+);
 app.use(cookieParser());
 
 /**
