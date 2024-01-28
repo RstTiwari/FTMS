@@ -9,7 +9,8 @@ const appApiCall = async (method, path, payload) => {
             method: method,
             headers: {
                 "Content-Type": "application/json",
-                token: token ? token : null,
+                "Access-Control-Allow-Origin": "*",
+                 token: token ? token : null,
             },
             data: payload,
         };

@@ -53,6 +53,7 @@ export const AuthProvider = ({ children }) => {
             method: method,
             headers: {
                 "Content-Type": "application/json",
+                "Access-Control-Allow-Origin":"*",
                 token: token ? token : null,
             },
             data: payload,
