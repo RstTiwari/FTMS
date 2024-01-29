@@ -12,7 +12,7 @@ import jwt from "jsonwebtoken";
  * @returns  {sucess:1, userId:string , name:string}
  */
 
-const login = async (req, res, next, userDb, userPassworDb) => {
+const login = async (req, res, next, userDb, userPassworDb,tenantDb) => {
     const { email, password } = req.body;
     // validate the input values
     const ObjectSchema = joi.object({
@@ -50,6 +50,7 @@ const login = async (req, res, next, userDb, userPassworDb) => {
         userPassword.salt + password,
         userPassword.password
     );
+
     if (!isMatch) {
         return res.status(403).json({
             success: 0,
@@ -60,7 +61,7 @@ const login = async (req, res, next, userDb, userPassworDb) => {
 
     const token = jwt.sign(
         {
-            _id: user._id,
+            userId: user._id,
         },
         process.env.JWT_SECRET,
         { expiresIn: req.body.remember ? 365 * 24 + "h" : "24h" }

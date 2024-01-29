@@ -34,6 +34,7 @@ app.use(cors());
 //         origin: process.env.myfac8ryFronendUrl,
 //     })
 // );
+
 app.use(cookieParser());
 
 /**
@@ -48,18 +49,9 @@ app.use("/sales", salesRoutes);
 app.use("/mangament", managmentRoutes);
 app.use("/general", generalRoutes);
 
-/*
- * Importing my Data
- */
-
-import Product from "./models/Product.js";
-import ProductStats from "./models/ProductStats.js";
-import { dataProduct, dataProductStat, dataTransaction } from "./data/index.js";
-import Transaction from "./models/Transaction.js";
-/**
- * Mongoose Connection to Data base
- */
 const Port = process.env.PORT || 5001;
+
+
 
 mongoose
     .connect(process.env.MDURL, {
@@ -70,10 +62,6 @@ mongoose
             console.log(` Server is running on the port ${Port}`);
         });
 
-        /**Only add Data at once */
-        //Product.insertMany(dataProduct)
-        // ProductStats.insertMany(dataProductStat)
-        //Transaction.insertMany(dataTransaction)
     })
     .catch((e) => {
         console.log("Data base connection failed" + e);

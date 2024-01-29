@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
  * @param {*} param
  * @returns in reposse
  */
-const isValidAuthtoken = async (req, res, next, userDb, userPasswordDb ) => {
+const isValidAuthtoken = async (req, res, next, userDb, userPasswordDb,tenantDb ) => {
     try {
         const token = req.headers.token;
         if (!token) {

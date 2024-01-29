@@ -12,7 +12,10 @@ const UserSchema = new mongoose.Schema({
     name: {
         type: "String",
         required: true,
-        lowercase: true,
+    },
+    tenantId:{
+        type:String,
+        require:true,
     },
     email: {
         type: String,
