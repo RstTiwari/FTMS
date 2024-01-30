@@ -26,7 +26,7 @@ const isValidAuthtoken = async (req, res, next, userDb, userPasswordDb,tenantDb 
         }
 
         const userPasswordPromise = userPasswordDb.findOne({
-            user: verfied._id,
+            userId: verfied._id,
             removed: false,
         });
         const userPromise = userDb.findOne({ _id: verfied._id });

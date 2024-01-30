@@ -9,33 +9,13 @@ const tenantSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    tenanId: {
+    tenantId: {
         type: String,
         require: true,
         unique: true,
     },
     companyName: {
         type: String,
-    },
-    panNo: {
-        type: String,
-        unique: true,
-    },
-    gstNo: {
-        type: String,
-        unique: true,
-    },
-    billingAddress: {
-        address: String,
-        city: String,
-        state: String,
-        pinCode: Number,
-    },
-    shippingAddress: {
-        address: String,
-        city: String,
-        state: String,
-        pinCode: Number,
     },
 });
 

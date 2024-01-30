@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-import { Form, Input, Checkbox, Col, Row,Button } from "antd";
+import { Form, Input, Checkbox, Col, Row,Button ,Typography } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
+
+const {Text} = Typography
 
 export const LoginForm = ({handleLoginChange}) => {
     const [login, setLogin] = useState({
@@ -76,6 +79,20 @@ export const LoginForm = ({handleLoginChange}) => {
                     </Col>
                 </Row>
             </Form.Item>
+            <Row justify={"center"} style={{margin:"1rem"}}>
+                <Col span={6}>
+                New to Myfac8ry
+                </Col>
+                <Col>
+                <Text type="success">
+                    <Link to={"/register"}>
+                   Register
+
+                    </Link>
+
+                </Text>
+                </Col>
+            </Row>
             <Form.Item>
                 <Row justify={"center"}>
                     <Button

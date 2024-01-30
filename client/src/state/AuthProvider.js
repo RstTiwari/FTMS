@@ -1,12 +1,11 @@
 import { createContext, useContext, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
-
-
-let myfac8ryBaseUrl = process.env.REACT_APP_URL;
-
+let myfac8ryBaseUrl = process.env.REACT_APP_URL_PROD;
+if (process.env.NODE_ENV === "development") {
+    myfac8ryBaseUrl = process.env.REACT_APP_URL_LOCAL;
+}
 const AuthContext = createContext();
-
 export const AuthProvider = ({ children }) => {
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 

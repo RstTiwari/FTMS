@@ -44,7 +44,7 @@ const register = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
      *Creating a new Tenant
      */
     const tenantId = uniqueId();
-    const tenantData = await tenantDb.create({ tenantId, companyName });
+    const tenantData = await tenantDb.create({ tenantId, companyName ,panNo:"",gstNo:""});
     if (!tenantData) {
         return res.status(403).json({
             success: 0,
@@ -52,7 +52,6 @@ const register = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
             message: "Failed To Register",
         });
     }
-    console.log(tenantData);
     /**
      * Creating a New User
      */
@@ -63,7 +62,7 @@ const register = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
 
     const savedUser = await User.create({ email, name, tenantId });
     const registrationDone = await userPasswordDb.create({
-        user: savedUser._id,
+        userId: savedUser._id,
         password: hashedPassword,
         salt: salt,
         emailOtp: emailOtp,
@@ -80,7 +79,8 @@ const register = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
     }
 
     const myfac8ryEmail = process.env.email;
-    await sendEmail({ email, name, emailOtp });
+    //verifying email
+    await sendEmail({ email, name, emailOtp  });
 
     return res.status(200).json({
         success: 1,
@@ -88,6 +88,7 @@ const register = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
             userId: savedUser._id,
             name: savedUser.name,
             email: savedUser.email,
+            tenantId:savedUser.tenantId
         },
         message:
             "Account registered successfully. Please check mail and verify.",

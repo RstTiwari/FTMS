@@ -1,16 +1,16 @@
 import Joi from "joi";
 import Jwt from "jsonwebtoken";
 
-const verify = async (req, res, userDb, userPasswordDb, tenantDb) => {
+const verify = async (req, res,next, userDb, userPasswordDb, tenantDb) => {
     try {
         const { userId, emailOtp, tenantId } = req.body;
         const ObjectSchema = Joi.object({
             userId: Joi.string().required(),
-            tenantId: Joi.string().required(),
             emailOtp: Joi.number().required(),
+            tenantId: Joi.string().required(),
         });
 
-        const { error, value } = ObjectSchema.validate({ userId, emailOtp });
+        const { error, value } = ObjectSchema.validate({ userId, emailOtp ,tenantId});
 
         if (error) {
             return res.status(409).json({
@@ -19,12 +19,11 @@ const verify = async (req, res, userDb, userPasswordDb, tenantDb) => {
                 message: "Invalid/Missing credentials ",
             });
         }
-
         const userPasswordResult = await userPasswordDb.findOne({
-            user: userId,
+            userId: userId,
             removed: false,
         });
-
+        
         if (!userPasswordResult)
             return res.status(404).json({
                 success: 0,
@@ -42,18 +41,19 @@ const verify = async (req, res, userDb, userPasswordDb, tenantDb) => {
         /***
          * Checking OTP time
          */
-        let nowTime = Math.floor(Date.now() / 1000);
-        const isOtpTimeValid = userPasswordResult.emailOtpExpireTime > nowTime;
 
-        if (!isOtpTimeValid) {
-            return res.status(403).json({
-                success: 0,
-                result: null,
-                message: "OTP Time Expired",
-            });
-        }
+        // let nowTime = Math.floor(Date.now() / 1000);
+        // const isOtpTimeValid = userPasswordResult.emailOtpExpireTime > nowTime;
 
-        const isMatch = emailOtp === userPasswordResult.emailOtp;
+        // if (!isOtpTimeValid) {
+        //     return res.status(403).json({
+        //         success: 0,
+        //         result: null,
+        //         message: "OTP  Expired",
+        //     });
+        // }
+
+        const isMatch =( emailOtp === userPasswordResult.emailOtp);
         if (
             !isMatch ||
             userPasswordResult.emailOtp === undefined ||
@@ -65,12 +65,9 @@ const verify = async (req, res, userDb, userPasswordDb, tenantDb) => {
                 message: "Invalid verify OTP",
             });
 
-        /**
-         * Finding the tenantId
-         */
 
-        const token = Jwt.sign(
-            { userId: userId},
+        const token =  Jwt.sign(
+            { userId: userId ,},
             process.env.JWT_SECRET,
             {
                 expiresIn: "24h",
@@ -80,7 +77,7 @@ const verify = async (req, res, userDb, userPasswordDb, tenantDb) => {
         await userPasswordDb
             .findOneAndUpdate(
                 { user: userId },
-                { $push: { loggedSessions: token }, emailVerified: true },
+                { $push: { loggedSessions: {token:token} }, emailVerified: true },
                 { new: true }
             )
             .exec();
@@ -97,6 +94,7 @@ const verify = async (req, res, userDb, userPasswordDb, tenantDb) => {
             success: 1,
             result:[],
             message: "Email Verified Please Login to Dashbord",
+            token:token
         });
     } catch (error) {
         return res.status(404).json({

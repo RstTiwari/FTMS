@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import mongooseAutoPopulate from "mongoose-autopopulate";
 const Schema = mongoose.Schema;
 
 const UserPaswordSchema = new Schema({
@@ -7,9 +8,8 @@ const UserPaswordSchema = new Schema({
         type: Boolean,
         default: false,
     },
-    user: {
-        type: mongoose.Schema.ObjectId,
-        ref: "Admin",
+    userId: {
+        type: String,
         required: true,
         unique: true,
     },
@@ -33,10 +33,11 @@ const UserPaswordSchema = new Schema({
         type: String,
         default: "email",
     },
-    loggedSessions: {
-        type: [String],
-        default: [],
-    },
+    loggedSessions: [
+        {
+            token:String,
+        }
+    ]
 });
 
 UserPaswordSchema.method.genrateHash = function (salt, password) {
@@ -47,4 +48,5 @@ UserPaswordSchema.method.validPassword = function (salt, userPassword) {
     return bcrypt.compareSync(salt + userPassword, this.password);
 };
 
+UserPaswordSchema.plugin(mongooseAutoPopulate)
 export default mongoose.model("UserPassword", UserPaswordSchema);

@@ -17,11 +17,11 @@ const tranporter = nodemailer.createTransport({
     },
 });
 
-const sendEmail = async ({ email, name, otp, type = "emailVerification" }) => {
+const sendEmail = async ({ email, name, emailOtp, type = "emailVerification" }) => {
     try {
         let text = (type = "emailVerification")
-            ? emailVerification({ name, otp })
-            : passwordVerification({ name, otp });
+            ? emailVerification({ name, emailOtp })
+            : passwordVerification({ name, emailOtp });
         let info = await tranporter.sendMail({
             from: process.env.myfac8ryEmail,
             to: email,

@@ -43,7 +43,7 @@ const login = async (req, res, next, userDb, userPassworDb,tenantDb) => {
     }
 
     const userPassword = await userPassworDb.findOne({
-        user: user._id,
+        userId: user._id,
         removed: false,
     });
     const isMatch = await bcrypt.compare(
@@ -69,11 +69,12 @@ const login = async (req, res, next, userDb, userPassworDb,tenantDb) => {
 
     await userPassworDb
         .findOneAndUpdate(
-            { user: user._id },
-            { $push: { loggedSessions: token } },
+            { userId: user._id },
+            { $push: { loggedSessions: { token: token } } },
             { new: true }
         )
         .exec();
+        
     res.status(200).json({
         success: 1,
         result: {

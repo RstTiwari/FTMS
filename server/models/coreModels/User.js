@@ -15,7 +15,7 @@ const UserSchema = new mongoose.Schema({
     },
     tenantId:{
         type:String,
-        require:true,
+        required:true,
     },
     email: {
         type: String,
@@ -34,7 +34,7 @@ const UserSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        default: "staff",
+        default: "superadmin",
         enum: [
             "superadmin",
             "admin",
