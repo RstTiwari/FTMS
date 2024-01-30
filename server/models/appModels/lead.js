@@ -34,6 +34,10 @@ const leadSchema = new mongoose.Schema({
             date: Number,
         },
     ],
+    tenantId:{
+        type:String,
+        required:true
+    }
 });
 
 leadSchema.plugin(mongooseAutoPopulate);

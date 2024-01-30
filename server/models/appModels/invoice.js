@@ -70,6 +70,10 @@ const quotationSchema = new mongoose.Schema({
     grandTotal: {
         type: Number,
     },
+    tenantId:{
+        type:String,
+        required:true
+    }
 });
 
 quotationSchema.plugin(mongooseAutoPopulate);

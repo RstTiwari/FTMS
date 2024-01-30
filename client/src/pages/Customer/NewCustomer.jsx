@@ -6,7 +6,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { createData } from "Helper/ApiHelper.js";
 
 const NewCustomer = () => {
-    const [payload, setPayload] = useState("");
+    const [payload, setPayload] = useState({});
     const [intialFormValue, setIntialFormValue] = useState();
     const [form] = Form.useForm();
     const fomulatePayload = (value) => {

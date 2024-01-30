@@ -16,6 +16,7 @@ const isValidAuthtoken = async (req, res, next, userDb, userPasswordDb,tenantDb 
             });
         }
         const verfied = jwt.verify(token, process.env.JWT_SECRET);
+        console.log(verfied);
         if (!verfied) {
             return res.status(401).json({
                 success: 0,
@@ -24,16 +25,8 @@ const isValidAuthtoken = async (req, res, next, userDb, userPasswordDb,tenantDb 
                 jwtExpired: true,
             });
         }
+        const user = await userDb.findOne({ _id: verfied.userId});
 
-        const userPasswordPromise = userPasswordDb.findOne({
-            userId: verfied._id,
-            removed: false,
-        });
-        const userPromise = userDb.findOne({ _id: verfied._id });
-        const [user, userPassword] = await Promise.all([
-            userPromise,
-            userPasswordPromise,
-        ]);
         if (!user) {
             return res.status(401).json({
                 success: 0,
@@ -43,19 +36,21 @@ const isValidAuthtoken = async (req, res, next, userDb, userPasswordDb,tenantDb 
             });
         }
 
-        const { loggedSessions } = userPassword;
-        if (!loggedSessions.includes(token)) {
-            return res.status(401).json({
-                success: 0,
-                result: null,
-                message:
-                    "User is already logout try to login, authorization denied.",
-                jwtExpired: true,
-            });
-        } else {
-            req[user] = user;
+        // const { loggedSessions } = userPassword;
+        // if (!loggedSessions.includes(token)) {
+        //     return res.status(401).json({
+        //         success: 0,
+        //         result: null,
+        //         message:
+        //             "User is already logout try to login, authorization denied.",
+        //         jwtExpired: true,
+        //     });
+        // } else {
+
+            req[user] = user
+            req.tenantId = user.tenantId;
             next();
-        }
+        // }
     } catch (error) {
         return res.status(503).json({
             status: 0,

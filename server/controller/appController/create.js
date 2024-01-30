@@ -1,6 +1,9 @@
 const create = async (req, res, next, dataBase) => {
     try {
-        let {entity,value} = req.body;
+        let { entity, value } = req.body;
+        let tenantId = req.tenantId;
+        value["tenantId"] = tenantId;
+        console.log(value);
         let newData = new dataBase(value);
         let savedata = await newData.save();
         if (!savedata) {

@@ -5,6 +5,10 @@ const productSchema = new mongoose.Schema({
     rate:String,
     hsnCode:String,
     image:String,
+    tenantId:{
+        type:String,
+        required:true
+    }
 
 })
 

@@ -82,6 +82,10 @@ const quotationSchema = new mongoose.Schema({
     facilityCondition: {
         type: String,
     },
+    tenantId:{
+        type:String,
+        required:true
+    }
 });
 
 quotationSchema.plugin(mongooseAutoPopulate);

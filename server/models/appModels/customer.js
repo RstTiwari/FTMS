@@ -41,6 +41,10 @@ const coustomerSchema = new mongoose.Schema({
         state: String,
         pinCode: Number,
     },
+    tenantId:{
+        type:String,
+        required:true
+    }
 });
 
 export default mongoose.model("customer",coustomerSchema)

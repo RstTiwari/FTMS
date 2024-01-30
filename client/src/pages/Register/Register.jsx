@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import "../Login/Login.css";
-import { Button, Form, Input, Row, Col } from "antd";
+import { Button, Form, Input, Row, Col, Spin,Alert } from "antd";
 import SideContent from "module/AuthModule/SideContent";
 import { RegisterForm } from "Forms/RegisterForm";
 import { useAuth } from "state/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+    const [isLoading, setIsLoading] = useState(false);
     const [isOtpVerify, setIsOtpVerify] = useState(false);
     const [otp, setOtp] = useState();
     const [userId, setUserId] = useState("");
@@ -15,8 +16,10 @@ const Register = () => {
 
     const { loginUser, authApiCall } = useAuth();
     const handleRegisterFormFinish = async (value) => {
+        setIsLoading(true);
         let response = await authApiCall("register", value);
         if (response.success === 1) {
+            setIsLoading(false);
             setIsOtpVerify(true);
             setUserId(response.result.userId);
             setTenantId(response.result.tenantId);
@@ -24,6 +27,7 @@ const Register = () => {
     };
 
     const handleVerifyClick = async () => {
+        setIsLoading(true);
         let payload = {
             emailOtp: Number(otp),
             userId: userId,
@@ -32,6 +36,8 @@ const Register = () => {
 
         let response = await authApiCall("verify", payload);
         if (response.success === 1) {
+            setIsLoading(false);
+            console.log(response.result);
             loginUser(response.result);
             navigate("/dashboard");
         }
@@ -42,38 +48,49 @@ const Register = () => {
             <SideContent />
             <div className="login">
                 <div className="container">
-                    <div>
-                        {isOtpVerify ? (
-                            <>
-                                <Row justify={"center"}>Verify OTP</Row>
-                                <Row justify={"center"}>
-                                    <Input
-                                        onChange={(e) => setOtp(e.target.value)}
-                                    />
-                                </Row>
-                                <Row
-                                    justify={"center"}
-                                    style={{ margin: "1rem" }}
-                                >
-                                    <Button
-                                        type="primary"
-                                        onClick={handleVerifyClick}
+                    {!isLoading ? (
+                        <div>
+                            {isOtpVerify ? (
+                                <>
+                                    <Row justify={"center"}>Verify OTP</Row>
+                                    <Row justify={"center"}>
+                                        <Input
+                                            onChange={(e) =>
+                                                setOtp(e.target.value)
+                                            }
+                                        />
+                                    </Row>
+                                    <Row
+                                        justify={"center"}
+                                        style={{ margin: "1rem" }}
                                     >
-                                        Vefiry
-                                    </Button>
-                                </Row>
-                            </>
-                        ) : (
-                            <div>
-                                <Form
-                                    name="registerFrom"
-                                    onFinish={handleRegisterFormFinish}
-                                >
-                                    <RegisterForm />
-                                </Form>
-                            </div>
-                        )}
-                    </div>
+                                        <Button
+                                            type="primary"
+                                            onClick={handleVerifyClick}
+                                        >
+                                            Vefiry
+                                        </Button>
+                                    </Row>
+                                </>
+                            ) : (
+                                <div>
+                                    <Form
+                                        name="registerFrom"
+                                        onFinish={handleRegisterFormFinish}
+                                    >
+                                        <RegisterForm />
+                                    </Form>
+                                </div>
+                            )}
+                        </div>
+                    ) : (
+                        <Spin>
+                            <Alert
+                                message="Please Wait we working...."
+                                type="info"
+                            />
+                        </Spin>
+                    )}
                 </div>
             </div>
         </div>

@@ -1,6 +1,9 @@
 import axios from "axios";
 
-let myfac8ryBaseUrl = process.env.REACT_APP_URL;
+let myfac8ryBaseUrl = process.env.REACT_APP_URL_PROD;
+if (process.env.NODE_ENV === "development") {
+    myfac8ryBaseUrl = process.env.REACT_APP_URL_LOCAL;
+}
 const appApiCall = async (method, path, payload) => {
     const token = window.document.cookie.split("=")[1];
     try {
@@ -10,7 +13,7 @@ const appApiCall = async (method, path, payload) => {
             headers: {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",
-                 token: token ? token : null,
+                token: token ? token : null,
             },
             data: payload,
         };

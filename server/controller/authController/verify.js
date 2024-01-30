@@ -1,7 +1,7 @@
 import Joi from "joi";
 import Jwt from "jsonwebtoken";
 
-const verify = async (req, res,next, userDb, userPasswordDb, tenantDb) => {
+const verify = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
     try {
         const { userId, emailOtp, tenantId } = req.body;
         const ObjectSchema = Joi.object({
@@ -10,7 +10,11 @@ const verify = async (req, res,next, userDb, userPasswordDb, tenantDb) => {
             tenantId: Joi.string().required(),
         });
 
-        const { error, value } = ObjectSchema.validate({ userId, emailOtp ,tenantId});
+        const { error, value } = ObjectSchema.validate({
+            userId,
+            emailOtp,
+            tenantId,
+        });
 
         if (error) {
             return res.status(409).json({
@@ -23,7 +27,7 @@ const verify = async (req, res,next, userDb, userPasswordDb, tenantDb) => {
             userId: userId,
             removed: false,
         });
-        
+
         if (!userPasswordResult)
             return res.status(404).json({
                 success: 0,
@@ -53,7 +57,7 @@ const verify = async (req, res,next, userDb, userPasswordDb, tenantDb) => {
         //     });
         // }
 
-        const isMatch =( emailOtp === userPasswordResult.emailOtp);
+        const isMatch = emailOtp === userPasswordResult.emailOtp;
         if (
             !isMatch ||
             userPasswordResult.emailOtp === undefined ||
@@ -65,19 +69,17 @@ const verify = async (req, res,next, userDb, userPasswordDb, tenantDb) => {
                 message: "Invalid verify OTP",
             });
 
-
-        const token =  Jwt.sign(
-            { userId: userId ,},
-            process.env.JWT_SECRET,
-            {
-                expiresIn: "24h",
-            }
-        );
+        const token = Jwt.sign({ userId: userId }, process.env.JWT_SECRET, {
+            expiresIn: "24h",
+        });
 
         await userPasswordDb
             .findOneAndUpdate(
                 { user: userId },
-                { $push: { loggedSessions: {token:token} }, emailVerified: true },
+                {
+                    $push: { loggedSessions: { token: token } },
+                    emailVerified: true,
+                },
                 { new: true }
             )
             .exec();
@@ -87,14 +89,29 @@ const verify = async (req, res,next, userDb, userPasswordDb, tenantDb) => {
             .exec();
 
         const tenant = await tenantDb
-            .findOneAndUpdate({ tenantId:tenantId }, { enabled: true }, { new: true })
+            .findOneAndUpdate(
+                { tenantId: tenantId },
+                { enabled: true },
+                { new: true }
+            )
             .exec();
+
+        const userData = await userDb.findOne({ _id: userId, removed: false });
+        console.log(userDb);
 
         res.status(200).json({
             success: 1,
-            result:[],
-            message: "Email Verified Please Login to Dashbord",
-            token:token
+            result: {
+                _id: userData._id,
+                name: userData.name,
+                surname: userData.surname,
+                role: userData.role,
+                email: userData.email,
+                photo: userData.photo,
+                token: token,
+            },
+
+            message: "Login Successfull",
         });
     } catch (error) {
         return res.status(404).json({
