@@ -84,11 +84,11 @@ const verify = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
             )
             .exec();
 
-        const user = await userDb
+        await userDb
             .findOneAndUpdate({ _id: userId }, { enabled: true }, { new: true })
             .exec();
 
-        const tenant = await tenantDb
+         await tenantDb
             .findOneAndUpdate(
                 { tenantId: tenantId },
                 { enabled: true },
@@ -97,7 +97,8 @@ const verify = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
             .exec();
 
         const userData = await userDb.findOne({ _id: userId, removed: false });
-        console.log(userDb);
+        const tenantData = await tenantDb.findOne({tenantId:tenantId})
+        //if compnay logoneeded call api
 
         res.status(200).json({
             success: 1,
@@ -108,6 +109,7 @@ const verify = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
                 role: userData.role,
                 email: userData.email,
                 photo: userData.photo,
+                companyName:tenantData.companyName,
                 token: token,
             },
 

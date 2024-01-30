@@ -16,7 +16,6 @@ const isValidAuthtoken = async (req, res, next, userDb, userPasswordDb,tenantDb 
             });
         }
         const verfied = jwt.verify(token, process.env.JWT_SECRET);
-        console.log(verfied);
         if (!verfied) {
             return res.status(401).json({
                 success: 0,
@@ -50,6 +49,7 @@ const isValidAuthtoken = async (req, res, next, userDb, userPasswordDb,tenantDb 
             req[user] = user
             req.tenantId = user.tenantId;
             next();
+
         // }
     } catch (error) {
         return res.status(503).json({

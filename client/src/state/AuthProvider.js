@@ -5,19 +5,19 @@ let myfac8ryBaseUrl = process.env.REACT_APP_URL_PROD;
 if (process.env.NODE_ENV === "development") {
     myfac8ryBaseUrl = process.env.REACT_APP_URL_LOCAL;
 }
-console.log(myfac8ryBaseUrl);
 const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
     const loginUser = (result) => {
         setCookie("token", result.token);
-        // window.location.replace("/dashboard");
+        setCookie("authData",JSON.stringify(result))
     };
 
     const logoutUser = () => {
         removeCookie("token");
-        window.location.replace("/login");
+        removeCookie("authData")
+
     };
 
     const authApiCall = async (path, data) => {

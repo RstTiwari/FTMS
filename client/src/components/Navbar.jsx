@@ -1,5 +1,5 @@
-import React, { useState ,useEffect} from 'react'
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
     LightModeOutlined,
     DarkModeOutlined,
@@ -9,11 +9,13 @@ import {
     ArrowDropDownOutlined,
     LoginOutlined,
     SupervisedUserCircle,
-
 } from "@mui/icons-material";
-import FlexBetween from './FlexBetween';
-import { useDispatch } from 'react-redux';
-import { setMode } from 'state';
+import { UserOutlined } from "@ant-design/icons";
+import PersonIcon from "@mui/icons-material/Person";
+import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
+import FlexBetween from "./FlexBetween";
+import { useDispatch } from "react-redux";
+import { setMode } from "state";
 import {
     AppBar,
     Button,
@@ -26,157 +28,153 @@ import {
     Menu,
     Box,
     MenuItem,
-    Avatar
+    Avatar,
 } from "@mui/material";
- import { theme } from '@mui/material';
-import { useAuth } from 'state/AuthProvider';
-// import profileImage from  "assets/"
-const icon = "https://res.cloudinary.com/drkxpdxr5/image/upload/v1702446552/samples/smile.jpg"
+import { theme } from "@mui/material";
+import { useAuth } from "state/AuthProvider";
 
-const NavBar = ({user,isSidebarOpen,setIsSidebarOpen,isLaptop}) => {
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
-    const theme = useTheme()
-    const [profileImage,setProfileImage] = useState("")
-    const [anchorEl,setAnchorEl] = useState(null);
-    const [isOpen,setIsopen] = useState(false)
+const NavBar = ({ user, isSidebarOpen, setIsSidebarOpen, isLaptop }) => {
+    const navigate = useNavigate();
+    const theme = useTheme();
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [isOpen, setIsopen] = useState(false);
+    const { isLoggedIn, loginUser, logoutUser } = useAuth();
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
-        setIsopen(!isOpen)
+        setIsopen(!isOpen);
     };
 
     const handleClose = () => {
         setAnchorEl(null);
     };
-    useEffect(() => {
-         setProfileImage(icon)
-      return () => {
-        
-      }
-    }, [profileImage])
-    const {isLoggedIn,loginUser,logoutUser} = useAuth();
-    const logOut = ()=>{
-        navigate("/login")
-    }
-  return (
-      <AppBar
-          sx={{
-              position: "static",
-              background:"none"
-          }}
-      >
-          <Toolbar sx={{ justifyContent: "space-between " }}>
-              {/**Left Side Off Navbar */}
-              <FlexBetween>
-                  {!isLaptop ? (
-                      <IconButton
-                          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                      >
-                          <MenuIcon />
-                      </IconButton>
-                  ) : (
-                      ""
-                  )}
-              </FlexBetween>
-              {isLaptop ? (
-                  <FlexBetween>
-                      <Box
-                          component="img"
-                          alt="companyProfile"
-                          src={
-                              "https://res.cloudinary.com/drkxpdxr5/image/upload/v1702446560/cld-sample-3.jpg"
-                          }
-                          height="20px"
-                          weidth="20px"
-                          borderRadius="25%"
-                          sx={{
-                              objectFit: "cover",
-                          }}
-                      />
-                      <Typography>Myfac8ry.com</Typography>
-                  </FlexBetween>
-              ) : (
-                  ""
-              )}
 
-              {/**Right Side of Navbar */}
-              <FlexBetween gap={"2rem"}>
-                  <IconButton>
-                      <SettingsOutlined sx={{ fontSize: "25px" }} />
-                  </IconButton>
-                  <FlexBetween>
-                      <Button
-                          onClick={handleClick}
-                          sx={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                              textTransform: "none",
-                          }}
-                      >
-                          {profileImage ? (
-                              <Box
-                                  component="img"
-                                  alt="profile"
-                                  src={profileImage}
-                                  height="20px"
-                                  weidth="20px"
-                                  borderRadius="25%"
-                                  sx={{
-                                      objectFit: "cover",
-                                  }}
-                              />
-                          ) : (
-                              <Avatar sx={{ backgroundColor: "#fff" }} />
-                          )}
+    const handleLogOutClick = () => {
+        navigate("/login");
+        logoutUser();
+    };
+    return (
+        <AppBar
+            sx={{
+                position: "static",
+                background: "none",
+            }}
+        >
+            <Toolbar sx={{ justifyContent: "space-between " }}>
+                {/**Left Side Off Navbar */}
+                <FlexBetween>
+                    {!isLaptop ? (
+                        <IconButton
+                            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                    ) : (
+                        ""
+                    )}
+                </FlexBetween>
+                {isLaptop ? (
+                    <FlexBetween>
+                        {user && user.companyLog ? (
+                            <Box
+                                component="img"
+                                alt="companyProfile"
+                                src={user.companyLogo || ""}
+                                height="20px"
+                                weidth="20px"
+                                borderRadius="25%"
+                                sx={{
+                                    objectFit: "cover",
+                                }}
+                            />
+                        ) : (
+                            ""
+                        )}
+                        <Typography>{user.companyName}</Typography>
+                    </FlexBetween>
+                ) : (
+                    ""
+                )}
 
-                          <Box sx={{ textAlign: "left" }}>
-                              <Typography
-                                  fontWeight={"bold"}
-                                  fontSize={"0.9rem"}
-                                  sx={{ color: theme.palette.secondary[100] }}
-                              >
-                                  {user.name}
-                              </Typography>
-                              <Typography
-                                  fontSize={"0.75rem"}
-                                  sx={{ color: theme.palette.secondary[200] }}
-                              >
-                                  {user.occupation}
-                              </Typography>
-                          </Box>
-                          <ArrowDropDownOutlined
-                              sx={{ color: theme.palette.secondary[300] }}
-                          />
-                          <Menu
-                              anchorEl={anchorEl}
-                              open={isOpen}
-                              onClose={handleClose}
-                              anchorOrigin={{
-                                  vertical: "bottom",
-                                  horizontal: "center",
-                              }}
-                          >
-                              <MenuItem
-                                  onClick={() => logoutUser()}
-                                  sx={{width:"200px", paddingRight:"20px"}}
-                               
-                              >
-                                  <FlexBetween>
-                                      <IconButton>
-                                          <LoginOutlined />
-                                      </IconButton>
-                                      <Typography>LogOut</Typography>
+                {/**Right Side of Navbar */}
+                <FlexBetween gap={"2rem"}>
+                    <IconButton>
+                        <SettingsOutlined sx={{ fontSize: "25px" }} />
+                    </IconButton>
+                    <FlexBetween>
+                        <Button
+                            onClick={handleClick}
+                            sx={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                textTransform: "none",
+                            }}
+                        >
+                            {user && user.photo ? (
+                                <Box
+                                    component="img"
+                                    alt="profile"
+                                    src={user.photo}
+                                    height="20px"
+                                    weidth="20px"
+                                    borderRadius="25%"
+                                    sx={{
+                                        objectFit: "cover",
+                                    }}
+                                />
+                            ) : (
+                                ""
+                            )}
 
-                                  </FlexBetween>
-                              </MenuItem>
-                          </Menu>
-                      </Button>
-                  </FlexBetween>
-              </FlexBetween>
-          </Toolbar>
-      </AppBar>
-  );
-}
+                            <Box sx={{ textAlign: "left" }}>
+                                <Typography
+                                    fontWeight={"bold"}
+                                    fontSize={"0.9rem"}
+                                    sx={{ color: theme.palette.secondary[100] }}
+                                >
+                                    {user.name}
+                                </Typography>
+                                <Typography
+                                    fontSize={"0.75rem"}
+                                    sx={{ color: theme.palette.secondary[200] }}
+                                >
+                                    {user.occupation}
+                                </Typography>
+                            </Box>
+                            <ArrowDropDownOutlined
+                                sx={{ color: theme.palette.secondary[300] }}
+                            />
+                            <Menu
+                                anchorEl={anchorEl}
+                                open={isOpen}
+                                onClose={handleClose}
+                                anchorOrigin={{
+                                    vertical: "bottom",
+                                    horizontal: "center",
+                                }}
+                            >
+                                <MenuItem
+                                    onClick={() => handleLogOutClick()}
+                                    sx={{
+                                        width: "200px",
+                                        paddingRight: "20px",
+                                    }}
+                                >
+                                    <FlexBetween>
+                                        <IconButton>
+                                            <LoginOutlined />
+                                        </IconButton>
+                                        <Typography>LogOut</Typography>
+                                    </FlexBetween>
+                                </MenuItem>
+                            </Menu>
+                        </Button>
+                    </FlexBetween>
+                </FlexBetween>
+            </Toolbar>
+        </AppBar>
+    );
+};
 
-export default NavBar
+export default NavBar;

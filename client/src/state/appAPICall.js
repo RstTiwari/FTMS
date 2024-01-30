@@ -4,6 +4,7 @@ let myfac8ryBaseUrl = process.env.REACT_APP_URL_PROD;
 if (process.env.NODE_ENV === "development") {
     myfac8ryBaseUrl = process.env.REACT_APP_URL_LOCAL;
 }
+
 const appApiCall = async (method, path, payload) => {
     const token = window.document.cookie.split("=")[1];
     try {

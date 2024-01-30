@@ -12,7 +12,7 @@ import jwt from "jsonwebtoken";
  * @returns  {sucess:1, userId:string , name:string}
  */
 
-const login = async (req, res, next, userDb, userPassworDb,tenantDb) => {
+const login = async (req, res, next, userDb, userPassworDb, tenantDb) => {
     const { email, password } = req.body;
     // validate the input values
     const ObjectSchema = joi.object({
@@ -74,7 +74,9 @@ const login = async (req, res, next, userDb, userPassworDb,tenantDb) => {
             { new: true }
         )
         .exec();
-        
+    let tenantId = user.tenantId;
+    const tenantData = await tenantDb.findOne({ tenantId: tenantId });
+    //if compnay logoneeded call api
     res.status(200).json({
         success: 1,
         result: {
@@ -84,7 +86,8 @@ const login = async (req, res, next, userDb, userPassworDb,tenantDb) => {
             role: user.role,
             email: user.email,
             photo: user.photo,
-            token:token
+            companyName: tenantData.companyName,
+            token: token,
         },
         message: "Successfully login user",
     });

@@ -32,13 +32,15 @@ import {
     Leaderboard,
     RequestQuote,
     AccountBalance,
+    CalculateOutlined
 } from "@mui/icons-material";
+import LocalShippingRoundedIcon from '@mui/icons-material/LocalShippingRounded';
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
 import { useCookies } from "react-cookie";
 import { useAuth } from "state/AuthProvider";
-import { AccountBookFilled, MoneyCollectFilled } from "@ant-design/icons";
+import { AccountBookFilled, MoneyCollectFilled ,FileSearchOutlined} from "@ant-design/icons";
 
 const Sidebar = ({
     user ,
@@ -70,17 +72,19 @@ const Sidebar = ({
         //     icon: <Leaderboard />,
         // },
         {
-            text: "Lead",
-            icon: < PointOfSaleOutlined />,
-        },
-        {
-            text: "Quotation",
-            icon: <RequestQuote />,
-        },
-        {
             text: "Customers",
             icon: <Groups2Outlined />,
         },
+        {
+            text: "Quotation",
+            icon: <CalculateOutlined />,
+        },
+       
+        {
+            text: "Lead",
+            icon: < PointOfSaleOutlined />,
+        },
+      
         {
             text: "Accounts",
             icon: null,
@@ -94,7 +98,27 @@ const Sidebar = ({
             icon:<AccountBalance/>
         },
         {
-            text: "Client Facing",
+            text:"Expenses",
+            icon:<ReceiptLongOutlined/>
+        },
+        {
+            text:"Challan",
+            icon:<LocalShippingRoundedIcon/>
+        },  
+        {
+            text: "Purchase",
+            icon: null,
+        },
+        {
+            text: "Vendors",
+            icon: <AdminPanelSettingsOutlined />,
+        },
+        {
+            text: "Purchase Order",
+            icon: <FileSearchOutlined />,
+        },
+        {
+            text: "Desgin & Development",
             icon: null,
         },
         {
@@ -102,25 +126,8 @@ const Sidebar = ({
             icon: <ShoppingCartOutlined />,
         },
         {
-            text: "Transactions",
+            text: "BOM",
             icon: <ReceiptLongOutlined />,
-        },
-        {
-            text: "Geography",
-            icon: <PublicOutlined />,
-        },
- 
-        {
-            text: "Management",
-            icon: null,
-        },
-        {
-            text: "Admin",
-            icon: <AdminPanelSettingsOutlined />,
-        },
-        {
-            text: "Performance",
-            icon: <TrendingUpOutlined />,
         },
     ];
 
