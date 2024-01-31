@@ -12,24 +12,24 @@ import {
 } from "antd";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import DropDownCoustom from "components/DropDownCoustom";
-import { companyDetails } from "Data/LeadData";
 import { productOption } from "Data/ProductData";
-import { GetDropDownData } from "Helper/ApiHelper";
+import { useAuth } from "state/AuthProvider";
 
 const Invoice = ({ current }) => {
     const [company, setCompany] = useState([]);
     const [proudcts, setProduct] = useState([]);
+    const {getDropDownData} = useAuth()
 
     const handleCustomerClcik = async ()=>{
         let entity = "customer"
         let fieldName ="customerName"
-        let data = await GetDropDownData(entity,fieldName)
+        let data = await getDropDownData(entity,fieldName)
         setCompany(data)
     }
     const handleDescriptionClick = async ()=>{
         let entity = "product"
         let fieldName ="productName"
-        let data = await GetDropDownData(entity,fieldName)
+        let data = await getDropDownData(entity,fieldName)
         setProduct(data)
     }
     const handleCustomerChange = async (value,label) => {

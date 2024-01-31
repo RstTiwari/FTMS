@@ -4,7 +4,7 @@ import { useGetCoustomersQuery, useGetListDataQuery } from "state/api";
 import Headers from "../../components/Header";
 import { Flex, Table } from "antd";
 import { useAuth } from "state/AuthProvider";
-import { App } from 'antd';
+import { App } from "antd";
 import {
     coustomerColumns,
     coustomerDataSource,
@@ -12,10 +12,10 @@ import {
 
 const Customers = () => {
     const [data, setData] = useState([]);
-    const [isLoading,setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(true);
     const { message, notification, modal } = App.useApp();
 
-    const { appApiCall } = useAuth();
+    const { getTableData } = useAuth();
     const isLaptop = useMediaQuery("(min-width:1000px)");
     const theme = useTheme();
     useEffect(() => {
@@ -23,12 +23,13 @@ const Customers = () => {
     }, []);
 
     const fetchData = async () => {
-        let data = await appApiCall("post", "getList", { entity: "customer" });
-        if (data.success === 0) {
-            alert(`${data.message}`)
+        let entity = "customer";
+        const { success, result, message } = await getTableData(entity);
+        if (success === 0) {
+            alert(`${data.message}`);
         } else {
-            setData(data.result);
-            setIsLoading(false)
+            setData(result);
+            setIsLoading(false);
         }
     };
 
@@ -47,7 +48,11 @@ const Customers = () => {
                 subTitle={"ADD COUSTOMER"}
                 addRoute={"customers/create"}
             />
-            <Table columns={coustomerColumns} dataSource={data} loading ={isLoading} />
+            <Table
+                columns={coustomerColumns}
+                dataSource={data}
+                loading={isLoading}
+            />
         </Flex>
     );
 };

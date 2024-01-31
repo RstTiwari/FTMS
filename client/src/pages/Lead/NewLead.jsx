@@ -2,10 +2,11 @@ import React from "react";
 import { Flex, Form, Select, Row, Col } from "antd";
 import LeadForm from "Forms/LeadForm";
 import Header from "components/Header";
-import { createData } from "Helper/ApiHelper";
+import { useAuth } from "state/AuthProvider";
 
 const NewLead = () => {
     const [form] = Form.useForm();
+    const {createData}  = useAuth()
     const handleLeadFormFinish = async (value) => {
         value["comments"] = [
             {

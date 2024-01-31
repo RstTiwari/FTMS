@@ -20,12 +20,13 @@ import { companyDetails } from "../Data/LeadData";
 import { quoteAddProductColumn } from "../Data/QuotationData";
 import { productOption } from "Data/ProductData";
 import { useMediaQuery } from "@mui/material";
-import { GetDropDownData } from "Helper/ApiHelper";
+import { useAuth } from "state/AuthProvider";
 const { Text } = Typography;
 
 const QuotationForm = ({ current }) => {
     const [company, setCompany] = useState([]);
     const [product, setProduct] = useState([]);
+    const {getDropDownData} = useAuth()
     const isLaptop = useMediaQuery("(min-width:1000px)");
     const inputWidth = isLaptop ? 700 : 350;
     const inputFontSize = isLaptop ? "1rem" : "0.4rem";
@@ -39,7 +40,7 @@ const QuotationForm = ({ current }) => {
     const handelCustomerClick = async (value) => {
         let entity = "customer";
         let fieldName = "customerName";
-        let data = await GetDropDownData(entity, fieldName);
+        let data = await getDropDownData(entity, fieldName);
         setCompany(data);
     };
     const handleCustomerChange = (value, label) => {
@@ -53,7 +54,7 @@ const QuotationForm = ({ current }) => {
     const handleDescriptionClick = async () => {
         let entity = "product";
         let fieldName = "productName";
-        let data = await GetDropDownData(entity, fieldName);
+        let data = await getDropDownData(entity, fieldName);
         setProduct(data);
     };
     const onDescriptionChange = (value, label, subField) => {

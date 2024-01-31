@@ -2,18 +2,19 @@ import React, { useEffect, useState } from "react";
 import { Flex, Form, Select, Table } from "antd";
 import Header from "components/Header";
 import { leadColumns } from "Data/LeadData";
-import { getTableData } from "Helper/ApiHelper";
+import { useAuth } from "state/AuthProvider";
 
 const Index = () => {
-    const [tableData, setTableData] = useState([]);
+    const [data, setData] = useState([]);
     const [isLoading,setIsLoading] = useState(true)
+    const {getTableData} = useAuth()
     let entity = "lead";
     useEffect(() => {
         const fetchData = async () => {
             const { success, result, message } = await getTableData(entity);
             if (success === 1) {
                 setIsLoading(false)
-                setTableData(result);
+                setData(result);
             }
         };
         fetchData();
@@ -36,7 +37,7 @@ const Index = () => {
             <Table
                 columns={leadColumns}
                 loading={isLoading}
-                dataSource={tableData}
+                dataSource={data}
                 scroll={{ x: true, y: 400 }}
                 showSorterTooltip={true}
             />

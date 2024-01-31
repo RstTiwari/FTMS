@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Flex, Form, Select, Table } from "antd";
 import Header from "components/Header";
 import { quotationColumn,quotationDataSource } from "Data/QuotationData";
-import { getTableData } from "Helper/ApiHelper";
+import { useAuth } from "state/AuthProvider";
 
 
 const Index = () => {
            const [data,setData] = useState([])
            const [isloading,setIsLoading] = useState(true)
+           const {getTableData} = useAuth()
            let entity ="quote"
            useEffect(()=>{
               const fetchData = async ()=>{

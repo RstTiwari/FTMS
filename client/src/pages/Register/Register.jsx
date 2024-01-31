@@ -16,7 +16,7 @@ const Register = () => {
 
     const { loginUser, authApiCall } = useAuth();
     const handleRegisterFormFinish = async (value) => {
-        setIsLoading(true);
+         setIsLoading(true);
         let response = await authApiCall("register", value);
         if (response.success === 1) {
             setIsLoading(false);

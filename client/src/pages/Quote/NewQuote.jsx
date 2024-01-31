@@ -13,11 +13,12 @@ import {
     validityCondition,
 } from "Data/QuotationData.js";
 import { useForm } from "antd/es/form/Form.js";
-import { createData } from "Helper/ApiHelper.js";
+import { useAuth } from "state/AuthProvider.js";
 
 const NewQuote = () => {
     const [form] = Form.useForm();
     const [quoteNo, setQuoteNo] = useState("123456");
+    const {createData}   = useAuth()
     const onQuoteFormFinish = async (value) => {
         let epochQuoteDate = epochConveter(value.quoteDate.$d);
         let epochExpiryDate = epochConveter(value.quoteDate.$d);

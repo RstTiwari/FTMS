@@ -2,24 +2,29 @@ import React, { useState, useEffect } from "react"; // Import useEffect from Rea
 import { Flex, Table } from "antd";
 import Header from "components/Header";
 import { invoiceColumns, invoiceData } from "Data/InvoiceData";
-import { getTableData } from "Helper/ApiHelper";
+import { useAuth } from "state/AuthProvider";
 
-const Index = () => { // Capitalize index to Index as it's a component name convention
+
+const Index = () => {
+    const { getTableData } = useAuth();
+
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    let entity = "invoice";
-
     useEffect(() => {
-        const fetchData = async () => {
-            const { success, result, message } = await getTableData(entity);
-            if (success === 1) {
-                setIsLoading(false);
-                setData(result);
-            }
-        };
         fetchData();
     }, []);
-    
+
+    const fetchData = async () => {
+        let entity = "invoice";
+        const {success,result,message} = await getTableData(entity)
+        if (success === 0) {
+            alert(`${message}`);
+        } else {
+            setData(result);
+            setIsLoading(false);
+        }
+    };
+
     return (
         <Flex
             gap={"middle"}
@@ -35,7 +40,11 @@ const Index = () => { // Capitalize index to Index as it's a component name conv
                 subTitle={"ADD INVOiCES"}
                 addRoute={"invoice/create"}
             />
-            <Table columns={invoiceColumns} dataSource={data} loading={isLoading} />
+            <Table
+                columns={invoiceColumns}
+                dataSource={data}
+                loading={isLoading}
+            />
         </Flex>
     );
 };

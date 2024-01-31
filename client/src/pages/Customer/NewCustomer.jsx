@@ -3,11 +3,11 @@ import Header from "components/Header";
 import React, { useEffect, useState } from "react";
 import CoustomerForm from "../../Forms/CoustomersForm.js";
 import { PlusOutlined } from "@ant-design/icons";
-import { createData } from "Helper/ApiHelper.js";
-
+import { useAuth } from "state/AuthProvider.js";
 const NewCustomer = () => {
     const [payload, setPayload] = useState({});
     const [intialFormValue, setIntialFormValue] = useState();
+    const {createData} = useAuth()
     const [form] = Form.useForm();
     const fomulatePayload = (value) => {
         value["billingAddress"] = {

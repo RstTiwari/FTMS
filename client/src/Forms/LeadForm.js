@@ -2,16 +2,17 @@ import React, { useState } from 'react'
 import { Form ,Select,Divider,Space,Input,Button} from 'antd'
 import { LeadOption ,companyDetails,leadStatus} from 'Data/LeadData'
 import DropDownCoustom from 'components/DropDownCoustom'
-import {GetDropDownData} from 'Helper/ApiHelper'
+import { useAuth } from 'state/AuthProvider'
 const LeadForm = ({current}) => {
     const [compnayDetails ,setCompanyDetails]  = useState([])
+    const {getDropDownData} = useAuth()
     const handleInputChange = async (value) => {
           
     }
     const handelDropDownClick = async()=>{
         let entity ="customer"
         let fieldName ="customerName"
-        let data = await GetDropDownData(entity,fieldName)
+        let data = await getDropDownData(entity,fieldName)
         setCompanyDetails(data)
     }
     

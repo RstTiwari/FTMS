@@ -61,6 +61,7 @@ export const AuthProvider = ({ children }) => {
         try {
             let response = await axios(axiosConfig);
             return response.data;
+            
         } catch (error) {
             let response = {
                 success: 0,
@@ -68,6 +69,36 @@ export const AuthProvider = ({ children }) => {
                 message: error.message
             };
             return response;
+        }
+    };
+    const getDropDownData = async (entity, fieldName) => {
+        let data = await appApiCall("post", "getList", { entity: entity });
+        if (data.success === 0) {
+            return (data = []);
+        } else {
+            data = data.result.map((item) => {
+                item["label"] = item[fieldName];
+                item["value"] = item._id;
+                return item;
+            });
+            return data;
+        }
+    };
+     const createData = async (payload) => {
+        let data = await appApiCall("post", "create", payload);
+        if (data.success === 0) {
+            return { success: 0, result: null, message: data.message };
+        } else {
+            return { success: 1, result: data.result, message: data.message };
+        }
+    };
+    
+     const getTableData = async (entity) => {
+        let data = await appApiCall("post", "getList", { entity: entity });
+        if (data.success === 0) {
+            return { success: 0, result: null, message: data.message };
+        } else {
+            return { success: 1, result: data.result, message: data.message };
         }
     };
 
@@ -103,7 +134,7 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider
-            value={{ loginUser, logoutUser, authApiCall, appApiCall }}
+            value={{ loginUser, logoutUser, authApiCall, appApiCall,getDropDownData,getTableData,createData }}
         >
             {children}
         </AuthContext.Provider>

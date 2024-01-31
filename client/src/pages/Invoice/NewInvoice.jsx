@@ -4,10 +4,12 @@ import {React} from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import InvoiceFrom from "../../Forms/Invoice";
 import { epochConveter } from "Helper/EpochConveter";
-import { createData } from "Helper/ApiHelper";
+import { useAuth } from "state/AuthProvider.js";
+
 
 const NewInvoice = () => {
     const [form] = Form.useForm();
+    const {createData} = useAuth()
     const handleInvoiceFormFinish = async (value) => {
         let epochQuoteDate = epochConveter(value.invoiceDate.$d);
         let epochExpiryDate = epochConveter(value.invoiceExpiredDate.$d);
