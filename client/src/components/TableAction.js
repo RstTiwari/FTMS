@@ -4,15 +4,16 @@ import { Link } from 'react-router-dom';
 import { Space, Dropdown, Menu } from "antd";
 
 export const TableAction = ({ params,page }) => {
+    console.log(params,page);
     const menuItems = [
         <Menu.Item key="1">
-            <Link to={`/show/${page}/${params}`}>SHOW</Link>
+            <Link to={`/read/${page}/:${params}`}>SHOW</Link>
         </Menu.Item>,
         <Menu.Item key="2">
-            <Link to={`/edit/${page}/${params}`}>EDIT</Link>
+            <Link to={`/edit/${page}/:${params}`}>EDIT</Link>
         </Menu.Item>,
         <Menu.Item key="3">
-            <Link to={`/download/${page}/${params}`}>DOWNLOAD</Link>
+            <Link to={`/download/${page}/:${params}`}>DOWNLOAD</Link>
         </Menu.Item>,
     ];
 

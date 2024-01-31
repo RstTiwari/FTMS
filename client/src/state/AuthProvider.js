@@ -10,8 +10,8 @@ export const AuthProvider = ({ children }) => {
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
     const loginUser = (result) => {
-        setCookie("token", result.token);
-        setCookie("authData",JSON.stringify(result))
+        setCookie("token", result.token,{maxAge:result.expiresIn});
+        setCookie("authData",JSON.stringify(result),{maxAge:result.expiresIn})
     };
 
     const logoutUser = () => {
@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const appApiCall = async (method, path, payload) => {
+    const appApiCall = async (method, path, payload,params) => {
         let token = cookies["token"];
         let axiosConfig = {
             url: myfac8ryBaseUrl + `app/${path}`,
@@ -56,6 +56,7 @@ export const AuthProvider = ({ children }) => {
                 "Access-Control-Allow-Origin":"*",
                 token: token ? token : null,
             },
+            params:params ? params:null,
             data: payload,
         };
         try {
@@ -92,6 +93,15 @@ export const AuthProvider = ({ children }) => {
             return { success: 1, result: data.result, message: data.message };
         }
     };
+    const readData = async (payload,params)=>{
+        let data = await appApiCall("post", "getList", payload,params);
+        if (data.success === 0) {
+            return { success: 0, result: null, message: data.message };
+        } else {
+            return { success: 1, result: data.result, message: data.message };
+        }
+    }
+
     
      const getTableData = async (entity) => {
         let data = await appApiCall("post", "getList", { entity: entity });

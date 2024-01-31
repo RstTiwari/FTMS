@@ -27,7 +27,7 @@ function App() {
                 >
                     <ThemeProvider theme={theme}>
                         <CssBaseline />
-                        <CookiesProvider defaultSetOptions={{ path: "/" }}>
+                        <CookiesProvider  defaultSetOptions={{ path: "/" }} >
                             <AuthProvider>
                                     <Myfac8ry />
                             </AuthProvider>

@@ -32,8 +32,8 @@ export const coustomerColumns = [
     },
     {
         fixed: "right",
-        render: () => (
-          <TableAction/>
+        render: (_,record) => (
+          <TableAction params={record._id} page={"customer"}/>
         ),
     },
 ]

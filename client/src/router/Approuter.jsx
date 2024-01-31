@@ -13,6 +13,7 @@ import Coustomer from "scenes/customers"
 import NewCoustomer from "pages/Customer/NewCustomer";
 import Invoice from "scenes/Invoice"
 import NewInvoice from "pages/Invoice/NewInvoice"
+import ReadCustomer from "pages/Customer/ReadCustomer";
 
 const Approuter = () => {
     return (
@@ -23,12 +24,15 @@ const Approuter = () => {
                     element={<Navigate to="/dashboard" replace />}
                 />
                 <Route path="/dashboard" element={<Dashbord />} />
+                <Route path="/customers" element ={<Coustomer/>}/>
+                <Route path="/customers/create" element ={<NewCoustomer/>}/>
+                <Route path="/read/customer/:id" element ={<ReadCustomer/>}/>
+
                 <Route path="/lead" element={<Lead />} />
                 <Route path="/lead/create" element={<NewLead />} />
                 <Route path="/quotation" element={<Quote />} />
                 <Route path="/quotation/create" element={<NewQuote />} />
-                <Route path="/customers" element ={<Coustomer/>}/>
-                <Route path="/customers/create" element ={<NewCoustomer/>}/>
+        
                 <Route path="/invoice" element ={<Invoice/>}/>
                 <Route path="/invoice/create" element ={<NewInvoice/>}/>
 
