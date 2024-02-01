@@ -63,7 +63,7 @@ export const quotationColumn = [
     {
         fixed: "right",
         render: () => (
-            <TableAction/>
+            <TableAction params = {items.invoiceNo} page ={"quote"} download={true}/>
         ),
     },
 ];
@@ -75,65 +75,7 @@ export const paymentsCondition = "Advance with PO 50% & against Delivery 50 % . 
 export const cancellationCondition = "Order once placed will not be cancelled in any circumstances."
 export const installationCondition = "Civil materials such as cement, metal, sand, water, electricity along with unskilled labours to be arranged by Client."
 export const facilityCondition = "Proper storage space will be provided by the client for safety & security of materials at site upon delivery. Security of materials delivered st site shall be responsibility ofclient only"
-// export const quoteAddProductColumn = [
-//    {
-//     title:"SrNo",
-//     dataIndex:"srNo",
-//     key:"srNo"
-//    },
-//    {
-//     title:"Item Detials",
-//     dataIndex:"items",
-//     key:"item",
-//     render:(_,menu) =>(
-//         <>
-//         <DropDownCoustom 
-//         option ={menu}
-//         placeHolder={"Select ITtem"}
-//         buttonName={"ADD New Item"}
-//         onInputChange={handleItemInputChange}
-//         />
-//         </>
-//     )
-//    },
-//    {
-//     title:"Rate",
-//     dataIndex:"rate",
-//     key:"rate",
-//     render:(_,data)=>(
-//        <>
-//         <Form.Item  name={"rate"}>
-//             <Input/>
-//         </Form.Item>
-//        </>
-//     )
-//    },
-//    {
-//     title:"Discount %",
-//     dataIndex:"discount",
-//     key:"rate",
-//     render:(_,data)=>(
-//        <>
-//         <Form.Item  name={"discount"}>
-//             <Input/>
-//         </Form.Item>
-//        </>
-//     )
-//    },
-//    {
-//     title:"Discount %",
-//     dataIndex:"discount",
-//     key:"rate",
-//     render:(_,data)=>(
-//        <>
-//         <Form.Item  name={"discount"}>
-//             <Input/>
-//         </Form.Item>
-//        </>
-//     )
-//    }
-   
-// ]
+
 
 export const quotationDataSource = [
     {
