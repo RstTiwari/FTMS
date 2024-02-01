@@ -13,6 +13,7 @@ import generalRoutes from "./routes/general.js";
 import managmentRoutes from "./routes/managment.js";
 import auth from "./routes/auth.js";
 import appRoutes from "./routes/appRoutes.js";
+import cron from "./controller/CronController/Cron.js";
 
 /**
  * Configration
@@ -61,7 +62,6 @@ mongoose
         app.listen(Port, () => {
             console.log(` Server is running on the port ${Port}`);
         });
-
     })
     .catch((e) => {
         console.log("Data base connection failed" + e);

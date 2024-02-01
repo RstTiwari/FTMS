@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const appApiCall = async (method, path, payload) => {
+    const appApiCall = async (method, path, payload,params) => {
         let token = cookies["token"];
         let axiosConfig = {
             url: myfac8ryBaseUrl + `app/${path}`,
@@ -56,8 +56,8 @@ export const AuthProvider = ({ children }) => {
                 "Access-Control-Allow-Origin":"*",
                 token: token ? token : null,
             },
-            data: payload,
-            params:payload
+            data: payload ? payload:null,
+            params:params ? params :null
         };
         try {
             let response = await axios(axiosConfig);
@@ -73,6 +73,7 @@ export const AuthProvider = ({ children }) => {
         }
     };
     const getDropDownData = async (entity, fieldName) => {
+        console.log(entity,fieldName);
         let data = await appApiCall("post", "getList", { entity: entity });
         if (data.success === 0) {
             return (data = []);

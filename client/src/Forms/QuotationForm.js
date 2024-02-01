@@ -53,9 +53,13 @@ const QuotationForm = ({ current }) => {
     };
     const handleDescriptionClick = async () => {
         let entity = "product";
-        let fieldName = "productName";
-        let data = await getDropDownData(entity, fieldName);
-        setProduct(data);
+        let fieldName = "name";
+        const dropDownData = await getDropDownData(
+            entity,
+            fieldName
+        );
+        setProduct(dropDownData);
+        console.log(product);
     };
     const onDescriptionChange = (value, label, subField) => {
         const formData = current.getFieldValue("items");
