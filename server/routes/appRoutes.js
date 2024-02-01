@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post("/create", authMethod.isValidAuthtoken, appRoutes.create);
 router.post("/getList", authMethod.isValidAuthtoken, appRoutes.getList);
-router.get("/read:id", authMethod.isValidAuthtoken, appRoutes.read);
+router.get("/read", authMethod.isValidAuthtoken, appRoutes.read);
 
 
 

@@ -3,6 +3,7 @@ import { Flex, Table } from "antd";
 import Header from "components/Header";
 import { invoiceColumns, invoiceData } from "Data/InvoiceData";
 import { useAuth } from "state/AuthProvider";
+import NotificationHandler from "ErrorHandler/NotificationHandler";
 
 
 const Index = () => {
@@ -16,9 +17,10 @@ const Index = () => {
 
     const fetchData = async () => {
         let entity = "invoice";
-        const {success,result,message} = await getTableData(entity)
-        if (success === 0) {
-            alert(`${message}`);
+        const { success, result, message } = await getTableData(entity);
+        if (!success) {
+            setIsLoading(false);
+            return NotificationHandler.error(message);
         } else {
             setData(result);
             setIsLoading(false);

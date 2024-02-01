@@ -5,6 +5,7 @@ import quoteDb from "../../models/appModels/quotation.js";
 import invoiceDb from "../../models/appModels/invoice.js";
 import create from "./create.js";
 import getList from "./getList.js";
+import read from "./read.js";
 
 const appRoutes = {
     create: async (req, res, next) => {
@@ -14,10 +15,14 @@ const appRoutes = {
         create(req, res, next, db);
     },
     getList: async (req, res, next) => {
-        console.log(req.body);
         let db = checkDbForEntity(req.body.entity);
         if (!db) return res.send("failed"); // manage Error here
         getList(req, res, next, db);
+    },
+    read: async (req, res, next) => {
+        let db = checkDbForEntity(req.query.entity);
+        if (!db) return res.send("failed"); // manage Error here
+        read(req, res, next, db);
     },
 };
 

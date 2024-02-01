@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import "../Login/Login.css";
-import { Button, Form, Input, Row, Col, Spin,Alert } from "antd";
+import { Button, Form, Input, Row, Col, Spin, Alert } from "antd";
 import SideContent from "module/AuthModule/SideContent";
 import { RegisterForm } from "Forms/RegisterForm";
 import { useAuth } from "state/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import NotificationHandler from "ErrorHandler/NotificationHandler";
 
 const Register = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -16,13 +17,16 @@ const Register = () => {
 
     const { loginUser, authApiCall } = useAuth();
     const handleRegisterFormFinish = async (value) => {
-         setIsLoading(true);
+        setIsLoading(true);
         let response = await authApiCall("register", value);
         if (response.success === 1) {
             setIsLoading(false);
             setIsOtpVerify(true);
             setUserId(response.result.userId);
             setTenantId(response.result.tenantId);
+            return NotificationHandler.success(response.message);
+        } else {
+            return NotificationHandler.error(response.message);
         }
     };
 

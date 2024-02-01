@@ -9,6 +9,7 @@ import {
     coustomerColumns,
     coustomerDataSource,
 } from "../../Data/CoustomerData";
+import NotificationHandler from "ErrorHandler/NotificationHandler";
 
 const Customers = () => {
     const [data, setData] = useState([]);
@@ -26,13 +27,12 @@ const Customers = () => {
         let entity = "customer";
         const { success, result, message } = await getTableData(entity);
         if (success === 0) {
-            alert(`${data.message}`);
+           return NotificationHandler.error(message);
         } else {
             setData(result);
             setIsLoading(false);
         }
     };
-
     return (
         <Flex
             gap={"middle"}

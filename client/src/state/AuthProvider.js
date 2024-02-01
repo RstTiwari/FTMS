@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const appApiCall = async (method, path, payload,params) => {
+    const appApiCall = async (method, path, payload) => {
         let token = cookies["token"];
         let axiosConfig = {
             url: myfac8ryBaseUrl + `app/${path}`,
@@ -56,8 +56,8 @@ export const AuthProvider = ({ children }) => {
                 "Access-Control-Allow-Origin":"*",
                 token: token ? token : null,
             },
-            params:params ? params:null,
             data: payload,
+            params:payload
         };
         try {
             let response = await axios(axiosConfig);
@@ -93,8 +93,8 @@ export const AuthProvider = ({ children }) => {
             return { success: 1, result: data.result, message: data.message };
         }
     };
-    const readData = async (payload,params)=>{
-        let data = await appApiCall("post", "getList", payload,params);
+    const readData = async (payload)=>{
+        let data = await appApiCall("get", "read",payload);
         if (data.success === 0) {
             return { success: 0, result: null, message: data.message };
         } else {
@@ -144,7 +144,7 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider
-            value={{ loginUser, logoutUser, authApiCall, appApiCall,getDropDownData,getTableData,createData }}
+            value={{ loginUser, logoutUser, authApiCall, appApiCall,getDropDownData,getTableData,createData,readData }}
         >
             {children}
         </AuthContext.Provider>

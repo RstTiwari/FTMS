@@ -4,10 +4,11 @@ import React, { useEffect, useState } from "react";
 import CoustomerForm from "../../Forms/CoustomersForm.js";
 import { PlusOutlined } from "@ant-design/icons";
 import { useAuth } from "state/AuthProvider.js";
+import NotificationHandler from "ErrorHandler/NotificationHandler.jsx";
 const NewCustomer = () => {
     const [payload, setPayload] = useState({});
     const [intialFormValue, setIntialFormValue] = useState();
-    const {createData} = useAuth()
+    const { createData } = useAuth();
     const [form] = Form.useForm();
     const fomulatePayload = (value) => {
         value["billingAddress"] = {
@@ -38,7 +39,11 @@ const NewCustomer = () => {
         setIntialFormValue(value);
         setPayload(fomulatePayload(value));
         const { success, result, message } = await createData(payload);
-        console.log(success, result);
+        if (success) {
+            return NotificationHandler.success(message);
+        } else {
+            return NotificationHandler.error(message);
+        }
     };
 
     return (

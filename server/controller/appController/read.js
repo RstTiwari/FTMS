@@ -1,7 +1,6 @@
 const read = async (req, res, next, database) => {
     try {
-        const { entity } = req.body;
-        let id = req.params;
+        let {entity,id} = req.query;
         let tenantId = req.tenantId;
         let data = await database.findOne({ tenantId: tenantId, _id: id });
         if (!data) {
@@ -20,3 +19,4 @@ const read = async (req, res, next, database) => {
         });
     }
 };
+export default read

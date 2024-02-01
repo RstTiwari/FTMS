@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, Input, Checkbox, Col, Row,Button ,Typography } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { useAuth } from "state/AuthProvider";
 
 const {Text} = Typography
 

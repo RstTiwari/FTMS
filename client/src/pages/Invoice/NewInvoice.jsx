@@ -1,15 +1,15 @@
-import { Flex, Form,Button,Col } from "antd";
+import { Flex, Form, Button, Col } from "antd";
 import Header from "components/Header";
-import {React} from "react";
+import { React } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import InvoiceFrom from "../../Forms/Invoice";
 import { epochConveter } from "Helper/EpochConveter";
 import { useAuth } from "state/AuthProvider.js";
-
+import NotificationHandler from "ErrorHandler/NotificationHandler";
 
 const NewInvoice = () => {
     const [form] = Form.useForm();
-    const {createData} = useAuth()
+    const { createData } = useAuth();
     const handleInvoiceFormFinish = async (value) => {
         let epochQuoteDate = epochConveter(value.invoiceDate.$d);
         let epochExpiryDate = epochConveter(value.invoiceExpiredDate.$d);
@@ -17,6 +17,11 @@ const NewInvoice = () => {
         value.invoiceExpiredDate = epochExpiryDate;
         let payload = { entity: "invoice", value };
         const { success, result, message } = await createData(payload);
+        if (success) {
+            return NotificationHandler.success(message);
+        } else {
+            return NotificationHandler.error(message);
+        }
     };
     return (
         <Flex
@@ -32,7 +37,12 @@ const NewInvoice = () => {
             wrapperCol={{ span: 8 }}
         >
             <Header title={"NEW INVOICE"} />
-            <Form name="newInvoiceForm" form={form} layout="horizontal" onFinish={handleInvoiceFormFinish}>
+            <Form
+                name="newInvoiceForm"
+                form={form}
+                layout="horizontal"
+                onFinish={handleInvoiceFormFinish}
+            >
                 <InvoiceFrom current={form} />
                 <Col className="gutter-row" span={6}>
                     <Form.Item>

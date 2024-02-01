@@ -3,22 +3,26 @@ import { Flex, Form, Select, Table } from "antd";
 import Header from "components/Header";
 import { leadColumns } from "Data/LeadData";
 import { useAuth } from "state/AuthProvider";
+import NotificationHandler from "ErrorHandler/NotificationHandler";
 
 const Index = () => {
     const [data, setData] = useState([]);
-    const [isLoading,setIsLoading] = useState(true)
-    const {getTableData} = useAuth()
+    const [isLoading, setIsLoading] = useState(true);
+    const { getTableData } = useAuth();
     let entity = "lead";
     useEffect(() => {
         const fetchData = async () => {
             const { success, result, message } = await getTableData(entity);
-            if (success === 1) {
-                setIsLoading(false)
+            if (!success) {
+                setIsLoading(false);
+                return NotificationHandler.error(message);
+            } else {
+                setIsLoading(false);
                 setData(result);
             }
         };
         fetchData();
-    },[]);
+    }, []);
     return (
         <Flex
             gap={"middle"}

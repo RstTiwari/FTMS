@@ -26,7 +26,7 @@ const Approuter = () => {
                 <Route path="/dashboard" element={<Dashbord />} />
                 <Route path="/customers" element ={<Coustomer/>}/>
                 <Route path="/customers/create" element ={<NewCoustomer/>}/>
-                <Route path="/read/customer/:id" element ={<ReadCustomer/>}/>
+                <Route path="/read/:entity/:id" element ={<ReadCustomer/>}/>
 
                 <Route path="/lead" element={<Lead />} />
                 <Route path="/lead/create" element={<NewLead />} />

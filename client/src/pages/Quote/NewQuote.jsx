@@ -14,11 +14,12 @@ import {
 } from "Data/QuotationData.js";
 import { useForm } from "antd/es/form/Form.js";
 import { useAuth } from "state/AuthProvider.js";
+import NotificationHandler from "ErrorHandler/NotificationHandler.jsx";
 
 const NewQuote = () => {
     const [form] = Form.useForm();
     const [quoteNo, setQuoteNo] = useState("123456");
-    const {createData}   = useAuth()
+    const { createData } = useAuth();
     const onQuoteFormFinish = async (value) => {
         let epochQuoteDate = epochConveter(value.quoteDate.$d);
         let epochExpiryDate = epochConveter(value.quoteDate.$d);
@@ -26,6 +27,11 @@ const NewQuote = () => {
         value.quoteExpiryDate = epochExpiryDate;
         let payload = { entity: "quote", value };
         const { success, result, message } = await createData(payload);
+        if (success) {
+            return NotificationHandler.success(message);
+        } else {
+            return NotificationHandler.error(message);
+        }
     };
 
     return (

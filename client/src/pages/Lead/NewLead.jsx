@@ -3,10 +3,11 @@ import { Flex, Form, Select, Row, Col } from "antd";
 import LeadForm from "Forms/LeadForm";
 import Header from "components/Header";
 import { useAuth } from "state/AuthProvider";
+import NotificationHandler from "ErrorHandler/NotificationHandler";
 
 const NewLead = () => {
     const [form] = Form.useForm();
-    const {createData}  = useAuth()
+    const { createData } = useAuth();
     const handleLeadFormFinish = async (value) => {
         value["comments"] = [
             {
@@ -17,7 +18,11 @@ const NewLead = () => {
         delete value.addComment;
         let payload = { entity: "lead", value: value };
         const { success, result, message } = await createData(payload);
-        
+        if (success) {
+            return NotificationHandler.success(message);
+        } else {
+            return NotificationHandler.error(message);
+        }
     };
     return (
         <Flex
