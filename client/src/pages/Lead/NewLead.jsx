@@ -3,7 +3,7 @@ import { Flex, Form, Select, Row, Col } from "antd";
 import LeadForm from "Forms/LeadForm";
 import Header from "components/Header";
 import { useAuth } from "state/AuthProvider";
-import NotificationHandler from "ErrorHandler/NotificationHandler";
+import NotificationHandler from "EventHandler/NotificationHandler";
 
 const NewLead = () => {
     const [form] = Form.useForm();

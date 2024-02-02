@@ -3,7 +3,7 @@ import { Flex, Table } from "antd";
 import Header from "components/Header";
 import { invoiceColumns, invoiceData } from "Data/InvoiceData";
 import { useAuth } from "state/AuthProvider";
-import NotificationHandler from "ErrorHandler/NotificationHandler";
+import NotificationHandler from "EventHandler/NotificationHandler";
 
 
 const Index = () => {

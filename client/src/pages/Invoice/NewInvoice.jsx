@@ -5,7 +5,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import InvoiceFrom from "../../Forms/Invoice";
 import { epochConveter } from "Helper/EpochConveter";
 import { useAuth } from "state/AuthProvider.js";
-import NotificationHandler from "ErrorHandler/NotificationHandler";
+import NotificationHandler from "EventHandler/NotificationHandler";
 
 const NewInvoice = () => {
     const [form] = Form.useForm();

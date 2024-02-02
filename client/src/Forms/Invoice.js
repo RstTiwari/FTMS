@@ -29,8 +29,8 @@ const Invoice = ({ current }) => {
     const handleDescriptionClick = async ()=>{
         let entity = "product"
         let fieldName ="productName"
-        let data = await getDropDownData(entity,fieldName)
-        setProduct(data)
+        // let data = await getDropDownData(entity,fieldName)
+        // setProduct(data)
     }
     const handleCustomerChange = async (value,label) => {
         console.log(value);

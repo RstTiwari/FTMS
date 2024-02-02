@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import {debounce}  from "lodash"
 import {
     Form,
     Select,
@@ -21,12 +22,13 @@ import { quoteAddProductColumn } from "../Data/QuotationData";
 import { productOption } from "Data/ProductData";
 import { useMediaQuery } from "@mui/material";
 import { useAuth } from "state/AuthProvider";
+import debounceHandler from "EventHandler/DebounceHandler";
 const { Text } = Typography;
 
 const QuotationForm = ({ current }) => {
     const [company, setCompany] = useState([]);
     const [product, setProduct] = useState([]);
-    const {getDropDownData} = useAuth()
+    const { getDropDownData } = useAuth();
     const isLaptop = useMediaQuery("(min-width:1000px)");
     const inputWidth = isLaptop ? 700 : 350;
     const inputFontSize = isLaptop ? "1rem" : "0.4rem";
@@ -46,20 +48,12 @@ const QuotationForm = ({ current }) => {
     const handleCustomerChange = (value, label) => {
         current.setFieldsValue({ customer: value });
     };
-    const handleInputChange = () => {};
 
-    const handleItemInputChange = async () => {
-        setCompany(productOption);
-    };
     const handleDescriptionClick = async () => {
         let entity = "product";
-        let fieldName = "name";
-        const dropDownData = await getDropDownData(
-            entity,
-            fieldName
-        );
-        setProduct(dropDownData);
-        console.log(product);
+        let fieldName = "productName";
+        const dropDownData = await getDropDownData(entity, fieldName);
+        setProduct(dropDownData)
     };
     const onDescriptionChange = (value, label, subField) => {
         const formData = current.getFieldValue("items");
@@ -234,7 +228,10 @@ const QuotationForm = ({ current }) => {
         setGrandAmount(grandSum);
         current.setFieldsValue({ grandTotal: grandSum });
     };
-
+    useEffect(()=>{
+        handleDescriptionClick()
+        handelCustomerClick()
+    },[])
     return (
         <div>
             <Form.Item
@@ -252,18 +249,28 @@ const QuotationForm = ({ current }) => {
                 <Select
                     options={company}
                     showSearch
-                    dropdownRender={(menu) => (
-                        <>
-                            <DropDownCoustom
-                                option={menu}
-                                placeHolder={"Search Customer"}
-                                buttonName={"Add New"}
-                                onInputChange={handleInputChange}
-                            />
-                        </>
-                    )}
+                    filterOption={(input, option) =>
+                        (option?.label ?? "")
+                            .toLowerCase()
+                            .includes(input.toLowerCase())
+                    }
+                    dropdownRender={(menu) => {
+                        return (
+                            <div>
+                                {menu}
+                                <Divider />
+                                <Button
+                                    type="primary"
+                                    style={{
+                                        margin: "0.1rem",
+                                    }}
+                                >
+                                    Add New
+                                </Button>
+                            </div>
+                        );
+                    }}
                     onChange={handleCustomerChange}
-                    onClick={handelCustomerClick}
                 />
             </Form.Item>
             <Form.Item
@@ -395,16 +402,31 @@ const QuotationForm = ({ current }) => {
                                                 width: 250,
                                             }}
                                             options={product}
-                                            dropdownRender={(menu) => (
-                                                <DropDownCoustom
-                                                    option={menu}
-                                                    placeHolder="Search New Item"
-                                                    buttonName="Add New"
-                                                    onInputChange={
-                                                        handleItemInputChange
-                                                    }
-                                                />
-                                            )}
+                                            showSearch
+                                            filterOption={(input, option) =>
+                                                (option?.label ?? "")
+                                                    .toLowerCase()
+                                                    .includes(
+                                                        input.toLowerCase()
+                                                    )
+                                            }
+                    
+                                            dropdownRender={(menu) => {
+                                                return (
+                                                    <div>
+                                                        {menu}
+                                                        <Divider />
+                                                        <Button
+                                                            type="primary"
+                                                            style={{
+                                                                margin: "0.1rem",
+                                                            }}
+                                                        >
+                                                            Add New
+                                                        </Button>
+                                                    </div>
+                                                );
+                                            }}
                                             onChange={(value, option) => {
                                                 onDescriptionChange(
                                                     value,
@@ -412,7 +434,6 @@ const QuotationForm = ({ current }) => {
                                                     subField
                                                 );
                                             }}
-                                            onClick={handleDescriptionClick}
                                         />
                                     </Form.Item>
                                 </Col>

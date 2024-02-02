@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import CoustomerForm from "../../Forms/CoustomersForm.js";
 import { PlusOutlined } from "@ant-design/icons";
 import { useAuth } from "state/AuthProvider.js";
-import NotificationHandler from "ErrorHandler/NotificationHandler.jsx";
+import NotificationHandler from "EventHandler/NotificationHandler.jsx";
 const NewCustomer = () => {
     const [payload, setPayload] = useState({});
     const [intialFormValue, setIntialFormValue] = useState();

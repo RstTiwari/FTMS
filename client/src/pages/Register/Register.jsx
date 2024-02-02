@@ -5,7 +5,7 @@ import SideContent from "module/AuthModule/SideContent";
 import { RegisterForm } from "Forms/RegisterForm";
 import { useAuth } from "state/AuthProvider";
 import { useNavigate } from "react-router-dom";
-import NotificationHandler from "ErrorHandler/NotificationHandler";
+import NotificationHandler from "EventHandler/NotificationHandler";
 
 const Register = () => {
     const [isLoading, setIsLoading] = useState(false);

@@ -3,7 +3,7 @@ import { Flex, Form, Select, Table } from "antd";
 import Header from "components/Header";
 import { quotationColumn, quotationDataSource } from "Data/QuotationData";
 import { useAuth } from "state/AuthProvider";
-import NotificationHandler from "ErrorHandler/NotificationHandler";
+import NotificationHandler from "EventHandler/NotificationHandler";
 
 const Index = () => {
     const [data, setData] = useState([]);

@@ -3,7 +3,7 @@ import { Flex, Form, Select, Table } from "antd";
 import Header from "components/Header";
 import { leadColumns } from "Data/LeadData";
 import { useAuth } from "state/AuthProvider";
-import NotificationHandler from "ErrorHandler/NotificationHandler";
+import NotificationHandler from "EventHandler/NotificationHandler";
 
 const Index = () => {
     const [data, setData] = useState([]);

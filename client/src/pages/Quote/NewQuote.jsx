@@ -14,7 +14,7 @@ import {
 } from "Data/QuotationData.js";
 import { useForm } from "antd/es/form/Form.js";
 import { useAuth } from "state/AuthProvider.js";
-import NotificationHandler from "ErrorHandler/NotificationHandler.jsx";
+import NotificationHandler from "EventHandler/NotificationHandler.jsx";
 
 const NewQuote = () => {
     const [form] = Form.useForm();

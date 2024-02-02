@@ -9,7 +9,7 @@ import {
     coustomerColumns,
     coustomerDataSource,
 } from "../../Data/CoustomerData";
-import NotificationHandler from "ErrorHandler/NotificationHandler";
+import NotificationHandler from "EventHandler/NotificationHandler";
 
 const Customers = () => {
     const [data, setData] = useState([]);

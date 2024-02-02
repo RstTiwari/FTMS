@@ -73,7 +73,6 @@ export const AuthProvider = ({ children }) => {
         }
     };
     const getDropDownData = async (entity, fieldName) => {
-        console.log(entity,fieldName);
         let data = await appApiCall("post", "getList", { entity: entity });
         if (data.success === 0) {
             return (data = []);
