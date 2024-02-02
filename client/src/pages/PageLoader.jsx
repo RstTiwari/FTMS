@@ -1,8 +1,8 @@
 import React from 'react';
 import { Spin,Row,Col } from 'antd';
 
-const PageLoader = ({text}) => {
-  return (
+const PageLoader = ({text ,isLoading}) => {
+  return  isLoading ?(
       <div
           style={{
               display: "flex",
@@ -16,6 +16,6 @@ const PageLoader = ({text}) => {
           </Row>
           <Row> {text}</Row>
       </div>
-  );
+  ):null;
 };
 export default PageLoader;

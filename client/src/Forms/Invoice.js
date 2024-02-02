@@ -1,4 +1,4 @@
-import React, { lazy, useState } from "react";
+import React, { lazy, useEffect, useState } from "react";
 import {
     Form,
     Select,
@@ -12,36 +12,34 @@ import {
 } from "antd";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import DropDownCoustom from "components/DropDownCoustom";
-import { productOption } from "Data/ProductData";
 import { useAuth } from "state/AuthProvider";
+import PageLoader from "pages/PageLoader";
 
 const Invoice = ({ current }) => {
     const [company, setCompany] = useState([]);
     const [proudcts, setProduct] = useState([]);
+    const [isLoading,setIsLoading] = useState(true)
     const {getDropDownData} = useAuth()
 
-    const handleCustomerClcik = async ()=>{
-        let entity = "customer"
-        let fieldName ="customerName"
-        let data = await getDropDownData(entity,fieldName)
-        setCompany(data)
-    }
-    const handleDescriptionClick = async ()=>{
-        let entity = "product"
-        let fieldName ="productName"
-        // let data = await getDropDownData(entity,fieldName)
-        // setProduct(data)
-    }
-    const handleCustomerChange = async (value,label) => {
-        console.log(value);
-        current.setFieldsValue({ customer: value });
+    const handleCustomerClcik = async () => {
+        let entity = "customer";
+        let fieldName = "customerName";
+        let data = await getDropDownData(entity, fieldName);
+        setCompany(data);
+        setIsLoading(false)
     };
-    const handleItemInputChange = (value) => {
-        setProduct(productOption);
+    const handleDescriptionClick = async () => {
+        let entity = "product";
+        let fieldName = "productName";
+        let data = await getDropDownData(entity, fieldName);
+        setProduct(data);
+        setIsLoading(false)
+    };
+    const handleCustomerChange = async (value,label) => {
+        current.setFieldsValue({ customer: value });
     };
 
     const onDescriptionChange = (value, label, subField) => {
-        console.log(label);
         const formData = current.getFieldValue("items");
         const items = [...formData];
         const rowManipulated = items[subField.key];
@@ -181,8 +179,13 @@ const Invoice = ({ current }) => {
         return taxableAmount + sgstAmount + igstAmount + cgstAmount;
     };
 
+     useEffect(()=>{
+      handleCustomerClcik()
+      handleDescriptionClick()
+     },[])
     return (
         <div>
+            <PageLoader text={"Fiailed to load Try again"} isLoading={isLoading} />
             <Form.Item
                 label={"Select Coustomer"}
                 name={"customer"}
@@ -199,18 +202,20 @@ const Invoice = ({ current }) => {
                     <Select
                         options={company}
                         showSearch
+                        filterOption={(input, option) =>
+                            (option?.label ?? "")
+                                .toLowerCase()
+                                .includes(input.toLowerCase())
+                        }
                         dropdownRender={(menu) => (
                             <>
                                 <DropDownCoustom
                                     option={menu}
-                                    placeHolder={"Search Coustomer"}
-                                    buttonName={"Add New"}
-                                    onInputChange={handleCustomerChange}
+                                    buttonName={"Add New Product"}
                                 />
                             </>
                         )}
                         onChange={handleCustomerChange}
-                        onClick={handleCustomerClcik}
                     />
                 </Col>
             </Form.Item>
@@ -227,7 +232,7 @@ const Invoice = ({ current }) => {
                 ]}
             >
                 <Col span={10}>
-                    <Input/>
+                    <Input />
                 </Col>
             </Form.Item>
             <Form.Item
@@ -353,9 +358,10 @@ const Invoice = ({ current }) => {
                                         name={[subField.name, "description"]}
                                         rules={[
                                             {
-                                                required:true,
-                                                message:"Please Select the description"
-                                            }
+                                                required: true,
+                                                message:
+                                                    "Please Select the description",
+                                            },
                                         ]}
                                     >
                                         <Select
@@ -363,15 +369,23 @@ const Invoice = ({ current }) => {
                                                 width: 200,
                                             }}
                                             options={proudcts}
+                                            showSearch
+                                            filterOption={(input, option) =>
+                                                (option?.label ?? "")
+                                                    .toLowerCase()
+                                                    .includes(
+                                                        input.toLowerCase()
+                                                    )
+                                            }
                                             dropdownRender={(menu) => (
-                                                <DropDownCoustom
-                                                    option={menu}
-                                                    placeHolder="Search New Item"
-                                                    buttonName="Add New"
-                                                    onInputChange={
-                                                        handleItemInputChange
-                                                    }
-                                                />
+                                                <>
+                                                    <DropDownCoustom
+                                                        option={menu}
+                                                        buttonName={
+                                                            "Add New Product"
+                                                        }
+                                                    />
+                                                </>
                                             )}
                                             onChange={(value, option) => {
                                                 onDescriptionChange(
@@ -380,7 +394,6 @@ const Invoice = ({ current }) => {
                                                     subField
                                                 );
                                             }}
-                                            onClick = {handleDescriptionClick}
                                         />
                                     </Form.Item>
                                 </Col>
@@ -526,7 +539,7 @@ const Invoice = ({ current }) => {
                             readOnly
                             className="moneyInput"
                             style={{ width: 150 }}
-                            controls ={false}
+                            controls={false}
                         />
                     </Form.Item>
                 </Col>
@@ -542,7 +555,7 @@ const Invoice = ({ current }) => {
                             readOnly
                             className="moneyInput"
                             style={{ width: 150 }}
-                            controls ={false}
+                            controls={false}
                         />
                     </Form.Item>
                 </Col>
@@ -558,7 +571,7 @@ const Invoice = ({ current }) => {
                             readOnly
                             className="moneyInput"
                             style={{ width: 150 }}
-                            controls ={false}
+                            controls={false}
                         />
                     </Form.Item>
                 </Col>
