@@ -31,14 +31,17 @@ const leadSchema = new mongoose.Schema({
     comments: [
         {
             comment: String,
-            date: Number,
+            date: {
+                type: Number,
+                default: Math.floor(Date.now() / 1000),
+            },
         },
     ],
-    tenantId:{
-        type:String,
-        required:true
-    }
+    tenantId: {
+        type: String,
+        required: true,
+    },
 });
 
 leadSchema.plugin(mongooseAutoPopulate);
-export default mongoose.model("lead",leadSchema)
+export default mongoose.model("lead", leadSchema);

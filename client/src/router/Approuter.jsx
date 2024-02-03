@@ -14,6 +14,7 @@ import NewCoustomer from "pages/Customer/NewCustomer";
 import Invoice from "scenes/Invoice"
 import NewInvoice from "pages/Invoice/NewInvoice"
 import ReadCustomer from "pages/Customer/ReadCustomer";
+import ReadModule from "module/ReadModule/ReadModule";
 
 const Approuter = () => {
     return (
@@ -26,7 +27,6 @@ const Approuter = () => {
                 <Route path="/dashboard" element={<Dashbord />} />
                 <Route path="/customers" element ={<Coustomer/>}/>
                 <Route path="/customers/create" element ={<NewCoustomer/>}/>
-                <Route path="/read/:entity/:id" element ={<ReadCustomer/>}/>
 
                 <Route path="/lead" element={<Lead />} />
                 <Route path="/lead/create" element={<NewLead />} />
@@ -38,6 +38,10 @@ const Approuter = () => {
 
                 <Route path="/products" element={<Products />} />
                 <Route path="/transactions" element={<Transaction />} />
+
+
+                <Route path="/read/:entity/:id" element ={<ReadModule />}/>
+
                 <Route path="*" element={<NotFound />} />
 
                 {/**In case some one acess login page after being logged in */}

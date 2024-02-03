@@ -55,8 +55,7 @@ export const invoiceColumns = [
     {
         fixed: "right",
         render: (_,items)  => (
-            
-             <TableAction  params = {items.invoiceNo} page ={"invoice"} download={true}/>
+             <TableAction  params = {items._id} page ={"invoice"} download={true}/>
         )
             
     }

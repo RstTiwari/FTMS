@@ -93,8 +93,8 @@ export const AuthProvider = ({ children }) => {
             return { success: 1, result: data.result, message: data.message };
         }
     };
-    const readData = async (payload)=>{
-        let data = await appApiCall("get", "read",payload);
+    const readData = async (params)=>{
+        let data = await appApiCall("get", "read",{},params);
         if (data.success === 0) {
             return { success: 0, result: null, message: data.message };
         } else {

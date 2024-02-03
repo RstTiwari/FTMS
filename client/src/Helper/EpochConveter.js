@@ -1,3 +1,6 @@
+import moment from 'moment';
+
+
 export const epochConveter =(date)=>{
   let epoch = Math.floor(date.getTime()/1000)
   return epoch
@@ -16,3 +19,7 @@ export const convertUnixTimestampToDate = (timestamp) => {
   const formattedDate = `${day}-${month}-${year}`;
   return formattedDate;
 };
+
+export const epochInDDMMYY = (epochTime)=>{
+    return moment(epochTime*1000)
+}

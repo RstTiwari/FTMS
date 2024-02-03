@@ -32,7 +32,7 @@ export const TableAction = ({ params, page, download }) => {
             {download ? (
                 <Link to={`/download/${page}/${params}`}>
                     {" "}
-                    <FilePdfOutlined /> DOWNLOAD
+                    <FilePdfOutlined />PDF
                 </Link>
             ) : (
                 ""
@@ -43,7 +43,7 @@ export const TableAction = ({ params, page, download }) => {
     return (
         <Space size="small">
             <Dropdown overlay={<Menu>{menuItems}</Menu>} trigger={["click"]}>
-                <a>....</a>
+                <div style={{fontSize:"2rem",cursor:"pointer"}} >...</div>
             </Dropdown>
         </Space>
     );

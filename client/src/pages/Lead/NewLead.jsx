@@ -9,13 +9,6 @@ const NewLead = () => {
     const [form] = Form.useForm();
     const { createData } = useAuth();
     const handleLeadFormFinish = async (value) => {
-        value["comments"] = [
-            {
-                comment: value.addComment,
-                date: Math.floor(Date.now() / 1000),
-            },
-        ];
-        delete value.addComment;
         let payload = { entity: "lead", value: value };
         const { success, result, message } = await createData(payload);
         if (success) {

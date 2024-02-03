@@ -505,6 +505,7 @@ const QuotationForm = ({ current }) => {
                                 </Col>
                                 <Form.Item>
                                     <DeleteOutlined
+                                    disabled
                                         onClick={() => {
                                             subOpt.remove(subField.name);
                                         }}

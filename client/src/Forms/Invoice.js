@@ -59,9 +59,9 @@ const Invoice = ({ current }) => {
         let amountBeforeTax = items.reduce((a, b) => a + b.taxableAmount, 0);
         let amountAfterTax = items.reduce((a, b) => a + b.finalAmount, 0);
         const totalTaxAmount = amountAfterTax - amountBeforeTax;
-        current.setFieldsValue({ grossTotal: amountBeforeTax });
-        current.setFieldsValue({ grandTotal: amountBeforeTax });
-        current.setFieldsValue({ taxAmount: totalTaxAmount });
+        current.setFieldsValue({ grossTotal:  Math.ceil(amountBeforeTax) });
+        current.setFieldsValue({ grandTotal: Math.ceil(amountAfterTax) });
+        current.setFieldsValue({ totalTaxAmount: Math.ceil(totalTaxAmount) });
     };
 
     const onRateChange = (value, subField) => {
@@ -82,9 +82,9 @@ const Invoice = ({ current }) => {
         let amountBeforeTax = items.reduce((a, b) => a + b.taxableAmount, 0);
         let amountAfterTax = items.reduce((a, b) => a + b.finalAmount, 0);
         const totalTaxAmount = amountAfterTax - amountBeforeTax;
-        current.setFieldsValue({ grossTotal: amountBeforeTax });
-        current.setFieldsValue({ grandTotal: amountAfterTax });
-        current.setFieldsValue({ totalTaxAmount: totalTaxAmount });
+        current.setFieldsValue({ grossTotal:  Math.ceil(amountBeforeTax) });
+        current.setFieldsValue({ grandTotal: Math.ceil(amountAfterTax) });
+        current.setFieldsValue({ totalTaxAmount: Math.ceil(totalTaxAmount) });
     };
 
     const onQtyChange = (value, subField) => {
@@ -104,9 +104,9 @@ const Invoice = ({ current }) => {
         let amountBeforeTax = items.reduce((a, b) => a + b.taxableAmount, 0);
         let amountAfterTax = items.reduce((a, b) => a + b.finalAmount, 0);
         const totalTaxAmount = amountAfterTax - amountBeforeTax;
-        current.setFieldsValue({ grossTotal: amountBeforeTax });
-        current.setFieldsValue({ grandTotal: amountAfterTax });
-        current.setFieldsValue({ totalTaxAmount: totalTaxAmount });
+        current.setFieldsValue({ grossTotal:  Math.ceil(amountBeforeTax) });
+        current.setFieldsValue({ grandTotal: Math.ceil(amountAfterTax) });
+        current.setFieldsValue({ totalTaxAmount: Math.ceil(totalTaxAmount) });
     };
 
     const onSgstChange = (value, subField) => {
@@ -125,9 +125,9 @@ const Invoice = ({ current }) => {
         let amountBeforeTax = items.reduce((a, b) => a + b.taxableAmount, 0);
         let amountAfterTax = items.reduce((a, b) => a + b.finalAmount, 0);
         const totalTaxAmount = amountAfterTax - amountBeforeTax;
-        current.setFieldsValue({ grossTotal: amountBeforeTax });
-        current.setFieldsValue({ grandTotal: amountAfterTax });
-        current.setFieldsValue({ totalTaxAmount: totalTaxAmount });
+        current.setFieldsValue({ grossTotal:  Math.ceil(amountBeforeTax) });
+        current.setFieldsValue({ grandTotal: Math.ceil(amountAfterTax) });
+        current.setFieldsValue({ totalTaxAmount: Math.ceil(totalTaxAmount) });
     };
     const onCgstChange = (value, subField) => {
         const formData = current.getFieldValue("items");
@@ -145,9 +145,9 @@ const Invoice = ({ current }) => {
         let amountBeforeTax = items.reduce((a, b) => a + b.taxableAmount, 0);
         let amountAfterTax = items.reduce((a, b) => a + b.finalAmount, 0);
         const totalTaxAmount = amountAfterTax - amountBeforeTax;
-        current.setFieldsValue({ grossTotal: amountBeforeTax });
-        current.setFieldsValue({ grandTotal: amountAfterTax });
-        current.setFieldsValue({ totalTaxAmount: totalTaxAmount });
+        current.setFieldsValue({ grossTotal:  Math.ceil(amountBeforeTax) });
+        current.setFieldsValue({ grandTotal: Math.ceil(amountAfterTax) });
+        current.setFieldsValue({ totalTaxAmount: Math.ceil(totalTaxAmount) });
     };
     const onIgstChange = (value, subField) => {
         const formData = current.getFieldValue("items");
@@ -166,9 +166,9 @@ const Invoice = ({ current }) => {
         let amountBeforeTax = items.reduce((a, b) => a + b.taxableAmount, 0);
         let amountAfterTax = items.reduce((a, b) => a + b.finalAmount, 0);
         const totalTaxAmount = amountAfterTax - amountBeforeTax;
-        current.setFieldsValue({ grossTotal: amountBeforeTax });
-        current.setFieldsValue({ grandTotal: amountAfterTax });
-        current.setFieldsValue({ totalTaxAmount: totalTaxAmount });
+        current.setFieldsValue({ grossTotal:  Math.ceil(amountBeforeTax) });
+        current.setFieldsValue({ grandTotal: Math.ceil(amountAfterTax) });
+        current.setFieldsValue({ totalTaxAmount: Math.ceil(totalTaxAmount) });
     };
 
     /**Function for Calculating the Final Amount */
@@ -186,11 +186,13 @@ const Invoice = ({ current }) => {
     return (
         <div>
             <PageLoader text={"Fiailed to load Try again"} isLoading={isLoading} />
+            <Col span={10}>
+
             <Form.Item
                 label={"Select Coustomer"}
                 name={"customer"}
                 labelAlign="left"
-                labelCol={{ span: 6 }}
+                labelCol={{ span: 8}}
                 rules={[
                     {
                         required: "true",
@@ -198,7 +200,6 @@ const Invoice = ({ current }) => {
                     },
                 ]}
             >
-                <Col span={10}>
                     <Select
                         options={company}
                         showSearch
@@ -217,13 +218,15 @@ const Invoice = ({ current }) => {
                         )}
                         onChange={handleCustomerChange}
                     />
-                </Col>
             </Form.Item>
+            </Col>
+
+            <Col span={10}>
             <Form.Item
                 label={"Invoice#"}
                 name={"invoiceNo"}
                 labelAlign="left"
-                labelCol={{ span: 6 }}
+                labelCol={{ span: 8 }}
                 rules={[
                     {
                         required: "true",
@@ -231,20 +234,21 @@ const Invoice = ({ current }) => {
                     },
                 ]}
             >
-                <Col span={10}>
                     <Input />
-                </Col>
             </Form.Item>
+            </Col>
+            <Col span={10}>
+
             <Form.Item
                 label={"OrderNo"}
                 name={"orderNo"}
                 labelAlign="left"
-                labelCol={{ span: 6 }}
+                labelCol={{ span: 8}}
             >
-                <Col span={10}>
                     <Input />
-                </Col>
             </Form.Item>
+            </Col>
+
             <Row>
                 <Col xs={24} sm={24} md={12} lg={12}>
                     <Form.Item
@@ -257,7 +261,7 @@ const Invoice = ({ current }) => {
                             },
                         ]}
                         labelAlign="left"
-                        labelCol={{ span: 12 }}
+                        labelCol={{ span: 8 }}
                     >
                         <DatePicker
                             placeholder="Invoice Date"
@@ -276,7 +280,7 @@ const Invoice = ({ current }) => {
                             },
                         ]}
                         labelAlign="left"
-                        labelCol={{ span: 6 }}
+                        labelCol={{ span: 8}}
                     >
                         <DatePicker
                             placeholder="Expiry Date"
@@ -285,16 +289,18 @@ const Invoice = ({ current }) => {
                     </Form.Item>
                 </Col>
             </Row>
+            <Col span={6}>
+
             <Form.Item
                 label={"SalesPerson"}
                 name={"salesPerson"}
                 labelAlign="left"
-                labelCol={{ span: 6 }}
+                labelCol={{ span: 8}}
             >
-                <Col span={6}>
                     <Input />
-                </Col>
             </Form.Item>
+            </Col>
+
             <Row>
                 <h3>Item Table</h3>
             </Row>

@@ -3,15 +3,16 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAuth } from "state/AuthProvider";
 import Header from "components/Header";
-import CoustomersForm from "Forms/CoustomersForm";
 import PageLoader from "pages/PageLoader";
-const ReadCustomer = () => {
+import InvoiceFrom from "Forms/Invoice";
+import { epochInDDMMYY } from "Helper/EpochConveter";
+const ReadInvoice = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState("");
     const { readData } = useAuth();
     const { entity, id } = useParams();
-    console.log(entity, id);
     const [form] = Form.useForm();
+
     let fetchData = async () => {
         const { success, result, message } = await readData({
             entity: entity,
@@ -25,7 +26,6 @@ const ReadCustomer = () => {
     useEffect(() => {
         fetchData();
     }, []);
-
     return (
         <Flex
             gap={"middle"}
@@ -38,35 +38,32 @@ const ReadCustomer = () => {
             }}
         >
             <PageLoader
-                text={"Fetching Customer Detail Please Waiti"}
+                text={"Fetching Invoice Detail Please Wait"}
                 isLoading={isLoading}
             />
             {!isLoading && data ? (
                 <>
-                    <Header title={`${data.customerName}`} subTitle={""} />
+                    <Header title={` ${entity} Details`} subTitle={""} />
                     <Form
                         name="coustomerForm"
                         form={form}
                         initialValues={{
-                            remeber: true,
-                            customerName: data.customerName,
-                            contactPerson: data.contactPerson,
-                            customerPhone: data.customerPhone,
-                            customerEmail: data.customerEmail,
-                            panNo: data.panNo,
-                            gstNo: data.gstNo,
-                            billingStreet: data.billingAddress.address,
-                            billingCity: data.billingAddress.city,
-                            billingState: data.billingAddress.state,
-                            billingPincode: data.billingAddress.pinCode,
-                            shippingStreet: data.shippingAddress.address,
-                            shippingCity: data.shippingAddress.city,
-                            shippingState: data.shippingAddress.state,
-                            shippingPincode: data.shippingAddress.pinCode,
+                            customer: data.customer.customerName,
+                            invoiceNo: data.invoiceNo,
+                            orderNo: data.orderNo,
+                            invoiceDate: epochInDDMMYY(data.invoiceDate),
+                            invoiceExpiredDate: epochInDDMMYY(
+                                data.invoiceExpiredDate
+                            ),
+                            salesPerson: data.salesPerson,
+                            items: data.items,
+                            grossTotal: data.grossTotal,
+                            totalTaxAmount: data.totalTaxAmount,
+                            grandTotal: data.grandTotal,
                         }}
                         disabled={true}
                     >
-                        <CoustomersForm current={form} />
+                        <InvoiceFrom current={form} />
                     </Form>
                 </>
             ) : (
@@ -76,4 +73,4 @@ const ReadCustomer = () => {
     );
 };
 
-export default ReadCustomer;
+export default ReadInvoice;

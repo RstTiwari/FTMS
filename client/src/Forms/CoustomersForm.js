@@ -26,38 +26,40 @@ const CoustomersForm = ({ current }) => {
     };
     return (
         <div>
-            <Form.Item
-                label={"Customer Name"}
-                name={"customerName"}
-                labelAlign="left"
-                labelCol={{ span: 3 }}
-                rules={[
-                    {
-                        required: true,
-                        message: "Please Provide Customer Name",
-                    },
-                ]}
-            >
-                <Col xs={24} sm={24} md={12} lg={12}>
+            <Col xs={24} sm={24} md={12} lg={12}>
+                <Form.Item
+                    label={"Company Name "}
+                    name={"customerName"}
+                    labelAlign="left"
+                    labelCol={{ span: 6 }}
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please Provide Customer Name",
+                        },
+                    ]}
+                >
                     <Input />
-                </Col>
-            </Form.Item>
-            <Form.Item
-                label={"Contact Person"}
-                name={"contactPerson"}
-                labelAlign="left"
-                labelCol={{ span: 3 }}
-            >
-                <Col xs={24} sm={24} md={12} lg={12}>
+                </Form.Item>
+            </Col>
+
+            <Col xs={24} sm={24} md={12} lg={12}>
+                <Form.Item
+                    label={"Contact Person"}
+                    name={"contactPerson"}
+                    labelAlign="left"
+                    labelCol={{ span: 6}}
+                >
                     <Input />
-                </Col>
-            </Form.Item>
+                </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={12} lg={12}>
+
             <Form.Item
                 label={"Customer Phone"}
                 labelAlign="left"
                 name="customerPhone"
-                labelCol={{ span: 3 }}
-                
+                labelCol={{ span: 6}}
                 rules={[
                     {
                         required: true,
@@ -69,15 +71,16 @@ const CoustomersForm = ({ current }) => {
                     },
                 ]}
             >
-                <Col xs={24} sm={24} md={12} lg={12}>
                     <Input />
-                </Col>
             </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={12} lg={12}>
+            
             <Form.Item
                 label={"Customer Email"}
                 labelAlign="left"
                 name="customerEmail"
-                labelCol={{ span: 3 }}
+                labelCol={{ span: 6}}
                 rules={[
                     {
                         required: true,
@@ -85,27 +88,31 @@ const CoustomersForm = ({ current }) => {
                     },
                 ]}
             >
-                <Col xs={24} sm={24} md={12} lg={12}>
                     <Input />
-                </Col>
             </Form.Item>
+            </Col>
+ 
+            <Col xs={24} sm={24} md={12} lg={12}>
+
             <Form.Item
                 label={"PAN NO"}
                 labelAlign="left"
                 tooltip="this data  will be Encripted then stored not visible to other pepole accpet accept acces given  "
                 name="panNo"
-                labelCol={{ span: 3 }}
+                labelCol={{ span: 6 }}
             >
-                <Col xs={24} sm={24} md={12} lg={12}>
                     <Input />
-                </Col>
             </Form.Item>
+            </Col>
+
+            <Col xs={24} sm={24} md={12} lg={12}>
+
             <Form.Item
                 label={"GST NO"}
                 labelAlign="left"
                 tooltip="this data  will be Encripted then stored not visible to other pepole accpet accept acces given  "
                 name="gstNo"
-                labelCol={{ span: 3 }}
+                labelCol={{ span: 6}}
                 rules={[
                     {
                         required: true,
@@ -117,12 +124,12 @@ const CoustomersForm = ({ current }) => {
                     },
                 ]}
             >
-                <Col xs={24} sm={24} md={12} lg={12}>
                     <Input />
-                </Col>
             </Form.Item>
+            </Col>
+
             <Row justify={"center"}>
-                <h2>Other Details</h2>
+                <h2>Address & Details</h2>
             </Row>
             <Row xs={24} sm={24} md={24} lg={24}>
                 <Col sm={24} xs={24} md={12} lg={12}>
@@ -142,7 +149,12 @@ const CoustomersForm = ({ current }) => {
                                     width: isLaptop ? 300 : 250,
                                     height: 100,
                                 }}
-                                onChange={(e)=>setBilling({...billing,street:e.target.value})}
+                                onChange={(e) =>
+                                    setBilling({
+                                        ...billing,
+                                        street: e.target.value,
+                                    })
+                                }
                             />
                         </Form.Item>
                     </Row>
@@ -153,7 +165,14 @@ const CoustomersForm = ({ current }) => {
                             labelAlign="left"
                             labelCol={{ span: 7 }}
                         >
-                            <Input   onChange={(e)=>setBilling({...billing,city:e.target.value})} />
+                            <Input
+                                onChange={(e) =>
+                                    setBilling({
+                                        ...billing,
+                                        city: e.target.value,
+                                    })
+                                }
+                            />
                         </Form.Item>
                     </Row>
                     <Row>
@@ -163,7 +182,14 @@ const CoustomersForm = ({ current }) => {
                             labelAlign="left"
                             labelCol={{ span: 7 }}
                         >
-                            <Input  onChange={(e)=>setBilling({...billing,state:e.target.value})} />
+                            <Input
+                                onChange={(e) =>
+                                    setBilling({
+                                        ...billing,
+                                        state: e.target.value,
+                                    })
+                                }
+                            />
                         </Form.Item>
                     </Row>
                     <Row>
@@ -173,7 +199,14 @@ const CoustomersForm = ({ current }) => {
                             labelAlign="left"
                             labelCol={{ span: 7 }}
                         >
-                            <Input  onChange={(e)=>setBilling({...billing,pincode:e.target.value})} />
+                            <Input
+                                onChange={(e) =>
+                                    setBilling({
+                                        ...billing,
+                                        pincode: e.target.value,
+                                    })
+                                }
+                            />
                         </Form.Item>
                     </Row>
                 </Col>

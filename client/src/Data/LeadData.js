@@ -143,8 +143,10 @@ export const leadColumns = [
     },
 
     {
-        fixed: "right",
-        render: () => <TableAction />,
+        fixed: "right",        
+        render: (_, record) => (
+            <TableAction params={record._id} page={"lead"} />
+        ),
     },
 ];
 

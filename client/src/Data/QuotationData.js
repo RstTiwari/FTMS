@@ -62,8 +62,8 @@ export const quotationColumn = [
   
     {
         fixed: "right",
-        render: () => (
-            <TableAction params = {items.invoiceNo} page ={"quote"} download={true}/>
+        render: (_,record) => (
+            <TableAction params = {record._id} page ={"quote"} download={true}/>
         ),
     },
 ];
