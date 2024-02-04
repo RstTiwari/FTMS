@@ -1,4 +1,5 @@
 import moment from 'moment';
+import dayjs from 'dayjs';
 
 
 export const epochConveter =(date)=>{
@@ -21,5 +22,5 @@ export const convertUnixTimestampToDate = (timestamp) => {
 };
 
 export const epochInDDMMYY = (epochTime)=>{
-    return moment(epochTime*1000)
+    return dayjs((epochTime*1000))
 }

@@ -55,7 +55,7 @@ const UpdateQuotation = () => {
     };
 
     const handleValueChange = (updatedValue, allValues) => {
-        setToUpdateObj(true);
+        console.log(updatedValue,allValues);
     };
 
     let fetchData = async () => {
