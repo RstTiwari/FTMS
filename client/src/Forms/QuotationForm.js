@@ -15,15 +15,8 @@ import {
 } from "antd";
 
 import { PlusOutlined, CloseOutlined, DeleteOutlined } from "@ant-design/icons";
-import DropDownCoustom from "components/DropDownCoustom";
-import TextArea from "antd/es/input/TextArea";
-import { companyDetails } from "../Data/LeadData";
-import { quoteAddProductColumn } from "../Data/QuotationData";
-import { productOption } from "Data/ProductData";
 import { useMediaQuery } from "@mui/material";
 import { useAuth } from "state/AuthProvider";
-import debounceHandler from "EventHandler/DebounceHandler";
-const { Text } = Typography;
 
 const QuotationForm = ({ current }) => {
     const [company, setCompany] = useState([]);
@@ -32,7 +25,8 @@ const QuotationForm = ({ current }) => {
     const isLaptop = useMediaQuery("(min-width:1000px)");
     const inputWidth = isLaptop ? 700 : 350;
     const inputFontSize = isLaptop ? "1rem" : "0.4rem";
-
+   
+    console.log(current.getFieldValue("customer"));
     // state for Item
     const [bestOffer, setBestOffer] = useState(0);
     const [finalAmount, setFinalAmount] = useState(0);
@@ -685,18 +679,7 @@ const QuotationForm = ({ current }) => {
                     </Form.Item>
                 </Col>
             </Row>
-            <Col className="gutter-row">
-                <Form.Item>
-                    <Button
-                        type="primary"
-                        htmlType="submit"
-                        icon={<PlusOutlined />}
-                        block
-                    >
-                        Save
-                    </Button>
-                </Form.Item>
-            </Col>
+            
         </div>
     );
 };

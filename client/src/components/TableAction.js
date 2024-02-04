@@ -22,7 +22,7 @@ export const TableAction = ({ params, page, download }) => {
             </Link>
         </Menu.Item>,
         <Menu.Item key="2">
-            <Link to={`/edit/${page}/${params}`}>
+            <Link to={`/update/${page}/${params}`}>
                 {" "}
                 <EditOutlined />
                 EDIT

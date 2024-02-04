@@ -1,20 +1,19 @@
 import React, { lazy } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import Dashbord from "scenes/dashbord"
-import Layout from "scenes/layout";
-import Products from "scenes/products";
-import Transaction from "scenes/transaction";
+import Dashbord from "../pages/dashbord"
+import Layout from "../pages/layout"
 import NotFound from "pages/Notfound";
-import Lead  from "scenes/Lead"
+import Lead  from "../pages/Lead"
 import NewLead from "pages/Lead/NewLead";
-import Quote  from "scenes/Quote"
+import Quote  from "../pages/Quote"
 import NewQuote from "pages/Quote/NewQuote"
-import Coustomer from "scenes/customers"
+import Coustomer from "../pages/Customer"
 import NewCoustomer from "pages/Customer/NewCustomer";
-import Invoice from "scenes/Invoice"
+import Invoice from "../pages/Invoice"
 import NewInvoice from "pages/Invoice/NewInvoice"
-import ReadCustomer from "pages/Customer/ReadCustomer";
 import ReadModule from "module/ReadModule/ReadModule";
+import UpdateModule from "module/UpdateModule/UpdateModule";
+
 
 const Approuter = () => {
     return (
@@ -36,11 +35,10 @@ const Approuter = () => {
                 <Route path="/invoice" element ={<Invoice/>}/>
                 <Route path="/invoice/create" element ={<NewInvoice/>}/>
 
-                <Route path="/products" element={<Products />} />
-                <Route path="/transactions" element={<Transaction />} />
-
-
+                {/**Routes for Read  Update And Pdf */}
                 <Route path="/read/:entity/:id" element ={<ReadModule />}/>
+                <Route path="/update/:entity/:id" element ={<UpdateModule />}/>
+
 
                 <Route path="*" element={<NotFound />} />
 

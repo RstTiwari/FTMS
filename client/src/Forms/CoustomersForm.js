@@ -3,7 +3,7 @@ import { Flex, Form, Input, Col, Row, Button } from "antd";
 import { useMediaQuery } from "@mui/material";
 import React, { useState } from "react";
 
-const CoustomersForm = ({ current }) => {
+const CoustomersForm = ({ current ,disabled }) => {
     const isLaptop = useMediaQuery("(min-width:600px)");
     const [billing, setBilling] = useState({
         street: "",
@@ -12,6 +12,7 @@ const CoustomersForm = ({ current }) => {
         pincode: "",
     });
     const handeCopyBillingAddress = () => {
+        console.log("called",billing);
         const { billingStreet, billingCity, billingState, billingPincode } =
             current.getFieldsValue([
                 "billingStreet",
@@ -19,7 +20,7 @@ const CoustomersForm = ({ current }) => {
                 "billingState",
                 "billingPincode",
             ]);
-        current.setFieldsValue({ shippingStreet: billing.street });
+        current.setFieldsValue({ shippingStreet:billing.street  });
         current.setFieldsValue({ shippingCity: billing.city });
         current.setFieldsValue({ shippingState: billing.state });
         current.setFieldsValue({ shippingPincode: billing.pincode });
@@ -48,84 +49,76 @@ const CoustomersForm = ({ current }) => {
                     label={"Contact Person"}
                     name={"contactPerson"}
                     labelAlign="left"
-                    labelCol={{ span: 6}}
+                    labelCol={{ span: 6 }}
                 >
                     <Input />
                 </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={12} lg={12}>
-
-            <Form.Item
-                label={"Customer Phone"}
-                labelAlign="left"
-                name="customerPhone"
-                labelCol={{ span: 6}}
-                rules={[
-                    {
-                        required: true,
-                        message: "Please Provide Customer Phone",
-                    },
-                    {
-                        max: 10,
-                        message: "Phone must be at most 10 characters",
-                    },
-                ]}
-            >
+                <Form.Item
+                    label={"Customer Phone"}
+                    labelAlign="left"
+                    name="customerPhone"
+                    labelCol={{ span: 6 }}
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please Provide Customer Phone",
+                        }
+                    ]}
+                >
                     <Input />
-            </Form.Item>
+                </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={12} lg={12}>
-            
-            <Form.Item
-                label={"Customer Email"}
-                labelAlign="left"
-                name="customerEmail"
-                labelCol={{ span: 6}}
-                rules={[
-                    {
-                        required: true,
-                        message: "Please Provide Customer Email",
-                    },
-                ]}
-            >
+                <Form.Item
+                    label={"Customer Email"}
+                    labelAlign="left"
+                    name="customerEmail"
+                    labelCol={{ span: 6 }}
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please Provide Customer Email",
+                        },
+                    ]}
+                >
                     <Input />
-            </Form.Item>
-            </Col>
- 
-            <Col xs={24} sm={24} md={12} lg={12}>
-
-            <Form.Item
-                label={"PAN NO"}
-                labelAlign="left"
-                tooltip="this data  will be Encripted then stored not visible to other pepole accpet accept acces given  "
-                name="panNo"
-                labelCol={{ span: 6 }}
-            >
-                    <Input />
-            </Form.Item>
+                </Form.Item>
             </Col>
 
             <Col xs={24} sm={24} md={12} lg={12}>
-
-            <Form.Item
-                label={"GST NO"}
-                labelAlign="left"
-                tooltip="this data  will be Encripted then stored not visible to other pepole accpet accept acces given  "
-                name="gstNo"
-                labelCol={{ span: 6}}
-                rules={[
-                    {
-                        required: true,
-                        message: "Please Provide GST No",
-                    },
-                    {
-                        max: 15,
-                        message: "GST  must be at most 15 characters",
-                    },
-                ]}
-            >
+                <Form.Item
+                    label={"PAN NO"}
+                    labelAlign="left"
+                    tooltip="this data  will be Encripted then stored not visible to other pepole accpet accept acces given  "
+                    name="panNo"
+                    labelCol={{ span: 6 }}
+                >
                     <Input />
-            </Form.Item>
+                </Form.Item>
+            </Col>
+
+            <Col xs={24} sm={24} md={12} lg={12}>
+                <Form.Item
+                    label={"GST NO"}
+                    labelAlign="left"
+                    tooltip="this data  will be Encripted then stored not visible to other pepole accpet accept acces given  "
+                    name="gstNo"
+                    labelCol={{ span: 6 }}
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please Provide GST No",
+                        },
+                        {
+                            max: 15,
+                            message: "GST  must be at most 15 characters",
+                        },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
             </Col>
 
             <Row justify={"center"}>
@@ -212,14 +205,18 @@ const CoustomersForm = ({ current }) => {
                 </Col>
                 <Col sm={12} md={12} lg={12}>
                     <Row>
-                        Shipping Address (
-                        <Col
-                            style={{ color: "blue", cursor: "pointer" }}
-                            onClick={handeCopyBillingAddress}
-                        >
-                            Copy Billing Address
-                        </Col>
-                        )
+                        Shipping Address 
+                        {!disabled ? (
+                            <Col
+                                style={{ color: "blue", cursor: "pointer" }}
+                                onClick={handeCopyBillingAddress}
+                            >
+                                (Copy Billing Address)
+                            </Col>
+                        ) : (
+                            ""
+                        )}
+                        
                     </Row>
 
                     <Row>

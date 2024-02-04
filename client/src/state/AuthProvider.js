@@ -61,6 +61,7 @@ export const AuthProvider = ({ children }) => {
         };
         try {
             let response = await axios(axiosConfig);
+            console.log(response,"----");
             return response.data;
             
         } catch (error) {
@@ -101,6 +102,14 @@ export const AuthProvider = ({ children }) => {
             return { success: 1, result: data.result, message: data.message };
         }
     }
+    const updateData = async (payload) => {
+        let data = appApiCall("post", "update", payload, {});
+        if (data.success === 0) {
+            return { success: 0, result: null, message: data.message };
+        } else {
+            return { success: 1, result: data.result, message: data.message };
+        }
+    };
 
     
      const getTableData = async (entity) => {
@@ -144,7 +153,17 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider
-            value={{ loginUser, logoutUser, authApiCall, appApiCall,getDropDownData,getTableData,createData,readData }}
+            value={{
+                loginUser,
+                logoutUser,
+                authApiCall,
+                appApiCall,
+                getDropDownData,
+                getTableData,
+                createData,
+                readData,
+                updateData,
+            }}
         >
             {children}
         </AuthContext.Provider>

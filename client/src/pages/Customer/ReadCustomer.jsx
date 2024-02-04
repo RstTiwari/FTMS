@@ -10,7 +10,6 @@ const ReadCustomer = () => {
     const [data, setData] = useState("");
     const { readData } = useAuth();
     const { entity, id } = useParams();
-    console.log(entity, id);
     const [form] = Form.useForm();
     let fetchData = async () => {
         const { success, result, message } = await readData({

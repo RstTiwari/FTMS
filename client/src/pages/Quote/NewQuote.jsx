@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Flex, Form, Select } from "antd";
+import { Flex, Form, Select ,Col,Button} from "antd";
 import Header from "components/Header";
 import QuotationForm from "../../Forms/QuotationForm.js";
 import { epochConveter } from "Helper/EpochConveter.js";
+import { PlusOutlined } from "@ant-design/icons";
+
 import {
     cancellationCondition,
     deliveryCondition,
@@ -48,8 +50,6 @@ const NewQuote = () => {
             <Form
                 form={form}
                 name="qouteForm"
-                labelCol={{ span: 8 }}
-                wrapperCol={{ span: 8 }}
                 initialValues={{
                     remeber: true,
                     quoteNo: quoteNo,
@@ -70,6 +70,18 @@ const NewQuote = () => {
             >
                 <Header title={"New Quotation"} cancelRoute={"quotation"} />
                 <QuotationForm current={form} />
+                <Col className="gutter-row" span={6}>
+                            <Form.Item>
+                                <Button
+                                    type="primary"
+                                    htmlType="submit"
+                                    icon={<PlusOutlined />}
+                                    block
+                                >
+                                    Save
+                                </Button>
+                            </Form.Item>
+                        </Col>
             </Form>
         </Flex>
     );

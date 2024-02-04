@@ -6,6 +6,7 @@ import invoiceDb from "../../models/appModels/invoice.js";
 import create from "./create.js";
 import getList from "./getList.js";
 import read from "./read.js";
+import update from "./update.js"
 
 const appRoutes = {
     create: async (req, res, next) => {
@@ -23,6 +24,11 @@ const appRoutes = {
         let db = checkDbForEntity(req.query.entity);
         if (!db) return res.send("failed"); // manage Error here
         read(req, res, next, db);
+    },
+    update: async (req, res, next) => {
+        let db = checkDbForEntity(req.body.entity);
+        if (!db) return res.send("failed");
+        update(req, res, next, db);
     },
 };
 
