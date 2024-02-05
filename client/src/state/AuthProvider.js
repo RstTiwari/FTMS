@@ -61,7 +61,6 @@ export const AuthProvider = ({ children }) => {
         };
         try {
             let response = await axios(axiosConfig);
-            console.log(response,"----");
             return response.data;
             
         } catch (error) {

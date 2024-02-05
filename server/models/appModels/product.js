@@ -7,6 +7,7 @@ const productSchema = new mongoose.Schema({
     category:String,
     rating:Number,
     supply:Number,
+    hsnCode:String,
     tenantId:String
 });
 

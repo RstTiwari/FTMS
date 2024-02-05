@@ -54,180 +54,23 @@ const QuotationForm = ({ current,data }) => {
     };
 
     const onDescriptionChange = (value, label, subField) => {
-            const formData = current.getFieldValue("items");
-            console.log(formData,"----");
-            const items = [...formData];
-            console.log(items,"itms");
-            const index = subField.key; // Use subField.name to get the index
-            const rowManipulated = items[0];
-            console.log(rowManipulated, label, subField);
-            rowManipulated.rate = label.rate;
-            const discountAmount = Math.floor(
-                (rowManipulated.rate * rowManipulated.percentDiscount) / 100
-            );
-            rowManipulated.bestOffer = rowManipulated.rate - discountAmount;
-            rowManipulated.finalAmount = rowManipulated.bestOffer * rowManipulated.qty;
-            items[index] = rowManipulated;
-            current.setFieldsValue({ items: items });
         
-
-        // // now updataing grossTotal ,grandTotal
-        // let { grossTotal, grandTotal, taxPercent, transPortAmount } =
-        //     current.getFieldsValue([
-        //         "grossTotal",
-        //         "grandTotal",
-        //         "taxPercent",
-        //         "transPortAmount",
-        //     ]);
-        // const grossSum = items.reduce(
-        //     (accumulator, currentValue) =>
-        //         accumulator + currentValue.finalAmount,
-        //     0
-        // );
-
-        // setGrossAmount(grossSum);
-        // const taxAmount = Math.floor((grossSum * taxPercent) / 100);
-        // const grandSum = grossSum + taxAmount + transPortAmount;
-        // setGrandAmount(grandSum);
-        // console.log(grandSum, taxAmount, transPortAmount);
-        // current.setFieldsValue({ grossTotal: grossSum });
-        // current.setFieldsValue({ grandTotal: grandSum });
-        // setFetchedItem(items)
     };
     
     const onRateChange = async (value, subField) => {
-        const formData = fetchItems 
-        const items = [...formData];
-        console.log(items,"itenms",fetchItems,current.getFieldValue("items"));
-        const rowManipulated = items[subField.key];
-        const discountAmount = Math.floor(
-            (value * rowManipulated.percentDiscount) / 100
-        );
-        rowManipulated.bestOffer = value - discountAmount;
-        rowManipulated.finalAmount =
-            rowManipulated.bestOffer * rowManipulated.qty;
-        items[subField.key] = rowManipulated;
-        setBestOffer(rowManipulated.bestOffer);
-        setFinalAmount(rowManipulated.finalAmount);
-        current.setFieldsValue({ items: items });
-        // now updataing grossTotal ,grandTotal
-        let { grossTotal, grandTotal, taxPercent, transPortAmount } =
-            current.getFieldsValue([
-                "grossTotal",
-                "grandTotal",
-                "taxPercent",
-                "transPortAmount",
-            ]);
-        const grossSum = items.reduce(
-            (accumulator, currentValue) =>
-                accumulator + currentValue.finalAmount,
-            0
-        );
-
-        setGrossAmount(grossSum);
-        const taxAmount = Math.floor((grossSum * taxPercent) / 100);
-        const grandSum = grossSum + taxAmount + transPortAmount;
-        setGrandAmount(grandSum);
-        console.log(grandSum, taxAmount, transPortAmount);
-        current.setFieldsValue({ grossTotal: grossSum });
-        current.setFieldsValue({ grandTotal: grandSum });
     };
 
     const onDiscountChange = (value, subField) => {
-        const formData = fetchItems || current.getFieldValue("items");
-        const items = [...formData];
-        const rowManipulated = items[subField.key];
-        rowManipulated.percentDiscount = value;
-        const discountAmount = Math.floor(
-            (rowManipulated.rate * rowManipulated.percentDiscount) / 100
-        );
-        rowManipulated.bestOffer = rowManipulated.rate - discountAmount;
-        setBestOffer(rowManipulated.bestOffer);
-        rowManipulated.finalAmount =
-            rowManipulated.bestOffer * rowManipulated.qty;
-        setFinalAmount(rowManipulated.finalAmount);
-        current.setFieldsValue({ items: items });
-
-        let { grossTotal, grandTotal, taxPercent, transPortAmount } =
-            current.getFieldsValue([
-                "grossTotal",
-                "grandTotal",
-                "taxPercent",
-                "transPortAmount",
-            ]);
-        const grossSum = items.reduce(
-            (accumulator, currentValue) =>
-                accumulator + currentValue.finalAmount,
-            0
-        );
-
-        setGrossAmount(grossSum);
-        const taxAmount = Math.floor((grossSum * taxPercent) / 100);
-        const grandSum = grossSum + taxAmount + transPortAmount;
-        setGrandAmount(grandSum);
-        console.log(grandSum, taxAmount, transPortAmount);
-        current.setFieldsValue({ grossTotal: grossSum });
-        current.setFieldsValue({ grandTotal: grandSum });
     };
 
     const onQtyChange = async (value, subField) => {
-        const formData = fetchItems ||  current.getFieldValue("items");
-        const items = [...formData];
-        const rowManipulated = items[subField.key];
-        rowManipulated.qty = value;
-        rowManipulated.finalAmount =
-            rowManipulated.bestOffer * rowManipulated.qty;
-        setFinalAmount(rowManipulated.finalAmount);
-        current.setFieldsValue({ items: items });
-
-        let { grossTotal, grandTotal, taxPercent, transPortAmount } =
-            current.getFieldsValue([
-                "grossTotal",
-                "grandTotal",
-                "taxPercent",
-                "transPortAmount",
-            ]);
-        const grossSum = items.reduce(
-            (accumulator, currentValue) =>
-                accumulator + currentValue.finalAmount,
-            0
-        );
-
-        setGrossAmount(grossSum);
-        const taxAmount = Math.floor((grossSum * taxPercent) / 100);
-        const grandSum = grossSum + taxAmount + transPortAmount;
-        setGrandAmount(grandSum);
-        console.log(grandSum, taxAmount, transPortAmount);
-        current.setFieldsValue({ grossTotal: grossSum });
-        current.setFieldsValue({ grandTotal: grandSum });
     };
 
     const onTaxPercentChange = async (value) => {
-        let { grossTotal, grandTotal, taxPercent, transPortAmount } =
-            current.getFieldsValue([
-                "grossTotal",
-                "grandTotal",
-                "taxPercent",
-                "transPortAmount",
-            ]);
-        const taxAmount = Math.floor((grossTotal * value) / 100);
-        const grandSum = grossTotal + taxAmount + transPortAmount;
-        setGrandAmount(grandSum);
-        current.setFieldsValue({ grandTotal: grandSum });
+
     };
 
     const onTransportAmountChange = (value) => {
-        let { grossTotal, grandTotal, taxPercent, transPortAmount } =
-            current.getFieldsValue([
-                "grossTotal",
-                "grandTotal",
-                "taxPercent",
-                "transPortAmount",
-            ]);
-        const taxAmount = Math.floor((grossTotal * taxPercent) / 100);
-        const grandSum = grossTotal + taxAmount + value;
-        setGrandAmount(grandSum);
-        current.setFieldsValue({ grandTotal: grandSum });
     };
     useEffect(()=>{
         handleDescriptionClick()

@@ -1,13 +1,27 @@
-import { Flex, Form, Col, Button } from "antd";
+import {
+    Form,
+    Select,
+    Divider,
+    Space,
+    Input,
+    Button,
+    Row,
+    Col,
+    DatePicker,
+    InputNumber,
+    Flex,
+} from "antd";
 import PageLoader from "pages/PageLoader";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
+import { useMediaQuery } from "@mui/material";
 import { useAuth } from "state/AuthProvider";
 import Header from "components/Header";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import QuotationForm from "Forms/QuotationForm";
 import { epochInDDMMYY } from "Helper/EpochConveter";
+import UpdateQuotationForm from "Forms/UpdateQuotationForm";
 
 const UpdateQuotation = () => {
     const [form] = Form.useForm();
@@ -16,7 +30,20 @@ const UpdateQuotation = () => {
     const [toUpdateObj, setToUpdateObj] = useState(false);
     const { entity, id } = useParams();
     const { readData, updateData } = useAuth();
+    const [product, setProduct] = useState([]);
 
+    const [formKey, setFormKey] = useState(0);
+    const { getDropDownData } = useAuth();
+    const isLaptop = useMediaQuery("(min-width:1000px)");
+    const inputWidth = isLaptop ? 700 : 350;
+    const inputFontSize = isLaptop ? "1rem" : "0.4rem";
+
+    const handleDescriptionClick = async () => {
+        let entity = "product";
+        let fieldName = "productName";
+        const dropDownData = await getDropDownData(entity, fieldName);
+        setProduct(dropDownData);
+    };
     const fomulatePayload = (value) => {
         value["billingAddress"] = {
             address: value.billingStreet,
@@ -54,8 +81,9 @@ const UpdateQuotation = () => {
         }
     };
 
-    const handleValueChange = (updatedValue, allValues) => {
-        console.log(updatedValue,allValues);
+    const handleValueChange = (subField, allValues) => {
+        setToUpdateObj(allValues["item"]);
+        form.setFieldValue({ items: toUpdateObj });
     };
 
     let fetchData = async () => {
