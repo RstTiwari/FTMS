@@ -71,7 +71,7 @@ const ReadQuation = () => {
                         }}
                         disabled={true}
                     >
-                        <QuotationForm current={form} />
+                        <QuotationForm current={form} data={data.items} />
                     </Form>
                 </>
             ) : (

@@ -2,10 +2,8 @@ import mongoose from "mongoose";
 import mongooseAutoPopulate from "mongoose-autopopulate";
 const quotationSchema = new mongoose.Schema({
     customer: {
-        type: mongoose.Schema.ObjectId,
-        ref: "customer",
+        type: String,
         require: true,
-        autopopulate: true,
     },
     quoteNo: {
         type: String,
@@ -31,8 +29,7 @@ const quotationSchema = new mongoose.Schema({
     items: [
         {
             description: {
-                type: mongoose.Schema.ObjectId,
-                ref: "product",
+                type: String,
                 require: true,
             },
             rate: {

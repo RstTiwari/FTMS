@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import mongooseAutoPopulate from "mongoose-autopopulate";
-const quotationSchema = new mongoose.Schema({
+const invoiceSchema = new mongoose.Schema({
     customer: {
-        type: mongoose.Schema.ObjectId,
+        type: String,
         ref: "customer",
         require: true,
         autopopulate: true,
@@ -30,8 +30,7 @@ const quotationSchema = new mongoose.Schema({
     items: [
         {
             description: {
-                type: mongoose.Schema.ObjectId,
-                ref: "product",
+                type: String,
                 require: true,
             },
             hsnCode:{
@@ -76,5 +75,5 @@ const quotationSchema = new mongoose.Schema({
     }
 });
 
-quotationSchema.plugin(mongooseAutoPopulate);
-export default mongoose.model("invoice", quotationSchema);
+invoiceSchema.plugin(mongooseAutoPopulate);
+export default mongoose.model("invoice", invoiceSchema);

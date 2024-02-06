@@ -20,7 +20,7 @@ export const quotationColumn = [
         render:(_,record)=>(
             <>
             <Text type="success">
-                {record.customer.customerName}
+                {record.customer}
             </Text>
             </>
         )
@@ -124,3 +124,4 @@ export const quotationDataSource = [
         status:"SEND"
     }
 ]
+

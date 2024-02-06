@@ -79,7 +79,7 @@ export const AuthProvider = ({ children }) => {
         } else {
             data = data.result.map((item) => {
                 item["label"] = item[fieldName];
-                item["value"] = item._id;
+                item["value"] = item[fieldName];
                 return item;
             });
             return data;

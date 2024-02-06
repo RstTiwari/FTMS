@@ -18,7 +18,7 @@ import { PlusOutlined, CloseOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useMediaQuery } from "@mui/material";
 import { useAuth } from "state/AuthProvider";
 
-const QuotationForm = ({ current,data }) => {
+const QuotationForm = ({ current }) => {
     const [company, setCompany] = useState([]);
     const [product, setProduct] = useState([]);
     const [fetchItems,setFetchedItem] = useState([])
@@ -26,15 +26,7 @@ const QuotationForm = ({ current,data }) => {
     const isLaptop = useMediaQuery("(min-width:1000px)");
     const inputWidth = isLaptop ? 700 : 350;
     const inputFontSize = isLaptop ? "1rem" : "0.4rem";
-      useEffect(()=>{
-        current.setFieldsValue({items:data})
-      },[])
-      console.log(current.getFieldValue("items"),"-items-");
-    // state for Item
-    const [bestOffer, setBestOffer] = useState(0);
-    const [finalAmount, setFinalAmount] = useState(0);
-    const [grossAmount, setGrossAmount] = useState(0);
-    const [grandAmount, setGrandAmount] = useState(0);
+
 
     const handelCustomerClick = async (value) => {
         let entity = "customer";
@@ -54,51 +46,43 @@ const QuotationForm = ({ current,data }) => {
     };
 
     const onDescriptionChange = (value, label, subField) => {
-            const formData = current.getFieldValue("items");
-            console.log(formData,"----");
-            const items = [...formData];
-            console.log(items,"itms");
-            const index = subField.key; // Use subField.name to get the index
-            const rowManipulated = items[0];
-            console.log(rowManipulated, label, subField);
-            rowManipulated.rate = label.rate;
-            const discountAmount = Math.floor(
-                (rowManipulated.rate * rowManipulated.percentDiscount) / 100
-            );
-            rowManipulated.bestOffer = rowManipulated.rate - discountAmount;
-            rowManipulated.finalAmount = rowManipulated.bestOffer * rowManipulated.qty;
-            items[index] = rowManipulated;
-            current.setFieldsValue({ items: items });
-        
+        const formData = current.getFieldValue("items");
+        const items = [...formData];
+        const index = subField.key; // Use subField.name to get the index
+        const rowManipulated = items[0];
+        rowManipulated.rate = label.rate;
+        const discountAmount = Math.floor(
+            (rowManipulated.rate * rowManipulated.percentDiscount) / 100
+        );
+        rowManipulated.bestOffer = rowManipulated.rate - discountAmount;
+        rowManipulated.finalAmount =
+            rowManipulated.bestOffer * rowManipulated.qty;
+        items[index] = rowManipulated;
+        current.setFieldsValue({ items: items });
 
-        // // now updataing grossTotal ,grandTotal
-        // let { grossTotal, grandTotal, taxPercent, transPortAmount } =
-        //     current.getFieldsValue([
-        //         "grossTotal",
-        //         "grandTotal",
-        //         "taxPercent",
-        //         "transPortAmount",
-        //     ]);
-        // const grossSum = items.reduce(
-        //     (accumulator, currentValue) =>
-        //         accumulator + currentValue.finalAmount,
-        //     0
-        // );
+        // now updataing grossTotal ,grandTotal
+        let { grossTotal, grandTotal, taxPercent, transPortAmount } =
+            current.getFieldsValue([
+                "grossTotal",
+                "grandTotal",
+                "taxPercent",
+                "transPortAmount",
+            ]);
+        const grossSum = items.reduce(
+            (accumulator, currentValue) =>
+                accumulator + currentValue.finalAmount,
+            0
+        );
 
-        // setGrossAmount(grossSum);
-        // const taxAmount = Math.floor((grossSum * taxPercent) / 100);
-        // const grandSum = grossSum + taxAmount + transPortAmount;
-        // setGrandAmount(grandSum);
-        // console.log(grandSum, taxAmount, transPortAmount);
-        // current.setFieldsValue({ grossTotal: grossSum });
-        // current.setFieldsValue({ grandTotal: grandSum });
-        // setFetchedItem(items)
+        const taxAmount = Math.floor((grossSum * taxPercent) / 100);
+        const grandSum = grossSum + taxAmount + transPortAmount;
+        current.setFieldsValue({ grossTotal: Math.ceil(grossSum) });
+        current.setFieldsValue({ grandTotal: Math.ceil(grandSum) });
     };
     
     const onRateChange = async (value, subField) => {
-        const formData = fetchItems 
+        const formData = current.getFieldValue("items"); 
         const items = [...formData];
-        console.log(items,"itenms",fetchItems,current.getFieldValue("items"));
         const rowManipulated = items[subField.key];
         const discountAmount = Math.floor(
             (value * rowManipulated.percentDiscount) / 100
@@ -107,8 +91,6 @@ const QuotationForm = ({ current,data }) => {
         rowManipulated.finalAmount =
             rowManipulated.bestOffer * rowManipulated.qty;
         items[subField.key] = rowManipulated;
-        setBestOffer(rowManipulated.bestOffer);
-        setFinalAmount(rowManipulated.finalAmount);
         current.setFieldsValue({ items: items });
         // now updataing grossTotal ,grandTotal
         let { grossTotal, grandTotal, taxPercent, transPortAmount } =
@@ -124,17 +106,14 @@ const QuotationForm = ({ current,data }) => {
             0
         );
 
-        setGrossAmount(grossSum);
         const taxAmount = Math.floor((grossSum * taxPercent) / 100);
         const grandSum = grossSum + taxAmount + transPortAmount;
-        setGrandAmount(grandSum);
-        console.log(grandSum, taxAmount, transPortAmount);
-        current.setFieldsValue({ grossTotal: grossSum });
-        current.setFieldsValue({ grandTotal: grandSum });
+        current.setFieldsValue({ grossTotal: Math.ceil(grossSum) });
+        current.setFieldsValue({ grandTotal: Math.ceil(grandSum) });
     };
 
     const onDiscountChange = (value, subField) => {
-        const formData = fetchItems || current.getFieldValue("items");
+        const formData = current.getFieldValue("items");
         const items = [...formData];
         const rowManipulated = items[subField.key];
         rowManipulated.percentDiscount = value;
@@ -142,10 +121,8 @@ const QuotationForm = ({ current,data }) => {
             (rowManipulated.rate * rowManipulated.percentDiscount) / 100
         );
         rowManipulated.bestOffer = rowManipulated.rate - discountAmount;
-        setBestOffer(rowManipulated.bestOffer);
         rowManipulated.finalAmount =
             rowManipulated.bestOffer * rowManipulated.qty;
-        setFinalAmount(rowManipulated.finalAmount);
         current.setFieldsValue({ items: items });
 
         let { grossTotal, grandTotal, taxPercent, transPortAmount } =
@@ -161,23 +138,19 @@ const QuotationForm = ({ current,data }) => {
             0
         );
 
-        setGrossAmount(grossSum);
         const taxAmount = Math.floor((grossSum * taxPercent) / 100);
         const grandSum = grossSum + taxAmount + transPortAmount;
-        setGrandAmount(grandSum);
-        console.log(grandSum, taxAmount, transPortAmount);
-        current.setFieldsValue({ grossTotal: grossSum });
-        current.setFieldsValue({ grandTotal: grandSum });
+        current.setFieldsValue({ grossTotal: Math.ceil(grossSum) });
+        current.setFieldsValue({ grandTotal: Math.ceil(grandSum) });
     };
 
     const onQtyChange = async (value, subField) => {
-        const formData = fetchItems ||  current.getFieldValue("items");
+        const formData = current.getFieldValue("items");
         const items = [...formData];
         const rowManipulated = items[subField.key];
         rowManipulated.qty = value;
         rowManipulated.finalAmount =
             rowManipulated.bestOffer * rowManipulated.qty;
-        setFinalAmount(rowManipulated.finalAmount);
         current.setFieldsValue({ items: items });
 
         let { grossTotal, grandTotal, taxPercent, transPortAmount } =
@@ -193,10 +166,8 @@ const QuotationForm = ({ current,data }) => {
             0
         );
 
-        setGrossAmount(grossSum);
         const taxAmount = Math.floor((grossSum * taxPercent) / 100);
         const grandSum = grossSum + taxAmount + transPortAmount;
-        setGrandAmount(grandSum);
         console.log(grandSum, taxAmount, transPortAmount);
         current.setFieldsValue({ grossTotal: grossSum });
         current.setFieldsValue({ grandTotal: grandSum });
@@ -212,8 +183,7 @@ const QuotationForm = ({ current,data }) => {
             ]);
         const taxAmount = Math.floor((grossTotal * value) / 100);
         const grandSum = grossTotal + taxAmount + transPortAmount;
-        setGrandAmount(grandSum);
-        current.setFieldsValue({ grandTotal: grandSum });
+        current.setFieldsValue({ grandTotal: Math.ceil(grandSum) });
     };
 
     const onTransportAmountChange = (value) => {
@@ -226,8 +196,7 @@ const QuotationForm = ({ current,data }) => {
             ]);
         const taxAmount = Math.floor((grossTotal * taxPercent) / 100);
         const grandSum = grossTotal + taxAmount + value;
-        setGrandAmount(grandSum);
-        current.setFieldsValue({ grandTotal: grandSum });
+        current.setFieldsValue({ grandTotal: Math.ceil(grandSum) });
     };
     useEffect(()=>{
         handleDescriptionClick()
@@ -375,6 +344,17 @@ const QuotationForm = ({ current,data }) => {
             </Row>
             <Form.List
                 name={"items"}
+                initialValue={[
+                    {
+                        description:"",
+                        rate:0,
+                        percentDiscount:0,
+                        bestOffer:0,
+                        qty:1,
+                        finalAmount:0
+
+                    }
+                ]}
             >
                 {(subFields, subOpt) => (
                     <div>
@@ -463,7 +443,6 @@ const QuotationForm = ({ current,data }) => {
                                         <InputNumber
                                             readOnly
                                             className="moneyInput"
-                                            value={bestOffer}
                                             min={0}
                                             controls={false}
                                             style={{ width: 75 }}
@@ -487,7 +466,6 @@ const QuotationForm = ({ current,data }) => {
                                         <InputNumber
                                             readOnly
                                             className="moneyInput"
-                                            value={finalAmount}
                                             min={0}
                                             controls={false}
                                             style={{ width: 75 }}
@@ -529,16 +507,14 @@ const QuotationForm = ({ current,data }) => {
                 )}
             </Form.List>
             <Row align={"middle"} justify={"end"}>
-                <Col span={6}>
+                <Col span={8}>
                     <Form.Item
                         label="Gross Total"
                         name={"grossTotal"}
-                        labelAlign="center"
                     >
                         <InputNumber
                             readOnly
                             className="moneyInput"
-                            value={grossAmount}
                             style={{ width: 150 }}
                             controls={false}
                         />
@@ -546,11 +522,12 @@ const QuotationForm = ({ current,data }) => {
                 </Col>
             </Row>
             <Row align={"middle"} justify={"end"}>
-                <Col span={6}>
+                <Col span={8}>
                     <Form.Item
                         label="Tax(%)"
                         name={"taxPercent"}
-                        labelAlign="center"
+                        labelCol={{span:5}}
+                        labelAlign="left"
                     >
                         <InputNumber
                             style={{ width: 150 }}
@@ -564,7 +541,9 @@ const QuotationForm = ({ current,data }) => {
                     <Form.Item
                         label="Transport(Amount)"
                         name={"transPortAmount"}
-                        labelAlign="center"
+                        labelCol={{span:8}}
+                        labelAlign="left"
+                        
                     >
                         <InputNumber
                             style={{ width: 150 }}
@@ -578,12 +557,10 @@ const QuotationForm = ({ current,data }) => {
                     <Form.Item
                         label="Grand Total"
                         name={"grandTotal"}
-                        labelAlign="center"
                     >
                         <InputNumber
                             readOnly
                             style={{ width: 150 }}
-                            value={grandAmount}
                             controls={false}
                         />
                     </Form.Item>

@@ -61,7 +61,7 @@ const NewCustomer = () => {
             <Form
                 name="coustomerForm"
                 form={form}
-                initialValues={{ shippinStreet: "" }}
+                initialValues={{}}
                 onFinish={handelCustomerFormFinish}
             >
                 <CoustomerForm current={form} />
