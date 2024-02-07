@@ -68,7 +68,7 @@ const NewQuote = () => {
                 onFinish={onQuoteFormFinish}
                 layout="horizontal"
             >
-                <Header title={"New Quotation"} cancelRoute={"quotation"} />
+                <Header title={"New Quotation"} cancelRoute={"quotation"}  />
                 <QuotationForm current={form} />
                 <Col className="gutter-row" span={6}>
                             <Form.Item>

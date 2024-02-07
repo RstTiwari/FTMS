@@ -1,7 +1,6 @@
 import { debounce } from "lodash";
 
 const debounceHandler = debounce((value, data, fieldName) => {
-    console.log(value, data, fieldName);
     const regex = new RegExp(`${value}`, "i");
     let filteredData = data.filter((item) => {
         const test = regex.test(item[fieldName]);

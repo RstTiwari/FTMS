@@ -42,7 +42,7 @@ const ReadCustomer = () => {
             />
             {!isLoading && data ? (
                 <>
-                    <Header title={`${data.customerName}`} subTitle={""} />
+                    <Header title={` Customer Details - ${data.customerName}`} subTitle={""} cancelRoute={"customers"} />
                     <Form
                         name="coustomerForm"
                         form={form}
@@ -65,7 +65,7 @@ const ReadCustomer = () => {
                         }}
                         disabled={true}
                     >
-                        <CoustomersForm current={form} />
+                        <CoustomersForm current={form} disabled={true} />
                     </Form>
                 </>
             ) : (

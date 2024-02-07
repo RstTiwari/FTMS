@@ -5,7 +5,6 @@ import Transaction from "../models/Transaction.js";
 
 export const getProduct = async (req, res) => {
     try {
-        console.log(req.headers["token"])
         const products = await Product.find();
         const productStats = await Promise.all(
             products.map(async (product) => {
@@ -23,7 +22,6 @@ export const getProduct = async (req, res) => {
 
 export const getCoustomers = async(req,res)=>{
     try {
-        console.log(req.cookies)
         const coustomers = await User.find({role:"user"}).select("-password")
         res.status(200).json(coustomers);
 

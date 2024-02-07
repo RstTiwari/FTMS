@@ -36,7 +36,7 @@ const NewLead = () => {
                 onFinish={handleLeadFormFinish}
                 form={form}
             >
-                <Header title={"New Lead"} cancelRoute={"lead"} />
+                <Header title={"New Lead"} cancelRoute={"lead"}  />
                 <LeadForm current={form} />
             </Form>
         </Flex>

@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect } from "react";
-import { useCookies } from "react-cookie";
+import { Cookies, useCookies } from "react-cookie";
 import axios from "axios";
+import { Cookie } from "@mui/icons-material";
 let myfac8ryBaseUrl = process.env.REACT_APP_URL_PROD;
 if (process.env.NODE_ENV === "development") {
     myfac8ryBaseUrl = process.env.REACT_APP_URL_LOCAL;
@@ -161,7 +162,7 @@ export const AuthProvider = ({ children }) => {
                 getTableData,
                 createData,
                 readData,
-                updateData,
+                updateData
             }}
         >
             {children}

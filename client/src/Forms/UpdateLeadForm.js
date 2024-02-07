@@ -158,7 +158,6 @@ const UpdateLeadForm = ({ initialValues, id }) => {
                         {subFileds.map((subField, index) => (
                             <Row justify={"center"} align={"middle"}>
                                 <Col span={16}>
-                                    {console.log(subField, subFileds)}
                                     <Form.Item
                                         label="Add Remark"
                                         name={[subField.name, "comment"]}

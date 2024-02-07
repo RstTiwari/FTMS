@@ -37,7 +37,7 @@ const ReadInvoice = () => {
                 borderRadius: "1rem",
             }}
         >
-            <Header title={` ${entity} Details`} subTitle={""} />
+            <Header title={` ${entity} Details`} subTitle={""} cancelRoute={"invoice"} />
 
             <PageLoader
                 text={"Fetching Invoice Detail Please Wait"}

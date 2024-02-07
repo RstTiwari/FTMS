@@ -60,7 +60,7 @@ const UpdateInvoice = () => {
                 borderRadius: "1rem",
             }}
         >
-            <Header title={` Update - ${entity} Details`} subTitle={""} />
+            <Header title={` Update - ${entity} Details`} subTitle={""}  cancelRoute={"invoice"}/>
             <PageLoader
                 text={`Please hold Fetching ${entity}`}
                 isLoading={isLoading}

@@ -4,26 +4,35 @@ import Header from "components/Header";
 import { invoiceColumns, invoiceData } from "Data/InvoiceData";
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
+import { getLocalData,setLocalData } from "Helper/FetchingLocalData"
 
 
 const Index = () => {
     const { getTableData } = useAuth();
-
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    let entity = "invoice";
     useEffect(() => {
-        fetchData();
+        const localData = getLocalData(entity);
+        if (localData) {
+            // Data has been fetched before, retrieve it from local storage
+            setData(localData);
+            setIsLoading(false);
+        } else {
+            // Data hasn't been fetched before, fetch it
+            fetchData();
+        }
     }, []);
 
     const fetchData = async () => {
-        let entity = "invoice";
         const { success, result, message } = await getTableData(entity);
         if (!success) {
-            setIsLoading(false);
+            setIsLoading(false)
             return NotificationHandler.error(message);
         } else {
             setData(result);
             setIsLoading(false);
+            setLocalData(entity,result)
         }
     };
 
@@ -41,6 +50,7 @@ const Index = () => {
                 title={"Invoice List"}
                 subTitle={"ADD INVOiCES"}
                 addRoute={"invoice/create"}
+                cancelRoute={"dashboard"}
             />
             <Table
                 columns={invoiceColumns}

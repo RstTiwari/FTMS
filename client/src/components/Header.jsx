@@ -4,19 +4,20 @@ import { useMediaQuery } from "@mui/material";
 import { ArrowBackOutlined } from "@mui/icons-material";
 import CloseIcon from '@mui/icons-material/Close';
 import {Row,Col,Button, Divider} from "antd"
+import { removeLocalData } from "Helper/FetchingLocalData"
 
-
-const Header = ({ title, subTitle , addRoute ,cancelRoute}) => { 
+const Header = ({ title, subTitle , addRoute,localDataKey ,cancelRoute}) => { 
     const onCloseClick = ()=>{
-        window.history.back()
+        navigate(`/${cancelRoute}`)
     }
-    const naviogate = useNavigate()
+    const navigate = useNavigate()
     const onAddClick = ()=>{
-        naviogate(`/${addRoute}`)
+        navigate(`/${addRoute}`)
     }
-    const onCancelClick =()=>{
-        naviogate(`/${cancelRoute}`)
-    }
+    const refreshThePageOnly = () => {
+        removeLocalData(`${localDataKey}`);
+    };
+   
      const titleSpane =  subTitle ? 15 : addRoute ? 15 :21;
      const isLaptop = useMediaQuery("(min-width:1000px)")
      const fontSize = isLaptop ? "1.3rem":"0.7rem"
@@ -37,7 +38,7 @@ const Header = ({ title, subTitle , addRoute ,cancelRoute}) => {
                      <Col xs={6} sm={12} md={6} lg={3}>
                         <Button
                             onClick={() => {
-                                window.location.reload();
+                                refreshThePageOnly()
                             }}
                         >
                             Refresh

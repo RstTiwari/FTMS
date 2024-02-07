@@ -83,16 +83,18 @@ const UpdateCustomer = () => {
                 borderRadius: "1rem",
             }}
         >
+             <Header
+                        title={` Update - ${entity} Details`}
+                        subTitle={""}
+                        cancelRoute={"customers"}
+                    />
             <PageLoader
                 text={`Please hold Fetching ${entity}`}
                 isLoading={isLoading}
             />
             {!isLoading && data ? (
                 <>
-                    <Header
-                        title={` Update - ${entity} Details`}
-                        subTitle={""}
-                    />
+                   
 
                     <Form
                         name="updateCustomer"

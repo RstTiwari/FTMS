@@ -41,7 +41,6 @@ const Register = () => {
         let response = await authApiCall("verify", payload);
         if (response.success === 1) {
             setIsLoading(false);
-            console.log(response.result);
             loginUser(response.result);
             navigate("/dashboard");
         }

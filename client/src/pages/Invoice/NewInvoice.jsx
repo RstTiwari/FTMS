@@ -36,7 +36,7 @@ const NewInvoice = () => {
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 8 }}
         >
-            <Header title={"NEW INVOICE"} />
+            <Header title={"NEW INVOICE"} cancelRoute={"invoice"} />
             <Form
                 name="newInvoiceForm"
                 form={form}

@@ -169,7 +169,6 @@ const QuotationForm = ({ current }) => {
 
         const taxAmount = Math.floor((grossSum * taxPercent) / 100);
         const grandSum = grossSum + taxAmount + transPortAmount;
-        console.log(grandSum, taxAmount, transPortAmount);
         current.setFieldsValue({ grossTotal: grossSum });
         current.setFieldsValue({ grandTotal: grandSum });
     };

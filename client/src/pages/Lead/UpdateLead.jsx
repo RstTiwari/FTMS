@@ -47,7 +47,6 @@ const UpdateLead = () => {
     useEffect(() => {
         fetchData();
     }, []);
-    console.log(data);
     return (
         <Flex
             gap={"middle"}
@@ -59,7 +58,7 @@ const UpdateLead = () => {
                 borderRadius: "1rem",
             }}
         >
-            <Header title={` Update - ${entity} Details`} subTitle={""} />
+            <Header title={` Update - ${entity} Details`} subTitle={""} cancelRoute={"lead"} />
             <PageLoader
                 text={`Please hold Fetching ${entity}`}
                 isLoading={isLoading}

@@ -44,7 +44,7 @@ const ReadLead = () => {
             />
             {!isLoading && data ? (
                 <>
-                    <Header title={` ${entity} Details`} subTitle={""} />
+                    <Header title={` ${entity} Details`} subTitle={""}  cancelRoute={"lead"}/>
                     <Form
                         name="coustomerForm"
                         labelCol={{ span: 8 }}

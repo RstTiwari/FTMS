@@ -57,7 +57,7 @@ const NewCustomer = () => {
                 borderRadius: "1rem",
             }}
         >
-            <Header title={"New Customers"} subTitle={""} />
+            <Header title={"New Customers"} subTitle={""} cancelRoute={"customers"} />
             <Form
                 name="coustomerForm"
                 form={form}
