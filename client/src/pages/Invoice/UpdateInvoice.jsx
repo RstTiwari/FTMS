@@ -20,11 +20,10 @@ import { useMediaQuery } from "@mui/material";
 import { useAuth } from "state/AuthProvider";
 import Header from "components/Header";
 import NotificationHandler from "EventHandler/NotificationHandler";
-import QuotationForm from "Forms/QuotationForm";
 import { epochInDDMMYY } from "Helper/EpochConveter";
-import UpdateQuotationForm from "Forms/UpdateQuotationForm";
+import UpdateInvoiceForm from "Forms/UpdateInvoiceForm";
 
-const UpdateQuotation = () => {
+const UpdateInvoice = () => {
     const [form] = Form.useForm();
     const [data, setData] = useState([]);
     const [items, setItems] = useState([]);
@@ -42,7 +41,7 @@ const UpdateQuotation = () => {
             setData(result);
             setIsLoading(false);
         } else {
-            return NotificationHandler.error("Failed to Fetch");
+            NotificationHandler.error("Failed to Fetch");
         }
     };
 
@@ -66,31 +65,22 @@ const UpdateQuotation = () => {
                 text={`Please hold Fetching ${entity}`}
                 isLoading={isLoading}
             />
-
             {!isLoading && data && product ? (
                 <>
-                    <UpdateQuotationForm
+                    <UpdateInvoiceForm
                         initialValues={{
-                            customer: data.customer.customerName,
-                            quoteNo: data.quoteNo,
-                            attenPerson: data.attenPerson,
-                            grandTotal: data.grandTotal,
-                            grossTotal: data.grossTotal,
-                            items: data.items,
-                            message: data.message,
-                            quoteDate: epochInDDMMYY(data.quoteDate),
-                            quoteExpiryDate: epochInDDMMYY(
-                                data.quoteExpiryDate
+                            customer: data.customer._id,
+                            invoiceNo: data.invoiceNo,
+                            orderNo: data.orderNo,
+                            invoiceDate: epochInDDMMYY(data.invoiceDate),
+                            invoiceExpiredDate: epochInDDMMYY(
+                                data.invoiceExpiredDate
                             ),
-                            subject: data.subject,
-                            taxPercent: data.taxPercent,
-                            transPortAmount: data.transPortAmount,
-                            validityCondition: data.validityCondition,
-                            paymentsCondition: data.paymentsCondition,
-                            installationCondition: data.installationCondition,
-                            deliveryCondition: data.deliveryCondition,
-                            facilityCondition: data.facilityCondition,
-                            cancellationCondition: data.cancellationCondition,
+                            salesPerson: data.salesPerson,
+                            items: data.items,
+                            grossTotal: data.grossTotal,
+                            totalTaxAmount: data.totalTaxAmount,
+                            grandTotal: data.grandTotal,
                         }}
                         id={id}
                     />
@@ -102,4 +92,4 @@ const UpdateQuotation = () => {
     );
 };
 
-export default UpdateQuotation;
+export default UpdateInvoice;

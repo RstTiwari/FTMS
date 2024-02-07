@@ -37,13 +37,14 @@ const ReadQuation = () => {
                 borderRadius: "1rem",
             }}
         >
+            <Header title={` Quotation Details`} subTitle={""} />
+
             <PageLoader
                 text={"Fetching Customer Detail Please Wait"}
                 isLoading={isLoading}
             />
             {!isLoading && data ? (
                 <>
-                    <Header title={` Quotation Details`} subTitle={""} />
                     <Form
                         name="coustomerForm"
                         form={form}

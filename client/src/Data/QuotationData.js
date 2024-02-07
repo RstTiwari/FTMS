@@ -20,7 +20,7 @@ export const quotationColumn = [
         render:(_,record)=>(
             <>
             <Text type="success">
-                {record.customer}
+                {record.customer.customerName}
             </Text>
             </>
         )

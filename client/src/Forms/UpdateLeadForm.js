@@ -1,31 +1,69 @@
-import React, { useState } from "react";
-import { Form, Select, Divider, Space, Input, Button, Row, Col } from "antd";
-import { LeadOption, companyDetails, leadStatus } from "Data/LeadData";
-import DropDownCoustom from "components/DropDownCoustom";
+import {
+    Form,
+    Select,
+    Row,
+    Col,
+    Input,
+    Button,
+    Divider,
+    DatePicker,
+} from "antd";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "state/AuthProvider";
-import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
-const LeadForm = ({ current }) => {
-    const [compnayDetails, setCompanyDetails] = useState([]);
-    const { getDropDownData } = useAuth();
-    const handleInputChange = async (value) => {};
-    const handelDropDownClick = async () => {
+import { LeadOption } from "Data/LeadData";
+import { leadStatus } from "Data/LeadData";
+import { epochConveter, epochInDDMMYY } from "Helper/EpochConveter";
+import NotificationHandler from "EventHandler/NotificationHandler";
+
+const UpdateLeadForm = ({ initialValues, id }) => {
+    const [form] = Form.useForm();
+    const [company, setCompany] = useState([]);
+    const [toUpdate,setToUpdate] = useState(false)
+
+    const { getDropDownData,updateData } = useAuth();
+
+    const onFinish = async(value) => {
+        if(!toUpdate) return NotificationHandler.error("Nothing to Update")
+        value._id = id;
+        value.recivedDate = epochConveter(value.recivedDate.$d)
+        let payload = { entity: "lead", value };
+        const { success, result, message } = await updateData(payload);
+        if (success) {
+            return NotificationHandler.success(message);
+        } else {
+            return NotificationHandler.error(message);
+        }
+    };
+    const handleValueChange = ()=>{
+        setToUpdate(true)
+    }
+
+    const handelCustomerClick = async (value) => {
         let entity = "customer";
         let fieldName = "customerName";
         let data = await getDropDownData(entity, fieldName);
-        setCompanyDetails(data);
+        setCompany(data);
+    };
+    const handleCustomerChange = (value, label) => {
+        form.setFieldsValue({ customer: value });
     };
 
-    const handleCustomerChange = (value, option) => {
-        const { customer } = current.getFieldsValue(["customer"]);
-        current.setFieldsValue({ customer: option.value });
-    };
+    useEffect(() => {
+        handelCustomerClick();
+    }, []);
     return (
-        <div>
+        <Form
+            name="leadUpdateForm"
+            form={form}
+            initialValues={initialValues}
+            onFinish={onFinish}
+            onValuesChange={handleValueChange}
+        >
             <Form.Item
-                label="Source"
-                name="source"
-                hasFeedback
-                allowClear={true}
+                label="Recvied Date"
+                name="recivedDate"
+                disabled
                 rules={[
                     {
                         required: true,
@@ -33,7 +71,22 @@ const LeadForm = ({ current }) => {
                     },
                 ]}
             >
-                <Select>
+                <DatePicker disabled />
+            </Form.Item>
+            <Form.Item
+                label="Source"
+                name="source"
+                hasFeedback
+                allowClear={true}
+                disabled
+                rules={[
+                    {
+                        required: true,
+                        message: "Please Select Source",
+                    },
+                ]}
+            >
+                <Select disabled>
                     {LeadOption.map((item) => {
                         const { label, value } = item;
                         return (
@@ -46,6 +99,7 @@ const LeadForm = ({ current }) => {
                     })}
                 </Select>
             </Form.Item>
+
             <Form.Item
                 label={"Select Customer"}
                 name={"customer"}
@@ -58,19 +112,31 @@ const LeadForm = ({ current }) => {
                 ]}
             >
                 <Select
-                    labelInValue
-                    allowClear={true}
-                    options={compnayDetails}
-                    onClick={handelDropDownClick}
-                    onChange={handleCustomerChange}
+                    options={company}
+                    disabled
+                    showSearch
+                    filterOption={(input, option) =>
+                        (option?.label ?? "")
+                            .toLowerCase()
+                            .includes(input.toLowerCase())
+                    }
                     dropdownRender={(menu) => (
-                        <DropDownCoustom
-                            option={menu}
-                            placeHolder="Search New Coustomer"
-                            buttonName="Add New"
-                            onInputChange={handleInputChange}
-                        />
+                        <>
+                            <div>
+                                {menu}
+                                <Divider />
+                                <Button
+                                    type="primary"
+                                    style={{
+                                        margin: "0.1rem",
+                                    }}
+                                >
+                                    Add New
+                                </Button>
+                            </div>
+                        </>
                     )}
+                    onChange={handleCustomerChange}
                 />
             </Form.Item>
             <Form.Item
@@ -92,6 +158,7 @@ const LeadForm = ({ current }) => {
                         {subFileds.map((subField, index) => (
                             <Row justify={"center"} align={"middle"}>
                                 <Col span={16}>
+                                    {console.log(subField, subFileds)}
                                     <Form.Item
                                         label="Add Remark"
                                         name={[subField.name, "comment"]}
@@ -119,6 +186,7 @@ const LeadForm = ({ current }) => {
                                 onClick={() => {
                                     subOpt.add({
                                         comment: "",
+                                        edit: true,
                                     });
                                 }}
                                 icon={<PlusOutlined />}
@@ -136,11 +204,11 @@ const LeadForm = ({ current }) => {
 
             <Form.Item>
                 <Button type="primary" htmlType="submit">
-                    Save
+                    Update Lead
                 </Button>
             </Form.Item>
-        </div>
+        </Form>
     );
 };
 
-export default LeadForm;
+export default UpdateLeadForm;

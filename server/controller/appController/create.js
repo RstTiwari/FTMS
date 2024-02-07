@@ -8,14 +8,14 @@ const create = async (req, res, next, dataBase) => {
         if (!savedata) {
             throw new Error(`Failed to Create new ${req.entity} data`);
         }
-        res.send({
+        res.status(200).json({
             success: 1,
             result: [],
             message: `New ${entity} data is saved`,
         });
     } catch (error) {
         console.error(error.message);
-        res.send({
+        res.status.json({
             success: 0,
             result: [],
             message:error.message

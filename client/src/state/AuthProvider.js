@@ -79,7 +79,7 @@ export const AuthProvider = ({ children }) => {
         } else {
             data = data.result.map((item) => {
                 item["label"] = item[fieldName];
-                item["value"] = item[fieldName];
+                item["value"] = item._id;
                 return item;
             });
             return data;
@@ -102,7 +102,7 @@ export const AuthProvider = ({ children }) => {
         }
     }
     const updateData = async (payload) => {
-        let data = appApiCall("post", "update", payload, {});
+        let data = await appApiCall("post", "update", payload, {});
         if (data.success === 0) {
             return { success: 0, result: null, message: data.message };
         } else {

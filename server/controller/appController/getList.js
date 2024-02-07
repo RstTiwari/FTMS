@@ -1,5 +1,6 @@
 const getList = async (req, res, next, dataBase) => {
     let tenantId = req.tenantId 
+    console.log(tenantId);
     try {
         let data = await dataBase.find({tenantId:tenantId});
         return res.status(200).json({

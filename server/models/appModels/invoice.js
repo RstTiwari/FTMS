@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 import mongooseAutoPopulate from "mongoose-autopopulate";
 const invoiceSchema = new mongoose.Schema({
     customer: {
-        type: String,
+        type: mongoose.Schema.ObjectId,
         ref: "customer",
-        require: true,
         autopopulate: true,
+        require: true,
     },
     invoiceNo: {
         type: String,
@@ -30,7 +30,7 @@ const invoiceSchema = new mongoose.Schema({
     items: [
         {
             description: {
-                type: String,
+                type:String,
                 require: true,
             },
             hsnCode:{

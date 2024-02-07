@@ -50,6 +50,7 @@ const QuotationForm = ({ current }) => {
         const items = [...formData];
         const index = subField.key; // Use subField.name to get the index
         const rowManipulated = items[0];
+        rowManipulated.label = label.label;
         rowManipulated.rate = label.rate;
         const discountAmount = Math.floor(
             (rowManipulated.rate * rowManipulated.percentDiscount) / 100

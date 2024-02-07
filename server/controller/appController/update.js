@@ -2,10 +2,9 @@ const update = async (req, res, next, database) => {
     try {
         let tenantId = req.tenantId;
         const { entity, value } = req.body;
-        let filter = { _id: value.id, tenantId: tenantId };
-        let updatedData = await database.updateOne(filter, {
-            $set: value,
-        });
+        let filter = { _id: value._id, tenantId: tenantId };
+        let updatedData = await database.updateOne(filter, {$set:value});
+        console.log(updatedData);
         if (updatedData.modifiedCount === 0) {
             throw new Error(`Failed to Update ${entity}`);
         }

@@ -20,18 +20,16 @@ import { useMediaQuery } from "@mui/material";
 import { useAuth } from "state/AuthProvider";
 import Header from "components/Header";
 import NotificationHandler from "EventHandler/NotificationHandler";
-import QuotationForm from "Forms/QuotationForm";
 import { epochInDDMMYY } from "Helper/EpochConveter";
-import UpdateQuotationForm from "Forms/UpdateQuotationForm";
+import UpdateLeadForm from "Forms/UpdateLeadForm";
 
-const UpdateQuotation = () => {
+const UpdateLead = () => {
     const [form] = Form.useForm();
     const [data, setData] = useState([]);
     const [items, setItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const { entity, id } = useParams();
     const { readData } = useAuth();
-    const [product, setProduct] = useState([]);
 
     let fetchData = async () => {
         const { success, result, message } = await readData({
@@ -49,7 +47,7 @@ const UpdateQuotation = () => {
     useEffect(() => {
         fetchData();
     }, []);
-
+    console.log(data);
     return (
         <Flex
             gap={"middle"}
@@ -67,30 +65,15 @@ const UpdateQuotation = () => {
                 isLoading={isLoading}
             />
 
-            {!isLoading && data && product ? (
+            {!isLoading && data ? (
                 <>
-                    <UpdateQuotationForm
+                    <UpdateLeadForm
                         initialValues={{
-                            customer: data.customer.customerName,
-                            quoteNo: data.quoteNo,
-                            attenPerson: data.attenPerson,
-                            grandTotal: data.grandTotal,
-                            grossTotal: data.grossTotal,
-                            items: data.items,
-                            message: data.message,
-                            quoteDate: epochInDDMMYY(data.quoteDate),
-                            quoteExpiryDate: epochInDDMMYY(
-                                data.quoteExpiryDate
-                            ),
-                            subject: data.subject,
-                            taxPercent: data.taxPercent,
-                            transPortAmount: data.transPortAmount,
-                            validityCondition: data.validityCondition,
-                            paymentsCondition: data.paymentsCondition,
-                            installationCondition: data.installationCondition,
-                            deliveryCondition: data.deliveryCondition,
-                            facilityCondition: data.facilityCondition,
-                            cancellationCondition: data.cancellationCondition,
+                            recivedDate: epochInDDMMYY(data.recivedDate),
+                            customer: data.customer._id,
+                            comments: data.comments,
+                            source: data.source,
+                            status: data.status,
                         }}
                         id={id}
                     />
@@ -102,4 +85,4 @@ const UpdateQuotation = () => {
     );
 };
 
-export default UpdateQuotation;
+export default UpdateLead;

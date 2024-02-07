@@ -37,13 +37,14 @@ const ReadInvoice = () => {
                 borderRadius: "1rem",
             }}
         >
+            <Header title={` ${entity} Details`} subTitle={""} />
+
             <PageLoader
                 text={"Fetching Invoice Detail Please Wait"}
                 isLoading={isLoading}
             />
             {!isLoading && data ? (
                 <>
-                    <Header title={` ${entity} Details`} subTitle={""} />
                     <Form
                         name="coustomerForm"
                         form={form}

@@ -9,7 +9,7 @@ import {
     Divider,
     Row,
     Col,
-    DatePicker
+    DatePicker,
 } from "antd";
 import {
     MinusCircleOutlined,
@@ -19,27 +19,23 @@ import {
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import { useMediaQuery } from "@mui/material";
-import { epochConveter } from "Helper/EpochConveter"
+import { epochConveter } from "Helper/EpochConveter";
 
-
-const UpdateQuotationForm = ({ initialValues ,id}) => {
+const UpdateInvoiceForm = ({ initialValues, id }) => {
     const [form] = Form.useForm();
-    const { getDropDownData,createData,updateData } = useAuth();
+    const { getDropDownData, createData, updateData } = useAuth();
     const [product, setProduct] = useState([]);
     const [company, setCompany] = useState([]);
-    const [toUpdate,setToUpdate] = useState(false)
+    const [toUpdate, setToUpdate] = useState(false);
     const isLaptop = useMediaQuery("(min-width:1000px)");
-    const inputWidth = isLaptop ? 700 : 350;
-    const inputFontSize = isLaptop ? "1rem" : "0.4rem";
+  
 
-    const onFinish = async(value) => {
-        if(!toUpdate) return NotificationHandler.error("Nothing to Update")
-        let epochQuoteDate = epochConveter(value.quoteDate.$d);
-        let epochExpiryDate = epochConveter(value.quoteDate.$d);
+    const onFinish = async (value) => {
+        if (!toUpdate) return NotificationHandler.error("Nothing to Update");
+        value.invoiceDate  = epochConveter(value.invoiceDate.$d);
+        value.invoiceExpiredDate = epochConveter(value.invoiceExpiredDate.$d);
         value._id = id;
-        value.quoteDate = epochQuoteDate;
-        value.quoteExpiryDate = epochExpiryDate;
-        let payload = { entity: "quote", value };
+        let payload = { entity: "invoice", value };
         const { success, result, message } = await updateData(payload);
         if (success) {
             return NotificationHandler.success(message);
@@ -47,9 +43,9 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
             return NotificationHandler.error(message);
         }
     };
-    const handleValueChange = ()=>{
-        setToUpdate(true)
-    }
+    const handleValueChange = () => {
+        setToUpdate(true);
+    };
     const handleDescriptionClick = async () => {
         let entity = "product";
         let fieldName = "productName";
@@ -67,60 +63,54 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
         form.setFieldsValue({ customer: value });
     };
 
-    const onItemChange = (value, label ={}, index,subField) => {
-        let { items, grossTotal, grandTotal, taxPercent, transPortAmount } =
-            form.getFieldsValue([
-                "items",
-                "grossTotal",
-                "grandTotal",
-                "taxPercent",
-                "transPortAmount",
-            ]);
+    const onItemChange = (value, label = {}, index, subField) => {
+        let { items } = form.getFieldsValue(["items"]);
         let data = [...items];
         const rowManipulated = data[index];
         if (subField === "description") {
             rowManipulated.description = label.label;
             rowManipulated.rate = Math.ceil(label.rate);
+            rowManipulated.hsnCode = label.hsnCode;
         } else if (subField === "qty") {
             rowManipulated.qty = value;
         } else if (subField === "rate") {
             rowManipulated.rate = Math.ceil(value);
-        } else if (subField === "percentDiscount") {
-            rowManipulated.percentDiscount = value;
-        } else if (subField === "taxPercent") {
-            taxPercent = value;
-        } else if (subField === "transPortAmount") {
-            transPortAmount = value;
+        } else if (subField === "sgstPercent") {
+            rowManipulated.sgstPercent = value;
+        } else if (subField === "cgstPercent") {
+            rowManipulated.cgstPercent = value;
+        } else if (subField === "igstPercent") {
+            rowManipulated.igstPercent = value;
         } else {
             NotificationHandler.error("somthing went wrong");
         }
-
-        const discountAmount = Math.floor(
-            (rowManipulated.rate * rowManipulated.percentDiscount) / 100
+        
+        rowManipulated.taxableAmount = Math.ceil(rowManipulated.rate*rowManipulated.qty)
+        rowManipulated.finalAmount = getFinalAmount(
+            rowManipulated.sgstPercent,
+            rowManipulated.cgstPercent,
+            rowManipulated.igstPercent,
+            rowManipulated.taxableAmount
         );
-        rowManipulated.bestOffer = Math.ceil(rowManipulated.rate - discountAmount);
-        rowManipulated.finalAmount = Math.ceil(
-            rowManipulated.bestOffer * rowManipulated.qty
-        );
 
-        data[index] = rowManipulated; // Update the form with the new final amount value
+        data[index] = rowManipulated;
         form.setFieldsValue({ items: data });
-      
-        const grossSum = items.reduce(
-            (accumulator, currentValue) =>
-                accumulator + currentValue.finalAmount,
-            0
-        );
-        if (subField === "taxPercent") {
-        }
-        if (subField === "transPortAmount") {
-        }
-        const taxAmount = Math.floor((grossSum * taxPercent) / 100);
-        const grandSum = grossSum + taxAmount + transPortAmount;
-        form.setFieldsValue({ grossTotal: Math.ceil(grossSum) });
-        form.setFieldsValue({ grandTotal: Math.ceil(grandSum) });
+
+        let amountBeforeTax = items.reduce((a, b) => a + b.taxableAmount, 0);
+        let amountAfterTax = items.reduce((a, b) => a + b.finalAmount, 0);
+        const totalTaxAmount = amountAfterTax - amountBeforeTax;
+        form.setFieldsValue({ grossTotal: Math.ceil(amountBeforeTax) });
+        form.setFieldsValue({ grandTotal: Math.ceil(amountAfterTax) });
+        form.setFieldsValue({ totalTaxAmount: Math.ceil(totalTaxAmount) });
     };
-  
+
+     /**Function for Calculating the Final Amount */
+     const getFinalAmount = (sgst, cgst, igst, taxableAmount) => {
+        let sgstAmount = Math.floor((sgst * taxableAmount) / 100);
+        let cgstAmount = Math.floor((cgst * taxableAmount) / 100);
+        let igstAmount = Math.floor((igst * taxableAmount) / 100);
+        return Math.ceil(taxableAmount + sgstAmount + igstAmount + cgstAmount);
+    };
     useEffect(() => {
         handleDescriptionClick();
         handelCustomerClick();
@@ -128,89 +118,104 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
 
     return (
         <Form
-            name="update_quotation"
+            name="update_invoice"
             initialValues={initialValues}
             onFinish={onFinish}
             onValuesChange={handleValueChange}
             form={form}
         >
-            <Form.Item
-                label={"Select Customer"}
-                name={"customer"}
-                labelAlign="left"
-                labelCol={{ span: 6 }}
-                rules={[
-                    {
-                        required: "true",
-                        message: "Please Select Customer",
-                    },
-                ]}
-            >
-                <Select
-                    options={company}
-                    showSearch
-                    filterOption={(input, option) =>
-                        (option?.label ?? "")
-                            .toLowerCase()
-                            .includes(input.toLowerCase())
-                    }
-                    dropdownRender={(menu) => {
-                        return (
-                            <div>
-                                {menu}
-                                <Divider />
-                                <Button
-                                    type="primary"
-                                    style={{
-                                        margin: "0.1rem",
-                                    }}
-                                >
-                                    Add New
-                                </Button>
-                            </div>
-                        );
-                    }}
-                    onChange={handleCustomerChange}
-                />
-            </Form.Item>
-            <Form.Item
-                label={"Quote#"}
-                name={"quoteNo"}
-                labelAlign="left"
-                labelCol={{ span: 6 }}
-                rules={[
-                    {
-                        required: "true",
-                        message: "Please Provide Quote No",
-                    },
-                ]}
-            >
-                <Input />
-            </Form.Item>
+            <Col span={10}>
+                <Form.Item
+                    label={"Select Coustomer"}
+                    name={`customer`}
+                    labelAlign="left"
+                    labelCol={{ span: 8 }}
+                    rules={[
+                        {
+                            required: "true",
+                            message: "Please Select Coustomer",
+                        },
+                    ]}
+                >
+                    <Select
+                        options={company}
+                        disabled
+                        showSearch
+                        filterOption={(input, option) =>
+                            (option?.label ?? "")
+                                .toLowerCase()
+                                .includes(input.toLowerCase())
+                        }
+                        dropdownRender={(menu) => (
+                            <>
+                                <div>
+                                    {menu}
+                                    <Divider />
+                                    <Button
+                                        type="primary"
+                                        style={{
+                                            margin: "0.1rem",
+                                        }}
+                                    >
+                                        Add New
+                                    </Button>
+                                </div>
+                            </>
+                        )}
+                        onChange={handleCustomerChange}
+                    />
+                </Form.Item>
+            </Col>
+            <Col span={10}>
+                <Form.Item
+                    label={"Invoice#"}
+                    name={"invoiceNo"}
+                    labelAlign="left"
+                    labelCol={{ span: 8 }}
+                    rules={[
+                        {
+                            required: "true",
+                            message: "Please Fill InvoiceNo",
+                        },
+                    ]}
+                >
+                    <Input disabled />
+                </Form.Item>
+            </Col>
+            <Col span={10}>
+                <Form.Item
+                    label={"OrderNo"}
+                    name={"orderNo"}
+                    labelAlign="left"
+                    labelCol={{ span: 8 }}
+                >
+                    <Input  disabled/>
+                </Form.Item>
+            </Col>
             <Row>
                 <Col xs={24} sm={24} md={12} lg={12}>
                     <Form.Item
-                        label={"Quote Date"}
-                        name={"quoteDate"}
+                        label={"Invoice Date"}
+                        name={"invoiceDate"}
                         rules={[
                             {
                                 required: true,
-                                message: "Please Select Quote Date",
+                                message: "Please Select Invocie Date",
                             },
                         ]}
                         labelAlign="left"
-                        labelCol={{ span: 12 }}
+                        labelCol={{ span: 8 }}
                     >
                         <DatePicker
-                            placeholder="Quote Date"
+                            placeholder="Invoice Date"
                             format={"DD/MM/YY"}
                         />
                     </Form.Item>
                 </Col>
                 <Col xs={24} sm={24} md={12} lg={12}>
                     <Form.Item
-                        label={"Expiry Date"}
-                        name={"quoteExpiryDate"}
+                        label={"Due Date"}
+                        name={"invoiceExpiredDate"}
                         rules={[
                             {
                                 required: true,
@@ -218,7 +223,7 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
                             },
                         ]}
                         labelAlign="left"
-                        labelCol={{ span: 6 }}
+                        labelCol={{ span: 8 }}
                     >
                         <DatePicker
                             placeholder="Expiry Date"
@@ -227,64 +232,52 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
                     </Form.Item>
                 </Col>
             </Row>
-            <Form.Item
-                label="Atten Per"
-                name={"attenPerson"}
-                labelAlign="left"
-                labelCol={{ span: 6 }}
-            >
-                <Input />
-            </Form.Item>
-            <Form.Item
-                label="Sub"
-                name={"subject"}
-                labelAlign="left"
-                labelCol={{ span: 6 }}
-            >
-                <Input size="large" maxLength={100} />
-            </Form.Item>
-            <Form.Item
-                label="Message"
-                name={"message"}
-                labelAlign="left"
-                labelCol={{ span: 6 }}
-            >
-                <Input.TextArea style={{ width: "100%" }} />
-            </Form.Item>
+            <Col span={6}>
+                <Form.Item
+                    label={"SalesPerson"}
+                    name={"salesPerson"}
+                    labelAlign="left"
+                    labelCol={{ span: 8 }}
+                >
+                    <Input />
+                </Form.Item>
+            </Col>
+            <Divider dashed />
+            <Row>
+                <h3>Item Table</h3>
+            </Row>
             <Divider dashed />
             <Row gutter={[12, 12]} style={{ position: "relative" }}>
-                <Col className="gutter-row" span={7}>
+                <Col className="gutter-row" span={5}>
                     <p>{"Description"}</p>
                 </Col>
-                <Col className="gutter-row" span={3}>
+                <Col className="gutter-row" span={2}>
+                    <p>{"HSN Code"}</p>
+                </Col>
+                <Col className="gutter-row" span={2}>
                     <p>{"Rate"}</p>
                 </Col>
-                <Col className="gutter-row" span={3}>
-                    <p>{"Discount %"}</p>
-                </Col>
-                <Col className="gutter-row" span={3}>
-                    <p>{"Best Offer"}</p>{" "}
-                </Col>
-                <Col className="gutter-row" span={3}>
+                <Col className="gutter-row" span={2}>
                     <p>{"Qty"}</p>
+                </Col>
+
+                <Col className="gutter-row" span={2}>
+                    <p>{"Taxable Amount"}</p>
+                </Col>
+                <Col className="gutter-row" span={2}>
+                    <p>{"SGST%"}</p>{" "}
+                </Col>
+                <Col className="gutter-row" span={2}>
+                    <p>{"CGST%"}</p>{" "}
+                </Col>
+                <Col className="gutter-row" span={2}>
+                    <p>{"IGST%"}</p>
                 </Col>
                 <Col className="gutter-row" span={3}>
                     <p>{"Final Amount"}</p>
                 </Col>
             </Row>
-            <Form.List
-                name={"items"}
-                initialValue={[
-                    {
-                        description: "",
-                        rate: 0,
-                        percentDiscount: 0,
-                        bestOffer: 0,
-                        qty: 1,
-                        finalAmount: 0,
-                    },
-                ]}
-            >
+            <Form.List name={"items"}>
                 {(subFields, subOpt) => (
                     <div>
                         {subFields.map((subField, index) => (
@@ -293,13 +286,20 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
                                 key={subField.key}
                                 align={"middle"}
                             >
-                                <Col className="gutter-row" span={7}>
+                                <Col className="gutter-row" span={5}>
                                     <Form.Item
                                         name={[subField.name, "description"]}
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message:
+                                                    "Please Select the description",
+                                            },
+                                        ]}
                                     >
                                         <Select
                                             style={{
-                                                width: 250,
+                                                width: 200,
                                             }}
                                             options={product}
                                             showSearch
@@ -310,8 +310,8 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
                                                         input.toLowerCase()
                                                     )
                                             }
-                                            dropdownRender={(menu) => {
-                                                return (
+                                            dropdownRender={(menu) => (
+                                                <>
                                                     <div>
                                                         {menu}
                                                         <Divider />
@@ -324,8 +324,8 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
                                                             Add New
                                                         </Button>
                                                     </div>
-                                                );
-                                            }}
+                                                </>
+                                            )}
                                             onChange={(
                                                 value,
                                                 option,
@@ -341,7 +341,14 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
                                         />
                                     </Form.Item>
                                 </Col>
-                                <Col span={3}>
+                                <Col span={2}>
+                                    <Form.Item
+                                        name={[subField.name, "hsnCode"]}
+                                    >
+                                        <Input style={{ width: 75 }} />
+                                    </Form.Item>
+                                </Col>
+                                <Col span={2}>
                                     <Form.Item name={[subField.name, "rate"]}>
                                         <InputNumber
                                             style={{ width: 75 }}
@@ -360,44 +367,7 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
                                         />
                                     </Form.Item>
                                 </Col>
-                                <Col span={3}>
-                                    <Form.Item
-                                        name={[
-                                            subField.name,
-                                            "percentDiscount",
-                                        ]}
-                                    >
-                                        <InputNumber
-                                            style={{ width: 75 }}
-                                            onChange={(
-                                                value,
-                                                label = {},
-                                                subField = "percentDiscount"
-                                            ) =>
-                                                onItemChange(
-                                                    value,
-                                                    label,
-                                                    index,
-                                                    subField
-                                                )
-                                            }
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={3}>
-                                    <Form.Item
-                                        name={[subField.name, "bestOffer"]}
-                                    >
-                                        <InputNumber
-                                            readOnly
-                                            className="moneyInput"
-                                            min={0}
-                                            controls={false}
-                                            style={{ width: 75 }}
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={3}>
+                                <Col span={2}>
                                     <Form.Item name={[subField.name, "qty"]}>
                                         <InputNumber
                                             style={{ width: 75 }}
@@ -416,7 +386,87 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
                                         />
                                     </Form.Item>
                                 </Col>
-                                <Col span={3}>
+                                <Col span={2}>
+                                    <Form.Item
+                                        name={[subField.name, "taxableAmount"]}
+                                    >
+                                        <InputNumber
+                                            readOnly
+                                            className="moneyInput"
+                                            min={0}
+                                            controls={false}
+                                            style={{ width: 75 }}
+                                        />
+                                    </Form.Item>
+                                </Col>
+                                <Col span={2}>
+                                    <Form.Item
+                                        name={[subField.name, "sgstPercent"]}
+                                    >
+                                        <InputNumber
+                                            style={{ width: 75 }}
+                                            onChange={(
+                                                value,
+                                                label,
+                                                subField = "sgstPercent"
+                                            ) =>
+                                                onItemChange(
+                                                    value,
+                                                    label,
+                                                    index,
+                                                    subField
+                                                )
+                                            }
+                                        />
+                                    </Form.Item>
+                                </Col>
+                                <Col span={2}>
+                                    <Form.Item
+                                        name={[subField.name, "cgstPercent"]}
+                                    >
+                                        <InputNumber
+                                            className="moneyInput"
+                                            min={0}
+                                            style={{ width: 75 }}
+                                            onChange={(
+                                                value,
+                                                label = {},
+                                                subField = "cgstPercent"
+                                            ) =>
+                                                onItemChange(
+                                                    value,
+                                                    label,
+                                                    index,
+                                                    subField
+                                                )
+                                            }
+                                        />
+                                    </Form.Item>
+                                </Col>
+                                <Col span={2}>
+                                    <Form.Item
+                                        name={[subField.name, "igstPercent"]}
+                                    >
+                                        <InputNumber
+                                            className="moneyInput"
+                                            min={0}
+                                            style={{ width: 75 }}
+                                            onChange={(
+                                                value,
+                                                label = {},
+                                                subField = "igstPercent"
+                                            ) =>
+                                                onItemChange(
+                                                    value,
+                                                    label,
+                                                    index,
+                                                    subField
+                                                )
+                                            }
+                                        />
+                                    </Form.Item>
+                                </Col>
+                                <Col span={2}>
                                     <Form.Item
                                         name={[subField.name, "finalAmount"]}
                                     >
@@ -429,14 +479,15 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
                                         />
                                     </Form.Item>
                                 </Col>
-                                <Form.Item>
-                                    <DeleteOutlined
-                                        disabled
-                                        onClick={() => {
-                                            subOpt.remove(subField.name);
-                                        }}
-                                    />
-                                </Form.Item>
+                                <Col span={3}>
+                                    <Form.Item>
+                                        <DeleteOutlined
+                                            onClick={() => {
+                                                subOpt.remove(subField.name);
+                                            }}
+                                        />
+                                    </Form.Item>
+                                </Col>
                             </Row>
                         ))}
 
@@ -444,11 +495,14 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
                             type="primary"
                             onClick={() => {
                                 subOpt.add({
-                                    bestOffer: 0,
-                                    finalAmount: 0,
+                                    description: "",
                                     qty: 1,
                                     rate: 0,
-                                    percentDiscount: 0,
+                                    taxableAmount: 0,
+                                    sgstPercent: 0,
+                                    cgstPercent: 0,
+                                    igstPercent: 0,
+                                    finalAmount: 0,
                                 }); // Use srNo instead of srN
                             }}
                             icon={<PlusOutlined />}
@@ -465,7 +519,11 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
             </Form.List>
             <Row align={"middle"} justify={"end"}>
                 <Col span={8}>
-                    <Form.Item label="Gross Total" name={"grossTotal"}>
+                    <Form.Item
+                        label="Gross Total"
+                        name={"grossTotal"}
+                        labelAlign="center"
+                    >
                         <InputNumber
                             readOnly
                             className="moneyInput"
@@ -478,141 +536,31 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
             <Row align={"middle"} justify={"end"}>
                 <Col span={8}>
                     <Form.Item
-                        label="Tax(%)"
-                        name={"taxPercent"}
-                        labelCol={{ span: 5 }}
-                        labelAlign="left"
+                        label="Tax Amount"
+                        name={"totalTaxAmount"}
+                        labelAlign="center"
                     >
-                        <InputNumber
-                            style={{ width: 150 }}
-                            onChange={(
-                                value,
-                                label = {},
-                                index =0,
-                                subField = "taxPercent"
-                            ) => {
-                                onItemChange(value, label, index, subField);
-                            }}
-                        />
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Row align={"middle"} justify={"end"}>
-                <Col span={8}>
-                    <Form.Item
-                        label="Transport(Rs)"
-                        name={"transPortAmount"}
-                        labelCol={{ span: 8 }}
-                        labelAlign="left"
-                    >
-                        <InputNumber
-                            style={{ width: 150 }}
-                            onChange={(
-                                value,
-                                label = {},
-                                index = 0,
-                                subField = "transPortAmount"
-                            ) => {
-                                onItemChange(value, label, index , subField);
-                            }}
-                        />
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Row align={"middle"} justify={"end"}>
-                <Col span={8}>
-                    <Form.Item label="Grand Total" name={"grandTotal"}>
                         <InputNumber
                             readOnly
+                            className="moneyInput"
                             style={{ width: 150 }}
                             controls={false}
                         />
                     </Form.Item>
                 </Col>
             </Row>
-            <Row justify={"center"} style={{ padding: "1rem" }}>
-                Term & Conditions
-            </Row>
-            <Row justify={"start"}>
-                <Col span={10}>
-                    <Form.Item label="Delivery" name={"deliveryCondition"}>
-                        <Input
-                            type="text"
-                            style={{
-                                width: inputWidth,
-                                fontSize: inputFontSize,
-                            }}
-                        />
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Row justify={"start"}>
-                <Col span={10}>
-                    <Form.Item label="Validity" name={"validityCondition"}>
-                        <Input
-                            type="text"
-                            style={{
-                                width: inputWidth,
-                                fontSize: inputFontSize,
-                            }}
-                        />
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Row justify={"start"}>
-                <Col span={10}>
-                    <Form.Item label="Payments" name={"paymentsCondition"}>
-                        <Input
-                            type="text"
-                            style={{
-                                width: inputWidth,
-                                fontSize: inputFontSize,
-                            }}
-                        />
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Row justify={"start"}>
-                <Col span={10}>
+            <Row align={"middle"} justify={"end"}>
+                <Col span={8}>
                     <Form.Item
-                        label="Cancellation"
-                        name={"cancellationCondition"}
+                        label="Grand Total"
+                        name={"grandTotal"}
+                        labelAlign="center"
                     >
-                        <Input
-                            type="text"
-                            style={{
-                                width: inputWidth,
-                                fontSize: inputFontSize,
-                            }}
-                        />
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Row justify={"start"}>
-                <Col span={10}>
-                    <Form.Item
-                        label="Installation"
-                        name={"installationCondition"}
-                    >
-                        <Input
-                            type="text"
-                            style={{
-                                width: inputWidth,
-                                fontSize: inputFontSize,
-                            }}
-                        />
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Row justify={"start"}>
-                <Col span={10}>
-                    <Form.Item label="Faciltity" name={"facilityCondition"}>
-                        <Input
-                            type="text"
-                            style={{
-                                width: inputWidth,
-                                fontSize: inputFontSize,
-                            }}
+                        <InputNumber
+                            readOnly
+                            className="moneyInput"
+                            style={{ width: 150 }}
+                            controls={false}
                         />
                     </Form.Item>
                 </Col>
@@ -620,11 +568,11 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
 
             <Form.Item>
                 <Button type="primary" htmlType="submit">
-                    Update Quotation
+                    Update Invoice
                 </Button>
             </Form.Item>
         </Form>
     );
 };
 
-export default UpdateQuotationForm;
+export default UpdateInvoiceForm;
