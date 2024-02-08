@@ -61,7 +61,7 @@ const UpdateQuotation = () => {
                 borderRadius: "1rem",
             }}
         >
-            <Header title={` Update - ${entity} Details`} subTitle={""}  cancelRoute={"quotation"}/>
+            <Header title={` Update - ${entity} Details`} subTitle={""} localDataKey={"quote"}  cancelRoute={"quotation"}/>
             <PageLoader
                 text={`Please hold Fetching ${entity}`}
                 isLoading={isLoading}

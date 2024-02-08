@@ -7,6 +7,7 @@ import create from "./create.js";
 import getList from "./getList.js";
 import read from "./read.js";
 import update from "./update.js"
+import genratePdf  from "./genratePdf.js"
 
 const appRoutes = {
     create: async (req, res, next) => {
@@ -30,6 +31,9 @@ const appRoutes = {
         if (!db) return res.send("failed");
         update(req, res, next, db);
     },
+    genratePdf :async (req,res,next)=>{
+        genratePdf(req,res,next)
+    }
 };
 
 const checkDbForEntity = (entity) => {

@@ -30,13 +30,13 @@ const coustomerSchema = new mongoose.Schema({
 
     },
     billingAddress: {
-        address: String,
+        street: String,
         city: String,
         state: String,
         pinCode: Number,
     },
     shippingAddress: {
-        address: String,
+        street: String,
         city: String,
         state: String,
         pinCode: Number,

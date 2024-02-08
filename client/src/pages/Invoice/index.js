@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"; // Import useEffect from React
+import React, { useState, useEffect,useCallback } from "react"; // Import useEffect from React
 import { Flex, Table } from "antd";
 import Header from "components/Header";
 import { invoiceColumns, invoiceData } from "Data/InvoiceData";
@@ -12,29 +12,35 @@ const Index = () => {
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     let entity = "invoice";
-    useEffect(() => {
-        const localData = getLocalData(entity);
-        if (localData) {
-            // Data has been fetched before, retrieve it from local storage
-            setData(localData);
+    const fetchData = useCallback(async () => {
+        try {
+            const localData = getLocalData(entity);
+            if (localData) {
+                // Data has been fetched before, retrieve it from local storage
+                setData(localData);
+                setIsLoading(false);
+            } else {
+                // Data hasn't been fetched before, fetch it
+                const { success, result, message } = await getTableData(entity);
+                if (!success) {
+                    setIsLoading(false);
+                    NotificationHandler.error(message);
+                } else {
+                    setData(result);
+                    setIsLoading(false);
+                    setLocalData(entity, result);
+                }
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
             setIsLoading(false);
-        } else {
-            // Data hasn't been fetched before, fetch it
-            fetchData();
+            NotificationHandler.error("Failed to fetch data");
         }
-    }, []);
+    }, [getTableData, entity])
 
-    const fetchData = async () => {
-        const { success, result, message } = await getTableData(entity);
-        if (!success) {
-            setIsLoading(false)
-            return NotificationHandler.error(message);
-        } else {
-            setData(result);
-            setIsLoading(false);
-            setLocalData(entity,result)
-        }
-    };
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
 
     return (
         <Flex
@@ -50,6 +56,7 @@ const Index = () => {
                 title={"Invoice List"}
                 subTitle={"ADD INVOiCES"}
                 addRoute={"invoice/create"}
+                localDataKey={"invoice"}
                 cancelRoute={"dashboard"}
             />
             <Table

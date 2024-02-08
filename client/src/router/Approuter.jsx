@@ -13,6 +13,7 @@ import Invoice from "../pages/Invoice"
 import NewInvoice from "pages/Invoice/NewInvoice"
 import ReadModule from "module/ReadModule/ReadModule";
 import UpdateModule from "module/UpdateModule/UpdateModule";
+import PdfModule from "module/PdfModule/PdfModule.js"
 
 
 const Approuter = () => {
@@ -38,6 +39,8 @@ const Approuter = () => {
                 {/**Routes for Read  Update And Pdf */}
                 <Route path="/read/:entity/:id" element ={<ReadModule />}/>
                 <Route path="/update/:entity/:id" element ={<UpdateModule />}/>
+                <Route path="/download/:entity/:id" element ={<PdfModule />}/>
+
 
 
                 <Route path="*" element={<NotFound />} />

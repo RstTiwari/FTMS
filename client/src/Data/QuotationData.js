@@ -63,7 +63,7 @@ export const quotationColumn = [
     {
         fixed: "right",
         render: (_,record) => (
-            <TableAction params = {record._id} page ={"quote"} download={true}/>
+            <TableAction params = {record._id} page ={"quote"} entityNo = {record.quoteNo} download={true}/>
         ),
     },
 ];

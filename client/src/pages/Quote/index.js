@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState ,useCallback} from "react";
 import { Flex, Form, Select, Table } from "antd";
 import Header from "components/Header";
 import { quotationColumn, quotationDataSource } from "Data/QuotationData";
@@ -11,31 +11,38 @@ const Index = () => {
     const [isloading, setIsLoading] = useState(true);
     const { getTableData } = useAuth();
     let entity = "quote";
+    const fetchData = useCallback(async () => {
+        try {
+            const localData = getLocalData(entity);
+            if (localData) {
+                // Data has been fetched before, retrieve it from local storage
+                setData(localData);
+                setIsLoading(false);
+            } else {
+                // Data hasn't been fetched before, fetch it
+                const { success, result, message } = await getTableData(entity);
+                if (!success) {
+                    setIsLoading(false);
+                    NotificationHandler.error(message);
+                } else {
+                    setData(result);
+                    setIsLoading(false);
+                    setLocalData(entity, result);
+                }
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            setIsLoading(false);
+            NotificationHandler.error("Failed to fetch data");
+        }
+    }, [getTableData, entity])
 
     useEffect(() => {
-        const localData = getLocalData(entity);
-        if (localData) {
-            // Data has been fetched before, retrieve it from local storage
-            setData(localData);
-            setIsLoading(false);
-        } else {
-            // Data hasn't been fetched before, fetch it
-            fetchData();
-        }
-    }, []);
+        fetchData();
+    }, [fetchData]);
 
-    const fetchData = async () => {
-        const { success, result, message } = await getTableData(entity);
-        if (!success) {
-            setIsLoading(false);
-            NotificationHandler.error(message);
-        } else {
-            setIsLoading(false);
-            setData(result);
-            setLocalData(entity, result);
-        }
-    };
-    fetchData();
+  
+
     return (
         <Flex
             gap={"middle"}
@@ -50,6 +57,7 @@ const Index = () => {
                 title={"Quotation List"}
                 subTitle={"ADD QUOTE"}
                 addRoute={"quotation/create"}
+                localDataKey={"quote"}
                 cancelRoute={"dashboard"}
             />
             <Table

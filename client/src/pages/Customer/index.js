@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState ,useCallback} from "react";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { useGetCoustomersQuery, useGetListDataQuery } from "state/api";
 import Headers from "../../components/Header";
@@ -14,34 +14,37 @@ const Customers = () => {
     const [isLoading, setIsLoading] = useState(true);
     const { getTableData } = useAuth();
     const isLaptop = useMediaQuery("(min-width:1000px)");
-
     const theme = useTheme();
+    let entity = "customer"
+    const fetchData = useCallback(async () => {
+        try {
+            const localData = getLocalData(entity);
+            if (localData) {
+                // Data has been fetched before, retrieve it from local storage
+                setData(localData);
+                setIsLoading(false);
+            } else {
+                // Data hasn't been fetched before, fetch it
+                const { success, result, message } = await getTableData(entity);
+                if (!success) {
+                    setIsLoading(false);
+                    NotificationHandler.error(message);
+                } else {
+                    setData(result);
+                    setIsLoading(false);
+                    setLocalData(entity, result);
+                }
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            setIsLoading(false);
+            NotificationHandler.error("Failed to fetch data");
+        }
+    }, [getTableData, entity])
 
     useEffect(() => {
-        const localData = getLocalData("customers");
-        if (localData) {
-            // Data has been fetched before, retrieve it from local storage
-            setData(localData);
-            setIsLoading(false);
-        } else {
-            // Data hasn't been fetched before, fetch it
-            fetchData();
-        }
-    }, []);
-
-    // will get data from the Cookies there after
-    const fetchData = async () => {
-        let entity = "customer";
-        const { success, result, message } = await getTableData(entity);
-        if (success === 0) {
-            return NotificationHandler.error(message);
-        } else {
-            setData(result);
-            setLocalData(true);
-            setLocalData("customers", result);
-            setIsLoading(false);
-        }
-    };
+        fetchData();
+    }, [fetchData]);
     return (
         <Flex
             gap={"middle"}

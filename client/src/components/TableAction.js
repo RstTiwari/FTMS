@@ -2,6 +2,8 @@ import React from "react";
 import { DownOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { Space, Dropdown, Menu } from "antd";
+import pdfGenrate from "Helper/PdfGenrate";
+import { useAuth } from "state/AuthProvider"
 import {
     EyeOutlined,
     EditOutlined,
@@ -12,7 +14,8 @@ import {
     EllipsisOutlined,
 } from "@ant-design/icons";
 
-export const TableAction = ({ params, page, download }) => {
+export const TableAction = ({ params, page, download,entityNo }) => {
+    const {pdfGenrate} = useAuth()
     const menuItems = [
         <Menu.Item key="1">
             <Link to={`/read/${page}/${params}`}>
@@ -28,12 +31,12 @@ export const TableAction = ({ params, page, download }) => {
                 EDIT
             </Link>
         </Menu.Item>,
-        <Menu.Item key="3">
+        <Menu.Item key="3" onClick={()=>pdfGenrate(page,entityNo)}>
             {download ? (
-                <Link to={`/download/${page}/${params}`}>
+                <div>
                     {" "}
                     <FilePdfOutlined />PDF
-                </Link>
+                </div>
             ) : (
                 ""
             )}

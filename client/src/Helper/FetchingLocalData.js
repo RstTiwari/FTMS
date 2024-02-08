@@ -1,4 +1,5 @@
 export const removeLocalData = (cookieName) => {
+    console.log(cookieName);
     sessionStorage.removeItem(`${cookieName}`);
     window.location.reload();
 };

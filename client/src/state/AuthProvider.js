@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect } from "react";
 import { Cookies, useCookies } from "react-cookie";
+import NotificationHandler from "EventHandler/NotificationHandler";
 import axios from "axios";
-import { Cookie } from "@mui/icons-material";
 let myfac8ryBaseUrl = process.env.REACT_APP_URL_PROD;
 if (process.env.NODE_ENV === "development") {
     myfac8ryBaseUrl = process.env.REACT_APP_URL_LOCAL;
@@ -11,14 +11,15 @@ export const AuthProvider = ({ children }) => {
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
     const loginUser = (result) => {
-        setCookie("token", result.token,{maxAge:result.expiresIn});
-        setCookie("authData",JSON.stringify(result),{maxAge:result.expiresIn})
+        setCookie("token", result.token, { maxAge: result.expiresIn });
+        setCookie("authData", JSON.stringify(result), {
+            maxAge: result.expiresIn,
+        });
     };
 
     const logoutUser = () => {
         removeCookie("token");
-        removeCookie("authData")
-
+        removeCookie("authData");
     };
 
     const authApiCall = async (path, data) => {
@@ -47,32 +48,32 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const appApiCall = async (method, path, payload,params) => {
+    const appApiCall = async (method, path, payload, params) => {
         let token = cookies["token"];
         let axiosConfig = {
             url: myfac8ryBaseUrl + `app/${path}`,
             method: method,
             headers: {
                 "Content-Type": "application/json",
-                "Access-Control-Allow-Origin":"*",
+                "Access-Control-Allow-Origin": "*",
                 token: token ? token : null,
             },
-            data: payload ? payload:null,
-            params:params ? params :null
+            data: payload ? payload : null,
+            params: params ? params : null,
         };
         try {
             let response = await axios(axiosConfig);
             return response.data;
-            
         } catch (error) {
             let response = {
                 success: 0,
                 result: null,
-                message: error.message
+                message: error.message,
             };
             return response;
         }
     };
+
     const getDropDownData = async (entity, fieldName) => {
         let data = await appApiCall("post", "getList", { entity: entity });
         if (data.success === 0) {
@@ -86,7 +87,8 @@ export const AuthProvider = ({ children }) => {
             return data;
         }
     };
-     const createData = async (payload) => {
+
+    const createData = async (payload) => {
         let data = await appApiCall("post", "create", payload);
         if (data.success === 0) {
             return { success: 0, result: null, message: data.message };
@@ -94,14 +96,16 @@ export const AuthProvider = ({ children }) => {
             return { success: 1, result: data.result, message: data.message };
         }
     };
-    const readData = async (params)=>{
-        let data = await appApiCall("get", "read",{},params);
+
+    const readData = async (params) => {
+        let data = await appApiCall("get", "read", {}, params);
         if (data.success === 0) {
             return { success: 0, result: null, message: data.message };
         } else {
             return { success: 1, result: data.result, message: data.message };
         }
-    }
+    };
+
     const updateData = async (payload) => {
         let data = await appApiCall("post", "update", payload, {});
         if (data.success === 0) {
@@ -111,8 +115,7 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    
-     const getTableData = async (entity) => {
+    const getTableData = async (entity) => {
         let data = await appApiCall("post", "getList", { entity: entity });
         if (data.success === 0) {
             return { success: 0, result: null, message: data.message };
@@ -120,6 +123,38 @@ export const AuthProvider = ({ children }) => {
             return { success: 1, result: data.result, message: data.message };
         }
     };
+
+    const pdfGenrate = async (entity, entityNo) => {
+        try {
+            const headers = {
+                "Content-Type": "application/json", // Example header
+                Authorization: "Bearer YOUR_TOKEN", // Example authorization header
+                token: cookies["token"],
+            };
+            let url = `${myfac8ryBaseUrl}app/pdf?entity=${entity}&entityNo=${entityNo}`;
+
+            // Fetch with headers
+            const response = await fetch(url, {
+                method: "GET",
+                headers: headers,
+            });
+            const blob = await response.blob();
+            const pdfUrl = URL.createObjectURL(blob);
+            //you can initiate a download
+            const a = document.createElement("a");
+            a.href = pdfUrl;
+            a.download = `${entity}${entityNo}`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        } catch (error) {
+            console.error("Failed to generate PDF:", error);
+            return NotificationHandler.error(
+                `Failed to download ${entity} pdf`
+            );
+        }
+    };
+
 
     const verifyToken = async () => {
         try {
@@ -162,7 +197,8 @@ export const AuthProvider = ({ children }) => {
                 getTableData,
                 createData,
                 readData,
-                updateData
+                updateData,
+                pdfGenrate
             }}
         >
             {children}

@@ -14,7 +14,7 @@ const Header = ({ title, subTitle , addRoute,localDataKey ,cancelRoute}) => {
     const onAddClick = ()=>{
         navigate(`/${addRoute}`)
     }
-    const refreshThePageOnly = () => {
+    const refreshThePageOnly = (localDataKey) => {
         removeLocalData(`${localDataKey}`);
     };
    
@@ -38,7 +38,7 @@ const Header = ({ title, subTitle , addRoute,localDataKey ,cancelRoute}) => {
                      <Col xs={6} sm={12} md={6} lg={3}>
                         <Button
                             onClick={() => {
-                                refreshThePageOnly()
+                                refreshThePageOnly(localDataKey)
                             }}
                         >
                             Refresh
