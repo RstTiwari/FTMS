@@ -95,12 +95,9 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
             NotificationHandler.error("somthing went wrong");
         }
 
-        const discountAmount = Math.floor(
-            (rowManipulated.rate * rowManipulated.percentDiscount) / 100
-        );
-        rowManipulated.bestOffer = Math.ceil(rowManipulated.rate - discountAmount);
+  
         rowManipulated.finalAmount = Math.ceil(
-            rowManipulated.bestOffer * rowManipulated.qty
+            rowManipulated.rate * rowManipulated.qty
         );
 
         data[index] = rowManipulated; // Update the form with the new final amount value
@@ -227,30 +224,7 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
                     </Form.Item>
                 </Col>
             </Row>
-            <Form.Item
-                label="Atten Per"
-                name={"attenPerson"}
-                labelAlign="left"
-                labelCol={{ span: 6 }}
-            >
-                <Input />
-            </Form.Item>
-            <Form.Item
-                label="Sub"
-                name={"subject"}
-                labelAlign="left"
-                labelCol={{ span: 6 }}
-            >
-                <Input size="large" maxLength={100} />
-            </Form.Item>
-            <Form.Item
-                label="Message"
-                name={"message"}
-                labelAlign="left"
-                labelCol={{ span: 6 }}
-            >
-                <Input.TextArea style={{ width: "100%" }} />
-            </Form.Item>
+
             <Divider dashed />
             <Row gutter={[12, 12]} style={{ position: "relative" }}>
                 <Col className="gutter-row" span={7}>
@@ -258,12 +232,6 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
                 </Col>
                 <Col className="gutter-row" span={3}>
                     <p>{"Rate"}</p>
-                </Col>
-                <Col className="gutter-row" span={3}>
-                    <p>{"Discount %"}</p>
-                </Col>
-                <Col className="gutter-row" span={3}>
-                    <p>{"Best Offer"}</p>{" "}
                 </Col>
                 <Col className="gutter-row" span={3}>
                     <p>{"Qty"}</p>
@@ -278,8 +246,6 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
                     {
                         description: "",
                         rate: 0,
-                        percentDiscount: 0,
-                        bestOffer: 0,
                         qty: 1,
                         finalAmount: 0,
                     },
@@ -360,43 +326,7 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
                                         />
                                     </Form.Item>
                                 </Col>
-                                <Col span={3}>
-                                    <Form.Item
-                                        name={[
-                                            subField.name,
-                                            "percentDiscount",
-                                        ]}
-                                    >
-                                        <InputNumber
-                                            style={{ width: 75 }}
-                                            onChange={(
-                                                value,
-                                                label = {},
-                                                subField = "percentDiscount"
-                                            ) =>
-                                                onItemChange(
-                                                    value,
-                                                    label,
-                                                    index,
-                                                    subField
-                                                )
-                                            }
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={3}>
-                                    <Form.Item
-                                        name={[subField.name, "bestOffer"]}
-                                    >
-                                        <InputNumber
-                                            readOnly
-                                            className="moneyInput"
-                                            min={0}
-                                            controls={false}
-                                            style={{ width: 75 }}
-                                        />
-                                    </Form.Item>
-                                </Col>
+        
                                 <Col span={3}>
                                     <Form.Item name={[subField.name, "qty"]}>
                                         <InputNumber
@@ -444,11 +374,9 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
                             type="primary"
                             onClick={() => {
                                 subOpt.add({
-                                    bestOffer: 0,
                                     finalAmount: 0,
                                     qty: 1,
                                     rate: 0,
-                                    percentDiscount: 0,
                                 }); // Use srNo instead of srN
                             }}
                             icon={<PlusOutlined />}
@@ -588,36 +516,6 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
                     </Form.Item>
                 </Col>
             </Row>
-            <Row justify={"start"}>
-                <Col span={10}>
-                    <Form.Item
-                        label="Installation"
-                        name={"installationCondition"}
-                    >
-                        <Input
-                            type="text"
-                            style={{
-                                width: inputWidth,
-                                fontSize: inputFontSize,
-                            }}
-                        />
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Row justify={"start"}>
-                <Col span={10}>
-                    <Form.Item label="Faciltity" name={"facilityCondition"}>
-                        <Input
-                            type="text"
-                            style={{
-                                width: inputWidth,
-                                fontSize: inputFontSize,
-                            }}
-                        />
-                    </Form.Item>
-                </Col>
-            </Row>
-
             <Form.Item>
                 <Button type="primary" htmlType="submit">
                     Update Quotation

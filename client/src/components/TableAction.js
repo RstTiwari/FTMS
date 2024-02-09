@@ -31,7 +31,7 @@ export const TableAction = ({ params, page, download,entityNo }) => {
                 EDIT
             </Link>
         </Menu.Item>,
-        <Menu.Item key="3" onClick={()=>pdfGenrate(page,entityNo)}>
+        <Menu.Item key="3" onClick={()=>pdfGenrate(page,params,entityNo)}>
             {download ? (
                 <div>
                     {" "}

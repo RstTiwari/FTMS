@@ -124,14 +124,14 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const pdfGenrate = async (entity, entityNo) => {
+    const pdfGenrate = async (entity,params, entityNo) => {
         try {
             const headers = {
-                "Content-Type": "application/json", // Example header
-                Authorization: "Bearer YOUR_TOKEN", // Example authorization header
+                "Content-Type": "application/json", //Example header
+                Authorization: "Bearer YOUR_TOKEN", //Example authorization header
                 token: cookies["token"],
             };
-            let url = `${myfac8ryBaseUrl}app/pdf?entity=${entity}&entityNo=${entityNo}`;
+            let url = `${myfac8ryBaseUrl}app/pdf?entity=${entity}&id=${params}&entityNo=${entityNo}`;
 
             // Fetch with headers
             const response = await fetch(url, {
@@ -143,7 +143,7 @@ export const AuthProvider = ({ children }) => {
             //you can initiate a download
             const a = document.createElement("a");
             a.href = pdfUrl;
-            a.download = `${entity}${entityNo}`;
+            a.download = `${entity}/${entityNo}`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);

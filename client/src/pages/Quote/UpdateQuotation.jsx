@@ -71,7 +71,7 @@ const UpdateQuotation = () => {
                 <>
                     <UpdateQuotationForm
                         initialValues={{
-                            customer: data.customer.customerName,
+                            customer: data.customer._id,
                             quoteNo: data.quoteNo,
                             attenPerson: data.attenPerson,
                             grandTotal: data.grandTotal,

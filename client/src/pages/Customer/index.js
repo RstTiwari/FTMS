@@ -59,7 +59,7 @@ const Customers = () => {
                 title={"COUSTOMER LIST"}
                 subTitle={"ADD COUSTOMER"}
                 addRoute={"customers/create"}
-                localDataKey={"customers"}
+                localDataKey={entity}
                 cancelRoute={"dashboard"}
             />
             <Table

@@ -12,13 +12,13 @@ const NewCustomer = () => {
     const [form] = Form.useForm();
     const fomulatePayload = (value) => {
         value["billingAddress"] = {
-            address: value.billingStreet,
+            street: value.billingStreet,
             city: value.billingCity,
             state: value.billingState,
             pinCode: value.billingPincode,
         };
         value["shippingAddress"] = {
-            address: value.shippingStreet,
+            street: value.shippingStreet,
             city: value.shippingCity,
             state: value.shippingState,
             pinCode: value.shippingPincode,

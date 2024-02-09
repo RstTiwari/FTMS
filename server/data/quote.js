@@ -1,6 +1,6 @@
 export const quote = {
     company: {
-        companyName: "Arihant pvt",
+        companyName: "Myfac8ry.com pvt ltd",
         companyIcon:
             "https://st3.depositphotos.com/43745012/44906/i/450/depositphotos_449066958-stock-photo-financial-accounting-logo-financial-logo.jpg",
         panNo: "1238388844",
@@ -56,6 +56,40 @@ export const quote = {
                 $oid: "65c4956a9d786daec065f838",
             },
         },
+        {
+            description: "Rosa Lemon",
+            rate: 16.91,
+            percentDiscount: 0,
+            bestOffer: 16.91,
+            qty: 1,
+            finalAmount: 16.91,
+            _id: {
+                $oid: "65c4956a9d786daec065f838",
+            },
+        },
+        {
+            description: "Rosa Lemon",
+            rate: 16.91,
+            percentDiscount: 0,
+            bestOffer: 16.91,
+            qty: 1,
+            finalAmount: 16.91,
+            _id: {
+                $oid: "65c4956a9d786daec065f838",
+            },
+        },
+        {
+            description: "Rosa Lemon for the Given product of new Value in the product",
+            rate: 16.91,
+            percentDiscount: 0,
+            bestOffer: 16.91,
+            qty: 1,
+            finalAmount: 16.91,
+            _id: {
+                $oid: "65c4956a9d786daec065f838",
+            },
+        },
+        
     ],
     grossTotal: 17,
     taxPercent: 0,

@@ -32,7 +32,12 @@ const appRoutes = {
         update(req, res, next, db);
     },
     genratePdf :async (req,res,next)=>{
-        genratePdf(req,res,next)
+        let db = checkDbForEntity(req.query.entity);
+        if(!db) return res.status(500).json({
+            success:0,
+            message:"Failed to genrate Pdf"
+        })
+        genratePdf(req,res,next,db)
     }
 };
 

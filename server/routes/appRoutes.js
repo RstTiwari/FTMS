@@ -8,7 +8,7 @@ router.post("/create", authMethod.isValidAuthtoken, appRoutes.create);
 router.post("/getList", authMethod.isValidAuthtoken, appRoutes.getList);
 router.get("/read", authMethod.isValidAuthtoken, appRoutes.read);
 router.post("/update", authMethod.isValidAuthtoken, appRoutes.update);
-router.get("/pdf",  appRoutes.genratePdf);
+router.get("/pdf", authMethod.isValidAuthtoken, appRoutes.genratePdf);
 
 
 
