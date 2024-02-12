@@ -54,8 +54,8 @@ export const invoiceColumns = [
     },
     {
         fixed: "right",
-        render: (_,items)  => (
-             <TableAction  params = {items._id} page ={"invoice"} download={true}/>
+        render: (_,record)  => (
+             <TableAction  params = {record._id} page ={"invoice"} entityNo={record.invoiceNo} download={true}/>
         )
             
     }

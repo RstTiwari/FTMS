@@ -1,3 +1,4 @@
+import invoicePdf from "../../template/pdfTemplate/invoice.js";
 import quotationPdf from "../../template/pdfTemplate/quotation.js";
 const generatePdf = async (req, res, next,dataBase) => {
     try {
@@ -6,6 +7,8 @@ const generatePdf = async (req, res, next,dataBase) => {
         let data = await dataBase.findOne({_id:id ,tenantId:tenantId})
         if(entity ==="quote"){
             return quotationPdf(req,res,next,data)
+        }else if(entity ==="invoice"){
+            return invoicePdf(req,res,next,data)
         }
 
 
