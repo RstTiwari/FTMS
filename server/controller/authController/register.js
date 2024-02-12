@@ -77,10 +77,9 @@ const register = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
             message: "document couldn't save correctly",
         });
     }
-
-    const myfac8ryEmail = process.env.email;
+    const type = "emailVerification"
     //verifying email
-    await sendEmail({ email, name, emailOtp  });
+    await sendEmail({ email, name, emailOtp ,type });
 
     return res.status(200).json({
         success: 1,

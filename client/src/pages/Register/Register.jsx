@@ -26,6 +26,7 @@ const Register = () => {
             setTenantId(response.result.tenantId);
             return NotificationHandler.success(response.message);
         } else {
+            setIsLoading(false)
             return NotificationHandler.error(response.message);
         }
     };
@@ -43,6 +44,8 @@ const Register = () => {
             setIsLoading(false);
             loginUser(response.result);
             navigate("/dashboard");
+        }else{
+           return NotificationHandler.error(response.message)
         }
     };
 

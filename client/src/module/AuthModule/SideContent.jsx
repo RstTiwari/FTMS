@@ -34,7 +34,7 @@ const SideContent = () => {
                       <img alt="quality" src={Quality} />
                     </div>
                     <div className="signin__description__text">
-                    Mangae Your Team From Finger
+                    Mangae Your Opration From Fingertip
                     </div>
                   </div>
                   <div className="signin__description__row">

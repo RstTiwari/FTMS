@@ -6,6 +6,8 @@ const router = express.Router()
 router.post("/register",authRoutes.register)
 router.post("/verify",authRoutes.verify)
 router.post("/login" , authRoutes.login)
+router.post("/forgetPassword" , authRoutes.forgetPassword)
+
 router.post("/isValidAuthtoken" , authRoutes.isValidAuthtoken)
 
 

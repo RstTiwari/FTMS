@@ -22,6 +22,8 @@ export const LoginForm = ({handleLoginChange}) => {
             <Form.Item
                 label={"Email"}
                 name={"email"}
+                labelAlign="left"
+                labelCol={{span:6}}
                 rules={[
                     {
                         required: true,
@@ -33,16 +35,19 @@ export const LoginForm = ({handleLoginChange}) => {
             >
                 <Input
                     prefix={<UserOutlined />}
-                    placeholder={"Email"}
                     type={"email"}
+                    placeholder="Email"
                     size={"large"}
                     onChange={(e) =>
                         setLogin({ ...login, email: e.target.value })
                     }
                 />
             </Form.Item>
+            <Col xs={24} sm={24} lg={12} xl={24}md={24}>
             <Form.Item
                 label={"password"}
+                labelAlign="left"
+                labelCol={{span:6}}
                 name={"Password"}
                 rules={[
                     {
@@ -59,6 +64,8 @@ export const LoginForm = ({handleLoginChange}) => {
                     }
                 />
             </Form.Item>
+            </Col>
+         
             <Form.Item>
                 <Row align={"middle"}>
                     <Col span={12}>

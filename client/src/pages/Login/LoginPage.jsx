@@ -5,18 +5,25 @@ import SideContent from "module/AuthModule/SideContent";
 import { LoginForm } from "Forms/LoginForm";
 import { useAuth } from "../../state/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import NotificationHandler from "EventHandler/NotificationHandler";
+import { message } from "antd";
 const Login = () => {
     const navigate = useNavigate()
     const [login, setLogin] = useState("");
+    const[isLoading,setIsLoading]= useState(false)
     const {logoutUser,loginUser,authApiCall } = useAuth()
     
     const handleLoginChange = async (value) => {
         setLogin(value);
+        setIsLoading(true);
         let response = await authApiCall("login", value);
         if (response.success === 1) {
             loginUser(response.result);
-            navigate("/dashboard")
+            setIsLoading(false);
+            navigate("/dashboard");
         } else {
+            setIsLoading(false);
+            return NotificationHandler.error(response.message);
         }
     };
     return (
@@ -25,9 +32,8 @@ const Login = () => {
                 <SideContent />
                 <div className="login">
                     <div className="container">
-                        <div className="login-form">
+                            <PageLoader  isLoading={isLoading} text ={"Plase Wait..."}/>
                             <LoginForm handleLoginChange={handleLoginChange} />
-                        </div>
                     </div>
                 </div>
             </div>

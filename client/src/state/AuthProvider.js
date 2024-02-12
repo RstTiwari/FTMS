@@ -23,25 +23,29 @@ export const AuthProvider = ({ children }) => {
     };
 
     const authApiCall = async (path, data) => {
-        try {
-            let token = cookies["token"];
+        let token = cookies["token"];
 
-            let axiosConfig = {
-                url: myfac8ryBaseUrl + `auth/${path}`,
-                method: "post",
-                headers: {
-                    "Content-Type": "application/json",
-                    token: token ? token : null,
-                },
-                data: data,
-            };
+        let axiosConfig = {
+            url: myfac8ryBaseUrl + `auth/${path}`,
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+                token: token ? token : null,
+            },
+            data: data,
+        };
+        try {
             let response = await axios(axiosConfig);
+            console.log(response, "--inAuth");
             return response.data;
         } catch (error) {
+            console.log(error.response, "--");
             let response = {
                 success: 0,
                 result: null,
-                message: "axios call Failed",
+                message: error.response
+                    ? error.response.data.message
+                    : "NetWork Error",
                 error: error.message,
             };
             return response;
@@ -68,7 +72,9 @@ export const AuthProvider = ({ children }) => {
             let response = {
                 success: 0,
                 result: null,
-                message: error.message,
+                message: error.response
+                    ? error.response.data.message
+                    : "NetWork Error",
             };
             return response;
         }
