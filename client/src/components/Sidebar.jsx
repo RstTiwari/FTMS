@@ -94,7 +94,7 @@ const Sidebar = ({
             icon:<MoneyCollectFilled/>
         },
         {
-            text:"Payements",
+            text:"Payments",
             icon:<AccountBalance/>
         },
         {

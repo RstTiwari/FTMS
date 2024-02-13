@@ -4,6 +4,9 @@ import Dashbord from "../pages/dashbord"
 import Layout from "../pages/layout"
 import NotFound from "pages/Notfound";
 import Lead  from "../pages/Lead"
+import Payments  from "../pages/Payments/Index"
+import Expenses  from "../pages/Expenses/Index"
+import Challan  from "../pages/Challan/Index"
 import NewLead from "pages/Lead/NewLead";
 import Quote  from "../pages/Quote"
 import NewQuote from "pages/Quote/NewQuote"
@@ -35,6 +38,15 @@ const Approuter = () => {
         
                 <Route path="/invoice" element ={<Invoice/>}/>
                 <Route path="/invoice/create" element ={<NewInvoice/>}/>
+
+                <Route path="/payments" element ={<Payments/>}/>
+
+                <Route path="/expenses" element ={<Expenses/>}/>
+
+                <Route path="/challan" element ={<Challan/>}/>
+
+
+
 
                 {/**Routes for Read  Update And Pdf */}
                 <Route path="/read/:entity/:id" element ={<ReadModule />}/>

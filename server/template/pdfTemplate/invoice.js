@@ -6,7 +6,6 @@ import { epochInDDMMYY } from "../../Helper/timehelper.js"
 const invoicePdf = (req,res,next,invocieData) => {
     try {
         const { customer, items } = invocieData;
-        console.log(oragnization,customer,items);
 
         const doc = new PDFDocument({ size: [595, 842] });
         doc.pipe(res);

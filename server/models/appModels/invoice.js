@@ -12,11 +12,18 @@ const invoiceSchema = new mongoose.Schema({
         require: true,
         unique: true,
     },
-    orderNo: {
+    status: {
         type: String,
-        require: true,
-        unique: true,
-    },
+        enum: ['draft', 'pending', 'sent', 'refunded', 'cancelled', 'on hold'],
+        default: 'draft',
+      },
+      
+    payment: [
+        {
+            type: mongoose.Schema.ObjectId,
+            ref: "payments",
+        },
+    ],
     invoiceDate: {
         type: Number,
         require: true,
@@ -30,11 +37,11 @@ const invoiceSchema = new mongoose.Schema({
     items: [
         {
             description: {
-                type:String,
+                type: String,
                 require: true,
             },
-            hsnCode:{
-                type:String
+            hsnCode: {
+                type: String,
             },
             rate: {
                 type: Number,
@@ -42,8 +49,8 @@ const invoiceSchema = new mongoose.Schema({
             qty: {
                 type: Number,
             },
-            taxableAmount:{
-                type:Number
+            taxableAmount: {
+                type: Number,
             },
             sgstPercent: {
                 type: Number,
@@ -56,7 +63,7 @@ const invoiceSchema = new mongoose.Schema({
             },
             finalAmount: {
                 type: Number,
-            }
+            },
         },
     ],
     grossTotal: {
@@ -69,10 +76,10 @@ const invoiceSchema = new mongoose.Schema({
     grandTotal: {
         type: Number,
     },
-    tenantId:{
-        type:String,
-        required:true
-    }
+    tenantId: {
+        type: String,
+        required: true,
+    },
 });
 
 invoiceSchema.plugin(mongooseAutoPopulate);
