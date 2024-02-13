@@ -1,34 +1,32 @@
 import PDFDocument from "pdfkit";
 import { quote } from "../../data/quote.js";
-import { epochInDDMMYY } from "../../Helper/timehelper.js"
+import { epochInDDMMYY } from "../../Helper/timehelper.js";
+import { oragnization } from "../../data/orgnization.js";
 
-const quotationPdf = (req,res,next,quoteData) => {
+const quotationPdf = (req, res, next, quoteData) => {
     try {
-        let {company} =  quote
+        let { company } = quote;
         const { customer, items } = quoteData;
-        console.log(company,customer,items);
 
         const doc = new PDFDocument({ size: [595, 842] });
         doc.pipe(res);
 
         //setting the icon and title of the image
-        const { companyHeaderText, companyHeaderPostion } = calcultTitlePostion(
-            company.companyName
-        );
+        const { orgnizationHeaderText, orgnizationHeaderPostion } =
+            calcultTitlePostion(oragnization.name);
         doc.fontSize(20)
             .fillColor("#33D7FF")
-            .text(companyHeaderText, companyHeaderPostion, 20);
+            .text(orgnizationHeaderText, orgnizationHeaderPostion, 20);
         //compnay Address
-        const { companyStreet, companyStreetPostion } = calculateStreetPostion(
-            company.address.street
-        );
+        const { orgnizationStreet, orgnizationStreetPostion } =
+            calculateStreetPostion(oragnization.address.street);
         doc.fontSize(12)
             .fillColor("#4B4E4F")
-            .text(companyStreet, companyStreetPostion, 50);
+            .text(orgnizationStreet, orgnizationStreetPostion, 50);
         doc.fontSize(12)
             .fillColor("#4B4E4F")
             .text(
-                `${company.address.city} ,${company.address.state}, ${company.address.pinCode}`,
+                `${oragnization.address.city} ,${oragnization.address.state}, ${oragnization.address.pinCode}`,
                 225
             );
 
@@ -151,29 +149,30 @@ const quotationPdf = (req,res,next,quoteData) => {
 };
 
 export default quotationPdf;
+
 const calcultTitlePostion = (companyName) => {
-    let companyHeaderText = companyName.replace(/\s+/g, " ").toUpperCase();
-    let companyHeaderPostion =
-        companyHeaderText.length <= 15
+    let orgnizationHeaderText = companyName.replace(/\s+/g, " ").toUpperCase();
+    let orgnizationHeaderPostion =
+        orgnizationHeaderText.length <= 15
             ? 225
-            : companyHeaderText.length <= 25
+            : orgnizationHeaderText.length <= 25
             ? 200
-            : companyHeaderText.length <= 35
+            : orgnizationHeaderText.length <= 35
             ? 120
             : 120;
-    return { companyHeaderText, companyHeaderPostion };
+    return { orgnizationHeaderText, orgnizationHeaderPostion };
 };
 
 const calculateStreetPostion = (street) => {
-    let companyStreet = street.replace(/\s+/g, " ");
-    let companyStreetPostion =
-        companyStreet.length <= 30
+    let orgnizationStreet = street.replace(/\s+/g, " ");
+    let orgnizationStreetPostion =
+        orgnizationStreet.length <= 30
             ? 225
-            : companyStreet.length <= 45
+            : orgnizationStreet.length <= 45
             ? 190
-            : companyStreet.length <= 55
+            : orgnizationStreet.length <= 55
             ? 175
             : 150;
 
-    return { companyStreet, companyStreetPostion };
+    return { orgnizationStreet, orgnizationStreetPostion };
 };
