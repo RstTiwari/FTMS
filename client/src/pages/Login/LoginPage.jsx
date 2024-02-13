@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./Login.css";
 import PageLoader from "pages/PageLoader";
 import SideContent from "module/AuthModule/SideContent";
-import { LoginForm } from "Forms/LoginForm";
+import  LoginForm  from "Forms/LoginForm.js";
 import { useAuth } from "../../state/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import NotificationHandler from "EventHandler/NotificationHandler";
@@ -14,6 +14,7 @@ const Login = () => {
     const {logoutUser,loginUser,authApiCall } = useAuth()
     
     const handleLoginChange = async (value) => {
+        console.log(value);
         setLogin(value);
         setIsLoading(true);
         let response = await authApiCall("login", value);

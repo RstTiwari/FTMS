@@ -6,11 +6,11 @@ import { useAuth } from "state/AuthProvider";
 
 const {Text} = Typography
 
-export const LoginForm = ({handleLoginChange}) => {
+const  LoginForm = ({handleLoginChange}) => {
     const [login, setLogin] = useState({
         email: "",
         password: "",
-        remeber: false,
+        remember: false,
     });
 
 
@@ -73,7 +73,7 @@ export const LoginForm = ({handleLoginChange}) => {
                             onChange={(e) =>
                                 setLogin({
                                     ...login,
-                                    remeber: e.target.checked,
+                                    remember: e.target.checked,
                                 })
                             }
                         >
@@ -118,3 +118,6 @@ export const LoginForm = ({handleLoginChange}) => {
         </div>
     );
 };
+
+
+export default LoginForm

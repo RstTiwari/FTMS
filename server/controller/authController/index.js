@@ -6,6 +6,7 @@ import userDb from "../../models/coreModels/User.js";
 import isValidAuthtoken from './isValidAuthtoken.js';
 import tenantDb from "../../models/coreModels/Tenant.js"
 import forgetpassword from "./forgetPassword.js";
+import updatePassword from "./updatePassword.js"
 
 const authRoutes = {
     verify: (req, res, next) => {
@@ -23,6 +24,9 @@ const authRoutes = {
     forgetPassword: (req, res, next) => {
         forgetpassword(req, res, next, userDb, userPasswordDb, tenantDb);
     },
+    updatePassword:(req,res,next)=>{
+        updatePassword(req,res,next,userDb,userPasswordDb,tenantDb)
+    }
 };
 
 export default authRoutes;

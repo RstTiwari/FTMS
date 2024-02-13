@@ -36,7 +36,6 @@ export const AuthProvider = ({ children }) => {
         };
         try {
             let response = await axios(axiosConfig);
-            console.log(response, "--inAuth");
             return response.data;
         } catch (error) {
             console.log(error.response, "--");

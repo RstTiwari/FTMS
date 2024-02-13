@@ -7,6 +7,8 @@ router.post("/register",authRoutes.register)
 router.post("/verify",authRoutes.verify)
 router.post("/login" , authRoutes.login)
 router.post("/forgetPassword" , authRoutes.forgetPassword)
+router.post("/updatePassword" , authRoutes.updatePassword)
+
 
 router.post("/isValidAuthtoken" , authRoutes.isValidAuthtoken)
 
