@@ -11,16 +11,6 @@ export const coustomerColumns = [
         key:"customerName"
     },
     {
-        title:"GST NO",
-        dataIndex:"gstNo",
-        key:"gstNo"
-    },
-    {
-        title:"PAN NO",
-        dataIndex:"panNo",
-        key:"panNo"
-    },
-    {
         title:"PHONE NO",
         dataIndex:"customerPhone",
         key:"customerPhone"
@@ -30,6 +20,17 @@ export const coustomerColumns = [
         dataIndex:"customerEmail",
         key:"customerEmail"
     },
+    {
+        title:"GST NO",
+        dataIndex:"gstNo",
+        key:"gstNo"
+    },
+    {
+        title:"PAN NO",
+        dataIndex:"panNo",
+        key:"panNo"
+    },
+ 
     {
         fixed: "right",
         render: (_,record) => (

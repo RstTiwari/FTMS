@@ -1,24 +1,15 @@
 import React, { useState } from "react";
 import { Form, Select, Divider, Space, Input, Button, Row, Col } from "antd";
 import { LeadOption, companyDetails, leadStatus } from "Data/LeadData";
-import DropDownCoustom from "components/DropDownCoustom";
 import { useAuth } from "state/AuthProvider";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
+import CustomerModal from "components/CustomerModal";
 const LeadForm = ({ current }) => {
-    const [compnayDetails, setCompanyDetails] = useState([]);
-    const { getDropDownData } = useAuth();
-    const handleInputChange = async (value) => {};
-    const handelDropDownClick = async () => {
-        let entity = "customer";
-        let fieldName = "customerName";
-        let data = await getDropDownData(entity, fieldName);
-        setCompanyDetails(data);
-    };
 
-    const handleCustomerChange = (value, option) => {
-        const { customer } = current.getFieldsValue(["customer"]);
-        current.setFieldsValue({ customer: option.value });
+    const handleCustomerChange = (value) => {
+        current.setFieldsValue({ customer: value });
     };
+    const customerId = current.getFieldValue("customer")
     return (
         <div>
             <Form.Item
@@ -57,21 +48,7 @@ const LeadForm = ({ current }) => {
                     },
                 ]}
             >
-                <Select
-                    labelInValue
-                    allowClear={true}
-                    options={compnayDetails}
-                    onClick={handelDropDownClick}
-                    onChange={handleCustomerChange}
-                    dropdownRender={(menu) => (
-                        <DropDownCoustom
-                            option={menu}
-                            placeHolder="Search New Coustomer"
-                            buttonName="Add New"
-                            onInputChange={handleInputChange}
-                        />
-                    )}
-                />
+                <CustomerModal   customerSelect={handleCustomerChange} customerId={customerId} />
             </Form.Item>
             <Form.Item
                 label="Status"

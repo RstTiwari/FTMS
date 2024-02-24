@@ -4,8 +4,9 @@ import { notification } from 'antd';
 notification.config({
   placement: 'topRight',
   bottom: 50,
-  duration: 2.5,
-  maxCount:1
+  duration: 1,
+  maxCount:1,
+  zIndex: 1000000000, // Set the desired z-index value
 });
 
 const NotificationHandler = {

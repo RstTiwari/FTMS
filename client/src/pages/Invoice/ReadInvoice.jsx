@@ -49,7 +49,7 @@ const ReadInvoice = () => {
                         name="coustomerForm"
                         form={form}
                         initialValues={{
-                            customer: data.customer.customerName,
+                            customer: data.customer._id,
                             invoiceNo: data.invoiceNo,
                             orderNo: data.orderNo,
                             invoiceDate: epochInDDMMYY(data.invoiceDate),

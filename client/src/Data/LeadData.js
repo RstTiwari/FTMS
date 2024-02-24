@@ -113,6 +113,7 @@ export const leadColumns = [
     {
         title: "Comments",
         dataIndex: "comments",
+        width:250,
         key: "comments",
         responsive: ["lg"],
         render: (_, record) => (

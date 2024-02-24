@@ -7,7 +7,6 @@ if (process.env.NODE_ENV === "development") {
 
 const appApiCall = async (method, path, payload) => {
     const token = window.document.cookie;
-    console.log(token);
     try {
         let axiosConfig = {
             url: myfac8ryBaseUrl + `app/${path}`,

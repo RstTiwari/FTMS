@@ -3,7 +3,7 @@ import { Flex, Form, Input, Col, Row, Button } from "antd";
 import { useMediaQuery } from "@mui/material";
 import React, { useState } from "react";
 
-const CoustomersForm = ({ current ,disabled }) => {
+const CoustomersForm = ({ current ,disabled}) => {
     const isLaptop = useMediaQuery("(min-width:600px)");
     const [billing, setBilling] = useState({
         street: "",
@@ -12,7 +12,6 @@ const CoustomersForm = ({ current ,disabled }) => {
         pincode: "",
     });
     const handeCopyBillingAddress = () => {
-        console.log("called",billing);
         const { billingStreet, billingCity, billingState, billingPincode } =
             current.getFieldsValue([
                 "billingStreet",
@@ -44,16 +43,7 @@ const CoustomersForm = ({ current ,disabled }) => {
                 </Form.Item>
             </Col>
 
-            <Col xs={24} sm={24} md={12} lg={12}>
-                <Form.Item
-                    label={"Contact Person"}
-                    name={"contactPerson"}
-                    labelAlign="left"
-                    labelCol={{ span: 6 }}
-                >
-                    <Input />
-                </Form.Item>
-            </Col>
+    
             <Col xs={24} sm={24} md={12} lg={12}>
                 <Form.Item
                     label={"Customer Phone"}
@@ -86,6 +76,16 @@ const CoustomersForm = ({ current ,disabled }) => {
                     <Input />
                 </Form.Item>
             </Col>
+            <Col xs={24} sm={24} md={12} lg={12}>
+                <Form.Item
+                    label={"Contact Person"}
+                    name={"contactPerson"}
+                    labelAlign="left"
+                    labelCol={{ span: 6 }}
+                >
+                    <Input />
+                </Form.Item>
+            </Col>
 
             <Col xs={24} sm={24} md={12} lg={12}>
                 <Form.Item
@@ -106,16 +106,7 @@ const CoustomersForm = ({ current ,disabled }) => {
                     tooltip="this data  will be Encripted then stored not visible to other pepole accpet accept acces given  "
                     name="gstNo"
                     labelCol={{ span: 6 }}
-                    rules={[
-                        {
-                            required: true,
-                            message: "Please Provide GST No",
-                        },
-                        {
-                            max: 15,
-                            message: "GST  must be at most 15 characters",
-                        },
-                    ]}
+                    
                 >
                     <Input />
                 </Form.Item>

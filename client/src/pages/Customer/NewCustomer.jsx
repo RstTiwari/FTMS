@@ -3,11 +3,14 @@ import Header from "components/Header";
 import React, { useEffect, useState } from "react";
 import CoustomerForm from "../../Forms/CoustomersForm.js";
 import { PlusOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "state/AuthProvider.js";
 import NotificationHandler from "EventHandler/NotificationHandler.jsx";
-const NewCustomer = () => {
-    const [payload, setPayload] = useState({});
+
+const NewCustomer = ({ checkHeader, afterAdd }) => {
+    const entity = "customer";
     const [intialFormValue, setIntialFormValue] = useState();
+    const navigate = useNavigate();
     const { createData } = useAuth();
     const [form] = Form.useForm();
     const fomulatePayload = (value) => {
@@ -32,14 +35,19 @@ const NewCustomer = () => {
         delete value.billingState;
         delete value.billingCity;
         delete value.billingPincode;
-        return { entity: "customer", value };
+        return { entity: entity, value };
     };
 
     const handelCustomerFormFinish = async (value) => {
         setIntialFormValue(value);
-        setPayload(fomulatePayload(value));
-        const { success, result, message } = await createData(payload);
-        if (success) {
+        let data = fomulatePayload(value);
+        const { success, result, message } = await createData(data);
+        if (success && success === 1) {
+            if (afterAdd) {
+                afterAdd(result);
+            } else {
+                navigate("/customers");
+            }
             return NotificationHandler.success(message);
         } else {
             return NotificationHandler.error(message);
@@ -57,7 +65,15 @@ const NewCustomer = () => {
                 borderRadius: "1rem",
             }}
         >
-            <Header title={"New Customers"} subTitle={""} cancelRoute={"customers"} />
+            {checkHeader ? (
+                <Header
+                    title={"New Customers"}
+                    subTitle={""}
+                    cancelRoute={"customers"}
+                />
+            ) : (
+                ""
+            )}
             <Form
                 name="coustomerForm"
                 form={form}

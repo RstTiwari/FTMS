@@ -14,36 +14,20 @@ import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import DropDownCoustom from "components/DropDownCoustom";
 import { useAuth } from "state/AuthProvider";
 import PageLoader from "pages/PageLoader";
+import CustomerModal from "components/CustomerModal";
+import ProductModal from "components/ProductModal";
+import { items } from "Data/LeadData";
 
 const Invoice = ({ current }) => {
-    const [company, setCompany] = useState([]);
-    const [proudcts, setProduct] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const { getDropDownData } = useAuth();
-
-    const handleCustomerClcik = async () => {
-        let entity = "customer";
-        let fieldName = "customerName";
-        let data = await getDropDownData(entity, fieldName);
-        setCompany(data);
-        setIsLoading(false);
-    };
-    const handleDescriptionClick = async () => {
-        let entity = "product";
-        let fieldName = "productName";
-        let data = await getDropDownData(entity, fieldName);
-        setProduct(data);
-        setIsLoading(false);
-    };
     const handleCustomerChange = async (value, label) => {
         current.setFieldsValue({ customer: value });
     };
 
-    const onDescriptionChange = (value, label, subField) => {
+    const onDescriptionChange = (label, subField) => {
         const formData = current.getFieldValue("items");
         const items = [...formData];
         const rowManipulated = items[subField.key];
-        rowManipulated.description = label.label;
+        rowManipulated.description = label.productName;
         rowManipulated.rate = label.rate;
         rowManipulated.hsnCode = label.hsnCode;
         rowManipulated.taxableAmount = rowManipulated.rate * rowManipulated.qty;
@@ -56,6 +40,7 @@ const Invoice = ({ current }) => {
 
         items[subField.key] = rowManipulated;
         current.setFieldsValue({ items: items });
+        console.log(current.getFieldValue("items"));
 
         let amountBeforeTax = items.reduce((a, b) => a + b.taxableAmount, 0);
         let amountAfterTax = items.reduce((a, b) => a + b.finalAmount, 0);
@@ -179,16 +164,11 @@ const Invoice = ({ current }) => {
         return taxableAmount + sgstAmount + igstAmount + cgstAmount;
     };
 
-    useEffect(() => {
-        handleCustomerClcik();
-        handleDescriptionClick();
-    }, []);
+    useEffect(() => {}, []);
+    const items = current.getFieldValue("items");
+    console.log(current.getFieldValue("customer"), "--");
     return (
         <div>
-            <PageLoader
-                text={"Fiailed to load Try again"}
-                isLoading={isLoading}
-            />
             <Col span={10}>
                 <Form.Item
                     label={"Select Coustomer"}
@@ -202,23 +182,9 @@ const Invoice = ({ current }) => {
                         },
                     ]}
                 >
-                    <Select
-                        options={company}
-                        showSearch
-                        filterOption={(input, option) =>
-                            (option?.label ?? "")
-                                .toLowerCase()
-                                .includes(input.toLowerCase())
-                        }
-                        dropdownRender={(menu) => (
-                            <>
-                                <DropDownCoustom
-                                    option={menu}
-                                    buttonName={"Add New Product"}
-                                />
-                            </>
-                        )}
-                        onChange={handleCustomerChange}
+                    <CustomerModal
+                        customerSelect={handleCustomerChange}
+                        customerId={current.getFieldValue("customer")}
                     />
                 </Form.Item>
             </Col>
@@ -235,16 +201,6 @@ const Invoice = ({ current }) => {
                             message: "Please Fill InvoiceNo",
                         },
                     ]}
-                >
-                    <Input />
-                </Form.Item>
-            </Col>
-            <Col span={10}>
-                <Form.Item
-                    label={"OrderNo"}
-                    name={"orderNo"}
-                    labelAlign="left"
-                    labelCol={{ span: 8 }}
                 >
                     <Input />
                 </Form.Item>
@@ -290,16 +246,6 @@ const Invoice = ({ current }) => {
                     </Form.Item>
                 </Col>
             </Row>
-            <Col span={6}>
-                <Form.Item
-                    label={"SalesPerson"}
-                    name={"salesPerson"}
-                    labelAlign="left"
-                    labelCol={{ span: 8 }}
-                >
-                    <Input />
-                </Form.Item>
-            </Col>
 
             <Row>
                 <h3>Item Table</h3>
@@ -370,36 +316,16 @@ const Invoice = ({ current }) => {
                                             },
                                         ]}
                                     >
-                                        <Select
-                                            style={{
-                                                width: 200,
-                                            }}
-                                            options={proudcts}
-                                            showSearch
-                                            filterOption={(input, option) =>
-                                                (option?.label ?? "")
-                                                    .toLowerCase()
-                                                    .includes(
-                                                        input.toLowerCase()
-                                                    )
-                                            }
-                                            dropdownRender={(menu) => (
-                                                <>
-                                                    <DropDownCoustom
-                                                        option={menu}
-                                                        buttonName={
-                                                            "Add New Product"
-                                                        }
-                                                    />
-                                                </>
-                                            )}
-                                            onChange={(value, option) => {
+                                        <ProductModal
+                                            productSelect={(label) =>
                                                 onDescriptionChange(
-                                                    value,
-                                                    option,
+                                                    label,
                                                     subField
-                                                );
-                                            }}
+                                                )
+                                            }
+                                            productValue={
+                                                items ? items[subField.key] : ""
+                                            }
                                         />
                                     </Form.Item>
                                 </Col>

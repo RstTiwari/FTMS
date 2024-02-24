@@ -10,6 +10,7 @@ import Challan  from "../pages/Challan/Index"
 import NewLead from "pages/Lead/NewLead";
 import Quote  from "../pages/Quote"
 import NewQuote from "pages/Quote/NewQuote"
+import Product from "pages/Product/Index"
 import Coustomer from "../pages/Customer"
 import NewCoustomer from "pages/Customer/NewCustomer";
 import Invoice from "../pages/Invoice"
@@ -17,6 +18,7 @@ import NewInvoice from "pages/Invoice/NewInvoice"
 import ReadModule from "module/ReadModule/ReadModule";
 import UpdateModule from "module/UpdateModule/UpdateModule";
 import PdfModule from "module/PdfModule/PdfModule.js"
+import NewProduct from "pages/Product/NewProduct";
 
 
 const Approuter = () => {
@@ -27,7 +29,7 @@ const Approuter = () => {
                     path="/"
                     element={<Navigate to="/dashboard" replace />}
                 />
-                <Route path="/dashboard" element={<Dashbord />} />
+                <Route  path="/dashboard"   exact  element={<Dashbord />} />
                 <Route path="/customers" element ={<Coustomer/>}/>
                 <Route path="/customers/create" element ={<NewCoustomer/>}/>
 
@@ -44,6 +46,11 @@ const Approuter = () => {
                 <Route path="/expenses" element ={<Expenses/>}/>
 
                 <Route path="/challan" element ={<Challan/>}/>
+
+                <Route path="/products" element ={<Product/>}/>
+                <Route path="/products/create" element ={<NewProduct/>}/>
+
+
 
 
 

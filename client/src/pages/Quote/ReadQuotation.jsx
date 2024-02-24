@@ -37,7 +37,11 @@ const ReadQuation = () => {
                 borderRadius: "1rem",
             }}
         >
-            <Header title={` Quotation Details`} subTitle={""} cancelRoute={"quotation"}/>
+            <Header
+                title={` Quotation Details`}
+                subTitle={""}
+                cancelRoute={"quotation"}
+            />
 
             <PageLoader
                 text={"Fetching Customer Detail Please Wait"}

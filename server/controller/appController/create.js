@@ -10,7 +10,7 @@ const create = async (req, res, next, dataBase) => {
         }
         res.status(200).json({
             success: 1,
-            result: [],
+            result: savedata,
             message: `New ${entity} data is saved`,
         });
     } catch (error) {

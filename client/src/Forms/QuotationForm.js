@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import {debounce}  from "lodash"
+import { debounce } from "lodash";
 import {
     Form,
     Select,
@@ -17,43 +17,28 @@ import {
 import { PlusOutlined, CloseOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useMediaQuery } from "@mui/material";
 import { useAuth } from "state/AuthProvider";
+import CustomerModal from "components/CustomerModal";
+import ProductModal from "components/ProductModal";
 
 const QuotationForm = ({ current }) => {
-    const [company, setCompany] = useState([]);
-    const [product, setProduct] = useState([]);
-    const [fetchItems,setFetchedItem] = useState([])
-    const { getDropDownData } = useAuth();
     const isLaptop = useMediaQuery("(min-width:1000px)");
     const inputWidth = isLaptop ? 700 : 350;
     const inputFontSize = isLaptop ? "1rem" : "0.4rem";
 
-
-    const handelCustomerClick = async (value) => {
-        let entity = "customer";
-        let fieldName = "customerName";
-        let data = await getDropDownData(entity, fieldName);
-        setCompany(data);
-    };
-    const handleCustomerChange = (value, label) => {
+    const handleCustomerChange = (value) => {
         current.setFieldsValue({ customer: value });
     };
 
-    const handleDescriptionClick = async () => {
-        let entity = "product";
-        let fieldName = "productName";
-        const dropDownData = await getDropDownData(entity, fieldName);
-        setProduct(dropDownData)
-    };
-
-    const onDescriptionChange = (value, label, subField) => {
+    const onProductChange = (value, subField) => {
         const formData = current.getFieldValue("items");
         const items = [...formData];
         const index = subField.key; // Use subField.name to get the index
-        const rowManipulated = items[0];
-        rowManipulated.description = label.label;
-        rowManipulated.rate = label.rate;
-        rowManipulated.finalAmount =
-           Math.ceil( rowManipulated.rate * rowManipulated.qty)
+        const rowManipulated = items[index];
+        rowManipulated.description = value.productName;
+        rowManipulated.rate = Math.ceil(value.rate);
+        rowManipulated.finalAmount = Math.ceil(
+            rowManipulated.rate * rowManipulated.qty
+        );
         items[index] = rowManipulated;
         current.setFieldsValue({ items: items });
 
@@ -76,9 +61,9 @@ const QuotationForm = ({ current }) => {
         current.setFieldsValue({ grossTotal: Math.ceil(grossSum) });
         current.setFieldsValue({ grandTotal: Math.ceil(grandSum) });
     };
-    
+
     const onRateChange = async (value, subField) => {
-        const formData = current.getFieldValue("items"); 
+        const formData = current.getFieldValue("items");
         const items = [...formData];
         const rowManipulated = items[subField.key];
         rowManipulated.finalAmount = Math.ceil(
@@ -106,14 +91,14 @@ const QuotationForm = ({ current }) => {
         current.setFieldsValue({ grandTotal: Math.ceil(grandSum) });
     };
 
-   
     const onQtyChange = async (value, subField) => {
         const formData = current.getFieldValue("items");
         const items = [...formData];
         const rowManipulated = items[subField.key];
         rowManipulated.qty = value;
-        rowManipulated.finalAmount =
-           Math.ceil( rowManipulated.rate * rowManipulated.qty)
+        rowManipulated.finalAmount = Math.ceil(
+            rowManipulated.rate * rowManipulated.qty
+        );
         current.setFieldsValue({ items: items });
 
         let { grossTotal, grandTotal, taxPercent, transPortAmount } =
@@ -160,10 +145,9 @@ const QuotationForm = ({ current }) => {
         const grandSum = grossTotal + taxAmount + value;
         current.setFieldsValue({ grandTotal: Math.ceil(grandSum) });
     };
-    useEffect(()=>{
-        handleDescriptionClick()
-        handelCustomerClick()
-    },[])
+
+    const items = current.getFieldValue("items");
+    useEffect(() => {}, []);
     return (
         <div>
             <Form.Item
@@ -178,31 +162,9 @@ const QuotationForm = ({ current }) => {
                     },
                 ]}
             >
-                <Select
-                    options={company}
-                    showSearch
-                    filterOption={(input, option) =>
-                        (option?.label ?? "")
-                            .toLowerCase()
-                            .includes(input.toLowerCase())
-                    }
-                    dropdownRender={(menu) => {
-                        return (
-                            <div>
-                                {menu}
-                                <Divider />
-                                <Button
-                                    type="primary"
-                                    style={{
-                                        margin: "0.1rem",
-                                    }}
-                                >
-                                    Add New
-                                </Button>
-                            </div>
-                        );
-                    }}
-                    onChange={handleCustomerChange}
+                <CustomerModal
+                    customerSelect={handleCustomerChange}
+                    customerId={current.getFieldValue("customer")}
                 />
             </Form.Item>
             <Form.Item
@@ -264,13 +226,13 @@ const QuotationForm = ({ current }) => {
                 <Col className="gutter-row" span={7}>
                     <p>{"Description"}</p>
                 </Col>
-                <Col className="gutter-row" span={3}>
+                <Col className="gutter-row" span={4}>
                     <p>{"Rate"}</p>
                 </Col>
-                <Col className="gutter-row" span={3}>
+                <Col className="gutter-row" span={4}>
                     <p>{"Qty"}</p>
                 </Col>
-                <Col className="gutter-row" span={3}>
+                <Col className="gutter-row" span={4}>
                     <p>{"Final Amount"}</p>
                 </Col>
             </Row>
@@ -278,12 +240,11 @@ const QuotationForm = ({ current }) => {
                 name={"items"}
                 initialValue={[
                     {
-                        description:"",
-                        rate:0,
-                        qty:1,
-                        finalAmount:0
-
-                    }
+                        description: "",
+                        rate: 0,
+                        qty: 1,
+                        finalAmount: 0,
+                    },
                 ]}
             >
                 {(subFields, subOpt) => (
@@ -298,47 +259,19 @@ const QuotationForm = ({ current }) => {
                                     <Form.Item
                                         name={[subField.name, "description"]}
                                     >
-                                        <Select
-                                            style={{
-                                                width: 250,
-                                            }}
-                                            options={product}
-                                            showSearch
-                                            filterOption={(input, option) =>
-                                                (option?.label ?? "")
-                                                    .toLowerCase()
-                                                    .includes(
-                                                        input.toLowerCase()
-                                                    )
+                                        <ProductModal
+                                            productSelect={(label) =>
+                                                onProductChange(label, subField)
                                             }
-                    
-                                            dropdownRender={(menu) => {
-                                                return (
-                                                    <div>
-                                                        {menu}
-                                                        <Divider />
-                                                        <Button
-                                                            type="primary"
-                                                            style={{
-                                                                margin: "0.1rem",
-                                                            }}
-                                                        >
-                                                            Add New
-                                                        </Button>
-                                                    </div>
-                                                );
-                                            }}
-                                            onChange={(value, option) => {
-                                                onDescriptionChange(
-                                                    value,
-                                                    option,
-                                                    subField
-                                                );
-                                            }}
+                                            productValue={
+                                                current.getFieldValue("items")[
+                                                    subField.key
+                                                ]
+                                            }
                                         />
                                     </Form.Item>
                                 </Col>
-                                <Col span={3}>
+                                <Col span={4}>
                                     <Form.Item name={[subField.name, "rate"]}>
                                         <InputNumber
                                             style={{ width: 75 }}
@@ -348,7 +281,7 @@ const QuotationForm = ({ current }) => {
                                         />
                                     </Form.Item>
                                 </Col>
-                                <Col span={3}>
+                                <Col span={4}>
                                     <Form.Item name={[subField.name, "qty"]}>
                                         <InputNumber
                                             style={{ width: 75 }}
@@ -358,7 +291,7 @@ const QuotationForm = ({ current }) => {
                                         />
                                     </Form.Item>
                                 </Col>
-                                <Col span={3}>
+                                <Col span={4}>
                                     <Form.Item
                                         name={[subField.name, "finalAmount"]}
                                     >
@@ -373,7 +306,7 @@ const QuotationForm = ({ current }) => {
                                 </Col>
                                 <Form.Item>
                                     <DeleteOutlined
-                                    disabled
+                                        disabled
                                         onClick={() => {
                                             subOpt.remove(subField.name);
                                         }}
@@ -408,6 +341,8 @@ const QuotationForm = ({ current }) => {
                     <Form.Item
                         label="Gross Total"
                         name={"grossTotal"}
+                        labelAlign="left"
+                        labelCol={{ span: 10 }}
                     >
                         <InputNumber
                             readOnly
@@ -423,7 +358,7 @@ const QuotationForm = ({ current }) => {
                     <Form.Item
                         label="Tax(%)"
                         name={"taxPercent"}
-                        labelCol={{span:5}}
+                        labelCol={{ span: 10 }}
                         labelAlign="left"
                     >
                         <InputNumber
@@ -436,11 +371,10 @@ const QuotationForm = ({ current }) => {
             <Row align={"middle"} justify={"end"}>
                 <Col span={8}>
                     <Form.Item
-                        label="Transport(Amount)"
+                        label="Transport(Rs)"
                         name={"transPortAmount"}
-                        labelCol={{span:8}}
+                        labelCol={{ span: 10 }}
                         labelAlign="left"
-                        
                     >
                         <InputNumber
                             style={{ width: 150 }}
@@ -454,6 +388,8 @@ const QuotationForm = ({ current }) => {
                     <Form.Item
                         label="Grand Total"
                         name={"grandTotal"}
+                        labelCol={{ span: 10 }}
+                        labelAlign="left"
                     >
                         <InputNumber
                             readOnly
@@ -521,7 +457,6 @@ const QuotationForm = ({ current }) => {
                     </Form.Item>
                 </Col>
             </Row>
-            
         </div>
     );
 };

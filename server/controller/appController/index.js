@@ -13,30 +13,47 @@ const appRoutes = {
     create: async (req, res, next) => {
         // will update the Data Model based on entity here only
         let db = checkDbForEntity(req.body.entity);
-        if (!db) return res.send("failed"); // manage Error here
+        if (!db) return res.status(404).json({
+            success:0,
+            data:null,
+            message:"Something went Wrong"
+        }); // manage Error here
         create(req, res, next, db);
     },
     getList: async (req, res, next) => {
         let db = checkDbForEntity(req.body.entity);
-        if (!db) return res.send("failed"); // manage Error here
+        if (!db) return res.status(404).json({
+            success:0,
+            data:null,
+            message:"Something went Wrong"
+        }); // manage Error here
         getList(req, res, next, db);
     },
     read: async (req, res, next) => {
         let db = checkDbForEntity(req.query.entity);
-        if (!db) return res.send("failed"); // manage Error here
+        if (!db) return res.status(404).json({
+            success:0,
+            data:null,
+            message:"Something went Wrong"
+        }); // manage Error here
         read(req, res, next, db);
     },
     update: async (req, res, next) => {
         let db = checkDbForEntity(req.body.entity);
-        if (!db) return res.send("failed");
+        if (!db) return res.status(404).json({
+            success:0,
+            data:null,
+            message:"Something went Wrong"
+        }); // manage Error here
         update(req, res, next, db);
     },
     genratePdf :async (req,res,next)=>{
         let db = checkDbForEntity(req.query.entity);
-        if(!db) return res.status(500).json({
+        if (!db) return res.status(404).json({
             success:0,
-            message:"Failed to genrate Pdf"
-        })
+            data:null,
+            message:"Something went Wrong"
+        }); // manage Error here
         genratePdf(req,res,next,db)
     }
 };
@@ -52,7 +69,10 @@ const checkDbForEntity = (entity) => {
         return quoteDb;
     } else if (entity === "invoice") {
         return invoiceDb;
-    } else {
+    }  else if (entity === "product") {
+        return invoiceDb;
+    } 
+    else {
         return false;
     }
 };

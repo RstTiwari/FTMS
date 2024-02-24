@@ -9,7 +9,7 @@ import {
     Divider,
     Row,
     Col,
-    DatePicker
+    DatePicker,
 } from "antd";
 import {
     MinusCircleOutlined,
@@ -19,21 +19,22 @@ import {
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import { useMediaQuery } from "@mui/material";
-import { epochConveter } from "Helper/EpochConveter"
+import { epochConveter } from "Helper/EpochConveter";
+import CustomerModal from "components/CustomerModal";
+import ProductModal from "components/ProductModal";
 
-
-const UpdateQuotationForm = ({ initialValues ,id}) => {
+const UpdateQuotationForm = ({ initialValues, id }) => {
     const [form] = Form.useForm();
-    const { getDropDownData,createData,updateData } = useAuth();
+    const { getDropDownData, createData, updateData } = useAuth();
     const [product, setProduct] = useState([]);
     const [company, setCompany] = useState([]);
-    const [toUpdate,setToUpdate] = useState(false)
+    const [toUpdate, setToUpdate] = useState(false);
     const isLaptop = useMediaQuery("(min-width:1000px)");
     const inputWidth = isLaptop ? 700 : 350;
     const inputFontSize = isLaptop ? "1rem" : "0.4rem";
 
-    const onFinish = async(value) => {
-        if(!toUpdate) return NotificationHandler.error("Nothing to Update")
+    const onFinish = async (value) => {
+        if (!toUpdate) return NotificationHandler.error("Nothing to Update");
         let epochQuoteDate = epochConveter(value.quoteDate.$d);
         let epochExpiryDate = epochConveter(value.quoteDate.$d);
         value._id = id;
@@ -47,27 +48,17 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
             return NotificationHandler.error(message);
         }
     };
-    const handleValueChange = ()=>{
-        setToUpdate(true)
-    }
-    const handleDescriptionClick = async () => {
-        let entity = "product";
-        let fieldName = "productName";
-        const dropDownData = await getDropDownData(entity, fieldName);
-        setProduct(dropDownData);
+    const handleValueChange = () => {
+        setToUpdate(true);
     };
 
-    const handelCustomerClick = async (value) => {
-        let entity = "customer";
-        let fieldName = "customerName";
-        let data = await getDropDownData(entity, fieldName);
-        setCompany(data);
-    };
     const handleCustomerChange = (value, label) => {
         form.setFieldsValue({ customer: value });
     };
 
-    const onItemChange = (value, label ={}, index,subField) => {
+    const onItemChange = (value, label = {}, index, subField) => {
+        console.log(value,);
+        handleValueChange()
         let { items, grossTotal, grandTotal, taxPercent, transPortAmount } =
             form.getFieldsValue([
                 "items",
@@ -79,8 +70,8 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
         let data = [...items];
         const rowManipulated = data[index];
         if (subField === "description") {
-            rowManipulated.description = label.label;
-            rowManipulated.rate = Math.ceil(label.rate);
+            rowManipulated.description = value.productName;
+            rowManipulated.rate = Math.ceil(value.rate);
         } else if (subField === "qty") {
             rowManipulated.qty = value;
         } else if (subField === "rate") {
@@ -95,14 +86,13 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
             NotificationHandler.error("somthing went wrong");
         }
 
-  
         rowManipulated.finalAmount = Math.ceil(
             rowManipulated.rate * rowManipulated.qty
         );
 
         data[index] = rowManipulated; // Update the form with the new final amount value
         form.setFieldsValue({ items: data });
-      
+
         const grossSum = items.reduce(
             (accumulator, currentValue) =>
                 accumulator + currentValue.finalAmount,
@@ -117,11 +107,6 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
         form.setFieldsValue({ grossTotal: Math.ceil(grossSum) });
         form.setFieldsValue({ grandTotal: Math.ceil(grandSum) });
     };
-  
-    useEffect(() => {
-        handleDescriptionClick();
-        handelCustomerClick();
-    }, []);
 
     return (
         <Form
@@ -143,31 +128,9 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
                     },
                 ]}
             >
-                <Select
-                    options={company}
-                    showSearch
-                    filterOption={(input, option) =>
-                        (option?.label ?? "")
-                            .toLowerCase()
-                            .includes(input.toLowerCase())
-                    }
-                    dropdownRender={(menu) => {
-                        return (
-                            <div>
-                                {menu}
-                                <Divider />
-                                <Button
-                                    type="primary"
-                                    style={{
-                                        margin: "0.1rem",
-                                    }}
-                                >
-                                    Add New
-                                </Button>
-                            </div>
-                        );
-                    }}
-                    onChange={handleCustomerChange}
+                <CustomerModal
+                    customerSelect={handleCustomerChange}
+                    customerId={initialValues.customer}
                 />
             </Form.Item>
             <Form.Item
@@ -230,13 +193,13 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
                 <Col className="gutter-row" span={7}>
                     <p>{"Description"}</p>
                 </Col>
-                <Col className="gutter-row" span={3}>
+                <Col className="gutter-row" span={4}>
                     <p>{"Rate"}</p>
                 </Col>
-                <Col className="gutter-row" span={3}>
+                <Col className="gutter-row" span={4}>
                     <p>{"Qty"}</p>
                 </Col>
-                <Col className="gutter-row" span={3}>
+                <Col className="gutter-row" span={4}>
                     <p>{"Final Amount"}</p>
                 </Col>
             </Row>
@@ -263,54 +226,27 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
                                     <Form.Item
                                         name={[subField.name, "description"]}
                                     >
-                                        <Select
-                                            style={{
-                                                width: 250,
-                                            }}
-                                            options={product}
-                                            showSearch
-                                            filterOption={(input, option) =>
-                                                (option?.label ?? "")
-                                                    .toLowerCase()
-                                                    .includes(
-                                                        input.toLowerCase()
-                                                    )
-                                            }
-                                            dropdownRender={(menu) => {
-                                                return (
-                                                    <div>
-                                                        {menu}
-                                                        <Divider />
-                                                        <Button
-                                                            type="primary"
-                                                            style={{
-                                                                margin: "0.1rem",
-                                                            }}
-                                                        >
-                                                            Add New
-                                                        </Button>
-                                                    </div>
-                                                );
-                                            }}
-                                            onChange={(
-                                                value,
-                                                option,
-                                                subField = "description"
-                                            ) => {
+                                        <ProductModal
+                                            productSelect={(label,value={},subField ="description") =>
                                                 onItemChange(
+                                                    label,
                                                     value,
-                                                    option,
                                                     index,
                                                     subField
-                                                );
-                                            }}
+                                                )
+                                            }
+                                            productValue={
+                                                form.getFieldValue("items")[
+                                                    subField.key
+                                                ]
+                                            }
                                         />
                                     </Form.Item>
                                 </Col>
-                                <Col span={3}>
+                                <Col span={4}>
                                     <Form.Item name={[subField.name, "rate"]}>
                                         <InputNumber
-                                            style={{ width: 75 }}
+                                            style={{ width: 100 }}
                                             onChange={(
                                                 value,
                                                 label = {},
@@ -326,11 +262,11 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
                                         />
                                     </Form.Item>
                                 </Col>
-        
-                                <Col span={3}>
+
+                                <Col span={4}>
                                     <Form.Item name={[subField.name, "qty"]}>
                                         <InputNumber
-                                            style={{ width: 75 }}
+                                            style={{ width: 100 }}
                                             onChange={(
                                                 value,
                                                 label = {},
@@ -346,7 +282,7 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
                                         />
                                     </Form.Item>
                                 </Col>
-                                <Col span={3}>
+                                <Col span={4}>
                                     <Form.Item
                                         name={[subField.name, "finalAmount"]}
                                     >
@@ -355,7 +291,7 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
                                             className="moneyInput"
                                             min={0}
                                             controls={false}
-                                            style={{ width: 75 }}
+                                            style={{ width: 100 }}
                                         />
                                     </Form.Item>
                                 </Col>
@@ -416,7 +352,7 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
                             onChange={(
                                 value,
                                 label = {},
-                                index =0,
+                                index = 0,
                                 subField = "taxPercent"
                             ) => {
                                 onItemChange(value, label, index, subField);
@@ -441,7 +377,7 @@ const UpdateQuotationForm = ({ initialValues ,id}) => {
                                 index = 0,
                                 subField = "transPortAmount"
                             ) => {
-                                onItemChange(value, label, index , subField);
+                                onItemChange(value, label, index, subField);
                             }}
                         />
                     </Form.Item>

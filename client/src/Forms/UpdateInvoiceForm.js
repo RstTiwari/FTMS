@@ -20,6 +20,8 @@ import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import { useMediaQuery } from "@mui/material";
 import { epochConveter } from "Helper/EpochConveter";
+import CustomerModal from "components/CustomerModal";
+import ProductModal from "components/ProductModal";
 
 const UpdateInvoiceForm = ({ initialValues, id }) => {
     const [form] = Form.useForm();
@@ -28,11 +30,10 @@ const UpdateInvoiceForm = ({ initialValues, id }) => {
     const [company, setCompany] = useState([]);
     const [toUpdate, setToUpdate] = useState(false);
     const isLaptop = useMediaQuery("(min-width:1000px)");
-  
 
     const onFinish = async (value) => {
         if (!toUpdate) return NotificationHandler.error("Nothing to Update");
-        value.invoiceDate  = epochConveter(value.invoiceDate.$d);
+        value.invoiceDate = epochConveter(value.invoiceDate.$d);
         value.invoiceExpiredDate = epochConveter(value.invoiceExpiredDate.$d);
         value._id = id;
         let payload = { entity: "invoice", value };
@@ -68,9 +69,9 @@ const UpdateInvoiceForm = ({ initialValues, id }) => {
         let data = [...items];
         const rowManipulated = data[index];
         if (subField === "description") {
-            rowManipulated.description = label.label;
-            rowManipulated.rate = Math.ceil(label.rate);
-            rowManipulated.hsnCode = label.hsnCode;
+            rowManipulated.description = value.productName;
+            rowManipulated.rate = Math.ceil(value.rate);
+            rowManipulated.hsnCode = value.hsnCode;
         } else if (subField === "qty") {
             rowManipulated.qty = value;
         } else if (subField === "rate") {
@@ -84,8 +85,10 @@ const UpdateInvoiceForm = ({ initialValues, id }) => {
         } else {
             NotificationHandler.error("somthing went wrong");
         }
-        
-        rowManipulated.taxableAmount = Math.ceil(rowManipulated.rate*rowManipulated.qty)
+
+        rowManipulated.taxableAmount = Math.ceil(
+            rowManipulated.rate * rowManipulated.qty
+        );
         rowManipulated.finalAmount = getFinalAmount(
             rowManipulated.sgstPercent,
             rowManipulated.cgstPercent,
@@ -104,8 +107,8 @@ const UpdateInvoiceForm = ({ initialValues, id }) => {
         form.setFieldsValue({ totalTaxAmount: Math.ceil(totalTaxAmount) });
     };
 
-     /**Function for Calculating the Final Amount */
-     const getFinalAmount = (sgst, cgst, igst, taxableAmount) => {
+    /**Function for Calculating the Final Amount */
+    const getFinalAmount = (sgst, cgst, igst, taxableAmount) => {
         let sgstAmount = Math.floor((sgst * taxableAmount) / 100);
         let cgstAmount = Math.floor((cgst * taxableAmount) / 100);
         let igstAmount = Math.floor((igst * taxableAmount) / 100);
@@ -137,32 +140,9 @@ const UpdateInvoiceForm = ({ initialValues, id }) => {
                         },
                     ]}
                 >
-                    <Select
-                        options={company}
-                        disabled
-                        showSearch
-                        filterOption={(input, option) =>
-                            (option?.label ?? "")
-                                .toLowerCase()
-                                .includes(input.toLowerCase())
-                        }
-                        dropdownRender={(menu) => (
-                            <>
-                                <div>
-                                    {menu}
-                                    <Divider />
-                                    <Button
-                                        type="primary"
-                                        style={{
-                                            margin: "0.1rem",
-                                        }}
-                                    >
-                                        Add New
-                                    </Button>
-                                </div>
-                            </>
-                        )}
-                        onChange={handleCustomerChange}
+                    <CustomerModal
+                        customerSelect={handleCustomerChange}
+                        customerId={initialValues.customer}
                     />
                 </Form.Item>
             </Col>
@@ -182,16 +162,7 @@ const UpdateInvoiceForm = ({ initialValues, id }) => {
                     <Input disabled />
                 </Form.Item>
             </Col>
-            <Col span={10}>
-                <Form.Item
-                    label={"OrderNo"}
-                    name={"orderNo"}
-                    labelAlign="left"
-                    labelCol={{ span: 8 }}
-                >
-                    <Input  disabled/>
-                </Form.Item>
-            </Col>
+
             <Row>
                 <Col xs={24} sm={24} md={12} lg={12}>
                     <Form.Item
@@ -232,16 +203,6 @@ const UpdateInvoiceForm = ({ initialValues, id }) => {
                     </Form.Item>
                 </Col>
             </Row>
-            <Col span={6}>
-                <Form.Item
-                    label={"SalesPerson"}
-                    name={"salesPerson"}
-                    labelAlign="left"
-                    labelCol={{ span: 8 }}
-                >
-                    <Input />
-                </Form.Item>
-            </Col>
             <Divider dashed />
             <Row>
                 <h3>Item Table</h3>
@@ -297,47 +258,24 @@ const UpdateInvoiceForm = ({ initialValues, id }) => {
                                             },
                                         ]}
                                     >
-                                        <Select
-                                            style={{
-                                                width: 200,
-                                            }}
-                                            options={product}
-                                            showSearch
-                                            filterOption={(input, option) =>
-                                                (option?.label ?? "")
-                                                    .toLowerCase()
-                                                    .includes(
-                                                        input.toLowerCase()
-                                                    )
-                                            }
-                                            dropdownRender={(menu) => (
-                                                <>
-                                                    <div>
-                                                        {menu}
-                                                        <Divider />
-                                                        <Button
-                                                            type="primary"
-                                                            style={{
-                                                                margin: "0.1rem",
-                                                            }}
-                                                        >
-                                                            Add New
-                                                        </Button>
-                                                    </div>
-                                                </>
-                                            )}
-                                            onChange={(
-                                                value,
-                                                option,
+                                        <ProductModal
+                                            productSelect={(
+                                                label,
+                                                value = {},
                                                 subField = "description"
-                                            ) => {
+                                            ) =>
                                                 onItemChange(
+                                                    label,
                                                     value,
-                                                    option,
                                                     index,
                                                     subField
-                                                );
-                                            }}
+                                                )
+                                            }
+                                            productValue={
+                                                form.getFieldValue("items")[
+                                                    subField.key
+                                                ]
+                                            }
                                         />
                                     </Form.Item>
                                 </Col>

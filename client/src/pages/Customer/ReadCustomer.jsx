@@ -54,14 +54,14 @@ const ReadCustomer = () => {
                             customerEmail: data.customerEmail,
                             panNo: data.panNo,
                             gstNo: data.gstNo,
-                            billingStreet: data.billingAddress.address,
-                            billingCity: data.billingAddress.city,
-                            billingState: data.billingAddress.state,
+                            billingStreet: data.billingAddress.address ,
+                            billingCity: data.billingAddress.city ,
+                            billingState: data.billingAddress.state ,
                             billingPincode: data.billingAddress.pinCode,
-                            shippingStreet: data.shippingAddress.address,
-                            shippingCity: data.shippingAddress.city,
-                            shippingState: data.shippingAddress.state,
-                            shippingPincode: data.shippingAddress.pinCode,
+                            shippingStreet: data.shippingAddress.address ,
+                            shippingCity: data.shippingAddress.city ,
+                            shippingState: data.shippingAddress.state ,
+                            shippingPincode: data.shippingAddress.pinCode 
                         }}
                         disabled={true}
                     >

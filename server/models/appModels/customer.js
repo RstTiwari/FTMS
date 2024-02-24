@@ -25,7 +25,6 @@ const coustomerSchema = new mongoose.Schema({
     },
     gstNo: {
         type: String,
-        require: true,
         unique:true
 
     },
