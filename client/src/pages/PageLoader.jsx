@@ -12,7 +12,7 @@ const PageLoader = ({text ,isLoading}) => {
           }}
       >
           <Row>
-              <Spin size="large" />
+              <Spin size="large"  />
           </Row>
           <Row> {text}</Row>
       </div>

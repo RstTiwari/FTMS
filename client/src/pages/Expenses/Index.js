@@ -23,6 +23,8 @@ const Index = () => {
         >
             <Header
                 title={"Expenses List"}
+                subTitle={"Add New Expense"}
+                addRoute={"expense/create"}
                 localDataKey={"expenses"}
                 cancelRoute={"dashboard"}
             />

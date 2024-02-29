@@ -43,3 +43,36 @@ export const expensesColumns = [
         ),
     },
 ];
+
+export const categoryOption = [
+    {
+        label:"Labour",
+        value:"Labour"
+
+    },
+    {
+        label:"Materials",
+        value:"Materials"
+
+    },
+    {
+        label:"IT & Internet",
+        value:"IT & Internet"
+
+    },
+    {
+        label:"Office Stationary",
+        value:"Office Stationary"
+
+    },
+    {
+        label:"Repair & Maintainance",
+        value:"Repair & Maintainance"
+
+    },
+    {
+        label:"Travel",
+        value:"Travel"
+    },
+   
+]

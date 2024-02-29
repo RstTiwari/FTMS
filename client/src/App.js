@@ -22,7 +22,7 @@ function App() {
                             text={
                                 "Please Wait While We make Everythinh Perfect For You"
                             }
-                            isLoading={false}
+                            isLoading={true}
                         />
                     }
                 >
