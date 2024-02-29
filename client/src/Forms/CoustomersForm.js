@@ -128,7 +128,6 @@ const CoustomersForm = ({ current ,disabled}) => {
                             }}
                         >
                             <Input.TextArea
-                                placeholder="street1"
                                 style={{
                                     width: isLaptop ? 300 : 250,
                                     height: 100,
@@ -220,7 +219,6 @@ const CoustomersForm = ({ current ,disabled}) => {
                             }}
                         >
                             <Input.TextArea
-                                placeholder="street1"
                                 controls={false}
                                 style={{
                                     width: isLaptop ? 300 : 250,

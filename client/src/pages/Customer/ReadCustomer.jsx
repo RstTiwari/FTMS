@@ -25,6 +25,19 @@ const ReadCustomer = () => {
         fetchData();
     }, []);
 
+    const {
+        customerName,
+        contactPerson,
+        customerPhone,
+        customerEmail,
+        panNo,
+        gstNo,
+        billingAddress,
+        shippingAddress,
+    } = data;
+    const { addressB, cityB, stateB, pinCodeB } = billingAddress ? billingAddress :"";
+    const { addressS, cityS, stateS, pinCodeS } = shippingAddress ? shippingAddress :"";
+
     return (
         <Flex
             gap={"middle"}
@@ -42,26 +55,30 @@ const ReadCustomer = () => {
             />
             {!isLoading && data ? (
                 <>
-                    <Header title={` Customer Details - ${data.customerName}`} subTitle={""} cancelRoute={"customers"} />
+                    <Header
+                        title={` Customer Details - ${data.customerName}`}
+                        subTitle={""}
+                        cancelRoute={"customers"}
+                    />
                     <Form
                         name="coustomerForm"
                         form={form}
                         initialValues={{
                             remeber: true,
-                            customerName: data.customerName,
-                            contactPerson: data.contactPerson,
-                            customerPhone: data.customerPhone,
-                            customerEmail: data.customerEmail,
-                            panNo: data.panNo,
-                            gstNo: data.gstNo,
-                            billingStreet: data.billingAddress.address ,
-                            billingCity: data.billingAddress.city ,
-                            billingState: data.billingAddress.state ,
-                            billingPincode: data.billingAddress.pinCode,
-                            shippingStreet: data.shippingAddress.address ,
-                            shippingCity: data.shippingAddress.city ,
-                            shippingState: data.shippingAddress.state ,
-                            shippingPincode: data.shippingAddress.pinCode 
+                            customerName: customerName ? customerName : "",
+                            contactPerson: contactPerson ? contactPerson : "",
+                            customerPhone: customerPhone ? customerPhone : "",
+                            customerEmail: customerEmail ? customerEmail : "",
+                            panNo: panNo ? panNo : "",
+                            gstNo: gstNo ? gstNo : "",
+                            billingStreet: addressB ? addressB : "",
+                            billingCity: cityB ? cityB : "",
+                            billingState: stateB ? stateB : "",
+                            billingPincode: pinCodeB ? pinCodeB : "",
+                            shippingStreet: addressS ? addressS : "",
+                            shippingCity: cityS ? cityS : "",
+                            shippingState: stateS ? stateS : "",
+                            shippingPincode: pinCodeS ? pinCodeS : "",
                         }}
                         disabled={true}
                     >

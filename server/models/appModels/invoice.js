@@ -32,9 +32,7 @@ const invoiceSchema = new mongoose.Schema({
     invoiceExpiredDate: {
         type: Number,
     },
-    salesPerson: {
-        type: String,
-    },
+
     items: [
         {
             description: {
