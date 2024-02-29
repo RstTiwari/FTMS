@@ -26,7 +26,7 @@ function base64ToArray(base64String) {
         const jsonString = atob(base64String); // Decode Base64 to JSON string
         return JSON.parse(jsonString); // Parse JSON string back to array
     } catch (error) {
-        console.error('Error decoding Base64 string:', error);
+        console.error('Error decoding Base64 string', error);
         return null; // Return null if decoding fails
     }
 }

@@ -6,6 +6,7 @@ import Header from "components/Header";
 import PageLoader from "pages/PageLoader";
 import InvoiceFrom from "Forms/Invoice";
 import { epochInDDMMYY } from "Helper/EpochConveter";
+import PaymentHistoryList from "pages/Payments/PaymentHistory";
 const ReadInvoice = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState("");
@@ -65,6 +66,8 @@ const ReadInvoice = () => {
                         disabled={true}
                     >
                         <InvoiceFrom current={form} />
+                        
+                        <PaymentHistoryList  data={data.payment}/>
                     </Form>
                 </>
             ) : (

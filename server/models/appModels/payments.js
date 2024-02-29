@@ -6,17 +6,17 @@ const paymentsSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    customer: {
-        type: mongoose.Schema.ObjectId,
-        ref: "customer",
-        autopopulate: true,
-        required: true,
-    },
+
     invoice: {
         type: mongoose.Schema.ObjectId,
         ref: "invoice",
         required: true,
         autopopulate: true,
+    },
+    paymentDate:{
+         type:Number,
+         required:true
+
     },
     createdDate: {
         type: Number,
@@ -34,12 +34,8 @@ const paymentsSchema = new mongoose.Schema({
     ref: {
         type: String,
     },
-    description: {
+    notes: {
         type: String,
-    },
-    updated: {
-        type: Date,
-        default: Math.floor(Date.now() / 1000),
     },
 });
 

@@ -40,7 +40,7 @@ const ProductModal = ({ productSelect,productValue}) => {
             {!open ? (
                 <Select
                     options={options}
-                    value={product ? product :""}
+                    value={product ? product : ""}
                     showSearch
                     filterOption={(input, option) =>
                         (option?.label ?? "")
@@ -68,19 +68,21 @@ const ProductModal = ({ productSelect,productValue}) => {
                     onChange={handleProductChange}
                 />
             ) : (
-                <Modal
-                    title={"NEW PRODUCT"}
-                    zIndex={1200}
-                    centered
-                    open={open}
-                    width={"90%"}
-                    onCancel={onCancel}
-                    maskClosable={true}
-                    footer={null}
-                    keyboard ={false}
-                >
-                    <NewProduct  afterAdd = {afterAdd}  />
-                </Modal>
+                <>
+                    <Modal
+                        title={"NEW PRODUCT"}
+                        zIndex={1200}
+                        centered
+                        open={open}
+                        width={"90%"}
+                        onCancel={onCancel}
+                        maskClosable={true}
+                        footer={null}
+                        keyboard={false}
+                    >
+                        <NewProduct afterAdd={afterAdd} />
+                    </Modal>
+                </>
             )}
         </>
     );

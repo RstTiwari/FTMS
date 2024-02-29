@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect } from "react";
 import { Cookies, useCookies } from "react-cookie";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import axios from "axios";
+import { removeLocalData } from "Helper/FetchingLocalData";
 let myfac8ryBaseUrl = process.env.REACT_APP_URL_PROD;
 if (process.env.NODE_ENV === "development") {
     myfac8ryBaseUrl = process.env.REACT_APP_URL_LOCAL;
@@ -20,6 +21,12 @@ export const AuthProvider = ({ children }) => {
     const logoutUser = () => {
         removeCookie("token");
         removeCookie("authData");
+        removeLocalData("customer");
+        removeLocalData("payments");
+        removeLocalData("quote");
+        removeLocalData("challan");
+        removeLocalData("lead");
+        removeLocalData("expenses");
     };
 
     const authApiCall = async (path, data) => {
@@ -119,6 +126,14 @@ export const AuthProvider = ({ children }) => {
             return { success: 1, result: data.result, message: data.message };
         }
     };
+    const patchData = async (payload) => {
+        let data = await appApiCall("patch", "patch", payload,{});
+        if (data.success === 0) {
+            return { success: 0, result: null, message: data.message };
+        } else {
+            return { success: 1, result: data.result, message: data.message };
+        }
+    };
 
     const getTableData = async (entity) => {
         let data = await appApiCall("post", "getList", { entity: entity });
@@ -129,7 +144,7 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const pdfGenrate = async (entity,params, entityNo) => {
+    const pdfGenrate = async (entity, params, entityNo) => {
         try {
             const headers = {
                 "Content-Type": "application/json", //Example header
@@ -159,7 +174,6 @@ export const AuthProvider = ({ children }) => {
             );
         }
     };
-
 
     const verifyToken = async () => {
         try {
@@ -203,7 +217,8 @@ export const AuthProvider = ({ children }) => {
                 createData,
                 readData,
                 updateData,
-                pdfGenrate
+                pdfGenrate,
+                patchData
             }}
         >
             {children}

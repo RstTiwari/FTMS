@@ -3,10 +3,12 @@ import customerDb from "../../models/appModels/customer.js";
 import productDb from "../../models/appModels/product.js";
 import quoteDb from "../../models/appModels/quotation.js";
 import invoiceDb from "../../models/appModels/invoice.js";
+import paymentDb from "../../models/appModels/payments.js";
 import create from "./create.js";
 import getList from "./getList.js";
 import read from "./read.js";
 import update from "./update.js"
+import patch from "./patch.js"
 import genratePdf  from "./genratePdf.js"
 
 const appRoutes = {
@@ -47,6 +49,15 @@ const appRoutes = {
         }); // manage Error here
         update(req, res, next, db);
     },
+    patch:async (req,res,next)=>{
+        let db = checkDbForEntity(req.body.entity);
+        if (!db) return res.status(404).json({
+            success:0,
+            data:null,
+            message:"Something went Wrong"
+        }); // manage Error here
+        patch(req, res, next, db);
+    },
     genratePdf :async (req,res,next)=>{
         let db = checkDbForEntity(req.query.entity);
         if (!db) return res.status(404).json({
@@ -71,6 +82,9 @@ const checkDbForEntity = (entity) => {
         return invoiceDb;
     }  else if (entity === "product") {
         return invoiceDb;
+    }
+    else if (entity === "payments") {
+        return paymentDb;
     } 
     else {
         return false;

@@ -19,8 +19,9 @@ const invoiceSchema = new mongoose.Schema({
       },
       
     payment: [
-        {
+        {    
             type: mongoose.Schema.ObjectId,
+            autopopulate: true,
             ref: "payments",
         },
     ],

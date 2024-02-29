@@ -1,5 +1,5 @@
 import React from "react";
-import { DownOutlined } from "@ant-design/icons";
+import { BankOutlined, DownOutlined, MoneyCollectFilled, MoneyCollectOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { Space, Dropdown, Menu } from "antd";
 import pdfGenrate from "Helper/PdfGenrate";
@@ -13,25 +13,26 @@ import {
     PlusOutlined,
     EllipsisOutlined,
 } from "@ant-design/icons";
+import { PaymentOutlined } from "@mui/icons-material";
 
-export const TableAction = ({ params, page, download,entityNo }) => {
+export const TableAction = ({ params, page, download,entityNo,payment }) => {
     const {pdfGenrate} = useAuth()
     const menuItems = [
-        <Menu.Item key="1">
+        <Menu.Item key="1" style={{fontSize:"0.75rem"}}>
             <Link to={`/read/${page}/${params}`}>
                 {" "}
                 <EyeOutlined />
                 SHOW
             </Link>
         </Menu.Item>,
-        <Menu.Item key="2">
+        <Menu.Item key="2"  style={{fontSize:"0.75rem"}}>
             <Link to={`/update/${page}/${params}`}>
                 {" "}
                 <EditOutlined />
                 EDIT
             </Link>
         </Menu.Item>,
-        <Menu.Item key="3" onClick={()=>pdfGenrate(page,params,entityNo)}>
+        <Menu.Item key="3" onClick={()=>pdfGenrate(page,params,entityNo)}  style={{fontSize:"0.75rem"}}>
             {download ? (
                 <div>
                     {" "}
@@ -40,6 +41,17 @@ export const TableAction = ({ params, page, download,entityNo }) => {
             ) : (
                 ""
             )}
+        </Menu.Item>,
+            <Menu.Item key="4"  style={{fontSize:"0.75rem"}}>
+            <Link to={`/record/payment/${params}`}>
+                {payment ? (
+                    <>
+                    <BankOutlined />
+                RECORD PAYMENT
+                    </>
+                ):("")}
+                
+            </Link>
         </Menu.Item>,
     ];
 

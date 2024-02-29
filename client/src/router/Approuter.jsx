@@ -19,6 +19,7 @@ import ReadModule from "module/ReadModule/ReadModule";
 import UpdateModule from "module/UpdateModule/UpdateModule";
 import PdfModule from "module/PdfModule/PdfModule.js"
 import NewProduct from "pages/Product/NewProduct";
+import NewPayment from "pages/Payments/NewPayment";
 
 
 const Approuter = () => {
@@ -59,6 +60,8 @@ const Approuter = () => {
                 <Route path="/read/:entity/:id" element ={<ReadModule />}/>
                 <Route path="/update/:entity/:id" element ={<UpdateModule />}/>
                 <Route path="/download/:entity/:id" element ={<PdfModule />}/>
+                <Route path="/record/payment/:id" element ={<NewPayment />}/>
+
 
 
 
