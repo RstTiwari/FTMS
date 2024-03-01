@@ -5,7 +5,12 @@ const { Text } = Typography;
 
 export const challanColumns = [
     {
-        title: "Customer Name",
+        title: "DELIVERY CHALLAN #",
+        dataIndex: "challanNumber",
+        key: "challanNumber",
+    },
+    {
+        title: "CUSTOMER NAME",
         dataIndex: "customer",
         key: "name",
         render: (_, record) => (
@@ -15,17 +20,23 @@ export const challanColumns = [
         ),
     },
     {
-        title: "Challan Number",
-        dataIndex: "challanNumber",
+        title: "INVOICE #",
+        dataIndex: "invoice",
         key: "challanNumber",
+        render: (_, record) => (
+            <>
+                <Text type="success">{record.invoice.invoiceNo}</Text>
+            </>
+        ),
     },
+
     {
-        title: "Status",
+        title: "STATUS",
         dataIndex: "status",
         key: "total",
     },
     {
-        title: "Invocie Status",
+        title: "INVOICE STATUS",
         dataIndex: "invoice",
         render: (_, record) => (
             <>
@@ -35,12 +46,12 @@ export const challanColumns = [
     },
 
     {
-        title: " Date",
+        title: " DATE",
         dataIndex: "createdDate",
         key: "createdDate",
         render: (_, record) => (
             <>
-                <Text>{convertUnixTimestampToDate(record.createdDate)}</Text>
+                <Text>{convertUnixTimestampToDate(record.challanDate)}</Text>
             </>
         ),
     },
@@ -50,5 +61,23 @@ export const challanColumns = [
         render: (_, record) => (
             <TableAction params={record._id} page={"challan"} />
         ),
+    },
+];
+export const unitOptions = [
+    {
+        label: "Box",
+        value: "Box",
+    },
+    {
+        label: "Nos",
+        value: "Nos",
+    },
+    {
+        label: "Kg",
+        value: "Kg",
+    },
+    {
+        label: "Unit",
+        value: "Unit",
     },
 ];

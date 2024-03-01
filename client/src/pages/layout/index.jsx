@@ -15,7 +15,7 @@ const Layout = () => {
            <Sidebar
                user = {data || {}}
                isLaptop={isLaptop}
-               drawerWidth="250px"
+               drawerWidth="275px"
                isSidebarOpen={ isLaptop ? !isSidebarOpen :isSidebarOpen}
                setIsSidebarOpen={setIsSidebarOpen}
            /> 

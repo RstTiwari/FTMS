@@ -23,10 +23,11 @@ const Index = () => {
         >
             <Header
                 title={"Expenses List"}
-                subTitle={"Add New Expense"}
+                subTitle={"ADD EXPENSE"}
                 addRoute={"expense/create"}
                 localDataKey={"expenses"}
                 cancelRoute={"dashboard"}
+                refresh={true}
             />
             <PageLoader isLoading={isLoading} />
             <Table columns={expensesColumns} dataSource={data} />

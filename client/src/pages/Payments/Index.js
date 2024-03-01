@@ -26,6 +26,7 @@ const Index = () => {
                 title={"Payment List"}
                 localDataKey={"payments"}
                 cancelRoute={"dashboard"}
+                refresh={true}
             />
             <PageLoader isLoading={isLoading} />
             <Table columns={paymentColumns} dataSource={data} />

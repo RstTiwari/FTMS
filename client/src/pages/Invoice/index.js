@@ -5,43 +5,16 @@ import { invoiceColumns, invoiceData } from "Data/InvoiceData";
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import { getLocalData,setLocalData } from "Helper/FetchingLocalData"
+import useDataFetching from "Hook/useDataFetching";
 
 
 const Index = () => {
-    const { getTableData } = useAuth();
-    const [data, setData] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
     let entity = "invoice";
-    const fetchData = useCallback(async () => {
-        try {
-            const localData = getLocalData(entity);
-            if (localData) {
-                // Data has been fetched before, retrieve it from local storage
-                setData(localData);
-                setIsLoading(false);
-            } else {
-                // Data hasn't been fetched before, fetch it
-                const { success, result, message } = await getTableData(entity);
-                if (!success) {
-                    setIsLoading(false);
-                    NotificationHandler.error(message);
-                } else {
-                    setData(result);
-                    setIsLoading(false);
-                    setLocalData(entity, result);
-                }
-            }
-        } catch (error) {
-            console.error("Error fetching data:", error);
-            setIsLoading(false);
-            NotificationHandler.error("Failed to fetch data");
-        }
-    }, [getTableData, entity])
-
+    const { data, isLoading, fetchData } = useDataFetching(entity);
     useEffect(() => {
         fetchData();
     }, [fetchData]);
-
+  
     return (
         <Flex
             gap={"middle"}
@@ -58,6 +31,7 @@ const Index = () => {
                 addRoute={"invoice/create"}
                 localDataKey={"invoice"}
                 cancelRoute={"dashboard"}
+                refresh={true}
             />
             <Table
                 columns={invoiceColumns}

@@ -37,6 +37,10 @@ const paymentsSchema = new mongoose.Schema({
     notes: {
         type: String,
     },
+    tenantId: {
+        type: String,
+        required: true,
+    },
 });
 
 paymentsSchema.plugin(mongooseAutoPopulate);

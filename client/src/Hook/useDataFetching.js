@@ -24,7 +24,6 @@ const useDataFetching = (entity) => {
                 }
             }
         } catch (error) {
-            console.error("Error fetching data:", error);
             setIsLoading(false);
             NotificationHandler.error("Failed to fetch data");
         }

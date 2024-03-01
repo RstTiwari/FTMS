@@ -30,6 +30,7 @@ const Index = () => {
                 addRoute={"quotation/create"}
                 localDataKey={"quote"}
                 cancelRoute={"dashboard"}
+                refresh={true}
             />
             <Table
                 columns={quotationColumn}

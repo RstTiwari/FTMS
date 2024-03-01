@@ -28,7 +28,11 @@ const expenseSchema = new mongoose.Schema({
     image: {
         type: String,
     },
+    tenantId: {
+        type: String,
+        required: true,
+    },
 });
 
 expenseSchema.plugin(mongooseAutoPopulate);
-export default mongoose.modal("expesnses", expenseSchema);
+export default mongoose.model("expenses", expenseSchema);

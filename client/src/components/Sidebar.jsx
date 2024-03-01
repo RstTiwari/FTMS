@@ -102,7 +102,7 @@ const Sidebar = ({
             icon:<ReceiptLongOutlined/>
         },
         {
-            text:"Challan",
+            text:"Delivery Challan",
             icon:<LocalShippingRoundedIcon/>
         },  
         {
@@ -192,7 +192,7 @@ const Sidebar = ({
                                     <ListItem key={text} disablePadding>
                                         <ListItemButton
                                             onClick={() => {
-                                                navigate(`${lcText}`);
+                                                navigate(`${lcText.replaceAll(" ","")}`);
                                                 setActive(lcText);
                                             }}
                                             sx={{

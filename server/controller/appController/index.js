@@ -4,6 +4,7 @@ import productDb from "../../models/appModels/product.js";
 import quoteDb from "../../models/appModels/quotation.js";
 import invoiceDb from "../../models/appModels/invoice.js";
 import paymentDb from "../../models/appModels/payments.js";
+import expensesDb from "../../models/appModels/expenses.js";
 import create from "./create.js";
 import getList from "./getList.js";
 import read from "./read.js";
@@ -86,6 +87,9 @@ const checkDbForEntity = (entity) => {
     else if (entity === "payments") {
         return paymentDb;
     } 
+    else if (entity === "expenses") {
+        return expensesDb;
+    }
     else {
         return false;
     }

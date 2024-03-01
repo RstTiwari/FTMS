@@ -6,7 +6,8 @@ import NotFound from "pages/Notfound";
 import Lead from "../pages/Lead";
 import Payments from "../pages/Payments/Index";
 import Expenses from "../pages/Expenses/Index";
-import Challan from "../pages/Challan/Index";
+import DeliveryChallan from "../pages/DeliveyChallan/Index";
+import NewDeliveryChallan  from "../pages/DeliveyChallan/NewDeliveryChallan"
 import NewLead from "pages/Lead/NewLead";
 import Quote from "../pages/Quote";
 import NewQuote from "pages/Quote/NewQuote";
@@ -47,7 +48,9 @@ const Approuter = () => {
                 <Route path="/expenses" element={<Expenses />} />
                 <Route path="expense/create" element={<NewExpenses />} />
 
-                <Route path="/challan" element={<Challan />} />
+                <Route path="/deliverychallan" element={<DeliveryChallan />} />
+                <Route path="/deliverychallan/create" element={<NewDeliveryChallan />} />
+
 
                 <Route path="/products" element={<Product />} />
                 <Route path="/products/create" element={<NewProduct />} />

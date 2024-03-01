@@ -13,12 +13,15 @@ import { categoryOption } from "../Data/ExpensesData";
 import CustomerModal from "components/CustomerModal";
 import UploadImage from "components/UploadImage";
 
-const ExpenseForm = () => {
+const ExpenseForm = ({handleFormFinish}) => {
     const [form] = Form.useForm();
-    const handleFinish = (value) => {
-        console.log(value);
+    
+    const handleValueChange = () => {
+
     };
-    const handleValueChange = () => {};
+    const handleSubmit =(value)=>{
+        handleFormFinish(value)
+    }
     const handleCustomerSelect = (value) => {
         form.setFieldValue({ customer: value });
     };
@@ -26,10 +29,10 @@ const ExpenseForm = () => {
         <Form
             name="expnseForm"
             form={form}
-            onFinish={handleFinish}
-            onValuesChange={handleValueChange}
+            onFinish={handleSubmit}
+            layout="horizontal"
         >
-            <Col span={8}>
+            <Col xs={24} sm={24} md={8} lg={8} xl={8}>
                 <Form.Item
                     label={"Expense Date"}
                     name={"expenseDate"}
@@ -42,23 +45,23 @@ const ExpenseForm = () => {
                     <DatePicker />
                 </Form.Item>
             </Col>
-                <Col span={8}>
-                    <Form.Item
-                        label={"Category  Name"}
-                        name={"expenseDate"}
-                        labelAlign="left"
-                        labelCol={{ span: 12 }}
-                        rules={[
-                            {
-                                required: true,
-                                message: "Expense Date is Required",
-                            },
-                        ]}
-                    >
-                        <Select options={categoryOption} />
-                    </Form.Item>
-                    </Col>
-            <Col span={8}>
+            <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+                <Form.Item
+                    label={"Category  Name"}
+                    name={"categoryName"}
+                    labelAlign="left"
+                    labelCol={{ span: 12 }}
+                    rules={[
+                        {
+                            required: true,
+                            message: "Expense Date is Required",
+                        },
+                    ]}
+                >
+                    <Select options={categoryOption} />
+                </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={8} lg={8} xl={8}>
                 <Form.Item
                     label={"Amount"}
                     name={"amount"}
@@ -69,19 +72,18 @@ const ExpenseForm = () => {
                     <Input />
                 </Form.Item>
             </Col>
-            <Row>
-                <Col span={8}>
-                    <Form.Item
-                        label={"Invoice #"}
-                        name={"invoice"}
-                        labelAlign="left"
-                        labelCol={{ span: 12 }}
-                    >
-                        <Input />
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Col span={8}>
+
+            <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+                <Form.Item
+                    label={"Invoice #"}
+                    name={"invoice"}
+                    labelAlign="left"
+                    labelCol={{ span: 12 }}
+                >
+                    <Input />
+                </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={8} lg={8} xl={8}>
                 <Form.Item
                     label={"Note"}
                     name={"note"}
@@ -91,7 +93,7 @@ const ExpenseForm = () => {
                     <Input.TextArea placeholder="Max. 500 characters" />
                 </Form.Item>
             </Col>
-            <Col span={8}>
+            <Col xs={24} sm={24} md={8} lg={8} xl={8}>
                 <Form.Item
                     label={"Customer"}
                     name={"customer"}
@@ -101,18 +103,17 @@ const ExpenseForm = () => {
                     <CustomerModal customerSelect={handleCustomerSelect} />
                 </Form.Item>
             </Col>
-            <Col span={24}>
+            <Col xs={24} sm={24} md={8} lg={8} xl={8}>
                 <Form.Item
-                    label={""}
-                    name={"customer"}
-                    labelAlign="left"
-                    labelCol={{ span: 12 }}
+                    name={"image"}
+                    labelAlign="right"
+                    labelCol={{ span: 4 }}
+                    style={{marginLeft:"15rem"}}
                 >
-            <UploadImage />
+                    <UploadImage />
                 </Form.Item>
             </Col>
-
-            <Col span={8}>
+            <Col xs={24} sm={24} md={8} lg={8} xl={8}>
                 <Form.Item labelAlign="left" labelCol={{ span: 12 }}>
                     <Button type="primary" htmlType="submit">
                         Save

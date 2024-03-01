@@ -5,9 +5,14 @@ const { Text } = Typography;
 
 export const expensesColumns = [
     {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
+        title: " Date",
+        dataIndex: "expenseDate",
+        key: "expenseDate",
+        render: (_, record) => (
+            <>
+                <Text>{convertUnixTimestampToDate(record.expenseDate)}</Text>
+            </>
+        ),
     },
     {
         title: "Expense Category",
@@ -15,64 +20,57 @@ export const expensesColumns = [
         key: "category",
         render: (_, record) => (
             <>
-                <Text type="success">{record.category}</Text>
+                <Text type="success">{record.categoryName}</Text>
             </>
         ),
     },
     {
         title: "Total",
-        dataIndex: "total",
+        dataIndex: "amount",
         key: "total",
-    },
-
-    {
-        title: " Date",
-        dataIndex: "createdDate",
-        key: "createdDate",
         render: (_, record) => (
             <>
-                <Text>{convertUnixTimestampToDate(record.createdDate)}</Text>
+                <Text type="danger">{record.amount}</Text>
+            </>
+        ),
+    },
+    {
+        title: "Total",
+        dataIndex: "note",
+        key: "total",
+        render: (_, record) => (
+            <>
+                <Text >{record.note}</Text>
             </>
         ),
     },
 
-    {
-        fixed: "right",
-        render: (_, record) => (
-            <TableAction params={record._id} page={"expenses"} />
-        ),
-    },
+ 
 ];
 
 export const categoryOption = [
     {
-        label:"Labour",
-        value:"Labour"
-
+        label: "Labour",
+        value: "Labour",
     },
     {
-        label:"Materials",
-        value:"Materials"
-
+        label: "Materials",
+        value: "Materials",
     },
     {
-        label:"IT & Internet",
-        value:"IT & Internet"
-
+        label: "IT & Internet",
+        value: "IT & Internet",
     },
     {
-        label:"Office Stationary",
-        value:"Office Stationary"
-
+        label: "Office Stationary",
+        value: "Office Stationary",
     },
     {
-        label:"Repair & Maintainance",
-        value:"Repair & Maintainance"
-
+        label: "Repair & Maintainance",
+        value: "Repair & Maintainance",
     },
     {
-        label:"Travel",
-        value:"Travel"
+        label: "Travel",
+        value: "Travel",
     },
-   
-]
+];

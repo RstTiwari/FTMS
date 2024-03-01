@@ -30,6 +30,7 @@ const Index = () => {
                 addRoute={"products/create"}
                 localDataKey={"product"}
                 cancelRoute={"dashboard"}
+                refresh={true}
             />
             <Table
                 columns={productColumns}

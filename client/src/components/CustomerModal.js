@@ -16,7 +16,7 @@ const CustomerModal = ({ customerSelect,customerId }) => {
         setOptions(data);
     };
     const handleCustomerChange = (value, label) => {
-        customerSelect(value);
+        customerSelect(value,label);
         setCustomer(value)
     };
     const addNewCustomer = () => {

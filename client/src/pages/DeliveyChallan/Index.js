@@ -23,8 +23,11 @@ const Index = () => {
         >
             <Header
                 title={"Challan List"}
+                subTitle={"NEW CHALLAN"}
                 localDataKey={"expenses"}
                 cancelRoute={"dashboard"}
+                addRoute={"deliverychallan/create"}
+                refresh={true}
             />
             <PageLoader isLoading={isLoading} />
             <Table columns={challanColumns} dataSource={data} />

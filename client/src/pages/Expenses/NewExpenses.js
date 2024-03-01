@@ -1,9 +1,28 @@
+import NotificationHandler from "EventHandler/NotificationHandler";
 import ExpenseForm from "Forms/ExpenseForm";
+import { epochConveter } from "Helper/EpochConveter";
 import { Flex } from "antd";
 import Header from "components/Header";
-import React from "react";
-
+import React, { useState } from "react";
+import { useAuth } from "state/AuthProvider";
+import { useNavigate } from "react-router-dom";
+const entity = "expenses";
 const NewExpenses = () => {
+    const { createData } = useAuth();
+    const navigate = useNavigate();
+    const handleFormFinish = async (value) => {
+        value.expenseDate =  epochConveter(value.expenseDate.$d);
+        console.log(value);
+        const payload = { entity: entity, value };
+        const { success, result, message } = await createData(payload);
+        if (!success) {
+            console.log(message,"meessage");
+            return NotificationHandler.error(message);
+        } else {
+            NotificationHandler.success(message);
+            navigate("/expenses");
+        }
+    };
     return (
         <Flex
             gap={"middle"}
@@ -14,11 +33,8 @@ const NewExpenses = () => {
                 borderRadius: "1rem",
             }}
         >
-            <Header
-                title={"Add New Expenses"}
-                cancelRoute={"expenses"}
-            />
-            <ExpenseForm />
+            <Header title={"Add New Expenses"} cancelRoute={"expenses"} />
+            <ExpenseForm handleFormFinish={handleFormFinish} />
         </Flex>
     );
 };

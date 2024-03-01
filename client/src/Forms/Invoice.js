@@ -247,10 +247,10 @@ const Invoice = ({ current }) => {
                 </Col>
             </Row>
 
-            <Row>
-                <h3>Item Table</h3>
-            </Row>
             <Divider dashed />
+            <Row justify={"center"} >
+                <h4>ITEM TABLE</h4>
+            </Row>
             <Row gutter={[12, 12]} style={{ position: "relative" }}>
                 <Col className="gutter-row" span={5}>
                     <p>{"Description"}</p>
