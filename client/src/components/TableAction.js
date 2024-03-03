@@ -16,6 +16,7 @@ import {
 import { PaymentOutlined } from "@mui/icons-material";
 
 export const TableAction = ({ params, page, download,entityNo,payment }) => {
+    console.log(params,page,download );
     const {pdfGenrate} = useAuth()
     const menuItems = [
         <Menu.Item key="1" style={{fontSize:"0.75rem"}}>

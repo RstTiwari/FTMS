@@ -3,7 +3,8 @@ import { Flex, Form, Input, Col, Row, Button } from "antd";
 import { useMediaQuery } from "@mui/material";
 import React, { useState } from "react";
 
-const CoustomersForm = ({ current ,disabled}) => {
+const VendorForm = ({ handleFormFinish, value, disabled }) => {
+    const [form] = Form.useForm();
     const isLaptop = useMediaQuery("(min-width:600px)");
     const [billing, setBilling] = useState({
         street: "",
@@ -13,29 +14,30 @@ const CoustomersForm = ({ current ,disabled}) => {
     });
     const handeCopyBillingAddress = () => {
         const { billingStreet, billingCity, billingState, billingPincode } =
-            current.getFieldsValue([
+            form.getFieldsValue([
                 "billingStreet",
                 "billingCity",
                 "billingState",
                 "billingPincode",
             ]);
-        current.setFieldsValue({ shippingStreet:billing.street  });
-        current.setFieldsValue({ shippingCity: billing.city });
-        current.setFieldsValue({ shippingState: billing.state });
-        current.setFieldsValue({ shippingPincode: billing.pincode });
+        form.setFieldsValue({ shippingStreet: billing.street });
+        form.setFieldsValue({ shippingCity: billing.city });
+        form.setFieldsValue({ shippingState: billing.state });
+        form.setFieldsValue({ shippingPincode: billing.pincode });
     };
+
     return (
-        <div>
+        <Form name={"venordForm"} form={form} initialValues={value} onFinish={handleFormFinish}>
             <Col xs={24} sm={24} md={12} lg={12}>
                 <Form.Item
-                    label={"Company Name "}
-                    name={"customerName"}
+                    label={"Vendor Name "}
+                    name={"vendorName"}
                     labelAlign="left"
-                    labelCol={{ span: 8 }}
+                    labelCol={{ span: 8}}
                     rules={[
                         {
                             required: true,
-                            message: "Please Provide Customer Name",
+                            message: "Please Provide Vendor Name",
                         },
                     ]}
                 >
@@ -43,18 +45,17 @@ const CoustomersForm = ({ current ,disabled}) => {
                 </Form.Item>
             </Col>
 
-    
             <Col xs={24} sm={24} md={12} lg={12}>
                 <Form.Item
-                    label={"Customer Phone"}
+                    label={"Vendor Phone"}
                     labelAlign="left"
-                    name="customerPhone"
-                    labelCol={{ span: 8 }}
+                    name="vendorPhone"
+                    labelCol={{ span: 8}}
                     rules={[
                         {
                             required: true,
-                            message: "Please Provide Customer Phone",
-                        }
+                            message: "Please Provide Vendor Phone",
+                        },
                     ]}
                 >
                     <Input />
@@ -62,14 +63,14 @@ const CoustomersForm = ({ current ,disabled}) => {
             </Col>
             <Col xs={24} sm={24} md={12} lg={12}>
                 <Form.Item
-                    label={"Customer Email"}
+                    label={"Vendor Email"}
                     labelAlign="left"
-                    name="customerEmail"
+                    name="vendorEmail"
                     labelCol={{ span: 8}}
                     rules={[
                         {
                             required: true,
-                            message: "Please Provide Customer Email",
+                            message: "Please Provide Vendor Email",
                         },
                     ]}
                 >
@@ -106,7 +107,6 @@ const CoustomersForm = ({ current ,disabled}) => {
                     tooltip="this data  will be Encripted then stored not visible to other pepole accpet accept acces given  "
                     name="gstNo"
                     labelCol={{ span: 8}}
-                    
                 >
                     <Input />
                 </Form.Item>
@@ -195,7 +195,7 @@ const CoustomersForm = ({ current ,disabled}) => {
                 </Col>
                 <Col sm={12} md={12} lg={12}>
                     <Row>
-                        Shipping Address 
+                        Shipping Address
                         {!disabled ? (
                             <Col
                                 style={{ color: "blue", cursor: "pointer" }}
@@ -206,7 +206,6 @@ const CoustomersForm = ({ current ,disabled}) => {
                         ) : (
                             ""
                         )}
-                        
                     </Row>
 
                     <Row>
@@ -260,8 +259,13 @@ const CoustomersForm = ({ current ,disabled}) => {
                     </Row>
                 </Col>
             </Row>
-        </div>
+            <Row>
+                <Button type="primary" htmlType="submit">
+                   SAVE 
+                </Button>
+            </Row>
+        </Form>
     );
 };
 
-export default CoustomersForm;
+export default VendorForm;

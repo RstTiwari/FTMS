@@ -14,21 +14,44 @@ import CustomerModal from "components/CustomerModal";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import ProductModal from "components/ProductModal";
 import { unitOptions } from "Data/Challan";
+import { epochInDDMMYY } from "Helper/EpochConveter";
 
-const DeliveryChallanForm = ({ onFinish, value }) => {
+const DeliveryChallanForm = ({ onFinish, value, disabled }) => {
     const [form] = Form.useForm();
     const items = form.getFieldValue("items");
 
-    console.log(value);
     const handleFinish = (values) => {
         onFinish(values);
     };
     const handleCustomerChange = (value, label) => {
-        console.log(value, label);
+        form.setFieldsValue({ customer: value });
     };
-    const handleValueChange = () => {};
-    const onItemChange = () => {};
+    const handleValueChange = (changeValue, allValue) => {};
+    const onItemChange = (value, label, index, subField) => {
+        const items = form.getFieldValue("items");
+        const currentObject = items[index]; // Create a copy of the object to avoid mutating the original array
 
+        if (subField === "description") {
+            currentObject.description = value.productName;
+            currentObject.hsnCode = value.hsnCode;
+        } else if (subField === "hsnCode") {
+            currentObject.hsnCode = value;
+        } else if (subField === "qty") {
+            currentObject.qty = Math.ceil(value);
+        } else {
+        }
+        items[index] = currentObject;
+        const totalQuantity = items.reduce(
+            (total, currentItem) => total + currentItem.qty,
+            0
+        );
+        form.setFieldsValue({ totalQuantity: Math.ceil(totalQuantity) });
+        form.setFieldsValue({ items: items });
+    };
+
+    if (value) {
+        value.challanDate = epochInDDMMYY(value.challanDate);
+    }
     return (
         <Form
             form={form}
@@ -50,7 +73,13 @@ const DeliveryChallanForm = ({ onFinish, value }) => {
                             },
                         ]}
                     >
-                        <CustomerModal customerSelect={handleCustomerChange} />
+                        <CustomerModal
+                            customerSelect={handleCustomerChange}
+                            customerId={
+                                value ? value.customer._id : ""
+                            }
+                            disabled={disabled}
+                        />
                     </Form.Item>
                 </Col>
             </Row>
@@ -67,7 +96,7 @@ const DeliveryChallanForm = ({ onFinish, value }) => {
                             },
                         ]}
                     >
-                        <Input />
+                        <Input disabled= {disabled} style={{ width: 100 }} />
                     </Form.Item>
                 </Col>
                 <Col span={6}>
@@ -81,7 +110,11 @@ const DeliveryChallanForm = ({ onFinish, value }) => {
                             },
                         ]}
                     >
-                        <DatePicker style={{ width: "100%" }} />
+                         <DatePicker
+                         disabled = {disabled}
+                            placeholder="Challan Date"
+                            format={"DD/MM/YY"}
+                        />
                     </Form.Item>
                 </Col>
             </Row>
@@ -105,21 +138,17 @@ const DeliveryChallanForm = ({ onFinish, value }) => {
                     <p>{"Unit"}</p>
                 </Col>
             </Row>
-            <Form.List
-                name={"items"}
-                initialValue={[
-                    {
-                        bestOffer: 0,
-                        qty: 1,
-                        rate: 0,
-                        taxableAmount: 0,
-                        finalAmount: 0,
-                    },
-                ]}
-            >
+            <Form.List name={"items"} initialValue={[
+               {
+                description:"",
+                hsnCode:"",
+                qty:"",
+                unit:''
+               }
+            ]}>
                 {(subFields, subOpt) => (
                     <div>
-                        {subFields.map((subField) => (
+                        {subFields.map((subField, index) => (
                             <Row
                                 gutter={[12, 12]}
                                 key={subField.key}
@@ -137,12 +166,24 @@ const DeliveryChallanForm = ({ onFinish, value }) => {
                                         ]}
                                     >
                                         <ProductModal
-                                            productSelect={(label) =>
-                                                onItemChange(label, subField)
+                                            productSelect={(
+                                                label,
+                                                value = {},
+                                                subField = "description"
+                                            ) =>
+                                                onItemChange(
+                                                    label,
+                                                    value,
+                                                    index,
+                                                    subField
+                                                )
                                             }
                                             productValue={
-                                                items ? items[subField.key] : ""
+                                                value
+                                                    ? value.items[index]
+                                                    : ""
                                             }
+                                            disabled={disabled}
                                         />
                                     </Form.Item>
                                 </Col>
@@ -150,22 +191,46 @@ const DeliveryChallanForm = ({ onFinish, value }) => {
                                     <Form.Item
                                         name={[subField.name, "hsnCode"]}
                                     >
-                                        <Input style={{ width: 150 }} />
+                                        <Input
+                                            disabled={disabled}
+                                            style={{ width: 150 }}
+                                            onChange={(
+                                                value,
+                                                subField = "hsnCode"
+                                            ) =>
+                                                onItemChange(
+                                                    value,
+                                                    {},
+                                                    index,
+                                                    subField
+                                                )
+                                            }
+                                        />
                                     </Form.Item>
                                 </Col>
                                 <Col span={5}>
                                     <Form.Item name={[subField.name, "qty"]}>
                                         <InputNumber
                                             style={{ width: 100 }}
-                                            onChange={(value) =>
-                                                onItemChange(value, subField)
-                                            }
+                                            disabled={disabled}
+                                            onChange={(
+                                                value,
+                                                subField = "qty"
+                                            ) => {
+                                                onItemChange(
+                                                    value,
+                                                    {},
+                                                    index,
+                                                    subField
+                                                );
+                                            }}
                                         />
                                     </Form.Item>
                                 </Col>
                                 <Col span={5}>
                                     <Form.Item name={[subField.name, "unit"]}>
                                         <Select
+                                            disabled={disabled}
                                             options={unitOptions}
                                             style={{ width: 100 }}
                                         />
@@ -185,11 +250,14 @@ const DeliveryChallanForm = ({ onFinish, value }) => {
                         ))}
 
                         <Button
+                            disabled={disabled}
                             type="primary"
                             onClick={() => {
                                 subOpt.add({
                                     description: "",
+                                    hsnCode: "",
                                     qty: 1,
+                                    unit:""
                                 }); // Use srNo instead of srN
                             }}
                             icon={<PlusOutlined />}

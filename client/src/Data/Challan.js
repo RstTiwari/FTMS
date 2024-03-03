@@ -10,42 +10,6 @@ export const challanColumns = [
         key: "challanNumber",
     },
     {
-        title: "CUSTOMER NAME",
-        dataIndex: "customer",
-        key: "name",
-        render: (_, record) => (
-            <>
-                <Text type="success">{record.customer.customerName}</Text>
-            </>
-        ),
-    },
-    {
-        title: "INVOICE #",
-        dataIndex: "invoice",
-        key: "challanNumber",
-        render: (_, record) => (
-            <>
-                <Text type="success">{record.invoice.invoiceNo}</Text>
-            </>
-        ),
-    },
-
-    {
-        title: "STATUS",
-        dataIndex: "status",
-        key: "total",
-    },
-    {
-        title: "INVOICE STATUS",
-        dataIndex: "invoice",
-        render: (_, record) => (
-            <>
-                <Text>{convertUnixTimestampToDate(record.invoice.status)}</Text>
-            </>
-        ),
-    },
-
-    {
         title: " DATE",
         dataIndex: "createdDate",
         key: "createdDate",
@@ -55,11 +19,28 @@ export const challanColumns = [
             </>
         ),
     },
+    {
+        title: "CUSTOMER NAME",
+        dataIndex: "customer",
+        key: "name",
+        render: (_, record) => (
+            <>
+                <Text type="success">{record.customer.customerName}</Text>
+            </>
+        ),
+    },
+
+    {
+        title: "STATUS",
+        dataIndex: "status",
+        key: "status",
+    },
+
 
     {
         fixed: "right",
         render: (_, record) => (
-            <TableAction params={record._id} page={"challan"} />
+            <TableAction params={record._id} page={"deliverychallan"} />
         ),
     },
 ];

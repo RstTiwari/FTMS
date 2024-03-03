@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
-import Header from "components/Header";
-import { Flex, Table, Typography } from "antd";
-import PageLoader from "pages/PageLoader";
-import { challanColumns } from "Data/Challan";
+import Headers from "../../components/Header";
+import { Flex, Table } from "antd";
+import { purchaseColumn } from "../../Data/PurchaseData";
 import useDataFetching from "Hook/useDataFetching";
 
-const Index = () => {
-    let entity = "deliverychallan";
+const PurchaseOrder = () => {
+    let entity = "purchaseorder";
     const { data, isLoading, fetchData } = useDataFetching(entity);
     useEffect(() => {
         fetchData();
     }, [fetchData]);
+
     return (
         <Flex
             gap={"middle"}
@@ -21,18 +21,21 @@ const Index = () => {
                 borderRadius: "1rem",
             }}
         >
-            <Header
-                title={"Challan List"}
-                subTitle={"NEW CHALLAN"}
-                localDataKey={"deliverychallan"}
+            <Headers
+                title={"PURCHASE ORDER LIST"}
+                subTitle={"NEW PURCHASE"}
+                addRoute={"purchaseorder/create"}
+                localDataKey={entity}
                 cancelRoute={"dashboard"}
-                addRoute={"deliverychallan/create"}
                 refresh={true}
             />
-            <PageLoader isLoading={isLoading} />
-            <Table columns={challanColumns} dataSource={data} />
+            <Table
+                columns={purchaseColumn}
+                dataSource={data}
+                loading={isLoading}
+            />
         </Flex>
     );
 };
 
-export default Index;
+export default PurchaseOrder;

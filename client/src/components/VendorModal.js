@@ -1,51 +1,52 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Select, Divider, Button } from "antd";
-import NewCustomer from "pages/Customer/NewCustomer";
+import Newvendor from "../pages/Vendor/NewVendor";
 import { useAuth } from "state/AuthProvider";
 
-const CustomerModal = ({ customerSelect,customerId ,disabled}) => {
+const VendorModal = ({ vendorSelect,vendorId ,disabled}) => {
     const [open, setOpen] = useState(false);
     const { getDropDownData } = useAuth();
-    const [customer,setCustomer] = useState("")
+    const [vendor,setVendor] = useState("")
     const [options, setOptions] = useState([]);
 
-    const handelCustomerClick = async () => {
-        let entity = "customer";
-        let fieldName = "customerName";
+    const handleVendorClick = async () => {
+        let entity = "vendors";
+        let fieldName = "vendorName";
         let data = await getDropDownData(entity, fieldName);
         setOptions(data);
     };
-    const handleCustomerChange = (value, label) => {
-        customerSelect(value,label);
-        setCustomer(value)
+    const handleVendorChange = (value, label) => {
+        vendorSelect(value,label);
+        setVendor(value)
     };
-    const addNewCustomer = () => {
+    const addNewVendor = () => {
         setOpen(true);
     };
     const onCancel = () => {
         setOpen(!open);
-        if(customerId){
-            setCustomer(customerId)
+        if(vendorId){
+            setVendor(vendorId)
         }
     };
     const afterAdd = (result) => {
-        handelCustomerClick();
-        handleCustomerChange(result._id);
-        setCustomer(result._id)
-        customerSelect(result._id);
+        handleVendorClick();
+        handleVendorChange(result._id);
+        setVendor(result._id)
+        vendorSelect(result._id);
         setOpen(false);
     };
     useEffect(() => {
-        handelCustomerClick();
-        setCustomer(customerId)
+        handleVendorClick();
+        setVendor(vendorId)
     }, []);
+    console.log(vendorId,'vendorId');
     return (
         <>
             {!open ? (
                 <Select
                     options={options}
                     disabled ={disabled}
-                    value={customer ? customer :""}
+                    value={vendor ? vendor :""}
                     showSearch
                     filterOption={(input, option) =>
                         (option?.label ?? "")
@@ -62,19 +63,19 @@ const CustomerModal = ({ customerSelect,customerId ,disabled}) => {
                                     style={{
                                         margin: "0.1rem",
                                     }}
-                                    onClick={addNewCustomer}
+                                    onClick={addNewVendor}
                                 >
                                     Add New
                                 </Button>
                             </div>
                         );
                     }}
-                    onClick={handelCustomerClick}
-                    onChange={handleCustomerChange}
+                    onClick={handleVendorClick}
+                    onChange={handleVendorChange}
                 />
             ) : (
                 <Modal
-                    title={"NEW CUSTOMER"}
+                    title={"NEW VENDOR"}
                     zIndex={1200}
                     centered
                     open={open}
@@ -84,11 +85,11 @@ const CustomerModal = ({ customerSelect,customerId ,disabled}) => {
                     footer={null}
                     keyboard={false}
                 >
-                    <NewCustomer checkHeader={false} afterAdd={afterAdd} />
+                    <Newvendor checkHeader={false} afterAdd={afterAdd} />
                 </Modal>
             )}
         </>
     );
 };
 
-export default CustomerModal;
+export default VendorModal;

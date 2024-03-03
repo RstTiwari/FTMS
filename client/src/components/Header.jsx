@@ -34,7 +34,7 @@ const Header = ({ title, subTitle, addRoute, localDataKey, cancelRoute,refresh }
                 {title.toUpperCase()}
             </Col>
             {refresh ? (
-                <Col xs={6} sm={12} md={6} lg={2}>
+                <Col xs={6} sm={12} md={6} lg={3}>
                     <Button
                         onClick={() => {
                             refreshThePageOnly(localDataKey);
@@ -48,7 +48,7 @@ const Header = ({ title, subTitle, addRoute, localDataKey, cancelRoute,refresh }
             )}
             {subTitle ? (
                 <>
-                    <Col xs={6} sm={12} md={6} lg={3}>
+                    <Col xs={6} sm={12} md={6} lg={2}>
                         <Button
                             onClick={onAddClick}
                             type="primary"

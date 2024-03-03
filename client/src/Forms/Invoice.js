@@ -166,7 +166,6 @@ const Invoice = ({ current }) => {
 
     useEffect(() => {}, []);
     const items = current.getFieldValue("items");
-    console.log(current.getFieldValue("customer"), "--");
     return (
         <div>
             <Col span={10}>
@@ -251,11 +250,11 @@ const Invoice = ({ current }) => {
             <Row justify={"center"} >
                 <h4>ITEM TABLE</h4>
             </Row>
-            <Row gutter={[12, 12]} style={{ position: "relative" }}>
-                <Col className="gutter-row" span={5}>
+            <Row style={{ position: "relative" }}>
+                <Col className="gutter-row" span={4}>
                     <p>{"Description"}</p>
                 </Col>
-                <Col className="gutter-row" span={2}>
+                <Col className="gutter-row" span={3}>
                     <p>{"HSN Code"}</p>
                 </Col>
                 <Col className="gutter-row" span={2}>
@@ -305,7 +304,7 @@ const Invoice = ({ current }) => {
                                 key={subField.key}
                                 align={"middle"}
                             >
-                                <Col className="gutter-row" span={5}>
+                                <Col className="gutter-row" span={4}>
                                     <Form.Item
                                         name={[subField.name, "description"]}
                                         rules={[
@@ -333,10 +332,10 @@ const Invoice = ({ current }) => {
                                     <Form.Item
                                         name={[subField.name, "hsnCode"]}
                                     >
-                                        <Input style={{ width: 75 }} />
+                                        <Input style={{ width: 60 }} />
                                     </Form.Item>
                                 </Col>
-                                <Col span={2}>
+                                <Col span={2.5}>
                                     <Form.Item name={[subField.name, "rate"]}>
                                         <InputNumber
                                             style={{ width: 75 }}
@@ -349,7 +348,7 @@ const Invoice = ({ current }) => {
                                 <Col span={2}>
                                     <Form.Item name={[subField.name, "qty"]}>
                                         <InputNumber
-                                            style={{ width: 75 }}
+                                            style={{ width: 60 }}
                                             onChange={(value) =>
                                                 onQtyChange(value, subField)
                                             }
@@ -365,7 +364,7 @@ const Invoice = ({ current }) => {
                                             className="moneyInput"
                                             min={0}
                                             controls={false}
-                                            style={{ width: 75 }}
+                                            style={{ width: 60 }}
                                         />
                                     </Form.Item>
                                 </Col>
@@ -374,7 +373,7 @@ const Invoice = ({ current }) => {
                                         name={[subField.name, "sgstPercent"]}
                                     >
                                         <InputNumber
-                                            style={{ width: 75 }}
+                                            style={{ width: 40 }}
                                             onChange={(value) =>
                                                 onSgstChange(value, subField)
                                             }
@@ -388,7 +387,7 @@ const Invoice = ({ current }) => {
                                         <InputNumber
                                             className="moneyInput"
                                             min={0}
-                                            style={{ width: 75 }}
+                                            style={{ width: 40 }}
                                             onChange={(value) =>
                                                 onCgstChange(value, subField)
                                             }
@@ -402,7 +401,7 @@ const Invoice = ({ current }) => {
                                         <InputNumber
                                             className="moneyInput"
                                             min={0}
-                                            style={{ width: 75 }}
+                                            style={{ width: 40}}
                                             onChange={(value) =>
                                                 onIgstChange(value, subField)
                                             }
@@ -418,7 +417,7 @@ const Invoice = ({ current }) => {
                                             className="moneyInput"
                                             min={0}
                                             controls={false}
-                                            style={{ width: 75 }}
+                                            style={{ width: 60 }}
                                         />
                                     </Form.Item>
                                 </Col>

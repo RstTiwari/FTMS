@@ -5,6 +5,8 @@ import NotFound from "pages/Notfound";
 import UpdateQuotation from "pages/Quote/UpdateQuotation";
 import UpdateInvoice from "pages/Invoice/UpdateInvoice";
 import UpdateLead from "pages/Lead/UpdateLead";
+import UpdateChallan from "pages/DeliveyChallan/UpdateChallan";
+import UpdatePurchaseOrder from "pages/PurchaseOrder/UpdatePurchaseOrder";
 
 const UpdateModule = () => {
     const { entity, id } = useParams();
@@ -22,6 +24,12 @@ const UpdateModule = () => {
         case "lead":
             componentToRender = <UpdateLead />;
             break;
+        case "deliverychallan":
+            componentToRender = <UpdateChallan />;
+            break;
+        case "purchaseorder":
+                componentToRender = <UpdatePurchaseOrder />;
+                break;
         default:
             break;
     }

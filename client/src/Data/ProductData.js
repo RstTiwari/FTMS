@@ -55,7 +55,7 @@ export const productColumns = [
     {
         fixed: "right",
         render: (_, record) => (
-            <TableAction params={record._id} page={"customer"} />
+            <TableAction params={record._id} page={"products"} />
         ),
     },
 ];

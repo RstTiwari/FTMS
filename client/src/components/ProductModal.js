@@ -3,10 +3,10 @@ import { Modal, Select, Divider, Button } from "antd";
 import { useAuth } from "state/AuthProvider";
 import NewProduct from "pages/Product/NewProduct";
 
-const ProductModal = ({ productSelect,productValue}) => {
+const ProductModal = ({ productSelect, productValue ,disabled}) => {
     const [open, setOpen] = useState(false);
     const { getDropDownData } = useAuth();
-    const [product,setProduct] = useState("")
+    const [product, setProduct] = useState("");
     const [options, setOptions] = useState([]);
     const handelProductClick = async () => {
         let entity = "product";
@@ -15,15 +15,14 @@ const ProductModal = ({ productSelect,productValue}) => {
         setOptions(dropDownData);
     };
     const handleProductChange = (value, label) => {
-        setProduct(label.productName)
-        productSelect(label)
+        setProduct(label.productName);
+        productSelect(label);
     };
     const addNewProduct = () => {
         setOpen(true);
     };
     const onCancel = () => {
         setOpen(!open);
-        
     };
     const afterAdd = (result) => {
         handelProductClick();
@@ -33,12 +32,13 @@ const ProductModal = ({ productSelect,productValue}) => {
     };
     useEffect(() => {
         handelProductClick();
-        setProduct(productValue.description)
+        setProduct(productValue ? productValue.description : "");
     }, []);
     return (
         <>
             {!open ? (
                 <Select
+                disabled ={disabled}
                     options={options}
                     value={product ? product : ""}
                     showSearch

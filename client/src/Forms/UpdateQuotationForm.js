@@ -57,7 +57,6 @@ const UpdateQuotationForm = ({ initialValues, id }) => {
     };
 
     const onItemChange = (value, label = {}, index, subField) => {
-        console.log(value,);
         handleValueChange()
         let { items, grossTotal, grandTotal, taxPercent, transPortAmount } =
             form.getFieldsValue([
@@ -85,6 +84,7 @@ const UpdateQuotationForm = ({ initialValues, id }) => {
         } else {
             NotificationHandler.error("somthing went wrong");
         }
+
 
         rowManipulated.finalAmount = Math.ceil(
             rowManipulated.rate * rowManipulated.qty

@@ -7,10 +7,12 @@ import Lead from "../pages/Lead";
 import Payments from "../pages/Payments/Index";
 import Expenses from "../pages/Expenses/Index";
 import DeliveryChallan from "../pages/DeliveyChallan/Index";
-import NewDeliveryChallan  from "../pages/DeliveyChallan/NewDeliveryChallan"
+import NewDeliveryChallan from "../pages/DeliveyChallan/NewDeliveryChallan";
+import Vendor from "../pages/Vendor/Index";
 import NewLead from "pages/Lead/NewLead";
 import Quote from "../pages/Quote";
 import NewQuote from "pages/Quote/NewQuote";
+import NewPurchaseOrder from "pages/PurchaseOrder/NewPurchaseOrder";
 import Product from "pages/Product/Index";
 import Coustomer from "../pages/Customer";
 import NewCoustomer from "pages/Customer/NewCustomer";
@@ -22,6 +24,8 @@ import PdfModule from "module/PdfModule/PdfModule.js";
 import NewProduct from "pages/Product/NewProduct";
 import NewPayment from "pages/Payments/NewPayment";
 import NewExpenses from "pages/Expenses/NewExpenses";
+import NewVendor from "pages/Vendor/NewVendor";
+import PurchaseOrder from "pages/PurchaseOrder";
 
 const Approuter = () => {
     return (
@@ -32,8 +36,8 @@ const Approuter = () => {
                     element={<Navigate to="/dashboard" replace />}
                 />
                 <Route path="/dashboard" exact element={<Dashbord />} />
-                <Route path="/customers" element={<Coustomer />} />
-                <Route path="/customers/create" element={<NewCoustomer />} />
+                <Route path="/customers" element={<Coustomer  />} />
+                <Route path="/customers/create" element={<NewCoustomer checkHeader={true} />} />
 
                 <Route path="/lead" element={<Lead />} />
                 <Route path="/lead/create" element={<NewLead />} />
@@ -49,7 +53,16 @@ const Approuter = () => {
                 <Route path="expense/create" element={<NewExpenses />} />
 
                 <Route path="/deliverychallan" element={<DeliveryChallan />} />
-                <Route path="/deliverychallan/create" element={<NewDeliveryChallan />} />
+                <Route
+                    path="/deliverychallan/create"
+                    element={<NewDeliveryChallan />}
+                />
+
+                <Route path="/vendors" element={<Vendor />} />
+                <Route path="/vendors/create" element={<NewVendor checkHeader={true} />} />
+                <Route  path="/purchaseorder" element ={<PurchaseOrder />}/>
+                <Route  path="/purchaseorder/create" element ={<NewPurchaseOrder/>}/>
+
 
 
                 <Route path="/products" element={<Product />} />

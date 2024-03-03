@@ -6,7 +6,8 @@ const challanSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: "customer",
         required: true,
-    },
+        autopopulate: true,
+        },
     invoice: {
         type: mongoose.Schema.ObjectId,
         ref: "invoice",
@@ -14,6 +15,7 @@ const challanSchema = new mongoose.Schema({
     challanNumber: {
         type: Number,
         required: true,
+        unique:true
     },
     challanDate: {
         type: Number,
@@ -25,19 +27,16 @@ const challanSchema = new mongoose.Schema({
                 type: String,
                 require: true,
             },
-            rate: {
-                type: Number,
+            hsnCode: {
+                type: String,
             },
             qty: {
                 type: Number,
             },
-            taxPercent: {
-                type: Number,
+            unit: {
+                type: String,
             },
 
-            finalAmount: {
-                type: Number,
-            },
         },
     ],
     totalQuantity: {
@@ -48,6 +47,11 @@ const challanSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    status: {
+        type: String,
+        required: true,
+        default:"DRAFT"
+    },
 });
-
-export default mongoose.model("deliverychallan");
+challanSchema.plugin(mongooseAutoPopulate);
+export default mongoose.model("deliverychallan", challanSchema);
