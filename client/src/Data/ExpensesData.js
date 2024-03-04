@@ -35,9 +35,10 @@ export const expensesColumns = [
         ),
     },
     {
-        title: "Total",
+        title: "NOTE",
         dataIndex: "note",
         key: "total",
+        responsive: ["lg"],
         render: (_, record) => (
             <>
                 <Text >{record.note}</Text>

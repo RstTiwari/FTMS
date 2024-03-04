@@ -104,16 +104,6 @@ const ExpenseForm = ({handleFormFinish}) => {
                 </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={8} lg={8} xl={8}>
-                <Form.Item
-                    name={"image"}
-                    labelAlign="right"
-                    labelCol={{ span: 4 }}
-                    style={{marginLeft:"15rem"}}
-                >
-                    <UploadImage />
-                </Form.Item>
-            </Col>
-            <Col xs={24} sm={24} md={8} lg={8} xl={8}>
                 <Form.Item labelAlign="left" labelCol={{ span: 12 }}>
                     <Button type="primary" htmlType="submit">
                         Save

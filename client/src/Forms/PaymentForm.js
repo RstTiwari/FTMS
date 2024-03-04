@@ -16,6 +16,7 @@ import { epochConveter } from "Helper/EpochConveter";
 import { useAuth } from "state/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import NotificationHandler from "EventHandler/NotificationHandler";
+import { paymentMode } from "Data/PaymentData";
 const { Text } = Typography;
 
 const { Option } = Select;
@@ -102,11 +103,9 @@ const PaymentForm = ({ initialValue }) => {
                             <Select
                                 style={{ width: "50%" }}
                                 placeholder="Select payment mode"
+                                options={paymentMode}
                             >
-                                <Option value="cash">Cash</Option>
-                                <Option value="credit">Credit Card</Option>
-                                <Option value="debit">Debit Card</Option>
-                                <Option value="netbanking">Net Banking</Option>
+                                
                             </Select>
                         </Form.Item>
                     </Col>

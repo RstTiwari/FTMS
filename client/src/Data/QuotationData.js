@@ -9,14 +9,14 @@ export const quotationColumn = [
     {
         title: "Number",
         dataIndex: "quoteNo",
-        width:"100px",
         key: "srno",
+        width:100
     },
     {
         title: "Client",
         dataIndex: "client",
         key: "source",
-        width:250,
+        width:300,
         render:(_,record)=>(
             <>
             <Text type="success">
@@ -52,12 +52,14 @@ export const quotationColumn = [
     {
         title: "Gross Total",
         dataIndex: "grossTotal",
+        width:250,
         key: "subTotal",
     },
     {
         title: "Grand Total",
         dataIndex: "grandTotal",
         key: "subTotal",
+        width:250
     },
   
     {
@@ -77,51 +79,4 @@ export const installationCondition = "Civil materials such as cement, metal, san
 export const facilityCondition = "Proper storage space will be provided by the client for safety & security of materials at site upon delivery. Security of materials delivered st site shall be responsibility ofclient only"
 
 
-export const quotationDataSource = [
-    {
-        quoteNumber:"10",
-        client:"BHEL Corporation",
-        quoteRecivedDate:"31-1-23",
-        quoteExpiredDate:"12-3-23",
-        grossTotal:2899,
-        grandTotal:3100,
-        status:"SEND"
-    },
-    {
-        quoteNumber:"23",
-        client:"SBI Park ASAM",
-        quoteRecivedDate:"3-1-23",
-        quoteExpiredDate:"1-3-23",
-        grossTotal:28990,
-        grandTotal:31000,
-        status:"DRAFT"
-    },
-    {
-        quoteNumber:"22",
-        client:"GOderej Corporation",
-        quoteRecivedDate:"1-1-23",
-        quoteExpiredDate:"1-3-23",
-        grossTotal:2899,
-        grandTotal:3100,
-        status:"SEND"
-    },
-    {
-        quoteNumber:"15",
-        client:"SAIL Corporation",
-        quoteRecivedDate:"01-1-23",
-        quoteExpiredDate:"2-3-23",
-        grossTotal:2899,
-        grandTotal:3100,
-        status:"SEND"
-    },
-    {
-        quoteNumber:"10",
-        client:"BHEL Corporation",
-        quoteRecivedDate:"31-1-23",
-        quoteExpiredDate:"12-3-23",
-        grossTotal:2899,
-        grandTotal:3100,
-        status:"SEND"
-    }
-]
 

@@ -7,6 +7,7 @@ import ReadLead from "pages/Lead/ReadLead";
 import NotFound from "pages/Notfound";
 import ReadChallan from "pages/DeliveyChallan/ReadChallan";
 import ReadPurchaseOrder  from "pages/PurchaseOrder/ReadPurchaseOrder";
+import ReadVendor from "pages/Vendor/ReadVendor"
 
 
 const ReadModule = () => {
@@ -31,6 +32,9 @@ const ReadModule = () => {
         case "purchaseorder":
             componentToRender = <ReadPurchaseOrder />;
             break;
+        case "vendors":
+                componentToRender = <ReadVendor />;
+                break;
 
         default:
             break;

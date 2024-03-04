@@ -118,7 +118,6 @@ const Dashbord = () => {
                 {cards}
             </Row>
             <Row align={"middle"} gutter={[32,10]} >
-              <OverviewChart />
             </Row>
         </Flex>
     );

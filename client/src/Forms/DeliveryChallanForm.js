@@ -18,7 +18,6 @@ import { epochInDDMMYY } from "Helper/EpochConveter";
 
 const DeliveryChallanForm = ({ onFinish, value, disabled }) => {
     const [form] = Form.useForm();
-    const items = form.getFieldValue("items");
 
     const handleFinish = (values) => {
         onFinish(values);
@@ -48,15 +47,19 @@ const DeliveryChallanForm = ({ onFinish, value, disabled }) => {
         form.setFieldsValue({ totalQuantity: Math.ceil(totalQuantity) });
         form.setFieldsValue({ items: items });
     };
-
-    if (value) {
-        value.challanDate = epochInDDMMYY(value.challanDate);
-    }
+    
+    const {customer,challanNumber,challanDate, items,totalQuantity} = value
     return (
         <Form
             form={form}
             onFinish={handleFinish}
-            initialValues={value}
+            initialValues={{
+                customer:customer ? customer :"",
+                challanNumber:challanNumber ? challanNumber :"",
+                challanDate:challanDate ? epochInDDMMYY(challanDate):"",
+                items:items ? items :[{}],
+                totalQuantity: totalQuantity ? totalQuantity:"",
+            }}
             onValuesChange={handleValueChange}
         >
             <Row>
@@ -76,7 +79,7 @@ const DeliveryChallanForm = ({ onFinish, value, disabled }) => {
                         <CustomerModal
                             customerSelect={handleCustomerChange}
                             customerId={
-                                value ? value.customer._id : ""
+                                customer ? customer._id : ""
                             }
                             disabled={disabled}
                         />
@@ -179,8 +182,8 @@ const DeliveryChallanForm = ({ onFinish, value, disabled }) => {
                                                 )
                                             }
                                             productValue={
-                                                value
-                                                    ? value.items[index]
+                                                items
+                                                    ?items[index]
                                                     : ""
                                             }
                                             disabled={disabled}

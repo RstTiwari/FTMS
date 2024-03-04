@@ -14,7 +14,9 @@ const NewPurchaseOrder = ({afterAdd}) => {
     const { createData } = useAuth();
 
     const handCusotmerSubmit = async (value) => {
+        console.log(value,"before");
         value.purchaseDate = epochConveter(value.purchaseDate.$d)
+        console.log(value);
         const payload = { entity: entity, value };
         const { success, result, message } = await createData(payload);
         if (!success) {
@@ -45,7 +47,7 @@ const NewPurchaseOrder = ({afterAdd}) => {
                 cancelRoute={"purchaseorder"}
             />
 
-            <PurchaseOrder handleFormFinish={handCusotmerSubmit} />
+            <PurchaseOrder handleFormFinish={handCusotmerSubmit} value={{}}/>
         </Flex>
     );
 };

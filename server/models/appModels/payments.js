@@ -34,7 +34,7 @@ const paymentsSchema = new mongoose.Schema({
     ref: {
         type: String,
     },
-    notes: {
+    note: {
         type: String,
     },
     tenantId: {

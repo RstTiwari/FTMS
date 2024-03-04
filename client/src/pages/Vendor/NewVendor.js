@@ -72,7 +72,7 @@ const NewVendor = ({ checkHeader, afterAdd }) => {
             ) : (
                 ""
             )}
-            <VendorForm handleFormFinish={handCusotmerSubmit}  />
+            <VendorForm handleFormFinish={handCusotmerSubmit} value={{}}  disabled={false} notShowCopy={false} />
         </Flex>
     );
 };

@@ -6,6 +6,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "state/AuthProvider.js";
 import NotificationHandler from "EventHandler/NotificationHandler.jsx";
+import SaveBottmComponent from "components/SaveBottomComponent.js";
 
 const NewCustomer = ({ checkHeader, afterAdd }) => {
     const entity = "customer";
@@ -13,32 +14,36 @@ const NewCustomer = ({ checkHeader, afterAdd }) => {
     const navigate = useNavigate();
     const { createData } = useAuth();
     const [form] = Form.useForm();
-    const fomulatePayload = (value) => {
+    const fomulatePayload = (value={}) => {
+        const {
+            billingStreet,
+            billingCity,
+            billingState,
+            billingPincode,
+            shippingStreet,
+            shippingCity,
+            shippingState,
+            shippingPincode,
+        } = value
+
         value["billingAddress"] = {
-            street: value.billingStreet,
-            city: value.billingCity,
-            state: value.billingState,
-            pinCode: value.billingPincode,
+            street: billingStreet ? billingStreet : "",
+            city: billingCity ? billingCity : "",
+            state: billingState ? billingState : "",
+            pinCode: billingPincode ? billingPincode : "",
         };
         value["shippingAddress"] = {
-            street: value.shippingStreet,
-            city: value.shippingCity,
-            state: value.shippingState,
-            pinCode: value.shippingPincode,
+            street: shippingStreet ? shippingStreet : "",
+            city: shippingCity ? shippingCity : "",
+            state: shippingState ? shippingState : "",
+            pinCode: shippingPincode ? shippingPincode : "",
         };
 
-        delete value.shippingStreet;
-        delete value.shippingState;
-        delete value.shippingCity;
-        delete value.shippingPincode;
-        delete value.billingStreet;
-        delete value.billingState;
-        delete value.billingCity;
-        delete value.billingPincode;
         return { entity: entity, value };
     };
 
     const handelCustomerFormFinish = async (value) => {
+        console.log(value);
         setIntialFormValue(value);
         let data = fomulatePayload(value);
         const { success, result, message } = await createData(data);
@@ -81,18 +86,12 @@ const NewCustomer = ({ checkHeader, afterAdd }) => {
                 onFinish={handelCustomerFormFinish}
             >
                 <CoustomerForm current={form} />
-                <Col className="gutter-row" span={6}>
-                    <Form.Item>
-                        <Button
-                            type="primary"
-                            htmlType="submit"
-                            icon={<PlusOutlined />}
-                            block
-                        >
-                            Save
-                        </Button>
-                    </Form.Item>
-                </Col>
+                <SaveBottmComponent
+                    text1={"SAVE AS DRAFT"}
+                    text3={"CANCEL"}
+                    action1={handelCustomerFormFinish}
+                    action3={"customers"}
+                />
             </Form>
         </Flex>
     );

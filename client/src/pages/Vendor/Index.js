@@ -33,6 +33,8 @@ const Vendor = () => {
                 columns={vendorColumns}
                 dataSource={data}
                 loading={isLoading}
+                scroll={{ x: true, y: 600 }}
+                showSorterTooltip={true}
             />
         </Flex>
     );

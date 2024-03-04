@@ -37,6 +37,8 @@ const Index = () => {
                 columns={invoiceColumns}
                 dataSource={data}
                 loading={isLoading}
+                scroll={{ x: true, y: 600 }}
+                showSorterTooltip={true}
             />
         </Flex>
     );

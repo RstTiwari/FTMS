@@ -20,8 +20,9 @@ export const convertUnixTimestampToDate = (timestamp) => {
   return formattedDate;
 };
 
-export const epochInDDMMYY = (epochTime)=>{
+export const epochInDDMMYY = (epochTime) => {
   console.log(epochTime);
-  console.log(dayjs((epochTime*1000)))
-    return dayjs((epochTime*1000))
+  console.log(dayjs.unix(epochTime));
+  return dayjs.unix(epochTime);
 }
+

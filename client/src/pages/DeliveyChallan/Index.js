@@ -30,7 +30,12 @@ const Index = () => {
                 refresh={true}
             />
             <PageLoader isLoading={isLoading} />
-            <Table columns={challanColumns} dataSource={data} />
+            <Table
+                columns={challanColumns}
+                dataSource={data}
+                scroll={{ x: true, y: 600 }}
+                showSorterTooltip={true}
+            />
         </Flex>
     );
 };

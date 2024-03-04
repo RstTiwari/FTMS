@@ -17,6 +17,7 @@ import {
 import { useForm } from "antd/es/form/Form.js";
 import { useAuth } from "state/AuthProvider.js";
 import NotificationHandler from "EventHandler/NotificationHandler.jsx";
+import SaveBottmComponent from "components/SaveBottomComponent.js";
 
 const NewQuote = () => {
     const [form] = Form.useForm();
@@ -70,18 +71,7 @@ const NewQuote = () => {
             >
                 <Header title={"New Quotation"} cancelRoute={"quotation"} />
                 <QuotationForm current={form} />
-                <Col className="gutter-row" span={6}>
-                    <Form.Item>
-                        <Button
-                            type="primary"
-                            htmlType="submit"
-                            icon={<PlusOutlined />}
-                            block
-                        >
-                            Save
-                        </Button>
-                    </Form.Item>
-                </Col>
+                <SaveBottmComponent   action1={onQuoteFormFinish} action3={"quotation"}/>
             </Form>
         </Flex>
     );

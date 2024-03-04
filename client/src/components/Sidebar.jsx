@@ -194,6 +194,7 @@ const Sidebar = ({
                                             onClick={() => {
                                                 navigate(`${lcText.replaceAll(" ","")}`);
                                                 setActive(lcText);
+                                                setIsSidebarOpen(!isSidebarOpen)
                                             }}
                                             sx={{
                                                 backgroundColor:

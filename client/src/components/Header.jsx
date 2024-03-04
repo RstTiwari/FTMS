@@ -7,6 +7,7 @@ import { Row, Col, Button, Divider } from "antd";
 import { removeLocalData } from "Helper/FetchingLocalData";
 
 const Header = ({ title, subTitle, addRoute, localDataKey, cancelRoute,refresh }) => {
+    const windowWidth = window.innerWidth;
     const onCloseClick = () => {
         navigate(`/${cancelRoute}`);
     };
@@ -33,7 +34,7 @@ const Header = ({ title, subTitle, addRoute, localDataKey, cancelRoute,refresh }
             >
                 {title.toUpperCase()}
             </Col>
-            {refresh ? (
+            {refresh  ? (
                 <Col xs={6} sm={12} md={6} lg={3}>
                     <Button
                         onClick={() => {
@@ -46,7 +47,7 @@ const Header = ({ title, subTitle, addRoute, localDataKey, cancelRoute,refresh }
             ) : (
                 ""
             )}
-            {subTitle ? (
+            {(subTitle && windowWidth >= 992) ? (
                 <>
                     <Col xs={6} sm={12} md={6} lg={2}>
                         <Button

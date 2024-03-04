@@ -3,7 +3,13 @@ import { Flex, Form, Input, Col, Row, Button } from "antd";
 import { useMediaQuery } from "@mui/material";
 import React, { useState } from "react";
 
-const VendorForm = ({ handleFormFinish, value, disabled }) => {
+const VendorForm = ({
+    handleFormFinish,
+    value,
+    disabled,
+    handleValueChange,
+    notShowCopy,
+}) => {
     const [form] = Form.useForm();
     const isLaptop = useMediaQuery("(min-width:600px)");
     const [billing, setBilling] = useState({
@@ -26,14 +32,79 @@ const VendorForm = ({ handleFormFinish, value, disabled }) => {
         form.setFieldsValue({ shippingPincode: billing.pincode });
     };
 
+    const {
+        vendorName,
+        contactPerson,
+        vendorPhone,
+        vendorEmail,
+        panNo,
+        gstNo,
+        billingAddress,
+        shippingAddress,
+    } = value;
+
     return (
-        <Form name={"venordForm"} form={form} initialValues={value} onFinish={handleFormFinish}>
+        <Form
+            name={"venordForm"}
+            form={form}
+            initialValues={{
+                remeber: true,
+                vendorName: vendorName ? vendorName : "",
+                contactPerson: contactPerson ? contactPerson : "",
+                vendorPhone: vendorPhone ? vendorPhone : "",
+                vendorEmail: vendorEmail ? vendorEmail : "",
+                panNo: panNo ? panNo : "",
+                gstNo: gstNo ? gstNo : "",
+                billingStreet: !billingAddress
+                    ? ""
+                    : billingAddress.street
+                    ? billingAddress.street
+                    : "",
+                billingCity: !billingAddress
+                    ? ""
+                    : billingAddress.city
+                    ? billingAddress.city
+                    : "",
+                billingState: !billingAddress
+                    ? ""
+                    : billingAddress.state
+                    ? billingAddress.state
+                    : "",
+                billingPincode: !billingAddress
+                    ? ""
+                    : billingAddress.pinCode
+                    ? billingAddress.pinCode
+                    : "",
+                shippingStreet: !shippingAddress
+                    ? ""
+                    : shippingAddress.street
+                    ? shippingAddress.street
+                    : "",
+                shippingCity: !shippingAddress
+                    ? ""
+                    : shippingAddress.city
+                    ? shippingAddress.city
+                    : "",
+                shippingState: !shippingAddress
+                    ? ""
+                    : shippingAddress.state
+                    ? shippingAddress.state
+                    : "",
+                shippingPincode: !shippingAddress
+                    ? ""
+                    : shippingAddress.pinCode
+                    ? shippingAddress.pinCode
+                    : "",
+            }}
+            onFinish={handleFormFinish}
+            onValuesChange={handleValueChange}
+        >
             <Col xs={24} sm={24} md={12} lg={12}>
                 <Form.Item
                     label={"Vendor Name "}
                     name={"vendorName"}
                     labelAlign="left"
-                    labelCol={{ span: 8}}
+                    labelCol={{ span: 8 }}
                     rules={[
                         {
                             required: true,
@@ -41,7 +112,7 @@ const VendorForm = ({ handleFormFinish, value, disabled }) => {
                         },
                     ]}
                 >
-                    <Input />
+                    <Input disabled={disabled} />
                 </Form.Item>
             </Col>
 
@@ -50,7 +121,7 @@ const VendorForm = ({ handleFormFinish, value, disabled }) => {
                     label={"Vendor Phone"}
                     labelAlign="left"
                     name="vendorPhone"
-                    labelCol={{ span: 8}}
+                    labelCol={{ span: 8 }}
                     rules={[
                         {
                             required: true,
@@ -58,7 +129,7 @@ const VendorForm = ({ handleFormFinish, value, disabled }) => {
                         },
                     ]}
                 >
-                    <Input />
+                    <Input disabled={disabled} />
                 </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={12} lg={12}>
@@ -66,7 +137,7 @@ const VendorForm = ({ handleFormFinish, value, disabled }) => {
                     label={"Vendor Email"}
                     labelAlign="left"
                     name="vendorEmail"
-                    labelCol={{ span: 8}}
+                    labelCol={{ span: 8 }}
                     rules={[
                         {
                             required: true,
@@ -74,7 +145,7 @@ const VendorForm = ({ handleFormFinish, value, disabled }) => {
                         },
                     ]}
                 >
-                    <Input />
+                    <Input disabled={disabled} />
                 </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={12} lg={12}>
@@ -82,9 +153,9 @@ const VendorForm = ({ handleFormFinish, value, disabled }) => {
                     label={"Contact Person"}
                     name={"contactPerson"}
                     labelAlign="left"
-                    labelCol={{ span: 8}}
+                    labelCol={{ span: 8 }}
                 >
-                    <Input />
+                    <Input disabled={disabled} />
                 </Form.Item>
             </Col>
 
@@ -94,9 +165,9 @@ const VendorForm = ({ handleFormFinish, value, disabled }) => {
                     labelAlign="left"
                     tooltip="this data  will be Encripted then stored not visible to other pepole accpet accept acces given  "
                     name="panNo"
-                    labelCol={{ span: 8}}
+                    labelCol={{ span: 8 }}
                 >
-                    <Input />
+                    <Input disabled={disabled} />
                 </Form.Item>
             </Col>
 
@@ -106,9 +177,9 @@ const VendorForm = ({ handleFormFinish, value, disabled }) => {
                     labelAlign="left"
                     tooltip="this data  will be Encripted then stored not visible to other pepole accpet accept acces given  "
                     name="gstNo"
-                    labelCol={{ span: 8}}
+                    labelCol={{ span: 8 }}
                 >
-                    <Input />
+                    <Input disabled={disabled} />
                 </Form.Item>
             </Col>
 
@@ -128,6 +199,7 @@ const VendorForm = ({ handleFormFinish, value, disabled }) => {
                             }}
                         >
                             <Input.TextArea
+                                disabled={disabled}
                                 style={{
                                     width: isLaptop ? 300 : 250,
                                     height: 100,
@@ -155,6 +227,7 @@ const VendorForm = ({ handleFormFinish, value, disabled }) => {
                                         city: e.target.value,
                                     })
                                 }
+                                disabled={disabled}
                             />
                         </Form.Item>
                     </Row>
@@ -166,6 +239,7 @@ const VendorForm = ({ handleFormFinish, value, disabled }) => {
                             labelCol={{ span: 7 }}
                         >
                             <Input
+                                disabled={disabled}
                                 onChange={(e) =>
                                     setBilling({
                                         ...billing,
@@ -196,15 +270,15 @@ const VendorForm = ({ handleFormFinish, value, disabled }) => {
                 <Col sm={12} md={12} lg={12}>
                     <Row>
                         Shipping Address
-                        {!disabled ? (
-                            <Col
-                                style={{ color: "blue", cursor: "pointer" }}
-                                onClick={handeCopyBillingAddress}
-                            >
-                                (Copy Billing Address)
-                            </Col>
+                        {!notShowCopy  ? (
+                                 <Col
+                                 style={{ color: "blue", cursor: "pointer" }}
+                                 onClick={handeCopyBillingAddress}
+                             >
+                                 (Copy Billing Address)
+                             </Col>
                         ) : (
-                            ""
+                       ""
                         )}
                     </Row>
 
@@ -218,6 +292,7 @@ const VendorForm = ({ handleFormFinish, value, disabled }) => {
                             }}
                         >
                             <Input.TextArea
+                                disabled={disabled}
                                 controls={false}
                                 style={{
                                     width: isLaptop ? 300 : 250,
@@ -234,7 +309,7 @@ const VendorForm = ({ handleFormFinish, value, disabled }) => {
                             labelAlign="left"
                             labelCol={{ span: 7 }}
                         >
-                            <Input value={billing.city} />
+                            <Input value={billing.city} disabled={disabled} />
                         </Form.Item>
                     </Row>
                     <Row>
@@ -244,7 +319,7 @@ const VendorForm = ({ handleFormFinish, value, disabled }) => {
                             labelAlign="left"
                             labelCol={{ span: 7 }}
                         >
-                            <Input value={billing.state} />
+                            <Input value={billing.state} disabled={disabled} />
                         </Form.Item>
                     </Row>
                     <Row>
@@ -254,14 +329,17 @@ const VendorForm = ({ handleFormFinish, value, disabled }) => {
                             labelAlign="left"
                             labelCol={{ span: 7 }}
                         >
-                            <Input value={billing.pincode} />
+                            <Input
+                                value={billing.pincode}
+                                disabled={disabled}
+                            />
                         </Form.Item>
                     </Row>
                 </Col>
             </Row>
             <Row>
-                <Button type="primary" htmlType="submit">
-                   SAVE 
+                <Button type="primary" htmlType="submit" disabled={disabled}>
+                    SAVE
                 </Button>
             </Row>
         </Form>

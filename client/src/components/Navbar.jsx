@@ -90,7 +90,11 @@ const NavBar = ({ user, isSidebarOpen, setIsSidebarOpen, isLaptop }) => {
                         ) : (
                             ""
                         )}
-                        <Typography>{user.companyName}</Typography>
+                        <Typography>
+                            {user.companyName
+                                ? user.companyName.toUpperCase()
+                                : ""}
+                        </Typography>
                     </FlexBetween>
                 ) : (
                     ""
@@ -133,7 +137,7 @@ const NavBar = ({ user, isSidebarOpen, setIsSidebarOpen, isLaptop }) => {
                                     fontSize={"0.9rem"}
                                     sx={{ color: theme.palette.secondary[100] }}
                                 >
-                                    {user.name}
+                                    {user.name ? user.name.toUpperCase() : ""}
                                 </Typography>
                                 <Typography
                                     fontSize={"0.75rem"}

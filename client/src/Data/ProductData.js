@@ -41,6 +41,7 @@ export const productColumns = [
         title: "HSN CODE",
         dataIndex: "hsnCode",
         key: "source",
+        responsive: ["lg"],
         render: (_, record) => (
             <>
                 <Text type="success">{record.hsnCode}</Text>

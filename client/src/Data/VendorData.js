@@ -23,18 +23,22 @@ export const vendorColumns = [
     {
         title:"GST NO",
         dataIndex:"gstNo",
-        key:"gstNo"
+        key:"gstNo",
+        responsive: ["lg"],
+
     },
     {
         title:"PAN NO",
         dataIndex:"panNo",
-        key:"panNo"
+        key:"panNo",
+        responsive: ["lg"],
+
     },
  
     {
         fixed: "right",
         render: (_,record) => (
-          <TableAction params={record._id} page={"vendor"} />
+          <TableAction params={record._id} page={"vendors"} />
         ),
     },
 ]

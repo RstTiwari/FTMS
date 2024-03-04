@@ -16,17 +16,20 @@ import {
 
 import { PlusOutlined, CloseOutlined, DeleteOutlined } from "@ant-design/icons";
 import VendorModal from "components/VendorModal";
-import { epochInDDMMYY } from "Helper/EpochConveter";
+import { epochInDDMMYY ,convertUnixTimestampToDate} from "Helper/EpochConveter";
+import dayjs from 'dayjs';
+
 
 const PurchaseOrder = ({ handleFormFinish, value, disabled }) => {
+    console.log("Render 1")
     const [form] = Form.useForm();
 
     const handleVendorChange = (value, lable) => {
         form.setFieldsValue({ vendor: value });
     };
 
+    console.log(value,"before");
     const onItemChange = (value, label, index, subFiled) => {
-        console.log(value, label, index, subFiled);
         const items = form.getFieldValue("items");
         const currentObj = items[index];
         if (subFiled === "rate") {
@@ -73,13 +76,15 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled }) => {
         const grandTotal = totalTaxAmount + totalTranportAmount + totalGross;
         form.setFieldsValue({ grandTotal: Math.ceil(grandTotal) });
     };
-
-    if (value) {
-        value.purchaseDate = epochInDDMMYY(value.purchaseDate);
-    }
-
+    const {vendor,purchaseNo,purchaseDate,items} = value
     return (
-        <Form onFinish={handleFormFinish} form={form} initialValues={value}>
+        <Form onFinish={handleFormFinish} form={form}
+         initialValues={{
+            vendor:vendor ? vendor:"",
+            purchaseNo:purchaseNo ? purchaseNo :"",
+            purchaseDate: purchaseDate ?epochInDDMMYY(value.purchaseDate):"",
+            items:items ? items:[{description:"",rate:0,qty:0,finalAmount:0}]
+         }}>
             <Form.Item
                 label={"Select Vendor"}
                 name={"vendor"}
@@ -94,7 +99,9 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled }) => {
             >
                 <VendorModal
                     vendorSelect={handleVendorChange}
-                    vendorId={value.vendor.vendorName}
+                    vendorId={
+                        vendor ? vendor.vendorName : ""
+                    }
                     disabled={disabled}
                 />
             </Form.Item>
@@ -128,7 +135,7 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled }) => {
                     >
                         <DatePicker
                             placeholder="Purchase Date"
-                            format={"DD/MM/YY"}
+                            format={"DD/MM/YYYY"}
                             disabled={disabled}
                         />
                     </Form.Item>
@@ -372,7 +379,7 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled }) => {
                 </Col>
             </Row>
             <Row>
-                <Button type="primary" htmlType="submit" disabled ={disabled}>
+                <Button type="primary" htmlType="submit" disabled={disabled}>
                     SAVE
                 </Button>
             </Row>

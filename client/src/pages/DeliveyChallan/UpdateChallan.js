@@ -52,7 +52,7 @@ const UpdateChallan = () => {
         >
             <Header
                 title={"UPDATE CHALLAN "}
-                cancelRoute={"/deliverychallan"}
+                cancelRoute={"deliverychallan"}
             />
             <PageLoader isLoading={isLoading}  text={"Pleas Wait Fecthing Challan"}/>
             {

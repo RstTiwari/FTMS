@@ -7,24 +7,26 @@ import NotificationHandler from "EventHandler/NotificationHandler";
 import PageLoader from "pages/PageLoader";
 import Header from "components/Header";
 import PurchaseOrder from "Forms/PurchaseOrderForm";
+import { epochInDDMMYY } from "Helper/EpochConveter";
 
 const ReadPurchaseOrder = () => {
     const { entity, id } = useParams();
     const { readData } = useAuth();
-    const [data, setData] = useState({});
+    const [data, setData] = useState("");
     const [isLoading, setIsLoading] = useState(true);
-    const fetchData = async () => {
-        const { success, result, message } = await readData({ entity, id });
-        if (!success) {
-            setIsLoading(false);
-            return NotificationHandler.error(message);
-        } else {
-            setIsLoading(false);
-            setData(result);
-        }
-    };
+
 
     useEffect(() => {
+        const fetchData = async () => {
+            const { success, result, message } = await readData({ entity, id });
+            if (!success) {
+                setIsLoading(false);
+                return NotificationHandler.error(message);
+            } else {
+                setIsLoading(false);
+                setData(result);
+            }
+        };
         fetchData();
     }, []);
 
@@ -43,7 +45,8 @@ const ReadPurchaseOrder = () => {
                 cancelRoute={"purchaseorder"}
             />
             <PageLoader isLoading={isLoading} />
-            {data.items ? (
+            {data.purchaseDate
+             ? (
                 <PurchaseOrder
                     onFinish={{}}
                     value={data}

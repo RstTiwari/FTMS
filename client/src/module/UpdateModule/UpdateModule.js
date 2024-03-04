@@ -7,6 +7,7 @@ import UpdateInvoice from "pages/Invoice/UpdateInvoice";
 import UpdateLead from "pages/Lead/UpdateLead";
 import UpdateChallan from "pages/DeliveyChallan/UpdateChallan";
 import UpdatePurchaseOrder from "pages/PurchaseOrder/UpdatePurchaseOrder";
+import UpdateVendors from "pages/Vendor/UpdateVendors";
 
 const UpdateModule = () => {
     const { entity, id } = useParams();
@@ -28,8 +29,11 @@ const UpdateModule = () => {
             componentToRender = <UpdateChallan />;
             break;
         case "purchaseorder":
-                componentToRender = <UpdatePurchaseOrder />;
-                break;
+            componentToRender = <UpdatePurchaseOrder />;
+            break;
+        case "vendors":
+            componentToRender = <UpdateVendors />;
+            break;
         default:
             break;
     }

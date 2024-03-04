@@ -99,6 +99,7 @@ export const leadColumns = [
         title: "Recived Date",
         dataIndex: "recivedDate",
         key: "recivedDate",
+        responsive: ["lg"],
         render: (_, record) => (
             <>
                 <Text>{convertUnixTimestampToDate(record.recivedDate)}</Text>

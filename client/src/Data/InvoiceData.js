@@ -25,7 +25,8 @@ export const invoiceColumns = [
     {
         title:"Date",
         dataIndex:"invoiceDate",
-        key:"customer", 
+        key:"customer",
+
         render:(_,record)=>(
             <>
                 {convertUnixTimestampToDate(record.invoiceDate)}
@@ -36,6 +37,7 @@ export const invoiceColumns = [
         title:"Exipred Date",
         dataIndex:"invoiceExpiredDate",
         key:"customer",  
+        responsive: ["lg"],
         render:(_,record)=>(
             <>
                 {convertUnixTimestampToDate(record.invoiceExpiredDate)}
@@ -46,6 +48,8 @@ export const invoiceColumns = [
         title:"Gross Total",
         dataIndex:"grossTotal",
         key:"grossTotal",  
+        responsive: ["lg"],
+
     },
     {
         title:"Grand Total",

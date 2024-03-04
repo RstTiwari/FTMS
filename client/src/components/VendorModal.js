@@ -39,7 +39,6 @@ const VendorModal = ({ vendorSelect,vendorId ,disabled}) => {
         handleVendorClick();
         setVendor(vendorId)
     }, []);
-    console.log(vendorId,'vendorId');
     return (
         <>
             {!open ? (
