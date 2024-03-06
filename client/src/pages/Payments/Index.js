@@ -28,8 +28,11 @@ const Index = () => {
                 cancelRoute={"dashboard"}
                 refresh={true}
             />
-            <PageLoader isLoading={isLoading} />
-            <Table columns={paymentColumns} dataSource={data} />
+            <Table columns={paymentColumns} dataSource={data}
+             scroll={{ x: true, y: 600 }}
+             showSorterTooltip={true}
+             loading ={isLoading}
+             />
         </Flex>
     );
 };

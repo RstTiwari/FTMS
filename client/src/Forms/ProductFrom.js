@@ -68,7 +68,7 @@ const ProductForm = ({ onFormFinish, initalValue }) => {
                     </Form.Item>
                     <Form.Item>
                         <Button type="primary" htmlType="submit">
-                            Submit
+                            SAVE PRODUCT
                         </Button>
                     </Form.Item>
                 </Form>

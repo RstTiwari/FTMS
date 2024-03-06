@@ -23,7 +23,13 @@ const NewProduct = ({checkHeader, afterAdd }) => {
 
     return (
         <Flex
-        
+            gap={"middle"}
+            vertical
+            style={{
+                padding: "2rem",
+                backgroundColor: "#ffffff",
+                borderRadius: "1rem",
+            }}
         >
             {checkHeader ? (
                 <Header title={"ADD NEW PRODUCT"} cancelRoute={"products"} />

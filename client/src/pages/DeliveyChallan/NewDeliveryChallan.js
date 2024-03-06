@@ -7,6 +7,7 @@ import Header from "components/Header";
 import React from "react";
 import { useAuth } from "state/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import SaveBottmComponent from "components/SaveBottomComponent";
 const entity = "deliverychallan"
 
 const NewChallan = () => {
@@ -39,6 +40,7 @@ const NewChallan = () => {
             cancelRoute={"deliverychallan"}
             />
             <DeliveryChallanForm onFinish={onFinish} value={false} />
+            <SaveBottmComponent  buttonText={"SAVE AS DRAFT"} cancelRoute={"deliverychallan"}/>
         </Flex>
     );
 };

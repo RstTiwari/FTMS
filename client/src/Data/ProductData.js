@@ -53,10 +53,10 @@ export const productColumns = [
         dataIndex: "rate",
         key: "subTotal",
     },
-    {
-        fixed: "right",
-        render: (_, record) => (
-            <TableAction params={record._id} page={"products"} />
-        ),
-    },
+    // {
+    //     fixed: "right",
+    //     render: (_, record) => (
+    //         <TableAction params={record._id} page={"products"} />
+    //     ),
+    // },
 ];

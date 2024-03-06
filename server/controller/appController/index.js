@@ -8,6 +8,7 @@ import expensesDb from "../../models/appModels/expenses.js";
 import deliveryChallanDb from "../../models/appModels/challan.js";
 import vednorDb from "../../models/appModels/vendor.js";
 import purchaseDb from "../..//models/appModels/purchase.js";
+import tenantDb from "../../models/coreModels/Tenant.js"
 import create from "./create.js";
 import getList from "./getList.js";
 import read from "./read.js";
@@ -102,6 +103,8 @@ const checkDbForEntity = (entity) => {
         return vednorDb;
     } else if (entity === "purchaseorder") {
         return purchaseDb;
+    } else if (entity === "orgnizationprofile") {
+        return tenantDb;
     } else {
         return false;
     }

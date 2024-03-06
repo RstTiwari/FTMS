@@ -2,8 +2,8 @@ import React from "react";
 import { Row, Col, Button } from "antd";
 import { useNavigate } from "react-router-dom";
 
-const SaveBottmComponent = ({ action1,action2 ,action3 }) => {
-    const navigate = useNavigate()
+const SaveBottmComponent = ({ buttonText, action2, cancelRoute }) => {
+    const navigate = useNavigate();
     return (
         <div
             style={{
@@ -15,25 +15,35 @@ const SaveBottmComponent = ({ action1,action2 ,action3 }) => {
                 backgroundColor: "#f0f0f0",
             }}
         >
-            <Row justify={"center"}>
-                {action1 ? (
-                    <Col xs={12} sm={12} md={12} lg={4} xl={4}>
-                        <Button htmlType={"submit"} type="primary" onClick={()=>{action1()}}>SAVE AS DRAFT</Button>
-                    </Col>
-                ) : (
-                    ""
-                )}
+            <Row justify={"center"} style={{marginTop:"1rem"}}>
+                <Col xs={12} sm={12} md={12} lg={6} xl={6}>
+                    <Button htmlType={"submit"} type="primary">
+                        {buttonText}
+                    </Button>
+                </Col>
+
                 {action2 ? (
-                    <Col xs={12} sm={12} md={12} lg={4} xl={4}>
-                        <Button onClick={()=>{action2()}}>SAVE AND DOWNLOAD</Button>
+                    <Col xs={12} sm={12} md={12} lg={2} xl={4}>
+                        <Button
+                            onClick={() => {
+                                action2();
+                            }}
+                        >
+                            SAVE AND DOWNLOAD
+                        </Button>
                     </Col>
                 ) : (
                     ""
                 )}
-                {action3 ? (
-                    <Col xs={12} sm={12} md={12} lg={4} xl={4}>
-                        <Button  danger  onClick={()=>{navigate(`/${action3}`)}}>
-                        CANCEL
+                {cancelRoute ? (
+                    <Col xs={12} sm={12} md={12} lg={2} xl={6}>
+                        <Button
+                            danger
+                            onClick={() => {
+                                navigate(`/${cancelRoute}`);
+                            }}
+                        >
+                            CANCEL
                         </Button>
                     </Col>
                 ) : (

@@ -110,6 +110,7 @@ const verify = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
                 email: userData.email,
                 photo: userData.photo,
                 companyName:tenantData.companyName,
+                tenantId:tenantId,
                 token: token,
             },
 

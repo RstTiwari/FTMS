@@ -8,6 +8,7 @@ import { useAuth } from "state/AuthProvider";
 import Header from "components/Header";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import { useNavigate } from "react-router-dom";
+import SaveBottmComponent from "components/SaveBottomComponent";
 
 const UpdateCustomer = () => {
     const [form] = Form.useForm();
@@ -20,13 +21,13 @@ const UpdateCustomer = () => {
 
     const fomulatePayload = (value) => {
         value["billingAddress"] = {
-            address: value.billingStreet,
+            street: value.billingStreet,
             city: value.billingCity,
             state: value.billingState,
             pinCode: value.billingPincode,
         };
         value["shippingAddress"] = {
-            address: value.shippingStreet,
+            street: value.shippingStreet,
             city: value.shippingCity,
             state: value.shippingState,
             pinCode: value.shippingPincode,
@@ -46,7 +47,7 @@ const UpdateCustomer = () => {
     const handleUpdateFormFinish = async (value) => {
         if (!toUpdateObj) {
             // checking if anything to update
-            return NotificationHandler.error("Nothing to Update");
+            return NotificationHandler.error("Nothing to Update Please Click CANCEL Page");
         }
         value._id = data._id;
         let payload = fomulatePayload(value);
@@ -78,6 +79,30 @@ const UpdateCustomer = () => {
         fetchData();
     }, []);
 
+    const {
+        customerName,
+        contactPerson,
+        customerPhone,
+        customerEmail,
+        panNo,
+        gstNo,
+        billingAddress,
+        shippingAddress,
+    } = data;
+
+    const {
+        street: addressB,
+        city: cityB,
+        state: stateB,
+        pinCode: pinCodeB,
+    } = billingAddress ? billingAddress : "";
+    const {
+        street: addressS,
+        city: cityS,
+        state: stateS,
+        pinCode: pinCodeS,
+    } = shippingAddress ? shippingAddress : "";
+
     return (
         <Flex
             gap={"middle"}
@@ -108,35 +133,24 @@ const UpdateCustomer = () => {
                         onValuesChange={handleValueChange}
                         initialValues={{
                             remeber: true,
-                            customerName: data.customerName,
-                            contactPerson: data.contactPerson,
-                            customerPhone: data.customerPhone,
-                            customerEmail: data.customerEmail,
-                            panNo: data.panNo,
-                            gstNo: data.gstNo,
-                            billingStreet: data.billingAddress.address,
-                            billingCity: data.billingAddress.city,
-                            billingState: data.billingAddress.state,
-                            billingPincode: data.billingAddress.pinCode,
-                            shippingStreet: data.shippingAddress.address,
-                            shippingCity: data.shippingAddress.city,
-                            shippingState: data.shippingAddress.state,
-                            shippingPincode: data.shippingAddress.pinCode,
+                            customerName: customerName ? customerName : "",
+                            contactPerson: contactPerson ? contactPerson : "",
+                            customerPhone: customerPhone ? customerPhone : "",
+                            customerEmail: customerEmail ? customerEmail : "",
+                            panNo: panNo ? panNo : "",
+                            gstNo: gstNo ? gstNo : "",
+                            billingStreet: addressB ? addressB : "",
+                            billingCity: cityB ? cityB : "",
+                            billingState: stateB ? stateB : "",
+                            billingPincode: pinCodeB ? pinCodeB : "",
+                            shippingStreet: addressS ? addressS : "",
+                            shippingCity: cityS ? cityS : "",
+                            shippingState: stateS ? stateS : "",
+                            shippingPincode: pinCodeS ? pinCodeS : "",
                         }}
                     >
                         <CoustomersForm current={form} disabled={true} />
-                        <Col className="gutter-row" span={6}>
-                            <Form.Item>
-                                <Button
-                                    type="primary"
-                                    htmlType="submit"
-                                    icon={<PlusOutlined />}
-                                    block
-                                >
-                                    Save
-                                </Button>
-                            </Form.Item>
-                        </Col>
+                         <SaveBottmComponent  buttonText={"UPDATE"} cancelRoute ={"customers"} />
                     </Form>
                 </>
             ) : (

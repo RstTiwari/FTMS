@@ -58,7 +58,11 @@ const UpdateLead = () => {
                 borderRadius: "1rem",
             }}
         >
-            <Header title={` Update - ${entity} Details`} subTitle={""} cancelRoute={"lead"} />
+            <Header
+                title={` Update - ${entity} Details`}
+                subTitle={""}
+                cancelRoute={"lead"}
+            />
             <PageLoader
                 text={`Please hold Fetching ${entity}`}
                 isLoading={isLoading}
@@ -76,6 +80,11 @@ const UpdateLead = () => {
                         }}
                         id={id}
                     />
+                    <Form.Item>
+                        <Button type="primary" htmlType="submit">
+                            UPDATE
+                        </Button>
+                    </Form.Item>
                 </>
             ) : (
                 ""

@@ -7,6 +7,7 @@ import NotificationHandler from "EventHandler/NotificationHandler";
 import PageLoader from "pages/PageLoader";
 import Header from "components/Header";
 import { epochConveter } from "Helper/EpochConveter";
+import SaveBottmComponent from "components/SaveBottomComponent";
 
 
 const UpdateChallan = () => {
@@ -57,7 +58,10 @@ const UpdateChallan = () => {
             <PageLoader isLoading={isLoading}  text={"Pleas Wait Fecthing Challan"}/>
             {
               data.items ? (
+                <>
                 <DeliveryChallanForm onFinish={updateChallan} value={data}  />
+                <SaveBottmComponent buttonText={"UPDATE CHALLAN"} cancelRoute={"deliverychallan"} />
+                </>
               ):
               ("")
 

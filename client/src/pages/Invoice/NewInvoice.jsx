@@ -6,10 +6,13 @@ import InvoiceFrom from "../../Forms/Invoice";
 import { epochConveter } from "Helper/EpochConveter";
 import { useAuth } from "state/AuthProvider.js";
 import NotificationHandler from "EventHandler/NotificationHandler";
+import SaveBottmComponent from "components/SaveBottomComponent";
+import { useNavigate } from "react-router-dom";
 
 const NewInvoice = () => {
     const [form] = Form.useForm();
     const { createData } = useAuth();
+    const navigate = useNavigate()
     const handleInvoiceFormFinish = async (value) => {
         let epochQuoteDate = epochConveter(value.invoiceDate.$d);
         let epochExpiryDate = epochConveter(value.invoiceExpiredDate.$d);
@@ -18,6 +21,7 @@ const NewInvoice = () => {
         let payload = { entity: "invoice", value };
         const { success, result, message } = await createData(payload);
         if (success) {
+            navigate("/invoice")
             return NotificationHandler.success(message);
         } else {
             return NotificationHandler.error(message);
@@ -45,16 +49,7 @@ const NewInvoice = () => {
             >
                 <InvoiceFrom current={form} />
                 <Col className="gutter-row" span={6}>
-                    <Form.Item>
-                        <Button
-                            type="primary"
-                            htmlType="submit"
-                            icon={<PlusOutlined />}
-                            block
-                        >
-                            Save
-                        </Button>
-                    </Form.Item>
+                 <SaveBottmComponent buttonText={"SAVE AS DRAFT"} cancelRoute={"invoice"}/>
                 </Col>
             </Form>
         </Flex>

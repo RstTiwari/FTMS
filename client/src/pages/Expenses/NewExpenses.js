@@ -6,6 +6,7 @@ import Header from "components/Header";
 import React, { useState } from "react";
 import { useAuth } from "state/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import SaveBottmComponent from "components/SaveBottomComponent";
 const entity = "expenses";
 const NewExpenses = () => {
     const { createData } = useAuth();
@@ -35,6 +36,7 @@ const NewExpenses = () => {
         >
             <Header title={"Add New Expenses"} cancelRoute={"expenses"} />
             <ExpenseForm handleFormFinish={handleFormFinish} />
+            <SaveBottmComponent  buttonText={"SAVE EXPESNES "}  cancelRoute={"expenses"}/>
         </Flex>
     );
 };

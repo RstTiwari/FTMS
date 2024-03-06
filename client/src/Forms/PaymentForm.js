@@ -140,11 +140,6 @@ const PaymentForm = ({ initialValue }) => {
                             <Input style={{ width: "50%" }} />
                         </Form.Item>
                     </Col>
-                    <Col span={24} labelAlign="left" labelCol={{ span: 4 }}>
-                        <Button type="primary" htmlType="submit">
-                            Submit
-                        </Button>
-                    </Col>
                 </Row>
             </Form>
             <PaymentHistoryList data = {initialValue.payment} />

@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "state/AuthProvider.js";
 import NotificationHandler from "EventHandler/NotificationHandler.jsx";
 import VendorForm from "Forms/VendorForm.js";
+import SaveBottmComponent from "components/SaveBottomComponent.js";
 
 const NewVendor = ({ checkHeader, afterAdd }) => {
     const entity = "vendors";
@@ -73,6 +74,7 @@ const NewVendor = ({ checkHeader, afterAdd }) => {
                 ""
             )}
             <VendorForm handleFormFinish={handCusotmerSubmit} value={{}}  disabled={false} notShowCopy={false} />
+            <SaveBottmComponent buttonText={"SAVE VENDOR"} cancelRoute={"vendors"} />
         </Flex>
     );
 };

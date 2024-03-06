@@ -87,6 +87,7 @@ const login = async (req, res, next, userDb, userPassworDb, tenantDb) => {
             email: user.email,
             photo: user.photo,
             companyName: tenantData.companyName,
+            tenantId:tenantId,
             token: token,
             expiresIn: req.body.remember  ?  (365 * 86400) :( 86400 )
         },

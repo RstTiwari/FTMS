@@ -22,7 +22,7 @@ const Customers = () => {
             gap={"middle"}
             vertical
             style={{
-                padding: "2rem",
+                padding: "1rem",
                 backgroundColor: "#ffffff",
                 borderRadius: "1rem",
             }}

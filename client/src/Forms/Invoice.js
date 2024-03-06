@@ -254,7 +254,7 @@ const Invoice = ({ current }) => {
                 <Col className="gutter-row" span={4}>
                     <p>{"Description"}</p>
                 </Col>
-                <Col className="gutter-row" span={3}>
+                <Col className="gutter-row" span={2}>
                     <p>{"HSN Code"}</p>
                 </Col>
                 <Col className="gutter-row" span={2}>
@@ -373,7 +373,7 @@ const Invoice = ({ current }) => {
                                         name={[subField.name, "sgstPercent"]}
                                     >
                                         <InputNumber
-                                            style={{ width: 40 }}
+                                            style={{ width: 60 }}
                                             onChange={(value) =>
                                                 onSgstChange(value, subField)
                                             }
@@ -387,7 +387,7 @@ const Invoice = ({ current }) => {
                                         <InputNumber
                                             className="moneyInput"
                                             min={0}
-                                            style={{ width: 40 }}
+                                            style={{ width: 60 }}
                                             onChange={(value) =>
                                                 onCgstChange(value, subField)
                                             }
@@ -401,7 +401,7 @@ const Invoice = ({ current }) => {
                                         <InputNumber
                                             className="moneyInput"
                                             min={0}
-                                            style={{ width: 40}}
+                                            style={{ width: 60}}
                                             onChange={(value) =>
                                                 onIgstChange(value, subField)
                                             }
@@ -417,7 +417,7 @@ const Invoice = ({ current }) => {
                                             className="moneyInput"
                                             min={0}
                                             controls={false}
-                                            style={{ width: 60 }}
+                                            style={{ width: 80 }}
                                         />
                                     </Form.Item>
                                 </Col>

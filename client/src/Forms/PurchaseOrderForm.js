@@ -21,14 +21,12 @@ import dayjs from 'dayjs';
 
 
 const PurchaseOrder = ({ handleFormFinish, value, disabled }) => {
-    console.log("Render 1")
     const [form] = Form.useForm();
 
     const handleVendorChange = (value, lable) => {
         form.setFieldsValue({ vendor: value });
     };
 
-    console.log(value,"before");
     const onItemChange = (value, label, index, subFiled) => {
         const items = form.getFieldValue("items");
         const currentObj = items[index];
@@ -377,11 +375,6 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled }) => {
                         />
                     </Form.Item>
                 </Col>
-            </Row>
-            <Row>
-                <Button type="primary" htmlType="submit" disabled={disabled}>
-                    SAVE
-                </Button>
             </Row>
         </Form>
     );

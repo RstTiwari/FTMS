@@ -87,10 +87,8 @@ const NewCustomer = ({ checkHeader, afterAdd }) => {
             >
                 <CoustomerForm current={form} />
                 <SaveBottmComponent
-                    text1={"SAVE AS DRAFT"}
-                    text3={"CANCEL"}
-                    action1={handelCustomerFormFinish}
-                    action3={"customers"}
+                    buttonText={"SAVE AS DRAFT"}
+                    cancelRoute={"customers"}
                 />
             </Form>
         </Flex>

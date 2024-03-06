@@ -103,13 +103,6 @@ const ExpenseForm = ({handleFormFinish}) => {
                     <CustomerModal customerSelect={handleCustomerSelect} />
                 </Form.Item>
             </Col>
-            <Col xs={24} sm={24} md={8} lg={8} xl={8}>
-                <Form.Item labelAlign="left" labelCol={{ span: 12 }}>
-                    <Button type="primary" htmlType="submit">
-                        Save
-                    </Button>
-                </Form.Item>
-            </Col>
         </Form>
     );
 };

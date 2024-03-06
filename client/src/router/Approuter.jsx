@@ -26,6 +26,7 @@ import NewPayment from "pages/Payments/NewPayment";
 import NewExpenses from "pages/Expenses/NewExpenses";
 import NewVendor from "pages/Vendor/NewVendor";
 import PurchaseOrder from "pages/PurchaseOrder";
+import Orgnization from "pages/Orgnization/Orgnization";
 
 const Approuter = () => {
     return (
@@ -36,8 +37,11 @@ const Approuter = () => {
                     element={<Navigate to="/dashboard" replace />}
                 />
                 <Route path="/dashboard" exact element={<Dashbord />} />
-                <Route path="/customers" element={<Coustomer  />} />
-                <Route path="/customers/create" element={<NewCoustomer checkHeader={true} />} />
+                <Route path="/customers" element={<Coustomer />} />
+                <Route
+                    path="/customers/create"
+                    element={<NewCoustomer checkHeader={true} />}
+                />
 
                 <Route path="/lead" element={<Lead />} />
                 <Route path="/lead/create" element={<NewLead />} />
@@ -59,20 +63,33 @@ const Approuter = () => {
                 />
 
                 <Route path="/vendors" element={<Vendor />} />
-                <Route path="/vendors/create" element={<NewVendor checkHeader={true} />} />
-                <Route  path="/purchaseorder" element ={<PurchaseOrder />}/>
-                <Route  path="/purchaseorder/create" element ={<NewPurchaseOrder/>}/>
-
-
+                <Route
+                    path="/vendors/create"
+                    element={<NewVendor checkHeader={true} />}
+                />
+                <Route path="/purchaseorder" element={<PurchaseOrder />} />
+                <Route
+                    path="/purchaseorder/create"
+                    element={<NewPurchaseOrder />}
+                />
 
                 <Route path="/products" element={<Product />} />
-                <Route path="/products/create" element={<NewProduct />} />
+                <Route
+                    path="/products/create"
+                    element={<NewProduct checkHeader={true} />}
+                />
 
                 {/**Routes for Read  Update And Pdf */}
                 <Route path="/read/:entity/:id" element={<ReadModule />} />
                 <Route path="/update/:entity/:id" element={<UpdateModule />} />
                 <Route path="/download/:entity/:id" element={<PdfModule />} />
                 <Route path="/record/payment/:id" element={<NewPayment />} />
+
+                {/*Mangaining Orgnization Profile */}
+                <Route
+                    path="/orgnizationprofile/:tenanId"
+                    element={<Orgnization />}
+                />
 
                 <Route path="*" element={<NotFound />} />
 

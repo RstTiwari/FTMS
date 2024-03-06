@@ -18,11 +18,13 @@ import { useForm } from "antd/es/form/Form.js";
 import { useAuth } from "state/AuthProvider.js";
 import NotificationHandler from "EventHandler/NotificationHandler.jsx";
 import SaveBottmComponent from "components/SaveBottomComponent.js";
+import { useNavigate } from "react-router-dom";
 
 const NewQuote = () => {
     const [form] = Form.useForm();
     const [quoteNo, setQuoteNo] = useState("123456");
     const { createData } = useAuth();
+    const navigate = useNavigate()
     const onQuoteFormFinish = async (value) => {
         let epochQuoteDate = epochConveter(value.quoteDate.$d);
         let epochExpiryDate = epochConveter(value.quoteDate.$d);
@@ -31,6 +33,7 @@ const NewQuote = () => {
         let payload = { entity: "quote", value };
         const { success, result, message } = await createData(payload);
         if (success) {
+            navigate("/quotation")
             return NotificationHandler.success(message);
         } else {
             return NotificationHandler.error(message);
@@ -71,7 +74,7 @@ const NewQuote = () => {
             >
                 <Header title={"New Quotation"} cancelRoute={"quotation"} />
                 <QuotationForm current={form} />
-                <SaveBottmComponent   action1={onQuoteFormFinish} action3={"quotation"}/>
+                <SaveBottmComponent  buttonText={"SAVE AS DRAFT"}  cancelRoute={"quotation"}/>
             </Form>
         </Flex>
     );

@@ -8,6 +8,7 @@ import { useAuth } from "state/AuthProvider";
 import Header from "components/Header";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import { useNavigate } from "react-router-dom";
+import SaveBottmComponent from "components/SaveBottomComponent";
 
 const UpdateVendors = () => {
     const [data, setData] = useState("");
@@ -105,6 +106,7 @@ const UpdateVendors = () => {
                         handleValueChange={handleValueChange}
                         notShowCopy={true}
                     />
+                    <SaveBottmComponent buttonText={"UPDATE VENDOR"}  cancelRoute={"vendors"}/>
                 </>
             ) : (
                 ""

@@ -337,11 +337,6 @@ const VendorForm = ({
                     </Row>
                 </Col>
             </Row>
-            <Row>
-                <Button type="primary" htmlType="submit" disabled={disabled}>
-                    SAVE
-                </Button>
-            </Row>
         </Form>
     );
 };

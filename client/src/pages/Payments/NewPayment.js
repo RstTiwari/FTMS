@@ -6,6 +6,7 @@ import PageLoader from "pages/PageLoader";
 import { useAuth } from "state/AuthProvider";
 import { useParams } from "react-router-dom";
 import PaymentHistoryList from "../Payments/PaymentHistory";
+import SaveBottmComponent from "components/SaveBottomComponent";
 
 const NewPayment = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -41,6 +42,7 @@ const NewPayment = () => {
                 data ? (
             <>
             <PaymentForm initialValue={data} />
+            <SaveBottmComponent buttonText={"UPDATE PAYMENT"} cancelRoute={"payments"} />
             </>
 
                 ):(

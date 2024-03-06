@@ -30,8 +30,9 @@ import {
     MenuItem,
     Avatar,
 } from "@mui/material";
-import { theme } from "@mui/material";
 import { useAuth } from "state/AuthProvider";
+import SettingSidebar from "pages/Setting/SettingSidebar";
+import SettingList from "../pages/Setting/SettingList";
 
 const NavBar = ({ user, isSidebarOpen, setIsSidebarOpen, isLaptop }) => {
     const navigate = useNavigate();
@@ -39,6 +40,7 @@ const NavBar = ({ user, isSidebarOpen, setIsSidebarOpen, isLaptop }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [isOpen, setIsopen] = useState(false);
     const { isLoggedIn, loginUser, logoutUser } = useAuth();
+    const [openSettingSideBar,setOpenSettingSidebar] = useState(false)
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -54,72 +56,33 @@ const NavBar = ({ user, isSidebarOpen, setIsSidebarOpen, isLaptop }) => {
         logoutUser();
     };
     return (
-        <AppBar
-            sx={{
-                position: "static",
-                background: "none",
-            }}
-        >
-            <Toolbar sx={{ justifyContent: "space-between " }}>
-                {/**Left Side Off Navbar */}
-                <FlexBetween>
-                    {!isLaptop ? (
-                        <IconButton
-                            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                    ) : (
-                        ""
-                    )}
-                </FlexBetween>
-                {isLaptop ? (
+        <>
+            <AppBar
+                sx={{
+                    position: "static",
+                    background: "none",
+                }}
+            >
+                <Toolbar sx={{ justifyContent: "space-between " }}>
+                    {/**Left Side Off Navbar */}
                     <FlexBetween>
-                        {user && user.companyLog ? (
-                            <Box
-                                component="img"
-                                alt="companyProfile"
-                                src={user.companyLogo || ""}
-                                height="20px"
-                                weidth="20px"
-                                borderRadius="25%"
-                                sx={{
-                                    objectFit: "cover",
-                                }}
-                            />
+                        {!isLaptop ? (
+                            <IconButton
+                                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                            >
+                                <MenuIcon />
+                            </IconButton>
                         ) : (
                             ""
                         )}
-                        <Typography>
-                            {user.companyName
-                                ? user.companyName.toUpperCase()
-                                : ""}
-                        </Typography>
                     </FlexBetween>
-                ) : (
-                    ""
-                )}
-
-                {/**Right Side of Navbar */}
-                <FlexBetween gap={"2rem"}>
-                    <IconButton>
-                        <SettingsOutlined sx={{ fontSize: "25px" }} />
-                    </IconButton>
-                    <FlexBetween>
-                        <Button
-                            onClick={handleClick}
-                            sx={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                                textTransform: "none",
-                            }}
-                        >
-                            {user && user.photo ? (
+                    {isLaptop ? (
+                        <FlexBetween>
+                            {user && user.companyLog ? (
                                 <Box
                                     component="img"
-                                    alt="profile"
-                                    src={user.photo}
+                                    alt="companyProfile"
+                                    src={user.companyLogo || ""}
                                     height="20px"
                                     weidth="20px"
                                     borderRadius="25%"
@@ -130,54 +93,111 @@ const NavBar = ({ user, isSidebarOpen, setIsSidebarOpen, isLaptop }) => {
                             ) : (
                                 ""
                             )}
+                            <Typography>
+                                {user.companyName
+                                    ? user.companyName.toUpperCase()
+                                    : ""}
+                            </Typography>
+                        </FlexBetween>
+                    ) : (
+                        ""
+                    )}
 
-                            <Box sx={{ textAlign: "left" }}>
-                                <Typography
-                                    fontWeight={"bold"}
-                                    fontSize={"0.9rem"}
-                                    sx={{ color: theme.palette.secondary[100] }}
-                                >
-                                    {user.name ? user.name.toUpperCase() : ""}
-                                </Typography>
-                                <Typography
-                                    fontSize={"0.75rem"}
-                                    sx={{ color: theme.palette.secondary[200] }}
-                                >
-                                    {user.occupation}
-                                </Typography>
-                            </Box>
-                            <ArrowDropDownOutlined
-                                sx={{ color: theme.palette.secondary[300] }}
+                    {/**Right Side of Navbar */}
+                    <FlexBetween gap={"2rem"}>
+                        <IconButton>
+                            <SettingsOutlined
+                                sx={{ fontSize: "25px" }}
+                                onClick={() =>
+                                    setOpenSettingSidebar(!openSettingSideBar)
+                                }
                             />
-                            <Menu
-                                anchorEl={anchorEl}
-                                open={isOpen}
-                                onClose={handleClose}
-                                anchorOrigin={{
-                                    vertical: "bottom",
-                                    horizontal: "center",
+                        </IconButton>
+                        <FlexBetween>
+                            <Button
+                                onClick={handleClick}
+                                sx={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
+                                    textTransform: "none",
                                 }}
                             >
-                                <MenuItem
-                                    onClick={() => handleLogOutClick()}
-                                    sx={{
-                                        width: "200px",
-                                        paddingRight: "20px",
+                                {user && user.photo ? (
+                                    <Box
+                                        component="img"
+                                        alt="profile"
+                                        src={user.photo}
+                                        height="20px"
+                                        weidth="20px"
+                                        borderRadius="25%"
+                                        sx={{
+                                            objectFit: "cover",
+                                        }}
+                                    />
+                                ) : (
+                                    ""
+                                )}
+
+                                <Box sx={{ textAlign: "left" }}>
+                                    <Typography
+                                        fontWeight={"bold"}
+                                        fontSize={"0.9rem"}
+                                        sx={{
+                                            color: theme.palette.secondary[100],
+                                        }}
+                                    >
+                                        {user.name
+                                            ? user.name.toUpperCase()
+                                            : ""}
+                                    </Typography>
+                                    <Typography
+                                        fontSize={"0.75rem"}
+                                        sx={{
+                                            color: theme.palette.secondary[200],
+                                        }}
+                                    >
+                                        {user.occupation}
+                                    </Typography>
+                                </Box>
+                                <ArrowDropDownOutlined
+                                    sx={{ color: theme.palette.secondary[300] }}
+                                />
+                                <Menu
+                                    anchorEl={anchorEl}
+                                    open={isOpen}
+                                    onClose={handleClose}
+                                    anchorOrigin={{
+                                        vertical: "bottom",
+                                        horizontal: "center",
                                     }}
                                 >
-                                    <FlexBetween>
-                                        <IconButton>
-                                            <LoginOutlined />
-                                        </IconButton>
-                                        <Typography>LogOut</Typography>
-                                    </FlexBetween>
-                                </MenuItem>
-                            </Menu>
-                        </Button>
+                                    <MenuItem
+                                        onClick={() => handleLogOutClick()}
+                                        sx={{
+                                            width: "200px",
+                                            paddingRight: "20px",
+                                        }}
+                                    >
+                                        <FlexBetween>
+                                            <IconButton>
+                                                <LoginOutlined />
+                                            </IconButton>
+                                            <Typography>LogOut</Typography>
+                                        </FlexBetween>
+                                    </MenuItem>
+                                </Menu>
+                            </Button>
+                        </FlexBetween>
                     </FlexBetween>
-                </FlexBetween>
-            </Toolbar>
-        </AppBar>
+                </Toolbar>
+            </AppBar>
+            <SettingSidebar
+                open={openSettingSideBar}
+                setOpen={setOpenSettingSidebar}
+                childern={<SettingList/>}
+            />
+        </>
     );
 };
 

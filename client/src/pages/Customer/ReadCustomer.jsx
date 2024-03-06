@@ -35,9 +35,18 @@ const ReadCustomer = () => {
         billingAddress,
         shippingAddress,
     } = data;
-    const { addressB, cityB, stateB, pinCodeB } = billingAddress ? billingAddress :"";
-    const { addressS, cityS, stateS, pinCodeS } = shippingAddress ? shippingAddress :"";
-
+    const {
+        street: addressB,
+        city: cityB,
+        state: stateB,
+        pinCode: pinCodeB,
+    } = billingAddress ? billingAddress : "";
+    const {
+        street: addressS,
+        city: cityS,
+        state: stateS,
+        pinCode: pinCodeS,
+    } = shippingAddress ? shippingAddress : "";
     return (
         <Flex
             gap={"middle"}
