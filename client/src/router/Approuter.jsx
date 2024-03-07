@@ -87,7 +87,7 @@ const Approuter = () => {
 
                 {/*Mangaining Orgnization Profile */}
                 <Route
-                    path="/orgnizationprofile/:tenanId"
+                    path="/:entity/:id"
                     element={<Orgnization />}
                 />
 

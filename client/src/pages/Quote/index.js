@@ -36,7 +36,8 @@ const Index = () => {
                 columns={quotationColumn}
                 dataSource={data}
                 loading={isloading}
-                scroll={{ x: true, y: 400 }}
+                scroll={{ x: true, y: 600 }}
+                showSorterTooltip={true}
             />
         </Flex>
     );

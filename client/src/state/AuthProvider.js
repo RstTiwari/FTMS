@@ -27,6 +27,10 @@ export const AuthProvider = ({ children }) => {
         removeLocalData("challan");
         removeLocalData("lead");
         removeLocalData("expenses");
+        removeLocalData("vendors");
+        removeLocalData("deliverychallan");
+        removeLocalData("purchaseorder");
+        removeLocalData("vendors");
     };
 
     const authApiCall = async (path, data) => {
@@ -46,6 +50,38 @@ export const AuthProvider = ({ children }) => {
             return response.data;
         } catch (error) {
             console.log(error.response, "--");
+            let response = {
+                success: 0,
+                result: null,
+                message: error.response
+                    ? error.response.data.message
+                    : "NetWork Error",
+                error: error.message,
+            };
+            return response;
+        }
+    };
+    const adminApiCall = async (method, path, data, params) => {
+        const token = cookies["token"];
+        let axiosConfig = {
+            url: myfac8ryBaseUrl + `admin/${path}`,
+            method: method,
+            headers: {
+                "Content-Type": "application/json",
+                token: token ? token : null,
+            },
+            data: data ? data :"",
+            params : params ? params :""
+        };
+        try {
+            let response = await axios(axiosConfig);
+            const data = response.data;
+            return {
+                success: data ? data.success : 0,
+                result: data ? data.result : null,
+                message: data ? data.message : "NewWork Error",
+            };
+        } catch (error) {
             let response = {
                 success: 0,
                 result: null,
@@ -127,7 +163,7 @@ export const AuthProvider = ({ children }) => {
         }
     };
     const patchData = async (payload) => {
-        let data = await appApiCall("patch", "patch", payload,{});
+        let data = await appApiCall("patch", "patch", payload, {});
         if (data.success === 0) {
             return { success: 0, result: null, message: data.message };
         } else {
@@ -212,13 +248,14 @@ export const AuthProvider = ({ children }) => {
                 logoutUser,
                 authApiCall,
                 appApiCall,
+                adminApiCall,
                 getDropDownData,
                 getTableData,
                 createData,
                 readData,
                 updateData,
                 pdfGenrate,
-                patchData
+                patchData,
             }}
         >
             {children}

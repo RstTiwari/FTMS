@@ -8,7 +8,7 @@ import { useCookies } from "react-cookie";
 
 const { Text, Title } = Typography;
 
-const SettingList = () => {
+const SettingList = ({closeSideBar,setCloseSideBar}) => {
     const navigate = useNavigate();
     function getItem(label, key, icon, children, type) {
         return {
@@ -24,6 +24,7 @@ const SettingList = () => {
 
     const handleClick = (e) => {
         navigate(`/${e.key}`);
+        setCloseSideBar(!closeSideBar)
     };
     const items = [
         getItem(

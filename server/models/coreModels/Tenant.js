@@ -20,6 +20,14 @@ const tenantSchema = new mongoose.Schema({
     logo: {
         type: String,
     },
+    panNo:{
+        type:String,
+        unique:true
+    },
+    gstNo:{
+        type:String,
+        unique:true
+    },
     industry: {
         type: String,
     },
@@ -39,9 +47,11 @@ const tenantSchema = new mongoose.Schema({
     },
     email: {
         type: String,
+        unique:true
     },
     phone: {
         type: Number,
+        unique:true
     },
 });
 

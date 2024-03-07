@@ -18,6 +18,7 @@ import auth from "./routes/auth.js";
 import appRoutes from "./routes/appRoutes.js";
 
 import cron from "./controller/CronController/Cron.js";
+import adminRoutes from "./routes/adminRoutes.js";
 
 /**
  * Configuration
@@ -40,6 +41,7 @@ app.use(cookieParser());
 
 app.use("/auth", auth);
 app.use("/app", appRoutes);
+app.use("/admin",adminRoutes)
 app.use("/client", clientRoutes);
 app.use("/sales", salesRoutes);
 app.use("/mangament", managmentRoutes);

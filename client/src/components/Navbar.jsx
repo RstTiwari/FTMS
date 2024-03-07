@@ -33,14 +33,16 @@ import {
 import { useAuth } from "state/AuthProvider";
 import SettingSidebar from "pages/Setting/SettingSidebar";
 import SettingList from "../pages/Setting/SettingList";
+import PageLoader from "pages/PageLoader";
 
 const NavBar = ({ user, isSidebarOpen, setIsSidebarOpen, isLaptop }) => {
     const navigate = useNavigate();
     const theme = useTheme();
     const [anchorEl, setAnchorEl] = useState(null);
     const [isOpen, setIsopen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const { isLoggedIn, loginUser, logoutUser } = useAuth();
-    const [openSettingSideBar,setOpenSettingSidebar] = useState(false)
+    const [openSettingSideBar, setOpenSettingSidebar] = useState(false);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -52,7 +54,6 @@ const NavBar = ({ user, isSidebarOpen, setIsSidebarOpen, isLaptop }) => {
     };
 
     const handleLogOutClick = () => {
-        navigate("/login");
         logoutUser();
     };
     return (
@@ -195,7 +196,16 @@ const NavBar = ({ user, isSidebarOpen, setIsSidebarOpen, isLaptop }) => {
             <SettingSidebar
                 open={openSettingSideBar}
                 setOpen={setOpenSettingSidebar}
-                childern={<SettingList/>}
+                childern={
+                    <SettingList
+                        closeSideBar={openSettingSideBar}
+                        setCloseSideBar={setOpenSettingSidebar}
+                    />
+                }
+            />
+            <PageLoader
+                isLoading={isLoading}
+                text={"PLEASE WAIT LOGGIN YOU OUT FORM SYSTEM"}
             />
         </>
     );

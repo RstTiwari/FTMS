@@ -28,3 +28,19 @@ export const stateData = [
     { label: "UTTARAKHAND", value: "UTTARAKHAND" },
     { label: "WEST BENGAL", value: "WEST_BENGAL" },
 ];
+export const industryType = [
+    { label: "Automotive", value: "AUTOMOTIVE" },
+    { label: "Aerospace", value: "AEROSPACE" },
+    { label: "Electronics", value: "ELECTRONICS" },
+    { label: "Pharmaceuticals", value: "PHARMACEUTICALS" },
+    { label: "Machinery", value: "MACHINERY" },
+    { label: "Food Processing", value: "FOOD_PROCESSING" },
+    { label: "Textiles", value: "TEXTILES" },
+    { label: "Chemicals", value: "CHEMICALS" },
+    { label: "Plastics", value: "PLASTICS" },
+    { label: "Metal Fabrication", value: "METAL_FABRICATION" },
+    { label: "Sheet Metal", value: "SHEET_METAL" },
+    { label: "Laser", value: "LASER" },
+    { label: "Molding", value: "MOLDING" },
+    { label: "Fabrication", value: "FABRICATION" },
+];

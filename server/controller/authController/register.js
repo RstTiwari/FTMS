@@ -44,7 +44,7 @@ const register = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
      *Creating a new Tenant
      */
     const tenantId = uniqueId();
-    const tenantData = await tenantDb.create({ tenantId, companyName ,panNo:"",gstNo:""});
+    const tenantData = await tenantDb.create({ tenantId, companyName ,email });
     if (!tenantData) {
         return res.status(403).json({
             success: 0,

@@ -1,28 +1,54 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Flex } from "antd";
 import OrganizationForm from "Forms/OrgnizationForm";
 import { useAuth } from "state/AuthProvider";
-import {useParams} from "react-router-dom"
+import { useParams } from "react-router-dom";
+import Header from "components/Header";
+import SaveBottmComponent from "components/SaveBottomComponent";
+import NotificationHandler from "EventHandler/NotificationHandler";
+import PageLoader from "pages/PageLoader";
+import { useNavigate } from "react-router-dom";
 
 const Orgnization = () => {
     const [isLoading, setIsLoading] = useState(true);
-    const [data, setData] = useState("");
-    const { readData } = useAuth();
+    const [data, setData] = useState({});
+    const { adminApiCall } = useAuth();
     const { entity, id } = useParams();
+    const navigate = useNavigate()
 
     let fetchData = async () => {
-        const { success, result, message } = await readData({
-            entity: entity,
-            id: id,
-        });
-        if (success === 1) {
+        const payload = {};
+        const params = { entity: entity };
+        const {success,result,message} = await adminApiCall(
+            "get",
+            "read",
+            payload,
+            params
+        );
+        if (!success) {
+            return NotificationHandler.error(message);
+        } else {
             setData(result);
             setIsLoading(false);
         }
     };
+
     useEffect(() => {
         fetchData();
-    }, [fetchData]);
+    }, []);
+
+    const onFormSubmit = async (value) => {
+        setIsLoading(true)
+        const payload = {entity:entity,value}
+        const {success,result, message} = await adminApiCall("post","update",payload)
+        if (!success) {
+            setIsLoading(false);
+            NotificationHandler.error(message);
+        } else {
+            navigate("/dashboard");
+            return NotificationHandler.success(message);
+        }
+    };
 
     return (
         <Flex
@@ -32,8 +58,25 @@ const Orgnization = () => {
                 padding: "2rem",
                 backgroundColor: "#f1f1f1",
                 borderRadius: "1rem",
+                marginBottom: "2rem",
             }}
-        ></Flex>
+        >
+            <Header
+                title={"SETUP ORGNIZATION DETAILS"}
+                cancelRoute={"dashboard"}
+            />
+            <PageLoader
+                isLoading={isLoading}
+                text={" PLEASE WAIT"}
+            />
+            {!isLoading && data ? (
+                <>
+                    <OrganizationForm  value ={data} handleFormSubmit = {onFormSubmit} />
+                </>
+            ) : (
+                ""
+            )}
+        </Flex>
     );
 };
 
