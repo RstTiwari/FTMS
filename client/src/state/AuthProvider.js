@@ -107,6 +107,12 @@ export const AuthProvider = ({ children }) => {
             data: payload ? payload : null,
             params: params ? params : null,
         };
+
+        if (payload instanceof FormData) {
+            axiosConfig.headers["Content-Type"] = "multipart/form-data";
+            axiosConfig.data = payload;
+        }
+
         try {
             let response = await axios(axiosConfig);
             return response.data;
@@ -156,6 +162,14 @@ export const AuthProvider = ({ children }) => {
 
     const updateData = async (payload) => {
         let data = await appApiCall("post", "update", payload, {});
+        if (data.success === 0) {
+            return { success: 0, result: null, message: data.message };
+        } else {
+            return { success: 1, result: data.result, message: data.message };
+        }
+    };
+    const uploadFile = async (payload) => {
+        let data = await appApiCall("post", "upload", payload, {});
         if (data.success === 0) {
             return { success: 0, result: null, message: data.message };
         } else {
@@ -256,6 +270,7 @@ export const AuthProvider = ({ children }) => {
                 updateData,
                 pdfGenrate,
                 patchData,
+                uploadFile
             }}
         >
             {children}

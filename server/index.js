@@ -9,6 +9,7 @@ import cookieParser from "cookie-parser";
 import https from "https";
 import http from "http"
 import fs from "fs";
+import {v2 as cloudinary} from "cloudinary"
 
 import clientRoutes from "./routes/client.js";
 import salesRoutes from "./routes/sales.js";
@@ -23,6 +24,8 @@ import adminRoutes from "./routes/adminRoutes.js";
 /**
  * Configuration
  */
+
+
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -48,6 +51,15 @@ app.use("/mangament", managmentRoutes);
 app.use("/general", generalRoutes);
 
 const Port = process.env.PORT || 5001;
+
+/**
+ * Lets Conncet to Cloudinary with this Datas 
+ */
+cloudinary.config({
+    cloud_name: process.env.cloudinaryName,
+    api_key: process.env.apiKey,
+    api_secret: process.env.apiSecret,
+});
 
 mongoose
   .connect(process.env.MDURL, {

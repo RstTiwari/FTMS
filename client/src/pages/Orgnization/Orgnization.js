@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 const Orgnization = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState({});
+    const [formUpdated,setFormUpdate] = useState(false)
     const { adminApiCall } = useAuth();
     const { entity, id } = useParams();
     const navigate = useNavigate()
@@ -49,6 +50,9 @@ const Orgnization = () => {
             return NotificationHandler.success(message);
         }
     };
+    const handleValueChange =()=>{
+        setFormUpdate(true)
+    }
 
     return (
         <Flex
@@ -71,7 +75,7 @@ const Orgnization = () => {
             />
             {!isLoading && data ? (
                 <>
-                    <OrganizationForm  value ={data} handleFormSubmit = {onFormSubmit} />
+                    <OrganizationForm  value ={data} handleFormSubmit = {onFormSubmit} handleValueChange={handleValueChange} />
                 </>
             ) : (
                 ""

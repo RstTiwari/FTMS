@@ -1,37 +1,60 @@
 import PDFDocument from "pdfkit";
 import { quote } from "../../data/quote.js";
 import { epochInDDMMYY } from "../../Helper/timehelper.js";
-import { oragnization } from "../../data/orgnization.js";
+import {
+    calcultTitlePostion,
+    calculateStreetPostion,
+} from "../../Helper/pdfHelper.js";
 
-const quotationPdf = (req, res, next, quoteData) => {
+const quotationPdf = async (req, res, next, quoteData) => {
     try {
-        let { company } = quote;
-        const { customer, items } = quoteData;
+        const { orgnization, customer, items } = quoteData;
 
         const doc = new PDFDocument({ size: [595, 842] });
         doc.pipe(res);
+        const logoUrl = "https://res.cloudinary.com/dyw4lrlzh/image/upload/v1709882900/logoundefined.webp";
 
-        //setting the icon and title of the image
-        const { orgnizationHeaderText, orgnizationHeaderPostion } =
-            calcultTitlePostion(oragnization.name);
-        doc.fontSize(20)
-            .fillColor("#33D7FF")
+        // Fetch logo image as ArrayBuffer
+        const response = await fetch(logoUrl);
+        if (!response.ok) {
+            throw new Error(
+                `Failed to fetch logo: ${response.status} - ${response.statusText}`
+            );
+        }
+        const logoBuffer = await response.arrayBuffer();
+        const logoUint8Array = new Uint8Array(logoBuffer);
+        const logoImage = doc.openImage(logoUint8Array);
+
+        // Adjust logo size and position
+        const logoWidth = 100; // Adjust the width of the logo as needed
+        const logoHeight = (logoWidth / logoImage.width) * logoImage.height;
+        const logoPositionX = 20; // Adjust the X position of the logo as needed
+        const logoPositionY = 50; // Adjust the Y position of the logo as needed
+        doc.image(logoImage, logoPositionX, logoPositionY, {
+            width: logoWidth,
+            height: logoHeight,
+        });
+
+        const { orgnizationHeaderText, orgnizationHeaderPostion, fontSize } =
+            calcultTitlePostion(orgnization.companyName);
+        doc.fontSize(fontSize)
+            .fillColor("#0047AB")
             .text(orgnizationHeaderText, orgnizationHeaderPostion, 20);
         //compnay Address
         const { orgnizationStreet, orgnizationStreetPostion } =
-            calculateStreetPostion(oragnization.address.street);
+            calculateStreetPostion(orgnization.address.street);
         doc.fontSize(12)
             .fillColor("#4B4E4F")
             .text(orgnizationStreet, orgnizationStreetPostion, 50);
         doc.fontSize(12)
             .fillColor("#4B4E4F")
             .text(
-                `${oragnization.address.city} ,${oragnization.address.state}, ${oragnization.address.pinCode}`,
+                `${orgnization.address.city} ,${orgnization.address.state}, ${orgnization.address.pinCode}`,
                 225
             );
 
         //customer details Left side of page
-        doc.fontSize(14).fillColor("#33D7FF").text("QUOTATION TO :", 20, 120);
+        doc.fontSize(14).fillColor("#0047AB").text("QUOTATION TO :", 20, 120);
         doc.fontSize(13)
             .fillColor("#1E1F20")
             .font("Helvetica-Bold")
@@ -84,7 +107,7 @@ const quotationPdf = (req, res, next, quoteData) => {
         // Creating table for Items
         // Add table headers
         doc.rect(10, 230, 550, 30) // x, y, width, height
-            .fill("#33D7FF");
+            .fill("#0047AB");
         doc.font("Helvetica-Bold").fill("#fff").text("Description", 20, 240);
         doc.text("Unit Price", 230, 240);
         doc.text("Qty", 380, 240);
@@ -103,7 +126,7 @@ const quotationPdf = (req, res, next, quoteData) => {
             doc.text(Math.ceil(item.finalAmount), 490, y);
             y += 30;
         });
-        doc.rect(10, y + 5, 550, 5).fill("#33D7FF");
+        doc.rect(10, y + 5, 550, 5).fill("#0047AB");
         //table End here
 
         doc.fill("#000");
@@ -111,13 +134,15 @@ const quotationPdf = (req, res, next, quoteData) => {
         doc.text("Gross Total :", 390, y + 30);
         doc.text("Tax(%) :", 390, y + 60);
         doc.text("Transport :", 390, y + 90);
-        doc.rect(370, y + 110, 200, 30).fill("#33D7FF");
-        doc.fill("#000");
-        doc.text("Grand Total :", 390, y + 120).fillColor("#000");
+        doc.rect(370, y + 110, 200, 30).fill("#0047AB");
+        doc.fill("#fff");
+        doc.text("Grand Total :", 390, y + 120);
 
+        doc.fill("#000");
         doc.text(`${quoteData.grossTotal}`, 475, y + 30);
         doc.text(`${quoteData.taxPercent}`, 475, y + 60);
         doc.text(`${quoteData.transPortAmount}`, 475, y + 90);
+        doc.fill("#fff");
         doc.text(`${quoteData.grossTotal}`, 475, y + 120);
         y = y + 120; // current y value
 
@@ -126,7 +151,7 @@ const quotationPdf = (req, res, next, quoteData) => {
             doc.addPage();
         }
 
-        doc.fill("#33D7FF").text("TERMS AND CONDITIONS", 20, y + 50);
+        doc.fill("#0047AB").text("TERMS AND CONDITIONS", 20, y + 50);
         doc.fill("#000");
         doc.fontSize(12);
         doc.text(`1. ${quoteData.paymentsCondition}.`, 20, y + 80);
@@ -134,7 +159,7 @@ const quotationPdf = (req, res, next, quoteData) => {
         doc.text(`3. ${quoteData.cancellationCondition}.`, 20);
         doc.text(`4. ${quoteData.validityCondition}.`, 20);
 
-        doc.fill("#33D7FF").text("THANK YOU FOR BUISNESS", 225, doc.y + 50);
+        doc.fill("#0047AB").text("THANK YOU FOR BUISNESS", 225, doc.y + 50);
         doc.end();
 
         res.setHeader("Content-Type", "application/pdf");
@@ -149,30 +174,3 @@ const quotationPdf = (req, res, next, quoteData) => {
 };
 
 export default quotationPdf;
-
-const calcultTitlePostion = (companyName) => {
-    let orgnizationHeaderText = companyName.replace(/\s+/g, " ").toUpperCase();
-    let orgnizationHeaderPostion =
-        orgnizationHeaderText.length <= 15
-            ? 225
-            : orgnizationHeaderText.length <= 25
-            ? 200
-            : orgnizationHeaderText.length <= 35
-            ? 120
-            : 120;
-    return { orgnizationHeaderText, orgnizationHeaderPostion };
-};
-
-const calculateStreetPostion = (street) => {
-    let orgnizationStreet = street.replace(/\s+/g, " ");
-    let orgnizationStreetPostion =
-        orgnizationStreet.length <= 30
-            ? 225
-            : orgnizationStreet.length <= 45
-            ? 190
-            : orgnizationStreet.length <= 55
-            ? 175
-            : 150;
-
-    return { orgnizationStreet, orgnizationStreetPostion };
-};

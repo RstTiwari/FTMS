@@ -45,6 +45,20 @@ const tenantSchema = new mongoose.Schema({
             type: String,
         },
     },
+    bankDetails: {
+        bankName: {
+            type: String,
+        },
+        accountNo: {
+            type: String,
+        },
+        branch: {
+            type: String,
+        },
+        ifscCode: {
+            type: String,
+        },
+    },
     email: {
         type: String,
         unique:true

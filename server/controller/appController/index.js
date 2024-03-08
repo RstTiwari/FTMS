@@ -15,6 +15,7 @@ import read from "./read.js";
 import update from "./update.js";
 import patch from "./patch.js";
 import genratePdf from "./genratePdf.js";
+import upload from "./upload.js"
 
 const appRoutes = {
     create: async (req, res, next) => {
@@ -77,6 +78,16 @@ const appRoutes = {
                 message: "Something went Wrong",
             }); // manage Error here
         genratePdf(req, res, next, db);
+    },
+    upload: async (req, res, next) => {
+        let db = checkDbForEntity("orgnizationprofile");
+        if (!db)
+            return res.status(404).json({
+                success: 0,
+                data: null,
+                message: "Something went Wrong",
+            }); // manage Error here
+        upload(req, res, next, db);
     },
 };
 
