@@ -1,40 +1,26 @@
 import PDFDocument from "pdfkit";
 import { quote } from "../../data/quote.js";
+import axios from "axios"
 import { epochInDDMMYY } from "../../Helper/timehelper.js";
 import {
     calcultTitlePostion,
     calculateStreetPostion,
+    downloadAndSaveImage
 } from "../../Helper/pdfHelper.js";
 
 const quotationPdf = async (req, res, next, quoteData) => {
     try {
         const { orgnization, customer, items } = quoteData;
+        console.log(orgnization.tenantId,"--");
+         const imagePath =   await downloadAndSaveImage(orgnization.logo , orgnization.tenantId)
+        console.log(imagePath,"--");
+
 
         const doc = new PDFDocument({ size: [595, 842] });
         doc.pipe(res);
-        const logoUrl = "https://res.cloudinary.com/dyw4lrlzh/image/upload/v1709882900/logoundefined.webp";
 
-        // Fetch logo image as ArrayBuffer
-        const response = await fetch(logoUrl);
-        if (!response.ok) {
-            throw new Error(
-                `Failed to fetch logo: ${response.status} - ${response.statusText}`
-            );
-        }
-        const logoBuffer = await response.arrayBuffer();
-        const logoUint8Array = new Uint8Array(logoBuffer);
-        const logoImage = doc.openImage(logoUint8Array);
-
-        // Adjust logo size and position
-        const logoWidth = 100; // Adjust the width of the logo as needed
-        const logoHeight = (logoWidth / logoImage.width) * logoImage.height;
-        const logoPositionX = 20; // Adjust the X position of the logo as needed
-        const logoPositionY = 50; // Adjust the Y position of the logo as needed
-        doc.image(logoImage, logoPositionX, logoPositionY, {
-            width: logoWidth,
-            height: logoHeight,
-        });
-
+        
+        doc.image(`${orgnization.tenantId}.png`,50,50 )
         const { orgnizationHeaderText, orgnizationHeaderPostion, fontSize } =
             calcultTitlePostion(orgnization.companyName);
         doc.fontSize(fontSize)
@@ -172,5 +158,8 @@ const quotationPdf = async (req, res, next, quoteData) => {
         return error.message;
     }
 };
+
+
+
 
 export default quotationPdf;

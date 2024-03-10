@@ -1,3 +1,7 @@
+import axios from 'axios'
+import fs from "fs"
+
+
 export const calcultTitlePostion = (companyName) => {
     const pageWidth = 595; // Assuming A4 paper width
     const maxWidth = pageWidth * 0.8;
@@ -44,3 +48,19 @@ export const calculateStreetPostion = (street) => {
 
     return { orgnizationStreet, orgnizationStreetPostion };
 };
+
+
+export const  downloadAndSaveImage = async(url, fileName) => {
+  try {
+
+    const response = await axios.get(url, { responseType: 'arraybuffer' });
+    const imageName = `${fileName}.png`;
+    fs.writeFileSync(imageName, response.data);
+    console.log(`Image downloaded and saved as ${imageName}`);
+    return imageName
+  } catch (error) {
+    console.error('Error downloading or saving the image:', error);
+    return null
+
+  }
+}

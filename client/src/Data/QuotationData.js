@@ -30,6 +30,7 @@ export const quotationColumn = [
         dataIndex: "quoteRecivedDate",
         key: "company",
         responsive: ["lg"],
+        width:200,
         render:(_,record)=>(
             <>
             {convertUnixTimestampToDate(record.quoteDate)}
@@ -42,6 +43,7 @@ export const quotationColumn = [
         dataIndex: "quoteExpiredDate",
         key: "quoteExpiredDate",
         responsive: ["lg"],
+        width:200,
         render:(_,record)=>(
             <>
             {convertUnixTimestampToDate(record.quoteExpiryDate)}
