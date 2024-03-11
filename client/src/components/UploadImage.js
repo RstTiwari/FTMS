@@ -3,6 +3,7 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { message, Upload, Image, Row, Button, Col } from "antd";
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
+import PageLoader from "pages/PageLoader";
 const { Dragger } = Upload;
 
 const UploadImage = ({
@@ -26,6 +27,7 @@ const UploadImage = ({
       if(!file){
        return NotificationHandler.error("Please Select an Image to Upload")
       }
+      setLoading(true)
         try {
             const formData = new FormData();
             formData.append("file", file);
@@ -35,6 +37,7 @@ const UploadImage = ({
             } else {
                 setImageUrl(result);
                 onUploadSuccess(result);
+                setLoading(false)
             }
         } catch (error) {
             console.error(error);
@@ -88,6 +91,7 @@ const UploadImage = ({
                         </p>
                         <p className="ant-upload-hint">{aboutImage}</p>
                     </Dragger>
+                    <PageLoader  isLoading={loading}/>
                     <Row justify={"center"}>
                         <Button type="primary" onClick={()=>uploadImage()}>UPLOAD</Button>
                     </Row>

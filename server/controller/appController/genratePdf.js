@@ -1,5 +1,7 @@
 import invoicePdf from "../../template/pdfTemplate/invoice.js";
 import quotationPdf from "../../template/pdfTemplate/quotation.js";
+import challanPdf from "../../template/pdfTemplate/Challan.js";
+
 import tenanDb from "../../models/coreModels/Tenant.js"
 const generatePdf = async (req, res, next,dataBase) => {
     try {
@@ -13,6 +15,8 @@ const generatePdf = async (req, res, next,dataBase) => {
             return quotationPdf(req,res,next,data)
         }else if(entity ==="invoice"){
             return invoicePdf(req,res,next,data)
+        }else if(entity ==="deliverychallan"){
+            return challanPdf(req,res,next,data)
         }
 
 

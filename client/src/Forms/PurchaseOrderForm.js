@@ -16,11 +16,12 @@ import {
 
 import { PlusOutlined, CloseOutlined, DeleteOutlined } from "@ant-design/icons";
 import VendorModal from "components/VendorModal";
+import SaveBottmComponent from "components/SaveBottomComponent";
 import { epochInDDMMYY ,convertUnixTimestampToDate} from "Helper/EpochConveter";
 import dayjs from 'dayjs';
 
 
-const PurchaseOrder = ({ handleFormFinish, value, disabled }) => {
+const PurchaseOrder = ({ handleFormFinish, value, disabled,submitText }) => {
     const [form] = Form.useForm();
 
     const handleVendorChange = (value, lable) => {
@@ -76,13 +77,20 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled }) => {
     };
     const {vendor,purchaseNo,purchaseDate,items} = value
     return (
-        <Form onFinish={handleFormFinish} form={form}
-         initialValues={{
-            vendor:vendor ? vendor:"",
-            purchaseNo:purchaseNo ? purchaseNo :"",
-            purchaseDate: purchaseDate ?epochInDDMMYY(value.purchaseDate):"",
-            items:items ? items:[{description:"",rate:0,qty:0,finalAmount:0}]
-         }}>
+        <Form
+            onFinish={handleFormFinish}
+            form={form}
+            initialValues={{
+                vendor: vendor ? vendor : "",
+                purchaseNo: purchaseNo ? purchaseNo : "",
+                purchaseDate: purchaseDate
+                    ? epochInDDMMYY(value.purchaseDate)
+                    : "",
+                items: items
+                    ? items
+                    : [{ description: "", rate: 0, qty: 0, finalAmount: 0 }],
+            }}
+        >
             <Form.Item
                 label={"Select Vendor"}
                 name={"vendor"}
@@ -97,9 +105,7 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled }) => {
             >
                 <VendorModal
                     vendorSelect={handleVendorChange}
-                    vendorId={
-                        vendor ? vendor.vendorName : ""
-                    }
+                    vendorId={vendor ? vendor.vendorName : ""}
                     disabled={disabled}
                 />
             </Form.Item>
@@ -375,6 +381,14 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled }) => {
                         />
                     </Form.Item>
                 </Col>
+            </Row>
+            <Row>
+                <Form.Item>
+                    <SaveBottmComponent
+                        buttonText={submitText}
+                        cancelRoute={"purchaseorder"}
+                    />
+                </Form.Item>
             </Row>
         </Form>
     );

@@ -14,9 +14,9 @@ const NewPurchaseOrder = ({afterAdd}) => {
     const navigate = useNavigate();
     const { createData } = useAuth();
 
-    const handCusotmerSubmit = async (value) => {
+    const handleFormFinish = async (value) => {
         value.purchaseDate = epochConveter(value.purchaseDate.$d)
-        console.log(value);
+        console.log(value,"---");
         const payload = { entity: entity, value };
         const { success, result, message } = await createData(payload);
         if (!success) {
@@ -47,11 +47,8 @@ const NewPurchaseOrder = ({afterAdd}) => {
                 cancelRoute={"purchaseorder"}
             />
 
-            <PurchaseOrder handleFormFinish={handCusotmerSubmit} value={{}} />
-            <SaveBottmComponent
-                buttonText={"SAVE AS DRAFT"}
-                cancelRoute={"purchaseorder"}
-            />
+            <PurchaseOrder handleFormFinish={handleFormFinish} value={{}} submitText ={"SAVE AS DRAFT"} />
+        
         </Flex>
     );
 };

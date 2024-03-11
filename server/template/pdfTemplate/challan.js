@@ -1,17 +1,17 @@
 import PDFDocument from "pdfkit";
 import { quote } from "../../data/quote.js";
-import axios from "axios"
-import fs from "fs"
+import axios from "axios";
+import fs from "fs";
 import { epochInDDMMYY } from "../../Helper/timehelper.js";
 import {
     calcultTitlePostion,
     calculateStreetPostion,
-    downloadAndSaveImage
+    downloadAndSaveImage,
 } from "../../Helper/pdfHelper.js";
 
-const quotationPdf = async (req, res, next, quoteData) => {
+const challanPdf = async (req, res, next, challanData) => {
     try {
-        const { orgnization, customer, items } = quoteData;
+        const { orgnization, customer, items } = challanData;
         const imagePath = await downloadAndSaveImage(
             orgnization.logo,
             orgnization.tenantId
@@ -43,10 +43,10 @@ const quotationPdf = async (req, res, next, quoteData) => {
         doc.fontSize(15)
             .fillColor("#1E1F20")
             .font("Helvetica-Bold")
-            .text("QUOTATION", 255, doc.y + 10);
+            .text("CHALLAN", 255, doc.y + 10);
 
         //customer details Left side of page
-        doc.fontSize(14).fillColor("#0047AB").text("QUOTATION TO :", 20, 120);
+        doc.fontSize(14).fillColor("#0047AB").text("CHALLAN TO :", 20, 120);
         doc.fontSize(13)
             .fillColor("#1E1F20")
             .font("Helvetica-Bold")
@@ -71,28 +71,24 @@ const quotationPdf = async (req, res, next, quoteData) => {
             .font("Helvetica-Bold")
             .fillColor("#1E1F20")
             .text(
-                `DATE VALID FROM : ${epochInDDMMYY(quoteData.quoteDate)}`,
+                `DATE VALID FROM : ${epochInDDMMYY(challanData.challanDate)}`,
                 350,
                 120,
                 {
                     width: 300,
                 }
             );
+
         doc.fontSize(13)
             .fillColor("#1E1F20")
             .font("Helvetica-Bold")
-            .text(
-                `DATE VALID TO : ${epochInDDMMYY(quoteData.quoteExpiryDate)}`,
-                370,
-                140,
-                {
-                    width: 300,
-                }
-            );
+            .text(`CHALLAN NO : #${challanData.challanNumber}`, 370, 140, {
+                width: 300,
+            });
         doc.fontSize(13)
             .fillColor("#1E1F20")
             .font("Helvetica-Bold")
-            .text(`QUOTATION NO : #${quoteData.quoteNo}`, 370, 160, {
+            .text(`VEHICLE NO : `, 370, 160, {
                 width: 300,
             });
 
@@ -101,9 +97,9 @@ const quotationPdf = async (req, res, next, quoteData) => {
         doc.rect(10, 230, 550, 30) // x, y, width, height
             .fill("#0047AB");
         doc.font("Helvetica-Bold").fill("#fff").text("Description", 20, 240);
-        doc.text("Unit Price", 230, 240);
+        doc.text("HSN CODE", 230, 240);
         doc.text("Qty", 380, 240);
-        doc.text("Total", 480, 240);
+        doc.text("UNIT", 480, 240);
 
         let y = 270;
         doc.fill("#000");
@@ -113,9 +109,9 @@ const quotationPdf = async (req, res, next, quoteData) => {
                 item.description = subString;
             }
             doc.font("Helvetica").text(item.description, 20, y);
-            doc.text(Math.ceil(item.rate), 240, y);
+            doc.text(Math.ceil(item.hsnCode), 240, y);
             doc.text(item.qty, 390, y);
-            doc.text(Math.ceil(item.finalAmount), 490, y);
+            doc.text(item.unit, 490, y);
             y += 30;
         });
         doc.rect(10, y + 5, 550, 5).fill("#0047AB");
@@ -123,35 +119,25 @@ const quotationPdf = async (req, res, next, quoteData) => {
 
         doc.fill("#000");
         doc.font("Helvetica-Bold");
-        doc.text("Gross Total :", 390, y + 30);
-        doc.text("Tax(%) :", 390, y + 60);
-        doc.text("Transport :", 390, y + 90);
-        doc.rect(370, y + 110, 200, 30).fill("#0047AB");
-        doc.fill("#fff");
-        doc.text("Grand Total :", 390, y + 120);
-
         doc.fill("#000");
-        doc.text(`${quoteData.grossTotal}`, 475, y + 30);
-        doc.text(`${quoteData.taxPercent}`, 475, y + 60);
-        doc.text(`${quoteData.transPortAmount}`, 475, y + 90);
-        doc.fill("#fff");
-        doc.text(`${quoteData.grossTotal}`, 475, y + 120);
-        y = y + 120; // current y value
+        doc.text(`TOTAL QUANTITY : ${challanData.totalQuantity}`, 350, y +50);
+
 
         // Check if adding "THANK YOU FOR BUSINESS" exceeds the page height
         if (doc.y + 250 > doc.page.height) {
             doc.addPage();
         }
 
-        doc.fill("#0047AB").text("TERMS AND CONDITIONS", 20, y + 50);
-        doc.fill("#000");
-        doc.fontSize(12);
-        doc.text(`1. ${quoteData.paymentsCondition}.`, 20, y + 80);
-        doc.text(`2. ${quoteData.deliveryCondition}.`, 20);
-        doc.text(`3. ${quoteData.cancellationCondition}.`, 20);
-        doc.text(`4. ${quoteData.validityCondition}.`, 20);
+         console.log(y,doc.y,doc.page.height);
+        doc.fontSize(10)
+        doc.fill("#000").text("RECIVED BY:", 20 ,y +65);
+        doc.fill("#000").text("DATE:", 20);
+        doc.fill("#000").text("SIGNATRE:", 20);
 
-        doc.fill("#0047AB").text("THANK YOU FOR BUISNESS", 225, doc.y + 50);
+        doc.fill("#000").text("DEILVERD BY:", 20,);
+        doc.fill("#000").text("DATE:", 20);
+        doc.fill("#000").text("SIGNATRE:", 20);
+
         doc.end();
 
         res.setHeader("Content-Type", "application/pdf");
@@ -166,7 +152,4 @@ const quotationPdf = async (req, res, next, quoteData) => {
     }
 };
 
-
-
-
-export default quotationPdf;
+export default challanPdf;

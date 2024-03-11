@@ -36,11 +36,15 @@ export const challanColumns = [
         key: "status",
     },
 
-
     {
         fixed: "right",
         render: (_, record) => (
-            <TableAction params={record._id} page={"deliverychallan"} />
+            <TableAction
+                params={record._id}
+                page={"deliverychallan"}
+                download={true}
+                entityNo={record.challanNumber}
+            />
         ),
     },
 ];

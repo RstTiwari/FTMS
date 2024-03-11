@@ -39,8 +39,7 @@ const NewChallan = () => {
             title={"NEW DELIVERY CHALLAN"}
             cancelRoute={"deliverychallan"}
             />
-            <DeliveryChallanForm onFinish={onFinish} value={false} />
-            <SaveBottmComponent  buttonText={"SAVE AS DRAFT"} cancelRoute={"deliverychallan"}/>
+            <DeliveryChallanForm onFinish={onFinish} value={false}  submitText={"SAVE AS DRAFT"}/>
         </Flex>
     );
 };

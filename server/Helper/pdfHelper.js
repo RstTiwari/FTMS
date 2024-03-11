@@ -1,5 +1,8 @@
 import axios from 'axios'
 import fs from "fs"
+import path from 'path';
+
+const folder = "/upload"
 
 
 export const calcultTitlePostion = (companyName) => {
@@ -19,7 +22,6 @@ export const calcultTitlePostion = (companyName) => {
 };
 
 const calculateFontSize = (companyName, maxWidth, estimatedCharacterWidth) => {
-    console.log(companyName, maxWidth, estimatedCharacterWidth<"companyName, maxWidth, estimatedCharacterWidth");
     let nameWithoutWhitespace = companyName.replace(/\s+/g, ''); // Remove white space
     let nameWidth = nameWithoutWhitespace.length * estimatedCharacterWidth;
     
@@ -36,31 +38,59 @@ const calculateFontSize = (companyName, maxWidth, estimatedCharacterWidth) => {
 
 
 export const calculateStreetPostion = (street) => {
-    let orgnizationStreet = street.replace(/\s+/g, " ");
-    let orgnizationStreetPostion =
-        orgnizationStreet.length <= 30
-            ? 225
-            : orgnizationStreet.length <= 45
-            ? 190
-            : orgnizationStreet.length <= 55
-            ? 175
-            : 150;
-
-    return { orgnizationStreet, orgnizationStreetPostion };
+    const startPostion = 267.5; // Assuming A4 paper width
+    console.log(street.length,);
+    let orgnizationStreet = street.replace(/\s+/g, " ").toUpperCase();
+    const streetPostion =  startPostion - 2*street.length;
+    console.log(streetPostion,orgnizationStreet);
+    return {streetPostion,orgnizationStreet};
 };
 
 
 export const  downloadAndSaveImage = async(url, fileName) => {
   try {
-
+    const folder = "upload"
     const response = await axios.get(url, { responseType: 'arraybuffer' });
-    const imageName = `${fileName}.png`;
-    fs.writeFileSync(imageName, response.data);
+    const imageName = `${fileName}`;
+    const imagePath =path.join(folder ,imageName)
+    fs.writeFileSync(imagePath, response.data);
     console.log(`Image downloaded and saved as ${imageName}`);
-    return imageName
+    return imagePath
   } catch (error) {
     console.error('Error downloading or saving the image:', error);
     return null
 
   }
+}
+
+export const addBankDetails = (doc,orgnization)=>{
+    
+         //here bank Details Can be Come
+         doc.font("Helvetica-Bold")
+         .fontSize(12)
+         .fill("#000")
+         .text("COMPANY AND BANK DETAILS", 20, doc.y + 50);
+     doc.fontSize(10);
+     doc.text(
+         `BANK NAME: ${orgnization.bankDetails.bankName}`,
+         20,
+         doc.y + 10
+     );
+     doc.text(
+         `BANK BRANCH: ${orgnization.bankDetails.branch}`,
+         20,
+         doc.y + 10
+     );
+     doc.text(
+         `ACCOUNT NO: ${orgnization.bankDetails.accountNo}`,
+         20,
+         doc.y + 10
+     );
+     doc.text(
+         `IFSC CODE: ${orgnization.bankDetails.ifscCode}`,
+         20,
+         doc.y + 10
+     );
+     doc.text(`PAN NO: ${orgnization.panNo}`, 20, doc.y + 10);
+     doc.text(`GST NO: ${orgnization.gstNo}`, 20, doc.y + 10);
 }

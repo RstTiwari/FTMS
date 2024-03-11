@@ -59,8 +59,7 @@ const UpdateChallan = () => {
             {
               data.items ? (
                 <>
-                <DeliveryChallanForm onFinish={updateChallan} value={data}  />
-                <SaveBottmComponent buttonText={"UPDATE CHALLAN"} cancelRoute={"deliverychallan"} />
+                <DeliveryChallanForm onFinish={updateChallan} value={data} submitText={"UPDATE"}  />
                 </>
               ):
               ("")

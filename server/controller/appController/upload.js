@@ -1,5 +1,4 @@
 import { v2 as Cloudinary } from "cloudinary";
-import { error, log } from "console";
 import fs from "fs";
 
 const upload = async (req, res, next, database) => {
@@ -16,8 +15,7 @@ const upload = async (req, res, next, database) => {
     try {
         const { entity } = req.body;
         const tenantId = req.tenantId;
-        console.log(file, "file");
-        const cloudName = `logo${tenantId}`;
+        const cloudName = `${tenantId}`;
         const uploadImage = await Cloudinary.uploader.upload(file, {
             public_id: cloudName,
         });

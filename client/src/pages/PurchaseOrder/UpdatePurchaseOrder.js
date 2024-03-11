@@ -58,7 +58,7 @@ const UpdatePurchaseOrder = () => {
             <PageLoader isLoading={isLoading}  text={"Pleas Wait Fecthing PO"}/>
             {
               data.items ? (
-                <PurchaseOrder handleFormFinish={updateChallan} value={data}  />
+                <PurchaseOrder handleFormFinish={updateChallan} value={data}   submitText={"UPDATE"}/>
               ):
               ("")
 

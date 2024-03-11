@@ -15,8 +15,9 @@ import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import ProductModal from "components/ProductModal";
 import { unitOptions } from "Data/Challan";
 import { epochInDDMMYY } from "Helper/EpochConveter";
+import SaveBottmComponent from "components/SaveBottomComponent";
 
-const DeliveryChallanForm = ({ onFinish, value, disabled }) => {
+const DeliveryChallanForm = ({ onFinish, value, disabled ,submitText }) => {
     const [form] = Form.useForm();
 
     const handleFinish = (values) => {
@@ -286,6 +287,10 @@ const DeliveryChallanForm = ({ onFinish, value, disabled }) => {
                         <Input readOnly />
                     </Form.Item>
                 </Col>
+            </Row>
+            <Row>
+            <SaveBottmComponent  buttonText={submitText} cancelRoute={"deliverychallan"}/>
+
             </Row>
         </Form>
     );
