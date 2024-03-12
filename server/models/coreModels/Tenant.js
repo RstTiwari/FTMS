@@ -67,6 +67,9 @@ const tenantSchema = new mongoose.Schema({
         type: Number,
         unique:true
     },
+    templateId:{
+        type:String,
+    }
 });
 
 export default mongoose.model("tenant", tenantSchema);

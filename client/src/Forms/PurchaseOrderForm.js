@@ -75,7 +75,7 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled,submitText }) => {
         const grandTotal = totalTaxAmount + totalTranportAmount + totalGross;
         form.setFieldsValue({ grandTotal: Math.ceil(grandTotal) });
     };
-    const {vendor,purchaseNo,purchaseDate,items} = value
+    const {vendor,purchaseNo,purchaseDate,items,grandTotal,grossTotal,taxPercent,transPortAmount,taxAmount} = value
     return (
         <Form
             onFinish={handleFormFinish}
@@ -89,6 +89,11 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled,submitText }) => {
                 items: items
                     ? items
                     : [{ description: "", rate: 0, qty: 0, finalAmount: 0 }],
+                grandTotal: grandTotal ? grandTotal :"",
+                grossTotal:grossTotal ? grossTotal :"",
+                taxPercent:taxPercent ? taxPercent :"",
+                transPortAmount:transPortAmount ? transPortAmount:"",
+                taxAmount:taxAmount ? taxAmount :""
             }}
         >
             <Form.Item

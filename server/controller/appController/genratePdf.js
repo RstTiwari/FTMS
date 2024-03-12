@@ -1,24 +1,21 @@
-import invoicePdf from "../../template/pdfTemplate/invoice.js";
-import quotationPdf from "../../template/pdfTemplate/quotation.js";
-import challanPdf from "../../template/pdfTemplate/Challan.js";
-
+import myfac8ryTemplate from "../../template/pdfTemplate/myfac8ry/index.js";
+import whiteSimple from "../../template/pdfTemplate/whitesample/index.js"
 import tenanDb from "../../models/coreModels/Tenant.js"
-const generatePdf = async (req, res, next,dataBase) => {
+const  generatePdf = async (req, res, next,dataBase) => {
     try {
         const { entity,id, entityNo } = req.query;
         let tenantId = req.tenantId ;
         let data = await dataBase.findOne({_id:id ,tenantId:tenantId})
         const tenantData = await tenanDb.findOne({tenantId:tenantId})
+        const templateId = tenantData.templateId
         data["orgnization"] = tenantData
-        
-        if(entity ==="quote"){
-            return quotationPdf(req,res,next,data)
-        }else if(entity ==="invoice"){
-            return invoicePdf(req,res,next,data)
-        }else if(entity ==="deliverychallan"){
-            return challanPdf(req,res,next,data)
-        }
+        if(templateId ==="myfac8ry"){
+            return myfac8ryTemplate(req,res,next,data,entity)
+        }else if(templateId ==="whitesimple"){
+                return whiteSimple(req,res,next,data,entity)
+        }else{
 
+        }
 
     } catch (error) {
         console.error(error);

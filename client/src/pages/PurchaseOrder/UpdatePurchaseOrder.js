@@ -35,6 +35,7 @@ const UpdatePurchaseOrder = () => {
             return NotificationHandler.error(message)
         }else{
             navigate("/purchaseorder")
+            return NotificationHandler.success(message)
         }
     }
     useEffect(() => {

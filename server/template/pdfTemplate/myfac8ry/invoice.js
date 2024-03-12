@@ -1,6 +1,6 @@
 import PDFDocument from "pdfkit";
-import { epochInDDMMYY } from "../../Helper/timehelper.js"
-import { downloadAndSaveImage,calculateStreetPostion,calcultTitlePostion ,addBankDetails} from "../../Helper/pdfHelper.js";
+import { epochInDDMMYY } from "../../../Helper/timehelper.js"
+import { downloadAndSaveImage,calculateStreetPostion,calcultTitlePostion ,addBankDetails} from "../../../Helper/pdfHelper.js";
 
 const invoicePdf = async(req,res,next,invocieData) => {
     try {
