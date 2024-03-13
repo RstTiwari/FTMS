@@ -22,6 +22,7 @@ export const AuthProvider = ({ children }) => {
         removeCookie("token");
         removeCookie("authData");
         removeLocalData("customer");
+        removeLocalData("invoice")
         removeLocalData("payments");
         removeLocalData("quote");
         removeLocalData("challan");
