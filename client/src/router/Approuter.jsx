@@ -27,6 +27,7 @@ import NewExpenses from "pages/Expenses/NewExpenses";
 import NewVendor from "pages/Vendor/NewVendor";
 import PurchaseOrder from "pages/PurchaseOrder";
 import Orgnization from "pages/Orgnization/Orgnization";
+import Templates from "pages/Templates/index"
 
 const Approuter = () => {
     return (
@@ -85,10 +86,15 @@ const Approuter = () => {
                 <Route path="/download/:entity/:id" element={<PdfModule />} />
                 <Route path="/record/payment/:id" element={<NewPayment />} />
 
+
                 {/*Mangaining Orgnization Profile */}
                 <Route
                     path="/:entity/:id"
                     element={<Orgnization />}
+                />
+                <Route
+                    path="/templates"
+                    element={<Templates />}
                 />
 
                 <Route path="*" element={<NotFound />} />

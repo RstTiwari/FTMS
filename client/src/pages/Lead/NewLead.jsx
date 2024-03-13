@@ -15,7 +15,7 @@ const NewLead = () => {
         let payload = { entity: "lead", value: value };
         const { success, result, message } = await createData(payload);
         if (success) {
-            navigate("lead")
+            navigate("/lead")
             return NotificationHandler.success(message);
         } else {
             return NotificationHandler.error(message);

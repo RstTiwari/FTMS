@@ -10,6 +10,7 @@ import NotificationHandler from "EventHandler/NotificationHandler";
 const Register = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isOtpVerify, setIsOtpVerify] = useState(false);
+    const [email,setEmail] = useState("")
     const [otp, setOtp] = useState();
     const [userId, setUserId] = useState("");
     const [tenantId, setTenantId] = useState("");
@@ -18,6 +19,7 @@ const Register = () => {
     const { loginUser, authApiCall } = useAuth();
     const handleRegisterFormFinish = async (value) => {
         setIsLoading(true);
+        setEmail(value.email)
         let response = await authApiCall("register", value);
         if (response.success === 1) {
             setIsLoading(false);
@@ -59,6 +61,9 @@ const Register = () => {
                             {isOtpVerify ? (
                                 <>
                                     <Row justify={"center"}>Verify OTP</Row>
+                                    <Row>
+                                      Mail hasbeend send to {email}
+                                    </Row>
                                     <Row justify={"center"}>
                                         <Input
                                             onChange={(e) =>

@@ -2,7 +2,7 @@ import React from "react";
 import { List, Menu } from "antd";
 import { Link } from "react-router-dom";
 import { Typography, Row } from "antd";
-import { CorporateFare, PeopleAlt, Badge } from "@mui/icons-material";
+import { CorporateFare, PeopleAlt, Badge,Template,ViewWeek } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
@@ -32,6 +32,7 @@ const SettingList = ({closeSideBar,setCloseSideBar}) => {
             `orgnizationprofile/${tenantId}`,
             <CorporateFare />
         ),
+        getItem("PDF Templates", "templates", <ViewWeek />),
         getItem("Dashbord Users", "dashbordusers", <PeopleAlt />),
         getItem("Employess", "emloyess", <Badge />),
     ];

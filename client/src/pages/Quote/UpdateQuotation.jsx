@@ -23,6 +23,7 @@ import NotificationHandler from "EventHandler/NotificationHandler";
 import QuotationForm from "Forms/QuotationForm";
 import { epochInDDMMYY } from "Helper/EpochConveter";
 import UpdateQuotationForm from "Forms/UpdateQuotationForm";
+import { useNavigate } from "react-router-dom";
 
 const UpdateQuotation = () => {
     const [form] = Form.useForm();
@@ -32,6 +33,7 @@ const UpdateQuotation = () => {
     const { entity, id } = useParams();
     const { readData } = useAuth();
     const [product, setProduct] = useState([]);
+    const navigate = useNavigate()
 
     let fetchData = async () => {
         const { success, result, message } = await readData({
@@ -41,6 +43,7 @@ const UpdateQuotation = () => {
         if (success === 1) {
             setData(result);
             setIsLoading(false);
+            navigate("/quote")
         } else {
             return NotificationHandler.error("Failed to Fetch");
         }

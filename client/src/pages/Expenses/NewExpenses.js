@@ -17,7 +17,6 @@ const NewExpenses = () => {
         const payload = { entity: entity, value };
         const { success, result, message } = await createData(payload);
         if (!success) {
-            console.log(message,"meessage");
             return NotificationHandler.error(message);
         } else {
             NotificationHandler.success(message);

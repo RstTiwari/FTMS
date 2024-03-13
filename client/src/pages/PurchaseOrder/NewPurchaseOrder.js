@@ -8,25 +8,20 @@ import PurchaseOrder from "Forms/PurchaseOrderForm.js";
 import { epochConveter } from "Helper/EpochConveter";
 import SaveBottmComponent from "components/SaveBottomComponent";
 
-const NewPurchaseOrder = ({afterAdd}) => {
+const NewPurchaseOrder = () => {
     const entity = "purchaseorder";
     const [intialFormValue, setIntialFormValue] = useState();
     const navigate = useNavigate();
     const { createData } = useAuth();
 
     const handleFormFinish = async (value) => {
-        value.purchaseDate = epochConveter(value.purchaseDate.$d)
-        console.log(value,"---");
+        value.purchaseDate = epochConveter(value.purchaseDate.$d);
         const payload = { entity: entity, value };
         const { success, result, message } = await createData(payload);
         if (!success) {
             return NotificationHandler.error(message);
         } else {
-            if (afterAdd) {
-                afterAdd();
-            } else {
-                navigate("/purchaseorder");
-            }
+            navigate("/purchaseorder");
         }
     };
 
@@ -47,8 +42,11 @@ const NewPurchaseOrder = ({afterAdd}) => {
                 cancelRoute={"purchaseorder"}
             />
 
-            <PurchaseOrder handleFormFinish={handleFormFinish} value={{}} submitText ={"SAVE AS DRAFT"} />
-        
+            <PurchaseOrder
+                handleFormFinish={handleFormFinish}
+                value={{}}
+                submitText={"SAVE AS DRAFT"}
+            />
         </Flex>
     );
 };

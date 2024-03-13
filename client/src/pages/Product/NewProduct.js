@@ -5,17 +5,19 @@ import Header from "components/Header";
 import { useAuth } from "state/AuthProvider.js";
 import NotificationHandler from "EventHandler/NotificationHandler.jsx";
 import ProductForm from "Forms/ProductFrom.js";
+import { useNavigate } from "react-router-dom";
 
-const NewProduct = ({checkHeader, afterAdd }) => {
+const NewProduct = ({ checkHeader, afterAdd }) => {
     const { createData } = useAuth();
+    const navigate = useNavigate();
     const entity = "product";
     const onFormFinish = async (value) => {
         const payload = { entity: entity, value };
         const { success, result, message } = await createData(payload);
-        console.log(result);
         if (success) {
             afterAdd(value);
-            return NotificationHandler.success(message);
+            NotificationHandler.success(message);
+            navigate("/dashbord");
         } else {
             return NotificationHandler.error(message);
         }

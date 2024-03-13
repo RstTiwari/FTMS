@@ -22,6 +22,7 @@ import Header from "components/Header";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import { epochInDDMMYY } from "Helper/EpochConveter";
 import UpdateLeadForm from "Forms/UpdateLeadForm";
+import { useNavigate } from "react-router-dom";
 
 const UpdateLead = () => {
     const [form] = Form.useForm();
@@ -30,6 +31,7 @@ const UpdateLead = () => {
     const [isLoading, setIsLoading] = useState(true);
     const { entity, id } = useParams();
     const { readData } = useAuth();
+    const navigate = useNavigate()
 
     let fetchData = async () => {
         const { success, result, message } = await readData({
@@ -39,6 +41,7 @@ const UpdateLead = () => {
         if (success === 1) {
             setData(result);
             setIsLoading(false);
+            navigate("/lead")
         } else {
             return NotificationHandler.error("Failed to Fetch");
         }

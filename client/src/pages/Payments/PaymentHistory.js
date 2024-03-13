@@ -1,5 +1,5 @@
 import React from "react";
-import { List, Typography, Row } from "antd";
+import { List, Typography, Row, Col } from "antd";
 import {
     convertUnixTimestampToDate,
     epochInDDMMYY,
@@ -18,24 +18,28 @@ const PaymentHistoryList = ({ data }) => {
                 style={{ border: "2px solid green", padding: "10px" }}
                 renderItem={(item) => (
                     <List.Item key={item.id}>
-                        <div>
-                            <Text strong>Date: </Text>
-                            <Text>
-                                {convertUnixTimestampToDate(item.paymentDate)}
-                            </Text>
-                        </div>
-                        <div>
-                            <Text strong>Amount: </Text>
-                            <Text>{item.amount}</Text>
-                        </div>
-                        <div>
-                            <Text strong>Payment Mode: </Text>
-                            <Text>{item.paymentMode}</Text>
-                        </div>
-                        <div>
-                            <Text strong>Note: </Text>
-                            <Text>{item.note}</Text>
-                        </div>
+                        <Row>
+                            <Col span={6}>
+                                <Text strong>Date: </Text>
+                                <Text>
+                                    {convertUnixTimestampToDate(
+                                        item.paymentDate
+                                    )}
+                                </Text>
+                            </Col>
+                            <Col span={6}>
+                                <Text strong>Amount: </Text>
+                                <Text>{item.amount}</Text>
+                            </Col>
+                            <Col span={6}>
+                                <Text strong>Payment Mode: </Text>
+                                <Text>{item.paymentMode}</Text>
+                            </Col>
+                            <Col span={6}>
+                                <Text strong>Note: </Text>
+                                <Text>{item.note}</Text>
+                            </Col>
+                        </Row>
                     </List.Item>
                 )}
             />

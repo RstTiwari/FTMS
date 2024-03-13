@@ -2,6 +2,7 @@ import { ArrowDropDown } from "@mui/icons-material";
 import { Flex, Form, Input, Col, Row, Button } from "antd";
 import { useMediaQuery } from "@mui/material";
 import React, { useState } from "react";
+import SaveBottmComponent from "components/SaveBottomComponent";
 
 const VendorForm = ({
     handleFormFinish,
@@ -336,6 +337,10 @@ const VendorForm = ({
                         </Form.Item>
                     </Row>
                 </Col>
+            </Row>
+            <Row>
+            <SaveBottmComponent buttonText={"SAVE VENDOR"} cancelRoute={"vendors"} />
+                
             </Row>
         </Form>
     );

@@ -46,7 +46,7 @@ const NewVendor = ({ checkHeader, afterAdd }) => {
             return NotificationHandler.error(message);
         } else {
             if (afterAdd) {
-                afterAdd();
+                afterAdd(result);
             } else {
                 navigate("/vendors");
             }
@@ -74,7 +74,6 @@ const NewVendor = ({ checkHeader, afterAdd }) => {
                 ""
             )}
             <VendorForm handleFormFinish={handCusotmerSubmit} value={{}}  disabled={false} notShowCopy={false} />
-            <SaveBottmComponent buttonText={"SAVE VENDOR"} cancelRoute={"vendors"} />
         </Flex>
     );
 };

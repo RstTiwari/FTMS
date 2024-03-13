@@ -29,12 +29,12 @@ const Index = () => {
                 addRoute={"deliverychallan/create"}
                 refresh={true}
             />
-            <PageLoader isLoading={isLoading} />
             <Table
                 columns={challanColumns}
                 dataSource={data}
                 scroll={{ x: true, y: 600 }}
                 showSorterTooltip={true}
+                loading ={isLoading}
             />
         </Flex>
     );
