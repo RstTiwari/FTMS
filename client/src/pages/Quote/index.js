@@ -9,7 +9,7 @@ import useDataFetching from "Hook/useDataFetching";
 
 const Index = () => {
     let entity = "quote";
-    const { data, isloading, fetchData } = useDataFetching(entity);
+    const { data, isLoading, fetchData } = useDataFetching(entity);
     useEffect(() => {
         fetchData();
     }, [fetchData]);
@@ -35,7 +35,7 @@ const Index = () => {
             <Table
                 columns={quotationColumn}
                 dataSource={data}
-                loading={isloading}
+                loading={isLoading}
                 scroll={{ x: true, y: 600 }}
                 showSorterTooltip={true}
             />
