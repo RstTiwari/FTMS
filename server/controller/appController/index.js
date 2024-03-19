@@ -103,7 +103,6 @@ const appRoutes = {
             } else if (action === "update") {
                 if (!value) throw new Error("Please give update object");
                 const { challanNo, items } = value;
-                console.log(challanNo, items);
                 const updateData = await deliveryChallanDb.updateOne(
                     { challanNumber: challanNo },
                     { $set: { items } }
@@ -111,7 +110,7 @@ const appRoutes = {
                 if (updateData.modifiedCount >= 1) {
                     res.status(200).json({
                         success: 1,
-                        result: challanData,
+                        result: updateData,
                         message: "Data Fetched Successfully",
                     });
                 } else {
