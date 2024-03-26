@@ -2,7 +2,16 @@
 import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
 
-const socket = io("https://ftms.myfac8ry.com/ws"); // Replace with your server URL
+let url = process.env.REACT_APP_WS_PROD;
+
+if (process.env.NODE_ENV === "development") {
+    url = process.env.REACT_APP_WS_LOCAL;
+}
+console.log(url,"being called");
+
+const socket = io(url, {
+    path: "/ws/",
+}); // Replace with your server URL
 
 const SocketIo = () => {
     const [messages, setMessages] = useState([]);
