@@ -70,8 +70,8 @@ mongoose
     if (process.env.NODE_ENV === "production") {
       // Read SSL certificates for production
       const options = {
-        key: fs.readFileSync("/etc/letsencrypt/live/myfac8ry.com/privkey.pem"),
-        cert: fs.readFileSync("/etc/letsencrypt/live/myfac8ry.com/fullchain.pem"),
+        key: fs.readFileSync(process.env.KEY_PATH),
+        cert: fs.readFileSync(process.env.CERT_PATH),
       };
 
       // Create HTTPS server in production

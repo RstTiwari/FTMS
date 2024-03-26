@@ -125,10 +125,10 @@ const Sidebar = ({
             text: "Products",
             icon: <ShoppingCartOutlined />,
         },
-        // {
-        //     text: "BOM",
-        //     icon: <ReceiptLongOutlined />,
-        // },
+        {
+            text: "websocket",
+            icon: <ReceiptLongOutlined />,
+        },
     ];
 
     return (

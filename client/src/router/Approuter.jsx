@@ -28,6 +28,7 @@ import NewVendor from "pages/Vendor/NewVendor";
 import PurchaseOrder from "pages/PurchaseOrder";
 import Orgnization from "pages/Orgnization/Orgnization";
 import Templates from "pages/Templates/index"
+import SimpleWebSocketComponent from "pages/Websocket";
 
 const Approuter = () => {
     return (
@@ -96,6 +97,8 @@ const Approuter = () => {
                     path="/templates"
                     element={<Templates />}
                 />
+                <Route path="/websocket" element={<SimpleWebSocketComponent />} />
+
 
                 <Route path="*" element={<NotFound />} />
 
