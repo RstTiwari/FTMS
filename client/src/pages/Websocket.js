@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
 
-const socket = io("https://ftms.myfac8ry.com"); // Replace with your server URL
+const socket = io("https://ftms.myfac8ry.com/ws"); // Replace with your server URL
 
 const SocketIo = () => {
     const [messages, setMessages] = useState([]);
