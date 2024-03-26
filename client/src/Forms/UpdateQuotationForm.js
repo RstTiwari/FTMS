@@ -22,6 +22,7 @@ import { useMediaQuery } from "@mui/material";
 import { epochConveter } from "Helper/EpochConveter";
 import CustomerModal from "components/CustomerModal";
 import ProductModal from "components/ProductModal";
+import SaveBottmComponent from "components/SaveBottomComponent";
 
 const UpdateQuotationForm = ({ initialValues, id }) => {
     const [form] = Form.useForm();
@@ -453,9 +454,7 @@ const UpdateQuotationForm = ({ initialValues, id }) => {
                 </Col>
             </Row>
             <Form.Item>
-                <Button type="primary" htmlType="submit">
-                    Update Quotation
-                </Button>
+               <SaveBottmComponent buttonText={"UPDATE QUOTE"}  cancelRoute={"quotation"}/>
             </Form.Item>
         </Form>
     );

@@ -9,6 +9,7 @@ import Header from "components/Header";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import { useNavigate } from "react-router-dom";
 import SaveBottmComponent from "components/SaveBottomComponent";
+import { pageLayout } from "theme";
 
 const UpdateVendors = () => {
     const [data, setData] = useState("");
@@ -81,12 +82,7 @@ const UpdateVendors = () => {
         <Flex
             gap={"middle"}
             vertical
-            style={{
-                margin: "1.5rem 2rem",
-                padding: "2rem",
-                backgroundColor: "#ffffff",
-                borderRadius: "1rem",
-            }}
+            style={pageLayout}
         >
             <Header
                 title={` Update VENDOR - ${entity} Details`}
@@ -105,8 +101,8 @@ const UpdateVendors = () => {
                         disabled={false}
                         handleValueChange={handleValueChange}
                         notShowCopy={true}
+                        buttonText={"UPDATE VENDOR"}
                     />
-                    <SaveBottmComponent buttonText={"UPDATE VENDOR"}  cancelRoute={"vendors"}/>
                 </>
             ) : (
                 ""

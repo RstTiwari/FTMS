@@ -8,6 +8,7 @@ import { useAuth } from "state/AuthProvider.js";
 import NotificationHandler from "EventHandler/NotificationHandler.jsx";
 import VendorForm from "Forms/VendorForm.js";
 import SaveBottmComponent from "components/SaveBottomComponent.js";
+import { pageLayout } from "theme.js";
 
 const NewVendor = ({ checkHeader, afterAdd }) => {
     const entity = "vendors";
@@ -54,16 +55,7 @@ const NewVendor = ({ checkHeader, afterAdd }) => {
     };
 
     return (
-        <Flex
-            gap={"middle"}
-            vertical
-            style={{
-                margin: "1.5rem 2rem",
-                padding: "2rem",
-                backgroundColor: "#ffffff",
-                borderRadius: "1rem",
-            }}
-        >
+        <Flex gap={"middle"} vertical style={pageLayout}>
             {checkHeader ? (
                 <Header
                     title={"NEW VENDOR"}
@@ -73,7 +65,13 @@ const NewVendor = ({ checkHeader, afterAdd }) => {
             ) : (
                 ""
             )}
-            <VendorForm handleFormFinish={handCusotmerSubmit} value={{}}  disabled={false} notShowCopy={false} />
+            <VendorForm
+                handleFormFinish={handCusotmerSubmit}
+                value={{}}
+                disabled={false}
+                notShowCopy={false}
+                buttonText={"SUBMIT"}
+            />
         </Flex>
     );
 };

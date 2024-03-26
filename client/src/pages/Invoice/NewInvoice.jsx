@@ -8,6 +8,7 @@ import { useAuth } from "state/AuthProvider.js";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import SaveBottmComponent from "components/SaveBottomComponent";
 import { useNavigate } from "react-router-dom";
+import { pageLayout } from "theme";
 
 const NewInvoice = () => {
     const [form] = Form.useForm();
@@ -31,12 +32,7 @@ const NewInvoice = () => {
         <Flex
             gap={"middle"}
             vertical
-            style={{
-                margin: "1.5rem 2rem",
-                padding: "2rem",
-                backgroundColor: "#ffffff",
-                borderRadius: "1rem",
-            }}
+            style={pageLayout}
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 8 }}
         >

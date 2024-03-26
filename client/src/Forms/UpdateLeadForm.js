@@ -14,7 +14,11 @@ import { useAuth } from "state/AuthProvider";
 import { LeadOption } from "Data/LeadData";
 import { leadStatus } from "Data/LeadData";
 import { epochConveter, epochInDDMMYY } from "Helper/EpochConveter";
+import { useNavigate } from "react-router-dom";
+
+
 import NotificationHandler from "EventHandler/NotificationHandler";
+import SaveBottmComponent from "components/SaveBottomComponent";
 
 const UpdateLeadForm = ({ initialValues, id }) => {
     const [form] = Form.useForm();
@@ -30,6 +34,7 @@ const UpdateLeadForm = ({ initialValues, id }) => {
         let payload = { entity: "lead", value };
         const { success, result, message } = await updateData(payload);
         if (success) {
+
             return NotificationHandler.success(message);
         } else {
             return NotificationHandler.error(message);
@@ -200,6 +205,9 @@ const UpdateLeadForm = ({ initialValues, id }) => {
                     </div>
                 )}
             </Form.List>
+            <Form.Item>
+                <SaveBottmComponent buttonText={"UPDATE LEAD"}  cancelRoute={"lead"}/>
+            </Form.Item>
         </Form>
     );
 };

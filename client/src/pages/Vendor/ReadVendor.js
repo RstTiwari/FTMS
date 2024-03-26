@@ -5,6 +5,7 @@ import { useAuth } from "state/AuthProvider";
 import Header from "components/Header";
 import VendorForm from "../../Forms/VendorForm";
 import PageLoader from "pages/PageLoader";
+import { pageLayout } from "theme";
 const ReadVendor = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState("");
@@ -30,12 +31,7 @@ const ReadVendor = () => {
         <Flex
             gap={"middle"}
             vertical
-            style={{
-                margin: "1.5rem 2rem",
-                padding: "2rem",
-                backgroundColor: "#ffffff",
-                borderRadius: "1rem",
-            }}
+            style={pageLayout}
         >
             <PageLoader
                 text={"Fetching Customer Detail Please Waiti"}
@@ -48,7 +44,7 @@ const ReadVendor = () => {
                         subTitle={""}
                         cancelRoute={"vendors"}
                     />
-                        <VendorForm handleFormFinish={{}} value={data} disabled={true} notShowCopy={true} />
+                        <VendorForm handleFormFinish={{}} value={data} disabled={true} notShowCopy={true}  buttonText={"UPDATE VENDORS"}/>
                 </>
             ) : (
                 ""

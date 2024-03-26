@@ -23,6 +23,7 @@ import NotificationHandler from "EventHandler/NotificationHandler";
 import { epochInDDMMYY } from "Helper/EpochConveter";
 import UpdateLeadForm from "Forms/UpdateLeadForm";
 import { useNavigate } from "react-router-dom";
+import { pageLayout } from "theme";
 
 const UpdateLead = () => {
     const [form] = Form.useForm();
@@ -41,7 +42,6 @@ const UpdateLead = () => {
         if (success === 1) {
             setData(result);
             setIsLoading(false);
-            navigate("/lead")
         } else {
             return NotificationHandler.error("Failed to Fetch");
         }
@@ -54,12 +54,7 @@ const UpdateLead = () => {
         <Flex
             gap={"middle"}
             vertical
-            style={{
-                margin: "1.5rem 2rem",
-                padding: "2rem",
-                backgroundColor: "#ffffff",
-                borderRadius: "1rem",
-            }}
+            style={pageLayout}
         >
             <Header
                 title={` Update - ${entity} Details`}
@@ -83,11 +78,6 @@ const UpdateLead = () => {
                         }}
                         id={id}
                     />
-                    <Form.Item>
-                        <Button type="primary" htmlType="submit">
-                            UPDATE
-                        </Button>
-                    </Form.Item>
                 </>
             ) : (
                 ""

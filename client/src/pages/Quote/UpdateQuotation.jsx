@@ -24,6 +24,7 @@ import QuotationForm from "Forms/QuotationForm";
 import { epochInDDMMYY } from "Helper/EpochConveter";
 import UpdateQuotationForm from "Forms/UpdateQuotationForm";
 import { useNavigate } from "react-router-dom";
+import { pageLayout } from "theme";
 
 const UpdateQuotation = () => {
     const [form] = Form.useForm();
@@ -43,7 +44,6 @@ const UpdateQuotation = () => {
         if (success === 1) {
             setData(result);
             setIsLoading(false);
-            navigate("/quote")
         } else {
             return NotificationHandler.error("Failed to Fetch");
         }
@@ -57,12 +57,7 @@ const UpdateQuotation = () => {
         <Flex
             gap={"middle"}
             vertical
-            style={{
-                margin: "1.5rem 2rem",
-                padding: "2rem",
-                backgroundColor: "#ffffff",
-                borderRadius: "1rem",
-            }}
+            style={pageLayout}
         >
             <Header title={` Update - ${entity} Details`} subTitle={""} localDataKey={"quote"}  cancelRoute={"quotation"}/>
             <PageLoader

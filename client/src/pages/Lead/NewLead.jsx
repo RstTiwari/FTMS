@@ -6,6 +6,7 @@ import { useAuth } from "state/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import SaveBottmComponent from "components/SaveBottomComponent";
+import { pageLayout } from "theme";
 
 const NewLead = () => {
     const [form] = Form.useForm();
@@ -25,12 +26,7 @@ const NewLead = () => {
         <Flex
             gap={"middle"}
             vertical
-            style={{
-                margin: "1.5rem 2rem",
-                padding: "2rem",
-                backgroundColor: "#ffffff",
-                borderRadius: "1rem",
-            }}
+            style={pageLayout}
         >
             <Form
                 name="leadForm"
@@ -43,9 +39,7 @@ const NewLead = () => {
                 <Header title={"New Lead"} cancelRoute={"lead"}  />
                 <LeadForm current={form} />
                 <Form.Item>
-                <Button type="primary" htmlType="submit">
-                    SAVE AS DRAFT
-                </Button>
+                <SaveBottmComponent buttonText={"SUBMIT"} cancelRoute={"lead"} />
             </Form.Item>
             </Form>
         </Flex>

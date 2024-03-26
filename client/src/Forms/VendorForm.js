@@ -10,6 +10,7 @@ const VendorForm = ({
     disabled,
     handleValueChange,
     notShowCopy,
+    buttonText
 }) => {
     const [form] = Form.useForm();
     const isLaptop = useMediaQuery("(min-width:600px)");
@@ -339,8 +340,7 @@ const VendorForm = ({
                 </Col>
             </Row>
             <Row>
-            <SaveBottmComponent buttonText={"SAVE VENDOR"} cancelRoute={"vendors"} />
-                
+            <SaveBottmComponent buttonText={buttonText} cancelRoute={"vendors"} />   
             </Row>
         </Form>
     );

@@ -137,3 +137,10 @@ export const themeSettings = (mode) => {
         },
     };
 };
+
+export const pageLayout = {
+    padding: "2rem",
+    backgroundColor: "#ffffff",
+    borderRadius: "1rem",
+    marginBottom:"4rem"
+}

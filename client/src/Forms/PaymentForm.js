@@ -17,6 +17,7 @@ import { useAuth } from "state/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import { paymentMode } from "Data/PaymentData";
+import SaveBottmComponent from "components/SaveBottomComponent";
 const { Text } = Typography;
 
 const { Option } = Select;
@@ -125,6 +126,12 @@ const PaymentForm = ({ initialValue }) => {
                             name="amount"
                             labelAlign="left"
                             labelCol={{ span: 4 }}
+                            rules={[
+                                {
+                                    required:true,
+                                    message:"Amount need to specified"
+                                }
+                            ]}
                         >
                             <Input type="number" style={{ width: "50%" }} />
                         </Form.Item>
@@ -141,6 +148,10 @@ const PaymentForm = ({ initialValue }) => {
                         </Form.Item>
                     </Col>
                 </Row>
+                <Form.Item>
+            <SaveBottmComponent buttonText={"UPDATE PAYMENT"} cancelRoute={"payments"} />
+
+                </Form.Item>
             </Form>
             <PaymentHistoryList data = {initialValue.payment} />
         </>

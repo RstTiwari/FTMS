@@ -24,6 +24,7 @@ import CustomerModal from "components/CustomerModal";
 import ProductModal from "components/ProductModal";
 import SaveBottmComponent from "components/SaveBottomComponent";
 
+
 const UpdateInvoiceForm = ({ initialValues, id }) => {
     const [form] = Form.useForm();
     const { getDropDownData, createData, updateData } = useAuth();
@@ -31,6 +32,7 @@ const UpdateInvoiceForm = ({ initialValues, id }) => {
     const [company, setCompany] = useState([]);
     const [toUpdate, setToUpdate] = useState(false);
     const isLaptop = useMediaQuery("(min-width:1000px)");
+
 
     const onFinish = async (value) => {
         if (!toUpdate) return NotificationHandler.error("Nothing to Update");

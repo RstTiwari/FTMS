@@ -35,7 +35,6 @@ const NewExpenses = () => {
         >
             <Header title={"Add New Expenses"} cancelRoute={"expenses"} />
             <ExpenseForm handleFormFinish={handleFormFinish} />
-            <SaveBottmComponent  buttonText={"SAVE EXPESNES "}  cancelRoute={"expenses"}/>
         </Flex>
     );
 };

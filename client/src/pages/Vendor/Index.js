@@ -3,6 +3,7 @@ import Headers from "../../components/Header";
 import { Flex, Table } from "antd";
 import { vendorColumns } from "../../Data/VendorData.js";
 import useDataFetching from "Hook/useDataFetching";
+import { pageLayout } from "theme";
 
 const Vendor = () => {
     let entity = "vendors"
@@ -15,11 +16,7 @@ const Vendor = () => {
         <Flex
             gap={"middle"}
             vertical
-            style={{
-                padding: "2rem",
-                backgroundColor: "#ffffff",
-                borderRadius: "1rem",
-            }}
+            style={pageLayout}
         >
             <Headers
                 title={"VENDOR LIST"}

@@ -12,6 +12,7 @@ import {
 import { categoryOption } from "../Data/ExpensesData";
 import CustomerModal from "components/CustomerModal";
 import UploadImage from "components/UploadImage";
+import SaveBottmComponent from "components/SaveBottomComponent";
 
 const ExpenseForm = ({handleFormFinish}) => {
     const [form] = Form.useForm();
@@ -73,7 +74,7 @@ const ExpenseForm = ({handleFormFinish}) => {
                 </Form.Item>
             </Col>
 
-            <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+            {/* <Col xs={24} sm={24} md={8} lg={8} xl={8}>
                 <Form.Item
                     label={"Invoice #"}
                     name={"invoice"}
@@ -82,7 +83,7 @@ const ExpenseForm = ({handleFormFinish}) => {
                 >
                     <Input />
                 </Form.Item>
-            </Col>
+            </Col> */}
             <Col xs={24} sm={24} md={8} lg={8} xl={8}>
                 <Form.Item
                     label={"Note"}
@@ -103,6 +104,10 @@ const ExpenseForm = ({handleFormFinish}) => {
                     <CustomerModal customerSelect={handleCustomerSelect} />
                 </Form.Item>
             </Col>
+            <Form.Item>
+            <SaveBottmComponent  buttonText={"SAVE EXPESNES "}  cancelRoute={"expenses"}/>
+
+            </Form.Item>
         </Form>
     );
 };

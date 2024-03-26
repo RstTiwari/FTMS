@@ -25,12 +25,14 @@ export const vendorColumns = [
         dataIndex:"gstNo",
         key:"gstNo",
         responsive: ["lg"],
+        width:100,
 
     },
     {
         title:"PAN NO",
         dataIndex:"panNo",
         key:"panNo",
+        width:100,
         responsive: ["lg"],
 
     },

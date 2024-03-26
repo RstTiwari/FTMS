@@ -4,6 +4,7 @@ import { Flex, Table, Typography } from "antd";
 import PageLoader from "pages/PageLoader";
 import { expensesColumns } from "Data/ExpensesData"
 import useDataFetching from "Hook/useDataFetching";
+import { pageLayout } from "theme";
 
 const Index = () => {
     let entity = "expenses";
@@ -15,11 +16,7 @@ const Index = () => {
         <Flex
             gap={"middle"}
             vertical
-            style={{
-                padding: "2rem",
-                backgroundColor: "#ffffff",
-                borderRadius: "1rem",
-            }}
+            style={pageLayout}
         >
             <Header
                 title={"Expenses List"}

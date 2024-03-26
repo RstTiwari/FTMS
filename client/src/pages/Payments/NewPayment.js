@@ -7,9 +7,10 @@ import { useAuth } from "state/AuthProvider";
 import { useParams } from "react-router-dom";
 import PaymentHistoryList from "../Payments/PaymentHistory";
 import SaveBottmComponent from "components/SaveBottomComponent";
+import { pageLayout } from "theme";
 
 const NewPayment = () => {
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState();
     const { readData } = useAuth();
     const { id } = useParams();
@@ -20,8 +21,8 @@ const NewPayment = () => {
             id: id,
         });
         if (success === 1) {
-            setData(result);
             setIsLoading(false);
+            setData(result);
         }
     };
     useEffect(() => {
@@ -31,22 +32,18 @@ const NewPayment = () => {
         <Flex
             gap={"middle"}
             vertical
-            style={{
-                padding: "2rem",
-                backgroundColor: "#ffffff",
-                borderRadius: "1rem",
-            }}
+            style={pageLayout}
         >
             <Header title={"RECORD NEW  PAYMENT"} cancelRoute={"payments"} />
+            <PageLoader isLoading={isLoading} />
             {
                 data ? (
             <>
             <PaymentForm initialValue={data} />
-            <SaveBottmComponent buttonText={"UPDATE PAYMENT"} cancelRoute={"payments"} />
             </>
 
                 ):(
-                    <PageLoader  isLoading={isLoading}/>
+                    ""
                 )
             }
         </Flex>

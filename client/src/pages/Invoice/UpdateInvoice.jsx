@@ -23,6 +23,7 @@ import NotificationHandler from "EventHandler/NotificationHandler";
 import { epochInDDMMYY } from "Helper/EpochConveter";
 import UpdateInvoiceForm from "Forms/UpdateInvoiceForm";
 import { useNavigate } from "react-router-dom";
+import { pageLayout } from "theme";
 
 const UpdateInvoice = () => {
     const [form] = Form.useForm();
@@ -42,7 +43,6 @@ const UpdateInvoice = () => {
         if (success === 1) {
             setData(result);
             setIsLoading(false);
-            navigate("/invoice")
         } else {
             NotificationHandler.error("Failed to Fetch");
         }
@@ -56,12 +56,7 @@ const UpdateInvoice = () => {
         <Flex
             gap={"middle"}
             vertical
-            style={{
-                margin: "1.5rem 2rem",
-                padding: "2rem",
-                backgroundColor: "#ffffff",
-                borderRadius: "1rem",
-            }}
+            style={pageLayout}
         >
             <Header title={` Update - ${entity} Details`} subTitle={""}  cancelRoute={"invoice"}/>
             <PageLoader

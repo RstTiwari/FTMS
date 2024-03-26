@@ -13,11 +13,12 @@ const SaveBottmComponent = ({ buttonText, action2, cancelRoute }) => {
                 left: 0,
                 width: "100%",
                 backgroundColor: "#f0f0f0",
+                zIndex:100
             }}
         >
             <Row justify={"center"} style={{ margin: "1rem" }}>
                 <Col xs={12} sm={12} md={12} lg={6} xl={6}>
-                    <Button htmlType={"submit"}>{buttonText}</Button>
+                    <Button type="primary" htmlType={"submit"}>{buttonText}</Button>
                 </Col>
 
                 {action2 ? (
