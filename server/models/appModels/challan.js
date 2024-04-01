@@ -41,7 +41,7 @@ const challanSchema = new mongoose.Schema({
     ],
     totalQuantity: {
         type: Number,
-        required: true,
+        default:0
     },
     tenantId: {
         type: String,

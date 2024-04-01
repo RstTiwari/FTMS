@@ -161,13 +161,7 @@ const DeliveryChallanForm = ({ onFinish, value, disabled ,submitText }) => {
                                 <Col className="gutter-row" span={5}>
                                     <Form.Item
                                         name={[subField.name, "description"]}
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message:
-                                                    "Please Select the description",
-                                            },
-                                        ]}
+
                                     >
                                         <ProductModal
                                             productSelect={(
@@ -196,8 +190,8 @@ const DeliveryChallanForm = ({ onFinish, value, disabled ,submitText }) => {
                                         name={[subField.name, "hsnCode"]}
                                     >
                                         <Input
-                                            disabled={disabled}
-                                            style={{ width: 150 }}
+                                            disabled={true}
+                                            style={{ width: 150 }}  
                                             onChange={(
                                                 value,
                                                 subField = "hsnCode"
