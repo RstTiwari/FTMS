@@ -15,9 +15,12 @@ const NewProduct = ({ checkHeader, afterAdd }) => {
         const payload = { entity: entity, value };
         const { success, result, message } = await createData(payload);
         if (success) {
-            afterAdd(value);
-            NotificationHandler.success(message);
-            navigate("/dashbord");
+            if (afterAdd instanceof Object) {
+                afterAdd(value);
+            } else {
+                NotificationHandler.success(message);
+                navigate("/products");
+            }
         } else {
             return NotificationHandler.error(message);
         }

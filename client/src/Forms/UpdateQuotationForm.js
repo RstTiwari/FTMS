@@ -16,6 +16,10 @@ import {
     PlusOutlined,
     DeleteOutlined,
 } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
+
+
+
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import { useMediaQuery } from "@mui/material";
@@ -33,17 +37,19 @@ const UpdateQuotationForm = ({ initialValues, id }) => {
     const isLaptop = useMediaQuery("(min-width:1000px)");
     const inputWidth = isLaptop ? 700 : 350;
     const inputFontSize = isLaptop ? "1rem" : "0.4rem";
+    const navigate= useNavigate()
 
     const onFinish = async (value) => {
         if (!toUpdate) return NotificationHandler.error("Nothing to Update");
         let epochQuoteDate = epochConveter(value.quoteDate.$d);
-        let epochExpiryDate = epochConveter(value.quoteDate.$d);
+        let epochExpiryDate = epochConveter(value.quoteExpiryDate.$d);
         value._id = id;
         value.quoteDate = epochQuoteDate;
         value.quoteExpiryDate = epochExpiryDate;
         let payload = { entity: "quote", value };
         const { success, result, message } = await updateData(payload);
         if (success) {
+            navigate("/quotation")
             return NotificationHandler.success(message);
         } else {
             return NotificationHandler.error(message);

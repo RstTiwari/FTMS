@@ -1,7 +1,7 @@
 const getList = async (req, res, next, dataBase) => {
     let tenantId = req.tenantId 
     try {
-        let data = await dataBase.find({tenantId:tenantId});
+        let data = await dataBase.find({tenantId:tenantId}).sort({_id:-1});
         return res.status(200).json({
             success: 1,
             result: data,
