@@ -60,7 +60,7 @@ cloudinary.config({
     api_key: process.env.apiKey,
     api_secret: process.env.apiSecret,
 });
-
+console.log(process.env.MDURL);
 mongoose
   .connect(process.env.MDURL, {
     useUnifiedTopology: true,
