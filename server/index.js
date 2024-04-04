@@ -61,7 +61,6 @@ cloudinary.config({
     api_secret: process.env.apiSecret,
 });
 const MDURLSTRING = process.env.MDURL
-console.log(MDURLSTRING,typeof MDURLSTRING);
 mongoose
   .connect(MDURLSTRING, {
     useUnifiedTopology: true,
