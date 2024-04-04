@@ -7,21 +7,18 @@ let url = process.env.REACT_APP_WS_PROD;
 if (process.env.NODE_ENV === "development") {
     url = process.env.REACT_APP_WS_LOCAL;
 }
-console.log(url,"being called");
 
 const socket = io(url, {
+    connectionStateRecovery: true,
     path: "/ws/",
 }); // Replace with your server URL
 
 const SocketIo = () => {
     const [messages, setMessages] = useState([]);
-    const [inputMessage, setInputMessage] = useState("");
+    const [inputMessage, setInputMessage] = useState(""); 
 
     useEffect(() => {
-        console.log("useEffect called");
-        // Listen for incoming messages from the server
         socket.on("message", (data) => {
-            console.log("data from server", data);
             setMessages((prevMessages) => [
                 ...prevMessages,
                 { text: data, sender: "server" },
@@ -31,8 +28,7 @@ const SocketIo = () => {
         return () => {
             socket.off("message"); // Disconnect the socket when the component unmounts
         };
-    }, [messages]);
-    console.log(messages, "messages");
+    }, [socket]);
 
     const handleMessageChange = (e) => {
         setInputMessage(e.target.value);

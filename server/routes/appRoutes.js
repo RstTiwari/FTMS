@@ -17,6 +17,7 @@ const storage = multer.diskStorage({
         fileSize: 5 * 1024 * 1024,
     },
 });
+
 const upload = multer({ storage: storage });
 const type = upload.single("file");
 
@@ -26,9 +27,8 @@ router.get("/read", authMethod.isValidAuthtoken, appRoutes.read);
 router.post("/update", authMethod.isValidAuthtoken, appRoutes.update);
 router.patch("/patch", authMethod.isValidAuthtoken, appRoutes.patch);
 router.get("/pdf", authMethod.isValidAuthtoken, appRoutes.genratePdf);
-router.post("/upload", type,authMethod.isValidAuthtoken, appRoutes.upload);
+router.post("/upload", type, authMethod.isValidAuthtoken, appRoutes.upload);
 //just for app Data
 router.post("/challan", appRoutes.challan);
-
 
 export default router;
