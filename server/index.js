@@ -60,8 +60,9 @@ cloudinary.config({
     api_key: process.env.apiKey,
     api_secret: process.env.apiSecret,
 });
+console.log(process.env.MDURL);
 mongoose
-  .connect("mongodb://myfac8ry:2121@ac-z992smf-shard-00-00.fmmrhks.mongodb.net:27017,ac-z992smf-shard-00-01.fmmrhks.mongodb.net:27017,ac-z992smf-shard-00-02.fmmrhks.mongodb.net:27017/myfac8ry?ssl=true&replicaSet=atlas-piyukq-shard-0&authSource=admin&retryWrites=true&w=majority", {
+  .connect(process.env.MDURL, {
     useUnifiedTopology: true,
   })
   .then(() => {
