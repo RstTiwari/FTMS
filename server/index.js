@@ -60,7 +60,7 @@ cloudinary.config({
     api_key: process.env.apiKey,
     api_secret: process.env.apiSecret,
 });
-const MDURLSTRING = process.env.MDUR
+const MDURLSTRING = process.env.MDURL
 console.log(MDURLSTRING,typeof MDURLSTRING);
 mongoose
   .connect(MDURLSTRING, {
