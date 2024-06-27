@@ -1,243 +1,200 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Layout, Menu, Typography, Button } from "antd";
 import {
-    Box,
-    Diveder,
-    IconButton,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemButton,
-    useTheme,
-    Typography,
-    Drawer,
-    iconClasses,
-    ListItemText,
-} from "@mui/material";
-
-import {
-    SetMealOutlined,
-    ChevronLeft,
-    ChevronRightOutlined,
     HomeOutlined,
+    GroupOutlined,
+    DollarOutlined,
+    CalculatorOutlined,
     ShoppingCartOutlined,
-    Groups2Outlined,
-    ReceiptLongOutlined,
-    PublicOutlined,
-    PointOfSaleOutlined,
-    TodayOutlined,
-    CalendarMonthOutlined,
-    TrendingUpOutlined,
+    FileSearchOutlined,
+    ProfileOutlined,
+    AccountBookOutlined,
+    TeamOutlined,
+    MoneyCollectOutlined,
     PieChartOutlined,
-    AdminPanelSettingsOutlined,
-    Leaderboard,
-    RequestQuote,
-    AccountBalance,
-    CalculateOutlined
-} from "@mui/icons-material";
-import LocalShippingRoundedIcon from '@mui/icons-material/LocalShippingRounded';
-import { useEffect } from "react";
+    DatabaseOutlined,
+    MenuUnfoldOutlined,
+    MenuFoldOutlined
+} from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
-import FlexBetween from "./FlexBetween";
-import { useCookies } from "react-cookie";
-import { useAuth } from "state/AuthProvider";
-import { AccountBookFilled, MoneyCollectFilled ,FileSearchOutlined} from "@ant-design/icons";
+import { BusinessCenterOutlined } from "@mui/icons-material";
+
+import ftmsLogo from "../Assets/favicon.png"
+
+const { Sider } = Layout;
 
 const Sidebar = ({
-    user ,
+    user,
     drawerWidth,
-    isSidebarOpen,
-    setIsSidebarOpen,
+    isSideBarClosed,
+    setIsSidebarClosed,
     isLaptop,
 }) => {
     const { pathname } = useLocation();
     const [active, setActive] = useState("");
+    const [openKeys, setOpenKeys] = useState([]);
     const navigate = useNavigate();
-    const theme = useTheme();
+    const [collapsed, setCollapsed] = useState(false);
+
     useEffect(() => {
         setActive(pathname.substring(1));
     }, [pathname]);
 
-
     const navItems = [
         {
-            text: "Dashboard",
+            key: "dashboard",
             icon: <HomeOutlined />,
+            label: "Dashboard",
         },
         {
-            text: "Sales & Marketing",
-            icon: null,
-        },
-        // {
-        //     text: "Overview",
-        //     icon: <Leaderboard />,
-        // },
-        {
-            text: "Customers",
-            icon: <Groups2Outlined />,
-        },
-        {
-            text: "Quotation",
-            icon: <CalculateOutlined />,
-        },
-       
-        {
-            text: "Lead",
-            icon: < PointOfSaleOutlined />,
-        },
-      
-        {
-            text: "Accounts",
-            icon: null,
+            key: "sales",
+            label: "Sales & Marketing",
+            icon: <BusinessCenterOutlined />,
+            children: [
+                {
+                    key: "customers",
+                    label: "Customers",
+                },
+                {
+                    key: "quotation",
+                    label: "Quotation",
+                },
+                {
+                    key: "lead",
+                    label: "Lead",
+                },
+            ],
         },
         {
-            text:"Invoice",
-            icon:<MoneyCollectFilled/>
+            key: "accounts",
+            label: "Accounts",
+            icon: <AccountBookOutlined />,
+            children: [
+                {
+                    key: "invoice",
+                    label: "Invoice",
+                },
+                {
+                    key: "payments",
+                    label: "Payments",
+                },
+                {
+                    key: "expenses",
+                    label: "Expenses",
+                },
+                {
+                    key: "delivery",
+                    label: "Delivery Challan",
+                },
+            ],
         },
         {
-            text:"Payments",
-            icon:<AccountBalance/>
-        },
-        {
-            text:"Expenses",
-            icon:<ReceiptLongOutlined/>
-        },
-        {
-            text:"Delivery Challan",
-            icon:<LocalShippingRoundedIcon/>
-        },  
-        {
-            text: "Purchase",
-            icon: null,
-        },
-        {
-            text: "Vendors",
-            icon: <AdminPanelSettingsOutlined />,
-        },
-        {
-            text: "Purchase Order",
-            icon: <FileSearchOutlined />,
-        },
-        {
-            text: "Desgin & Development",
-            icon: null,
-        },
-        {
-            text: "Products",
+            key: "purchase",
+            label: "Purchase",
             icon: <ShoppingCartOutlined />,
+            children: [
+                {
+                    key: "vendors",
+                    label: "Vendors",
+                },
+                {
+                    key: "purchaseOrder",
+                    label: "Purchase Order",
+                },
+            ],
         },
-        // {
-        //     text: "websocket",
-        //     icon: <ReceiptLongOutlined />,
-        // },
+        {
+            key: "design",
+            label: "Design & Development",
+            icon: <DatabaseOutlined />,
+            children: [
+                {
+                    key: "products",
+                    label: "Products",
+                },
+            ],
+        },
     ];
 
+    const onOpenChange = (keys) => {
+        const latestOpenKey = keys.find(key => openKeys.indexOf(key) === -1);
+        if (navItems.map(item => item.key).includes(latestOpenKey)) {
+            setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
+        } else {
+            setOpenKeys(keys);
+        }
+    };
+
     return (
-        <Box >
-            {isSidebarOpen && (
-                <Drawer
-                    open={isSidebarOpen}
-                    onClose={() => setIsSidebarOpen(false)}
-                    variant="permanent"
-                    anchor="left"
-                    sx={{
-                        width: drawerWidth,
-                        "& .MuiDrawer-paper": {
-                            color: theme.palette.secondary[200],
-                            backgroundColor: theme.palette.background.alt,
-                            boxSixing: "border-box",
-                            borderWidth: isLaptop ? 0 : "0.5px",
-                        },
-                    }}
-                >
-                    <Box >
-                        <Box m={'1rem 2rem 0 5rem'}>
-                            <FlexBetween color={theme.palette.secondary.main}>
-                                <Box
-                                    display={"block"}
-                                    alignItems={"right"}
-                                    gap={"0.5"}
-                                >
-                                    <Typography
-                                        variant="h4"
-                                        fontWeight={"bold"}
-                                    >
-                                        FTMS
-                                    </Typography>
-                                </Box>
-                                {!isLaptop && (
-                                    <IconButton
-                                        onClick={() =>
-                                            setIsSidebarOpen(!isSidebarOpen)
-                                        }
-                                    >
-                                        <ChevronLeft />
-                                    </IconButton>
-                                )}
-                            </FlexBetween>
-                        </Box>
-                        <List>
-                            {navItems.map(({ text, icon }) => {
-                                if (!icon) {
-                                    return (
-                                        <Typography
-                                            key={text}
-                                            sx={{ m: "1rem  1rem 2rem" }}
-                                        >
-                                            {text}
-                                        </Typography>
-                                    );
-                                }
-                                const lcText = text.toLowerCase();
-                                return (
-                                    <ListItem key={text} disablePadding>
-                                        <ListItemButton
-                                            onClick={() => {
-                                                navigate(`${lcText.replaceAll(" ","")}`);
-                                                setActive(lcText);
-                                                setIsSidebarOpen(!isSidebarOpen)
-                                            }}
-                                            sx={{
-                                                backgroundColor:
-                                                    active === lcText
-                                                        ? theme.palette
-                                                              .secondary[300]
-                                                        : "transparent",
-                                                color:
-                                                    active === lcText
-                                                        ? theme.palette
-                                                              .primary[600]
-                                                        : theme.palette
-                                                              .secondary[500],
-                                            }}
-                                        >
-                                            <ListItemButton
-                                                sx={{
-                                                    ml: "3rem ",
-                                                    color:
-                                                        active === lcText
-                                                            ? theme.palette
-                                                                  .primary[600]
-                                                            : theme.palette
-                                                                  .secondary[200],
-                                                }}
-                                            >
-                                                {icon}
-                                            </ListItemButton>
-                                            <ListItemText primary={text} />
-                                            {active === lcText && (
-                                                <ChevronRightOutlined
-                                                    sx={{ ml: "auto" }}
-                                                />
-                                            )}
-                                        </ListItemButton>
-                                    </ListItem>
-                                );
-                            })}
-                        </List>
-                    </Box>
-                </Drawer>
-            )}
-        </Box>
+        <Sider
+            width={drawerWidth}
+            collapsible
+            collapsed={isSideBarClosed}
+            onCollapse={(value) => {
+                setIsSidebarClosed(value);
+            }}
+            style={{
+                height: "100vh",
+                position: "fixed",
+                background: "#181c2e",
+            }}
+        >
+            <div
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    padding: "16px",
+                }}
+            >
+                <img
+                    src={ftmsLogo}
+                    alt="FTMS Logo"
+                    style={{ width: "1.5rem", marginLeft: "0.5rem" }}
+                />
+                {!isSideBarClosed && (
+                    <Typography.Title
+                        level={4}
+                        style={{ color: "white", margin: 0 }}
+                    >
+                        FTMS
+                    </Typography.Title>
+                )}
+            </div>
+            <Menu
+                mode="inline"
+                selectedKeys={[active]}
+                openKeys={openKeys}
+                onOpenChange={onOpenChange}
+                onClick={(e) => {
+                    navigate(`/${e.key}`);
+                    setActive(e.key);
+                }}
+                theme="dark"
+                items={navItems}
+                style={{
+                    background: "#181c2e",
+                    color: "white",
+                    fontSize: "0.7rem",
+                    textAlign: "left",
+                }}
+            />
+            <style jsx>{`
+                .ant-menu-item:hover,
+                .ant-menu-submenu-title:hover {
+                    background-color: #22b378 !important;
+                }
+                .ant-menu-item-selected,
+                .ant-menu-submenu-selected {
+                    background-color: #22b378 !important;
+                }
+                .ant-menu-item-selected {
+                    color: white !important;
+                }
+                .ant-menu-submenu > .ant-menu-sub {
+                    background-color: #181c2e !important;
+                }
+            `}</style>
+        </Sider>
     );
 };
 

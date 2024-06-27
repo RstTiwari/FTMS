@@ -31,7 +31,6 @@ const ReadVendor = () => {
         <Flex
             gap={"middle"}
             vertical
-            style={pageLayout}
         >
             <PageLoader
                 text={"Fetching Customer Detail Please Waiti"}

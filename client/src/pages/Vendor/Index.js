@@ -16,7 +16,6 @@ const Vendor = () => {
         <Flex
             gap={"middle"}
             vertical
-            style={pageLayout}
         >
             <Headers
                 title={"VENDOR LIST"}

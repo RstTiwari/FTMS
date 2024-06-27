@@ -81,8 +81,8 @@ export const themeSettings = (mode) => {
                           main: tokensDark.grey[500],
                       },
                       background: {
-                          default: tokensDark.primary[600],
-                          alt: tokensDark.primary[500],
+                          default: "#fff", // changed from primary[600]
+                          alt: "blue", // changed from primary[500]
                       },
                   }
                 : {
@@ -142,5 +142,5 @@ export const pageLayout = {
     padding: "2rem",
     backgroundColor: "#ffffff",
     borderRadius: "1rem",
-    marginBottom:"4rem"
-}
+    marginBottom: "4rem",
+};

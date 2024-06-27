@@ -16,7 +16,6 @@ const Index = () => {
         <Flex
             gap={"middle"}
             vertical
-            style={pageLayout}
         >
             <Header
                 title={"Expenses List"}

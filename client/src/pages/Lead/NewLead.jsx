@@ -26,7 +26,6 @@ const NewLead = () => {
         <Flex
             gap={"middle"}
             vertical
-            style={pageLayout}
         >
             <Form
                 name="leadForm"

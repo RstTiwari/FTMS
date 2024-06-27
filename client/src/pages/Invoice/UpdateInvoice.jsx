@@ -56,7 +56,6 @@ const UpdateInvoice = () => {
         <Flex
             gap={"middle"}
             vertical
-            style={pageLayout}
         >
             <Header title={` Update - ${entity} Details`} subTitle={""}  cancelRoute={"invoice"}/>
             <PageLoader

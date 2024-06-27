@@ -32,7 +32,6 @@ const NewInvoice = () => {
         <Flex
             gap={"middle"}
             vertical
-            style={pageLayout}
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 8 }}
         >

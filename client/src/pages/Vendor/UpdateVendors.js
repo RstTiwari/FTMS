@@ -82,7 +82,6 @@ const UpdateVendors = () => {
         <Flex
             gap={"middle"}
             vertical
-            style={pageLayout}
         >
             <Header
                 title={` Update VENDOR - ${entity} Details`}

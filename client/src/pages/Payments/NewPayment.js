@@ -32,7 +32,6 @@ const NewPayment = () => {
         <Flex
             gap={"middle"}
             vertical
-            style={pageLayout}
         >
             <Header title={"RECORD NEW  PAYMENT"} cancelRoute={"payments"} />
             <PageLoader isLoading={isLoading} />
