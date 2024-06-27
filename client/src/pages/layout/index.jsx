@@ -4,6 +4,7 @@ import { useMediaQuery } from '@mui/material';
 import { useCookies } from 'react-cookie';
 import Sidebar from '../../components/Sidebar';
 import Navbar from '../../components/Navbar';
+import { Outlet } from 'react-router-dom';
 
 const { Header, Content } = Layout;
 
@@ -14,7 +15,6 @@ const CustomLayout = () => {
     const data = cookies['authData'] || {};
     const contentWidth = window.innerWidth- (isSideBarClosed ? 80 : 200)
     const contentMarginLeft = isSideBarClosed ? 80 :200
- 
 
     return (
         <Layout style={{ minHeight: "100vh" }}>
@@ -42,8 +42,7 @@ const CustomLayout = () => {
                         className="site-layout-background"
                         style={{ padding: 24, minHeight: 360, width:contentWidth }}
                     >
-                        {/* Content Area */}
-                        {/* Replace with your content components */}
+                        <Outlet/>
                     </div>
                 </Content>
             </div>

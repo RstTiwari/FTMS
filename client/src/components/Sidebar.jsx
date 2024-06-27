@@ -14,12 +14,12 @@ import {
     PieChartOutlined,
     DatabaseOutlined,
     MenuUnfoldOutlined,
-    MenuFoldOutlined
+    MenuFoldOutlined,
 } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BusinessCenterOutlined } from "@mui/icons-material";
 
-import ftmsLogo from "../Assets/favicon.png"
+import ftmsLogo from "../Assets/favicon.png";
 
 const { Sider } = Layout;
 
@@ -117,8 +117,8 @@ const Sidebar = ({
     ];
 
     const onOpenChange = (keys) => {
-        const latestOpenKey = keys.find(key => openKeys.indexOf(key) === -1);
-        if (navItems.map(item => item.key).includes(latestOpenKey)) {
+        const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
+        if (navItems.map((item) => item.key).includes(latestOpenKey)) {
             setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
         } else {
             setOpenKeys(keys);
@@ -137,6 +137,8 @@ const Sidebar = ({
                 height: "100vh",
                 position: "fixed",
                 background: "#181c2e",
+                fontFamily: "sans-serif",
+                fontWeight: 500,
             }}
         >
             <div
@@ -172,19 +174,17 @@ const Sidebar = ({
                 theme="dark"
                 items={navItems}
                 style={{
-                    background: "#181c2e",
+                    background: "#000",
                     color: "white",
                     fontSize: "0.7rem",
                     textAlign: "left",
                 }}
             />
             <style jsx>{`
-                .ant-menu-item:hover,
-                .ant-menu-submenu-title:hover {
+                .ant-menu-item:hover {
                     background-color: #22b378 !important;
                 }
-                .ant-menu-item-selected,
-                .ant-menu-submenu-selected {
+                .ant-menu-item-selected {
                     background-color: #22b378 !important;
                 }
                 .ant-menu-item-selected {
