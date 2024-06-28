@@ -1,3 +1,4 @@
+import tenantDataDb from "../../models/coreModels/tenantData.js";
 import Joi from "joi";
 import Jwt from "jsonwebtoken";
 
@@ -42,6 +43,7 @@ const verify = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
                 message: "email of your Account has been Verified",
             });
         }
+
         /***
          * Checking OTP time
          */
@@ -74,11 +76,11 @@ const verify = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
         });
 
         await userPasswordDb
-            .findOneAndUpdate(
-                { user: userId },
+            .updateOne(
+                { userId: userId },
                 {
-                    $push: { loggedSessions: { token: token } },
-                    emailVerified: true,
+                    $set: { loggedSession: token,emailVerified: true, },
+                    
                 },
                 { new: true }
             )
@@ -97,30 +99,30 @@ const verify = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
             .exec();
 
         const userData = await userDb.findOne({ _id: userId, removed: false });
-        const tenantData = await tenantDb.findOne({tenantId:tenantId})
+        const tenantData = await tenantDataDb.findOne({ tenantId: tenantId });
         //if compnay logoneeded call api
-
         res.status(200).json({
             success: 1,
             result: {
-                _id: userData._id,
-                name: userData.name,
-                surname: userData.surname,
-                role: userData.role,
-                email: userData.email,
-                photo: userData.photo,
-                companyName:tenantData.companyName,
+                _id: user._id,
+                name: user.name,
+                surname: user.surname,
+                role: user.role,
+                email: user.email,
+                photo: user.photo,
+                companyName: tenantData?.tenantId.companyName,
                 tenantId:tenantId,
                 token: token,
+                tenantData:tenantData,
+                expiresIn: req.body.remember  ?  (365 * 86400) :( 86400 )
             },
-
-            message: "Login Successfull",
+            message: "Successfully login user",
         });
     } catch (error) {
         return res.status(404).json({
             success: 0,
             result: null,
-            message: error,
+            message: error.message,
         });
     }
 };

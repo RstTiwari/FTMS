@@ -21,19 +21,14 @@ const NavBar = ({ user, width }) => {
     const isLaptop = window.innerWidth >= 900;
 
     const handleLogout = () => {
-        setIsLoggingOut(true);
-        // Perform logout operation
-        logoutUser().then(() => {
-            setIsLoggingOut(false);
-            navigate("/login");
-        });
+        logoutUser();
+    
     };
-    console.log(user)
     const menu = (
         <Menu style={{ width: 150 }}>
             <Menu.Item key="user" icon={<UserOutlined />}>
                 <div style={{ display: "flex", alignItems: "center" }}>
-                    <Typography.Text>{user.name.toUpperCase()}</Typography.Text>
+                    <Typography.Text>{user?.name?.toUpperCase()}</Typography.Text>
                 </div>
             </Menu.Item>
             <Menu.Item
@@ -69,14 +64,14 @@ const NavBar = ({ user, width }) => {
                     <>
                         {user && user.companyLogo && (
                             <Avatar
-                                src={user.companyLogo}
+                                src={user?.companyLogo}
                                 alt="Company Logo"
                                 size="small"
                                 style={{ marginRight: 8 }}
                             />
                         )}
-                        <Typography.Text style={{ textTransform: "uppercase", color: "black", marginLeft: "0.5rem" }}>
-                            {user.companyName}
+                        <Typography.Text style={{ textTransform: "uppercase", color: "#000",fontWeight:500, marginLeft: "0.5rem" }}>
+                            {user?.companyName}
                         </Typography.Text>
                     </>
                 )}
@@ -99,7 +94,6 @@ const NavBar = ({ user, width }) => {
                 setOpen={setOpenSettingSidebar}
                 children={<SettingList closeSideBar={openSettingSideBar} />}
             />
-            <PageLoader isLoading={isLoggingOut} text="Logging out..." />
         </Header>
     );
 };

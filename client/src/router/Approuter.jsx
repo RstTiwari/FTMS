@@ -30,15 +30,15 @@ import Orgnization from "pages/Orgnization/Orgnization";
 import Templates from "pages/Templates/index"
 import SimpleWebSocketComponent from "pages/Websocket";
 
-const Approuter = () => {
+const Approuter = ({profile}) => {
     return (
         <Routes>
-            <Route element={<Layout />}>
+            <Route element={<Layout profile = {profile} />}>
                 <Route
                     path="/"
-                    element={<Navigate to="/dashboard" replace />}
+                    element={<Navigate to="/app/:tenantId/dashboard"  replace />}
                 />
-                <Route path="/dashboard" exact element={<Dashbord />} />
+                <Route path="/app/:tenantId/dashboard" exact element={<Dashbord />} />
                 <Route path="/customers" element={<Coustomer />} />
                 <Route
                     path="/customers/create"
@@ -82,7 +82,7 @@ const Approuter = () => {
                 />
 
                 {/**Routes for Read  Update And Pdf */}
-                <Route path="/read/:entity/:id" element={<ReadModule />} />
+                <Route path="/:tenantId/:entity" element={<ReadModule />} />
                 <Route path="/update/:entity/:id" element={<UpdateModule />} />
                 <Route path="/download/:entity/:id" element={<PdfModule />} />
                 <Route path="/record/payment/:id" element={<NewPayment />} />

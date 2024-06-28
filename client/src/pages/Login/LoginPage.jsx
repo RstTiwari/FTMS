@@ -21,7 +21,7 @@ const Login = () => {
         if (response.success === 1) {
             loginUser(response.result);
             setIsLoading(false);
-            navigate("/dashboard");
+            navigate(`/app/${response.result?.tenant.tenantId}/dashboard`)
         } else {
             setIsLoading(false);
             return NotificationHandler.error(response.message);

@@ -36,15 +36,14 @@ const register = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
         return res.status(409).json({
             success: 0,
             result: null,
-            message: "An account with this email has already been registered.",
+            message: "An account with this email exist.",
         });
     }
 
     /**
      *Creating a new Tenant
      */
-    const tenantId = uniqueId();
-    const tenantData = await tenantDb.create({ tenantId, companyName ,email });
+    const tenantData = await tenantDb.create({ companyName ,email });
     if (!tenantData) {
         return res.status(403).json({
             success: 0,
@@ -59,7 +58,7 @@ const register = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
     const hashedPassword = bcrypt.hashSync(salt + password);
     const emailOtp = Math.floor(100000 + Math.random() * 900000);
     const emailOtpExpireTime = Math.floor(Date.now() / 1000) + 900;
-
+    const tenantId = tenantData._id
     const savedUser = await User.create({ email, name, tenantId });
     const registrationDone = await userPasswordDb.create({
         userId: savedUser._id,
@@ -87,7 +86,7 @@ const register = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
             userId: savedUser._id,
             name: savedUser.name,
             email: savedUser.email,
-            tenantId:savedUser.tenantId
+            tenantId:tenantId
         },
         message:
             "Account registered successfully. Please check mail and verify.",

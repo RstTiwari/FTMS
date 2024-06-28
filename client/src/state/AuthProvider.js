@@ -3,24 +3,27 @@ import { Cookies, useCookies } from "react-cookie";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import axios from "axios";
 import { removeLocalData } from "Helper/FetchingLocalData";
+
 let myfac8ryBaseUrl = process.env.REACT_APP_URL_PROD;
+
 if (process.env.NODE_ENV === "development") {
     myfac8ryBaseUrl = process.env.REACT_APP_URL_LOCAL;
-}
+};
+
 const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
     const loginUser = (result) => {
         setCookie("token", result.token, { maxAge: result.expiresIn });
-        setCookie("authData", JSON.stringify(result), {
+        setCookie("profile", JSON.stringify(result), {
             maxAge: result.expiresIn,
         });
     };
 
-    const logoutUser = () => {
+    const logoutUser = async() => {
         removeCookie("token");
-        removeCookie("authData");
+        removeCookie("profile");
         removeLocalData("customer");
         removeLocalData("invoice")
         removeLocalData("payments");

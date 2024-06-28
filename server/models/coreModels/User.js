@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema({
-
     removed: {
         type: Boolean,
         default: false,
@@ -14,10 +13,7 @@ const UserSchema = new mongoose.Schema({
         type: "String",
         required: true,
     },
-    tenantId:{
-        type:String,
-        required:true,
-    },
+    tenantId: { type: String, ref: 'tenant', required: true },
     email: {
         type: String,
         required: true,
@@ -36,15 +32,8 @@ const UserSchema = new mongoose.Schema({
     role: {
         type: String,
         default: "superadmin",
-        enum: [
-            "superadmin",
-            "admin",
-            "staffAdmin",
-            "staff",
-            "createOnly",
-            "readOnly",
-        ],
+        enum: ["superadmin", "admin", "staffAdmin", "staff"],
     },
-});
+},{timestamps:true});
 
 export default mongoose.model("User", UserSchema);

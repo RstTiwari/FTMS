@@ -1,120 +1,53 @@
 import React, { useState, useEffect } from "react";
 import { Layout, Menu, Typography, Button } from "antd";
-import {
-    HomeOutlined,
-    GroupOutlined,
-    DollarOutlined,
-    CalculatorOutlined,
-    ShoppingCartOutlined,
-    FileSearchOutlined,
-    ProfileOutlined,
-    AccountBookOutlined,
-    TeamOutlined,
-    MoneyCollectOutlined,
-    PieChartOutlined,
-    DatabaseOutlined,
-    MenuUnfoldOutlined,
-    MenuFoldOutlined,
-} from "@ant-design/icons";
-import { useLocation, useNavigate } from "react-router-dom";
+import  * as Icons from "@ant-design/icons";
+import { useLocation, useNavigate,useParams } from "react-router-dom";
 import { BusinessCenterOutlined } from "@mui/icons-material";
 
 import ftmsLogo from "../Assets/favicon.png";
+import { useCookies } from "react-cookie";
+
 
 const { Sider } = Layout;
 
 const Sidebar = ({
-    user,
     drawerWidth,
     isSideBarClosed,
     setIsSidebarClosed,
     isLaptop,
+    sidebar,
+    tenantId
+    
 }) => {
     const { pathname } = useLocation();
     const [active, setActive] = useState("");
     const [openKeys, setOpenKeys] = useState([]);
     const navigate = useNavigate();
-    const [collapsed, setCollapsed] = useState(false);
+    const [cookies,setCookies] = useCookies(['tenantData'])
 
     useEffect(() => {
         setActive(pathname.substring(1));
     }, [pathname]);
 
-    const navItems = [
-        {
-            key: "dashboard",
-            icon: <HomeOutlined />,
-            label: "Dashboard",
-        },
-        {
-            key: "sales",
-            label: "Sales & Marketing",
-            icon: <BusinessCenterOutlined />,
-            children: [
-                {
-                    key: "customers",
-                    label: "Customers",
-                },
-                {
-                    key: "quotation",
-                    label: "Quotation",
-                },
-                {
-                    key: "lead",
-                    label: "Lead",
-                },
-            ],
-        },
-        {
-            key: "accounts",
-            label: "Accounts",
-            icon: <AccountBookOutlined />,
-            children: [
-                {
-                    key: "invoice",
-                    label: "Invoice",
-                },
-                {
-                    key: "payments",
-                    label: "Payments",
-                },
-                {
-                    key: "expenses",
-                    label: "Expenses",
-                },
-                {
-                    key: "delivery",
-                    label: "Delivery Challan",
-                },
-            ],
-        },
-        {
-            key: "purchase",
-            label: "Purchase",
-            icon: <ShoppingCartOutlined />,
-            children: [
-                {
-                    key: "vendors",
-                    label: "Vendors",
-                },
-                {
-                    key: "purchaseOrder",
-                    label: "Purchase Order",
-                },
-            ],
-        },
-        {
-            key: "design",
-            label: "Design & Development",
-            icon: <DatabaseOutlined />,
-            children: [
-                {
-                    key: "products",
-                    label: "Products",
-                },
-            ],
-        },
-    ];
+
+        const convertDataToNavItems = (data) => {
+            return data.map(item => {
+                const IconComponent = Icons[item.icon]
+                const newItem = {
+                    key: item.key,
+                    label: item.label,
+                    icon: IconComponent ? < IconComponent/>:null,
+                };
+        
+                if (item.children && item.children.length > 0) {
+                    newItem.children = convertDataToNavItems(item.children);
+                }
+        
+                return newItem;
+            });
+        };
+
+        const navItems = convertDataToNavItems(sidebar)
 
     const onOpenChange = (keys) => {
         const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
@@ -123,6 +56,11 @@ const Sidebar = ({
         } else {
             setOpenKeys(keys);
         }
+    };
+
+    const handleNavbarClick = (e) => {
+        navigate(`/app/${tenantId}/${e.key}`);
+        setActive(e.key);
     };
 
     return (
@@ -167,14 +105,11 @@ const Sidebar = ({
                 selectedKeys={[active]}
                 openKeys={openKeys}
                 onOpenChange={onOpenChange}
-                onClick={(e) => {
-                    navigate(`/${e.key}`);
-                    setActive(e.key);
-                }}
+                onClick={handleNavbarClick}
                 theme="dark"
                 items={navItems}
                 style={{
-                    background: "#000",
+                    background: "#181c2e",
                     color: "white",
                     fontSize: "0.7rem",
                     textAlign: "left",

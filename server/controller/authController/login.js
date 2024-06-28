@@ -1,6 +1,7 @@
 import joi from "joi";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import tenantDataDb from "../../models/coreModels/tenantData.js";
 
 /**
  *
@@ -24,6 +25,7 @@ const login = async (req, res, next, userDb, userPassworDb, tenantDb) => {
     });
 
     const { error, value } = ObjectSchema.validate({ email, password });
+
     if (error) {
         return res.status(409).json({
             sucess: 0,
@@ -34,6 +36,7 @@ const login = async (req, res, next, userDb, userPassworDb, tenantDb) => {
     }
 
     const user = await userDb.findOne({ email: email, removed: false });
+
     if (!user) {
         return res.status(409).json({
             success: 0,
@@ -68,28 +71,39 @@ const login = async (req, res, next, userDb, userPassworDb, tenantDb) => {
     );
 
     await userPassworDb
-        .findOneAndUpdate(
+        .updateOne(
             { userId: user._id },
-            { $push: { loggedSessions: { token: token } } },
+            { $set: { loggedSession: token } },
             { new: true }
         )
         .exec();
-    let tenantId = user.tenantId;
-    const tenantData = await tenantDb.findOne({ tenantId: tenantId });
-    //if compnay logoneeded call api
+
+
+    let tenantId = user?.tenantId;
+    const tenantData = await tenantDataDb.findOne({ tenantId: tenantId });
+
+    //if company log  needed call api
+    // manage the Access here
+    let sidebar = tenantData?.sidebar
     res.status(200).json({
         success: 1,
         result: {
-            _id: user._id,
-            name: user.name,
-            surname: user.surname,
-            role: user.role,
-            email: user.email,
-            photo: user.photo,
-            companyName: tenantData.companyName,
-            tenantId:tenantId,
+            user: {
+                _id: user._id,
+                name: user.name,
+                surname: user.surname,
+                role: user.role,
+                email: user.email,
+                photo: user.photo,
+            },
+            tenant: {
+                tenantId: tenantId,
+                companyName: tenantData?.tenantId.companyName,
+                sidebar: sidebar,
+                // add all the data here
+            },
             token: token,
-            expiresIn: req.body.remember  ?  (365 * 86400) :( 86400 )
+            expiresIn: req.body.remember ? 365 * 86400 : 86400,
         },
         message: "Successfully login user",
     });

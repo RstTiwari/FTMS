@@ -8,7 +8,6 @@ import expensesDb from "../../models/appModels/expenses.js";
 import deliveryChallanDb from "../../models/appModels/challan.js";
 import vednorDb from "../../models/appModels/vendor.js";
 import purchaseDb from "../..//models/appModels/purchase.js";
-import sidebar from "../../models/appModels/sidebar.js"
 import tenantDb from "../../models/coreModels/Tenant.js"
 import create from "./create.js";
 import getList from "./getList.js";
@@ -17,6 +16,7 @@ import update from "./update.js";
 import patch from "./patch.js";
 import genratePdf from "./genratePdf.js";
 import upload from "./upload.js"
+import tenantData from "../../models/coreModels/tenantData.js";
 
 
 const appRoutes = {
@@ -155,8 +155,8 @@ const checkDbForEntity = (entity) => {
         return purchaseDb;
     } else if (entity === "orgnizationprofile") {
         return tenantDb;
-    }  else if (entity === "sidebar") {
-        return sidebar;
+    }  else if (entity === "tenantData") {
+        return tenantData;
     } 
      else {
         return false;

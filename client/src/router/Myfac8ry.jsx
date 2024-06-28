@@ -9,11 +9,12 @@ import { App } from "antd";
 
 const  Myfac8ry = ()=> {
     const [cookies,setCookie] = useCookies(["token"])
+    const profile =  cookies["profile"]
     return(
         <App>
 
         {
-            cookies["token"] ? (<Approuter/>):(<AuthRouter/>)
+            cookies["token"]  && profile ? (<Approuter  profile = {profile}/>):(<AuthRouter/>)
         }
         </App>
     )

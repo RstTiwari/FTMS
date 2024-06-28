@@ -45,7 +45,7 @@ const Register = () => {
         if (response.success === 1) {
             setIsLoading(false);
             loginUser(response.result);
-            navigate("/dashboard");
+            navigate("/app");
         }else{
            return NotificationHandler.error(response.message)
         }

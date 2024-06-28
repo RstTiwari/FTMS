@@ -11,10 +11,10 @@ import ReadVendor from "pages/Vendor/ReadVendor"
 
 
 const ReadModule = () => {
-    const { entity, id } = useParams();
+    const { entity} = useParams();
     let componentToRender = <NotFound />;
     switch (entity) {
-        case "customer":
+        case "customers":
             componentToRender = <ReadCustomer />;
             break;
         case "quote":
