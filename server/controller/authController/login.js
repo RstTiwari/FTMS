@@ -2,7 +2,6 @@ import joi from "joi";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import tenantDataDb from "../../models/coreModels/tenantData.js";
-
 /**
  *
  * @param {*} req
@@ -25,7 +24,6 @@ const login = async (req, res, next, userDb, userPassworDb, tenantDb) => {
     });
 
     const { error, value } = ObjectSchema.validate({ email, password });
-
     if (error) {
         return res.status(409).json({
             sucess: 0,
@@ -36,7 +34,6 @@ const login = async (req, res, next, userDb, userPassworDb, tenantDb) => {
     }
 
     const user = await userDb.findOne({ email: email, removed: false });
-
     if (!user) {
         return res.status(409).json({
             success: 0,
@@ -49,6 +46,7 @@ const login = async (req, res, next, userDb, userPassworDb, tenantDb) => {
         userId: user._id,
         removed: false,
     });
+
     const isMatch = await bcrypt.compare(
         userPassword.salt + password,
         userPassword.password
@@ -71,20 +69,17 @@ const login = async (req, res, next, userDb, userPassworDb, tenantDb) => {
     );
 
     await userPassworDb
-        .updateOne(
+        .findOneAndUpdate(
             { userId: user._id },
-            { $set: { loggedSession: token } },
+            { $push: { loggedSessions: { token: token } } },
             { new: true }
         )
         .exec();
 
-
-    let tenantId = user?.tenantId;
+    let tenantId = user.tenantId;
     const tenantData = await tenantDataDb.findOne({ tenantId: tenantId });
-
-    //if company log  needed call api
-    // manage the Access here
-    let sidebar = tenantData?.sidebar
+    //if compnay logoneeded call api
+    const sidebar = tenantData?.sidebar;
     res.status(200).json({
         success: 1,
         result: {
@@ -97,10 +92,9 @@ const login = async (req, res, next, userDb, userPassworDb, tenantDb) => {
                 photo: user.photo,
             },
             tenant: {
+                companyName: tenantData?.tenantDb?.companyName,
                 tenantId: tenantId,
-                companyName: tenantData?.tenantId.companyName,
                 sidebar: sidebar,
-                // add all the data here
             },
             token: token,
             expiresIn: req.body.remember ? 365 * 86400 : 86400,

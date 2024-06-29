@@ -6,16 +6,18 @@ import ReadInvoice from "pages/Invoice/ReadInvoice";
 import ReadLead from "pages/Lead/ReadLead";
 import NotFound from "pages/Notfound";
 import ReadChallan from "pages/DeliveyChallan/ReadChallan";
-import ReadPurchaseOrder  from "pages/PurchaseOrder/ReadPurchaseOrder";
-import ReadVendor from "pages/Vendor/ReadVendor"
+import ReadPurchaseOrder from "pages/PurchaseOrder/ReadPurchaseOrder";
+import ReadVendor from "pages/Vendor/ReadVendor";
+import NewCustomer from "pages/Customer/NewCustomer";
 
+const Create = () => {
+    const { tenantId, entity, pageNo } = useParams();
 
-const ReadModule = () => {
-    const { entity} = useParams();
     let componentToRender = <NotFound />;
+
     switch (entity) {
         case "customers":
-            componentToRender = <ReadCustomer />;
+            componentToRender = <NewCustomer />;
             break;
         case "quote":
             componentToRender = <ReadQuation />;
@@ -33,13 +35,13 @@ const ReadModule = () => {
             componentToRender = <ReadPurchaseOrder />;
             break;
         case "vendors":
-                componentToRender = <ReadVendor />;
-                break;
-
+            componentToRender = <ReadVendor />;
+            break;
         default:
             break;
     }
+
     return <>{componentToRender}</>;
 };
 
-export default ReadModule;
+export default Create;

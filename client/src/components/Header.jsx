@@ -1,80 +1,54 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useMediaQuery } from "@mui/material";
-import { ArrowBackOutlined } from "@mui/icons-material";
-import CloseIcon from "@mui/icons-material/Close";
-import { Row, Col, Button, Divider } from "antd";
-import { removeLocalData } from "Helper/FetchingLocalData";
+import React from "react";
+import { Col, Row, Button } from "antd";
+import { Refresh } from "@mui/icons-material"; // Assuming you have an icon library for Refresh
+import { PlusOutlined } from "@ant-design/icons";
+import { useParams, useNavigate } from "react-router-dom";
 
-const Header = ({ title, subTitle, addRoute, localDataKey, cancelRoute,refresh }) => {
-    const windowWidth = window.innerWidth;
-    const onCloseClick = () => {
-        navigate(`/${cancelRoute}`);
-    };
+const HeaderComponent = ({
+    title,
+    subTitle,
+    onAddClick,
+    refreshThePageOnly,
+    localDataKey,
+}) => {
+    const { tenantId, entity } = useParams();
     const navigate = useNavigate();
-    const onAddClick = () => {
-        navigate(`/${addRoute}`);
-    };
-    const refreshThePageOnly = (localDataKey) => {
-        removeLocalData(`${localDataKey}`);
-    };
-
-    const titleSpane = subTitle ? 15 : addRoute ? 15 : refresh ? 18:21;
-    const isLaptop = useMediaQuery("(min-width:1000px)");
-    const fontSize = isLaptop ? "1.3rem" : "0.7rem";
-
     return (
-        <Row align={"middle"} gutter={20}>
+        <Row
+            style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+            }}
+        >
             <Col
-                xs={6}
+                xs={12}
                 sm={12}
                 md={12}
-                lg={titleSpane}
-                style={{ color: "black", fontSize: fontSize }}
+                lg={12}
+                style={{ color: "black", fontSize: "1rem", color: "#22b378" }}
             >
-                {title.toUpperCase()}
+                LIST OF ALL {entity?.toUpperCase()}
             </Col>
-            {refresh  ? (
-                <Col xs={6} sm={12} md={6} lg={3}>
-                    <Button
-                        onClick={() => {
-                            refreshThePageOnly(localDataKey);
-                        }}
-                    >
-                        Refresh
-                    </Button>
-                </Col>
-            ) : (
-                ""
-            )}
-            {(subTitle && windowWidth >= 992) ? (
-                <>
-                    <Col xs={6} sm={12} md={6} lg={2}>
-                        <Button
-                            onClick={onAddClick}
-                            type="primary"
-                            style={{ fontSize: "0.7rem" }}
-                        >
-                            {subTitle}
-                        </Button>
-                    </Col>
-                </>
-            ) : (
-                ""
-            )}
-            <Col xs={6} sm={12} md={6} lg={3} push={2}>
-                <CloseIcon
-                    onClick={onCloseClick}
+            <Col xs={12} sm={12} md={12} lg={12} style={{ textAlign: "right" }}>
+                <Button
+                    icon={<PlusOutlined />}
+                    onClick={() =>
+                        navigate(`/app/${tenantId}/${entity}/create`)
+                    }
                     style={{
-                        cursor: "pointer",
-                        fontSize: fontSize,
-                        color: "red",
+                        fontSize: "1rem",
+                        backgroundColor: "#22b378",
+                        color: "#fff",
+                        borderRadius: "5px",
+                        alignItems: "center",
                     }}
-                />
+                >
+                    New
+                </Button>
             </Col>
-            <Divider />
         </Row>
     );
 };
 
-export default Header;
+export default HeaderComponent;

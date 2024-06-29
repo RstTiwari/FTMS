@@ -1,19 +1,16 @@
 export const removeLocalData = (cookieName) => {
-    console.log(cookieName);
     sessionStorage.removeItem(`${cookieName}`);
-    window.location.reload();
 };
 export const getLocalData = (tokenName) => {
     let data = sessionStorage.getItem(`${tokenName}`);
-    const decodedData = base64ToArray(data)
-    return  decodedData ? decodedData : null
+    const decodedData = base64ToArray(data);
+    return decodedData ? decodedData : null;
 };
 
-export const setLocalData = (tokenName,data) => {
-    let encodedData =  arrayToBase64(data)
+export const setLocalData = (tokenName, data) => {
+    let encodedData = arrayToBase64(data);
     sessionStorage.setItem(tokenName, encodedData);
 };
-
 
 // Encode array to Base64
 function arrayToBase64(array) {
@@ -26,13 +23,7 @@ function base64ToArray(base64String) {
         const jsonString = atob(base64String); // Decode Base64 to JSON string
         return JSON.parse(jsonString); // Parse JSON string back to array
     } catch (error) {
-        console.error('Error decoding Base64 string', error);
+        console.error("Error decoding Base64 string", error);
         return null; // Return null if decoding fails
     }
 }
-
-
-
-
-
-

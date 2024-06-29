@@ -31,32 +31,34 @@ import { TableAction } from "components/TableAction";
 import { convertUnixTimestampToDate } from "Helper/EpochConveter";
 const { Text } = Typography;
 
-export const productColumns = [
-    {
-        title: "PRODUCT NAME",
-        dataIndex: "productName",
-        key: "srno",
-    },
-    {
-        title: "HSN CODE",
-        dataIndex: "hsnCode",
-        key: "source",
-        responsive: ["lg"],
-        render: (_, record) => (
-            <>
-                <Text type="success">{record.hsnCode}</Text>
-            </>
-        ),
-    },
-    {
-        title: "RATE",
-        dataIndex: "rate",
-        key: "subTotal",
-    },
+export const productData = {
+    listColumns: [
+        {
+            title: "PRODUCT NAME",
+            dataIndex: "productName",
+            key: "srno",
+        },
+        {
+            title: "HSN CODE",
+            dataIndex: "hsnCode",
+            key: "source",
+            responsive: ["lg"],
+            render: (_, record) => (
+                <>
+                    <Text type="success">{record.hsnCode}</Text>
+                </>
+            ),
+        },
+        {
+            title: "RATE",
+            dataIndex: "rate",
+            key: "subTotal",
+        },
+    ],
     // {
     //     fixed: "right",
     //     render: (_, record) => (
     //         <TableAction params={record._id} page={"products"} />
     //     ),
     // },
-];
+};

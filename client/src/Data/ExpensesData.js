@@ -3,51 +3,54 @@ import { convertUnixTimestampToDate } from "Helper/EpochConveter";
 import { TableAction } from "components/TableAction";
 const { Text } = Typography;
 
-export const expensesColumns = [
-    {
-        title: " Date",
-        dataIndex: "expenseDate",
-        key: "expenseDate",
-        render: (_, record) => (
-            <>
-                <Text>{convertUnixTimestampToDate(record.expenseDate)}</Text>
-            </>
-        ),
-    },
-    {
-        title: "Expense Category",
-        dataIndex: "category",
-        key: "category",
-        render: (_, record) => (
-            <>
-                <Text type="success">{record.categoryName}</Text>
-            </>
-        ),
-    },
-    {
-        title: "Total",
-        dataIndex: "amount",
-        key: "total",
-        render: (_, record) => (
-            <>
-                <Text type="danger">{record.amount}</Text>
-            </>
-        ),
-    },
-    {
-        title: "NOTE",
-        dataIndex: "note",
-        key: "total",
-        responsive: ["lg"],
-        render: (_, record) => (
-            <>
-                <Text >{record.note}</Text>
-            </>
-        ),
-    },
-
- 
-];
+export const expenseData = {
+    listColumns: [
+        {
+            title: " Date",
+            dataIndex: "expenseDate",
+            key: "expenseDate",
+            render: (_, record) => (
+                <>
+                    <Text>
+                        {convertUnixTimestampToDate(record.expenseDate)}
+                    </Text>
+                </>
+            ),
+        },
+        {
+            title: "Expense Category",
+            dataIndex: "category",
+            key: "category",
+            render: (_, record) => (
+                <>
+                    <Text type="success">{record.categoryName}</Text>
+                </>
+            ),
+        },
+        {
+            title: "Total",
+            dataIndex: "amount",
+            key: "total",
+            render: (_, record) => (
+                <>
+                    <Text type="danger">{record.amount}</Text>
+                </>
+            ),
+        },
+        {
+            title: "NOTE",
+            dataIndex: "note",
+            key: "total",
+            responsive: ["lg"],
+            render: (_, record) => (
+                <>
+                    <Text>{record.note}</Text>
+                </>
+            ),
+        },
+    ],
+};
+export default expenseData;
 
 export const categoryOption = [
     {

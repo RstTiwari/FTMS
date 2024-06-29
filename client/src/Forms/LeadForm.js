@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import { Form, Select, Divider, Space, Input, Button, Row, Col } from "antd";
-import { LeadOption, companyDetails, leadStatus } from "Data/LeadData";
+import { sourceOptions, companyDetails, leadStatus } from "Data/LeadData";
 import { useAuth } from "state/AuthProvider";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import CustomerModal from "components/CustomerModal";
 const LeadForm = ({ current }) => {
-
     const handleCustomerChange = (value) => {
         current.setFieldsValue({ customer: value });
     };
-    const customerId = current.getFieldValue("customer")
+    const customerId = current.getFieldValue("customer");
     return (
         <div>
             <Form.Item
@@ -25,7 +24,7 @@ const LeadForm = ({ current }) => {
                 ]}
             >
                 <Select>
-                    {LeadOption.map((item) => {
+                    {sourceOptions.map((item) => {
                         const { label, value } = item;
                         return (
                             <>
@@ -48,7 +47,10 @@ const LeadForm = ({ current }) => {
                     },
                 ]}
             >
-                <CustomerModal   customerSelect={handleCustomerChange} customerId={customerId} />
+                <CustomerModal
+                    customerSelect={handleCustomerChange}
+                    customerId={customerId}
+                />
             </Form.Item>
             <Form.Item
                 label="Status"

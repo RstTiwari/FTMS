@@ -3,7 +3,7 @@ import { DownOutlined } from "@ant-design/icons";
 import { TableAction } from "components/TableAction";
 import { convertUnixTimestampToDate } from "../Helper/EpochConveter";
 const { Text, Link } = Typography;
-export const LeadOption = [
+export const sourceOptions = [
     {
         label: "IndiaMart",
         value: "indiaMart",
@@ -78,218 +78,75 @@ export const items = [
     },
 ];
 
-export const leadColumns = [
-    {
-        title: "Source",
-        dataIndex: "source",
-        key: "source",
-    },
-    {
-        title: "Customer",
-        dataIndex: "customer",
-        key: "company",
-        render: (_, record) => (
-            <>
-                <Text type="success">{record.customer.customerName}</Text>
-            </>
-        ),
-    },
+export const leadtData = {
+    listColumns: [
+        {
+            title: "Source",
+            dataIndex: "source",
+            key: "source",
+        },
+        {
+            title: "Customer",
+            dataIndex: "customer",
+            key: "company",
+            render: (_, record) => (
+                <>
+                    <Text type="success">{record.customer.customerName}</Text>
+                </>
+            ),
+        },
 
-    {
-        title: "Recived Date",
-        dataIndex: "recivedDate",
-        key: "recivedDate",
-        responsive: ["lg"],
-        render: (_, record) => (
-            <>
-                <Text>{convertUnixTimestampToDate(record.recivedDate)}</Text>
-            </>
-        ),
-    },
-    {
-        title: "Status",
-        dataIndex: "status",
-        key: "status",
-    },
-    {
-        title: "Comments",
-        dataIndex: "comments",
-        width:250,
-        key: "comments",
-        responsive: ["lg"],
-        render: (_, record) => (
-            <>
-                <Space>
-                    <Flex vertical>
-                        {record.comments.map((comment) => {
-                            return (
-                                <div>
-                                    <Text code>
-                                        DATE:{" "}
-                                        {convertUnixTimestampToDate(
-                                            comment.date
-                                        )}
-                                    </Text>
-                                    <Space style={{ margin: "0.3rem" }}>
-                                        <Text type="success">
-                                            {comment.comment}
+        {
+            title: "Recived Date",
+            dataIndex: "recivedDate",
+            key: "recivedDate",
+            responsive: ["lg"],
+            render: (_, record) => (
+                <>
+                    <Text>
+                        {convertUnixTimestampToDate(record.recivedDate)}
+                    </Text>
+                </>
+            ),
+        },
+        {
+            title: "Status",
+            dataIndex: "status",
+            key: "status",
+        },
+        {
+            title: "Comments",
+            dataIndex: "comments",
+            width: 250,
+            key: "comments",
+            responsive: ["lg"],
+            render: (_, record) => (
+                <>
+                    <Space>
+                        <Flex vertical>
+                            {record.comments.map((comment) => {
+                                return (
+                                    <div>
+                                        <Text code>
+                                            DATE:{" "}
+                                            {convertUnixTimestampToDate(
+                                                comment.date
+                                            )}
                                         </Text>
-                                    </Space>
-                                </div>
-                            );
-                        })}
-                    </Flex>
-                </Space>
-            </>
-        ),
-    },
+                                        <Space style={{ margin: "0.3rem" }}>
+                                            <Text type="success">
+                                                {comment.comment}
+                                            </Text>
+                                        </Space>
+                                    </div>
+                                );
+                            })}
+                        </Flex>
+                    </Space>
+                </>
+            ),
+        },
+    ],
+};
 
-    {
-        fixed: "right",        
-        render: (_, record) => (
-            <TableAction params={record._id} page={"lead"} />
-        ),
-    },
-];
-
-// export const leadDataSource = [
-//      {
-//       source:"indiamart",
-//       customer:"Reliance Nippon",
-//       status:"Draft",
-//       recivedDate:"21-1-23",
-//       comments:[
-//         {
-//           date: '23-1-23',
-//           comment: "Quote Sended",
-//         },
-//         {
-//           date: '21-1-23',
-//           comment: "Called Him For Detialsd",
-//         },
-//         {
-//           date: '21-1-23',
-//           comment: "Lead Reviced",
-//         },
-//             ]
-//      },
-//      {
-//       source:"Just Dial",
-//       customer:"Arihant Play",
-//       status:"Draft",
-//       recivedDate:"21-1-23",
-//       comments:[
-//         {
-//           date: '23-1-23',
-//           comment: "Quote Sended",
-//         },
-//         {
-//           date: '21-1-23',
-//           comment: "Called Him For Detialsd",
-//         },
-//         {
-//           date: '21-1-23',
-//           comment: "Lead Reviced",
-//         },
-//             ]
-//      },
-//      {
-//       source:"salesAgent",
-//       customer:"Adani Foundation",
-//       status:"Draft",
-//       recivedDate:"21-1-23",
-//       comments:[
-//         {
-//           date: '23-1-23',
-//           comment: "Quote Sended",
-//         },
-//         {
-//           date: '21-1-23',
-//           comment: "Called Him For Detialsd",
-//         },
-//         {
-//           date: '21-1-23',
-//           comment: "Lead Reviced",
-//         },
-//             ]
-//      },
-//      {
-//       source:"salesAgent",
-//       customer:"Adani Foundation",
-//       status:"Draft",
-//       recivedDate:"21-1-23",
-//       comments:[
-//         {
-//           date: '23-1-23',
-//           comment: "Quote Sended",
-//         },
-//         {
-//           date: '21-1-23',
-//           comment: "Called Him For Detialsd",
-//         },
-//         {
-//           date: '21-1-23',
-//           comment: "Lead Reviced",
-//         },
-//             ]
-//      },
-//      {
-//       source:"salesAgent",
-//       customer:"Adani Foundation",
-//       status:"Draft",
-//       recivedDate:"21-1-23",
-//       comments:[
-//         {
-//           date: '23-1-23',
-//           comment: "Quote Sended",
-//         },
-//         {
-//           date: '21-1-23',
-//           comment: "Called Him For Detialsd",
-//         },
-//         {
-//           date: '21-1-23',
-//           comment: "Lead Reviced",
-//         },
-//             ]
-//      },
-//      {
-//       source:"salesAgent",
-//       company:"Adani Foundation",
-//       status:"Draft",
-//       recivedDate:"21-1-23",
-//       comments:[
-//         {
-//           date: '23-1-23',
-//           comment: "Quote Sended",
-//         },
-//         {
-//           date: '21-1-23',
-//           comment: "Called Him For Detialsd",
-//         },
-//         {
-//           date: '21-1-23',
-//           comment: "Lead Reviced",
-//         },
-//             ]
-//      },  {
-//       source:"salesAgent",
-//       company:"Adani Foundation",
-//       status:"Draft",
-//       recivedDate:"21-1-23",
-//       comments:[
-//         {
-//           date: '23-1-23',
-//           comment: "Quote Sended",
-//         },
-//         {
-//           date: '21-1-23',
-//           comment: "Called Him For Detialsd",
-//         },
-//         {
-//           date: '21-1-23',
-//           comment: "Lead Reviced",
-//         },
-//             ]
-//      }
-//  ]
+export default leadtData;

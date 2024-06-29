@@ -1,5 +1,5 @@
 import React, { lazy } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useParams } from "react-router-dom";
 import Dashbord from "../pages/dashbord";
 import Layout from "../pages/layout";
 import NotFound from "pages/Notfound";
@@ -18,7 +18,6 @@ import Coustomer from "../pages/Customer";
 import NewCoustomer from "pages/Customer/NewCustomer";
 import Invoice from "../pages/Invoice";
 import NewInvoice from "pages/Invoice/NewInvoice";
-import ReadModule from "module/ReadModule/ReadModule";
 import UpdateModule from "module/UpdateModule/UpdateModule";
 import PdfModule from "module/PdfModule/PdfModule.js";
 import NewProduct from "pages/Product/NewProduct";
@@ -27,18 +26,35 @@ import NewExpenses from "pages/Expenses/NewExpenses";
 import NewVendor from "pages/Vendor/NewVendor";
 import PurchaseOrder from "pages/PurchaseOrder";
 import Orgnization from "pages/Orgnization/Orgnization";
-import Templates from "pages/Templates/index"
+import Templates from "pages/Templates/index";
 import SimpleWebSocketComponent from "pages/Websocket";
+import CoustomListPage from "components/CustomList";
+import CreateModule from "module/Create/Create";
 
-const Approuter = ({profile}) => {
+const Approuter = ({ profile }) => {
+    const tenantId = profile?.tenant?.tenantId;
     return (
         <Routes>
-            <Route element={<Layout profile = {profile} />}>
+            <Route element={<Layout profile={profile} />}>
                 <Route
                     path="/"
-                    element={<Navigate to="/app/:tenantId/dashboard"  replace />}
+                    element={
+                        <Navigate to={`/app/${tenantId}/dashboard`} replace /> // it replaces show it the details basically
+                    }
                 />
-                <Route path="/app/:tenantId/dashboard" exact element={<Dashbord />} />
+                <Route
+                    path="/app/:tenantId/dashboard"
+                    exact
+                    element={<Dashbord />}
+                />
+                <Route
+                    path="/app/:tenantId/:entity/:pageNo"
+                    element={<CoustomListPage />}
+                />
+                <Route
+                    path="/app/:tenantId/:entity/create"
+                    element={<CreateModule />}
+                />
                 <Route path="/customers" element={<Coustomer />} />
                 <Route
                     path="/customers/create"
@@ -82,23 +98,18 @@ const Approuter = ({profile}) => {
                 />
 
                 {/**Routes for Read  Update And Pdf */}
-                <Route path="/:tenantId/:entity" element={<ReadModule />} />
+
                 <Route path="/update/:entity/:id" element={<UpdateModule />} />
                 <Route path="/download/:entity/:id" element={<PdfModule />} />
                 <Route path="/record/payment/:id" element={<NewPayment />} />
 
-
                 {/*Mangaining Orgnization Profile */}
+                <Route path="/:entity/:id" element={<Orgnization />} />
+                <Route path="/templates" element={<Templates />} />
                 <Route
-                    path="/:entity/:id"
-                    element={<Orgnization />}
+                    path="/websocket"
+                    element={<SimpleWebSocketComponent />}
                 />
-                <Route
-                    path="/templates"
-                    element={<Templates />}
-                />
-                <Route path="/websocket" element={<SimpleWebSocketComponent />} />
-
 
                 <Route path="*" element={<NotFound />} />
 
