@@ -19,18 +19,16 @@ function App() {
                 <Suspense
                     fallback={
                         <PageLoader
-                            text={
-                                "Please Wait While We make Everythinh Perfect For You"
-                            }
+                            text={"Please Hold Making things  Perfect For You"}
                             isLoading={true}
                         />
                     }
                 >
                     <ThemeProvider theme={theme}>
                         <CssBaseline />
-                        <CookiesProvider  defaultSetOptions={{ path: "/" }} >
+                        <CookiesProvider defaultSetOptions={{ path: "/" }}>
                             <AuthProvider>
-                                    <Myfac8ry />
+                                <Myfac8ry />
                             </AuthProvider>
                         </CookiesProvider>
                     </ThemeProvider>

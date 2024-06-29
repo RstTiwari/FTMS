@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "state/AuthProvider.js";
 import NotificationHandler from "EventHandler/NotificationHandler.jsx";
 import SaveBottmComponent from "components/SaveBottomComponent.js";
+import FormActionButtons from "components/SmallComponent/FormActionButton.js";
 
 const NewCustomer = ({ checkHeader, afterAdd }) => {
     const entity = "customer";
@@ -14,7 +15,7 @@ const NewCustomer = ({ checkHeader, afterAdd }) => {
     const navigate = useNavigate();
     const { createData } = useAuth();
     const [form] = Form.useForm();
-    const fomulatePayload = (value={}) => {
+    const fomulatePayload = (value = {}) => {
         const {
             billingStreet,
             billingCity,
@@ -24,7 +25,7 @@ const NewCustomer = ({ checkHeader, afterAdd }) => {
             shippingCity,
             shippingState,
             shippingPincode,
-        } = value
+        } = value;
 
         value["billingAddress"] = {
             street: billingStreet ? billingStreet : "",
@@ -86,10 +87,7 @@ const NewCustomer = ({ checkHeader, afterAdd }) => {
                 onFinish={handelCustomerFormFinish}
             >
                 <CoustomerForm current={form} />
-                <SaveBottmComponent
-                    buttonText={"SAVE AS DRAFT"}
-                    cancelRoute={"customers"}
-                />
+                <FormActionButtons isUpdating={false} />
             </Form>
         </Flex>
     );

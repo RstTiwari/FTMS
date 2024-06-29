@@ -3,16 +3,14 @@ import { Col, Row, Button } from "antd";
 import { Refresh } from "@mui/icons-material"; // Assuming you have an icon library for Refresh
 import { PlusOutlined } from "@ant-design/icons";
 import { useParams, useNavigate } from "react-router-dom";
+import CoustomButton from "./SmallComponent/CoustomButton";
 
-const HeaderComponent = ({
-    title,
-    subTitle,
-    onAddClick,
-    refreshThePageOnly,
-    localDataKey,
-}) => {
+const HeaderComponent = ({}) => {
     const { tenantId, entity } = useParams();
     const navigate = useNavigate();
+    const handelAddNewClick = () => {
+        navigate(`/app/${tenantId}/${entity}/create`);
+    };
     return (
         <Row
             style={{
@@ -31,21 +29,11 @@ const HeaderComponent = ({
                 LIST OF ALL {entity?.toUpperCase()}
             </Col>
             <Col xs={12} sm={12} md={12} lg={12} style={{ textAlign: "right" }}>
-                <Button
-                    icon={<PlusOutlined />}
-                    onClick={() =>
-                        navigate(`/app/${tenantId}/${entity}/create`)
-                    }
-                    style={{
-                        fontSize: "1rem",
-                        backgroundColor: "#22b378",
-                        color: "#fff",
-                        borderRadius: "5px",
-                        alignItems: "center",
-                    }}
-                >
-                    New
-                </Button>
+                <CoustomButton
+                    onClick={handelAddNewClick}
+                    text={"New"}
+                    withIcon={true}
+                />
             </Col>
         </Row>
     );
