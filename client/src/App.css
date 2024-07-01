@@ -7,6 +7,12 @@
   pointer-events: none;
 }
 
+/* Custom CSS to hide asterisk for all Form.Item labels */
+.ant-form-item-label > label.ant-form-item-required::before {
+  display: none;
+}
+
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

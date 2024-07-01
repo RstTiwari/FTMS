@@ -10,21 +10,7 @@ const CoustomListPage = () => {
     const [isLoading, setIsLoading] = useState(false); // Example loading state, replace with your actual loading state
     const [selectedRecord, setSelectedRecord] = useState(null); // State to track selected row
 
-    // Example column definition
-    const customerColumns = [
-        { title: "ID", dataIndex: "id" },
-        { title: "Name", dataIndex: "name" },
-        { title: "Email", dataIndex: "email" },
-        // Add more columns as needed
-    ];
-
-    // Example data source
-    const data = [
-        { id: 1, name: "John Doe", email: "john.doe@example.com" },
-        { id: 2, name: "Jane Smith", email: "jane.smith@example.com" },
-        // Add more data rows as needed
-    ];
-
+    
     // Handle row click to open new route
     const handleRowClick = (record) => {
         setSelectedRecord(record);

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Layout, Menu, Typography, Button } from "antd";
 import * as Icons from "@ant-design/icons";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { BusinessCenterOutlined } from "@mui/icons-material";
 
 import ftmsLogo from "../Assets/favicon.png";
 import { useCookies } from "react-cookie";

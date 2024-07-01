@@ -28,8 +28,9 @@ import PurchaseOrder from "pages/PurchaseOrder";
 import Orgnization from "pages/Orgnization/Orgnization";
 import Templates from "pages/Templates/index";
 import SimpleWebSocketComponent from "pages/Websocket";
-import CoustomListPage from "components/CustomList";
-import CreateModule from "module/Create/Create";
+import CustomListPage from "components/CustomList";
+import CostomForm from "components/CustomForm"
+import CreateModule from "module/Create/CreateModule";
 
 const Approuter = ({ profile }) => {
     const tenantId = profile?.tenant?.tenantId;
@@ -49,11 +50,11 @@ const Approuter = ({ profile }) => {
                 />
                 <Route
                     path="/app/:tenantId/:entity/:pageNo"
-                    element={<CoustomListPage />}
+                    element={<CustomListPage />}
                 />
                 <Route
                     path="/app/:tenantId/:entity/create"
-                    element={<CreateModule />}
+                    element={<CostomForm />}
                 />
                 <Route path="/customers" element={<Coustomer />} />
                 <Route

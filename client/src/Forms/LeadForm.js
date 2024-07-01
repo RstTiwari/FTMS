@@ -4,17 +4,22 @@ import { sourceOptions, companyDetails, leadStatus } from "Data/LeadData";
 import { useAuth } from "state/AuthProvider";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import CustomerModal from "components/CustomerModal";
+import CustomLabel from "components/SmallComponent/CustomLabel";
+import FormItemCol from "components/SmallComponent/FormItemCol";
 const LeadForm = ({ current }) => {
     const handleCustomerChange = (value) => {
         current.setFieldsValue({ customer: value });
     };
-    const customerId = current.getFieldValue("customer");
+    // const customerId = current.getFieldValue("customer");
     return (
-        <div>
-            <Form.Item
-                label="Source"
+        <div style={{height:"100vh"}}>
+           <Col span={8}>
+           <Form.Item
+                label={<CustomLabel label={"Source"} />}
                 name="source"
                 hasFeedback
+                labelCol={{span:10}}
+                labelAlign="left"
                 allowClear={true}
                 rules={[
                     {
@@ -36,7 +41,9 @@ const LeadForm = ({ current }) => {
                     })}
                 </Select>
             </Form.Item>
-            <Form.Item
+           </Col>
+          
+            <FormItemCol
                 label={"Select Customer"}
                 name={"customer"}
                 hasFeedback
@@ -46,14 +53,12 @@ const LeadForm = ({ current }) => {
                         message: "Plese Select Customer",
                     },
                 ]}
-            >
-                <CustomerModal
-                    customerSelect={handleCustomerChange}
-                    customerId={customerId}
-                />
-            </Form.Item>
-            <Form.Item
-                label="Status"
+                customerSelect={handleCustomerChange}
+                type={"model"}
+            />
+             <Col span={8}>
+             <Form.Item
+                label={<CustomLabel label={"Status"} />}
                 name="status"
                 hasFeedback
                 rules={[
@@ -65,6 +70,8 @@ const LeadForm = ({ current }) => {
             >
                 <Select options={leadStatus} />
             </Form.Item>
+             </Col>
+
             <Form.List name={"comments"}>
                 {(subFileds, subOpt) => (
                     <div>

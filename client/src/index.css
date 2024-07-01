@@ -4,6 +4,9 @@ html
 body {
   overflow-x: hidden;
 }
+.ant-form-item-required::before {
+  display: none;
+}
 #root
 .app {
   height: 100%;

@@ -1,298 +1,140 @@
-import React, { lazy, useEffect, useState } from "react";
-import {
-    Form,
-    Select,
-    Col,
-    Input,
-    Row,
-    DatePicker,
-    Divider,
-    InputNumber,
-    Button,
-} from "antd";
-import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import DropDownCoustom from "components/DropDownCoustom";
-import { useAuth } from "state/AuthProvider";
-import PageLoader from "pages/PageLoader";
-import CustomerModal from "components/CustomerModal";
+import React from "react";
+import { Form, Row, Col, Input, InputNumber, Button, Divider } from "antd";
+import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
+import { useMediaQuery } from "@mui/material";
 import ProductModal from "components/ProductModal";
-import { items } from "Data/LeadData";
+import FormItemCol from "components/SmallComponent/FormItemCol";
+import Taglabel from "components/SmallComponent/Taglabel";
 
-const Invoice = ({ current }) => {
-    const handleCustomerChange = async (value, label) => {
+const QuotationForm = ({ current }) => {
+    const isLaptop = useMediaQuery("(min-width:1000px)");
+    const inputWidth = isLaptop ? 700 : 350;
+    const inputFontSize = isLaptop ? "1rem" : "0.4rem";
+
+    const items = current?.getFieldsValue(["items"]);
+
+    const handleCustomerChange = (value) => {
         current.setFieldsValue({ customer: value });
     };
 
-    const onDescriptionChange = (label, subField) => {
-        const formData = current.getFieldValue("items");
-        const items = [...formData];
-        const rowManipulated = items[subField.key];
-        rowManipulated.description = label.productName;
-        rowManipulated.rate = label.rate;
-        rowManipulated.hsnCode = label.hsnCode;
-        rowManipulated.taxableAmount = rowManipulated.rate * rowManipulated.qty;
-        rowManipulated.finalAmount = getFinalAmount(
-            rowManipulated.sgstPercent,
-            rowManipulated.cgstPercent,
-            rowManipulated.igstPercent,
-            rowManipulated.taxableAmount
-        );
-
-        items[subField.key] = rowManipulated;
-        current.setFieldsValue({ items: items });
-        console.log(current.getFieldValue("items"));
-
-        let amountBeforeTax = items.reduce((a, b) => a + b.taxableAmount, 0);
-        let amountAfterTax = items.reduce((a, b) => a + b.finalAmount, 0);
-        const totalTaxAmount = amountAfterTax - amountBeforeTax;
-        current.setFieldsValue({ grossTotal: Math.ceil(amountBeforeTax) });
-        current.setFieldsValue({ grandTotal: Math.ceil(amountAfterTax) });
-        current.setFieldsValue({ totalTaxAmount: Math.ceil(totalTaxAmount) });
+    const onDescriptionChange = (value, subField) => {
+        // Your logic here
     };
 
     const onRateChange = (value, subField) => {
-        const formData = current.getFieldValue("items");
-        const items = [...formData];
-        const rowManipulated = items[subField.key];
-        rowManipulated.rate = value;
-        rowManipulated.taxableAmount = rowManipulated.rate * rowManipulated.qty;
-        rowManipulated.finalAmount = getFinalAmount(
-            rowManipulated.sgstPercent,
-            rowManipulated.cgstPercent,
-            rowManipulated.igstPercent,
-            rowManipulated.taxableAmount
-        );
-
-        current.setFieldsValue({ items: items });
-
-        let amountBeforeTax = items.reduce((a, b) => a + b.taxableAmount, 0);
-        let amountAfterTax = items.reduce((a, b) => a + b.finalAmount, 0);
-        const totalTaxAmount = amountAfterTax - amountBeforeTax;
-        current.setFieldsValue({ grossTotal: Math.ceil(amountBeforeTax) });
-        current.setFieldsValue({ grandTotal: Math.ceil(amountAfterTax) });
-        current.setFieldsValue({ totalTaxAmount: Math.ceil(totalTaxAmount) });
+        // Your logic here
     };
 
     const onQtyChange = (value, subField) => {
-        const formData = current.getFieldValue("items");
-        const items = [...formData];
-        const rowManipulated = items[subField.key];
-        rowManipulated.qty = value;
-        rowManipulated.taxableAmount = rowManipulated.rate * rowManipulated.qty;
-        rowManipulated.finalAmount = getFinalAmount(
-            rowManipulated.sgstPercent,
-            rowManipulated.cgstPercent,
-            rowManipulated.igstPercent,
-            rowManipulated.taxableAmount
-        );
-        current.setFieldsValue({ items: items });
-
-        let amountBeforeTax = items.reduce((a, b) => a + b.taxableAmount, 0);
-        let amountAfterTax = items.reduce((a, b) => a + b.finalAmount, 0);
-        const totalTaxAmount = amountAfterTax - amountBeforeTax;
-        current.setFieldsValue({ grossTotal: Math.ceil(amountBeforeTax) });
-        current.setFieldsValue({ grandTotal: Math.ceil(amountAfterTax) });
-        current.setFieldsValue({ totalTaxAmount: Math.ceil(totalTaxAmount) });
+        // Your logic here
     };
 
     const onSgstChange = (value, subField) => {
-        const formData = current.getFieldValue("items");
-        const items = [...formData];
-        const rowManipulated = items[subField.key];
-        rowManipulated.sgstPercent = value;
-        rowManipulated.finalAmount = getFinalAmount(
-            rowManipulated.sgstPercent,
-            rowManipulated.cgstPercent,
-            rowManipulated.igstPercent,
-            rowManipulated.taxableAmount
-        );
-        current.setFieldsValue({ items: items });
-
-        let amountBeforeTax = items.reduce((a, b) => a + b.taxableAmount, 0);
-        let amountAfterTax = items.reduce((a, b) => a + b.finalAmount, 0);
-        const totalTaxAmount = amountAfterTax - amountBeforeTax;
-        current.setFieldsValue({ grossTotal: Math.ceil(amountBeforeTax) });
-        current.setFieldsValue({ grandTotal: Math.ceil(amountAfterTax) });
-        current.setFieldsValue({ totalTaxAmount: Math.ceil(totalTaxAmount) });
+        // Your logic here
     };
+
     const onCgstChange = (value, subField) => {
-        const formData = current.getFieldValue("items");
-        const items = [...formData];
-        const rowManipulated = items[subField.key];
-        rowManipulated.cgstPercent = value;
-        rowManipulated.finalAmount = getFinalAmount(
-            rowManipulated.sgstPercent,
-            rowManipulated.cgstPercent,
-            rowManipulated.igstPercent,
-            rowManipulated.taxableAmount
-        );
-        current.setFieldsValue({ items: items });
-
-        let amountBeforeTax = items.reduce((a, b) => a + b.taxableAmount, 0);
-        let amountAfterTax = items.reduce((a, b) => a + b.finalAmount, 0);
-        const totalTaxAmount = amountAfterTax - amountBeforeTax;
-        current.setFieldsValue({ grossTotal: Math.ceil(amountBeforeTax) });
-        current.setFieldsValue({ grandTotal: Math.ceil(amountAfterTax) });
-        current.setFieldsValue({ totalTaxAmount: Math.ceil(totalTaxAmount) });
+        // Your logic here
     };
+
     const onIgstChange = (value, subField) => {
-        const formData = current.getFieldValue("items");
-        const items = [...formData];
-        const rowManipulated = items[subField.key];
-        rowManipulated.igstPercent = value;
-        rowManipulated.finalAmount = getFinalAmount(
-            rowManipulated.sgstPercent,
-            rowManipulated.cgstPercent,
-            rowManipulated.igstPercent,
-            rowManipulated.taxableAmount
-        );
-        current.setFieldsValue({ items: items });
-
-        let amountBeforeTax = items.reduce((a, b) => a + b.taxableAmount, 0);
-        let amountAfterTax = items.reduce((a, b) => a + b.finalAmount, 0);
-        const totalTaxAmount = amountAfterTax - amountBeforeTax;
-        current.setFieldsValue({ grossTotal: Math.ceil(amountBeforeTax) });
-        current.setFieldsValue({ grandTotal: Math.ceil(amountAfterTax) });
-        current.setFieldsValue({ totalTaxAmount: Math.ceil(totalTaxAmount) });
+        // Your logic here
     };
 
-    /**Function for Calculating the Final Amount */
-    const getFinalAmount = (sgst, cgst, igst, taxableAmount) => {
-        let sgstAmount = Math.floor((sgst * taxableAmount) / 100);
-        let cgstAmount = Math.floor((cgst * taxableAmount) / 100);
-        let igstAmount = Math.floor((igst * taxableAmount) / 100);
-        return taxableAmount + sgstAmount + igstAmount + cgstAmount;
-    };
-
-    useEffect(() => {}, []);
-    const items = current.getFieldValue("items");
     return (
-        <div>
-            <Col span={10}>
-                <Form.Item
-                    label={"Select Coustomer"}
-                    name={"customer"}
-                    labelAlign="left"
-                    labelCol={{ span: 8 }}
-                    rules={[
-                        {
-                            required: "true",
-                            message: "Please Select Coustomer",
-                        },
-                    ]}
-                >
-                    <CustomerModal
-                        customerSelect={handleCustomerChange}
-                        customerId={current.getFieldValue("customer")}
-                    />
-                </Form.Item>
-            </Col>
+        <div style={{height:"100vh"}}>
+            <FormItemCol
+                label={"Select Customer"}
+                name={"customer"}
+                labelAlign="left"
+                labelCol={{ span: 6 }}
+                rules={[
+                    {
+                        required: "true",
+                        message: "Please Select Customer",
+                    },
+                ]}
+                type="model"
+                customerSelect=""
+                handleCustomerChange={handleCustomerChange}
+            />
 
-            <Col span={10}>
-                <Form.Item
-                    label={"Invoice#"}
-                    name={"invoiceNo"}
-                    labelAlign="left"
-                    labelCol={{ span: 8 }}
-                    rules={[
-                        {
-                            required: "true",
-                            message: "Please Fill InvoiceNo",
-                        },
-                    ]}
-                >
-                    <Input />
-                </Form.Item>
-            </Col>
+            <FormItemCol
+                label={"#Quote"}
+                name={"quoteNo"}
+                labelAlign="left"
+                labelCol={{ span: 6 }}
+                rules={[
+                    {
+                        required: "true",
+                        message: "Please Provide Quote No",
+                    },
+                ]}
+            />
 
             <Row>
-                <Col xs={24} sm={24} md={12} lg={12}>
-                    <Form.Item
-                        label={"Invoice Date"}
-                        name={"invoiceDate"}
-                        rules={[
-                            {
-                                required: true,
-                                message: "Please Select Invocie Date",
-                            },
-                        ]}
-                        labelAlign="left"
-                        labelCol={{ span: 8 }}
-                    >
-                        <DatePicker
-                            placeholder="Invoice Date"
-                            format={"DD/MM/YY"}
-                        />
-                    </Form.Item>
-                </Col>
-                <Col xs={24} sm={24} md={12} lg={12}>
-                    <Form.Item
-                        label={"Due Date"}
-                        name={"invoiceExpiredDate"}
-                        rules={[
-                            {
-                                required: true,
-                                message: "Please Select Quote Expiry Date",
-                            },
-                        ]}
-                        labelAlign="left"
-                        labelCol={{ span: 8 }}
-                    >
-                        <DatePicker
-                            placeholder="Expiry Date"
-                            format={"DD/MM/YY"}
-                        />
-                    </Form.Item>
-                </Col>
+                <FormItemCol
+                    label={"Invoice Date"}
+                    name={"quoteDate"}
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please Select Quote Date",
+                        },
+                    ]}
+                    labelAlign="left"
+                    type={"date"}
+                />
+                <FormItemCol
+                    label={"Due Date"}
+                    name={"expiryDate"}
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please Select Quote Expiry Date",
+                        },
+                    ]}
+                    labelAlign="left"
+                    labelCol={{ span: 6 }}
+                    type={"date"}
+                />
             </Row>
 
             <Divider dashed />
-            <Row justify={"center"} >
-                <h4>ITEM TABLE</h4>
-            </Row>
             <Row style={{ position: "relative" }}>
                 <Col className="gutter-row" span={4}>
-                    <p>{"Description"}</p>
+                    <Taglabel  text={"Description"}  />
+                    <p></p>
                 </Col>
                 <Col className="gutter-row" span={2}>
-                    <p>{"HSN Code"}</p>
+                    <Taglabel  text={"HSN CODE"}/>
                 </Col>
                 <Col className="gutter-row" span={2}>
-                    <p>{"Rate"}</p>
+                    <Taglabel  text={"Qty"}/>
                 </Col>
                 <Col className="gutter-row" span={2}>
-                    <p>{"Qty"}</p>
+                    <Taglabel  text={"Rate"}/>
                 </Col>
-
+              
+                
                 <Col className="gutter-row" span={2}>
-                    <p>{"Taxable Amount"}</p>
+                    <Taglabel  text={"Tax%"}/>
                 </Col>
-                <Col className="gutter-row" span={2}>
-                    <p>{"SGST%"}</p>{" "}
-                </Col>
-                <Col className="gutter-row" span={2}>
-                    <p>{"CGST%"}</p>{" "}
-                </Col>
-                <Col className="gutter-row" span={2}>
-                    <p>{"IGST%"}</p>
-                </Col>
+              
                 <Col className="gutter-row" span={3}>
-                    <p>{"Final Amount"}</p>
+                    <Taglabel  text={"Final Amount"}/>
                 </Col>
             </Row>
             <Form.List
                 name={"items"}
                 initialValue={[
                     {
-                        bestOffer: 0,
                         finalAmount: 0,
                         qty: 1,
                         rate: 0,
-                        sgstPercent: 0,
-                        cgstPercent: 0,
-                        igstPercent: 0,
-                        taxableAmount: 0,
+                        taxPercent: 0,
                         finalAmount: 0,
+                        description:""
                     },
                 ]}
             >
@@ -300,7 +142,6 @@ const Invoice = ({ current }) => {
                     <div>
                         {subFields.map((subField) => (
                             <Row
-                                gutter={[12, 12]}
                                 key={subField.key}
                                 align={"middle"}
                             >
@@ -335,7 +176,7 @@ const Invoice = ({ current }) => {
                                         <Input style={{ width: 60 }} />
                                     </Form.Item>
                                 </Col>
-                                <Col span={2.5}>
+                                <Col span={2}>
                                     <Form.Item name={[subField.name, "rate"]}>
                                         <InputNumber
                                             style={{ width: 75 }}
@@ -357,58 +198,19 @@ const Invoice = ({ current }) => {
                                 </Col>
                                 <Col span={2}>
                                     <Form.Item
-                                        name={[subField.name, "taxableAmount"]}
-                                    >
-                                        <InputNumber
-                                            readOnly
-                                            className="moneyInput"
-                                            min={0}
-                                            controls={false}
-                                            style={{ width: 60 }}
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={2}>
-                                    <Form.Item
-                                        name={[subField.name, "sgstPercent"]}
-                                    >
-                                        <InputNumber
-                                            style={{ width: 60 }}
-                                            onChange={(value) =>
-                                                onSgstChange(value, subField)
-                                            }
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={2}>
-                                    <Form.Item
-                                        name={[subField.name, "cgstPercent"]}
+                                        name={[subField.name, "taxPercent"]}
                                     >
                                         <InputNumber
                                             className="moneyInput"
                                             min={0}
                                             style={{ width: 60 }}
-                                            onChange={(value) =>
-                                                onCgstChange(value, subField)
-                                            }
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={2}>
-                                    <Form.Item
-                                        name={[subField.name, "igstPercent"]}
-                                    >
-                                        <InputNumber
-                                            className="moneyInput"
-                                            min={0}
-                                            style={{ width: 60}}
                                             onChange={(value) =>
                                                 onIgstChange(value, subField)
                                             }
                                         />
                                     </Form.Item>
                                 </Col>
-                                <Col span={2}>
+                                <Col span={3}>
                                     <Form.Item
                                         name={[subField.name, "finalAmount"]}
                                     >
@@ -421,7 +223,7 @@ const Invoice = ({ current }) => {
                                         />
                                     </Form.Item>
                                 </Col>
-                                <Col span={3}>
+                                <Col span={2}>
                                     <Form.Item>
                                         <DeleteOutlined
                                             onClick={() => {
@@ -459,56 +261,9 @@ const Invoice = ({ current }) => {
                     </div>
                 )}
             </Form.List>
-            <Row align={"middle"} justify={"end"}>
-                <Col span={8}>
-                    <Form.Item
-                        label="Gross Total"
-                        name={"grossTotal"}
-                        labelAlign="center"
-                    >
-                        <InputNumber
-                            readOnly
-                            className="moneyInput"
-                            style={{ width: 150 }}
-                            controls={false}
-                        />
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Row align={"middle"} justify={"end"}>
-                <Col span={8}>
-                    <Form.Item
-                        label="Tax Amount"
-                        name={"totalTaxAmount"}
-                        labelAlign="center"
-                    >
-                        <InputNumber
-                            readOnly
-                            className="moneyInput"
-                            style={{ width: 150 }}
-                            controls={false}
-                        />
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Row align={"middle"} justify={"end"}>
-                <Col span={8}>
-                    <Form.Item
-                        label="Grand Total"
-                        name={"grandTotal"}
-                        labelAlign="center"
-                    >
-                        <InputNumber
-                            readOnly
-                            className="moneyInput"
-                            style={{ width: 150 }}
-                            controls={false}
-                        />
-                    </Form.Item>
-                </Col>
-            </Row>
+            {/* Other form items go here */}
         </div>
     );
 };
 
-export default Invoice;
+export default QuotationForm;

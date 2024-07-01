@@ -29,7 +29,7 @@ const invoiceSchema = new mongoose.Schema({
         type: Number,
         require: true,
     },
-    invoiceExpiredDate: {
+    dueDate: {
         type: Number,
     },
 

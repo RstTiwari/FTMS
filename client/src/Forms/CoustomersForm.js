@@ -1,9 +1,15 @@
-import { ArrowDropDown } from "@mui/icons-material";
-import { Flex, Form, Input, Col, Row, Button } from "antd";
+import { Flex, Form, Input, Col, Row, Button, Typography, Select } from "antd";
 import { useMediaQuery } from "@mui/material";
 import React, { useState } from "react";
+import CustomLabel from "components/SmallComponent/CustomLabel";
+import CustomInput from "components/SmallComponent/CustomInput";
+import FormItemCol from "components/SmallComponent/FormItemCol";
+import CustomerData from "Data/CoustomerData";
+import CustomTable from "components/CustomTable";
 
-const CoustomersForm = ({ current ,disabled}) => {
+const { Text } = Typography;
+
+const CoustomersForm = ({ current, disabled }) => {
     const isLaptop = useMediaQuery("(min-width:600px)");
     const [billing, setBilling] = useState({
         street: "",
@@ -19,186 +25,146 @@ const CoustomersForm = ({ current ,disabled}) => {
                 "billingState",
                 "billingPincode",
             ]);
-        current.setFieldsValue({ shippingStreet:billing.street  });
+        current.setFieldsValue({ shippingStreet: billing.street });
         current.setFieldsValue({ shippingCity: billing.city });
         current.setFieldsValue({ shippingState: billing.state });
         current.setFieldsValue({ shippingPincode: billing.pincode });
     };
     return (
-        <div>
-            <Col xs={24} sm={24} md={12} lg={12}>
-                <Form.Item
-                    label={"Company Name "}
-                    name={"customerName"}
-                    labelAlign="left"
-                    labelCol={{ span: 8 }}
-                    rules={[
-                        {
-                            required: true,
-                            message: "Please Provide Customer Name",
-                        },
-                    ]}
-                >
-                    <Input />
-                </Form.Item>
-            </Col>
+        <div >
+            <FormItemCol
+                label={"Customer Name"}
+                labelAlign="left"
+                name="customerName"
+                required={true}
+                labelCol={{ span: 8 }}
+                rules={[
+                    {
+                        required: true,
+                        message: "Please Provide Customer Name",
+                    },
+                ]}
+                type={"text"}
+            />
+            <FormItemCol
+                label={"Customer Phone"}
+                required={true}
+                labelAlign="left"
+                name="customerPhone"
+                labelCol={{ span: 8 }}
+                rules={[
+                    {
+                        required: true,
+                        message: "Please Provide Customer Phone",
+                    },
+                ]}
+                type={"text"}
+            />
+            <FormItemCol
+                label={"Customer Email"}
+                labelAlign="left"
+                name="customerEmail"
+                labelCol={{ span: 8 }}
+                required={true}
+                rules={[
+                    {
+                        required: true,
+                        message: "Please Provide Customer Email",
+                    },
+                ]}
+                type={"text"}
+            />
+            <FormItemCol
+                label={"Contact Person"}
+                name={"contactPerson"}
+                labelAlign="left"
+                labelCol={{ span: 8 }}
+                type={"text"}
+            />
 
-    
-            <Col xs={24} sm={24} md={12} lg={12}>
-                <Form.Item
-                    label={"Customer Phone"}
-                    labelAlign="left"
-                    name="customerPhone"
-                    labelCol={{ span: 8 }}
-                    rules={[
-                        {
-                            required: true,
-                            message: "Please Provide Customer Phone",
-                        }
-                    ]}
-                >
-                    <Input />
-                </Form.Item>
-            </Col>
-            <Col xs={24} sm={24} md={12} lg={12}>
-                <Form.Item
-                    label={"Customer Email"}
-                    labelAlign="left"
-                    name="customerEmail"
-                    labelCol={{ span: 8}}
-                    rules={[
-                        {
-                            required: true,
-                            message: "Please Provide Customer Email",
-                        },
-                    ]}
-                >
-                    <Input />
-                </Form.Item>
-            </Col>
-            <Col xs={24} sm={24} md={12} lg={12}>
-                <Form.Item
-                    label={"Contact Person"}
-                    name={"contactPerson"}
-                    labelAlign="left"
-                    labelCol={{ span: 8}}
-                >
-                    <Input />
-                </Form.Item>
-            </Col>
+            <FormItemCol
+                label={"Pan No"}
+                labelAlign="left"
+                tooltip="this data  will be Encrypted then stored not visible to other people  accept access given  "
+                name="panNo"
+                labelCol={{ span: 8 }}
+            />
 
-            <Col xs={24} sm={24} md={12} lg={12}>
-                <Form.Item
-                    label={"PAN NO"}
-                    labelAlign="left"
-                    tooltip="this data  will be Encripted then stored not visible to other pepole accpet accept acces given  "
-                    name="panNo"
-                    labelCol={{ span: 8}}
-                >
-                    <Input />
-                </Form.Item>
-            </Col>
-
-            <Col xs={24} sm={24} md={12} lg={12}>
-                <Form.Item
-                    label={"GST NO"}
-                    labelAlign="left"
-                    tooltip="this data  will be Encripted then stored not visible to other pepole accpet accept acces given  "
-                    name="gstNo"
-                    labelCol={{ span: 8}}
-                    
-                >
-                    <Input />
-                </Form.Item>
-            </Col>
-
-            <Row justify={"center"}>
-                <h2>Address & Details</h2>
-            </Row>
+            <FormItemCol
+                label={"Gst No"}
+                labelAlign="left"
+                tooltip="this data  will be Encripted then stored not visible to other pepole  accept acces given  "
+                name="gstNo"
+                labelCol={{ span: 8 }}
+            />
             <Row xs={24} sm={24} md={24} lg={24}>
                 <Col sm={24} xs={24} md={12} lg={12}>
-                    <Row>Billing Address</Row>
                     <Row>
-                        <Form.Item
-                            label={"`Address"}
-                            labelAlign="left"
-                            name="billingStreet"
-                            style={{
-                                marginTop: "1rem",
-                            }}
-                        >
-                            <Input.TextArea
-                                style={{
-                                    width: isLaptop ? 300 : 250,
-                                    height: 100,
-                                }}
-                                onChange={(e) =>
-                                    setBilling({
-                                        ...billing,
-                                        street: e.target.value,
-                                    })
-                                }
-                            />
-                        </Form.Item>
+                        <Text type="secondary" style={{ fontWeight: 900 }}>
+                            Billing Address
+                        </Text>
+                    </Row>
+                    <Row>
+                        <Col lg={22}>
+                            <Form.Item
+                                label={<CustomLabel label={"Address"} />}
+                                name={"billingAddress.street"}
+                            >
+                                <Input.TextArea />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+
+                    <Row>
+                        <Col>
+                            <Form.Item
+                                label={<CustomLabel label={"City"} />}
+                                name={"billingAddress.city"}
+                                labelAlign="left"
+                                labelCol={{ span: 7 }}
+                            >
+                                <Input />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Form.Item
+                                label={<CustomLabel label={"Pin Code"} />}
+                                name={"billingAddress.pincode"}
+                                labelAlign="left"
+                                labelCol={{ span: 7 }}
+                            >
+                                <Input />
+                            </Form.Item>
+                        </Col>
                     </Row>
                     <Row>
                         <Form.Item
-                            label="City"
-                            name={"billingCity"}
+                            label={<CustomLabel label={"State"} />}
+                            name={"billingAddress.state"}
                             labelAlign="left"
                             labelCol={{ span: 7 }}
                         >
-                            <Input
-                                onChange={(e) =>
-                                    setBilling({
-                                        ...billing,
-                                        city: e.target.value,
-                                    })
-                                }
-                            />
-                        </Form.Item>
-                    </Row>
-                    <Row>
-                        <Form.Item
-                            label="State"
-                            name={"billingState"}
-                            labelAlign="left"
-                            labelCol={{ span: 7 }}
-                        >
-                            <Input
-                                onChange={(e) =>
-                                    setBilling({
-                                        ...billing,
-                                        state: e.target.value,
-                                    })
-                                }
-                            />
-                        </Form.Item>
-                    </Row>
-                    <Row>
-                        <Form.Item
-                            label="Pin Code"
-                            name={"billingPincode"}
-                            labelAlign="left"
-                            labelCol={{ span: 7 }}
-                        >
-                            <Input
-                                onChange={(e) =>
-                                    setBilling({
-                                        ...billing,
-                                        pincode: e.target.value,
-                                    })
-                                }
+                            <Select
+                                options={CustomerData.states}
+                                style={{ width: "150px" }}
                             />
                         </Form.Item>
                     </Row>
                 </Col>
-                <Col sm={12} md={12} lg={12}>
+                <Col sm={24} xs={12} md={12} lg={12}>
                     <Row>
-                        Shipping Address 
+                        <Text type="secondary" style={{ fontWeight: 900 }}>
+                            Shipping Address
+                        </Text>
                         {!disabled ? (
                             <Col
-                                style={{ color: "blue", cursor: "pointer" }}
+                                style={{
+                                    color: "green",
+                                    cursor: "pointer",
+                                    fontWeight: 500,
+                                }}
                                 onClick={handeCopyBillingAddress}
                             >
                                 (Copy Billing Address)
@@ -206,56 +172,50 @@ const CoustomersForm = ({ current ,disabled}) => {
                         ) : (
                             ""
                         )}
-                        
                     </Row>
 
                     <Row>
-                        <Form.Item
-                            label={"`Address"}
-                            labelAlign="left"
-                            name="shippingStreet"
-                            style={{
-                                marginTop: "1rem",
-                            }}
-                        >
-                            <Input.TextArea
-                                controls={false}
-                                style={{
-                                    width: isLaptop ? 300 : 250,
-                                    height: 100,
-                                }}
-                                value={billing.street}
-                            />
-                        </Form.Item>
+                        <Col span={22}>
+                            <Form.Item
+                                label={<CustomLabel label={" Address"} />}
+                                labelAlign="left"
+                                name="shippingAddress.street"
+                            >
+                                <Input.TextArea />
+                            </Form.Item>
+                        </Col>
                     </Row>
                     <Row>
                         <Form.Item
-                            label="City"
-                            name={"shippingCity"}
+                            label={<CustomLabel label={"City"} />}
+                            name={"shippingAddress.city"}
                             labelAlign="left"
                             labelCol={{ span: 7 }}
                         >
-                            <Input value={billing.city} />
+                            <Input />
                         </Form.Item>
                     </Row>
                     <Row>
                         <Form.Item
-                            label="State"
-                            name={"shippingState"}
-                            labelAlign="left"
-                            labelCol={{ span: 7 }}
-                        >
-                            <Input value={billing.state} />
-                        </Form.Item>
-                    </Row>
-                    <Row>
-                        <Form.Item
-                            label="Pin Code"
-                            name={"shippingPincode"}
+                            label={<CustomLabel label={"Pin Code"} />}
+                            name={"shippingAddress.pincode"}
                             labelAlign="left"
                             labelCol={{ span: 7 }}
                         >
                             <Input value={billing.pincode} />
+                        </Form.Item>
+                    </Row>
+                    <Row>
+                        <Form.Item
+                            label={<CustomLabel label={"State"} />}
+                            name={"shippingAddress.state"}
+                            labelAlign="left"
+                            labelCol={{ span: 7 }}
+                        >
+                            <Select
+                                options={CustomerData.states}
+                                style={{ width: "150px" }}
+                            />
                         </Form.Item>
                     </Row>
                 </Col>

@@ -76,8 +76,10 @@ const login = async (req, res, next, userDb, userPassworDb, tenantDb) => {
         )
         .exec();
 
-    let tenantId = user.tenantId;
+    let tenantId = user?.tenantId;
     const tenantData = await tenantDataDb.findOne({ tenantId: tenantId });
+
+
     //if compnay logoneeded call api
     const sidebar = tenantData?.sidebar;
     res.status(200).json({
@@ -90,9 +92,10 @@ const login = async (req, res, next, userDb, userPassworDb, tenantDb) => {
                 role: user.role,
                 email: user.email,
                 photo: user.photo,
+                companyName: tenantData?.tenantId?.companyName,
+
             },
             tenant: {
-                companyName: tenantData?.tenantDb?.companyName,
                 tenantId: tenantId,
                 sidebar: sidebar,
             },

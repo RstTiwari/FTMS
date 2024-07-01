@@ -65,27 +65,18 @@ const NewCustomer = ({ checkHeader, afterAdd }) => {
             gap={"middle"}
             vertical
             style={{
-                margin: "1.5rem 2rem",
-                padding: "2rem",
                 backgroundColor: "#ffffff",
                 borderRadius: "1rem",
+                position:"relative"
             }}
-        >
-            {checkHeader ? (
-                <Header
-                    title={"New Customers"}
-                    subTitle={""}
-                    cancelRoute={"customers"}
-                />
-            ) : (
-                ""
-            )}
+        >  
+             <Header onlyTitle = {true} />
             <Form
                 name="coustomerForm"
                 form={form}
                 initialValues={{}}
                 onFinish={handelCustomerFormFinish}
-            >
+            >    
                 <CoustomerForm current={form} />
                 <FormActionButtons isUpdating={false} />
             </Form>

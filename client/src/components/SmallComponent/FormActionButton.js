@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Row } from "antd";
 import { useNavigate } from "react-router-dom";
-import CustomButton from "../SmallComponent/CoustomButton"; // Assuming your CustomButton is imported from the correct path
+import CustomButton from "./CoustomButton"; // Assuming your CustomButton is imported from the correct path
 import useWindowWidth from "Hook/useWindowWidth";
 
 const FormActionButtons = ({ isUpdating }) => {
@@ -15,15 +15,7 @@ const FormActionButtons = ({ isUpdating }) => {
 
     return (
         <Row
-            style={{
-                bottom: 0,
-                height: "4rem",
-                left: 0,
-                width: "100%",
-                backgroundColor: "#ffffff",
-                zIndex: 100,
-                marginLeft: mariginLeft,
-            }}
+        
         >
             <Form.Item>
                 {isUpdating ? (

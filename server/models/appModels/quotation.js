@@ -16,7 +16,7 @@ const quotationSchema = new mongoose.Schema({
         type: Number,
         require: true,
     },
-    quoteExpiryDate: {
+    expiryDate: {
         type: Number,
     },
     attenPerson: {
