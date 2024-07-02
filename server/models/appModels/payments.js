@@ -2,6 +2,12 @@ import mongoose from "mongoose";
 import mongooseAutoPopulate from "mongoose-autopopulate";
 
 const paymentsSchema = new mongoose.Schema({
+    customer :{
+        type: mongoose.Schema.ObjectId,
+        ref: "customer",
+        required: true,
+        autopopulate: true,
+    },
     removed: {
         type: Boolean,
         default: false,

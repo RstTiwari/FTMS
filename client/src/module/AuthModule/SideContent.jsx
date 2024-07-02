@@ -17,7 +17,7 @@ const SideContent = () => {
 
             <div className="signin__view__area">
               <h1 className="signin__title">
-              Manage Your Buisness Smartly With Myfac8ry
+              Streamline Your Business with AI-Powered Myfac8ry
               </h1>
               <div className="signin__description__area">
                 <div className="signin__description">
@@ -34,7 +34,7 @@ const SideContent = () => {
                       <img alt="quality" src={Quality} />
                     </div>
                     <div className="signin__description__text">
-                    Mangae Your Opration From Fingertip
+                    Mangae Your Operation From Fingertip
                     </div>
                   </div>
                   <div className="signin__description__row">

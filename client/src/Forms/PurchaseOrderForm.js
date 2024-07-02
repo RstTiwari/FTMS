@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { debounce } from "lodash";
+import Taglabel from "components/SmallComponent/Taglabel";
 import {
     Form,
     Select,
@@ -17,11 +17,16 @@ import {
 import { PlusOutlined, CloseOutlined, DeleteOutlined } from "@ant-design/icons";
 import VendorModal from "components/VendorModal";
 import SaveBottmComponent from "components/SaveBottomComponent";
-import { epochInDDMMYY ,convertUnixTimestampToDate} from "Helper/EpochConveter";
-import dayjs from 'dayjs';
+import {
+    epochInDDMMYY,
+    convertUnixTimestampToDate,
+} from "Helper/EpochConveter";
+import dayjs from "dayjs";
+import FormItemCol from "components/SmallComponent/FormItemCol";
+import ProductModal from "components/ProductModal";
+import CustomSelect from "components/SmallComponent/CustomDropDown";
 
-
-const PurchaseOrder = ({ handleFormFinish, value, disabled,submitText }) => {
+const PurchaseOrder = ({ handleFormFinish, value, disabled, submitText }) => {
     const [form] = Form.useForm();
 
     const handleVendorChange = (value, lable) => {
@@ -75,49 +80,29 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled,submitText }) => {
         const grandTotal = totalTaxAmount + totalTranportAmount + totalGross;
         form.setFieldsValue({ grandTotal: Math.ceil(grandTotal) });
     };
-    const {vendor,purchaseNo,purchaseDate,items,grandTotal,grossTotal,taxPercent,transPortAmount,taxAmount} = value
+    // const {vendor,purchaseNo,purchaseDate,items,grandTotal,grossTotal,taxPercent,transPortAmount,taxAmount} = value
     return (
-        <Form
-            onFinish={handleFormFinish}
-            form={form}
-            initialValues={{
-                vendor: vendor ? vendor : "",
-                purchaseNo: purchaseNo ? purchaseNo : "",
-                purchaseDate: purchaseDate
-                    ? epochInDDMMYY(value.purchaseDate)
-                    : "",
-                items: items
-                    ? items
-                    : [{ description: "", rate: 0, qty: 0, finalAmount: 0 }],
-                grandTotal: grandTotal ? grandTotal :"",
-                grossTotal:grossTotal ? grossTotal :"",
-                taxPercent:taxPercent ? taxPercent :"",
-                transPortAmount:transPortAmount ? transPortAmount:"",
-                taxAmount:taxAmount ? taxAmount :""
-            }}
-        >
-            <Form.Item
+        <div style={{ height: "100vh" }}>
+            <FormItemCol
                 label={"Select Vendor"}
                 name={"vendor"}
                 labelAlign="left"
                 labelCol={{ span: 6 }}
+                required={true}
                 rules={[
                     {
                         required: "true",
                         message: "Please Select Vendor",
                     },
                 ]}
-            >
-                <VendorModal
-                    vendorSelect={handleVendorChange}
-                    vendorId={vendor ? vendor.vendorName : ""}
-                    disabled={disabled}
-                />
-            </Form.Item>
-            <Form.Item
-                label={"PURCHASE #"}
+                type={"vendormodel"}
+            />
+            <FormItemCol
+                label={"#PURCHASE"}
                 name={"purchaseNo"}
                 labelAlign="left"
+                required={true}
+                type={"input"}
                 labelCol={{ span: 6 }}
                 rules={[
                     {
@@ -125,277 +110,279 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled,submitText }) => {
                         message: "Please Provide Quote No",
                     },
                 ]}
-            >
-                <Input disabled={disabled} />
-            </Form.Item>
+            />
             <Row>
-                <Col xs={24} sm={24} md={12} lg={12}>
-                    <Form.Item
-                        label={"Purchase Date"}
-                        name={"purchaseDate"}
-                        rules={[
-                            {
-                                required: true,
-                                message: "Please Select Purchase Date",
-                            },
-                        ]}
-                        labelAlign="left"
-                        labelCol={{ span: 12 }}
-                    >
-                        <DatePicker
-                            placeholder="Purchase Date"
-                            format={"DD/MM/YYYY"}
-                            disabled={disabled}
-                        />
-                    </Form.Item>
-                </Col>
+                <FormItemCol
+                    label={"Purchase Date"}
+                    name={"purchaseDate"}
+                    required={true}
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please Select Purchase Date",
+                        },
+                    ]}
+                    labelAlign="left"
+                    type={"date"}
+                />
             </Row>
             <Divider dashed />
-            <Row gutter={[12, 12]} style={{ position: "relative" }}>
-                <Col className="gutter-row" span={7}>
-                    <p>{"Description"}</p>
-                </Col>
-                <Col className="gutter-row" span={4}>
-                    <p>{"Rate"}</p>
-                </Col>
-                <Col className="gutter-row" span={4}>
-                    <p>{"Qty"}</p>
-                </Col>
-                <Col className="gutter-row" span={4}>
-                    <p>{"Final Amount"}</p>
-                </Col>
-            </Row>
-            <Form.List
-                name={"items"}
-                initialValue={[
-                    {
-                        description: "",
-                        rate: 0,
-                        qty: 1,
-                        finalAmount: 0,
-                    },
-                ]}
+            <div
+                style={{
+                    position: "relative",
+                    border: "1px solid #bfbfbb",
+                    padding: "2px",
+                    marginBottom: "20px",
+                }}
             >
-                {(subFields, subOpt) => (
-                    <div>
-                        {subFields.map((subField, index) => (
-                            <Row
-                                gutter={[12, 12]}
-                                key={subField.key}
-                                align={"middle"}
-                            >
-                                <Col className="gutter-row" span={7}>
-                                    <Form.Item
-                                        name={[subField.name, "description"]}
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message:
-                                                    "PLease Fill Description",
-                                            },
-                                        ]}
-                                    >
-                                        <Input disabled={disabled} />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={4}>
-                                    <Form.Item
-                                        name={[subField.name, "rate"]}
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: "PLease Fill rate",
-                                            },
-                                        ]}
-                                    >
-                                        <InputNumber
-                                            style={{ width: 75 }}
-                                            onChange={(
-                                                value,
-                                                subField = "rate"
-                                            ) =>
-                                                onItemChange(
-                                                    value,
-                                                    {},
-                                                    index,
-                                                    subField
-                                                )
-                                            }
-                                            disabled={disabled}
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={4}>
-                                    <Form.Item
-                                        name={[subField.name, "qty"]}
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: "PLease Fill qty",
-                                            },
-                                        ]}
-                                    >
-                                        <InputNumber
-                                            style={{ width: 75 }}
-                                            onChange={(
-                                                value,
-                                                subField = "qty"
-                                            ) =>
-                                                onItemChange(
-                                                    value,
-                                                    {},
-                                                    index,
-                                                    subField
-                                                )
-                                            }
-                                            disabled={disabled}
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={4}>
-                                    <Form.Item
-                                        name={[subField.name, "finalAmount"]}
-                                    >
-                                        <InputNumber
-                                            readOnly
-                                            className="moneyInput"
-                                            min={0}
-                                            controls={false}
-                                            style={{ width: 75 }}
-                                            disabled
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Form.Item>
-                                    <DeleteOutlined
-                                        disabled={disabled}
-                                        onClick={() => {
-                                            subOpt.remove(subField.name);
+                <Row justify={"center"} style={{ marginBottom: "10px" }}>
+                    <Taglabel text={"Item Table"} weight={1000} />
+                </Row>
+                <Row
+                    style={{
+                        position: "relative",
+                        border: "1px solid #bfbfbb",
+                    }}
+                >
+                    <Col
+                        className="gutter-row"
+                        span={7}
+                        style={{
+                            borderRight: "1px solid #bfbfbb",
+                            textAlign: "center",
+                        }}
+                    >
+                        <Taglabel text={"ITEM DESCRIPTION"} weight={700} />
+                    </Col>
+                    <Col
+                        className="gutter-row"
+                        span={4}
+                        style={{
+                            borderRight: "1px solid #bfbfbb",
+                            textAlign: "center",
+                        }}
+                    >
+                        <Taglabel text={"Rate"} />
+                    </Col>
+                    <Col
+                        className="gutter-row"
+                        span={4}
+                        style={{
+                            borderRight: "1px solid #bfbfbb",
+                            textAlign: "center",
+                        }}
+                    >
+                        <Taglabel text={"Qty"} />
+                    </Col>
+                    <Col
+                        className="gutter-row"
+                        span={4}
+                        style={{
+                            borderRight: "1px solid #bfbfbb",
+                            textAlign: "center",
+                        }}
+                    >
+                        <Taglabel text={"Tax%"} />
+                    </Col>
+                    <Col
+                        className="gutter-row"
+                        span={4}
+                        style={{ textAlign: "center" }}
+                    >
+                        <Taglabel text={"Total Amount(before tax)"} />
+                    </Col>
+                </Row>
+                <Form.List
+                    name={"items"}
+                    initialValue={[
+                        {
+                            description: "",
+                            rate: 0,
+                            qty: 1,
+                            finalAmount: 0,
+                        },
+                    ]}
+                >
+                    {(subFields, subOpt) => (
+                        <div>
+                            {subFields.map((subField) => (
+                                <Row
+                                    key={subField.key}
+                                    align={"middle"}
+                                    style={{ marginTop: "5px" }}
+                                >
+                                    <Col
+                                        className="gutter-row"
+                                        span={7}
+                                        style={{
+                                            textAlign: "center",
                                         }}
-                                    />
-                                </Form.Item>
+                                    >
+                                        <Form.Item
+                                            name={[
+                                                subField.name,
+                                                "description",
+                                            ]}
+                                        >
+                                            <ProductModal />{" "}
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={4}>
+                                        <Form.Item
+                                            name={[subField.name, "rate"]}
+                                        >
+                                            <InputNumber
+                                                // onChange={(value) =>
+                                                //     onItemChange(value, {}, index, "rate")
+                                                // }
+                                                // disabled={disabled}
+                                                style={{
+                                                    textAlign: "center",
+                                                    width: "100%",
+                                                }}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={4}>
+                                        <Form.Item
+                                            name={[subField.name, "qty"]}
+                                        >
+                                            <InputNumber
+                                                // onChange={(value) =>
+                                                //     //onItemChange(value, {}, index, "qty")
+                                                // }
+                                                style={{
+                                                    width: "100%",
+                                                    textAlign: "center",
+                                                }}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={4}>
+                                        <Form.Item
+                                            name={[subField.name, "taxPercent"]}
+                                        >
+                                            <CustomSelect
+                                                // onChange={(value) =>
+                                                //     //onItemChange(value, {}, index, "qty")
+                                                // }
+                                                style={{
+                                                    width: "100%",
+                                                    textAlign: "center",
+                                                }}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col
+                                        span={4}
+                                        style={{ textAlign: "center" }}
+                                    >
+                                        <Form.Item
+                                            name={[
+                                                subField.name,
+                                                "finalAmount",
+                                            ]}
+                                        >
+                                            <InputNumber
+                                                readOnly
+                                                className="moneyInput"
+                                                min={0}
+                                                controls={false}
+                                                style={{
+                                                    width: "100%",
+                                                    textAlign: "center",
+                                                }}
+                                                disabled
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col
+                                        span={1}
+                                        style={{ textAlign: "center" }}
+                                    >
+                                        <Form.Item>
+                                            <DeleteOutlined
+                                                disabled={disabled}
+                                                style={{
+                                                    color: "red",
+                                                    cursor: "pointer",
+                                                }}
+                                                onClick={() => {
+                                                    subOpt.remove(
+                                                        subField.name
+                                                    );
+                                                }}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                            ))}
+                            <Row justify="start">
+                                <Button
+                                    type="primary"
+                                    disabled={disabled}
+                                    onClick={() => {
+                                        subOpt.add({
+                                            description: "",
+                                            finalAmount: 0,
+                                            qty: 1,
+                                            rate: 0,
+                                        });
+                                    }}
+                                    icon={<PlusOutlined />}
+                                    style={{
+                                        marginTop: "1rem",
+                                        background: "#22b378",
+                                        width: "15%",
+                                    }}
+                                >
+                                    Add Item
+                                </Button>
                             </Row>
-                        ))}
-
-                        <Button
-                            type="primary"
-                            disabled={disabled}
-                            onClick={() => {
-                                subOpt.add({
-                                    description: "",
-                                    finalAmount: 0,
-                                    qty: 1,
-                                    rate: 0,
-                                }); // Use srNo instead of srN
-                            }}
-                            icon={<PlusOutlined />}
-                            style={{
-                                marginBottom: "1rem",
-                                background: "green",
-                            }}
-                            block
-                        >
-                            Add Item
-                        </Button>
-                    </div>
-                )}
-            </Form.List>
+                        </div>
+                    )}
+                </Form.List>
+            </div>
             <Row align={"middle"} justify={"end"}>
-                <Col span={8}>
-                    <Form.Item
-                        label="Gross Total"
-                        name={"grossTotal"}
-                        labelAlign="left"
-                        labelCol={{ span: 10 }}
-                    >
-                        <InputNumber
-                            readOnly
-                            className="moneyInput"
-                            style={{ width: 150 }}
-                            controls={false}
-                            disabled={disabled}
-                        />
-                    </Form.Item>
-                </Col>
+                <FormItemCol
+                    label="Grand Total"
+                    name={"grossTotal"}
+                    tooltip={"Amount Before Tax"}
+                    labelAlign="left"
+                    type={"number"}
+                />
             </Row>
             <Row align={"middle"} justify={"end"}>
-                <Col span={8}>
-                    <Form.Item
-                        label="Tax(%)"
-                        name={"taxPercent"}
-                        labelCol={{ span: 10 }}
-                        labelAlign="left"
-                    >
-                        <InputNumber
-                            style={{ width: 150 }}
-                            onChange={(value, subField = "taxPercent") => {
-                                onItemChange(value, subField);
-                            }}
-                            disabled={disabled}
-                        />
-                    </Form.Item>
-                </Col>
+                <FormItemCol
+                    label="Tax Amount(Rs)"
+                    name={"taxAmount"}
+                    labelCol={{ span: 10 }}
+                    labelAlign="left"
+                    type={"number"}
+                />
             </Row>
             <Row align={"middle"} justify={"end"}>
-                <Col span={8}>
-                    <Form.Item
-                        label="Tax Amount"
-                        name={"taxAmount"}
-                        labelCol={{ span: 10 }}
-                        labelAlign="left"
-                    >
-                        <InputNumber
-                            readOnly
-                            style={{ width: 150 }}
-                            disabled={disabled}
-                        />
-                    </Form.Item>
-                </Col>
+                <FormItemCol
+                    label="Transport(Rs)"
+                    name={"transPortAmount"}
+                    labelCol={{ span: 10 }}
+                    labelAlign="left"
+                    type={"number"}
+                />
+               
             </Row>
             <Row align={"middle"} justify={"end"}>
-                <Col span={8}>
-                    <Form.Item
-                        label="Transport(Rs)"
-                        name={"transPortAmount"}
-                        labelCol={{ span: 10 }}
-                        labelAlign="left"
-                    >
-                        <InputNumber
-                            style={{ width: 150 }}
-                            onChange={(value, subField = "transPortAmount") => {
-                                onItemChange(value, subField);
-                            }}
-                            disabled={disabled}
-                        />
-                    </Form.Item>
-                </Col>
+                <FormItemCol 
+                 label="Grand Total"
+                 tooltip={"Amount After Tax"}
+                 name={"grandTotal"}
+                 labelCol={{ span: 10 }}
+                 labelAlign="left"
+                 type={"number"}
+                />
+                
             </Row>
-            <Row align={"middle"} justify={"end"}>
-                <Col span={8}>
-                    <Form.Item
-                        label="Grand Total"
-                        name={"grandTotal"}
-                        labelCol={{ span: 10 }}
-                        labelAlign="left"
-                    >
-                        <InputNumber
-                            readOnly
-                            style={{ width: 150 }}
-                            controls={false}
-                            disabled={disabled}
-                        />
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Row>
-                <Form.Item>
-                    <SaveBottmComponent
-                        buttonText={submitText}
-                        cancelRoute={"purchaseorder"}
-                    />
-                </Form.Item>
-            </Row>
-        </Form>
+        </div>
     );
 };
 

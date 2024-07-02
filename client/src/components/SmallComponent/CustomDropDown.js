@@ -9,9 +9,9 @@ import {
     Spin,
 } from "antd";
 import { useAuth } from "../../state/AuthProvider";
+import CoustomButton from "./CoustomButton";
 
-const CustomSelect = ({ entity, onChange, defaultSelect, width }) => {
-    const { getDropDownData, addNewDropDownData } = useAuth();
+const CustomSelect = ({ entity,entityKey, onChange, defaultSelect, width }) => {
     const [options, setOptions] = useState([]);
     const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false); // for Loader
@@ -20,14 +20,14 @@ const CustomSelect = ({ entity, onChange, defaultSelect, width }) => {
 
     const fetchOptions = async () => {
         setIsLoading(true);
-        const response = await getDropDownData(entity);
-        setOptions(response);
+        const response = //await getDropDownData(entity);
+        setOptions("response");
         setIsLoading(false);
     };
     useEffect(() => {
    
         fetchOptions();
-    }, [entity, getDropDownData]);
+    }, [entity]);
 
     useEffect(() => {
         if (defaultSelect) {
@@ -45,9 +45,9 @@ const CustomSelect = ({ entity, onChange, defaultSelect, width }) => {
             entity: entity,
             data: [{ label: addValue, value: addValue }],
         };
-        const response = await addNewDropDownData(payload);
+        const response =   null //await addNewDropDownData(payload);
         if (response.success) {
-            const updatedOptions = await getDropDownData(entity);
+            const updatedOptions =  null // await getDropDownData(entity);
             setOptions(updatedOptions);
             setSelected(addValue);
             onChange(addValue);
@@ -62,23 +62,18 @@ const CustomSelect = ({ entity, onChange, defaultSelect, width }) => {
             {!open ? (
                 <Select
                     value={"" || ""}
-                    options={options}
+                    options={[]}
                     onChange={{}}
                     style={{ width: width }}
                     // loading={isLoading}
                     // onClick={fetchOptions}
-                    getPopupContainer={(trigger) => trigger.parentElement}
+                    // getPopupContainer={(trigger) => trigger.parentElement}
                     dropdownRender={(menu) => (
                         <div>
                             {menu}
                             <Divider />
-                            <Button
-                                type="primary"
-                                style={{ margin: "0.1rem" }}
-                                onClick={() => setOpen(true)}
-                            >
-                                Add New
-                            </Button>
+
+                            <CoustomButton onClick={()=>setOpen(true)}  text={"New"}  withIcon ={true}/>
                         </div>
                     )}
                 />

@@ -9,6 +9,7 @@ import {
     Select,
     Button,
     Typography,
+    message,
 } from "antd";
 import { useParams } from "react-router-dom";
 import PaymentHistoryList from "pages/Payments/PaymentHistory";
@@ -18,12 +19,13 @@ import { useNavigate } from "react-router-dom";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import { paymentMode } from "Data/PaymentData";
 import SaveBottmComponent from "components/SaveBottomComponent";
+import FormItemCol from "components/SmallComponent/FormItemCol";
 const { Text } = Typography;
 
 const { Option } = Select;
 const entity = "payments";
 
-const PaymentForm = ({ initialValue }) => {
+const PaymentForm = ({ initialValue = {} }) => {
     const [form] = Form.useForm();
     const { _id, customer, payment } = initialValue;
     const { createData, patchData } = useAuth();
@@ -50,7 +52,7 @@ const PaymentForm = ({ initialValue }) => {
             const upDateObj = {
                 payment: { $each: [paymentId] },
             };
-            const payload = { entity: "invoice", value: upDateObj ,_id:_id};
+            const payload = { entity: "invoice", value: upDateObj, _id: _id };
             const { success, result, message } = await patchData(payload);
             if (!success) {
                 return NotificationHandler.error(message);
@@ -61,100 +63,88 @@ const PaymentForm = ({ initialValue }) => {
     };
 
     return (
-        <>
-            <Form
-                name={"paymentForm"}
-                initialValues={value}
-                form={form}
-                onFinish={onFinish}
-            >
-                <Row>
-                    <Col span={24}>
-                        <Form.Item
-                            label="Customer Name"
-                            name="customerName"
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
-                            labelAlign="left"
-                            labelCol={{ span: 4 }}
-                        >
-                            <Input disabled style={{ width: "50%" }} />
-                        </Form.Item>
-                    </Col>
-                    <Col span={24}>
-                        <Form.Item
-                            label="Payment Date"
-                            name="paymentDate"
-                            labelAlign="left"
-                            labelCol={{ span: 4 }}
-                        >
-                            <DatePicker style={{ width: "50%" }} />
-                        </Form.Item>
-                    </Col>
-                    <Col span={24} labelAlign="left" labelCol={{ span: 4 }}>
-                        <Form.Item
-                            label="Payment Mode"
-                            name="paymentMode"
-                            labelAlign="left"
-                            labelCol={{ span: 4 }}
-                        >
-                            <Select
-                                style={{ width: "50%" }}
-                                placeholder="Select payment mode"
-                                options={paymentMode}
-                            >
-                                
-                            </Select>
-                        </Form.Item>
-                    </Col>
-                    <Col span={24} labelAlign="left" labelCol={{ span: 4 }}>
-                        <Form.Item
-                            label="Reference(Check No etc)"
-                            name="refer"
-                            labelAlign="left"
-                            labelCol={{ span: 4 }}
-                        >
-                            <Input style={{ width: "50%" }} />
-                        </Form.Item>
-                    </Col>
-                    <Col span={24} labelAlign="left" labelCol={{ span: 4 }}>
-                        <Form.Item
-                            label="Amount(Rs)"
-                            name="amount"
-                            labelAlign="left"
-                            labelCol={{ span: 4 }}
-                            rules={[
-                                {
-                                    required:true,
-                                    message:"Amount need to specified"
-                                }
-                            ]}
-                        >
-                            <Input type="number" style={{ width: "50%" }} />
-                        </Form.Item>
-                    </Col>
+        <div style={{ height: "100vh" }}>
+            <Row>
+                <Col span={24}>
+                    <FormItemCol
+                        label="Select Customer"
+                        name="customer"
+                        required={true}
+                        rules={[
+                            {
+                                required: true,
+                                message: "Plese Select Customer",
+                            },
+                        ]}
+                        labelAlign="left"
+                        labelCol={{ span: 4 }}
+                        type={"model"}
+                    />
+                </Col>
+                <Col span={24}>
+                    <FormItemCol
+                        label="Payment Date"
+                        name="paymentDate"
+                        required={true}
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please Select Date",
+                            },
+                        ]}
+                        labelAlign="left"
+                        labelCol={{ span: 4 }}
+                        type={"date"}
+                    />
+                </Col>
+                <Col span={24}>
+                    <FormItemCol
+                        label="Payment Mode"
+                        name="paymentMode"
+                        labelAlign="left"
+                        labelCol={{ span: 4 }}
+                        type={"select"}
+                        entity="Payment Mode"
+                    />
+                </Col>
+                <Col span={24}>
+                    <FormItemCol
+                        label="Reference"
+                        name="refer"
+                        tooltip={"Check No or UPI Transaction No"}
+                        labelAlign="left"
+                        labelCol={{ span: 4 }}
+                        type={"input"}
+                    />
+                </Col>
+                <Col span={24}>
+                    <FormItemCol
+                        label="Amount(Rs)"
+                        name="amount"
+                        labelAlign="left"
+                        required={true}
+                        labelCol={{ span: 4 }}
+                        rules={[
+                            {
+                                required: true,
+                                message: "Amount need to specified",
+                            },
+                        ]}
+                    />
+                </Col>
 
-                    <Col span={24}>
-                        <Form.Item
-                            label={"NOTE"}
-                            name={"note"}
-                            labelAlign="left"
-                            labelCol={{ span: 4 }}
-                        >
-                            <Input style={{ width: "50%" }} />
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Form.Item>
-            <SaveBottmComponent buttonText={"UPDATE PAYMENT"} cancelRoute={"payments"} />
-
-                </Form.Item>
-            </Form>
-            <PaymentHistoryList data = {initialValue.payment} />
-        </>
+                <Col span={24}>
+                    <FormItemCol
+                        label={"NOTE"}
+                        name={"note"}
+                        labelAlign="left"
+                        tooltip={"Remark or Comment"}
+                        labelCol={{ span: 4 }}
+                        type={"box"}
+                    />
+                </Col>
+            </Row>
+        </div>
     );
 };
 

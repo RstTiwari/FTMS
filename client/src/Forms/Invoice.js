@@ -5,6 +5,7 @@ import { useMediaQuery } from "@mui/material";
 import ProductModal from "components/ProductModal";
 import FormItemCol from "components/SmallComponent/FormItemCol";
 import Taglabel from "components/SmallComponent/Taglabel";
+import CustomSelect from "components/SmallComponent/CustomDropDown";
 
 const QuotationForm = ({ current }) => {
     const isLaptop = useMediaQuery("(min-width:1000px)");
@@ -42,12 +43,13 @@ const QuotationForm = ({ current }) => {
     };
 
     return (
-        <div style={{height:"100vh"}}>
+        <div style={{ height: "100vh" }}>
             <FormItemCol
                 label={"Select Customer"}
                 name={"customer"}
                 labelAlign="left"
                 labelCol={{ span: 6 }}
+                required={true}
                 rules={[
                     {
                         required: "true",
@@ -62,6 +64,7 @@ const QuotationForm = ({ current }) => {
             <FormItemCol
                 label={"#Quote"}
                 name={"quoteNo"}
+                required={true}
                 labelAlign="left"
                 labelCol={{ span: 6 }}
                 rules={[
@@ -76,6 +79,7 @@ const QuotationForm = ({ current }) => {
                 <FormItemCol
                     label={"Invoice Date"}
                     name={"quoteDate"}
+                    required={true}
                     rules={[
                         {
                             required: true,
@@ -88,6 +92,7 @@ const QuotationForm = ({ current }) => {
                 <FormItemCol
                     label={"Due Date"}
                     name={"expiryDate"}
+                    required={true}
                     rules={[
                         {
                             required: true,
@@ -101,166 +106,305 @@ const QuotationForm = ({ current }) => {
             </Row>
 
             <Divider dashed />
-            <Row style={{ position: "relative" }}>
-                <Col className="gutter-row" span={4}>
-                    <Taglabel  text={"Description"}  />
-                    <p></p>
-                </Col>
-                <Col className="gutter-row" span={2}>
-                    <Taglabel  text={"HSN CODE"}/>
-                </Col>
-                <Col className="gutter-row" span={2}>
-                    <Taglabel  text={"Qty"}/>
-                </Col>
-                <Col className="gutter-row" span={2}>
-                    <Taglabel  text={"Rate"}/>
-                </Col>
-              
-                
-                <Col className="gutter-row" span={2}>
-                    <Taglabel  text={"Tax%"}/>
-                </Col>
-              
-                <Col className="gutter-row" span={3}>
-                    <Taglabel  text={"Final Amount"}/>
-                </Col>
-            </Row>
-            <Form.List
-                name={"items"}
-                initialValue={[
-                    {
-                        finalAmount: 0,
-                        qty: 1,
-                        rate: 0,
-                        taxPercent: 0,
-                        finalAmount: 0,
-                        description:""
-                    },
-                ]}
+            <div
+                style={{
+                    position: "relative",
+                    border: "1px solid #bfbfbb",
+                    padding: "2px",
+                }}
             >
-                {(subFields, subOpt) => (
-                    <div>
-                        {subFields.map((subField) => (
-                            <Row
-                                key={subField.key}
-                                align={"middle"}
-                            >
-                                <Col className="gutter-row" span={4}>
-                                    <Form.Item
-                                        name={[subField.name, "description"]}
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message:
-                                                    "Please Select the description",
-                                            },
-                                        ]}
+                <Row justify={"center"}>
+                    <Taglabel text={"ITEM TABLE"} />
+                </Row>
+                <Row
+                    style={{
+                        position: "relative",
+                        border: "1px solid #bfbfbb",
+                    }}
+                >
+                    <Col
+                        className="gutter-row"
+                        span={6}
+                        style={{
+                            borderRight: "1px solid #bfbfbb",
+                            textAlign: "center",
+                        }}
+                    >
+                        <Taglabel text="Description" />
+                    </Col>
+                    <Col
+                        className="gutter-row"
+                        span={3}
+                        style={{
+                            borderRight: "1px solid #bfbfbb",
+                            textAlign: "center",
+                        }}
+                    >
+                        <Taglabel text="HSN CODE" />
+                    </Col>
+                    <Col
+                        className="gutter-row"
+                        span={3}
+                        style={{
+                            borderRight: "1px solid #bfbfbb",
+                            textAlign: "center",
+                        }}
+                    >
+                        <Taglabel text="Qty" />
+                    </Col>
+                    <Col
+                        className="gutter-row"
+                        span={4}
+                        style={{
+                            borderRight: "1px solid #bfbfbb",
+                            textAlign: "center",
+                        }}
+                    >
+                        <Taglabel text="Rate" />
+                    </Col>
+                    <Col
+                        className="gutter-row"
+                        span={4}
+                        style={{
+                            borderRight: "1px solid #bfbfbb",
+                            textAlign: "center",
+                        }}
+                    >
+                        <Taglabel text="Tax%" />
+                    </Col>
+                    <Col
+                        className="gutter-row"
+                        span={4}
+                        style={{
+                            borderRight: "1px solid #bfbfbb",
+                            textAlign: "center",
+                        }}
+                    >
+                        <Taglabel text="Final Amount" />
+                    </Col>
+                </Row>
+                <Form.List
+                    name={"items"}
+                    initialValue={[
+                        {
+                            finalAmount: 0,
+                            qty: 1,
+                            rate: 0,
+                            taxPercent: 0,
+                            finalAmount: 0,
+                            description: "",
+                        },
+                    ]}
+                >
+                    {(subFields, subOpt) => (
+                        <div>
+                            {subFields.map((subField) => (
+                                <Row
+                                    key={subField.key}
+                                    align="middle"
+                                    style={{ marginTop: "5px" }}
+                                >
+                                    <Col
+                                        className="gutter-row"
+                                        span={6}
+                                        style={{
+                                            textAlign: "center",
+                                        }}
                                     >
-                                        <ProductModal
-                                            productSelect={(label) =>
-                                                onDescriptionChange(
-                                                    label,
-                                                    subField
-                                                )
-                                            }
-                                            productValue={
-                                                items ? items[subField.key] : ""
-                                            }
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={2}>
-                                    <Form.Item
-                                        name={[subField.name, "hsnCode"]}
+                                        <Form.Item
+                                            name={[
+                                                subField.name,
+                                                "description",
+                                            ]}
+                                            rules={[
+                                                {
+                                                    required: true,
+                                                    message:
+                                                        "Please Select the description",
+                                                },
+                                            ]}
+                                        >
+                                            <ProductModal
+                                                productSelect={(label) =>
+                                                    onDescriptionChange(
+                                                        label,
+                                                        subField
+                                                    )
+                                                }
+                                                productValue={
+                                                    items
+                                                        ? items[subField.key]
+                                                        : ""
+                                                }
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col
+                                        className="gutter-row"
+                                        span={3}
+                                        style={{
+                                            textAlign: "center",
+                                        }}
                                     >
-                                        <Input style={{ width: 60 }} />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={2}>
-                                    <Form.Item name={[subField.name, "rate"]}>
-                                        <InputNumber
-                                            style={{ width: 75 }}
-                                            onChange={(value) =>
-                                                onRateChange(value, subField)
-                                            }
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={2}>
-                                    <Form.Item name={[subField.name, "qty"]}>
-                                        <InputNumber
-                                            style={{ width: 60 }}
-                                            onChange={(value) =>
-                                                onQtyChange(value, subField)
-                                            }
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={2}>
-                                    <Form.Item
-                                        name={[subField.name, "taxPercent"]}
+                                        <Form.Item
+                                            name={[subField.name, "hsnCode"]}
+                                        >
+                                            <Input style={{ width: "100%" }} />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col
+                                        className="gutter-row"
+                                        span={3}
+                                        style={{
+                                            textAlign: "center",
+                                        }}
                                     >
-                                        <InputNumber
-                                            className="moneyInput"
-                                            min={0}
-                                            style={{ width: 60 }}
-                                            onChange={(value) =>
-                                                onIgstChange(value, subField)
-                                            }
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={3}>
-                                    <Form.Item
-                                        name={[subField.name, "finalAmount"]}
+                                        <Form.Item
+                                            name={[subField.name, "qty"]}
+                                        >
+                                            <InputNumber
+                                                style={{ width: "100%" }}
+                                                onChange={(value) =>
+                                                    onQtyChange(value, subField)
+                                                }
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col
+                                        className="gutter-row"
+                                        span={4}
+                                        style={{
+                                            textAlign: "center",
+                                        }}
                                     >
-                                        <InputNumber
-                                            readOnly
-                                            className="moneyInput"
-                                            min={0}
-                                            controls={false}
-                                            style={{ width: 80 }}
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={2}>
-                                    <Form.Item>
-                                        <DeleteOutlined
-                                            onClick={() => {
-                                                subOpt.remove(subField.name);
-                                            }}
-                                        />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                        ))}
+                                        <Form.Item
+                                            name={[subField.name, "rate"]}
+                                        >
+                                            <InputNumber
+                                                style={{ width: "100%" }}
+                                                onChange={(value) =>
+                                                    onRateChange(
+                                                        value,
+                                                        subField
+                                                    )
+                                                }
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col
+                                        className="gutter-row"
+                                        span={4}
+                                        style={{
+                                            textAlign: "center",
+                                        }}
+                                    >
+                                        <Form.Item
+                                            name={[subField.name, "taxPercent"]}
+                                        >
+                                            <CustomSelect
+                                                entity={"dropDownData"}
+                                                entityKey={"taxPercent"}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col
+                                        className="gutter-row"
+                                        span={3}
+                                        style={{
+                                            textAlign: "center",
+                                        }}
+                                    >
+                                        <Form.Item
+                                            name={[
+                                                subField.name,
+                                                "finalAmount",
+                                            ]}
+                                        >
+                                            <InputNumber
+                                                readOnly
+                                                style={{ width: "100%" }}
+                                                className="moneyInput"
+                                                min={0}
+                                                controls={false}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col
+                                        className="gutter-row"
+                                        span={1}
+                                        style={{ textAlign: "center" }}
+                                    >
+                                        <Form.Item>
+                                            <DeleteOutlined
+                                                style={{
+                                                    color: "red",
+                                                    cursor: "pointer",
+                                                }}
+                                                onClick={() => {
+                                                    subOpt.remove(
+                                                        subField.name
+                                                    );
+                                                }}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                            ))}
 
-                        <Button
-                            type="primary"
-                            onClick={() => {
-                                subOpt.add({
-                                    description: "",
-                                    qty: 1,
-                                    rate: 0,
-                                    taxableAmount: 0,
-                                    sgstPercent: 0,
-                                    cgstPercent: 0,
-                                    igstPercent: 0,
-                                    finalAmount: 0,
-                                }); // Use srNo instead of srN
-                            }}
-                            icon={<PlusOutlined />}
-                            style={{
-                                marginBottom: "1rem",
-                                background: "green",
-                            }}
-                            block
-                        >
-                            Add Item
-                        </Button>
-                    </div>
-                )}
-            </Form.List>
+                            <Button
+                                type="primary"
+                                onClick={() => {
+                                    subOpt.add({
+                                        description: "",
+                                        qty: 1,
+                                        rate: 0,
+                                        taxableAmount: 0,
+                                        sgstPercent: 0,
+                                        cgstPercent: 0,
+                                        igstPercent: 0,
+                                        finalAmount: 0,
+                                    });
+                                }}
+                                icon={<PlusOutlined />}
+                                style={{
+                                    marginTop: "1rem",
+                                    background: "green",
+                                    width: "10%",
+                                }}
+                                block
+                            >
+                                Add Item
+                            </Button>
+                        </div>
+                    )}
+                </Form.List>
+            </div>
+            <Row align={"middle"} justify={"end"}>
+                <FormItemCol
+                    label="Gross Total"
+                    name={"grossTotal"}
+                    labelAlign="left"
+                    type={"number"}
+                />
+            </Row>
+            <Row align={"middle"} justify={"end"}>
+                <FormItemCol
+                    label="Tax Amount"
+                    name={"taxAmount"}
+                    labelAlign="left"
+                    type={"number"}
+                />
+            </Row>
+            <Row align={"middle"} justify={"end"}>
+                <FormItemCol
+                    label="GrandTotal"
+                    name={"grandTotal"}
+                    labelAlign="left"
+                    type={"number"}
+                />
+            </Row>
+
+        
             {/* Other form items go here */}
         </div>
     );

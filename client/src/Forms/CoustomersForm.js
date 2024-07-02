@@ -44,7 +44,7 @@ const CoustomersForm = ({ current, disabled }) => {
                         message: "Please Provide Customer Name",
                     },
                 ]}
-                type={"text"}
+                type={"input"}
             />
             <FormItemCol
                 label={"Customer Phone"}
@@ -58,7 +58,7 @@ const CoustomersForm = ({ current, disabled }) => {
                         message: "Please Provide Customer Phone",
                     },
                 ]}
-                type={"text"}
+                type={"input"}
             />
             <FormItemCol
                 label={"Customer Email"}
@@ -72,14 +72,14 @@ const CoustomersForm = ({ current, disabled }) => {
                         message: "Please Provide Customer Email",
                     },
                 ]}
-                type={"text"}
+                type={"input"}
             />
             <FormItemCol
                 label={"Contact Person"}
                 name={"contactPerson"}
                 labelAlign="left"
                 labelCol={{ span: 8 }}
-                type={"text"}
+                type={"input    "}
             />
 
             <FormItemCol
@@ -88,6 +88,7 @@ const CoustomersForm = ({ current, disabled }) => {
                 tooltip="this data  will be Encrypted then stored not visible to other people  accept access given  "
                 name="panNo"
                 labelCol={{ span: 8 }}
+                type={"input"}
             />
 
             <FormItemCol
@@ -108,7 +109,7 @@ const CoustomersForm = ({ current, disabled }) => {
                         <Col lg={22}>
                             <Form.Item
                                 label={<CustomLabel label={"Address"} />}
-                                name={"billingAddress.street"}
+                                name={["billingAddress","street"]}
                             >
                                 <Input.TextArea />
                             </Form.Item>
@@ -119,7 +120,7 @@ const CoustomersForm = ({ current, disabled }) => {
                         <Col>
                             <Form.Item
                                 label={<CustomLabel label={"City"} />}
-                                name={"billingAddress.city"}
+                                name={["billingAddress","city"]}
                                 labelAlign="left"
                                 labelCol={{ span: 7 }}
                             >
@@ -131,7 +132,7 @@ const CoustomersForm = ({ current, disabled }) => {
                         <Col>
                             <Form.Item
                                 label={<CustomLabel label={"Pin Code"} />}
-                                name={"billingAddress.pincode"}
+                                name={["billingAddress","pincode"]}
                                 labelAlign="left"
                                 labelCol={{ span: 7 }}
                             >
@@ -142,7 +143,7 @@ const CoustomersForm = ({ current, disabled }) => {
                     <Row>
                         <Form.Item
                             label={<CustomLabel label={"State"} />}
-                            name={"billingAddress.state"}
+                            name={["billingAddress","state"]}
                             labelAlign="left"
                             labelCol={{ span: 7 }}
                         >
@@ -179,7 +180,7 @@ const CoustomersForm = ({ current, disabled }) => {
                             <Form.Item
                                 label={<CustomLabel label={" Address"} />}
                                 labelAlign="left"
-                                name="shippingAddress.street"
+                                name={["shippingAddress","street"]}
                             >
                                 <Input.TextArea />
                             </Form.Item>
@@ -188,7 +189,7 @@ const CoustomersForm = ({ current, disabled }) => {
                     <Row>
                         <Form.Item
                             label={<CustomLabel label={"City"} />}
-                            name={"shippingAddress.city"}
+                            name={["shippingAddress","city"]}
                             labelAlign="left"
                             labelCol={{ span: 7 }}
                         >
@@ -198,7 +199,7 @@ const CoustomersForm = ({ current, disabled }) => {
                     <Row>
                         <Form.Item
                             label={<CustomLabel label={"Pin Code"} />}
-                            name={"shippingAddress.pincode"}
+                            name={["shippingAddress","pincode"]}
                             labelAlign="left"
                             labelCol={{ span: 7 }}
                         >
@@ -208,7 +209,7 @@ const CoustomersForm = ({ current, disabled }) => {
                     <Row>
                         <Form.Item
                             label={<CustomLabel label={"State"} />}
-                            name={"shippingAddress.state"}
+                            name={["shippingAddress","state"]}
                             labelAlign="left"
                             labelCol={{ span: 7 }}
                         >

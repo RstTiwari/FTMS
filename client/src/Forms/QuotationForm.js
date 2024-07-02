@@ -160,6 +160,7 @@ const QuotationForm = ({ current }) => {
                 label={"Select Customer"}
                 name={"customer"}
                 labelAlign="left"
+                required ={true}
                 labelCol={{ span: 6 }}
                 rules={[
                     {
@@ -171,11 +172,11 @@ const QuotationForm = ({ current }) => {
                 customerSelect=""
                 handleCustomerChange={handleCustomerChange}
             />
-
             <FormItemCol
                 label={"#Quote"}
                 name={"quoteNo"}
                 labelAlign="left"
+                required={true}
                 labelCol={{ span: 6 }}
                 rules={[
                     {
@@ -184,11 +185,11 @@ const QuotationForm = ({ current }) => {
                     },
                 ]}
             />
-
             <Row>
                 <FormItemCol
                     label={"Quote Date"}
                     name={"quoteDate"}
+                    required ={true}
                     rules={[
                         {
                             required: true,
@@ -201,6 +202,7 @@ const QuotationForm = ({ current }) => {
                 <FormItemCol
                     label={"Expiry Date"}
                     name={"expiryDate"}
+                    required ={true}
                     rules={[
                         {
                             required: true,
@@ -212,118 +214,202 @@ const QuotationForm = ({ current }) => {
                     type={"date"}
                 />
             </Row>
-
             <Divider dashed />
-            <Row  justify={"center"} style={{marginBottom:"10px"}}>
-                <Taglabel text={"Item Table"} weight={1000} />
-            </Row>
-            <Row style={{ position: "relative" }}>
-                <Col className="gutter-row" span={7}>
-                    <Taglabel text={"ITEM DESCRIPTION"} weight={700} />
-                </Col>
-                <Col className="gutter-row" span={4}>
-                    <Taglabel text={"rate"} />
-                </Col>
-                <Col className="gutter-row" span={4}>
-                    <Taglabel text={"qty"} />
-                </Col>
-                <Col className="gutter-row" span={4}>
-                    <Taglabel text={"final Amount"} />
-                </Col>
-            </Row>
-            <Form.List
-                name={"items"}
-                
-                initialValue={[
-                    {
-                        description: "",
-                        rate: 0,
-                        qty: 1,
-                        finalAmount: 0,
-                    },
-                ]}
+            <div
+                style={{
+                    position: "relative",
+                    border: "1px solid #bfbfbb",
+                    padding: "2px",
+                    marginBottom: "20px",
+                }}
             >
-                {(subFields, subOpt) => (
-                    <div>
-                        {subFields.map((subField) => (
-                            <Row key={subField.key} align={"middle"}>
-                                <Col className="gutter-row" span={7}>
-                                    <Form.Item
-                                        name={[subField.name, "description"]}
-                                    >
-                                        <ProductModal
-                                            productSelect={(label) =>
-                                                onProductChange(label, subField)
-                                            }
-                                            // productValue={
-                                            //     // current.getFieldValue("")[subField.key]
-                                            // }
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={4}>
-                                    <Form.Item name={[subField.name, "rate"]}>
-                                        <InputNumber
-                                            style={{ width: 75 }}
-                                            onChange={(value) =>
-                                                onRateChange(value, subField)
-                                            }
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={4}>
-                                    <Form.Item name={[subField.name, "qty"]}>
-                                        <InputNumber
-                                            style={{ width: 75 }}
-                                            onChange={(value) =>
-                                                onQtyChange(value, subField)
-                                            }
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={4}>
-                                    <Form.Item
-                                        name={[subField.name, "finalAmount"]}
-                                    >
-                                        <InputNumber
-                                            readOnly
-                                            className="moneyInput"
-                                            min={0}
-                                            controls={false}
-                                            style={{ width: 75 }}
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Form.Item>
-                                    <DeleteOutlined
-                                        disabled
-                                        style={{ color: "red" }}
-                                        onClick={() => {
-                                            subOpt.remove(subField.name);
+                <Row justify={"center"} style={{ marginBottom: "10px" }}>
+                    <Taglabel text={"Item Table"} weight={1000} />
+                </Row>
+                <Row
+                    style={{
+                        position: "relative",
+                        border: "1px solid #bfbfbb",
+                    }}
+                >
+                    <Col
+                        className="gutter-row"
+                        span={7}
+                        style={{
+                            borderRight: "1px solid #bfbfbb",
+                            textAlign: "center",
+                        }}
+                    >
+                        <Taglabel text={"ITEM DESCRIPTION"} weight={700} />
+                    </Col>
+                    <Col
+                        className="gutter-row"
+                        span={4}
+                        style={{
+                            borderRight: "1px solid #bfbfbb",
+                            textAlign: "center",
+                        }}
+                    >
+                        <Taglabel text={"Rate"} />
+                    </Col>
+                    <Col
+                        className="gutter-row"
+                        span={4}
+                        style={{
+                            borderRight: "1px solid #bfbfbb",
+                            textAlign: "center",
+                        }}
+                    >
+                        <Taglabel text={"Qty"} />
+                    </Col>
+                    <Col
+                        className="gutter-row"
+                        span={4}
+                        style={{ textAlign: "center" }}
+                    >
+                        <Taglabel text={"Final Amount"} />
+                    </Col>
+                </Row>
+                <Form.List
+                    name={"items"}
+                    initialValue={[
+                        {
+                            description: "",
+                            rate: 0,
+                            qty: 1,
+                            finalAmount: 0,
+                        },
+                    ]}
+                >
+                    {(subFields, subOpt) => (
+                        <div>
+                            {subFields.map((subField) => (
+                                <Row
+                                    key={subField.key}
+                                    align={"middle"}
+                                    style={{ marginTop: "5px" }}
+                                >
+                                    <Col
+                                        className="gutter-row"
+                                        span={7}
+                                        style={{
+                                            textAlign: "center",
                                         }}
-                                    />
-                                </Form.Item>
-                            </Row>
-                        ))}
+                                    >
+                                        <Form.Item
+                                            name={[
+                                                subField.name,
+                                                "description",
+                                            ]}
+                                        >
+                                            <ProductModal
+                                                productSelect={(label) =>
+                                                    onProductChange(
+                                                        label,
+                                                        subField
+                                                    )
+                                                }
+                                                // productValue={ current.getFieldValue("")[subField.key]
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={4}>
+                                        <Form.Item
+                                            name={[subField.name, "rate"]}
+                                        >
+                                            <InputNumber
+                                                onChange={(value) =>
+                                                    onRateChange(
+                                                        value,
+                                                        subField
+                                                    )
+                                                }
+                                                style={{
+                                                    textAlign: "center",
+                                                    width: "100%",
+                                                }}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={4}>
+                                        <Form.Item
+                                            name={[subField.name, "qty"]}
+                                        >
+                                            <InputNumber
+                                                onChange={(value) =>
+                                                    onQtyChange(value, subField)
+                                                }
+                                                style={{
+                                                    width: "100%",
+                                                    textAlign: "center",
+                                                }}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col
+                                        span={4}
+                                        style={{ textAlign: "center" }}
+                                    >
+                                        <Form.Item
+                                            name={[
+                                                subField.name,
+                                                "finalAmount",
+                                            ]}
+                                        >
+                                            <InputNumber
+                                                readOnly
+                                                className="moneyInput"
+                                                min={0}
+                                                style={{
+                                                    width: "100%",
+                                                    textAlign: "center",
+                                                }}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col
+                                        span={1}
+                                        style={{ textAlign: "center" }}
+                                    >
+                                        <Form.Item>
+                                            <DeleteOutlined
+                                                disabled
+                                                style={{
+                                                    color: "red",
+                                                    cursor: "pointer",
+                                                }}
+                                                onClick={() => {
+                                                    subOpt.remove(
+                                                        subField.name
+                                                    );
+                                                }}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                            ))}
 
-                        {/* <CoustomButton onClick={addNewRow(subOpt)} text={"Add Row"} /> */}
-                        <Button
-                            type="primary"
-                            onClick={() => {
-                                subOpt.add(); // Use srNo instead of srN
-                            }}
-                            icon={<PlusOutlined />}
-                            style={{
-                                marginBottom: "1rem",
-                                background: "green",
-                                width: "20%",
-                            }}
-                        >
-                            Add Item
-                        </Button>
-                    </div>
-                )}
-            </Form.List>
+                            {/* Button to add new item */}
+                            <Row justify="start">
+                                <Button
+                                    type="primary"
+                                    onClick={() => {
+                                        subOpt.add(); // Use srNo instead of srN
+                                    }}
+                                    icon={<PlusOutlined />}
+                                    style={{
+                                        marginTop: "1rem",
+                                        background: "#22b378",
+                                        width: "15%",
+                                    }}
+                                >
+                                    Add Item
+                                </Button>
+                            </Row>
+                        </div>
+                    )}
+                </Form.List>
+            </div>
             <Row align={"middle"} justify={"end"}>
                 <FormItemCol
                     label="Gross Total"
@@ -336,8 +422,9 @@ const QuotationForm = ({ current }) => {
                 <FormItemCol
                     label="Tax(%)"
                     name={"taxPercent"}
-                    labelAlign="left"
-                    type={"number"}
+                    type={"select"}
+                    width={150}
+                    entity={"Tax Percent"}
                 />
             </Row>
             <Row align={"middle"} justify={"end"}>
@@ -357,72 +444,42 @@ const QuotationForm = ({ current }) => {
                     readOnly
                 />
             </Row>
-            <Row justify={"center"} style={{ padding: "1rem" }}>
+            <Row justify={"start"} style={{ marginBottom:10 }}>
                 <Taglabel text={" Term & Conditions"} weight={1000} />
             </Row>
+            <FormItemCol
+                label={"Delivery"}
+                name={"deliveryCondition"}
+                type={"select"}
+                width={500}
+                entity={"Delivery Condition"}
+            />
             <Row justify={"start"}>
-                <Col span={10}>
-                    <Form.Item
-                        label={<CustomLabel label={"Delivery"} />}
-                        name={"deliveryCondition"}
-                    >
-                        <Input
-                            type="text"
-                            style={{
-                                width: inputWidth,
-                                fontSize: inputFontSize,
-                            }}
-                        />
-                    </Form.Item>
-                </Col>
+                <FormItemCol
+                    label={"Validity"}
+                    name={"validityCondition"}
+                    type={"select"}
+                    width={500}
+                    entity={"Validity Condition"}
+                />
             </Row>
             <Row justify={"start"}>
-                <Col span={10}>
-                    <Form.Item
-                        label={<CustomLabel label={"Validity"} />}
-                        name={"validityCondition"}
-                    >
-                        <Input
-                            type="text"
-                            style={{
-                                width: inputWidth,
-                                fontSize: inputFontSize,
-                            }}
-                        />
-                    </Form.Item>
-                </Col>
+            <FormItemCol
+                    label={"Payments"}
+                    name={"paymentsCondition"}
+                    type={"select"}
+                    width={500}
+                    entity={"Payments Condition"}
+                />
             </Row>
             <Row justify={"start"}>
-                <Col span={10}>
-                    <Form.Item
-                        label={<CustomLabel label="Payments" />}
-                        name={"paymentsCondition"}
-                    >
-                        <Input
-                            type="text"
-                            style={{
-                                width: inputWidth,
-                                fontSize: inputFontSize,
-                            }}
-                        />
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Row justify={"start"}>
-                <Col span={10}>
-                    <Form.Item
-                        label={<CustomLabel label="Cancellation" />}
-                        name={"cancellationCondition"}
-                    >
-                        <Input
-                            type="text"
-                            style={{
-                                width: inputWidth,
-                                fontSize: inputFontSize,
-                            }}
-                        />
-                    </Form.Item>
-                </Col>
+                <FormItemCol
+                 label={"Cancellation"}
+                 name={"cancellationCondition"}
+                 type={"select"}
+                 width={500}
+                 entity={"Cancellation Condition"}
+                 />
             </Row>
         </div>
     );

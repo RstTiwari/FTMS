@@ -34,7 +34,7 @@
       display: flex;
       width: 50px;
       height: 50px;
-      background-color: white;
+      background-color: rgb(8, 8, 8);
       text-align: center;
       align-items: center;
       border-radius: 10px;
@@ -42,7 +42,7 @@
   }
   .signin__description__text{
     margin-left: 10px;
-    color: white;
+    color: rgb(10, 9, 9);
   }
   .signin__description__image img {
     width: 30px;
@@ -52,7 +52,7 @@
   }
   .signin__title {
     text-align: center;
-    color: whitesmoke;
+    color: rgb(10, 9, 9);
   }
   
   
@@ -60,7 +60,6 @@
     max-height: 100%;
     width: 50%;
     padding-top: 1rem;
-    background: white;
   }
   .login .container {
     width: 505px;
@@ -97,7 +96,7 @@
     width: 241px;
     height: 58px;
     text-transform: uppercase;
-    color: white;
+    color: rgb(10, 9, 9);;
     border-radius: 10px;
     position: relative;
     z-index: 2;

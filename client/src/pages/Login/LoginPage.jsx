@@ -6,7 +6,7 @@ import LoginForm from "Forms/LoginForm.js";
 import { useAuth } from "../../state/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import NotificationHandler from "EventHandler/NotificationHandler";
-import { message } from "antd";
+import { message, Row, Col } from "antd";
 const Login = () => {
     const navigate = useNavigate();
     const [login, setLogin] = useState("");
@@ -29,20 +29,32 @@ const Login = () => {
         }
     };
     return (
-        <>
-            <div className="parent_clearfix">
+        <Row
+            justify="center"
+            align="middle"
+            style={{ minHeight: "100vh", padding: "20px" ,}}
+        >
+            <Col
+                xs={24}
+                sm={24}
+                md={12}
+                lg={12}
+                style={{ textAlign: "center" }}
+            >
                 <SideContent />
-                <div className="login">
-                    <div className="container">
-                        <PageLoader
-                            isLoading={isLoading}
-                            text={"Plase Wait..."}
-                        />
-                        <LoginForm handleLoginChange={handleLoginChange} />
-                    </div>
-                </div>
-            </div>
-        </>
+            </Col>
+            
+            <Col
+                xs={24}
+                sm={24}
+                md={12}
+                lg={12}
+                style={{ textAlign: "center" }}
+            >
+                <PageLoader isLoading={isLoading} text={"Please Wait..."} />
+                <LoginForm handleLoginChange={handleLoginChange} />
+            </Col>
+        </Row>
     );
 };
 

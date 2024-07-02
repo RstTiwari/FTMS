@@ -4,7 +4,7 @@ import CustomLabel from "../SmallComponent/CustomLabel"; // Assuming you have cr
 import CustomInput from "../SmallComponent/CustomInput"; // Assuming you have created CustomInput component
 import CustomTable from "components/CustomTable";
 
-const FormItemCol = ({ label, name, required, rules,tooltip,readOnly, type, ...restProps }) => (
+const FormItemCol = ({ label, name, required =false, rules =[],tooltip,readOnly, type, width,...restProps }) => (
     <Col xs={24} sm={24} md={8} lg={8}>
         <Form.Item
             label={<CustomLabel required={required} label={label} />}
@@ -14,7 +14,11 @@ const FormItemCol = ({ label, name, required, rules,tooltip,readOnly, type, ...r
             rules={rules}
             tooltip ={tooltip}
         >
-            <CustomInput type={type} readOnly restProps={restProps} />
+             {
+           console.log(restProps,"---")
+
+             }
+            <CustomInput type={type} readOnly width ={width}  {...restProps} />
         </Form.Item>
     </Col>
 );
