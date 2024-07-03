@@ -57,10 +57,14 @@
   
   
   .login {
+    display: flex; /* Enables Flexbox layout */
+    justify-content: center; /* Centers content horizontally */
+    align-items: center; /* Centers content vertically */
     max-height: 100%;
     width: 50%;
-    padding-top: 1rem;
-  }
+    text-align: center;
+}
+
   .login .container {
     width: 505px;
     margin: 2rem auto;

@@ -10,12 +10,13 @@ export default function NotFound({ entity = '' }) {
       status="404"
       title={'error_404'}
       subTitle='Sorry the Page you requested does not exist'
-      style={{backgroundColor:"grey"}}
+      style={{backgroundColor:"#fff"}}
+      
       extra={
         <Button
           type="primary"
           onClick={() => {
-            navigate(`/${entity?.toLowerCase()}`);
+            navigate(-1);
           }}
         >
           {'Back'}

@@ -10,7 +10,7 @@ import {
     Upload,
 } from "antd";
 import { categoryOption } from "../Data/ExpensesData";
-import CustomerModal from "components/CustomerModal";
+import CustomerModal from "components/CustomModal";
 import UploadImage from "components/UploadImage";
 import FormItemCol from "components/SmallComponent/FormItemCol";
 

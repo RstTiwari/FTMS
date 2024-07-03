@@ -1,79 +1,71 @@
 import React from "react";
 import { Form, Input, Button } from "antd";
 import { Formik } from "formik";
+import FormItemCol from "components/SmallComponent/FormItemCol";
 
 const ProductForm = ({ onFormFinish, initalValue }) => {
-
     const handleSubmit = (values) => {
         // Handle form submission here
         onFormFinish(values);
     };
-    const { name, price, hsnCode } = initalValue;
+    // const { name, price, hsnCode } = initalValue;
     return (
-        <Formik
-            initialValues={{ name: name, price: price, hsnCode: hsnCode }}
-            onSubmit={handleSubmit}
-        >
-            {({ values, handleChange, handleSubmit }) => (
-                <Form onFinish={handleSubmit}>
-                    <Form.Item
-                        label="Product Name"
-                        labelAlign="left"
-                        labelCol={{span:6}}
-                        name="productName"
-                        rules={[
-                            {
-                                required: true,
-                                message: "Please input the product name!",
-                            },
-                        ]}
-                    >
-                        <Input value={values.name} onChange={handleChange} />
-                    </Form.Item>
-                    <Form.Item
-                        labelAlign="left"
-                        labelCol={{span:6}}
-                        label="RATE"
-                        name="rate"
-                        rules={[
-                            {
-                                required: true,
-                                message: "Please input the product price!",
-                            },
-                        ]}
-                    >
-                        <Input
-                            type="number"
-                            value={values.price}
-                            onChange={handleChange}
-                        />
-                    </Form.Item>
-                    <Form.Item
-                      labelAlign="left"
-                      labelCol={{span:6}}
-                        label="HSN CODE"
-                        name="hsnCode"
-                        rules={[
-                            {
-                                required: true,
-                                message:
-                                    "Please input the product description!",
-                            },
-                        ]}
-                    >
-                        <Input
-                            value={values.description}
-                            onChange={handleChange}
-                        />
-                    </Form.Item>
-                    <Form.Item>
-                        <Button type="primary" htmlType="submit">
-                            SAVE PRODUCT
-                        </Button>
-                    </Form.Item>
-                </Form>
-            )}
-        </Formik>
+        <div style={{ height: "100vh" }}>
+            <FormItemCol
+                label="Product Code"
+                labelAlign="left"
+                labelCol={{ span: 6 }}
+                name="code"
+                type={"select"}
+                entity ={"Product Code"}
+              
+            
+            />
+            <FormItemCol
+                label="Product Name"
+                labelAlign="left"
+                required={true}
+                labelCol={{ span: 6 }}
+                name="productName"
+                type={"input"}
+                rules={[
+                    {
+                        required: true,
+                        message: "Please input the product name!",
+                    },
+                ]}
+            />
+            <FormItemCol
+                labelAlign="left"
+                labelCol={{ span: 6 }}
+                label="HSN CODE"
+                name="hsnCode"
+                type={"input"}
+            />
+            <FormItemCol
+                labelAlign="left"
+                labelCol={{ span: 6 }}
+                label="Selling Price"
+                name="rate"
+                required={true}
+                rules={[
+                    {
+                        required: true,
+                        message: "Please input the product price!",
+                    },
+                ]}
+            />
+            <FormItemCol
+                labelAlign="left"
+                labelCol={{ span: 6 }}
+                label="Product Image"
+                name="image"
+                type={"image"}
+                url =""
+                onUploadSuccess={(result) => console.log('Upload success:', result)}
+               
+            />
+        </div>
     );
 };
 

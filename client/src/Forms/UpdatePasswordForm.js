@@ -3,6 +3,7 @@ import { Form, Row, Col, Button, Input, Typography, InputNumber } from "antd";
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import { useNavigate } from "react-router-dom";
+import CoustomButton from "components/SmallComponent/CoustomButton";
 const { Text, Link, Title } = Typography;
 
 const UpdatePasswordForm = ({ userId, tenantId }) => {
@@ -31,7 +32,6 @@ const UpdatePasswordForm = ({ userId, tenantId }) => {
                 name={"otp"}
                 label="Enter RECIVED OTP"
                 labelAlign="left"
-                
                 labelCol={{ span: 10 }}
                 rules={[
                     {
@@ -40,7 +40,7 @@ const UpdatePasswordForm = ({ userId, tenantId }) => {
                     },
                 ]}
             >
-                <InputNumber maxLength={6}/>
+                <InputNumber maxLength={6} />
             </Form.Item>
             <Form.Item
                 name={"password"}
@@ -82,9 +82,7 @@ const UpdatePasswordForm = ({ userId, tenantId }) => {
             </Form.Item>
             <Row justify={"center"}>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit">
-                        UPDATE
-                    </Button>
+                    <CoustomButton text={"UPDATE"} htmlType="submit" />
                 </Form.Item>
             </Row>
         </Form>

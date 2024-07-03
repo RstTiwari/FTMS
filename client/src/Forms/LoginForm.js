@@ -4,6 +4,7 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useAuth } from "state/AuthProvider";
 import CustomLabel from "components/SmallComponent/CustomLabel";
+import CoustomButton from "components/SmallComponent/CoustomButton";
 
 const { Text } = Typography;
 
@@ -14,17 +15,17 @@ const LoginForm = ({ handleLoginChange }) => {
         remember: false,
     });
 
-    const handleLoginClick = () => {
-        handleLoginChange(login);
-    };
+    // const handleLoginClick = () => {
+    //     handleLoginChange(login);
+    // };
     return (
-        <div>
-
+        <div style={{width:"50%"}}>
+            <Form onFinish={handleLoginChange}>
             <Form.Item
                 label={<CustomLabel label={"Email"} required={true} />}
                 name={"email"}
                 labelAlign="left"
-                labelCol={{ span: 6 }}
+                labelCol={{ span: 6}}
                 rules={[
                     {
                         required: true,
@@ -44,28 +45,27 @@ const LoginForm = ({ handleLoginChange }) => {
                     }
                 />
             </Form.Item>
-            <Col xs={24} sm={24} lg={12} xl={24} md={24}>
-                <Form.Item
-                    label={<CustomLabel label={"Password"} required={true} />}
-                    labelAlign="left"
-                    labelCol={{ span: 6 }}
-                    name={"Password"}
-                    rules={[
-                        {
-                            required: true,
-                        },
-                    ]}
-                >
-                    <Input.Password
-                        prefix={<LockOutlined />}
-                        placeHolder="password"
-                        size="large"
-                        onChange={(e) =>
-                            setLogin({ ...login, password: e.target.value })
-                        }
-                    />
-                </Form.Item>
-            </Col>
+            <Form.Item
+                label={<CustomLabel label={"Password"} required={true} />}
+                labelAlign="left"
+                name={"password"}
+                labelCol={{ span: 6 }}
+                rules={[
+                    {
+                        required: true,
+                    },
+                ]}
+            >
+                <Input.Password
+                    prefix={<LockOutlined />}
+                    placeHolder="password"
+                    size="large"
+                    onChange={(e) =>
+                        setLogin({ ...login, password: e.target.value })
+                    }
+                />
+            </Form.Item>
+                    
 
             <Form.Item>
                 <Row align={"middle"}>
@@ -89,7 +89,7 @@ const LoginForm = ({ handleLoginChange }) => {
                 </Row>
             </Form.Item>
             <Row justify={"center"} style={{ margin: "1rem" }}>
-                <Col span={6}>New to Myfac8ry</Col>
+                <Col>New to Myfac8ry - </Col>
                 <Col>
                     <Text type="success">
                         <Link to={"/register"}>Register</Link>
@@ -98,17 +98,18 @@ const LoginForm = ({ handleLoginChange }) => {
             </Row>
             <Form.Item>
                 <Row justify={"center"}>
-                    <Button
-                        type="primary"
+                    <CoustomButton 
                         htmlType="submit"
-                        className="login-form-button"
-                        size="large"
-                        onClick={handleLoginClick}
-                    >
-                        Log in
-                    </Button>
+                        text={" SignIn"}
+
+
+                    />
+
                 </Row>
             </Form.Item>
+                
+            </Form>
+        
         </div>
     );
 };

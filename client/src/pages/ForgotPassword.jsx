@@ -47,7 +47,7 @@ const ForgotPassword = () => {
                         <div className="container">
                             <PageLoader
                                 isLoading={isLoading}
-                                text={"Plase Wait ..."}
+                                text={"Hold On ..."}
                             />
                             <Form
                                 name="forgetPassword"

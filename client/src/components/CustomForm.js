@@ -3,17 +3,17 @@ import { Form } from "antd";
 import Header from "./Header";
 import FormActionButtons from "../components/SmallComponent/FormActionButton";
 import CustomFormItem from "../module/Create/CreateModule";
-
 import "../App.css"
 
-const CustomForm = ({ entity }) => {
+const CustomForm = ({ entity,height ="100vh",header =true }) => {
     const [form] = Form.useForm();
     const [initialValues, setInitialValues] = useState({});
 
     useEffect(() => {
         // Fetch initial values based on the entity
-        setInitialValues({ customerName: "Rohit" });
+        setInitialValues({ });
     }, [entity]);
+    console.log(entity,"inFOrm");
 
     const handleFormFinish = (values) => {
         console.log("Form submitted:", values);
@@ -26,16 +26,18 @@ const CustomForm = ({ entity }) => {
             style={{
                 display: "flex",
                 flexDirection: "column",
-                height: "100vh",
+                height: height,
                 backgroundColor: "#ffffff",
                 borderRadius: "1rem",
             }}
         >
-            <Header onlyTitle={true} />
+            {/**Only show in page now on the Mode */}
+            {header ? <Header onlyTitle={true} /> : null}
+
             <Form
                 name={`${entity}Form`}
                 form={form}
-                initialValues={initialValues}
+                initialValues={{}}
                 onFinish={handleFormFinish}
                 className="form-with-fixed-actions"
             >
@@ -43,10 +45,10 @@ const CustomForm = ({ entity }) => {
                     style={{
                         flex: 1,
                         overflowY: "auto",
-                        marginTop:"10px"
+                        marginTop: "10px",
                     }}
                 >
-                    <CustomFormItem entity={entity} form={form} />
+                    <CustomFormItem entityOfForm={entity} form={form} />
                 </div>
                 <div
                     style={{

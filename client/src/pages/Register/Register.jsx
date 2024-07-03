@@ -6,11 +6,13 @@ import { RegisterForm } from "Forms/RegisterForm";
 import { useAuth } from "state/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import NotificationHandler from "EventHandler/NotificationHandler";
+import PageLoader from "pages/PageLoader";
+import CoustomButton from "components/SmallComponent/CoustomButton";
 
 const Register = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isOtpVerify, setIsOtpVerify] = useState(false);
-    const [email,setEmail] = useState("")
+    const [email, setEmail] = useState("");
     const [otp, setOtp] = useState();
     const [userId, setUserId] = useState("");
     const [tenantId, setTenantId] = useState("");
@@ -19,7 +21,7 @@ const Register = () => {
     const { loginUser, authApiCall } = useAuth();
     const handleRegisterFormFinish = async (value) => {
         setIsLoading(true);
-        setEmail(value.email)
+        setEmail(value.email);
         let response = await authApiCall("register", value);
         if (response.success === 1) {
             setIsLoading(false);
@@ -28,7 +30,7 @@ const Register = () => {
             setTenantId(response.result.tenantId);
             return NotificationHandler.success(response.message);
         } else {
-            setIsLoading(false)
+            setIsLoading(false);
             return NotificationHandler.error(response.message);
         }
     };
@@ -46,8 +48,8 @@ const Register = () => {
             setIsLoading(false);
             loginUser(response.result);
             navigate("/app");
-        }else{
-           return NotificationHandler.error(response.message)
+        } else {
+            return NotificationHandler.error(response.message);
         }
     };
 
@@ -61,9 +63,7 @@ const Register = () => {
                             {isOtpVerify ? (
                                 <>
                                     <Row justify={"center"}>Verify OTP</Row>
-                                    <Row>
-                                      Mail hasbeend send to {email}
-                                    </Row>
+                                    <Row>Mail hasbeend send to {email}</Row>
                                     <Row justify={"center"}>
                                         <Input
                                             onChange={(e) =>
@@ -75,12 +75,7 @@ const Register = () => {
                                         justify={"center"}
                                         style={{ margin: "1rem" }}
                                     >
-                                        <Button
-                                            type="primary"
-                                            onClick={handleVerifyClick}
-                                        >
-                                            Vefiry
-                                        </Button>
+                                        <CoustomButton  onClick={handleVerifyClick} text={"Verify"}/>
                                     </Row>
                                 </>
                             ) : (
@@ -95,12 +90,7 @@ const Register = () => {
                             )}
                         </div>
                     ) : (
-                        <Spin>
-                            <Alert
-                                message="Please Wait we working...."
-                                type="info"
-                            />
-                        </Spin>
+                        <PageLoader text={"Hold On ...Creating Your Account"} />
                     )}
                 </div>
             </div>

@@ -24,7 +24,7 @@ import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import { useMediaQuery } from "@mui/material";
 import { epochConveter } from "Helper/EpochConveter";
-import CustomerModal from "components/CustomerModal";
+import CustomerModal from "components/CustomModal";
 import ProductModal from "components/ProductModal";
 import SaveBottmComponent from "components/SaveBottomComponent";
 

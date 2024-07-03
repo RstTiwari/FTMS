@@ -7,7 +7,7 @@ import ftmsLogo from "../Assets/favicon.png";
 import { useCookies } from "react-cookie";
 
 const { Sider } = Layout;
-
+console.log(Icons)
 const Sidebar = ({
     drawerWidth,
     isSideBarClosed,
@@ -31,7 +31,7 @@ const Sidebar = ({
             const newItem = {
                 key: item.key,
                 label: item.label,
-                icon: IconComponent ? <IconComponent /> : null,
+                icon: IconComponent ? <IconComponent    /> : null,
             };
 
             if (item.children && item.children.length > 0) {

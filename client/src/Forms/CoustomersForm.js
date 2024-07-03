@@ -98,18 +98,32 @@ const CoustomersForm = ({ current, disabled }) => {
                 name="gstNo"
                 labelCol={{ span: 8 }}
             />
-            <Row xs={24} sm={24} md={24} lg={24}>
+            <Row style={{ padding: 20 }}>
                 <Col sm={24} xs={24} md={12} lg={12}>
-                    <Row>
+                    <Row style={{ paddingBottom: 25 }}>
                         <Text type="secondary" style={{ fontWeight: 900 }}>
                             Billing Address
                         </Text>
                     </Row>
                     <Row>
-                        <Col lg={22}>
+                        <Col xs={24} sm={24} lg={12} xl={12}>
                             <Form.Item
-                                label={<CustomLabel label={"Address"} />}
-                                name={["billingAddress","street"]}
+                                label={<CustomLabel label={"Street1"} />}
+                                name={["billingAddress", "street1"]}
+                                labelAlign="left"
+                                labelCol={{ span: 5 }}
+                            >
+                                <Input.TextArea />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col xs={24} sm={24} lg={12} xl={12}>
+                            <Form.Item
+                                label={<CustomLabel label={"Street2"} />}
+                                name={["billingAddress", "street2"]}
+                                labelAlign="left"
+                                labelCol={{ span: 5 }}
                             >
                                 <Input.TextArea />
                             </Form.Item>
@@ -117,45 +131,47 @@ const CoustomersForm = ({ current, disabled }) => {
                     </Row>
 
                     <Row>
-                        <Col>
+                        <Col xs={24} sm={24} lg={12} xl={12}>
                             <Form.Item
                                 label={<CustomLabel label={"City"} />}
-                                name={["billingAddress","city"]}
+                                name={["billingAddress", "city"]}
                                 labelAlign="left"
-                                labelCol={{ span: 7 }}
+                                labelCol={{ span: 5 }}
                             >
                                 <Input />
                             </Form.Item>
                         </Col>
                     </Row>
                     <Row>
-                        <Col>
+                        <Col xs={24} sm={24} lg={12} xl={12}>
                             <Form.Item
-                                label={<CustomLabel label={"Pin Code"} />}
-                                name={["billingAddress","pincode"]}
+                                label={<CustomLabel label={"Pincode"} />}
+                                name={["billingAddress", "pincode"]}
                                 labelAlign="left"
-                                labelCol={{ span: 7 }}
+                                labelCol={{ span: 5 }}
                             >
                                 <Input />
                             </Form.Item>
                         </Col>
                     </Row>
                     <Row>
-                        <Form.Item
-                            label={<CustomLabel label={"State"} />}
-                            name={["billingAddress","state"]}
-                            labelAlign="left"
-                            labelCol={{ span: 7 }}
-                        >
-                            <Select
-                                options={CustomerData.states}
-                                style={{ width: "150px" }}
-                            />
-                        </Form.Item>
+                        <Col xs={24} sm={24} lg={12} xl={12}>
+                            <Form.Item
+                                label={<CustomLabel label={"State"} />}
+                                name={["billingAddress", "state"]}
+                                labelAlign="left"
+                                labelCol={{ span: 5 }}
+                            >
+                                <Select
+                                    options={CustomerData.states}
+                                    style={{ width: "150px" }}
+                                />
+                            </Form.Item>
+                        </Col>
                     </Row>
                 </Col>
                 <Col sm={24} xs={12} md={12} lg={12}>
-                    <Row>
+                    <Row style={{ paddingBottom: 25 }}>
                         <Text type="secondary" style={{ fontWeight: 900 }}>
                             Shipping Address
                         </Text>
@@ -176,48 +192,69 @@ const CoustomersForm = ({ current, disabled }) => {
                     </Row>
 
                     <Row>
-                        <Col span={22}>
+                        <Col xs={24} sm={24} lg={12} xl={12}>
                             <Form.Item
-                                label={<CustomLabel label={" Address"} />}
+                                label={<CustomLabel label={"Street1"} />}
+                                name={["shippingAddress", "street1"]}
                                 labelAlign="left"
-                                name={["shippingAddress","street"]}
+                                labelCol={{ span: 5 }}
                             >
                                 <Input.TextArea />
                             </Form.Item>
                         </Col>
                     </Row>
                     <Row>
-                        <Form.Item
-                            label={<CustomLabel label={"City"} />}
-                            name={["shippingAddress","city"]}
-                            labelAlign="left"
-                            labelCol={{ span: 7 }}
-                        >
-                            <Input />
-                        </Form.Item>
+                        <Col xs={24} sm={24} lg={12} xl={12}>
+                            <Form.Item
+                                label={<CustomLabel label={"Street2"} />}
+                                name={["shippingAddress", "street2"]}
+                                labelAlign="left"
+                                labelCol={{ span: 5 }}
+                            >
+                                <Input.TextArea />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+
+                    <Row>
+                        <Col xs={24} sm={24} lg={12} xl={12}>
+                            <Form.Item
+                                label={<CustomLabel label={"City"} />}
+                                name={["shippingAddress", "city"]}
+                                labelAlign="left"
+                                labelCol={{ span: 5 }}
+                            >
+                                <Input />
+                            </Form.Item>
+                        </Col>
                     </Row>
                     <Row>
-                        <Form.Item
-                            label={<CustomLabel label={"Pin Code"} />}
-                            name={["shippingAddress","pincode"]}
-                            labelAlign="left"
-                            labelCol={{ span: 7 }}
-                        >
-                            <Input value={billing.pincode} />
-                        </Form.Item>
+                        <Col xs={24} sm={24} lg={12} xl={12}>
+                            <Form.Item
+                                label={<CustomLabel label={"Pincode"} />}
+                                name={["shippingAddress", "pincode"]}
+                                labelAlign="left"
+                                labelCol={{ span: 5 }}
+                            >
+                                <Input value={billing.pincode} />
+                            </Form.Item>
+                        </Col>
                     </Row>
+
                     <Row>
-                        <Form.Item
-                            label={<CustomLabel label={"State"} />}
-                            name={["shippingAddress","state"]}
-                            labelAlign="left"
-                            labelCol={{ span: 7 }}
-                        >
-                            <Select
-                                options={CustomerData.states}
-                                style={{ width: "150px" }}
-                            />
-                        </Form.Item>
+                        <Col xs={24} sm={24} lg={12} xl={12}>
+                            <Form.Item
+                                label={<CustomLabel label={"State"} />}
+                                name={["shippingAddress", "state"]}
+                                labelAlign="left"
+                                labelCol={{ span: 5 }}
+                            >
+                                <Select
+                                    options={CustomerData.states}
+                                    style={{ width: "150px" }}
+                                />
+                            </Form.Item>
+                        </Col>
                     </Row>
                 </Col>
             </Row>

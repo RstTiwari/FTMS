@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { message, Upload, Image, Row, Button, Col } from "antd";
-import { useAuth } from "state/AuthProvider";
-import NotificationHandler from "EventHandler/NotificationHandler";
-import PageLoader from "pages/PageLoader";
+import React, { useState, useEffect } from 'react';
+import { Row, Col, Button, Upload, Image } from 'antd';
+import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import NotificationHandler from '../EventHandler/NotificationHandler'; // Update the path as necessary
+import { useAuth } from '../state/AuthProvider'; // Update the path as necessary
+
 const { Dragger } = Upload;
 
 const UploadImage = ({
@@ -11,99 +11,91 @@ const UploadImage = ({
     uploadTitle,
     aboutImage,
     onUploadSuccess,
-    logo,
+    url,
+    ...restProps
 }) => {
     const [loading, setLoading] = useState(false);
     const [edit, setEdit] = useState(true);
-    const [imageUrl, setImageUrl] = useState("");
-    const [file,setFile] = useState("")
-    const { uploadFile } = useAuth();
+    const [imageUrl, setImageUrl] = useState(url || "");
+    const [file, setFile] = useState(null);
 
     const handleChange = async (info) => {
-        setFile(info.file.originFileObj);
+        const file = info.file.originFileObj;
+        setFile(file);
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => setImageUrl(reader.result);
+        restProps.onChange && restProps.onChange(file); // Update form field value
     };
 
     const uploadImage = async () => {
-      if(!file){
-       return NotificationHandler.error("Please Select an Image to Upload")
-      }
-      setLoading(true)
+        if (!file) {
+            return NotificationHandler.error("Please Select an Image to Upload");
+        }
+        setLoading(true);
         try {
             const formData = new FormData();
             formData.append("file", file);
-            const { success, result, message } = await uploadFile(formData);
+            const { success, result, message } = await "" //useAuth().uploadFile(formData); // assuming useAuth has uploadFile method
             if (!success) {
                 return NotificationHandler.error(message);
             } else {
                 setImageUrl(result);
                 onUploadSuccess(result);
-                setLoading(false)
+                setLoading(false);
             }
         } catch (error) {
             console.error(error);
-            return NotificationHandler.error(message);
+            return NotificationHandler.error("Upload failed");
         }
     };
-    /**
-     * Changin edit status bas
-     */
-   useEffect(() => {
-       if (logo && logo !== "") {
-           setEdit(false);
-       }
-   }, []);
+
+    useEffect(() => {
+        if (url && url !== "") {
+            setEdit(false);
+        }
+    }, [url]);
+
     return (
         <>
-            <Row justify={"end"} align={"middle"}>
+            <Row justify="end" align="middle">
                 <Col span={8}>
                     <h4>{pageTitle}</h4>
                 </Col>
                 <Col span={8}>
-                    {!edit ? (
+                    {!edit && (
                         <Button
                             style={{ width: "5rem" }}
-                            onClick={() => (!edit ? setEdit(!edit) : "")}
+                            onClick={() => setEdit(true)}
                         >
-                            EDIT
+                            Change
                         </Button>
-                    ) : (
-                        ""
                     )}
                 </Col>
             </Row>
             {edit ? (
                 <>
-                    <Dragger onChange={(info) => handleChange(info)}>
-                        <h2>{uploadTitle}</h2>
+                    <Dragger onChange={handleChange} showUploadList={false}>
                         {imageUrl ? (
-                            <img
-                                src={`${imageUrl}`}
-                                style={{ width: "5rem" }}
-                            />
+                            <img src={imageUrl} alt="Preview" style={{ width: "100%", maxHeight: "200px" }} />
                         ) : (
-                            ""
+                            <>
+                                <p className="ant-upload-drag-icon">
+                                    {loading ? <LoadingOutlined /> : <PlusOutlined />}
+                                </p>
+                                <p className="ant-upload-text">{uploadTitle}</p>
+                                <p className="ant-upload-hint">{aboutImage}</p>
+                            </>
                         )}
-                        <p className="ant-upload-drag-icon">
-                            {loading ? <LoadingOutlined /> : <PlusOutlined />}
-                        </p>
-                        <p className="ant-upload-text">
-                            Click to this area to upload
-                        </p>
-                        <p className="ant-upload-hint">{aboutImage}</p>
                     </Dragger>
-                    <PageLoader  isLoading={loading}/>
-                    <Row justify={"center"}>
-                        <Button type="primary" onClick={()=>uploadImage()}>UPLOAD</Button>
-                    </Row>
                 </>
             ) : (
-                <>
-                    <Row justify={"center"}>
-                        <Image src={logo} style={{ width: "5rem" }} />
-                    </Row>
-                </>
+                <Row justify="center">
+                    <Image src={url} style={{ width: "100%", maxHeight: "200px" }} />
+                </Row>
             )}
         </>
     );
 };
+
 export default UploadImage;

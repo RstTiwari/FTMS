@@ -2,7 +2,7 @@ import { CloseOutlined } from "@ant-design/icons";
 import { Drawer } from "antd";
 import React, { useState } from "react";
 
-const SettingSidebar = ({ open, setOpen, childern }) => {
+const SettingSidebar = ({ open, setOpen, children }) => {
     return (
         <Drawer
             title={"SETTINGS"}
@@ -11,7 +11,7 @@ const SettingSidebar = ({ open, setOpen, childern }) => {
             maskClosable={false}
             closeIcon={<CloseOutlined style={{right:0,color:"red"}} />}
         >
-            {childern}
+            {children}
         </Drawer>
     );
 };

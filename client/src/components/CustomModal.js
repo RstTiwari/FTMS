@@ -2,15 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Modal, Select, Divider, Button } from "antd";
 import NewCustomer from "pages/Customer/NewCustomer";
 import { useAuth } from "state/AuthProvider";
+import CoustomButton from "./SmallComponent/CoustomButton";
+import CustomForm from "./CustomForm";
 
-const CustomerModal = ({ customerSelect,customerId ,disabled}) => {
+const CustomModel = ({ customerSelect,customerId ,disabled,entity,width}) => {
     const [open, setOpen] = useState(false);
     const { getDropDownData } = useAuth();
     const [customer,setCustomer] = useState("")
     const [options, setOptions] = useState([]);
 
     const handelCustomerClick = async () => {
-        let entity = "customer";
         let fieldName = "customerName";
         let data = await getDropDownData(entity, fieldName);
         setOptions(data);
@@ -22,6 +23,7 @@ const CustomerModal = ({ customerSelect,customerId ,disabled}) => {
     const addNewCustomer = () => {
         setOpen(true);
     };
+    console.log(entity,"entity");
     const onCancel = () => {
         setOpen(!open);
         if(customerId){
@@ -54,18 +56,10 @@ const CustomerModal = ({ customerSelect,customerId ,disabled}) => {
                     }
                     dropdownRender={(menu) => {
                         return (
-                            <div>
+                            <div >
                                 {menu}
                                 <Divider />
-                                <Button
-                                    type="primary"
-                                    style={{
-                                        margin: "0.1rem",
-                                    }}
-                                    onClick={addNewCustomer}
-                                >
-                                    Add New
-                                </Button>
+                                <CoustomButton   text ="New" onClick={addNewCustomer}/>
                             </div>
                         );
                     }}
@@ -74,21 +68,36 @@ const CustomerModal = ({ customerSelect,customerId ,disabled}) => {
                 />
             ) : (
                 <Modal
-                    title={"NEW CUSTOMER"}
-                    zIndex={1200}
-                    centered
-                    open={open}
-                    width={"90%"}
-                    onCancel={onCancel}
-                    maskClosable={true}
-                    footer={null}
+                title={`NEW ${entity.toUpperCase()}`}
+                zIndex={1200}
+                centered
+                open={open}
+                width={"600px"}
+                onCancel={onCancel}
+                maskClosable={true}
+                footer={null}
+                style={{
+                    height: '50vh',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+                bodyStyle={{
+                    height: '100%',
+                    width: '100%',
+                    overflow: 'auto',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}
+       
                     keyboard={false}
                 >
-                    <NewCustomer checkHeader={false} afterAdd={afterAdd} />
+                    <CustomForm  entity ={entity} height="50Vh" header ={false} />
                 </Modal>
             )}
         </>
     );
 };
 
-export default CustomerModal;
+export default CustomModel;

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, Input, Checkbox, Col, Row, Button } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import CoustomButton from "components/SmallComponent/CoustomButton";
 
 export const RegisterForm = () => {
     return (
@@ -17,7 +18,10 @@ export const RegisterForm = () => {
                     },
                 ]}
             >
-                <Input placeholder="Company Name" />
+                <Input placeholder="Company Name" 
+                    size={"large"}
+
+                />
             </Form.Item>
             <Form.Item
                 label={"Your Name"}
@@ -30,7 +34,10 @@ export const RegisterForm = () => {
                     },
                 ]}
             >
-                <Input placeholder="Your Name" />
+                <Input placeholder="Your Name" 
+                    size={"large"}
+
+                 />
             </Form.Item>
             <Form.Item
                 label={"Email"}
@@ -81,14 +88,7 @@ export const RegisterForm = () => {
            
             <Form.Item>
                 <Row justify={"center"}>
-                    <Button
-                        type="primary"
-                        htmlType="submit"
-                        className="login-form-button"
-                        size="large"
-                    >
-                        Register
-                    </Button>
+                    <CoustomButton  htmlType="submit"  text={"Register"}/>
                 </Row>
             </Form.Item>
         </div>

@@ -92,7 +92,7 @@ const NavBar = ({ user, width }) => {
             <SettingSidebar
                 open={openSettingSideBar}
                 setOpen={setOpenSettingSidebar}
-                children={<SettingList closeSideBar={openSettingSideBar} />}
+                children={<SettingList closeSideBar={openSettingSideBar}  setCloseSideBar={setOpenSettingSidebar}/>}
             />
         </Header>
     );

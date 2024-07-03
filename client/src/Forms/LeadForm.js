@@ -3,7 +3,7 @@ import { Form, Select, Divider, Space, Input, Button, Row, Col } from "antd";
 import { sourceOptions, companyDetails, leadStatus } from "Data/LeadData";
 import { useAuth } from "state/AuthProvider";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
-import CustomerModal from "components/CustomerModal";
+import CustomerModal from "components/CustomModal";
 import CustomLabel from "components/SmallComponent/CustomLabel";
 import FormItemCol from "components/SmallComponent/FormItemCol";
 const LeadForm = ({ current }) => {

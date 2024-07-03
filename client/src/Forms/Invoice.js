@@ -50,6 +50,7 @@ const QuotationForm = ({ current }) => {
                 labelAlign="left"
                 labelCol={{ span: 6 }}
                 required={true}
+                
                 rules={[
                     {
                         required: "true",
@@ -57,6 +58,8 @@ const QuotationForm = ({ current }) => {
                     },
                 ]}
                 type="model"
+                entity ="customers"
+                width="35%"
                 customerSelect=""
                 handleCustomerChange={handleCustomerChange}
             />

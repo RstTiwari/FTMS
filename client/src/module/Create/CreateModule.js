@@ -10,15 +10,17 @@ import PurchaseFormItem from "../../Forms/PurchaseOrderForm";
 import ExpensesItem from "../../Forms/ExpenseForm";
 import PaymentFormItem from "../../Forms/PaymentForm";
 import LeadFormItem from "../../Forms/LeadForm";
+import ProductForm from "Forms/ProductFrom";
 
 
-const CoustomFormItem = ({ form}) => {
-    const {entity} = useParams()
+const CoustomFormItem = ({ entityOfForm, form  }) => {
+    const { entity: entityFromRouter } = useParams();
     let componentToRender = <NotFound />;
+    const entity = entityOfForm || entityFromRouter;
 
     switch (entity) {
         case "customers":
-            componentToRender = <CoustomerItem form = {form} />;
+            componentToRender = <CoustomerItem  />;
             break;
         case "quotations":
             componentToRender = <QuotesFormItems />;
@@ -40,6 +42,9 @@ const CoustomFormItem = ({ form}) => {
             break;
         case "expenses":
             componentToRender = <ExpensesItem />;
+            break;
+        case "products":
+            componentToRender = <ProductForm />;
             break;
         case "payments":
             componentToRender = <PaymentFormItem />;

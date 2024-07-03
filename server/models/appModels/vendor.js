@@ -29,13 +29,15 @@ const vendorSchema = new mongoose.Schema({
 
     },
     billingAddress: {
-        street: String,
+        street1: String,
+        street2: String,
         city: String,
         state: String,
         pinCode: Number,
     },
     shippingAddress: {
-        street: String,
+        street1: String,
+        street2: String,
         city: String,
         state: String,
         pinCode: Number,

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form, Input, Typography,Row, Button } from "antd";
 import { MailOutlined } from "@ant-design/icons";
+import CoustomButton from "components/SmallComponent/CoustomButton";
 const {Text,Link,Title} = Typography
 
 const ForgetPassword = () => {
@@ -35,9 +36,7 @@ const ForgetPassword = () => {
             </Form.Item>
            <Row align={"middle"} justify={"center"}>
            <Form.Item >
-                <Button type="primary" htmlType="submit">
-                    Send Otp
-                </Button>
+            <CoustomButton htmlType="submit"  text={"Send OTP"}/>
             </Form.Item>
            </Row>
         </div>

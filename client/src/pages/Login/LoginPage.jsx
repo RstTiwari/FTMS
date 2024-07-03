@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./Login.css";
 import PageLoader from "pages/PageLoader";
 import SideContent from "module/AuthModule/SideContent";
 import LoginForm from "Forms/LoginForm.js";
@@ -29,32 +28,16 @@ const Login = () => {
         }
     };
     return (
-        <Row
-            justify="center"
-            align="middle"
-            style={{ minHeight: "100vh", padding: "20px" ,}}
-        >
-            <Col
-                xs={24}
-                sm={24}
-                md={12}
-                lg={12}
-                style={{ textAlign: "center" }}
-            >
-                <SideContent />
-            </Col>
-            
-            <Col
-                xs={24}
-                sm={24}
-                md={12}
-                lg={12}
-                style={{ textAlign: "center" }}
-            >
-                <PageLoader isLoading={isLoading} text={"Please Wait..."} />
-                <LoginForm handleLoginChange={handleLoginChange} />
-            </Col>
-        </Row>
+        <div className="parent_clearfix">
+            <SideContent />
+            <div className="login">
+                {!isLoading ? (
+                    <LoginForm handleLoginChange={handleLoginChange} />
+                ) : (
+                    <PageLoader isLoading={isLoading} text={"Hold On ... Making thing Perfect"} />
+                )}
+            </div>
+        </div>
     );
 };
 

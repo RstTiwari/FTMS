@@ -34,6 +34,7 @@ import CreateModule from "module/Create/CreateModule";
 
 const Approuter = ({ profile }) => {
     const tenantId = profile?.tenant?.tenantId;
+    const {entity}  = useParams()
     return (
         <Routes>
             <Route element={<Layout profile={profile} />}>
@@ -54,7 +55,7 @@ const Approuter = ({ profile }) => {
                 />
                 <Route
                     path="/app/:tenantId/:entity/create"
-                    element={<CostomForm />}
+                    element={<CostomForm  entity ={entity} />}
                 />
                 <Route path="/customers" element={<Coustomer />} />
                 <Route
@@ -105,19 +106,14 @@ const Approuter = ({ profile }) => {
                 <Route path="/record/payment/:id" element={<NewPayment />} />
 
                 {/*Mangaining Orgnization Profile */}
-                <Route path="/:entity/:id" element={<Orgnization />} />
-                <Route path="/templates" element={<Templates />} />
-                <Route
-                    path="/websocket"
-                    element={<SimpleWebSocketComponent />}
-                />
-
+                <Route path="/app/:tenantId/orgnizationprofile" element={<Orgnization />} />
+                <Route path="/app/:tenantId/templates" element={<Templates />} />
                 <Route path="*" element={<NotFound />} />
 
                 {/**In case some one acess login page after being logged in */}
                 <Route
                     path="/login"
-                    element={<Navigate to="/dashboard" replace />}
+                    element={<Navigate to="/app/:tenantId/dashboard" replace />}
                 />
             </Route>
         </Routes>
