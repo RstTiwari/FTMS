@@ -11,16 +11,16 @@ import ExpensesItem from "../../Forms/ExpenseForm";
 import PaymentFormItem from "../../Forms/PaymentForm";
 import LeadFormItem from "../../Forms/LeadForm";
 import ProductForm from "Forms/ProductFrom";
+import EntityNo from "Forms/EntityNo";
 
-
-const CoustomFormItem = ({ entityOfForm, form  }) => {
+const CoustomFormItem = ({ entityOfForm, form, isModal }) => {
     const { entity: entityFromRouter } = useParams();
     let componentToRender = <NotFound />;
     const entity = entityOfForm || entityFromRouter;
 
     switch (entity) {
         case "customers":
-            componentToRender = <CoustomerItem  />;
+            componentToRender = <CoustomerItem isModal={isModal} />;
             break;
         case "quotations":
             componentToRender = <QuotesFormItems />;
@@ -38,16 +38,19 @@ const CoustomFormItem = ({ entityOfForm, form  }) => {
             componentToRender = <PurchaseFormItem />;
             break;
         case "vendors":
-            componentToRender = <VendorFormItem />;
+            componentToRender = <VendorFormItem isModal={isModal} />;
             break;
         case "expenses":
             componentToRender = <ExpensesItem />;
             break;
         case "products":
-            componentToRender = <ProductForm />;
+            componentToRender = <ProductForm isModal={isModal} />;
             break;
         case "payments":
             componentToRender = <PaymentFormItem />;
+            break;
+        case "entityNo":
+            componentToRender = <EntityNo />;
             break;
         default:
             break;

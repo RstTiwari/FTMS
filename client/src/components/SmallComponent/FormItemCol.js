@@ -4,13 +4,14 @@ import CustomLabel from "../SmallComponent/CustomLabel"; // Assuming you have cr
 import CustomInput from "../SmallComponent/CustomInput"; // Assuming you have created CustomInput component
 import CustomTable from "components/CustomTable";
 
-const FormItemCol = ({ label, name, required =false, rules =[],tooltip,readOnly, type,entity, width,...restProps }) => (
+const FormItemCol = ({ label, name, required =false,labelCol, rules =[],tooltip,readOnly, type,entity, width,...restProps }) => (
     <Col xs={24} sm={24} md={8} lg={8}>
         <Form.Item
             label={<CustomLabel required={required} label={label} />}
             name={name}
             labelAlign="left"
             rules={rules}
+            labelCol={labelCol}
             tooltip ={tooltip}
             valuePropName={type === "image" ? "file" : "value"}
             getValueFromEvent={type === "image" ? (e) => e : undefined}

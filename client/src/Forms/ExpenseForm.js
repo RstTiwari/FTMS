@@ -34,7 +34,7 @@ const ExpenseForm = () => {
                 rules={[
                     { required: true, message: "Expense Date is Required" },
                 ]}
-                span={8}
+                labelCol={{ span: 8 }}
                 type={"date"}
             />
 
@@ -46,6 +46,7 @@ const ExpenseForm = () => {
                 labelAlign="left"
                 rules={[{ required: true, message: "Category  is Required" }]}
                 entity={"Category Name"}
+                labelCol={{ span: 8 }}
             />
 
             <FormItemCol
@@ -54,7 +55,7 @@ const ExpenseForm = () => {
                 labelAlign="left"
                 required={true}
                 rules={[{ required: true, message: "Amount is Required" }]}
-                span={8}
+                labelCol={{ span: 8 }}
                 type={"number"}
             />
 
@@ -62,16 +63,22 @@ const ExpenseForm = () => {
                 label="#WorkOrder"
                 name="workOrder"
                 labelAlign="left"
-                span={8}
+                labelCol={{ span: 8 }}
             />
 
-            <FormItemCol label="Note" name="note" labelAlign="left" span={8} type={"box"} />
+            <FormItemCol
+                label="Note"
+                name="note"
+                labelAlign="left"
+                labelCol={{ span: 8 }}
+                type={"box"}
+            />
 
             <FormItemCol
                 label="Select Customer"
                 name="customer"
                 labelAlign="left"
-                span={8}
+                labelCol={{span:8}}
                 type={"model"}
             ></FormItemCol>
         </div>

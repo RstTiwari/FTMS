@@ -77,7 +77,7 @@ const PaymentForm = ({ initialValue = {} }) => {
                             },
                         ]}
                         labelAlign="left"
-                        labelCol={{ span: 4 }}
+                        labelCol={{ span: 8 }}
                         type={"model"}
                     />
                 </Col>
@@ -93,7 +93,7 @@ const PaymentForm = ({ initialValue = {} }) => {
                             },
                         ]}
                         labelAlign="left"
-                        labelCol={{ span: 4 }}
+                        labelCol={{ span: 8 }}
                         type={"date"}
                     />
                 </Col>
@@ -102,7 +102,7 @@ const PaymentForm = ({ initialValue = {} }) => {
                         label="Payment Mode"
                         name="paymentMode"
                         labelAlign="left"
-                        labelCol={{ span: 4 }}
+                        labelCol={{ span: 8 }}
                         type={"select"}
                         entity="Payment Mode"
                     />
@@ -113,7 +113,7 @@ const PaymentForm = ({ initialValue = {} }) => {
                         name="refer"
                         tooltip={"Check No or UPI Transaction No"}
                         labelAlign="left"
-                        labelCol={{ span: 4 }}
+                        labelCol={{ span: 8 }}
                         type={"input"}
                     />
                 </Col>
@@ -123,7 +123,7 @@ const PaymentForm = ({ initialValue = {} }) => {
                         name="amount"
                         labelAlign="left"
                         required={true}
-                        labelCol={{ span: 4 }}
+                        labelCol={{ span: 8 }}
                         rules={[
                             {
                                 required: true,
@@ -139,8 +139,8 @@ const PaymentForm = ({ initialValue = {} }) => {
                         name={"note"}
                         labelAlign="left"
                         tooltip={"Remark or Comment"}
-                        labelCol={{ span: 4 }}
-                        type={"box"}
+                        labelCol={{ span: 8 }}
+                        type={"input"}
                     />
                 </Col>
             </Row>

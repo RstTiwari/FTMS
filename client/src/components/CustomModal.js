@@ -11,6 +11,8 @@ const CustomModel = ({ customerSelect,customerId ,disabled,entity,width}) => {
     const [customer,setCustomer] = useState("")
     const [options, setOptions] = useState([]);
 
+   
+
     const handelCustomerClick = async () => {
         let fieldName = "customerName";
         let data = await getDropDownData(entity, fieldName);
@@ -23,7 +25,6 @@ const CustomModel = ({ customerSelect,customerId ,disabled,entity,width}) => {
     const addNewCustomer = () => {
         setOpen(true);
     };
-    console.log(entity,"entity");
     const onCancel = () => {
         setOpen(!open);
         if(customerId){
@@ -41,6 +42,7 @@ const CustomModel = ({ customerSelect,customerId ,disabled,entity,width}) => {
         handelCustomerClick();
         setCustomer(customerId)
     }, []);
+
     return (
         <>
             {!open ? (
@@ -72,28 +74,17 @@ const CustomModel = ({ customerSelect,customerId ,disabled,entity,width}) => {
                 zIndex={1200}
                 centered
                 open={open}
-                width={"600px"}
+                width={"50%"}
                 onCancel={onCancel}
                 maskClosable={true}
                 footer={null}
-                style={{
-                    height: '50vh',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
                 bodyStyle={{
-                    height: '100%',
-                    width: '100%',
-                    overflow: 'auto',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center'
+                    overflow: 'auto' 
                 }}
        
                     keyboard={false}
                 >
-                    <CustomForm  entity ={entity} height="50Vh" header ={false} />
+                    <CustomForm  entity ={entity} height="50Vh" header ={false} isModal={true} />
                 </Modal>
             )}
         </>

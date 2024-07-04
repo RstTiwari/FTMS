@@ -1,25 +1,38 @@
 import React, { useState, useEffect } from "react";
-import { Form } from "antd";
+import { Form ,message} from "antd";
 import Header from "./Header";
 import FormActionButtons from "../components/SmallComponent/FormActionButton";
 import CustomFormItem from "../module/Create/CreateModule";
 import "../App.css"
 
-const CustomForm = ({ entity,height ="100vh",header =true }) => {
+const CustomForm = ({ entity,height ="100vh",header =true ,isModal = false }) => {
     const [form] = Form.useForm();
     const [initialValues, setInitialValues] = useState({});
+    const [unfilledField, setUnfilledField] = useState(null);
 
     useEffect(() => {
         // Fetch initial values based on the entity
         setInitialValues({ });
     }, [entity]);
-    console.log(entity,"inFOrm");
 
     const handleFormFinish = (values) => {
         console.log("Form submitted:", values);
-        // Handle form submission logic
+        // Handle form submission logic here
     };
-   
+
+    const validateFields = async () => {
+        try {
+            const values = await form.validateFields();
+            console.log(values,"--");
+            setUnfilledField(null); // Clear unfilledField state if validation succeeds
+            handleFormFinish(values); // Proceed with form submission logic
+        } catch (error) {
+            console.log("Validation error:", error);
+            const firstField = error.errorFields[0].name[0];
+            setUnfilledField(firstField); // Set the first unfilled field
+            message.error(`Please fill in '${firstField}'`); // Display error message using Ant Design message component
+        }
+    };
 
     return (
         <div
@@ -39,16 +52,14 @@ const CustomForm = ({ entity,height ="100vh",header =true }) => {
                 form={form}
                 initialValues={{}}
                 onFinish={handleFormFinish}
-                className="form-with-fixed-actions"
+                onFinishFailed={validateFields}
+                validateTrigger={unfilledField}
+                requiredMark={false}
+                layout = {isModal ? "vertical" :"horizontal"} 
             >
                 <div
-                    style={{
-                        flex: 1,
-                        overflowY: "auto",
-                        marginTop: "10px",
-                    }}
                 >
-                    <CustomFormItem entityOfForm={entity} form={form} />
+                    <CustomFormItem entityOfForm={entity} form={form}  isModal ={isModal}/>
                 </div>
                 <div
                     style={{

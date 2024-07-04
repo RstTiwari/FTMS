@@ -26,7 +26,7 @@ import FormItemCol from "components/SmallComponent/FormItemCol";
 import ProductModal from "components/ProductModal";
 import CustomSelect from "components/SmallComponent/CustomDropDown";
 
-const PurchaseOrder = ({ handleFormFinish, value, disabled, submitText }) => {
+const PurchaseOrder = ({ handleFormFinish, value, disabled, isModel }) => {
     const [form] = Form.useForm();
 
     const handleVendorChange = (value, lable) => {
@@ -87,7 +87,7 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled, submitText }) => {
                 label={"Select Vendor"}
                 name={"vendor"}
                 labelAlign="left"
-                labelCol={{ span: 6 }}
+                labelCol={{ span: 8 }}
                 required={true}
                 rules={[
                     {
@@ -95,7 +95,8 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled, submitText }) => {
                         message: "Please Select Vendor",
                     },
                 ]}
-                type={"vendormodel"}
+                type={"model"}
+                entity={"vendors"}
             />
             <FormItemCol
                 label={"#PURCHASE"}
@@ -103,7 +104,7 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled, submitText }) => {
                 labelAlign="left"
                 required={true}
                 type={"input"}
-                labelCol={{ span: 6 }}
+                labelCol={{ span: 8}}
                 rules={[
                     {
                         required: "true",
@@ -124,6 +125,7 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled, submitText }) => {
                     ]}
                     labelAlign="left"
                     type={"date"}
+                    labelCol={{ span: 8 }}
                 />
             </Row>
             <Divider dashed />
@@ -350,6 +352,8 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled, submitText }) => {
                     tooltip={"Amount Before Tax"}
                     labelAlign="left"
                     type={"number"}
+                    labelCol={{ span: 10 }}
+                    
                 />
             </Row>
             <Row align={"middle"} justify={"end"}>

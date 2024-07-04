@@ -9,7 +9,7 @@ import CustomTable from "components/CustomTable";
 
 const { Text } = Typography;
 
-const CoustomersForm = ({ current, disabled }) => {
+const CoustomersForm = ({ current, disabled,isModal }) => {
     const isLaptop = useMediaQuery("(min-width:600px)");
     const [billing, setBilling] = useState({
         street: "",
@@ -30,14 +30,15 @@ const CoustomersForm = ({ current, disabled }) => {
         current.setFieldsValue({ shippingState: billing.state });
         current.setFieldsValue({ shippingPincode: billing.pincode });
     };
+    
     return (
-        <div >
+        < >
             <FormItemCol
                 label={"Customer Name"}
                 labelAlign="left"
                 name="customerName"
                 required={true}
-                labelCol={{ span: 8 }}
+                labelCol={{ span: isModal ? 18:8}}
                 rules={[
                     {
                         required: true,
@@ -51,7 +52,7 @@ const CoustomersForm = ({ current, disabled }) => {
                 required={true}
                 labelAlign="left"
                 name="customerPhone"
-                labelCol={{ span: 8 }}
+                labelCol={{span: isModal ? 18:8}}
                 rules={[
                     {
                         required: true,
@@ -64,7 +65,7 @@ const CoustomersForm = ({ current, disabled }) => {
                 label={"Customer Email"}
                 labelAlign="left"
                 name="customerEmail"
-                labelCol={{ span: 8 }}
+                labelCol={{span: isModal ? 18:8}}
                 required={true}
                 rules={[
                     {
@@ -78,7 +79,7 @@ const CoustomersForm = ({ current, disabled }) => {
                 label={"Contact Person"}
                 name={"contactPerson"}
                 labelAlign="left"
-                labelCol={{ span: 8 }}
+                labelCol={{span: isModal ? 18:8}}
                 type={"input    "}
             />
 
@@ -87,7 +88,7 @@ const CoustomersForm = ({ current, disabled }) => {
                 labelAlign="left"
                 tooltip="this data  will be Encrypted then stored not visible to other people  accept access given  "
                 name="panNo"
-                labelCol={{ span: 8 }}
+                labelCol={{span: isModal ? 18:8}}
                 type={"input"}
             />
 
@@ -96,7 +97,7 @@ const CoustomersForm = ({ current, disabled }) => {
                 labelAlign="left"
                 tooltip="this data  will be Encripted then stored not visible to other pepole  accept acces given  "
                 name="gstNo"
-                labelCol={{ span: 8 }}
+                labelCol={{span: isModal ? 18:8}}
             />
             <Row style={{ padding: 20 }}>
                 <Col sm={24} xs={24} md={12} lg={12}>
@@ -111,7 +112,7 @@ const CoustomersForm = ({ current, disabled }) => {
                                 label={<CustomLabel label={"Street1"} />}
                                 name={["billingAddress", "street1"]}
                                 labelAlign="left"
-                                labelCol={{ span: 5 }}
+                                labelCol={{ span: 8 }}
                             >
                                 <Input.TextArea />
                             </Form.Item>
@@ -123,7 +124,7 @@ const CoustomersForm = ({ current, disabled }) => {
                                 label={<CustomLabel label={"Street2"} />}
                                 name={["billingAddress", "street2"]}
                                 labelAlign="left"
-                                labelCol={{ span: 5 }}
+                                labelCol={{ span: isModal? 8: 5 }}
                             >
                                 <Input.TextArea />
                             </Form.Item>
@@ -136,7 +137,7 @@ const CoustomersForm = ({ current, disabled }) => {
                                 label={<CustomLabel label={"City"} />}
                                 name={["billingAddress", "city"]}
                                 labelAlign="left"
-                                labelCol={{ span: 5 }}
+                                labelCol={{span: isModal? 8: 5}}
                             >
                                 <Input />
                             </Form.Item>
@@ -148,7 +149,7 @@ const CoustomersForm = ({ current, disabled }) => {
                                 label={<CustomLabel label={"Pincode"} />}
                                 name={["billingAddress", "pincode"]}
                                 labelAlign="left"
-                                labelCol={{ span: 5 }}
+                                labelCol={{span: isModal? 8: 5 }}
                             >
                                 <Input />
                             </Form.Item>
@@ -160,7 +161,7 @@ const CoustomersForm = ({ current, disabled }) => {
                                 label={<CustomLabel label={"State"} />}
                                 name={["billingAddress", "state"]}
                                 labelAlign="left"
-                                labelCol={{ span: 5 }}
+                                labelCol={{span: isModal? 8: 5}}
                             >
                                 <Select
                                     options={CustomerData.states}
@@ -197,7 +198,7 @@ const CoustomersForm = ({ current, disabled }) => {
                                 label={<CustomLabel label={"Street1"} />}
                                 name={["shippingAddress", "street1"]}
                                 labelAlign="left"
-                                labelCol={{ span: 5 }}
+                                labelCol={{ span: isModal? 8: 5 }}
                             >
                                 <Input.TextArea />
                             </Form.Item>
@@ -209,7 +210,7 @@ const CoustomersForm = ({ current, disabled }) => {
                                 label={<CustomLabel label={"Street2"} />}
                                 name={["shippingAddress", "street2"]}
                                 labelAlign="left"
-                                labelCol={{ span: 5 }}
+                                labelCol={{ span: isModal? 8: 5}}
                             >
                                 <Input.TextArea />
                             </Form.Item>
@@ -222,7 +223,7 @@ const CoustomersForm = ({ current, disabled }) => {
                                 label={<CustomLabel label={"City"} />}
                                 name={["shippingAddress", "city"]}
                                 labelAlign="left"
-                                labelCol={{ span: 5 }}
+                                labelCol={{span: isModal? 8: 5}}
                             >
                                 <Input />
                             </Form.Item>
@@ -234,7 +235,7 @@ const CoustomersForm = ({ current, disabled }) => {
                                 label={<CustomLabel label={"Pincode"} />}
                                 name={["shippingAddress", "pincode"]}
                                 labelAlign="left"
-                                labelCol={{ span: 5 }}
+                                labelCol={{ span: isModal? 8: 5 }}
                             >
                                 <Input value={billing.pincode} />
                             </Form.Item>
@@ -247,7 +248,7 @@ const CoustomersForm = ({ current, disabled }) => {
                                 label={<CustomLabel label={"State"} />}
                                 name={["shippingAddress", "state"]}
                                 labelAlign="left"
-                                labelCol={{ span: 5 }}
+                                labelCol={{span: isModal? 8: 5 }}
                             >
                                 <Select
                                     options={CustomerData.states}
@@ -258,7 +259,7 @@ const CoustomersForm = ({ current, disabled }) => {
                     </Row>
                 </Col>
             </Row>
-        </div>
+        </>
     );
 };
 

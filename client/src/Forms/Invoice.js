@@ -6,6 +6,7 @@ import ProductModal from "components/ProductModal";
 import FormItemCol from "components/SmallComponent/FormItemCol";
 import Taglabel from "components/SmallComponent/Taglabel";
 import CustomSelect from "components/SmallComponent/CustomDropDown";
+import CustomModel from "components/CustomModal";
 
 const QuotationForm = ({ current }) => {
     const isLaptop = useMediaQuery("(min-width:1000px)");
@@ -48,7 +49,7 @@ const QuotationForm = ({ current }) => {
                 label={"Select Customer"}
                 name={"customer"}
                 labelAlign="left"
-                labelCol={{ span: 6 }}
+                labelCol={{ span: 8}}
                 required={true}
                 
                 rules={[
@@ -65,11 +66,12 @@ const QuotationForm = ({ current }) => {
             />
 
             <FormItemCol
-                label={"#Quote"}
+                label={"Invoice#"}
                 name={"quoteNo"}
                 required={true}
+                type={"entityNo"}
                 labelAlign="left"
-                labelCol={{ span: 6 }}
+                labelCol={{ span: 8 }}
                 rules={[
                     {
                         required: "true",
@@ -83,6 +85,7 @@ const QuotationForm = ({ current }) => {
                     label={"Invoice Date"}
                     name={"quoteDate"}
                     required={true}
+                    labelCol={{span:8}}
                     rules={[
                         {
                             required: true,
@@ -113,7 +116,8 @@ const QuotationForm = ({ current }) => {
                 style={{
                     position: "relative",
                     border: "1px solid #bfbfbb",
-                    padding: "2px",
+                    marginBottom: "20px",
+
                 }}
             >
                 <Row justify={"center"}>
@@ -214,6 +218,7 @@ const QuotationForm = ({ current }) => {
                                             textAlign: "center",
                                         }}
                                     >
+
                                         <Form.Item
                                             name={[
                                                 subField.name,
@@ -227,7 +232,9 @@ const QuotationForm = ({ current }) => {
                                                 },
                                             ]}
                                         >
-                                            <ProductModal
+
+                                            <CustomModel  entity={"products"} />
+                                            {/* <ProductModal
                                                 productSelect={(label) =>
                                                     onDescriptionChange(
                                                         label,
@@ -239,7 +246,7 @@ const QuotationForm = ({ current }) => {
                                                         ? items[subField.key]
                                                         : ""
                                                 }
-                                            />
+                                            /> */}
                                         </Form.Item>
                                     </Col>
                                     <Col

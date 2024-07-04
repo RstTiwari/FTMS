@@ -15,7 +15,7 @@ const FormActionButtons = ({ isUpdating }) => {
 
     return (
         <Row
-        
+        style={{marginTop:10}}
         >
             <Form.Item>
                 {isUpdating ? (

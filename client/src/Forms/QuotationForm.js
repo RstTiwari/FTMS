@@ -161,7 +161,7 @@ const QuotationForm = ({ current }) => {
                 name={"customer"}
                 labelAlign="left"
                 required ={true}
-                labelCol={{ span: 6 }}
+                labelCol={{ span: 8 }}
                 rules={[
                     {
                         required: "true",
@@ -169,6 +169,7 @@ const QuotationForm = ({ current }) => {
                     },
                 ]}
                 type="model"
+                entity={"customers"}
                 customerSelect=""
                 handleCustomerChange={handleCustomerChange}
             />
@@ -177,7 +178,8 @@ const QuotationForm = ({ current }) => {
                 name={"quoteNo"}
                 labelAlign="left"
                 required={true}
-                labelCol={{ span: 6 }}
+                labelCol={{ span: 8 }}
+                type={"entityNo"}
                 rules={[
                     {
                         required: "true",
@@ -234,7 +236,7 @@ const QuotationForm = ({ current }) => {
                 >
                     <Col
                         className="gutter-row"
-                        span={7}
+                        span={9}
                         style={{
                             borderRight: "1px solid #bfbfbb",
                             textAlign: "center",
@@ -244,7 +246,7 @@ const QuotationForm = ({ current }) => {
                     </Col>
                     <Col
                         className="gutter-row"
-                        span={4}
+                        span={5}
                         style={{
                             borderRight: "1px solid #bfbfbb",
                             textAlign: "center",
@@ -254,7 +256,7 @@ const QuotationForm = ({ current }) => {
                     </Col>
                     <Col
                         className="gutter-row"
-                        span={4}
+                        span={5}
                         style={{
                             borderRight: "1px solid #bfbfbb",
                             textAlign: "center",
@@ -264,10 +266,10 @@ const QuotationForm = ({ current }) => {
                     </Col>
                     <Col
                         className="gutter-row"
-                        span={4}
+                        span={5}
                         style={{ textAlign: "center" }}
                     >
-                        <Taglabel text={"Final Amount"} />
+                        <Taglabel text={"Final Amount(Before Tax)"} />
                     </Col>
                 </Row>
                 <Form.List
@@ -291,7 +293,7 @@ const QuotationForm = ({ current }) => {
                                 >
                                     <Col
                                         className="gutter-row"
-                                        span={7}
+                                        span={9}
                                         style={{
                                             textAlign: "center",
                                         }}
@@ -313,7 +315,7 @@ const QuotationForm = ({ current }) => {
                                             />
                                         </Form.Item>
                                     </Col>
-                                    <Col span={4}>
+                                    <Col span={5}>
                                         <Form.Item
                                             name={[subField.name, "rate"]}
                                         >
@@ -331,7 +333,7 @@ const QuotationForm = ({ current }) => {
                                             />
                                         </Form.Item>
                                     </Col>
-                                    <Col span={4}>
+                                    <Col span={5}>
                                         <Form.Item
                                             name={[subField.name, "qty"]}
                                         >
@@ -413,15 +415,20 @@ const QuotationForm = ({ current }) => {
             <Row align={"middle"} justify={"end"}>
                 <FormItemCol
                     label="Gross Total"
+                    tooltip={"Amount before Tax"}
                     name={"grossTotal"}
                     labelAlign="left"
+                    labelCol={{span:8}}
                     type={"number"}
+                    width={150}
                 />
             </Row>
             <Row align={"middle"} justify={"end"}>
                 <FormItemCol
                     label="Tax(%)"
                     name={"taxPercent"}
+                    labelCol={{span:8}}
+                    labelAlign="left"
                     type={"select"}
                     width={150}
                     entity={"Tax Percent"}
@@ -433,13 +440,27 @@ const QuotationForm = ({ current }) => {
                     name={"transPortAmount"}
                     labelAlign="left"
                     type={"number"}
+                    labelCol={{span:8}}
+                />
+            </Row>
+            <Row align={"middle"} justify={"end"}>
+                <FormItemCol
+                    label="Tax Amount"
+                    name={"taxAmount"}
+                    labelCol={{span:8}}
+                    labelAlign="left"
+                    tooltip={"Tax Amount on total + transport"}
+                    type={"number"}
+                    entity={"Tax Percent"}
                 />
             </Row>
             <Row align={"middle"} justify={"end"}>
                 <FormItemCol
                     label="Grand Total"
                     name={"grandTotal"}
+                    labelCol={{span:8}}
                     labelAlign="left"
+                    tooltip={"Total Amount including Tax + total"}
                     type={"number"}
                     readOnly
                 />
