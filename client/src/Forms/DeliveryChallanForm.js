@@ -23,6 +23,7 @@ import Taglabel from "components/SmallComponent/Taglabel";
 import CoustomButton from "components/SmallComponent/CoustomButton";
 import CustomLabel from "components/SmallComponent/CustomLabel";
 import CustomSelect from "components/SmallComponent/CustomDropDown";
+import CustomModel from "components/CustomModal";
 
 const DeliveryChallan = ({ current }) => {
     const isLaptop = useMediaQuery("(min-width:1000px)");
@@ -162,7 +163,7 @@ const DeliveryChallan = ({ current }) => {
                 name={"customer"}
                 labelAlign="left"
                 required ={true}
-                labelCol={{ span: 6 }}
+                labelCol={{ span: 8 }}
                 rules={[
                     {
                         required: "true",
@@ -178,7 +179,7 @@ const DeliveryChallan = ({ current }) => {
                 name={"challanNo"}
                 labelAlign="left"
                 required={true}
-                labelCol={{ span: 6 }}
+                labelCol={{ span: 8 }}
                 rules={[
                     {
                         required: "true",
@@ -196,6 +197,7 @@ const DeliveryChallan = ({ current }) => {
                             message: "Please Select Challan Date",
                         },
                     ]}
+                    labelCol={{ span: 8 }}
                     labelAlign="left"
                     type={"date"}
                 />
@@ -209,6 +211,7 @@ const DeliveryChallan = ({ current }) => {
                             message: "Please Select Challan Type",
                         },
                     ]}
+                    labelCol={{ span: 8 }}
                     labelAlign="left"
                     type={"select"}
                     entity ={"Challan Type"}
@@ -314,15 +317,7 @@ const DeliveryChallan = ({ current }) => {
                                                 "description",
                                             ]}
                                         >
-                                            <ProductModal
-                                                productSelect={(label) =>
-                                                    onProductChange(
-                                                        label,
-                                                        subField
-                                                    )
-                                                }
-                                                // productValue={ current.getFieldValue("")[subField.key]
-                                            />
+                                            <CustomModel  entity={"products"}/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={4}>
@@ -441,6 +436,8 @@ const DeliveryChallan = ({ current }) => {
                 <FormItemCol
                     label="Gross Total"
                     name={"grossTotal"}
+                    width={150}
+                    labelCol={{span:8}}
                     tooltip={"Amount Before Tax"}
                     labelAlign="left"
                     type={"number"}
@@ -452,6 +449,7 @@ const DeliveryChallan = ({ current }) => {
                     name={"taxPercent"}
                     type={"number"}
                     width={150}
+                    labelCol={{span:8}}
                     entity={"Tax Percent"}
                 />
             </Row>
@@ -460,6 +458,8 @@ const DeliveryChallan = ({ current }) => {
                     label="Transport(Rs)"
                     name={"transPortAmount"}
                     labelAlign="left"
+                    width={150}
+                    labelCol={{span:8}}
                     type={"number"}
                 />
             </Row>
@@ -471,6 +471,9 @@ const DeliveryChallan = ({ current }) => {
                     name={"grandTotal"}
                     labelAlign="left"
                     type={"number"}
+                    labelCol={{span:8}}
+                    width={150}
+
                     readOnly
                 />
             </Row>

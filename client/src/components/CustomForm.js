@@ -4,10 +4,11 @@ import Header from "./Header";
 import FormActionButtons from "../components/SmallComponent/FormActionButton";
 import CustomFormItem from "../module/Create/CreateModule";
 import "../App.css"
+import moment from "moment";
 
-const CustomForm = ({ entity,height ="100vh",header =true ,isModal = false }) => {
+const CustomForm = ({ entity,height ="100vh",header =true ,isModal = false,modalFieldKey,passToModal }) => {
     const [form] = Form.useForm();
-    const [initialValues, setInitialValues] = useState({});
+    const [initialValues, setInitialValues] = useState({quoteDate:moment('2023-07-05T12:00:00Z')});
     const [unfilledField, setUnfilledField] = useState(null);
 
     useEffect(() => {
@@ -16,10 +17,18 @@ const CustomForm = ({ entity,height ="100vh",header =true ,isModal = false }) =>
     }, [entity]);
 
     const handleFormFinish = (values) => {
+        // Handle Form Finish Logic and Loading after that if modal pass value
         console.log("Form submitted:", values);
+        const response = {_id:"1243567"}
         // Handle form submission logic here
+        if (isModal) {
+            modalFieldKey.name = form.getFieldsValue([modalFieldKey.name])
+            modalFieldKey.id = response._id
+            return passToModal(modalFieldKey);
+        }
     };
 
+    // Validating Filed and setting the Values at that moment only
     const validateFields = async () => {
         try {
             const values = await form.validateFields();
@@ -50,7 +59,7 @@ const CustomForm = ({ entity,height ="100vh",header =true ,isModal = false }) =>
             <Form
                 name={`${entity}Form`}
                 form={form}
-                initialValues={{}}
+                initialValues={initialValues}
                 onFinish={handleFormFinish}
                 onFinishFailed={validateFields}
                 validateTrigger={unfilledField}

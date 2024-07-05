@@ -22,7 +22,7 @@ const tenantData = new mongoose.Schema(
                         key: { type: String },
                         label: { type: String },
                     },
-                ],
+                ],    // Embeidng the Document
             },
         ],
     },

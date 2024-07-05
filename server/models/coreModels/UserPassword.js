@@ -33,6 +33,7 @@ const UserPaswordSchema = new mongoose.Schema({
         type: String,
         default: "email",
     },
+    
     loggedSession:{type:String,unique:true,sparse: true,}
 },{timestamps:true});
 

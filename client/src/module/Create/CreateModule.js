@@ -20,7 +20,7 @@ const CoustomFormItem = ({ entityOfForm, form, isModal }) => {
 
     switch (entity) {
         case "customers":
-            componentToRender = <CoustomerItem isModal={isModal} />;
+            componentToRender = <CoustomerItem form = {form} isModal={isModal} />;
             break;
         case "quotations":
             componentToRender = <QuotesFormItems />;

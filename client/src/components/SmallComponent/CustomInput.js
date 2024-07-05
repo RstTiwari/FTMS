@@ -6,7 +6,7 @@ import VendorModal from "components/VendorModal";
 import UploadImage from "components/UploadImage";
 import CustomEntityNo from "./CustomEntityNo";
 
-const CustomInput = ({ type, readOnly,entity, width = "150px", ...restProps }) => {
+const CustomInput = ({ type, readOnly,entity,fieldName, width = "150px", ...restProps }) => {
     switch (type) {
         case "text":
             return <Input readOnly={readOnly} {...restProps} style={{ width: "100%" }} />;
@@ -19,7 +19,7 @@ const CustomInput = ({ type, readOnly,entity, width = "150px", ...restProps }) =
         case "select":
             return <CustomDropDown width={width} {...restProps} />;
         case "model":
-            return <CustomModal entity = {entity} width={width} {...restProps} />;
+            return <CustomModal entity = {entity} fieldName ={fieldName} width={width} {...restProps} />;
         case "entityNo":
             return <CustomEntityNo  entity ={entity} />
         case "image":

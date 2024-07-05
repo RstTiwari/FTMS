@@ -20,7 +20,6 @@ const Login = () => {
             loginUser(response.result);
             setIsLoading(false);
             let tenantId = response.result?.tenant.tenantId;
-            let entity = "dashboard";
             navigate(`/app/${tenantId}/dashboard`);
         } else {
             setIsLoading(false);

@@ -9,7 +9,7 @@ import CustomTable from "components/CustomTable";
 
 const { Text } = Typography;
 
-const CoustomersForm = ({ current, disabled,isModal }) => {
+const CoustomersForm = ({ form, disabled,isModal }) => {
     const isLaptop = useMediaQuery("(min-width:600px)");
     const [billing, setBilling] = useState({
         street: "",
@@ -18,17 +18,13 @@ const CoustomersForm = ({ current, disabled,isModal }) => {
         pincode: "",
     });
     const handeCopyBillingAddress = () => {
-        const { billingStreet, billingCity, billingState, billingPincode } =
-            current.getFieldsValue([
-                "billingStreet",
-                "billingCity",
-                "billingState",
-                "billingPincode",
-            ]);
-        current.setFieldsValue({ shippingStreet: billing.street });
-        current.setFieldsValue({ shippingCity: billing.city });
-        current.setFieldsValue({ shippingState: billing.state });
-        current.setFieldsValue({ shippingPincode: billing.pincode });
+        const {billingAddress} =  form.getFieldsValue(["billingAddress"]);
+        form.setFieldsValue({"shippingAddress":billingAddress})
+        console.log(form.getFieldsValue(['shippingAddress']),"--")
+        // current.setFieldsValue({ shippingStreet: billing.street });
+        // current.setFieldsValue({ shippingCity: billing.city });
+        // current.setFieldsValue({ shippingState: billing.state });
+        // current.setFieldsValue({ shippingPincode: billing.pincode });
     };
     
     return (
@@ -112,7 +108,7 @@ const CoustomersForm = ({ current, disabled,isModal }) => {
                                 label={<CustomLabel label={"Street1"} />}
                                 name={["billingAddress", "street1"]}
                                 labelAlign="left"
-                                labelCol={{ span: 8 }}
+                                labelCol={{ span: isModal? 8: 5 }}
                             >
                                 <Input.TextArea />
                             </Form.Item>
@@ -165,7 +161,7 @@ const CoustomersForm = ({ current, disabled,isModal }) => {
                             >
                                 <Select
                                     options={CustomerData.states}
-                                    style={{ width: "150px" }}
+                                    style={{ width: isModal ? "150px":"250px" }}
                                 />
                             </Form.Item>
                         </Col>
@@ -252,7 +248,9 @@ const CoustomersForm = ({ current, disabled,isModal }) => {
                             >
                                 <Select
                                     options={CustomerData.states}
-                                    style={{ width: "150px" }}
+                
+                                    style={{ width: isModal ? "150px":"250px"}}
+                                    
                                 />
                             </Form.Item>
                         </Col>

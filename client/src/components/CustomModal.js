@@ -5,42 +5,43 @@ import { useAuth } from "state/AuthProvider";
 import CoustomButton from "./SmallComponent/CoustomButton";
 import CustomForm from "./CustomForm";
 
-const CustomModel = ({ customerSelect,customerId ,disabled,entity,width}) => {
+const CustomModel = ({ customerSelect,customerId,width ,disabled,entity,fieldName}) => {
     const [open, setOpen] = useState(false);
     const { getDropDownData } = useAuth();
-    const [customer,setCustomer] = useState("")
+    const [value,setValue] = useState("")
     const [options, setOptions] = useState([]);
 
    
 
-    const handelCustomerClick = async () => {
-        let fieldName = "customerName";
+    const handelClick = async () => {
         let data = await getDropDownData(entity, fieldName);
         setOptions(data);
     };
-    const handleCustomerChange = (value, label) => {
+
+    const handleChange = (value, label) => {
         customerSelect(value,label);
-        setCustomer(value)
+        setValue(value)
     };
-    const addNewCustomer = () => {
+    const openModal = () => {
         setOpen(true);
     };
     const onCancel = () => {
         setOpen(!open);
         if(customerId){
-            setCustomer(customerId)
+            setValue(customerId)
         }
     };
-    const afterAdd = (result) => {
-        handelCustomerClick();
-        handleCustomerChange(result._id);
-        setCustomer(result._id)
-        customerSelect(result._id);
-        setOpen(false);
+
+    const handleModalClose = (result) => {
+        setOpen(!open);
+        handelClick();
+        handleChange(result?._id);
+        setValue(result?._id)
+        customerSelect(result?._id);
     };
     useEffect(() => {
-        handelCustomerClick();
-        setCustomer(customerId)
+        handelClick();
+        setValue(customerId)
     }, []);
 
     return (
@@ -49,7 +50,7 @@ const CustomModel = ({ customerSelect,customerId ,disabled,entity,width}) => {
                 <Select
                     options={options}
                     disabled ={disabled}
-                    value={customer ? customer :""}
+                    value={value ? value :""}
                     showSearch
                     filterOption={(input, option) =>
                         (option?.label ?? "")
@@ -61,12 +62,12 @@ const CustomModel = ({ customerSelect,customerId ,disabled,entity,width}) => {
                             <div >
                                 {menu}
                                 <Divider />
-                                <CoustomButton   text ="New" onClick={addNewCustomer}/>
+                                <CoustomButton   text ="New" onClick={openModal}/>
                             </div>
                         );
                     }}
-                    onClick={handelCustomerClick}
-                    onChange={handleCustomerChange}
+                    onClick={handelClick}
+                    onChange={handleChange}
                 />
             ) : (
                 <Modal
@@ -75,8 +76,9 @@ const CustomModel = ({ customerSelect,customerId ,disabled,entity,width}) => {
                 centered
                 open={open}
                 width={"50%"}
+                mask={true}
+                maskClosable={false}
                 onCancel={onCancel}
-                maskClosable={true}
                 footer={null}
                 bodyStyle={{
                     overflow: 'auto' 
@@ -84,7 +86,7 @@ const CustomModel = ({ customerSelect,customerId ,disabled,entity,width}) => {
        
                     keyboard={false}
                 >
-                    <CustomForm  entity ={entity} height="50Vh" header ={false} isModal={true} />
+                    <CustomForm  entity ={entity} height="50vh" header ={false} isModal={true} fieldName={fieldName} passToModal={handleModalClose} />
                 </Modal>
             )}
         </>
