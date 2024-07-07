@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import PageLoader from "pages/PageLoader";
 import CoustomButton from "components/SmallComponent/CoustomButton";
+import Taglabel from "components/SmallComponent/Taglabel";
 
 const Register = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -47,7 +48,7 @@ const Register = () => {
         if (response.success === 1) {
             setIsLoading(false);
             loginUser(response.result);
-            navigate("/app");
+            navigate("/");
         } else {
             return NotificationHandler.error(response.message);
         }
@@ -62,8 +63,18 @@ const Register = () => {
                         <div>
                             {isOtpVerify ? (
                                 <>
-                                    <Row justify={"center"}>Verify OTP</Row>
-                                    <Row>Mail hasbeend send to {email}</Row>
+                                    <Row justify={"center"}>
+                                        <Taglabel
+                                            text={"Verify OTP"}
+                                            type="warning"
+                                        />
+                                    </Row>
+                                    <Row>
+                                        <Taglabel
+                                            text={`Mail hasbeend send to ${email}`}
+                                            weight={500}
+                                        />
+                                    </Row>
                                     <Row justify={"center"}>
                                         <Input
                                             onChange={(e) =>
@@ -75,7 +86,10 @@ const Register = () => {
                                         justify={"center"}
                                         style={{ margin: "1rem" }}
                                     >
-                                        <CoustomButton  onClick={handleVerifyClick} text={"Verify"}/>
+                                        <CoustomButton
+                                            onClick={handleVerifyClick}
+                                            text={"Verify"}
+                                        />
                                     </Row>
                                 </>
                             ) : (
@@ -90,7 +104,10 @@ const Register = () => {
                             )}
                         </div>
                     ) : (
-                        <PageLoader text={"Hold On ...Creating Your Account"} />
+                        <PageLoader
+                            isLoading={isLoading}
+                            text={"Hold On ...Creating Your Account"}
+                        />
                     )}
                 </div>
             </div>

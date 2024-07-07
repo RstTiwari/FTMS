@@ -1,30 +1,50 @@
 import React, { useState, useEffect } from "react";
-import { Form ,message} from "antd";
+import { Form, message } from "antd";
+import { useParams } from "react-router-dom";
+
 import Header from "./Header";
 import FormActionButtons from "../components/SmallComponent/FormActionButton";
 import CustomFormItem from "../module/Create/CreateModule";
-import "../App.css"
+import "../App.css";
 import moment from "moment";
+import { useAuth } from "state/AuthProvider";
 
-const CustomForm = ({ entity,height ="100vh",header =true ,isModal = false,modalFieldKey,passToModal }) => {
+const CustomForm = ({
+    entityOfModal,
+    height = "100vh",
+    header = true,
+    isModal = false,
+    modalFieldKey,
+    passToModal,
+}) => {
+    //Checking the Enttiy of the Form if or fetch fromt the Router
+    const { entity: entityOfForm } = useParams();
+    const entity = isModal ? entityOfModal : entityOfForm;
+
     const [form] = Form.useForm();
-    const [initialValues, setInitialValues] = useState({quoteDate:moment('2023-07-05T12:00:00Z')});
+    const { appApiCall } = useAuth();
+    const [initialValues, setInitialValues] = useState({
+        quoteDate: moment("2023-07-05T12:00:00Z"),
+    });
     const [unfilledField, setUnfilledField] = useState(null);
 
     useEffect(() => {
         // Fetch initial values based on the entity
-        setInitialValues({ });
+        setInitialValues({});
     }, [entity]);
 
-    const handleFormFinish = (values) => {
+    const handleFormFinish = async (values) => {
         // Handle Form Finish Logic and Loading after that if modal pass value
-        console.log("Form submitted:", values);
-        const response = {_id:"1243567"}
-        // Handle form submission logic here
-        if (isModal) {
-            modalFieldKey.name = form.getFieldsValue([modalFieldKey.name])
-            modalFieldKey.id = response._id
-            return passToModal(modalFieldKey);
+        if (initialValues) {
+        } else {
+            let response = await appApiCall();
+            console.log("Form submitted:");
+            // Handle form submission logic here
+            if (isModal) {
+                modalFieldKey.name = form.getFieldsValue([modalFieldKey.name]);
+                modalFieldKey.id = response?._id;
+                return passToModal(modalFieldKey);
+            }
         }
     };
 
@@ -32,7 +52,7 @@ const CustomForm = ({ entity,height ="100vh",header =true ,isModal = false,modal
     const validateFields = async () => {
         try {
             const values = await form.validateFields();
-            console.log(values,"--");
+            console.log(values, "--");
             setUnfilledField(null); // Clear unfilledField state if validation succeeds
             handleFormFinish(values); // Proceed with form submission logic
         } catch (error) {
@@ -64,11 +84,14 @@ const CustomForm = ({ entity,height ="100vh",header =true ,isModal = false,modal
                 onFinishFailed={validateFields}
                 validateTrigger={unfilledField}
                 requiredMark={false}
-                layout = {isModal ? "vertical" :"horizontal"} 
+                layout={isModal ? "vertical" : "horizontal"}
             >
-                <div
-                >
-                    <CustomFormItem entityOfForm={entity} form={form}  isModal ={isModal}/>
+                <div>
+                    <CustomFormItem
+                        entity={entity}
+                        form={form}
+                        isModal={isModal}
+                    />
                 </div>
                 <div
                     style={{

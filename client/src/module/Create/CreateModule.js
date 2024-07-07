@@ -13,14 +13,14 @@ import LeadFormItem from "../../Forms/LeadForm";
 import ProductForm from "Forms/ProductFrom";
 import EntityNo from "Forms/EntityNo";
 
-const CoustomFormItem = ({ entityOfForm, form, isModal }) => {
-    const { entity: entityFromRouter } = useParams();
+const CoustomFormItem = ({ entity, form, isModal }) => {
+    // const { entity: entityFromRouter } = useParams();
     let componentToRender = <NotFound />;
-    const entity = entityOfForm || entityFromRouter;
+    // const entity = entityOfForm || entityFromRouter;
 
     switch (entity) {
         case "customers":
-            componentToRender = <CoustomerItem form = {form} isModal={isModal} />;
+            componentToRender = <CoustomerItem form={form} isModal={isModal} />;
             break;
         case "quotations":
             componentToRender = <QuotesFormItems />;

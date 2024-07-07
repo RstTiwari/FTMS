@@ -3,11 +3,10 @@ import Joi from "joi";
 import { generate as uniqueId } from "shortid";
 import User from "../../models/coreModels/User.js";
 import sendEmail from "../authController/sendEmail.js";
-import tenSpecificData from "../../data/tenantData.js";
+import tenantSpecificData from "../../data/tenantData.js";
 import tenantDataModal from "../../models/coreModels/tenantData.js";
 
 const register = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
-
     const { companyName, name, email, password } = req.body;
 
     //validate input parameters
@@ -46,7 +45,7 @@ const register = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
     /**
      *Creating a new Tenant
      */
-    const tenantData = await tenantDb.create({ companyName ,email });
+    const tenantData = await tenantDb.create({ companyName, email });
     if (!tenantData) {
         return res.status(403).json({
             success: 0,
@@ -57,14 +56,18 @@ const register = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
     /**
      * Creating a New User
      */
+
     const salt = uniqueId();
     const hashedPassword = bcrypt.hashSync(salt + password);
     const emailOtp = Math.floor(100000 + Math.random() * 900000);
     const emailOtpExpireTime = Math.floor(Date.now() / 1000) + 900;
-    const tenant= tenantData.id
-    const savedUser = await User.create({ email, name, tenant });
+
+    //Creating New User For
+    const tenantId = tenantData._id;
+    const savedUser = await User.create({ email, name, tenantId });
+
     const registrationDone = await userPasswordDb.create({
-        user: savedUser.id,
+        userId: savedUser.id,
         password: hashedPassword,
         salt: salt,
         emailOtp: emailOtp,
@@ -72,7 +75,7 @@ const register = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
     });
 
     if (!registrationDone) {
-        await User.deleteOne({id: savedUser.id }).exec();
+        await User.deleteOne({ _id: savedUser._id }).exec();
         return res.status(403).json({
             success: 0,
             result: null,
@@ -80,24 +83,23 @@ const register = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
         });
     }
 
-
-    //Creating basic  tenantData on the Following 
+    //Creating basic  tenantData  //Side bar columns and all
     await tenantDataModal.create({
-        tenantId:tenantData._id,
-        ...tenSpecificData
-    })
+        tenantId: tenantData._id,
+        ...tenantSpecificData,
+    });
 
-    const type = "emailVerification"
+    const type = "emailVerification";
     //verifying email
-    await sendEmail({ email, name, emailOtp ,type });
+    await sendEmail({ email, name, emailOtp, type });
 
     return res.status(200).json({
         success: 1,
         result: {
-            userId: savedUser.id,
+            userId: savedUser._id,
             name: savedUser.name,
             email: savedUser.email,
-            tenantId:tenantId
+            tenantId: tenantData._id,
         },
         message:
             "Account registered successfully. Please check mail and verify.",

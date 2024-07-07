@@ -7,9 +7,9 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import https from "https";
-import http from "http"
+import http from "http";
 import fs from "fs";
-import {v2 as cloudinary} from "cloudinary"
+import { v2 as cloudinary } from "cloudinary";
 
 import clientRoutes from "./routes/client.js";
 import salesRoutes from "./routes/sales.js";
@@ -20,11 +20,11 @@ import appRoutes from "./routes/appRoutes.js";
 
 import cron from "./controller/CronController/Cron.js";
 import adminRoutes from "./routes/adminRoutes.js";
+import errorHandler from "./middleware/errorHandler.js";
 
 /**
  * Configuration
  */
-
 
 dotenv.config();
 const app = express();
@@ -44,47 +44,56 @@ app.use(cookieParser());
 
 app.use("/auth", auth);
 app.use("/app", appRoutes);
-app.use("/admin",adminRoutes)
+app.use("/admin", adminRoutes);
 app.use("/client", clientRoutes);
 app.use("/sales", salesRoutes);
 app.use("/mangament", managmentRoutes);
 app.use("/general", generalRoutes);
 
+// Error handler middleware
+app.use(errorHandler);
+
 const Port = process.env.PORT || 5001;
 
 /**
- * Lets Conncet to Cloudinary with this Datas 
+ * Lets Conncet to Cloudinary with this Datas
  */
 cloudinary.config({
     cloud_name: process.env.cloudinaryName,
     api_key: process.env.apiKey,
     api_secret: process.env.apiSecret,
 });
-const MDURLSTRING = process.env.MDURL
-mongoose
-  .connect(MDURLSTRING, {
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    // Create HTTP or HTTPS server based on environment
-    if (process.env.NODE_ENV === "production") {
-      // Read SSL certificates for production
-      const options = {
-        key: fs.readFileSync(process.env.KEY_PATH),
-        cert: fs.readFileSync(process.env.CERT_PATH),
-      };
 
-      // Create HTTPS server in production
-      https.createServer(options, app).listen(Port, () => {
-        console.log(`Server is running on the port ${Port} (production)`);
-      });
-    } else {
-      // Create HTTP server in development
-      http.createServer(app).listen(Port, () => {
-        console.log(`Server is running on the port ${Port} (development)`);
-      });
-    }
-  })
-  .catch((e) => {
-    console.log("Database connection failed" + e);
-  });
+const MDURLSTRING = process.env.MDURL;
+
+mongoose
+    .connect(MDURLSTRING, {
+        useUnifiedTopology: true,
+    })
+    .then(() => {
+        // Create HTTP or HTTPS server based on environment
+        if (process.env.NODE_ENV === "production") {
+            // Read SSL certificates for production
+            const options = {
+                key: fs.readFileSync(process.env.KEY_PATH),
+                cert: fs.readFileSync(process.env.CERT_PATH),
+            };
+
+            // Create HTTPS server in production
+            https.createServer(options, app).listen(Port, () => {
+                console.log(
+                    `Server is running on the port ${Port} (production)`
+                );
+            });
+        } else {
+            // Create HTTP server in development
+            http.createServer(app).listen(Port, () => {
+                console.log(
+                    `Server is running on the port ${Port} (development)`
+                );
+            });
+        }
+    })
+    .catch((e) => {
+        console.log("Database connection failed" + e);
+    });

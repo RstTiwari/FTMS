@@ -10,23 +10,20 @@ const coustomerSchema = new mongoose.Schema({
     customerPhone: {
         type: Number,
         require: true,
-        unique:true
+        unique: true,
     },
     customerEmail: {
         type: String,
         require: true,
-        unique:true
-
+        unique: true,
     },
     panNo: {
         type: String,
-        unique:true
-
+        unique: true,
     },
     gstNo: {
         type: String,
-        unique:true
-
+        unique: true,
     },
     billingAddress: {
         street1: String,
@@ -42,10 +39,10 @@ const coustomerSchema = new mongoose.Schema({
         state: String,
         pinCode: Number,
     },
-    tenantId:{
-        type:String,
-        required:true
-    }
+    tenantId: {
+        type: String,
+        required: true,
+    },
 });
 
-export default mongoose.model("customer",coustomerSchema)
+export default mongoose.model("customer", coustomerSchema);

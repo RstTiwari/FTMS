@@ -28,7 +28,8 @@ router.post("/update", authMethod.isValidAuthtoken, appRoutes.update);
 router.patch("/patch", authMethod.isValidAuthtoken, appRoutes.patch);
 router.get("/pdf", authMethod.isValidAuthtoken, appRoutes.genratePdf);
 router.post("/upload", type, authMethod.isValidAuthtoken, appRoutes.upload);
-//just for app Data
-router.post("/challan", appRoutes.challan);
+
+// //just for app Data
+// router.post("/challan", appRoutes.challan);
 
 export default router;

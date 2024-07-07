@@ -24,6 +24,7 @@ const verify = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
                 message: "Invalid/Missing credentials ",
             });
         }
+
         const userPasswordResult = await userPasswordDb.findOne({
             userId: userId,
             removed: false,
@@ -44,22 +45,8 @@ const verify = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
             });
         }
 
-        /***
-         * Checking OTP time
-         */
-
-        // let nowTime = Math.floor(Date.now() / 1000);
-        // const isOtpTimeValid = userPasswordResult.emailOtpExpireTime > nowTime;
-
-        // if (!isOtpTimeValid) {
-        //     return res.status(403).json({
-        //         success: 0,
-        //         result: null,
-        //         message: "OTP  Expired",
-        //     });
-        // }
-
         const isMatch = emailOtp === userPasswordResult.emailOtp;
+
         if (
             !isMatch ||
             userPasswordResult.emailOtp === undefined ||
@@ -79,8 +66,7 @@ const verify = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
             .updateOne(
                 { userId: userId },
                 {
-                    $set: { loggedSession: token,emailVerified: true, },
-                    
+                    $set: { loggedSession: token, emailVerified: true },
                 },
                 { new: true }
             )
@@ -90,7 +76,7 @@ const verify = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
             .findOneAndUpdate({ _id: userId }, { enabled: true }, { new: true })
             .exec();
 
-         await tenantDb
+        await tenantDb
             .findOneAndUpdate(
                 { tenantId: tenantId },
                 { enabled: true },
@@ -98,23 +84,31 @@ const verify = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
             )
             .exec();
 
-        const userData = await userDb.findOne({ _id: userId, removed: false });
+        const user = await userDb.findOne({ _id: userId, removed: false });
+
         const tenantData = await tenantDataDb.findOne({ tenantId: tenantId });
-        //if compnay logoneeded call api
+
+        // Destructure aother tenat Sppecifi data in future if needed
+        const sidebar = tenantData?.sidebar;
+
         res.status(200).json({
             success: 1,
             result: {
-                _id: user._id,
-                name: user.name,
-                surname: user.surname,
-                role: user.role,
-                email: user.email,
-                photo: user.photo,
-                companyName: tenantData?.tenantId.companyName,
-                tenantId:tenantId,
+                user: {
+                    _id: user._id,
+                    name: user.name,
+                    surname: user.surname,
+                    role: user.role,
+                    email: user.email,
+                    photo: user.photo,
+                    companyName: tenantData?.tenantId?.companyName,
+                },
+                tenant: {
+                    tenantId: tenantId,
+                    sidebar: sidebar,
+                },
                 token: token,
-                tenantData:tenantData,
-                expiresIn: req.body.remember  ?  (365 * 86400) :( 86400 )
+                expiresIn: req.body.remember ? 365 * 86400 : 86400,
             },
             message: "Successfully login user",
         });

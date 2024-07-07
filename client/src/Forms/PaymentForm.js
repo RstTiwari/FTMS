@@ -77,6 +77,7 @@ const PaymentForm = ({ initialValue = {} }) => {
                             },
                         ]}
                         labelAlign="left"
+                        entity={"customers"}
                         labelCol={{ span: 8 }}
                         type={"model"}
                     />

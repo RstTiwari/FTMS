@@ -1,11 +1,17 @@
-const create = async (req, res, next, dataBase) => {
+import checkDbForEntity from "../../Helper/databaseSelector.js";
+
+const create = async (req, res, next) => {
     try {
         let { entity, value } = req.body;
         let tenantId = req.tenantId;
+
+        // Finding the DataBase for the Entity
+        let dataBase = checkDbForEntity(entity);
+
         value["tenantId"] = tenantId;
-        console.log(value,"--");
         let newData = new dataBase(value);
         let savedata = await newData.save();
+
         if (!savedata) {
             throw new Error(`Failed to Create new ${req.entity} data`);
         }
@@ -15,12 +21,7 @@ const create = async (req, res, next, dataBase) => {
             message: `New ${entity} data is saved`,
         });
     } catch (error) {
-        console.error(error.message);
-        res.status(200).json({
-            success: 0,
-            result: [],
-            message:error.message
-        });
+        next(error);
     }
 };
 
