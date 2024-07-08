@@ -20,7 +20,6 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
     const handeCopyBillingAddress = () => {
         const { billingAddress } = form.getFieldsValue(["billingAddress"]);
         form.setFieldsValue({ shippingAddress: billingAddress });
-        console.log(form.getFieldsValue(["shippingAddress"]), "--");
         // current.setFieldsValue({ shippingStreet: billing.street });
         // current.setFieldsValue({ shippingCity: billing.city });
         // current.setFieldsValue({ shippingState: billing.state });
@@ -53,6 +52,10 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
                     {
                         required: true,
                         message: "Please Provide Customer Phone",
+                    },
+                    {
+                        pattern: /^\d{10}$/,
+                        message: "Please enter a valid 10-digit phone number",
                     },
                 ]}
                 type={"input"}
@@ -95,7 +98,7 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
                 name="gstNo"
                 labelCol={{ span: isModal ? 18 : 8 }}
             />
-            <Row style={{ margin: 30, padding: 30 }}>
+            <Row style={{ margin: 5, padding: 5 }}>
                 <Col sm={24} xs={24} md={12} lg={12}>
                     <Row style={{ paddingBottom: 25 }}>
                         <Text type="secondary" style={{ fontWeight: 900 }}>

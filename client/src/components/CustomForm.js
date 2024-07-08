@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Form, message } from "antd";
 import { useParams } from "react-router-dom";
+import moment from "moment";
 
+
+
+import "../App.css";
 import Header from "./Header";
 import FormActionButtons from "../components/SmallComponent/FormActionButton";
 import CustomFormItem from "../module/Create/CreateModule";
-import "../App.css";
-import moment from "moment";
 import { useAuth } from "state/AuthProvider";
+import NotificationHandler from "EventHandler/NotificationHandler";
+import useFormActions from "Hook/useFormAction";
 
 const CustomForm = ({
     entityOfModal,
@@ -18,8 +22,10 @@ const CustomForm = ({
     passToModal,
 }) => {
     //Checking the Enttiy of the Form if or fetch fromt the Router
-    const { entity: entityOfForm } = useParams();
+
+    const { entity: entityOfForm,action } = useParams();
     const entity = isModal ? entityOfModal : entityOfForm;
+    const isUpdate = action ? true:false
 
     const [form] = Form.useForm();
     const { appApiCall } = useAuth();
@@ -33,33 +39,27 @@ const CustomForm = ({
         setInitialValues({});
     }, [entity]);
 
+    const { isLoading, error, handleFormSubmit } = useFormActions(
+        entity,
+        isUpdate
+    );
     const handleFormFinish = async (values) => {
         // Handle Form Finish Logic and Loading after that if modal pass value
-        if (initialValues) {
-        } else {
-            let response = await appApiCall();
-            console.log("Form submitted:");
-            // Handle form submission logic here
-            if (isModal) {
-                modalFieldKey.name = form.getFieldsValue([modalFieldKey.name]);
-                modalFieldKey.id = response?._id;
-                return passToModal(modalFieldKey);
-            }
-        }
+        console.log("called");
+        handleFormSubmit(values,isModal ,passToModal);
     };
 
     // Validating Filed and setting the Values at that moment only
     const validateFields = async () => {
         try {
             const values = await form.validateFields();
-            console.log(values, "--");
             setUnfilledField(null); // Clear unfilledField state if validation succeeds
             handleFormFinish(values); // Proceed with form submission logic
         } catch (error) {
-            console.log("Validation error:", error);
-            const firstField = error.errorFields[0].name[0];
+            const firstField = error.errorFields[0].errors[0];
             setUnfilledField(firstField); // Set the first unfilled field
-            message.error(`Please fill in '${firstField}'`); // Display error message using Ant Design message component
+           return NotificationHandler.error(`Please fill in '${firstField}'`)
+           
         }
     };
 

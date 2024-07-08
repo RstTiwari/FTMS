@@ -22,8 +22,8 @@ const upload = multer({ storage: storage });
 const type = upload.single("file");
 
 router.post("/create", authMethod.isValidAuthtoken, appRoutes.create);
-router.post("/getList", authMethod.isValidAuthtoken, appRoutes.getList);
-router.get("/read", authMethod.isValidAuthtoken, appRoutes.read);
+router.post("/fetchSelectData", authMethod.isValidAuthtoken, appRoutes.fetchSelectData);
+router.post("/read", authMethod.isValidAuthtoken, appRoutes.read);
 router.post("/update", authMethod.isValidAuthtoken, appRoutes.update);
 router.patch("/patch", authMethod.isValidAuthtoken, appRoutes.patch);
 router.get("/pdf", authMethod.isValidAuthtoken, appRoutes.genratePdf);

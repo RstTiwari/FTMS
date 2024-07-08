@@ -1,22 +1,33 @@
-const read = async (req, res, next, database) => {
+import checkDbForEntity from "../../Helper/databaseSelector.js";
+const read = async (req, res, next) => {
     try {
-        let {entity,id} = req.query;
+        let {entity,pageNo,pageSize,select} = req.body;
         let tenantId = req.tenantId;
-        let data = await database.findOne({ tenantId: tenantId, _id: id });
-        if (!data) {
-            throw new Error(`Failed to find ${entity} data`);
+        console.log(entity,pageNo,pageSize,select);
+
+        if(!entity || !pageNo ||!pageSize|| !tenantId){
+            throw new Error(`Invalid Payload for ${entity} List`)
         }
+
+        // selecting the Database
+        const dataBase = checkDbForEntity(entity)
+
+        let skip = (pageNo-1)*pageSize
+        let data = await dataBase
+            .find({ tenantId: tenantId })
+            .select(select)
+            .sort({ _id: -1 })
+            .skip(skip)
+            .limit(pageSize)
+            .lean();
+      
         res.status(200).json({
             success: 1,
-            result: data,
-            message: `Data Feteched SuccessFully`,
+            result: data ,
+            message: ` ${entity} fetched SuccessFully`,
         });
     } catch (error) {
-        res.status(403).json({
-            success: 0,
-            result: [],
-            message: error.message,
-        });
+         next(error)
     }
 };
 export default read

@@ -1,25 +1,28 @@
 import React from "react";
-import { notification } from "antd";
+import { message } from "antd";
 
-notification.config({
-    placement: "topRight",
-    bottom: 50,
-    duration: 1,
-    maxCount: 1,
-    zIndex: 1000000000, // Set the desired z-index value
+message.config({
+    duration: 1, // Duration in seconds
+    maxCount: 1, // Maximum count of messages at one time
 });
 
 const NotificationHandler = {
-    success: (message) => {
-        return notification.success({
-            message: "Success",
-            description: message,
+    success: (content) => {
+        return message.success({
+            content: content,
+            className: 'custom-class',
+            style: {
+                zIndex: 1000000000, // Set the desired z-index value
+            },
         });
     },
-    error: (message) => {
-        return notification.error({
-            message: "Error",
-            description: message,
+    error: (content) => {
+        return message.error({
+            content: content,
+            className: 'custom-class',
+            style: {
+                zIndex: 1000000000, // Set the desired z-index value
+            },
         });
     },
 };

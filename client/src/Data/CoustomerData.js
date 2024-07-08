@@ -1,12 +1,12 @@
 const CoustomerData = {
     listColumns: [
         {
-            title: "Company Name",
+            title: "Customer Name",
             dataIndex: "customerName",
             key: "customerName",
         },
         {
-            title: "PHONE NO",
+            title: "Phone No",
             dataIndex: "customerPhone",
             key: "customerPhone",
         },
@@ -16,13 +16,13 @@ const CoustomerData = {
             key: "customerEmail",
         },
         {
-            title: "GST NO",
+            title: "Gst No",
             dataIndex: "gstNo",
             key: "gstNo",
             responsive: ["lg"],
         },
         {
-            title: "PAN NO",
+            title: "Pan No",
             dataIndex: "panNo",
             key: "panNo",
             responsive: ["lg"],
@@ -178,7 +178,14 @@ const CoustomerData = {
         { label: "Puducherry", value: "Puducherry" },
         { label: "Ladakh", value: "Ladakh" },
         { label: "Jammu and Kashmir", value: "Jammu and Kashmir" },
-    ]
+    ],
+    select:{
+        customerName:1,
+        customerPhone:1,
+        customerEmail:1,
+        gstNo:1,
+        panNo:1
+    }
     
 };
 export default CoustomerData;

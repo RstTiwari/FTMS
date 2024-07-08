@@ -69,7 +69,7 @@ const Sidebar = ({
         if (entity == "dashboard") {
             return navigate(`/app/${tenantId}/dashboard`);
         }
-        navigate(`/app/${tenantId}/${entity}/${pageNo}`);
+        navigate(`/app/${tenantId}/${entity}/${pageNo}/25`);
         setActive(entity);
     };
 

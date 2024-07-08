@@ -1,10 +1,11 @@
 import jwt from "jsonwebtoken";
+import userDb from "../../models/coreModels/User.js"
 /**
  *
  * @param {*} param
  * @returns in reposse
  */
-const isValidAuthtoken = async (req, res, next, userDb, userPasswordDb,tenantDb ) => {
+const isValidAuthtoken = async (req, res, next) => {
     try {
         const token = req.headers.token;
         if (!token) {
@@ -45,12 +46,12 @@ const isValidAuthtoken = async (req, res, next, userDb, userPasswordDb,tenantDb 
         //         jwtExpired: true,
         //     });
         // } else {
-
-            req[user] = user
-            req.tenantId = user.tenantId;
+      
+            req["userId"] = user?._id
+            req['role']    = user?.role
+            req["tenantId"] = user?.tenantId;
             next();
 
-        // }
     } catch (error) {
         return res.status(503).json({
             status: 0,

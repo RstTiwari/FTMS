@@ -10,7 +10,7 @@ import vednorDb from "../../models/appModels/vendor.js";
 import purchaseDb from "../..//models/appModels/purchase.js";
 import tenantDb from "../../models/coreModels/Tenant.js";
 import create from "./create.js";
-import getList from "./getList.js";
+import fetchSelectData from "./fetchSelectData.js";
 import read from "./read.js";
 import update from "./update.js";
 import patch from "./patch.js";
@@ -22,8 +22,8 @@ const appRoutes = {
     create: async (req, res, next) => {
         create(req, res, next);
     },
-    getList: async (req, res, next) => {
-        getList(req, res, next);
+    fetchSelectData: async (req, res, next) => {
+        fetchSelectData(req, res, next);
     },
     read: async (req, res, next) => {
         read(req, res, next);

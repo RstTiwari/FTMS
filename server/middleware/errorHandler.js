@@ -1,5 +1,5 @@
 const errorHandler = (err, req, res, next) => {
-    console.error(err);
+    console.error(err,"errors");
     // Default error response
     let errorResponse = {
         success: 0,

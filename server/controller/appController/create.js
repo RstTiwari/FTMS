@@ -2,24 +2,30 @@ import checkDbForEntity from "../../Helper/databaseSelector.js";
 
 const create = async (req, res, next) => {
     try {
-        let { entity, value } = req.body;
+        let { entity, values } = req.body;
         let tenantId = req.tenantId;
+
+        if(!entity || !values){
+            throw new Error("invalid payload")
+        }
 
         // Finding the DataBase for the Entity
         let dataBase = checkDbForEntity(entity);
 
-        value["tenantId"] = tenantId;
-        let newData = new dataBase(value);
+        values["tenantId"] = tenantId;
+        let newData = new dataBase(values);
         let savedata = await newData.save();
 
         if (!savedata) {
             throw new Error(`Failed to Create new ${req.entity} data`);
         }
+
         res.status(200).json({
             success: 1,
             result: savedata,
             message: `New ${entity} data is saved`,
         });
+
     } catch (error) {
         next(error);
     }

@@ -53,7 +53,6 @@ export const AuthProvider = ({ children }) => {
             let response = await axios(axiosConfig);
             return response.data;
         } catch (error) {
-            console.log(error.response, "--");
             let response = {
                 success: 0,
                 result: null,
@@ -116,6 +115,7 @@ export const AuthProvider = ({ children }) => {
             axiosConfig.headers["Content-Type"] = "multipart/form-data";
             axiosConfig.data = payload;
         }
+        console.log(axiosConfig,"config");
 
         try {
             let response = await axios(axiosConfig);

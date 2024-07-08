@@ -4,6 +4,7 @@ import NewCustomer from "pages/Customer/NewCustomer";
 import { useAuth } from "state/AuthProvider";
 import CoustomButton from "./SmallComponent/CoustomButton";
 import CustomForm from "./CustomForm";
+import NotificationHandler from "EventHandler/NotificationHandler";
 
 const CustomModel = ({
     customerSelect,
@@ -14,17 +15,54 @@ const CustomModel = ({
     fieldName,
 }) => {
     const [open, setOpen] = useState(false);
-    const { getDropDownData } = useAuth();
+    const { appApiCall } = useAuth();
     const [value, setValue] = useState("");
     const [options, setOptions] = useState([]);
+    const [isLoading,setIsLoading] = useState(false)
+    const [char,setChar] = useState('')
 
+    // fucntion for clicking the select tab
     const handelClick = async () => {
-        let data = await getDropDownData(entity, fieldName);
-        setOptions(data);
+        setIsLoading(true)
+        let response = await appApiCall("post","fetchSelectData",{},{entity,fieldName});
+        if(response.success){
+            setOptions(response?.result);
+        }else{
+             setOptions([])
+             NotificationHandler.error(response.message)
+        }
+        setIsLoading(false)
     };
 
+    // deboucne function to manage the search
+    const debounce = (fun, delay)=>{
+       let debounceTimer 
+       return function (...args){
+        let context = this
+        clearInterval(debounceTimer)
+        debounceTimer = setTimeout(()=> fun.apply(context,args),delay)
+
+       }
+    }
+
+    // Fucntion whean serching the Vaiue
+    const handelSearch = async (char)=>{
+       setChar(char)
+       setIsLoading(true)
+       let response = await appApiCall("post","fetchSelectData",{},{entity,fieldName,char});
+       if(response.success){
+           setOptions(response?.result);
+       }else{
+            setOptions([])
+            NotificationHandler.error(response.message)
+       }
+       setIsLoading(false)
+    }
+    const handelDebounceSearch= debounce(handelSearch,500)
+
+
     const handleChange = (value, label) => {
-        customerSelect(value, label);
+        //customerSelect(value, label);
         setValue(value);
     };
     const openModal = () => {
@@ -38,11 +76,13 @@ const CustomModel = ({
     };
 
     const handleModalClose = (result) => {
-        setOpen(!open);
-        handelClick();
-        handleChange(result?._id);
+        console.log(result);
+        // handelClick();
+        // handleChange(result?._id);
         setValue(result?._id);
-        customerSelect(result?._id);
+        // customerSelect(result?._id);
+        setOpen(!open);
+
     };
     useEffect(() => {
         handelClick();
@@ -53,10 +93,14 @@ const CustomModel = ({
         <>
             {!open ? (
                 <Select
-                    options={options}
-                    disabled={disabled}
+                    options={options}                
                     value={value ? value : ""}
+                    disabled ={disabled}
+                    allowClear
+                    loading ={isLoading}
+                    onClear={()=>setValue("")}
                     showSearch
+                    onSearch={handelDebounceSearch}
                     filterOption={(input, option) =>
                         (option?.label ?? "")
                             .toLowerCase()
@@ -64,7 +108,7 @@ const CustomModel = ({
                     }
                     dropdownRender={(menu) => {
                         return (
-                            <div>
+                            <div style={{minHeight:"300px",overflow:"auto"}}>
                                 {menu}
                                 <Divider />
                                 <CoustomButton text="New" onClick={openModal} />

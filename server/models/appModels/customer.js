@@ -2,28 +2,33 @@ import mongoose, { Mongoose } from "mongoose";
 const coustomerSchema = new mongoose.Schema({
     customerName: {
         type: String,
-        require: true,
+        required: true,
+        sparse:true
     },
     contactPerson: {
         type: String,
     },
     customerPhone: {
         type: Number,
-        require: true,
+        required: true,
         unique: true,
+        sparse:true
     },
     customerEmail: {
         type: String,
-        require: true,
+        required: true,
+        sparse:true,
         unique: true,
     },
     panNo: {
         type: String,
         unique: true,
+        sparse:true
     },
     gstNo: {
         type: String,
         unique: true,
+        sparse:true
     },
     billingAddress: {
         street1: String,
@@ -40,7 +45,8 @@ const coustomerSchema = new mongoose.Schema({
         pinCode: Number,
     },
     tenantId: {
-        type: String,
+        type: mongoose.Types.ObjectId,
+        ref:"tenant",
         required: true,
     },
 });

@@ -50,7 +50,7 @@ const Approuter = ({ profile }) => {
                     element={<Dashbord />}
                 />
                 <Route
-                    path="/app/:tenantId/:entity/:pageNo"
+                    path="/app/:tenantId/:entity/:pageNo/:pageSize"
                     element={<CustomListPage />}
                 />
                 <Route
