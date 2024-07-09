@@ -20,7 +20,7 @@ const quotationData = {
             width: 300,
             render: (_, record) => (
                 <>
-                    <Text type="success">{record.customer.customerName}</Text>
+                    <Text type="success">{record?.customer?.customerName}</Text>
                 </>
             ),
         },

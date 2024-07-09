@@ -12,6 +12,7 @@ import CustomFormItem from "../module/Create/CreateModule";
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import useFormActions from "Hook/useFormAction";
+import { epochConveter } from "Helper/EpochConveter";
 
 const CustomForm = ({
     entityOfModal,
@@ -28,9 +29,7 @@ const CustomForm = ({
     const isUpdate = action ? true:false
 
     const [form] = Form.useForm();
-    const { appApiCall } = useAuth();
     const [initialValues, setInitialValues] = useState({
-        quoteDate: moment("2023-07-05T12:00:00Z"),
     });
     const [unfilledField, setUnfilledField] = useState(null);
 
@@ -43,10 +42,22 @@ const CustomForm = ({
         entity,
         isUpdate
     );
+
+
+    // Formatting the Dates Dynamically
     const handleFormFinish = async (values) => {
-        // Handle Form Finish Logic and Loading after that if modal pass value
-        console.log("called");
-        handleFormSubmit(values,isModal ,passToModal);
+        const formattedValues = Object.keys(values).reduce((acc, key) => {
+            if (key.includes("Date")) {
+                acc[key] = values[key].toDate(); // Convert dayjs to Date oject in js
+            } else {
+                acc[key] = values[key];
+            }
+            return acc;
+        }, {});
+       
+        console.log(formattedValues,values, "===");
+        //Handle Form Finish Logic and Loading after that if modal pass value
+        //handleFormSubmit(values,isModal ,passToModal);
     };
 
     // Validating Filed and setting the Values at that moment only
@@ -58,7 +69,7 @@ const CustomForm = ({
         } catch (error) {
             const firstField = error.errorFields[0].errors[0];
             setUnfilledField(firstField); // Set the first unfilled field
-           return NotificationHandler.error(`Please fill in '${firstField}'`)
+           return NotificationHandler.error(`${firstField}`)
            
         }
     };

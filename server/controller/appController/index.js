@@ -1,14 +1,3 @@
-import leadDb from "../../models/appModels/lead.js";
-import customerDb from "../../models/appModels/customer.js";
-import productDb from "../../models/appModels/product.js";
-import quoteDb from "../../models/appModels/quotation.js";
-import invoiceDb from "../../models/appModels/invoice.js";
-import paymentDb from "../../models/appModels/payments.js";
-import expensesDb from "../../models/appModels/expenses.js";
-import deliveryChallanDb from "../../models/appModels/challan.js";
-import vednorDb from "../../models/appModels/vendor.js";
-import purchaseDb from "../..//models/appModels/purchase.js";
-import tenantDb from "../../models/coreModels/Tenant.js";
 import create from "./create.js";
 import fetchSelectData from "./fetchSelectData.js";
 import read from "./read.js";
@@ -16,7 +5,7 @@ import update from "./update.js";
 import patch from "./patch.js";
 import genratePdf from "./genratePdf.js";
 import upload from "./upload.js";
-import tenantData from "../../models/coreModels/tenantData.js";
+import { fetchCountersNumber, updateCountersNumber } from "../appController/counter.js";
 
 const appRoutes = {
     create: async (req, res, next) => {
@@ -40,6 +29,12 @@ const appRoutes = {
     upload: async (req, res, next) => {
         upload(req, res, next);
     },
+    fetchCountersNumber: async (req, res, next) => {
+        fetchCountersNumber(req, res, next);
+    },
+    updateCountersNumber:async (req,res,next) =>{
+        updateCountersNumber(req,res,next)
+    }
     // challan: async (req, res, next) => {
     //     try {
     //         const { action, value } = req.body;

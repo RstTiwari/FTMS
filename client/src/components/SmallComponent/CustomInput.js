@@ -4,7 +4,7 @@ import CustomDropDown from "./CustomDropDown"; // Assuming you have created Cust
 import CustomModal from "components/CustomModal";
 import VendorModal from "components/VendorModal";
 import UploadImage from "components/UploadImage";
-import CustomEntityNo from "./CustomEntityNo";
+import CustomCounters from "./CustomCounters";
 
 const CustomInput = ({ type, readOnly,entity,fieldName, width = "150px", ...restProps }) => {
     switch (type) {
@@ -20,8 +20,8 @@ const CustomInput = ({ type, readOnly,entity,fieldName, width = "150px", ...rest
             return <CustomDropDown width={width} {...restProps} />;
         case "model":
             return <CustomModal entity = {entity} fieldName ={fieldName} width={width} {...restProps} />;
-        case "entityNo":
-            return <CustomEntityNo  entity ={entity} />
+        case "counters":
+            return <CustomCounters  entity ={entity}  {...restProps} />
         case "image":
             return <UploadImage {...restProps} />;
         default:

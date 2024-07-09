@@ -28,6 +28,11 @@ router.post("/update", authMethod.isValidAuthtoken, appRoutes.update);
 router.patch("/patch", authMethod.isValidAuthtoken, appRoutes.patch);
 router.get("/pdf", authMethod.isValidAuthtoken, appRoutes.genratePdf);
 router.post("/upload", type, authMethod.isValidAuthtoken, appRoutes.upload);
+router.get("/fetchCountersNumber", authMethod.isValidAuthtoken, appRoutes.fetchCountersNumber);
+router.post("/updateCountersNumber", authMethod.isValidAuthtoken, appRoutes.updateCountersNumber);
+
+
+
 
 // //just for app Data
 // router.post("/challan", appRoutes.challan);

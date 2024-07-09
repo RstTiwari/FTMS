@@ -13,11 +13,12 @@ const quotationSchema = new mongoose.Schema({
         unique: true,
     },
     quoteDate: {
-        type: Number,
+        type: Date,
         require: true,
     },
     expiryDate: {
-        type: Number,
+        type: Date,
+        required:true
     },
     attenPerson: {
         type: String,

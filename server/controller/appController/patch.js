@@ -2,7 +2,6 @@ const patch = async (req, res, next, database) => {
     try {
         let tenantId = req.tenantId;
         const { entity, value ,_id} = req.body;
-        console.log(value);
         let filter = { _id: _id, tenantId: tenantId };
         let updatedData = await database.updateOne(filter, { $push: value });
         console.log(updatedData);

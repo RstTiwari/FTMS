@@ -12,6 +12,11 @@ const tenantData = new mongoose.Schema(
             required: true,
             unique: true,
         },
+        quoteNo:{
+            preFix:String,
+            nextNumber:Number,         
+        },
+        
         sidebar: [
             {
                 key: { type: String, required: true },

@@ -115,7 +115,6 @@ export const AuthProvider = ({ children }) => {
             axiosConfig.headers["Content-Type"] = "multipart/form-data";
             axiosConfig.data = payload;
         }
-        console.log(axiosConfig,"config");
 
         try {
             let response = await axios(axiosConfig);

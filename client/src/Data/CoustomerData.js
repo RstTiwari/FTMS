@@ -1,28 +1,35 @@
+import Taglabel from "components/SmallComponent/Taglabel.js";
+
 const CoustomerData = {
     listColumns: [
         {
-            title: "Customer Name",
+            title:<Taglabel text={" COMPANY NAME"} />,
             dataIndex: "customerName",
             key: "customerName",
         },
         {
-            title: "Phone No",
+            title: "CONTACT PERSON",
+            dataIndex: "contactPerson",
+            key: "customerName",
+        },
+        {
+            title: "PHONE NO",
             dataIndex: "customerPhone",
             key: "customerPhone",
         },
         {
-            title: "Email Id",
+            title: "EMAIL ID",
             dataIndex: "customerEmail",
             key: "customerEmail",
         },
         {
-            title: "Gst No",
+            title: "GST NO",
             dataIndex: "gstNo",
             key: "gstNo",
             responsive: ["lg"],
         },
         {
-            title: "Pan No",
+            title: "PAN NO",
             dataIndex: "panNo",
             key: "panNo",
             responsive: ["lg"],
@@ -183,6 +190,7 @@ const CoustomerData = {
         customerName:1,
         customerPhone:1,
         customerEmail:1,
+        contactPerson:1,
         gstNo:1,
         panNo:1
     }

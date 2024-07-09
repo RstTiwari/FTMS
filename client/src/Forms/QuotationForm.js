@@ -20,16 +20,15 @@ import CustomerModal from "components/CustomModal";
 import ProductModal from "components/ProductModal";
 import FormItemCol from "components/SmallComponent/FormItemCol";
 import Taglabel from "components/SmallComponent/Taglabel";
-import CoustomButton from "components/SmallComponent/CoustomButton";
-import CustomLabel from "components/SmallComponent/CustomLabel";
+
 
 const QuotationForm = ({ form }) => {
-    const isLaptop = useMediaQuery("(min-width:1000px)");
-    const inputWidth = isLaptop ? 700 : 350;
-    const inputFontSize = isLaptop ? "1rem" : "0.4rem";
-
-    const handleCustomerChange = (value) => {
+    const handleCustomerUpdate = (value) => {
         form.setFieldsValue({ customer: value });
+    };
+    const handleQuotationNumUpdate = (value) => {
+        form.setFieldsValue({ quoteNo: value });
+        console.log("inForm");
     };
 
     const onProductChange = (value, subField) => {
@@ -171,8 +170,7 @@ const QuotationForm = ({ form }) => {
                 type="model"
                 entity={"customers"}
                 fieldName="customerName" // filed name form customer modal
-                customerSelect=""
-                handleCustomerChange={handleCustomerChange}
+                updateInForm= {handleCustomerUpdate}
             />
             <FormItemCol
                 label={"#Quote"}
@@ -180,13 +178,14 @@ const QuotationForm = ({ form }) => {
                 labelAlign="left"
                 required={true}
                 labelCol={{ span: 8 }}
-                type={"entityNo"}
+                type={"counters"}
                 rules={[
                     {
                         required: "true",
                         message: "Please Provide Quote No",
                     },
                 ]}
+                updateInForm = {handleQuotationNumUpdate}
             />
             <Row>
                 <FormItemCol

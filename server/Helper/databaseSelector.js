@@ -10,6 +10,7 @@ import vendorDb from "../models/appModels/vendor.js";
 import purchaseDb from "../models/appModels/purchase.js";
 import tenantDb from "../models/coreModels/Tenant.js";
 import tenantData from "../models/coreModels/tenantData.js";
+import counters from "../models/appModels/counters.js";
 
 const dbMapping = {
     customers: customerDb,
@@ -24,6 +25,7 @@ const dbMapping = {
     purchases: purchaseDb,
     orgnizationprofile: tenantDb,
     tenantData: tenantData,
+    counters:counters
 };
 
 const checkDbForEntity = (entity) => dbMapping[entity] || false;

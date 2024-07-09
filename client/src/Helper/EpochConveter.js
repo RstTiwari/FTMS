@@ -21,8 +21,6 @@ export const convertUnixTimestampToDate = (timestamp) => {
 };
 
 export const epochInDDMMYY = (epochTime) => {
-  console.log(epochTime);
-  console.log(dayjs.unix(epochTime));
   return dayjs.unix(epochTime);
 }
 

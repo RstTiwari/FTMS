@@ -7,12 +7,12 @@ import CustomForm from "./CustomForm";
 import NotificationHandler from "EventHandler/NotificationHandler";
 
 const CustomModel = ({
-    customerSelect,
-    customerId,
-    width,
-    disabled,
     entity,
     fieldName,
+    width,
+    disabled,
+    updateInForm,
+    customerId,
 }) => {
     const [open, setOpen] = useState(false);
     const { appApiCall } = useAuth();
@@ -62,12 +62,14 @@ const CustomModel = ({
 
 
     const handleChange = (value, label) => {
-        //customerSelect(value, label);
         setValue(value);
+        updateInForm(value);
     };
+
     const openModal = () => {
         setOpen(true);
     };
+    
     const onCancel = () => {
         setOpen(!open);
         if (customerId) {
@@ -77,13 +79,13 @@ const CustomModel = ({
 
     const handleModalClose = (result) => {
         console.log(result);
-        // handelClick();
-        // handleChange(result?._id);
+        handelClick();
+        handleChange(result?._id);
         setValue(result?._id);
-        // customerSelect(result?._id);
+        updateInForm(result?._id);
         setOpen(!open);
-
     };
+
     useEffect(() => {
         handelClick();
         setValue(customerId);
@@ -108,11 +110,20 @@ const CustomModel = ({
                     }
                     dropdownRender={(menu) => {
                         return (
-                            <div style={{minHeight:"300px",overflow:"auto"}}>
-                                {menu}
+                            <>
+                                <div
+                                    style={{
+                                        height: "200px",
+                                    }}
+                                >
+                                    {menu}
+                                </div>
                                 <Divider />
+                                <div style={{backgroundColor:"#fff", width:"100%"}}>
                                 <CoustomButton text="New" onClick={openModal} />
-                            </div>
+
+                                </div>
+                            </>
                         );
                     }}
                     onClick={handelClick}
