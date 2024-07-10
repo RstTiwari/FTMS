@@ -60,10 +60,21 @@ const CustomModel = ({
     }
     const handelDebounceSearch= debounce(handelSearch,500)
 
-
     const handleChange = (value, label) => {
         setValue(value);
-        updateInForm(value);
+        if (entity === "customers") {
+            return updateInForm(value);
+        } else if (entity === "products") {
+                return updateInForm({
+                    description: label?.label,
+                    rate: label?.item?.rate,
+                    hsnCode: label?.item?.hsnCode,
+                })// add if anything else needed from here Bro
+        } else if (entity === "vendors") {
+            return updateInForm(value);
+        }else{
+
+        }
     };
 
     const openModal = () => {
@@ -78,16 +89,24 @@ const CustomModel = ({
     };
 
     const handleModalClose = (result) => {
-        console.log(result);
         handelClick();
         handleChange(result?._id);
         setValue(result?._id);
-        updateInForm(result?._id);
         setOpen(!open);
+        if (entity === "customers") {
+            return updateInForm(result._id);
+        } else if (entity === "products") {
+            return updateInForm({
+                description: result.productName,
+                rate: result.rate,
+                hsnCode:result.hsnCode
+            }); 
+            // if anything else needed we can add from here
+        } else {
+        }
     };
 
     useEffect(() => {
-        handelClick();
         setValue(customerId);
     }, []);
 
@@ -98,9 +117,7 @@ const CustomModel = ({
                     options={options}                
                     value={value ? value : ""}
                     disabled ={disabled}
-                    allowClear
                     loading ={isLoading}
-                    onClear={()=>setValue("")}
                     showSearch
                     onSearch={handelDebounceSearch}
                     filterOption={(input, option) =>
@@ -128,6 +145,11 @@ const CustomModel = ({
                     }}
                     onClick={handelClick}
                     onChange={handleChange}
+                    onDropdownVisibleChange={(open) => {
+                        if (open) {
+                            handelClick();
+                        }
+                    }}
                 />
             ) : (
                 <Modal

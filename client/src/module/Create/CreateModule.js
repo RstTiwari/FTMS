@@ -26,31 +26,31 @@ const CoustomFormItem = ({ entity, form, isModal }) => {
             componentToRender = <QuotesFormItems form={form} />;
             break;
         case "invoices":
-            componentToRender = <InvoicesFormItems />;
+            componentToRender = <InvoicesFormItems  form={form} />;
             break;
         case "leads":
-            componentToRender = <LeadFormItem />;
+            componentToRender = <LeadFormItem form={form}  />;
             break;
         case "challans":
-            componentToRender = <ChallanFormItem />;
+            componentToRender = <ChallanFormItem form={form}  />;
             break;
         case "purchases":
-            componentToRender = <PurchaseFormItem />;
+            componentToRender = <PurchaseFormItem  form={form} />;
             break;
         case "vendors":
-            componentToRender = <VendorFormItem isModal={isModal} />;
+            componentToRender = <VendorFormItem form={form}   isModal={isModal} />;
             break;
         case "expenses":
-            componentToRender = <ExpensesItem />;
+            componentToRender = <ExpensesItem  form={form} />;
             break;
         case "products":
-            componentToRender = <ProductForm isModal={isModal} />;
+            componentToRender = <ProductForm form={form}   isModal={isModal} />;
             break;
         case "payments":
-            componentToRender = <PaymentFormItem />;
+            componentToRender = <PaymentFormItem form={form}  />;
             break;
         case "counters":
-            componentToRender = <EntityNo />;
+            componentToRender = <EntityNo form={form}  />;
             break;
         default:
             break;

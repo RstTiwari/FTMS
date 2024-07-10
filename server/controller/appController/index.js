@@ -6,6 +6,7 @@ import patch from "./patch.js";
 import genratePdf from "./genratePdf.js";
 import upload from "./upload.js";
 import { fetchCountersNumber, updateCountersNumber } from "../appController/counter.js";
+import { addDropDownData } from "./dropDown.js";
 
 const appRoutes = {
     create: async (req, res, next) => {
@@ -34,6 +35,9 @@ const appRoutes = {
     },
     updateCountersNumber:async (req,res,next) =>{
         updateCountersNumber(req,res,next)
+    },
+    addDropDownData:async (req,res,next)=>{
+        addDropDownData(req,res,next)
     }
     // challan: async (req, res, next) => {
     //     try {

@@ -27,6 +27,7 @@ const CustomForm = ({
     const { entity: entityOfForm,action } = useParams();
     const entity = isModal ? entityOfModal : entityOfForm;
     const isUpdate = action ? true:false
+    const {appApiCall} = useAuth()
 
     const [form] = Form.useForm();
     const [initialValues, setInitialValues] = useState({
@@ -44,8 +45,20 @@ const CustomForm = ({
     );
 
 
-    // Formatting the Dates Dynamically
     const handleFormFinish = async (values) => {
+        //Checking if form contains any image file then uploading that
+        if (values.hasOwnProperty("image")) {
+            //then now upload the file before saving it
+            const formData = new FormData();
+            formData.append("file", values.image);
+            const response = await appApiCall("post", "upload", formData, {});
+            if (!response.success) {
+                return NotificationHandler.error("failed to Upload Image");
+            }
+            values.image = response.result;
+        }
+
+        // Formatting the Dates Dynamically
         const formattedValues = Object.keys(values).reduce((acc, key) => {
             if (key.includes("Date")) {
                 acc[key] = values[key].toDate(); // Convert dayjs to Date oject in js
@@ -54,10 +67,10 @@ const CustomForm = ({
             }
             return acc;
         }, {});
-       
-        console.log(formattedValues,values, "===");
+
+        console.log(formattedValues, values, "===");
         //Handle Form Finish Logic and Loading after that if modal pass value
-        //handleFormSubmit(values,isModal ,passToModal);
+        handleFormSubmit(values,isModal ,passToModal);
     };
 
     // Validating Filed and setting the Values at that moment only

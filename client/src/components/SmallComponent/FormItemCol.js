@@ -7,7 +7,7 @@ import CustomTable from "components/CustomTable";
 const FormItemCol = ({ label, name, required =false,labelCol, rules =[],tooltip,readOnly, type,entity, fieldName, width,...restProps }) => (
     <Col xs={24} sm={24} md={8} lg={8}>
         <Form.Item
-            label={<CustomLabel required={required} label={label} />}
+            label= {label ?<CustomLabel required={required} label={label} />:null}
             name={name}
             labelAlign="left"
             rules={rules}

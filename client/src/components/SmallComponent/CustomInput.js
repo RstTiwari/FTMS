@@ -23,7 +23,7 @@ const CustomInput = ({ type, readOnly,entity,fieldName, width = "150px", ...rest
         case "counters":
             return <CustomCounters  entity ={entity}  {...restProps} />
         case "image":
-            return <UploadImage {...restProps} />;
+            return <UploadImage {...restProps}  />;
         default:
             return <Input {...restProps} />;
     }

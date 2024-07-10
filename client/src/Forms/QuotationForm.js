@@ -16,20 +16,56 @@ import {
 import { PlusOutlined, CloseOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useMediaQuery } from "@mui/material";
 import { useAuth } from "state/AuthProvider";
-import CustomerModal from "components/CustomModal";
+import CustomModal from "components/CustomModal";
 import ProductModal from "components/ProductModal";
 import FormItemCol from "components/SmallComponent/FormItemCol";
 import Taglabel from "components/SmallComponent/Taglabel";
+import { genTreeStyle } from "antd/es/tree/style";
 
 
 const QuotationForm = ({ form }) => {
-    const handleCustomerUpdate = (value) => {
-        form.setFieldsValue({ customer: value });
+    const handleCustomerUpdate = (result) => {
+        form.setFieldsValue({ customer: result });
     };
     const handleQuotationNumUpdate = (value) => {
         form.setFieldsValue({ quoteNo: value });
-        console.log("inForm");
     };
+
+    const handleItemsUpdate = (value, filedName, rowName) => {
+        const items = form.getFieldValue("items");
+        let temObj = items[rowName];
+         console.log(items,rowName);
+        if (filedName === "description") {
+            let { description, rate, hsnCode } = value;
+            console.log(description, rate, hsnCode);
+            temObj.description = description;
+            temObj.rate = Math.ceil(rate);
+            temObj.finalAmount = Math.ceil(temObj.qty * rate);
+        } else if (filedName === "rate") {
+            temObj.rate = value;
+            temObj.finalAmount = Math.ceil(temObj.qty * value);
+        } else if (filedName === "qty") {
+            temObj.qty = value;
+            temObj.finalAmount = Math.ceil(value * temObj.finalAmount);
+        }
+        items[rowName] = temObj;
+        form.setFieldsValue({ items: items });
+
+        // Tax Calculator
+        let grossTotal = items.reduce((a,b)=>{a.finalAmount + b.finalAmount},0)
+        let taxPercent = form.getFieldValue("taxPercent")
+        let taxOnProducts = calculateTax(taxPercent,total) 
+        let transportAmount = form.getFieldValue("transportAmount") || 0
+        let taxAmount = Math.ceil(taxOnProducts + transportAmount)
+        let grandTotal = grossTotal+ taxAmount
+        form.setFieldsValue({grossTotal:grossTotal,})
+        
+    };
+
+    function calculateTax(taxPercent = 0, total) {
+        let amount = (taxPercent * total) / 100;
+        return Math.ceil(amount);
+    }
 
     const onProductChange = (value, subField) => {
         // const formData = form.getFieldValue("items");
@@ -145,6 +181,7 @@ const QuotationForm = ({ form }) => {
 
     const addNewRow = (subOpt) => {
         subOpt.add({
+            description:"",
             finalAmount: 0,
             qty: 1,
             rate: 0,
@@ -170,7 +207,7 @@ const QuotationForm = ({ form }) => {
                 type="model"
                 entity={"customers"}
                 fieldName="customerName" // filed name form customer modal
-                updateInForm= {handleCustomerUpdate}
+                updateInForm={handleCustomerUpdate}
             />
             <FormItemCol
                 label={"#Quote"}
@@ -185,7 +222,7 @@ const QuotationForm = ({ form }) => {
                         message: "Please Provide Quote No",
                     },
                 ]}
-                updateInForm = {handleQuotationNumUpdate}
+                updateInForm={handleQuotationNumUpdate}
             />
             <Row>
                 <FormItemCol
@@ -286,9 +323,9 @@ const QuotationForm = ({ form }) => {
                 >
                     {(subFields, subOpt) => (
                         <div>
-                            {subFields.map((subField) => (
+                            {subFields.map(({key,name,...restField}) => (
                                 <Row
-                                    key={subField.key}
+                                    key={key}
                                     align={"middle"}
                                     style={{ marginTop: "5px" }}
                                 >
@@ -300,31 +337,36 @@ const QuotationForm = ({ form }) => {
                                         }}
                                     >
                                         <Form.Item
+                                              {...restField}
                                             name={[
-                                                subField.name,
+                                                name,
                                                 "description",
                                             ]}
                                         >
-                                            <ProductModal
-                                                productSelect={(label) =>
-                                                    onProductChange(
-                                                        label,
-                                                        subField
+                                            <CustomModal
+                                                entity={"products"}
+                                                fieldName={"productName"}
+                                                updateInForm={(value) =>
+                                                    handleItemsUpdate(
+                                                        value,
+                                                        "description",
+                                                        name
                                                     )
                                                 }
-                                                // productValue={ form.getFieldValue("")[subField.key]
                                             />
                                         </Form.Item>
                                     </Col>
                                     <Col span={5}>
                                         <Form.Item
-                                            name={[subField.name, "rate"]}
+                                             {...restField}
+                                            name={[name, "rate"]}
                                         >
                                             <InputNumber
                                                 onChange={(value) =>
-                                                    onRateChange(
+                                                    handleItemsUpdate(
                                                         value,
-                                                        subField
+                                                        "rate",
+                                                         name
                                                     )
                                                 }
                                                 style={{
@@ -336,11 +378,16 @@ const QuotationForm = ({ form }) => {
                                     </Col>
                                     <Col span={5}>
                                         <Form.Item
-                                            name={[subField.name, "qty"]}
+                                            {...restField}
+                                            name={[name, "qty"]}
                                         >
                                             <InputNumber
                                                 onChange={(value) =>
-                                                    onQtyChange(value, subField)
+                                                    handleItemsUpdate(
+                                                        value,
+                                                        "qty",
+                                                        name
+                                                    )
                                                 }
                                                 style={{
                                                     width: "100%",
@@ -354,8 +401,9 @@ const QuotationForm = ({ form }) => {
                                         style={{ textAlign: "center" }}
                                     >
                                         <Form.Item
+                                             {...restField}
                                             name={[
-                                                subField.name,
+                                                name,
                                                 "finalAmount",
                                             ]}
                                         >
@@ -383,7 +431,7 @@ const QuotationForm = ({ form }) => {
                                                 }}
                                                 onClick={() => {
                                                     subOpt.remove(
-                                                        subField.name
+                                                        name
                                                     );
                                                 }}
                                             />
@@ -397,7 +445,12 @@ const QuotationForm = ({ form }) => {
                                 <Button
                                     type="primary"
                                     onClick={() => {
-                                        subOpt.add(); // Use srNo instead of srN
+                                        subOpt.add({
+                                            description:"",
+                                            finalAmount: 0,
+                                            qty: 1,
+                                            rate: 0,
+                                        }); // Use srNo instead of srN
                                     }}
                                     icon={<PlusOutlined />}
                                     style={{
@@ -438,7 +491,7 @@ const QuotationForm = ({ form }) => {
             <Row align={"middle"} justify={"end"}>
                 <FormItemCol
                     label="Transport(Rs)"
-                    name={"transPortAmount"}
+                    name={"transportAmount"}
                     labelAlign="left"
                     type={"number"}
                     labelCol={{ span: 8 }}

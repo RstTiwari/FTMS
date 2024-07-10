@@ -3,11 +3,14 @@ import { Form, Input, Button } from "antd";
 import { Formik } from "formik";
 import FormItemCol from "components/SmallComponent/FormItemCol";
 
-const ProductForm = ({ onFormFinish, initalValue: initialValue ,isModal}) => {
+const ProductForm = ({form, onFormFinish, initalValue: initialValue ,isModal}) => {
     const handleSubmit = (values) => {
         // Handle form submission here
         onFormFinish(values);
     };
+    const handleImageUpdate = (file)=>{
+        form.setFieldsValue({image:file})
+    }
 
     // const { name, price, hsnCode } = initalValue;
     return (
@@ -62,9 +65,7 @@ const ProductForm = ({ onFormFinish, initalValue: initialValue ,isModal}) => {
                 name="image"
                 type={"image"}
                 url=""
-                onUploadSuccess={(result) =>
-                    console.log("Upload success:", result)
-                }
+                updateImageInForm ={handleImageUpdate}
             />
         </div>
     );

@@ -19,6 +19,7 @@ const fetchSelectData = async (req, res, next) => {
             const temObj=  {
                 label: item[fieldName],
                 value: item._id,
+                item
             };
             return temObj
         });

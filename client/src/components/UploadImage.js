@@ -10,9 +10,8 @@ const UploadImage = ({
     pageTitle,
     uploadTitle,
     aboutImage,
-    onUploadSuccess,
     url,
-    ...restProps
+    updateImageInForm
 }) => {
     const [loading, setLoading] = useState(false);
     const [edit, setEdit] = useState(true);
@@ -25,30 +24,33 @@ const UploadImage = ({
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => setImageUrl(reader.result);
-        restProps.onChange && restProps.onChange(file); // Update form field value
+
+        if (updateImageInForm) {
+            updateImageInForm(file);
+        }
     };
 
-    const uploadImage = async () => {
-        if (!file) {
-            return NotificationHandler.error("Please Select an Image to Upload");
-        }
-        setLoading(true);
-        try {
-            const formData = new FormData();
-            formData.append("file", file);
-            const { success, result, message } = await "" //useAuth().uploadFile(formData); // assuming useAuth has uploadFile method
-            if (!success) {
-                return NotificationHandler.error(message);
-            } else {
-                setImageUrl(result);
-                onUploadSuccess(result);
-                setLoading(false);
-            }
-        } catch (error) {
-            console.error(error);
-            return NotificationHandler.error("Upload failed");
-        }
-    };
+    // const uploadImage = async () => {
+    //     if (!file) {
+    //         return NotificationHandler.error("Please Select an Image to Upload");
+    //     }
+    //     setLoading(true);
+    //     try {
+    //         const formData = new FormData();
+    //         formData.append("file", file);
+    //         const { success, result, message } = await "" //useAuth().uploadFile(formData); // assuming useAuth has uploadFile method
+    //         if (!success) {
+    //             return NotificationHandler.error(message);
+    //         } else {
+    //             setImageUrl(result);
+    //             onUploadSuccess(result);
+    //             setLoading(false);
+    //         }
+    //     } catch (error) {
+    //         console.error(error);
+    //         return NotificationHandler.error("Upload failed");
+    //     }
+    // };
 
     useEffect(() => {
         if (url && url !== "") {
