@@ -22,7 +22,7 @@ import FormItemCol from "components/SmallComponent/FormItemCol";
 import Taglabel from "components/SmallComponent/Taglabel";
 import CoustomButton from "components/SmallComponent/CoustomButton";
 import CustomLabel from "components/SmallComponent/CustomLabel";
-import CustomSelect from "components/SmallComponent/CustomDropDown";
+import CustomSelect from "components/SmallComponent/CustomSelect";
 import CustomModel from "components/CustomModal";
 
 const DeliveryChallan = ({ current }) => {

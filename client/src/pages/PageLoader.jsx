@@ -1,14 +1,14 @@
 import React from "react";
 import { Spin, Row, Col } from "antd";
 
-const PageLoader = ({ text, isLoading }) => {
+const PageLoader = ({ text, isLoading ,height="100vh"}) => {
     return isLoading ? (
         <div
             style={{
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                height: "100vh",
+                height: height,
             }}
         >
             <Row>

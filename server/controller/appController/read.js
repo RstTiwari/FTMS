@@ -19,6 +19,11 @@ const read = async (req, res, next) => {
             .sort({ _id: -1 })
             .skip(skip)
             .limit(pageSize)
+            .populate({
+                path:"customer",
+                select:"customerName",
+                options: { strictPopulate: false },
+            })
             .lean();
       
         res.status(200).json({

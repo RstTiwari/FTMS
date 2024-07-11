@@ -1,39 +1,60 @@
+import { render } from "@testing-library/react";
 import Taglabel from "components/SmallComponent/Taglabel.js";
 
 const CoustomerData = {
     listColumns: [
         {
-            title:<Taglabel text={" COMPANY NAME"} />,
+            title: <Taglabel text={" COMPANY NAME"} />,
             dataIndex: "customerName",
             key: "customerName",
+            render: (_, record) => (
+                <>
+                    <Taglabel
+                        type="warning"
+                        text={`${
+                            record?.customerName ? record.customerName : ""
+                        }`}
+                    />
+                </>
+            ),
         },
         {
-            title: "CONTACT PERSON",
+            title: <Taglabel text={"CONTACT PERSON"} />,
             dataIndex: "contactPerson",
             key: "customerName",
+            render: (_, record) => (
+                <>
+                    <Taglabel
+                        type="danger"
+                        text={`${
+                            record?.contactPerson ? record.contactPerson : ""
+                        }`}
+                    />
+                </>
+            ),
         },
         {
-            title: "PHONE NO",
+            title: <Taglabel text={"PHONE NO"} />,
             dataIndex: "customerPhone",
             key: "customerPhone",
         },
         {
-            title: "EMAIL ID",
+            title: <Taglabel text={"EMAIL ID"} />,
             dataIndex: "customerEmail",
             key: "customerEmail",
         },
-        {
-            title: "GST NO",
-            dataIndex: "gstNo",
-            key: "gstNo",
-            responsive: ["lg"],
-        },
-        {
-            title: "PAN NO",
-            dataIndex: "panNo",
-            key: "panNo",
-            responsive: ["lg"],
-        },
+        // {
+        //     title: <Taglabel text={"GST NO"} />,
+        //     dataIndex: "gstNo",
+        //     key: "gstNo",
+        //     responsive: ["lg"],
+        // },
+        // {
+        //     title: <Taglabel  text={"PAN NO"}/>,
+        //     dataIndex: "panNo",
+        //     key: "panNo",
+        //     responsive: ["lg"],
+        // },
     ],
     formFields: [
         {
@@ -186,14 +207,13 @@ const CoustomerData = {
         { label: "Ladakh", value: "Ladakh" },
         { label: "Jammu and Kashmir", value: "Jammu and Kashmir" },
     ],
-    select:{
-        customerName:1,
-        customerPhone:1,
-        customerEmail:1,
-        contactPerson:1,
-        gstNo:1,
-        panNo:1
-    }
-    
+    select: {
+        customerName: 1,
+        customerPhone: 1,
+        customerEmail: 1,
+        contactPerson: 1,
+        gstNo: 1,
+        panNo: 1,
+    },
 };
 export default CoustomerData;

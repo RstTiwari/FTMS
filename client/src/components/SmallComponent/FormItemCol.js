@@ -2,9 +2,9 @@ import React from "react";
 import { Col, Form } from "antd";
 import CustomLabel from "../SmallComponent/CustomLabel"; // Assuming you have created CustomLabel component
 import CustomInput from "../SmallComponent/CustomInput"; // Assuming you have created CustomInput component
-import CustomTable from "components/CustomTable";
 
-const FormItemCol = ({ label, name, required =false,labelCol, rules =[],tooltip,readOnly, type,entity, fieldName, width,...restProps }) => (
+
+const FormItemCol = ({ label, name, required =false,labelCol, rules =[],tooltip,readOnly, type,entity, entityName,fieldName, width,...restProps }) => (
     <Col xs={24} sm={24} md={8} lg={8}>
         <Form.Item
             label= {label ?<CustomLabel required={required} label={label} />:null}
@@ -16,7 +16,7 @@ const FormItemCol = ({ label, name, required =false,labelCol, rules =[],tooltip,
             valuePropName={type === "image" ? "file" : "value"}
             getValueFromEvent={type === "image" ? (e) => e : undefined}
         >
-            <CustomInput type={type} readOnly entity={entity} fieldName ={fieldName} width ={width}  {...restProps} />
+            <CustomInput type={type} readOnly = {readOnly} entity={entity} entityName ={entityName} fieldName ={fieldName} width ={width}  {...restProps} />
         </Form.Item>
     </Col>
 );

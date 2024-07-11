@@ -1,6 +1,6 @@
 import checkDbForEntity from "../../Helper/databaseSelector.js";
 
-const fetchSelectData = async (req, res, next) => {
+const fetchCustomModalData = async (req, res, next) => {
     const { entity, fieldName, char } = req.query;
     let tenantId = req.tenantId;
 
@@ -33,4 +33,4 @@ const fetchSelectData = async (req, res, next) => {
     }
 };
 
-export default fetchSelectData;
+export default fetchCustomModalData;

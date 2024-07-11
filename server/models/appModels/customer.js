@@ -49,6 +49,6 @@ const coustomerSchema = new mongoose.Schema({
         ref:"tenant",
         required: true,
     },
-});
+},{timestamps:true});
 
-export default mongoose.model("customer", coustomerSchema);
+export default mongoose.model("customer", coustomerSchema,);

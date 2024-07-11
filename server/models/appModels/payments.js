@@ -13,21 +13,10 @@ const paymentsSchema = new mongoose.Schema({
         default: false,
     },
 
-    invoice: {
-        type: mongoose.Schema.ObjectId,
-        ref: "invoice",
-        required: true,
-        autopopulate: true,
-    },
     paymentDate:{
-         type:Number,
+         type:Date,
          required:true
 
-    },
-    createdDate: {
-        type: Number,
-        default: Math.floor(Date.now() / 1000),
-        required: true,
     },
     amount: {
         type: Number,
@@ -47,7 +36,7 @@ const paymentsSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-});
+},{timestamps:true});
 
 paymentsSchema.plugin(mongooseAutoPopulate);
 export default mongoose.model("payments", paymentsSchema);

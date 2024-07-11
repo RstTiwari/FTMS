@@ -5,7 +5,7 @@ import { useMediaQuery } from "@mui/material";
 import ProductModal from "components/ProductModal";
 import FormItemCol from "components/SmallComponent/FormItemCol";
 import Taglabel from "components/SmallComponent/Taglabel";
-import CustomSelect from "components/SmallComponent/CustomDropDown";
+import CustomSelect from "components/SmallComponent/CustomSelect";
 import CustomModel from "components/CustomModal";
 
 const QuotationForm = ({ current }) => {

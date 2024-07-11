@@ -2,59 +2,67 @@ import { Space, Flex, Dropdown, Typography, Form, Input } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { items } from "./LeadData";
 import { TableAction } from "components/TableAction";
-import { convertUnixTimestampToDate } from "Helper/EpochConveter";
+import { convertUnixTimestampToDate, jsDateIntoDayjsDate } from "Helper/EpochConveter";
+import Taglabel from "components/SmallComponent/Taglabel";
 const { Text } = Typography;
 
 const quotationData = {
     listColumns: [
         {
-            title: "#Number",
+            title: <Taglabel text={"NUMBER#"} />,
             dataIndex: "quoteNo",
             key: "srno",
             width: 100,
         },
         {
-            title: "Client",
+            title:<Taglabel  text={"CUSTOMER"}/>,
             dataIndex: "client",
             key: "source",
             width: 300,
             render: (_, record) => (
                 <>
-                    <Text type="success">{record?.customer?.customerName}</Text>
+                    <Taglabel type="warning" text= {`${record?.customer?.customerName}`} />
                 </>
             ),
         },
         {
-            title: "Recived Date",
-            dataIndex: "quoteRecivedDate",
+            title: <Taglabel text={"RECEIVED DATE"} />,
+            dataIndex: "quoteDate",
             key: "company",
             responsive: ["lg"],
             width: 200,
             render: (_, record) => (
-                <>{convertUnixTimestampToDate(record.quoteDate)}</>
+                <>{jsDateIntoDayjsDate(record.quoteDate)}</>
             ),
         },
         {
-            title: "Expired Date",
-            dataIndex: "quoteExpiredDate",
-            key: "quoteExpiredDate",
+            title: <Taglabel text={"DUE DATE"} />,
+            dataIndex: "expiryDate",
+            key: "expiryDate",
             responsive: ["lg"],
             width: 200,
             render: (_, record) => (
-                <>{convertUnixTimestampToDate(record.quoteExpiryDate)}</>
+                <>{jsDateIntoDayjsDate(record.expiryDate)}</>
             ),
         },
         {
-            title: "Gross Total",
+            title:<Taglabel text={"GROSS TOTAL"} />,
             dataIndex: "grossTotal",
             width: 250,
             key: "subTotal",
+            render: (_, record) => (
+                <>{<Taglabel  type="success" text={`${record.grossTotal}`} weight={1000}/>}</>
+            ),
         },
+        
         {
-            title: "Grand Total",
+            title:<Taglabel text={"GRAND TOTAL"} />,
             dataIndex: "grandTotal",
             key: "subTotal",
             width: 250,
+            render: (_, record) => (
+                <>{<Taglabel  type="success" text={`${record.grandTotal}`} weight={1000}/>}</>
+            ),
         },
     ],
 };

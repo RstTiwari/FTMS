@@ -1,19 +1,19 @@
 import create from "./create.js";
-import fetchSelectData from "./fetchSelectData.js";
+import fetchCustomModalData from "./customModal.js";
 import read from "./read.js";
 import update from "./update.js";
 import patch from "./patch.js";
 import genratePdf from "./genratePdf.js";
 import upload from "./upload.js";
 import { fetchCountersNumber, updateCountersNumber } from "../appController/counter.js";
-import { addDropDownData } from "./dropDown.js";
+import { addSelectData,fetchSelectData } from "./customSelect.js";
 
 const appRoutes = {
     create: async (req, res, next) => {
         create(req, res, next);
     },
-    fetchSelectData: async (req, res, next) => {
-        fetchSelectData(req, res, next);
+    fetchCustomModalData: async (req, res, next) => {
+        fetchCustomModalData(req, res, next);
     },
     read: async (req, res, next) => {
         read(req, res, next);
@@ -36,8 +36,11 @@ const appRoutes = {
     updateCountersNumber:async (req,res,next) =>{
         updateCountersNumber(req,res,next)
     },
-    addDropDownData:async (req,res,next)=>{
-        addDropDownData(req,res,next)
+    addSelectData:async (req,res,next)=>{
+        addSelectData(req,res,next)
+    },
+    fetchSelectData:async(req,res,next)=>{
+        fetchSelectData(req,res,next)
     }
     // challan: async (req, res, next) => {
     //     try {

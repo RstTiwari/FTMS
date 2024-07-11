@@ -24,7 +24,7 @@ import {
 import dayjs from "dayjs";
 import FormItemCol from "components/SmallComponent/FormItemCol";
 import ProductModal from "components/ProductModal";
-import CustomSelect from "components/SmallComponent/CustomDropDown";
+import CustomSelect from "components/SmallComponent/CustomSelect";
 
 const PurchaseOrder = ({ handleFormFinish, value, disabled, isModel }) => {
     const [form] = Form.useForm();

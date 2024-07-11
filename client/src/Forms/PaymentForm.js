@@ -25,42 +25,18 @@ const { Text } = Typography;
 const { Option } = Select;
 const entity = "payments";
 
-const PaymentForm = ({ initialValue = {} }) => {
-    const [form] = Form.useForm();
-    const { _id, customer, payment } = initialValue;
-    const { createData, patchData } = useAuth();
-    const navigate = useNavigate();
-    const [value, setValue] = useState({
-        paymentDate: null,
-        refer: "",
-        amount: "",
-        customerName: customer ? customer.customerName : "",
-        paymentMode: "",
-        payment: payment,
-    });
+const PaymentForm = ({form, initialValue = {} }) => {
+ 
+    const handleItemUpdate = (value,fieldName)=>{
+        if(fieldName ==="customer"){
+            form.setFieldsValue({customer:value})
+        }else if(fieldName ==="paymentMode"){
+            form.setFieldsValue({paymentMode:value})
+        }else{
 
-    const onFinish = async (value) => {
-        value.paymentDate = epochConveter(value.paymentDate.$d);
-        value.invoice = _id;
-        const payload = { entity: entity, value };
-        // First Create Paymnet Object
-        const { success, result, message } = await createData(payload);
-        const paymentId = success ? result._id : "";
-        if (!success) {
-            NotificationHandler.error(message);
-        } else {
-            const upDateObj = {
-                payment: { $each: [paymentId] },
-            };
-            const payload = { entity: "invoice", value: upDateObj, _id: _id };
-            const { success, result, message } = await patchData(payload);
-            if (!success) {
-                return NotificationHandler.error(message);
-            } else {
-                navigate("/payments");
-            }
         }
-    };
+    }
+
 
     return (
         <div style={{ height: "100vh" }}>
@@ -70,6 +46,7 @@ const PaymentForm = ({ initialValue = {} }) => {
                         label="Select Customer"
                         name="customer"
                         required={true}
+                        labelCol={{ span: 8 }}
                         rules={[
                             {
                                 required: true,
@@ -78,10 +55,31 @@ const PaymentForm = ({ initialValue = {} }) => {
                         ]}
                         labelAlign="left"
                         entity={"customers"}
-                        labelCol={{ span: 8 }}
+                        fieldName={"customerName"}
+                        updateInForm ={(value)=>{
+                               handleItemUpdate(value,"customer")
+                        }}
                         type={"model"}
                     />
                 </Col>
+                <FormItemCol
+                        label="Payment Number"
+                        name="paymentNo"
+                        required={true}
+                        labelAlign="left"
+                        labelCol={{ span: 8 }}
+                        type={"counters"}
+                        rules={[
+                            {
+                                required: true,
+                                message: "Plese Select Customer",
+                            },
+                        ]}
+                        width={300}
+                        updateInForm ={(value)=>{
+                               handleItemUpdate(value,"paymentNo")
+                        }}
+                    />
                 <Col span={24}>
                     <FormItemCol
                         label="Payment Date"
@@ -106,6 +104,10 @@ const PaymentForm = ({ initialValue = {} }) => {
                         labelCol={{ span: 8 }}
                         type={"select"}
                         entity="Payment Mode"
+                        entityName={"paymentMode"}
+                        updateInForm ={(value)=>{
+                            handleItemUpdate(value,'paymentMode')
+                        }}
                     />
                 </Col>
                 <Col span={24}>
@@ -124,6 +126,8 @@ const PaymentForm = ({ initialValue = {} }) => {
                         name="amount"
                         labelAlign="left"
                         required={true}
+                        type={"number"}
+                        width={250}
                         labelCol={{ span: 8 }}
                         rules={[
                             {

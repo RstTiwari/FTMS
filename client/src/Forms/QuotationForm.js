@@ -24,17 +24,10 @@ import { genTreeStyle } from "antd/es/tree/style";
 
 
 const QuotationForm = ({ form }) => {
-    const handleCustomerUpdate = (result) => {
-        form.setFieldsValue({ customer: result });
-    };
-    const handleQuotationNumUpdate = (value) => {
-        form.setFieldsValue({ quoteNo: value });
-    };
 
     const handleItemsUpdate = (value, filedName, rowName) => {
         const items = form.getFieldValue("items");
         let temObj = items[rowName];
-         console.log(items,rowName);
         if (filedName === "description") {
             let { description, rate, hsnCode } = value;
             console.log(description, rate, hsnCode);
@@ -46,149 +39,52 @@ const QuotationForm = ({ form }) => {
             temObj.finalAmount = Math.ceil(temObj.qty * value);
         } else if (filedName === "qty") {
             temObj.qty = value;
-            temObj.finalAmount = Math.ceil(value * temObj.finalAmount);
+            temObj.finalAmount = Math.ceil(value * temObj.rate);
+        } else if (filedName === "taxPercent") {
+            value = Number(value);
+            form.setFieldsValue({ taxPercent: value });
+        } else if (filedName === "transportAmount") {
+            form.setFieldsValue({ transportAmount: value });
+        } else if (filedName === "paymentsCondition") {
+            form.setFieldsValue({ paymentsCondition: value });
+        } else if (filedName === "deliveryCondition") {
+            form.setFieldsValue({ deliveryCondition: value });
+        } else if (filedName === "cancellationCondition") {
+            form.setFieldsValue({ cancellationCondition: value });
+        } else if (filedName === "validityCondition") {
+            form.setFieldsValue({ validityCondition: value });
+        } else if (filedName === "customer") {
+            form.setFieldsValue({ customer: value });
+        } else if (filedName === "quoteNo") {
+            form.setFieldsValue({ quoteNo: value });
+        }else{
+
         }
+
         items[rowName] = temObj;
         form.setFieldsValue({ items: items });
 
         // Tax Calculator
-        let grossTotal = items.reduce((a,b)=>{a.finalAmount + b.finalAmount},0)
-        let taxPercent = form.getFieldValue("taxPercent")
-        let taxOnProducts = calculateTax(taxPercent,total) 
-        let transportAmount = form.getFieldValue("transportAmount") || 0
-        let taxAmount = Math.ceil(taxOnProducts + transportAmount)
-        let grandTotal = grossTotal+ taxAmount
-        form.setFieldsValue({grossTotal:grossTotal,})
-        
+        let grossTotal = items.reduce((a, b) => a + b.finalAmount, 0);
+        let taxPercent = form.getFieldValue("taxPercent") || 0;
+        let transportAmount = form.getFieldValue("transportAmount") || 0;
+        let taxAmount = Math.ceil(
+            calculateTax(taxPercent, grossTotal + transportAmount)
+        );
+        let grandTotal = grossTotal + taxAmount +transportAmount;
+        form.setFieldsValue({
+            grossTotal: grossTotal,
+            grandTotal: grandTotal,
+            transportAmount: transportAmount,
+            taxAmount: taxAmount,
+        });
     };
 
     function calculateTax(taxPercent = 0, total) {
         let amount = (taxPercent * total) / 100;
         return Math.ceil(amount);
     }
-
-    const onProductChange = (value, subField) => {
-        // const formData = form.getFieldValue("items");
-        // const items = [...formData];
-        // const index = subField.key; // Use subField.name to get the index
-        // const rowManipulated = items[index];
-        // rowManipulated.description = value.productName;
-        // rowManipulated.rate = Math.ceil(value.rate);
-        // rowManipulated.finalAmount = Math.ceil(
-        //     rowManipulated.rate * rowManipulated.qty
-        // );
-        // items[index] = rowManipulated;
-        // form.setFieldsValue({ items: items });
-        // // now updataing grossTotal ,grandTotal
-        // let { grossTotal, grandTotal, taxPercent, transPortAmount } =
-        //     form.getFieldsValue([
-        //         "grossTotal",
-        //         "grandTotal",
-        //         "taxPercent",
-        //         "transPortAmount",
-        //     ]);
-        // const grossSum = items.reduce(
-        //     (accumulator, currentValue) =>
-        //         accumulator + currentValue.finalAmount,
-        //     0
-        // );
-        // const taxAmount = Math.floor((grossSum * taxPercent) / 100);
-        // const grandSum = grossSum + taxAmount + transPortAmount;
-        // form.setFieldsValue({ grossTotal: Math.ceil(grossSum) });
-        // form.setFieldsValue({ grandTotal: Math.ceil(grandSum) });
-    };
-
-    const onRateChange = async (value, subField) => {
-        // const formData = form?.getFieldValue("items");
-        // const items = [...formData];
-        // const rowManipulated = items[subField.key];
-        // rowManipulated.finalAmount = Math.ceil(
-        //     rowManipulated.rate * rowManipulated.qty
-        // );
-        // items[subField.key] = rowManipulated;
-        // form.setFieldsValue({ items: items });
-        // // now updataing grossTotal ,grandTotal
-        // let { grossTotal, grandTotal, taxPercent, transPortAmount } =
-        //     form.getFieldsValue([
-        //         "grossTotal",
-        //         "grandTotal",
-        //         "taxPercent",
-        //         "transPortAmount",
-        //     ]);
-        // const grossSum = items.reduce(
-        //     (accumulator, currentValue) =>
-        //         accumulator + currentValue.finalAmount,
-        //     0
-        // );
-        // const taxAmount = Math.floor((grossSum * taxPercent) / 100);
-        // const grandSum = grossSum + taxAmount + transPortAmount;
-        // form.setFieldsValue({ grossTotal: Math.ceil(grossSum) });
-        // form.setFieldsValue({ grandTotal: Math.ceil(grandSum) });
-    };
-
-    const onQtyChange = async (value, subField) => {
-        // const formData = form?.getFieldsValue(["items"]);
-        // const items = [...formData];
-        // const rowManipulated = items[subField.key];
-        // rowManipulated.qty = value;
-        // rowManipulated.finalAmount = Math.ceil(
-        //     rowManipulated.rate * rowManipulated.qty
-        // );
-        // form?.setFieldsValue({ items: items });
-        // let { grossTotal, grandTotal, taxPercent, transPortAmount } =
-        //     form.getFieldsValue([
-        //         "grossTotal",
-        //         "grandTotal",
-        //         "taxPercent",
-        //         "transPortAmount",
-        //     ]);
-        // const grossSum = items.reduce(
-        //     (accumulator, currentValue) =>
-        //         accumulator + currentValue.finalAmount,
-        //     0
-        // );
-        // const taxAmount = Math.floor((grossSum * taxPercent) / 100);
-        // const grandSum = grossSum + taxAmount + transPortAmount;
-        // form.setFieldsValue({ grossTotal: grossSum });
-        // form.setFieldsValue({ grandTotal: grandSum });
-    };
-
-    const onTaxPercentChange = async (value) => {
-        let { grossTotal, grandTotal, taxPercent, transPortAmount } =
-            form.getFieldsValue([
-                "grossTotal",
-                "grandTotal",
-                "taxPercent",
-                "transPortAmount",
-            ]);
-        const taxAmount = Math.floor((grossTotal * value) / 100);
-        const grandSum = grossTotal + taxAmount + transPortAmount;
-        form.setFieldsValue({ grandTotal: Math.ceil(grandSum) });
-    };
-
-    const onTransportAmountChange = (value) => {
-        let { grossTotal, grandTotal, taxPercent, transPortAmount } =
-            form?.getFieldsValue([
-                "grossTotal",
-                "grandTotal",
-                "taxPercent",
-                "transPortAmount",
-            ]);
-        const taxAmount = Math.floor((grossTotal * taxPercent) / 100);
-        const grandSum = grossTotal + taxAmount + value;
-        form.setFieldsValue({ grandTotal: Math.ceil(grandSum) });
-    };
-
-    const addNewRow = (subOpt) => {
-        subOpt.add({
-            description:"",
-            finalAmount: 0,
-            qty: 1,
-            rate: 0,
-        });
-    };
-
-    const items = form?.getFieldsValue(["items"]);
+ 
     useEffect(() => {}, []);
     return (
         <div>
@@ -207,7 +103,9 @@ const QuotationForm = ({ form }) => {
                 type="model"
                 entity={"customers"}
                 fieldName="customerName" // filed name form customer modal
-                updateInForm={handleCustomerUpdate}
+                updateInForm={(value)=>{
+                    handleItemsUpdate(value,"customer")
+                }}
             />
             <FormItemCol
                 label={"#Quote"}
@@ -222,7 +120,9 @@ const QuotationForm = ({ form }) => {
                         message: "Please Provide Quote No",
                     },
                 ]}
-                updateInForm={handleQuotationNumUpdate}
+                updateInForm={(value)=>{
+                    handleItemsUpdate(value,'quoteNo')
+                }}
             />
             <Row>
                 <FormItemCol
@@ -323,7 +223,7 @@ const QuotationForm = ({ form }) => {
                 >
                     {(subFields, subOpt) => (
                         <div>
-                            {subFields.map(({key,name,...restField}) => (
+                            {subFields.map(({ key, name, ...restField }) => (
                                 <Row
                                     key={key}
                                     align={"middle"}
@@ -337,11 +237,8 @@ const QuotationForm = ({ form }) => {
                                         }}
                                     >
                                         <Form.Item
-                                              {...restField}
-                                            name={[
-                                                name,
-                                                "description",
-                                            ]}
+                                            {...restField}
+                                            name={[name, "description"]}
                                         >
                                             <CustomModal
                                                 entity={"products"}
@@ -358,7 +255,7 @@ const QuotationForm = ({ form }) => {
                                     </Col>
                                     <Col span={5}>
                                         <Form.Item
-                                             {...restField}
+                                            {...restField}
                                             name={[name, "rate"]}
                                         >
                                             <InputNumber
@@ -366,7 +263,7 @@ const QuotationForm = ({ form }) => {
                                                     handleItemsUpdate(
                                                         value,
                                                         "rate",
-                                                         name
+                                                        name
                                                     )
                                                 }
                                                 style={{
@@ -401,11 +298,8 @@ const QuotationForm = ({ form }) => {
                                         style={{ textAlign: "center" }}
                                     >
                                         <Form.Item
-                                             {...restField}
-                                            name={[
-                                                name,
-                                                "finalAmount",
-                                            ]}
+                                            {...restField}
+                                            name={[name, "finalAmount"]}
                                         >
                                             <InputNumber
                                                 readOnly
@@ -430,9 +324,7 @@ const QuotationForm = ({ form }) => {
                                                     cursor: "pointer",
                                                 }}
                                                 onClick={() => {
-                                                    subOpt.remove(
-                                                        name
-                                                    );
+                                                    subOpt.remove(name);
                                                 }}
                                             />
                                         </Form.Item>
@@ -446,7 +338,7 @@ const QuotationForm = ({ form }) => {
                                     type="primary"
                                     onClick={() => {
                                         subOpt.add({
-                                            description:"",
+                                            description: "",
                                             finalAmount: 0,
                                             qty: 1,
                                             rate: 0,
@@ -475,6 +367,19 @@ const QuotationForm = ({ form }) => {
                     labelCol={{ span: 8 }}
                     type={"number"}
                     width={150}
+                    readOnly={true}
+                />
+            </Row>
+            <Row align={"middle"} justify={"end"}>
+                <FormItemCol
+                    label="Transport(Rs)"
+                    name={"transportAmount"}
+                    labelAlign="left"
+                    type={"number"}
+                    labelCol={{ span: 8 }}
+                    onChange={(value) => {
+                        handleItemsUpdate(value, "transportAmount");
+                    }}
                 />
             </Row>
             <Row align={"middle"} justify={"end"}>
@@ -486,17 +391,13 @@ const QuotationForm = ({ form }) => {
                     type={"select"}
                     width={150}
                     entity={"Tax Percent"}
+                    entityName="taxPercent"
+                    updateInForm={(value) => {
+                        handleItemsUpdate(value, "taxPercent");
+                    }}
                 />
             </Row>
-            <Row align={"middle"} justify={"end"}>
-                <FormItemCol
-                    label="Transport(Rs)"
-                    name={"transportAmount"}
-                    labelAlign="left"
-                    type={"number"}
-                    labelCol={{ span: 8 }}
-                />
-            </Row>
+
             <Row align={"middle"} justify={"end"}>
                 <FormItemCol
                     label="Tax Amount"
@@ -506,6 +407,7 @@ const QuotationForm = ({ form }) => {
                     tooltip={"Tax Amount on total + transport"}
                     type={"number"}
                     entity={"Tax Percent"}
+                    readOnly={true}
                 />
             </Row>
             <Row align={"middle"} justify={"end"}>
@@ -528,6 +430,11 @@ const QuotationForm = ({ form }) => {
                 type={"select"}
                 width={500}
                 entity={"Delivery Condition"}
+                entityName={"deliveryCondition"}
+                updateInForm={(value) => {
+                    handleItemsUpdate(value, "deliveryCondition");
+                }}
+
             />
             <Row justify={"start"}>
                 <FormItemCol
@@ -536,15 +443,24 @@ const QuotationForm = ({ form }) => {
                     type={"select"}
                     width={500}
                     entity={"Validity Condition"}
+                    entityName={"validityCondition"}
+                    updateInForm={(value) => {
+                        handleItemsUpdate(value, "validityCondition");
+                    }}
                 />
             </Row>
             <Row justify={"start"}>
                 <FormItemCol
                     label={"Payments"}
                     name={"paymentsCondition"}
+                    entityName={"paymentsCondition"}
                     type={"select"}
                     width={500}
                     entity={"Payments Condition"}
+                    updateInForm={(value) => {
+                        handleItemsUpdate(value, "paymentsCondition");
+                    }}
+                    
                 />
             </Row>
             <Row justify={"start"}>
@@ -554,6 +470,11 @@ const QuotationForm = ({ form }) => {
                     type={"select"}
                     width={500}
                     entity={"Cancellation Condition"}
+                    entityName={"cancellationCondition"}
+                    updateInForm={(value) => {
+                        handleItemsUpdate(value, "cancellationCondition");
+                    }}
+                    
                 />
             </Row>
         </div>

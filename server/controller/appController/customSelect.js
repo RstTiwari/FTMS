@@ -1,21 +1,25 @@
-export const addDropDownData = async (req, res, next) => {
+import checkDbForEntity from "../../Helper/databaseSelector.js";
+
+export const addSelectData = async (req, res, next) => {
     try {
 
-        const payload = req.body;
-        const entity = payload.entity;
+        const {entityName,data} = req.body;
         const tenantId = req.tenantId;
+        if(!entityName || !data || !tenantId){
+            throw new Error("Invalid payload")
+        }
 
         // selecting database dynamically
-        const database = databaseSelector("dropDownData");
+        const database = checkDbForEntity("customSelect");
 
         // check if the Same entity exist
         const existData = await database.findOne({
-            entity: entity,
+            entityName: entityName,
             tenantId: tenantId,
         });
 
         if (existData) {
-            const newData = payload.data[0];
+            const newData = data[0];
             //Before updating check if same value exist
             const findIndex = existData.data.findIndex(
                 (item) =>
@@ -34,10 +38,12 @@ export const addDropDownData = async (req, res, next) => {
             const updateObj = {
                 $push: { data: newData },
             };
+
             const updateData = await database.updateOne(
-                { entity: entity },
+                { entityName: entityName, tenantId: tenantId },
                 updateObj
             );
+
             if (updateData.nModified <= 0) {
                 throw new Error("Failed to add Data");
             }
@@ -47,7 +53,12 @@ export const addDropDownData = async (req, res, next) => {
                 message: "Data added successfully",
             });
         } else {
-            payload['tenantId'] = tenantId
+            let payload = {
+                tenantId:tenantId,
+                entityName:entityName,
+                data:data
+            }
+    
             const newData = new database(payload);
             await newData.save();
             res.status(200).json({
@@ -61,16 +72,16 @@ export const addDropDownData = async (req, res, next) => {
     }
 };
 
-export const fetchDropDownData = async (req, res, next) => {
+export const fetchSelectData = async (req, res, next) => {
     try {
         const { entityName } = req.query;
         const tenantId = req.tenantId;
         if (!entityName || !tenantId) {
             throw new Error("Invalid Payload");
         }
-        const database = databaseSelector("dropDownData");
+        const database = checkDbForEntity("customSelect");
         const data = await database
-            .findOne({ entityName: entityName })
+            .findOne({ entityName: entityName ,tenantId:tenantId})
             .select({ data: 1 })
             .lean()
             .exec();

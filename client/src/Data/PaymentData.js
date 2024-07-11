@@ -1,43 +1,32 @@
 import { Typography } from "antd";
-import { convertUnixTimestampToDate } from "Helper/EpochConveter";
+import { convertUnixTimestampToDate, jsDateIntoDayjsDate } from "Helper/EpochConveter";
 import { TableAction } from "components/TableAction";
+import Taglabel from "components/SmallComponent/Taglabel";
+import { render } from "@testing-library/react";
 const { Text } = Typography;
 
 const paymentData = {
     listColumns: [
         {
-            title: "Customer",
+            title: <Taglabel text={"CUSTOMER"} />,
             dataIndex: "invoice",
             key: "company",
             width: 300,
             render: (_, record) => (
                 <>
-                    <Text type="success">
-                        {record.invoice.customer.customerName}
-                    </Text>
+                    <Taglabel
+                        type="warning"
+                        text={
+                            record?.customer?.customerName
+                                ? record?.customer?.customerName
+                                : ""
+                        }
+                    />
                 </>
             ),
         },
         {
-            title: "Invoice#",
-            dataIndex: "invoice",
-            width: 100,
-            responsive: ["lg"],
-            render: (_, record) => (
-                <>
-                    <Text>{record.invoice.invoiceNo}</Text>
-                </>
-            ),
-        },
-        {
-            title: "Amount",
-            dataIndex: "amount",
-            key: "amount",
-            width: 100,
-        },
-
-        {
-            title: " Date",
+            title: <Taglabel text={" DATE"} />,
             dataIndex: "paymentDate",
             key: "createdDate",
             width: 100,
@@ -45,16 +34,39 @@ const paymentData = {
             render: (_, record) => (
                 <>
                     <Text>
-                        {convertUnixTimestampToDate(record.createdDate)}
+                        {jsDateIntoDayjsDate(record.createdDate)}
                     </Text>
                 </>
             ),
         },
         {
-            title: "PAYMNET MODE",
+            title: <Taglabel text={"AMOUNT"} />,
+            dataIndex: "amount",
+            key: "amount",
+            width: 100,
+            render: (_, record) => (
+                <>
+                    <Taglabel
+                        type="success"
+                        text={record?.amount ? record.amount : ""}
+                    />
+                </>
+            ),
+        },
+
+        {
+            title: <Taglabel text={"PAYMNET MODE"} />,
             dataIndex: "paymentMode",
             key: "paymentMode",
             width: 200,
+            render: (_, record) => (
+                <>
+                    <Taglabel
+                        type="text"
+                        text={record?.paymentMode ? record.paymentMode : ""}
+                    />
+                </>
+            ),
         },
         {
             title: "Note",
@@ -64,7 +76,10 @@ const paymentData = {
             responsive: ["lg"],
             render: (_, record) => (
                 <>
-                    <Text type="text">{record.note}</Text>
+                    <Taglabel
+                        type="text"
+                        text={record?.note ? record.note : ""}
+                    />
                 </>
             ),
         },

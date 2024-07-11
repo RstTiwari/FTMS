@@ -1,11 +1,10 @@
 import FormItemCol from "components/SmallComponent/FormItemCol";
 import React from "react";
 import { useParams } from "react-router-dom";
-import { Row, Typography, Form,Col } from "antd";
+import { Row, Typography, Form,Col,Input } from "antd";
 
-const { Text } = Typography;
 
-const Counters = ({ form }) => {
+const Counters = () => {
     const { entity } = useParams();
     return (
         <>
@@ -16,6 +15,7 @@ const Counters = ({ form }) => {
                     }
                     label={"Prefix"}
                     labelCol={{span:24}}
+                    type={"text"}
                     name={"prefix"}
                     required={true}
                     rules={[
@@ -29,6 +29,8 @@ const Counters = ({ form }) => {
                     name={"nextNumber"}
                     required={true}
                     labelCol={{span:24}}
+                    type={"text"}
+                    readOnly={false}
                     rules={[
                         { required: true, message: `Please input Next Number` },
                       
@@ -39,7 +41,7 @@ const Counters = ({ form }) => {
                     initialValue={entity}
                     hidden={true}
                 >
-                    <input type="hidden" />
+                    <Input type="hidden" />
                 </Form.Item>
             </Row>
 

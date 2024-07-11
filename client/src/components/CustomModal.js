@@ -24,7 +24,7 @@ const CustomModel = ({
     // fucntion for clicking the select tab
     const handelClick = async () => {
         setIsLoading(true)
-        let response = await appApiCall("post","fetchSelectData",{},{entity,fieldName});
+        let response = await appApiCall("post","fetchCustomModalData",{},{entity,fieldName});
         if(response.success){
             setOptions(response?.result);
         }else{
