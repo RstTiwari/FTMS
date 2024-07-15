@@ -1,53 +1,53 @@
 import { Typography } from "antd";
 import { convertUnixTimestampToDate } from "Helper/EpochConveter";
 import { TableAction } from "components/TableAction";
+import Taglabel from "components/SmallComponent/Taglabel";
 const { Text } = Typography;
 
 const challanData = {
     listColumns: [
         {
-            title: "DELIVERY CHALLAN #",
-            dataIndex: "challanNumber",
+            title: <Taglabel text={"CHALLAN #"} type={"heading"} />,
+            dataIndex: "challanNo",
             key: "challanNumber",
-        },
-        {
-            title: " DATE",
-            dataIndex: "createdDate",
-            key: "createdDate",
             render: (_, record) => (
                 <>
-                    <Text>
-                        {convertUnixTimestampToDate(record.challanDate)}
-                    </Text>
+                    <Taglabel type={"no"} text={record.challanNo} />
                 </>
             ),
         },
         {
-            title: "CUSTOMER NAME",
+            title: <Taglabel text={"CUSTOMER NAME"} type={"heading"} />,
             dataIndex: "customer",
             key: "name",
             render: (_, record) => (
                 <>
-                    <Text type="success">{record.customer.customerName}</Text>
+                    <Taglabel
+                        type="success"
+                        text={record.customer.customerName}
+                    ></Taglabel>
+                </>
+            ),
+        },
+        {
+            title: <Taglabel text={"DATE"} type={"heading"} />,
+            dataIndex: "createdDate",
+            key: "createdDate",
+            render: (_, record) => (
+                <>
+                    <Taglabel type={"text"} text={record.createdDate} />
                 </>
             ),
         },
 
         {
-            title: "STATUS",
+            title: <Taglabel text={"STATUS"} type={"heading"} />,
             dataIndex: "status",
             key: "status",
-        },
-
-        {
-            fixed: "right",
             render: (_, record) => (
-                <TableAction
-                    params={record._id}
-                    page={"deliverychallan"}
-                    download={true}
-                    entityNo={record.challanNumber}
-                />
+                <>
+                    <Taglabel type={"status"} text={record.status} />
+                </>
             ),
         },
     ],

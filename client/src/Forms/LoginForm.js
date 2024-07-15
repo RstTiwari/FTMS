@@ -25,7 +25,7 @@ const LoginForm = ({ handleLoginChange }) => {
                 label={<CustomLabel label={"Email"} required={true} />}
                 name={"email"}
                 labelAlign="left"
-                labelCol={{ span: 6}}
+                labelCol={{ span:6}}
                 rules={[
                     {
                         required: true,
@@ -69,7 +69,7 @@ const LoginForm = ({ handleLoginChange }) => {
 
             <Form.Item>
                 <Row align={"middle"}>
-                    <Col span={12}>
+                    <Col xs={24} sm={24} md={12} lg={12} xl={12}>
                         <Checkbox
                             onChange={(e) =>
                                 setLogin({
@@ -78,10 +78,10 @@ const LoginForm = ({ handleLoginChange }) => {
                                 })
                             }
                         >
-                            Remember me{" "}
+                            Remember-Me
                         </Checkbox>
                     </Col>
-                    <Col>
+                    <Col xs={24} sm={24} md={12} lg={12} xl={12}>
                         <a className="login-form-forgot" href="/forgotPassword">
                             Forgot Password
                         </a>
@@ -100,7 +100,7 @@ const LoginForm = ({ handleLoginChange }) => {
                 <Row justify={"center"}>
                     <CoustomButton 
                         htmlType="submit"
-                        text={" SignIn"}
+                        text={" Sign-In"}
 
 
                     />

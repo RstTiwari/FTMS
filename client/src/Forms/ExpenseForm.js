@@ -14,15 +14,14 @@ import CustomerModal from "components/CustomModal";
 import UploadImage from "components/UploadImage";
 import FormItemCol from "components/SmallComponent/FormItemCol";
 
-const ExpenseForm = () => {
-    const [form] = Form.useForm();
+const ExpenseForm = ({form}) => {
 
-    const handleValueChange = () => {};
-    const handleSubmit = (value) => {
-       // handleFormFinish(value);
-    };
-    const handleCustomerSelect = (value) => {
-        form.setFieldValue({ customer: value });
+    const handleItemUpdate = (value,fieldName) => {
+        if(fieldName ==="customer"){
+            form.setFieldsValue({ customer: value });
+        }else if(fieldName ==="categoryName"){
+            form.setFieldsValue({categoryName:value})
+        }
     };
     return (
         <div style={{ height: "100vh" }}>
@@ -46,7 +45,9 @@ const ExpenseForm = () => {
                 labelAlign="left"
                 rules={[{ required: true, message: "Category  is Required" }]}
                 entity={"Category Name"}
+                entityName={"categoryName"}
                 labelCol={{ span: 8 }}
+                updateInForm = {(value)=>handleItemUpdate(value,"categoryName")}
             />
 
             <FormItemCol
@@ -80,6 +81,9 @@ const ExpenseForm = () => {
                 labelAlign="left"
                 labelCol={{span:8}}
                 type={"model"}
+                entity="customers"
+                fieldName={"customerName"}
+                updateInForm = {(value)=>handleItemUpdate(value,"customer")}
             ></FormItemCol>
         </div>
     );

@@ -1,297 +1,321 @@
 .parent_clearfix {
-    display: flex;
-    flex-direction: row;
-    position: relative;
-  
-  }
-  .bg__signin {
-    height: 100vh;
-    margin-top: 76px;
-    width: 50%;
-  
-  }
-  .signin__title__div {
-    margin-top: 1rem;
-  }
-  
-  .signin__view__area {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    flex-direction: column;
-    margin-top: 50px;
-  }
-  .signin__description__area {
-    margin-top: 20px;
-    display: flex;
-  }
-  .signin__description__row {
-    display: flex;
-    padding: 20px;
-    align-items: center;
-  }
-  .signin__description__image {
-      display: flex;
-      width: 50px;
-      height: 50px;
-      background-color: rgb(8, 8, 8);
-      text-align: center;
-      align-items: center;
-      border-radius: 10px;
-  
-  }
-  .signin__description__text{
-    margin-left: 10px;
-    color: rgb(10, 9, 9);
-  }
-  .signin__description__image img {
-    width: 30px;
-    height: 30px;
-    margin-left: 10px;  
-  
-  }
-  .signin__title {
-    text-align: center;
-    color: rgb(10, 9, 9);
-  }
-  
-  
-  .login {
-    display: flex; /* Enables Flexbox layout */
-    justify-content: center; /* Centers content horizontally */
-    align-items: center; /* Centers content vertically */
-    max-height: 100%;
-    width: 50%;
-    text-align: center;
+  display: flex;
+  flex-direction: row;
+  position: relative;
 }
 
+.bg__signin {
+  height: 100vh;
+  width: 50%;
+  align-items: "center";
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  max-height: 100%;
+  width: 50%;
+  text-align: center;
+  position: relative;
+  top: 15%;
+}
+
+.signin__title__div {
+  margin-top: 0.1rem;
+}
+
+.signin__view__area {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  margin-top: 50px;
+}
+
+.signin__description__area {
+  margin-top: 20px;
+  display: flex;
+}
+
+.signin__description__row {
+  display: flex;
+  padding: 20px;
+  align-items: center;
+}
+
+.signin__description__image {
+  display: flex;
+  width: 50px;
+  height: 50px;
+  background-color: rgb(8, 8, 8);
+  text-align: center;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.signin__description__text {
+  margin-left: 10px;
+  color: rgb(10, 9, 9);
+}
+
+.signin__description__image img {
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+}
+
+.signin__title {
+  color: rgb(10, 9, 9);
+}
+
+.login {
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  max-height: 100%;
+  width: 50%;
+  text-align: center;
+  position: relative;
+  top: 15%;
+}
+
+.login .container {
+  width: 505px;
+  margin: 2rem auto;
+  position: relative;
+}
+
+.login .container h1 {
+  margin-top: 100px;
+  font-size: 35px;
+  font-weight: bolder;
+}
+
+.login .container .login-form {
+  margin-top: 25px;
+}
+
+.login .container .login-form form {
+  display: grid;
+}
+
+.login .container .login-form form input {
+  font-size: 16px;
+  font-weight: normal;
+  background: rgba(57, 57, 57, 0.07);
+  margin: 12.5px 0;
+  height: 50px;
+  border: none;
+  padding: 0 30px;
+  border-radius: 10px;
+}
+
+.login .container .login-form form button[type=submit] {
+  background: linear-gradient(-20deg, #f794a4 0%, #fdd6bd 100%);
+  border: none;
+  width: 241px;
+  height: 58px;
+  text-transform: uppercase;
+  color: rgb(10, 9, 9);
+  border-radius: 10px;
+  position: relative;
+  z-index: 2;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.login .container .login-form form button[type=submit]:hover::after {
+  opacity: 1;
+}
+
+.login .container .login-form form button[type=submit]::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  border-radius: 10px;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  transition: 0.3s ease-in-out;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top, #09203f 0%, #537895 100%);
+}
+
+.login .container .remember-form {
+  position: relative;
+  margin-top: -30px;
+}
+
+.login .container .remember-form input[type=checkbox] {
+  margin-top: 9px;
+}
+
+.login .container .remember-form span {
+  font-size: 18px;
+  font-weight: normal;
+  position: absolute;
+  top: 32px;
+  color: #3B3B3B;
+  margin-left: 15px;
+}
+
+.login .container .forget-pass {
+  position: absolute;
+  right: 0;
+  margin-top: 189px;
+}
+
+.login .container .forget-pass a {
+  font-size: 16px;
+  position: relative;
+  font-weight: normal;
+  color: #918F8F;
+}
+
+.login .container .forget-pass a::after {
+  content: "";
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  border-radius: 100px;
+  background: linear-gradient(-20deg, #f794a4 0%, #fdd6bd 100%);
+  bottom: -4px;
+  left: 0;
+  transition: 0.3s;
+  opacity: 0;
+  right: 0;
+}
+
+.login .container .forget-pass a:hover::after {
+  opacity: 1;
+}
+
+.signup-page {
+  display: flex;
+  margin-top: 20px;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+@media only screen and (min-width: 1024px) and (max-width: 1680px) {
+  .bg-illustration {
+    width: 50%;
+    animation: none;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  body {
+    overflow-x: hidden;
+  }
+  .parent_clearfix {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bg__signin {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+    height: 650px;
+    position: relative;
+    top: 25%;
+  }
+
+  .bg-illustration .burger-btn {
+    left: 33px;
+    top: 29px;
+    display: block;
+    position: absolute;
+  }
+
+  .bg-illustration .burger-btn span {
+    display: block;
+    height: 4px;
+    margin: 6px;
+    background-color: #fff;
+  }
+
+  .bg-illustration .burger-btn span:nth-child(1) {
+    width: 37px;
+  }
+
+  .bg-illustration .burger-btn span:nth-child(2) {
+    width: 28px;
+  }
+
+  .bg-illustration .burger-btn span:nth-child(3) {
+    width: 20px;
+  }
+
+  .login {
+    float: none;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    top: 25%;
+  }
+
   .login .container {
-    width: 505px;
-    margin: 2rem auto;
-    position: relative;
+    animation: slideIn 0.8s ease-in-out forwards;
+    width: 85%;
+    float: none;
   }
-  .login .container h1 {
-    margin-top: 100px;
-    font-size: 35px;
-    font-weight: bolder;
-  }
+
   .login .container .login-form {
-    margin-top: 25px;
+    margin-top: 20px;
   }
-  .login .container .login-form form {
-    display: -ms-grid;
-    display: grid;
-  }
+
   .login .container .login-form form input {
-    font-size: 16px;
-    font-weight: normal;
-    background: rgba(57, 57, 57, 0.07);
-    margin: 12.5px 0;
-    height: 50px;
-    border: none;
-    padding: 0 30px;
-    border-radius: 10px;
+    height: 45px;
   }
+
   .login .container .login-form form button[type=submit] {
-    background: -webkit-linear-gradient(110deg, #f794a4 0%, #fdd6bd 100%);
-    background: -o-linear-gradient(110deg, #f794a4 0%, #fdd6bd 100%);
-    background: linear-gradient(-20deg, #f794a4 0%, #fdd6bd 100%);
-    border: none;
-    width: 241px;
-    height: 58px;
-    text-transform: uppercase;
-    color: rgb(10, 9, 9);;
-    border-radius: 10px;
+    height: 45px;
+    margin-top: 100px;
+  }
+
+  .login .container .login-form .remember-form {
     position: relative;
-    z-index: 2;
-    font-weight: bold;
-    font-size: 20px;
+    margin-top: -14px;
   }
-  .login .container .login-form form button[type=submit]:hover::after {
-    opacity: 1;
+
+  .login .container .login-form .remember-form span {
+    font-size: 16px;
+    margin-top: 22px;
+    top: inherit;
   }
-  .login .container .login-form form button[type=submit]::after {
-    content: "";
+
+  .forget-pass {
     position: absolute;
-    z-index: -1;
-    border-radius: 10px;
-    opacity: 0;
-    top: 0;
+    right: inherit;
     left: 0;
-    -webkit-transition: 0.3s ease-in-out;
-    -o-transition: 0.3s ease-in-out;
-    transition: 0.3s ease-in-out;
-    right: 0;
-    bottom: 0;
-    background: -webkit-gradient(linear, left bottom, left top, from(#09203f), to(#537895));
-    background: -webkit-linear-gradient(bottom, #09203f 0%, #537895 100%);
-    background: -o-linear-gradient(bottom, #09203f 0%, #537895 100%);
-    background: linear-gradient(to top, #09203f 0%, #537895 100%);
+    bottom: 100px;
+    margin: 0 !important;
   }
-  .login .container .remember-form {
-    position: relative;
-    margin-top: -30px;
-  }
-  .login .container .remember-form input[type=checkbox] {
-    margin-top: 9px;
-  }
-  .login .container .remember-form span {
-    font-size: 18px;
-    font-weight: normal;
-    position: absolute;
-    top: 32px;
-    color: #3B3B3B;
-    margin-left: 15px;
-  }
-  .login .container .forget-pass {
-    position: absolute;
-    right: 0;
-    margin-top: 189px;
-  }
-  .login .container .forget-pass a {
+
+  .forget-pass a {
     font-size: 16px;
     position: relative;
     font-weight: normal;
     color: #918F8F;
   }
-  .login .container .forget-pass a::after {
+
+  .forget-pass a::after {
     content: "";
     position: absolute;
     height: 2px;
     width: 100%;
     border-radius: 100px;
-    background: -webkit-linear-gradient(110deg, #f794a4 0%, #fdd6bd 100%);
-    background: -o-linear-gradient(110deg, #f794a4 0%, #fdd6bd 100%);
     background: linear-gradient(-20deg, #f794a4 0%, #fdd6bd 100%);
     bottom: -4px;
     left: 0;
-    -webkit-transition: 0.3s;
-    -o-transition: 0.3s;
     transition: 0.3s;
     opacity: 0;
     right: 0;
   }
-  .login .container .forget-pass a:hover::after {
+
+  .forget-pass a:hover::after {
     opacity: 1;
   }
-  .signup-page {
-      display: flex;
-      margin-top: 20px;
-      align-items: center;
-      justify-content: space-evenly;
-  }
-  
-  @media only screen and (min-width: 1024px) and (max-width: 1680px) {
-    .bg-illustration {
-      width: 50%;
-      -webkit-animation: none;
-              animation: none;
-    }
-  
-  }
-  /* Display 12", iPad PRO Portrait, iPad landscape */
-  @media only screen and (max-width: 1024px) {
-    body {
-      overflow-x: hidden;
-    }
-  .parent_clearfix{
-    display: flex;
-    flex-direction: column;
-  }
-   
-    .bg__signin {
-      display: flex;
-      flex-direction:column;
-      width: 100%;
-      text-align: center;
-      height: 650px;
-    }
-  
-    .bg-illustration .burger-btn {
-      left: 33px;
-      top: 29px;
-      display: block;
-      position: absolute;
-    }
-    .bg-illustration .burger-btn span {
-      display: block;
-      height: 4px;
-      margin: 6px;
-      background-color: #fff;
-    }
-    .bg-illustration .burger-btn span:nth-child(1) {
-      width: 37px;
-    }
-    .bg-illustration .burger-btn span:nth-child(2) {
-      width: 28px;
-    }
-    .bg-illustration .burger-btn span:nth-child(3) {
-      width: 20px;
-    }
-  
-    .login {
-      float: none;
-      margin: 0 auto;
-      width: 100%;
-    }
-    .login .container {
-      -webkit-animation: slideIn 0.8s ease-in-out forwards;
-              animation: slideIn 0.8s ease-in-out forwards;
-      width: 85%;
-      float: none;
-    }
-    
-    .login .container .login-form {
-      margin-top: 20px;
-    }
-    .login .container .login-form form input {
-      height: 45px;
-    }
-    .login .container .login-form form button[type=submit] {
-      height: 45px;
-      margin-top: 100px;
-    }
-    .login .container .login-form .remember-form {
-      position: relative;
-      margin-top: -14px;
-    }
-    .login .container .login-form .remember-form span {
-      font-size: 16px;
-      margin-top: 22px;
-      top: inherit;
-    }
-  
-    .forget-pass {
-      position: absolute;
-      right: inherit;
-      left: 0;
-      bottom: 100px;
-      margin: 0 !important;
-    }
-    .forget-pass a {
-      font-size: 16px;
-      position: relative;
-      font-weight: normal;
-      color: #918F8F;
-    }
-    .forget-pass a::after {
-      content: "";
-      position: absolute;
-      height: 2px;
-      width: 100%;
-      border-radius: 100px;
-      background: -webkit-linear-gradient(110deg, #f794a4 0%, #fdd6bd 100%);
-      background: -o-linear-gradient(110deg, #f794a4 0%, #fdd6bd 100%);
-      background: linear-gradient(-20deg, #f794a4 0%, #fdd6bd 100%);
-      bottom: -4px;
-      left: 0;
-      -webkit-transition: 0.3s;
-      -o-transition: 0.3s;
-      transition: 0.3s;
-      opacity: 0;
-      right: 0;
-    }
-    .forget-pass a:hover::after {
-      opacity: 1;
-    }
-  }
+}

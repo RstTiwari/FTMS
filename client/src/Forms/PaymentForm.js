@@ -62,24 +62,6 @@ const PaymentForm = ({form, initialValue = {} }) => {
                         type={"model"}
                     />
                 </Col>
-                <FormItemCol
-                        label="Payment Number"
-                        name="paymentNo"
-                        required={true}
-                        labelAlign="left"
-                        labelCol={{ span: 8 }}
-                        type={"counters"}
-                        rules={[
-                            {
-                                required: true,
-                                message: "Plese Select Customer",
-                            },
-                        ]}
-                        width={300}
-                        updateInForm ={(value)=>{
-                               handleItemUpdate(value,"paymentNo")
-                        }}
-                    />
                 <Col span={24}>
                     <FormItemCol
                         label="Payment Date"

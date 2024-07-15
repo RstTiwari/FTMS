@@ -1,6 +1,6 @@
 import React from "react";
 import { Input, DatePicker, InputNumber, Select } from "antd";
-import CustomDropDown from "./CustomSelect"; // Assuming you have created CustomDrop component
+import CustomSelect from "./CustomSelect"; // Assuming you have created CustomDrop component
 import CustomModal from "components/CustomModal";
 import VendorModal from "components/VendorModal";
 import UploadImage from "components/UploadImage";
@@ -18,7 +18,7 @@ const CustomInput = ({ type, readOnly =false,entity,entityName,fieldName, width 
         case "box":
             return <Input.TextArea {...restProps} style={{ width: width }} />;
         case "select":
-            return <CustomDropDown entity={entity} entityName={entityName} width={width} {...restProps} />;
+            return <CustomSelect entity={entity} entityName={entityName} width={width} {...restProps} />;
         case "model":
             return <CustomModal entity = {entity} fieldName ={fieldName} width={width} {...restProps} />;
         case "counters":

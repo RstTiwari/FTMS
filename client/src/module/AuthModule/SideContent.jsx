@@ -11,13 +11,10 @@ const SideContent = () => {
 
         <>
         <div className="bg__signin">
-            <div className="signin__title__div">
-              <h1 className="signin__title"> Welcome to MyFac8ry.com</h1>
-            </div>
-
             <div className="signin__view__area">
+            <h1 className="signin__title"> Welcome to MyFac8ry.com</h1>
               <h1 className="signin__title">
-              Streamline Your Business with AI-Powered Myfac8ry
+              Streamline Your Business with AI-Powered Solution
               </h1>
               <div className="signin__description__area">
                 <div className="signin__description">

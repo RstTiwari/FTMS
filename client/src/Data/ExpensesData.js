@@ -1,50 +1,60 @@
 import { Typography } from "antd";
-import { convertUnixTimestampToDate } from "Helper/EpochConveter";
+import {
+    convertUnixTimestampToDate,
+    jsDateIntoDayjsDate,
+} from "Helper/EpochConveter";
 import { TableAction } from "components/TableAction";
+import Taglabel from "components/SmallComponent/Taglabel";
 const { Text } = Typography;
 
 export const expenseData = {
     listColumns: [
         {
-            title: " Date",
+            title: <Taglabel text={"DATE"} />,
             dataIndex: "expenseDate",
             key: "expenseDate",
             render: (_, record) => (
+                <Taglabel   type = "text" text= {jsDateIntoDayjsDate(record.expenseDate)}/>
+            ),
+        },
+        {
+            title: <Taglabel text={"EXPENSE#"} />,
+            dataIndex: "expenseNo",
+            key: "expenseDate",
+            render: (_, record) => (
                 <>
-                    <Text>
-                        {convertUnixTimestampToDate(record.expenseDate)}
-                    </Text>
+                    <Taglabel text={record.expenseNo} type={"no"} />
                 </>
             ),
         },
         {
-            title: "Expense Category",
+            title: <Taglabel text={"EXPENSE CATEGORY"} type={"heading"} />,
             dataIndex: "category",
             key: "category",
             render: (_, record) => (
                 <>
-                    <Text type="success">{record.categoryName}</Text>
+                    <Taglabel type="text" text={record.categoryName} />
                 </>
             ),
         },
         {
-            title: "Total",
+            title: <Taglabel text={"AMOUNT"} type={"heading"} />,
             dataIndex: "amount",
             key: "total",
             render: (_, record) => (
                 <>
-                    <Text type="danger">{record.amount}</Text>
+                    <Taglabel type={"amount"} text={record.amount} />
                 </>
             ),
         },
         {
-            title: "NOTE",
+            title: <Taglabel type={"heading"} text={"NOTE"} />,
             dataIndex: "note",
             key: "total",
             responsive: ["lg"],
             render: (_, record) => (
                 <>
-                    <Text>{record.note}</Text>
+                    <Taglabel  type ="text" text={record.note}/>
                 </>
             ),
         },

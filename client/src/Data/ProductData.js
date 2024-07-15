@@ -26,7 +26,8 @@
 //     }
 // ]
 
-import { Space, Flex, Dropdown, Typography, Form, Input } from "antd";
+import { Space, Flex, Dropdown, Typography, Form, Input, Image } from "antd";
+import Taglabel from "components/SmallComponent/Taglabel";
 import { TableAction } from "components/TableAction";
 import { convertUnixTimestampToDate } from "Helper/EpochConveter";
 const { Text } = Typography;
@@ -34,31 +35,49 @@ const { Text } = Typography;
 export const productData = {
     listColumns: [
         {
-            title: "PRODUCT NAME",
+            title: <Taglabel text={"PRODUCT NAME"} type={"heading"} />,
             dataIndex: "productName",
             key: "srno",
+            render: (_, record) => (
+                <>
+                    <Taglabel text={record.productName} type={"customer"} />
+                </>
+            ),
         },
         {
-            title: "HSN CODE",
+            title: <Taglabel text={"HSN CODE"} type={"heading"} />,
             dataIndex: "hsnCode",
             key: "source",
             responsive: ["lg"],
             render: (_, record) => (
                 <>
-                    <Text type="success">{record.hsnCode}</Text>
+                    <Taglabel text={record.hsnCode} type={"text"} />
                 </>
             ),
         },
         {
-            title: "RATE",
+            title: <Taglabel text={"IMAGE"} type={"heading"} />,
+            dataIndex: "image",
+            key: "source",
+            responsive: ["lg"],
+            render: (_, record) => (
+                <>
+                    {record.image ? (
+                        <Image  width = {100}  height ={25} src={record.image}/>
+                    ):("NO IMAGE FOUND")}
+                </>
+            ),
+        },
+        {
+            title: <Taglabel text={"RATE"}  type={"heading"}/>,
             dataIndex: "rate",
             key: "subTotal",
+            render: (_, record) => (
+                <>
+                    <Taglabel text={record.rate} type={"amount"} />
+                </>
+            ),
         },
+
     ],
-    // {
-    //     fixed: "right",
-    //     render: (_, record) => (
-    //         <TableAction params={record._id} page={"products"} />
-    //     ),
-    // },
 };

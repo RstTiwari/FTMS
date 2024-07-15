@@ -3,37 +3,61 @@ import { Space, Dropdown } from "antd";
 
 import { DownOutlined } from "@ant-design/icons";
 import { TableAction } from "components/TableAction";
+import Taglabel from "components/SmallComponent/Taglabel";
 
 const vendorData = {
     listColumns: [
         {
-            title: "Vendor Name",
+            title: <Taglabel text={"VENDOR NAME"} />,
             dataIndex: "vendorName",
             key: "vendorName",
+            render: (_, record) => (
+                <>
+                    <Taglabel text={record.vendorName} type={"customer"} />
+                </>
+            ),
         },
         {
-            title: "PHONE NO",
+            title: <Taglabel text={"PHONE NO"} type={"heading"} />,
             dataIndex: "vendorPhone",
             key: "vendorPhone",
+            render: (_, record) => (
+                <>
+                    <Taglabel text={record.vendorPhone} type={"text"} />
+                </>
+            ),
         },
         {
-            title: "Email Id",
+            title: <Taglabel text={"EMAIL ID"} type={"heading"} />,
             dataIndex: "vendorEmail",
             key: "vendorEmail",
+            render: (_, record) => (
+                <>
+                    <Taglabel text={record.vendorEmail} type={"text"} />
+                </>
+            ),
         },
         {
-            title: "GST NO",
+            title: <Taglabel text={"GST NO"} type={"heading"} />,
             dataIndex: "gstNo",
             key: "gstNo",
             responsive: ["lg"],
-            width: 100,
+            render: (_, record) => (
+                <>
+                    <Taglabel text={record.gstNo} type={"text"} />
+                </>
+            ),
         },
         {
-            title: "PAN NO",
+            title: <Taglabel text={"PAN NO"} type={"heading"} />,
             dataIndex: "panNo",
             key: "panNo",
-            width: 100,
             responsive: ["lg"],
+            render: (_, record) => (
+                <>
+                    <Taglabel text={record.panNo} type={"text"} />
+                </>
+            ),
         },
     ],
 };

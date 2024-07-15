@@ -14,20 +14,21 @@ const expenseSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    invoice: {
+    customer: {
         type: mongoose.Schema.ObjectId,
-        ref: "invoice",
+        ref: "customer",
     },
     note: {
         type: String,
     },
     expenseDate: {
-        type: Number,
+        type: Date,
         required: true,
     },
     image: {
         type: String,
     },
+    expenseNo: { type: Number, unique: true },
     tenantId: {
         type: String,
         required: true,
@@ -35,4 +36,19 @@ const expenseSchema = new mongoose.Schema({
 });
 
 expenseSchema.plugin(mongooseAutoPopulate);
+
+// Pre-save middleware to count documents and set incrementField
+expenseSchema.pre("save", async function (next) {
+    if (this.isNew) {
+        try {
+            const count = await mongoose.model("expenses").countDocuments();
+            this.expenseNo = count + 1;
+            next();
+        } catch (error) {
+            next(error);
+        }
+    } else {
+        next();
+    }
+});
 export default mongoose.model("expenses", expenseSchema);

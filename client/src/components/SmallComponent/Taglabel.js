@@ -1,14 +1,38 @@
-import React from 'react'
-import {Typography} from 'antd'
-const {Text} = Typography
+import React from 'react';
+import { Typography } from 'antd';
 
-const Taglabel = ({type ="secondary",text,weight =700}) => {
-     text = text.toString()
-  return (
-    <Text  type={type} style={{fontFamily:"sans-serif",fontWeight:weight}}>
-      {text ? text.toUpperCase():""}
-    </Text >
-  )
-}
+const { Text } = Typography;
 
-export default Taglabel
+// Define a mapping of types to colors
+const typeColorMapping = {
+  heading: '#000000',
+  amount: '#00b700',
+  text:"#7f7f7f",
+  no: ' #7f7fff',
+  customer: '#E59400',
+  status: '#7feaac', // Default color
+};
+
+const Taglabel = ({
+    type,
+    text,
+    weight = 700,
+}) => {
+
+    // Use the color based on the type if not provided
+    const textColor =  typeColorMapping[type]
+
+    return (
+        <Text
+            style={{
+                fontFamily: "sans-serif",
+                fontWeight: weight,
+                color: textColor,
+            }}
+        >
+            {text ||  ""}
+        </Text>
+    );
+};
+
+export default Taglabel;

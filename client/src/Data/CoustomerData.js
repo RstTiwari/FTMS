@@ -4,13 +4,13 @@ import Taglabel from "components/SmallComponent/Taglabel.js";
 const CoustomerData = {
     listColumns: [
         {
-            title: <Taglabel text={" COMPANY NAME"} />,
+            title: <Taglabel text={" COMPANY NAME"}  type={"heading"}/>,
             dataIndex: "customerName",
             key: "customerName",
             render: (_, record) => (
                 <>
                     <Taglabel
-                        type="warning"
+                        type="customer"
                         text={`${
                             record?.customerName ? record.customerName : ""
                         }`}
@@ -19,13 +19,13 @@ const CoustomerData = {
             ),
         },
         {
-            title: <Taglabel text={"CONTACT PERSON"} />,
+            title: <Taglabel text={"CONTACT PERSON"}  type={"heading"}/>,
             dataIndex: "contactPerson",
             key: "customerName",
             render: (_, record) => (
                 <>
                     <Taglabel
-                        type="danger"
+                        type="text"
                         text={`${
                             record?.contactPerson ? record.contactPerson : ""
                         }`}
@@ -34,14 +34,34 @@ const CoustomerData = {
             ),
         },
         {
-            title: <Taglabel text={"PHONE NO"} />,
+            title: <Taglabel text={"PHONE NO"} type={"heading"}/>,
             dataIndex: "customerPhone",
             key: "customerPhone",
+            render: (_, record) => (
+                <>
+                    <Taglabel
+                        type="text"
+                        text={`${
+                            record?.customerPhone ? record.customerPhone : ""
+                        }`}
+                    />
+                </>
+            ),
         },
         {
-            title: <Taglabel text={"EMAIL ID"} />,
+            title: <Taglabel text={"EMAIL ID"} type={"heading"} />,
             dataIndex: "customerEmail",
             key: "customerEmail",
+            render: (_, record) => (
+                <>
+                    <Taglabel
+                        type="text"
+                        text={`${
+                            record?.customerEmail ? record.customerEmail : ""
+                        }`}
+                    />
+                </>
+            ),
         },
         // {
         //     title: <Taglabel text={"GST NO"} />,

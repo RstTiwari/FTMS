@@ -22,7 +22,6 @@ const CustomSelect = ({ entity,entityName, defaultSelect, width ,updateInForm}) 
     const {appApiCall} = useAuth()
 
     const handelClick = async () => {
-        setIsLoading(true);
         const response = await appApiCall("get","fetchSelectData",{},{entityName})
         if(!response.success){
             setIsLoading(false)

@@ -1,53 +1,71 @@
 import { TableAction } from "components/TableAction";
 import { Space, Flex, Dropdown, Typography, Form, Input } from "antd";
 import { convertUnixTimestampToDate } from "Helper/EpochConveter";
+import Taglabel from "components/SmallComponent/Taglabel";
 const { Text } = Typography;
 
 const invoiceData = {
     listColumns: [
         {
-            title: "#Invoice",
+            title: <Taglabel  text={"#INVOICE"}  type={"heading"}/>,
             dataIndex: "invoiceNo",
             key: "invoiceNo",
         },
         {
-            title: "Customer",
+            title: <Taglabel  text={"CUSTOMER"} type={"heading"}/>,
             dataIndex: "customer",
             key: "customer",
             render: (_, record) => (
                 <>
-                    <Text type="success">{record.customer.customerName}</Text>
+                    <Taglabel type="customer" text = {record.customer.customerName}/>
                 </>
             ),
         },
         {
-            title: "Date",
+            title: <Taglabel text={"INVOICE DATE"} />,
             dataIndex: "invoiceDate",
             key: "customer",
 
             render: (_, record) => (
-                <>{convertUnixTimestampToDate(record.invoiceDate)}</>
+                <Taglabel type={"text"} text={convertUnixTimestampToDate(record.invoiceDate)}/>
             ),
         },
         {
-            title: "Exipred Date",
+            title: <Taglabel  text={"DUE DATE"} type={"heading"}/>,
             dataIndex: "invoiceExpiredDate",
             key: "customer",
             responsive: ["lg"],
             render: (_, record) => (
-                <>{convertUnixTimestampToDate(record.invoiceExpiredDate)}</>
+                <Taglabel  type="text" text= {convertUnixTimestampToDate(record.invoiceExpiredDate)}/>
             ),
         },
         {
-            title: "Gross Total",
+            title: <Taglabel text={"STATUS"} type={"heading"} />,
+            dataIndex: "status",
+            key: "expiryDate",
+            responsive: ["lg"],
+            render: (_, record) => (
+                <>
+                <Taglabel type={"text"} text= {(record.status)}/>
+                </>
+            ),
+        },
+        {
+            title: <Taglabel  text={"GROSS TOTAL"} type={"heading"}/>,
             dataIndex: "grossTotal",
             key: "grossTotal",
             responsive: ["lg"],
+            render: (_, record) => (
+                <Taglabel  type="amount" text= {(record.grossTotal)}/>
+            ),
         },
         {
-            title: "Grand Total",
+            title: <Taglabel text={"GRAND TOTAL"}  type={"heading"}/>,
             dataIndex: "grandTotal",
             key: "grandTotal",
+            render: (_, record) => (
+                <Taglabel  type="amount" text= {(record.grandTotal)}/>
+            ),
         },
     ],
     formField: {

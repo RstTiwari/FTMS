@@ -7,35 +7,46 @@ const { Text } = Typography;
 
 const paymentData = {
     listColumns: [
+
         {
-            title: <Taglabel text={"CUSTOMER"} />,
-            dataIndex: "invoice",
-            key: "company",
-            width: 300,
-            render: (_, record) => (
-                <>
-                    <Taglabel
-                        type="warning"
-                        text={
-                            record?.customer?.customerName
-                                ? record?.customer?.customerName
-                                : ""
-                        }
-                    />
-                </>
-            ),
-        },
-        {
-            title: <Taglabel text={" DATE"} />,
+            title: <Taglabel text={" DATE"}  type={"heading"}/>,
             dataIndex: "paymentDate",
             key: "createdDate",
             width: 100,
 
             render: (_, record) => (
                 <>
-                    <Text>
                         {jsDateIntoDayjsDate(record.createdDate)}
-                    </Text>
+                </>
+            ),
+        },
+        {
+            title: <Taglabel text={" PAYMENT #"} type={"heading"} />,
+            dataIndex: "paymentDate",
+            key: "createdDate",
+            width: 100,
+
+            render: (_, record) => (
+                <>
+                    <Taglabel  text={`${record.paymentNo}`}  type={"no"}/>
+                </>
+            ),
+        },
+        {
+            title: <Taglabel text={"CUSTOMER"}  type={"heading"} />,
+            dataIndex: "invoice",
+            key: "company",
+            width: 300,
+            render: (_, record) => (
+                <>
+                    <Taglabel
+                        type="customer"
+                        text={
+                            record?.customer?.customerName
+                                ? record?.customer?.customerName
+                                : ""
+                        }
+                    />
                 </>
             ),
         },
@@ -47,7 +58,7 @@ const paymentData = {
             render: (_, record) => (
                 <>
                     <Taglabel
-                        type="success"
+                        type="amount"
                         text={record?.amount ? record.amount : ""}
                     />
                 </>
@@ -55,7 +66,7 @@ const paymentData = {
         },
 
         {
-            title: <Taglabel text={"PAYMNET MODE"} />,
+            title: <Taglabel text={"PAYMENT MODE"} type={"heading"} />,
             dataIndex: "paymentMode",
             key: "paymentMode",
             width: 200,
@@ -69,7 +80,7 @@ const paymentData = {
             ),
         },
         {
-            title: "Note",
+            title: <Taglabel text={"NOTE"}  type={"heading"}/>,
             dataIndex: "note",
             key: "note",
             width: 200,
