@@ -8,27 +8,14 @@ import CustomerData from "Data/CoustomerData";
 
 const { Text } = Typography;
 
-const VendorsForm = ({ current, disabled,isModal }) => {
-    const isLaptop = useMediaQuery("(min-width:600px)");
-    const [billing, setBilling] = useState({
-        street: "",
-        city: "",
-        state: "",
-        pincode: "",
-    });
+const VendorsForm = ({ form, disabled,isModal }) => {
+
     const handeCopyBillingAddress = () => {
-        const { billingStreet, billingCity, billingState, billingPincode } =
-            current.getFieldsValue([
-                "billingStreet",
-                "billingCity",
-                "billingState",
-                "billingPincode",
-            ]);
-        current.setFieldsValue({ shippingStreet: billing.street });
-        current.setFieldsValue({ shippingCity: billing.city });
-        current.setFieldsValue({ shippingState: billing.state });
-        current.setFieldsValue({ shippingPincode: billing.pincode });
+        const { billingAddress } = form.getFieldsValue(["billingAddress"]);
+        form.setFieldsValue({ shippingAddress: billingAddress });
     };
+
+    
     return (
         <div>
             <FormItemCol
@@ -234,7 +221,7 @@ const VendorsForm = ({ current, disabled,isModal }) => {
                                 labelAlign="left"
                                 labelCol={{ span: isModal? 8: 5 }}
                             >
-                                <Input value={billing.pincode} />
+                                <Input />
                             </Form.Item>
                         </Col>
                     </Row>

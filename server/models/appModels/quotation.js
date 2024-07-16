@@ -24,6 +24,9 @@ const quotationSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  status:{
+    type:String,
+  },
   attenPerson: {
     type: String,
   },

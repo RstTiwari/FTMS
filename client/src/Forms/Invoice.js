@@ -7,41 +7,62 @@ import FormItemCol from "components/SmallComponent/FormItemCol";
 import Taglabel from "components/SmallComponent/Taglabel";
 import CustomSelect from "components/SmallComponent/CustomSelect";
 import CustomModel from "components/CustomModal";
+import NotificationHandler from "EventHandler/NotificationHandler";
 
-const QuotationForm = ({ current }) => {
+const QuotationForm = ({ form }) => {
     const isLaptop = useMediaQuery("(min-width:1000px)");
     const inputWidth = isLaptop ? 700 : 350;
     const inputFontSize = isLaptop ? "1rem" : "0.4rem";
 
-    const items = current?.getFieldsValue(["items"]);
 
-    const handleCustomerChange = (value) => {
-        current.setFieldsValue({ customer: value });
+    const handleItemsUpdate = (value,fieldName, rowName) => {
+        const items = form.getFieldValue("items");
+        let temObj = items[rowName];
+
+        if (fieldName === "customer") {
+            form.setFieldsValue({ customer: value });
+        }else if (fieldName ==="invoiceNo"){
+             form.setFieldsValue({invoiceNo:value})
+        }else if(fieldName === "description"){
+        let {description,rate,hsnCode} = value;
+            console.log(description,rate,hsnCode);
+            temObj.description = description;
+            temObj.hsnCode = hsnCode;
+            temObj.rate = rate
+            temObj.finalAmount = temObj.rate*temObj.qty
+        }else if(fieldName === "qty"){
+            temObj.qty = value;
+            temObj.finalAmount = (temObj.rate * value)
+        }else if(fieldName === "rate"){
+            temObj.rate = value ;
+            temObj.finalAmount = (temObj.qty * value)
+        }else if(fieldName ==="taxPercent"){
+            value = Number(value)
+            temObj.taxPercent = value
+        }
+        else {
+           return NotificationHandler.error("Invalid")
+        }
+
+        items[rowName]= temObj
+        let grossTotal = items.reduce((acc, item) => acc + (item.finalAmount || 0), 0);
+        const temItems = items.map((item)=>({
+            ...item,
+            taxAmount:item.finalAmount*(item.taxPercent/100)
+        }));
+
+        let taxAmount = temItems.reduce((acc,item)=>acc + (item.taxAmount ||0),0)
+        console.log(taxAmount,items);
+        let grandTotal = taxAmount + grossTotal
+        form.setFieldsValue({
+            items: items,
+            grandTotal: Math.ceil(grandTotal),
+            grossTotal: Math.ceil(grossTotal),
+            taxAmount: Math.ceil(taxAmount),
+        });
     };
 
-    const onDescriptionChange = (value, subField) => {
-        // Your logic here
-    };
 
-    const onRateChange = (value, subField) => {
-        // Your logic here
-    };
-
-    const onQtyChange = (value, subField) => {
-        // Your logic here
-    };
-
-    const onSgstChange = (value, subField) => {
-        // Your logic here
-    };
-
-    const onCgstChange = (value, subField) => {
-        // Your logic here
-    };
-
-    const onIgstChange = (value, subField) => {
-        // Your logic here
-    };
 
     return (
         <div style={{ height: "100vh" }}>
@@ -62,14 +83,15 @@ const QuotationForm = ({ current }) => {
                 entity ="customers"
                 width="35%"
                 customerSelect=""
-                handleCustomerChange={handleCustomerChange}
+                fieldName={"customerName"}
+                updateInForm={(value)=>handleItemsUpdate(value,'customer')}
             />
 
             <FormItemCol
                 label={"Invoice#"}
-                name={"quoteNo"}
+                name={"invoiceNo"}
                 required={true}
-                type={"entityNo"}
+                type={"counters"}
                 labelAlign="left"
                 labelCol={{ span: 8 }}
                 rules={[
@@ -78,6 +100,7 @@ const QuotationForm = ({ current }) => {
                         message: "Please Provide Quote No",
                     },
                 ]}
+                updateInForm = {(value)=>handleItemsUpdate(value,"invoiceNo")}
             />
 
             <Row>
@@ -205,9 +228,9 @@ const QuotationForm = ({ current }) => {
                 >
                     {(subFields, subOpt) => (
                         <div>
-                            {subFields.map((subField) => (
+                            {subFields.map(({key,name,...restField}) => (
                                 <Row
-                                    key={subField.key}
+                                    key={key}
                                     align="middle"
                                     style={{ marginTop: "5px" }}
                                 >
@@ -220,8 +243,9 @@ const QuotationForm = ({ current }) => {
                                     >
 
                                         <Form.Item
+                                          {...restField}
                                             name={[
-                                                subField.name,
+                                                name,
                                                 "description",
                                             ]}
                                             rules={[
@@ -233,20 +257,12 @@ const QuotationForm = ({ current }) => {
                                             ]}
                                         >
 
-                                            <CustomModel  entity={"products"} />
-                                            {/* <ProductModal
-                                                productSelect={(label) =>
-                                                    onDescriptionChange(
-                                                        label,
-                                                        subField
-                                                    )
-                                                }
-                                                productValue={
-                                                    items
-                                                        ? items[subField.key]
-                                                        : ""
-                                                }
-                                            /> */}
+                                            <CustomModel 
+                                             entity={"products"}
+                                             fieldName={"productName"}
+                                             updateInForm={(value)=>{handleItemsUpdate(value,"description",name)}}
+                                             />
+                                            
                                         </Form.Item>
                                     </Col>
                                     <Col
@@ -257,9 +273,10 @@ const QuotationForm = ({ current }) => {
                                         }}
                                     >
                                         <Form.Item
-                                            name={[subField.name, "hsnCode"]}
+                                           {...restField}
+                                            name={[name, "hsnCode"]}
                                         >
-                                            <Input style={{ width: "100%" }} />
+                                            <Input style={{ width: "100%" }}  readOnly ={true}/>
                                         </Form.Item>
                                     </Col>
                                     <Col
@@ -270,12 +287,13 @@ const QuotationForm = ({ current }) => {
                                         }}
                                     >
                                         <Form.Item
-                                            name={[subField.name, "qty"]}
+                                             {...restField}
+                                            name={[name, "qty"]}
                                         >
                                             <InputNumber
                                                 style={{ width: "100%" }}
                                                 onChange={(value) =>
-                                                    onQtyChange(value, subField)
+                                                    handleItemsUpdate(value, "qty",name)
                                                 }
                                             />
                                         </Form.Item>
@@ -288,14 +306,16 @@ const QuotationForm = ({ current }) => {
                                         }}
                                     >
                                         <Form.Item
-                                            name={[subField.name, "rate"]}
+                                           {...restField}
+                                            name={[name, "rate"]}
                                         >
                                             <InputNumber
                                                 style={{ width: "100%" }}
                                                 onChange={(value) =>
-                                                    onRateChange(
+                                                    handleItemsUpdate(
                                                         value,
-                                                        subField
+                                                        "rate",
+                                                         name
                                                     )
                                                 }
                                             />
@@ -304,16 +324,16 @@ const QuotationForm = ({ current }) => {
                                     <Col
                                         className="gutter-row"
                                         span={4}
-                                        style={{
-                                            textAlign: "center",
-                                        }}
+                                       
                                     >
                                         <Form.Item
-                                            name={[subField.name, "taxPercent"]}
+                                            {...restField}
+                                            name={[name, "taxPercent"]}
                                         >
                                             <CustomSelect
-                                                entity={"dropDownData"}
-                                                entityKey={"taxPercent"}
+                                                entity={"taxPercent"}
+                                                entityName={"taxPercent"}
+                                                updateInForm={(value)=>handleItemsUpdate(value,"taxPercent",name)}
                                             />
                                         </Form.Item>
                                     </Col>
@@ -325,8 +345,9 @@ const QuotationForm = ({ current }) => {
                                         }}
                                     >
                                         <Form.Item
+                                            {...restField}
                                             name={[
-                                                subField.name,
+                                                name,
                                                 "finalAmount",
                                             ]}
                                         >
@@ -336,6 +357,7 @@ const QuotationForm = ({ current }) => {
                                                 className="moneyInput"
                                                 min={0}
                                                 controls={false}
+                                                disabled ={true}
                                             />
                                         </Form.Item>
                                     </Col>
@@ -352,7 +374,7 @@ const QuotationForm = ({ current }) => {
                                                 }}
                                                 onClick={() => {
                                                     subOpt.remove(
-                                                        subField.name
+                                                        name
                                                     );
                                                 }}
                                             />
@@ -367,12 +389,9 @@ const QuotationForm = ({ current }) => {
                                     subOpt.add({
                                         description: "",
                                         qty: 1,
+                                        hsnCode:"",
                                         rate: 0,
-                                        taxableAmount: 0,
-                                        sgstPercent: 0,
-                                        cgstPercent: 0,
-                                        igstPercent: 0,
-                                        finalAmount: 0,
+                                        taxPercent: 0,
                                     });
                                 }}
                                 icon={<PlusOutlined />}
@@ -395,6 +414,7 @@ const QuotationForm = ({ current }) => {
                     name={"grossTotal"}
                     labelAlign="left"
                     type={"number"}
+                    readOnly={true}
                 />
             </Row>
             <Row align={"middle"} justify={"end"}>
@@ -402,7 +422,9 @@ const QuotationForm = ({ current }) => {
                     label="Tax Amount"
                     name={"taxAmount"}
                     labelAlign="left"
+                    readOnly={true}
                     type={"number"}
+                
                 />
             </Row>
             <Row align={"middle"} justify={"end"}>
@@ -411,6 +433,7 @@ const QuotationForm = ({ current }) => {
                     name={"grandTotal"}
                     labelAlign="left"
                     type={"number"}
+                    readOnly={true}
                 />
             </Row>
 

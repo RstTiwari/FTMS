@@ -1,6 +1,6 @@
 import { TableAction } from "components/TableAction";
 import { Space, Flex, Dropdown, Typography, Form, Input } from "antd";
-import { convertUnixTimestampToDate } from "Helper/EpochConveter";
+import { convertUnixTimestampToDate, jsDateIntoDayjsDate } from "Helper/EpochConveter";
 import Taglabel from "components/SmallComponent/Taglabel";
 const { Text } = Typography;
 
@@ -27,7 +27,7 @@ const invoiceData = {
             key: "customer",
 
             render: (_, record) => (
-                <Taglabel type={"text"} text={convertUnixTimestampToDate(record.invoiceDate)}/>
+                <Taglabel type={"text"} text={jsDateIntoDayjsDate(record.invoiceDate)}/>
             ),
         },
         {
@@ -36,7 +36,7 @@ const invoiceData = {
             key: "customer",
             responsive: ["lg"],
             render: (_, record) => (
-                <Taglabel  type="text" text= {convertUnixTimestampToDate(record.invoiceExpiredDate)}/>
+                <Taglabel  type="text" text= {jsDateIntoDayjsDate(record.invoiceExpiredDate)}/>
             ),
         },
         {

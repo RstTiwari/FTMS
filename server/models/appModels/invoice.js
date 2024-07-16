@@ -14,8 +14,8 @@ const invoiceSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['draft', 'pending', 'sent', 'refunded', 'cancelled', 'on hold'],
-        default: 'draft',
+        enum: ['DRAFT', 'SEND', 'CANCELLED', 'ON HOLD'],
+        default: 'DRAFT',
       },
       
     payment: [

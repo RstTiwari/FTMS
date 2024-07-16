@@ -55,11 +55,12 @@ const CustomSelect = ({ entity,entityName, defaultSelect, width ,updateInForm}) 
             handelClick();
             setSelected(addValue);
             updateInForm(addValue);
+            setIsLoading(false)
             setOpen(false);
         } else {
+            setIsLoading(false)
             return NotificationHandler.error(response.message);
         }
-        setIsLoading(false)
     };
 
 
@@ -80,14 +81,15 @@ const CustomSelect = ({ entity,entityName, defaultSelect, width ,updateInForm}) 
                     }}
                     getPopupContainer={(trigger) => trigger.parentElement}
                     dropdownRender={(menu) => (
-                        <div>
+                        <div style={{
+                        }}>
                             {menu}
                             <Divider />
-                            <CoustomButton
-                                onClick={() => setOpen(true)}
-                                text={"New"}
-                                withIcon={true}
-                            />
+                          
+                                <CoustomButton
+                                    text="New"
+                                    onClick={() => setOpen(true)}
+                                />
                         </div>
                     )}
                 />

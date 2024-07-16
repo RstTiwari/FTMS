@@ -13,10 +13,10 @@ export const fetchCountersNumber = async (req, res, next) => {
         let query = {};
         query["tenantId"] = tenantId;
         query["entityName"] = entityName;
-        console.log(query,"--");
+         
 
         const existingCounters = await dataBase.findOne(query);
-        // count the total last number of the document based on that update it
+        
         if (existingCounters) {
             return res.status(200).json({
                 success: 1,

@@ -25,62 +25,59 @@ import dayjs from "dayjs";
 import FormItemCol from "components/SmallComponent/FormItemCol";
 import ProductModal from "components/ProductModal";
 import CustomSelect from "components/SmallComponent/CustomSelect";
+import CustomModel from "components/CustomModal";
+import NotificationHandler from "EventHandler/NotificationHandler";
 
-const PurchaseOrder = ({ handleFormFinish, value, disabled, isModel }) => {
-    const [form] = Form.useForm();
+const PurchaseOrder = ({ form, value, disabled, isModel }) => {
 
-    const handleVendorChange = (value, lable) => {
-        form.setFieldsValue({ vendor: value });
-    };
-
-    const onItemChange = (value, label, index, subFiled) => {
-        const items = form.getFieldValue("items");
-        const currentObj = items[index];
-        if (subFiled === "rate") {
-            currentObj.rate = value;
-            currentObj.finalAmount = Math.ceil(value * currentObj.qty);
-        } else if (subFiled === "qty") {
-            currentObj.qty = value;
-            currentObj.finalAmount = Math.ceil(value * currentObj.rate);
+    const handleItemsUpdate = (value,fieldName,rowName)=>{
+        const items = form.getFieldValue("items")
+        const temObj = items[rowName]
+        if (fieldName === "vendorName") {
+            form.setFieldsValue({ vendor: value });
+        } else if (fieldName === "purchaseNo") {
+            form.setFieldsValue({ purchaseNo: value });
+        } else if (fieldName === "description") {
+            let { description, rate, hsnCode } = value;
+            temObj.description = description;
+            temObj.rate = rate;
+            temObj.finalAmount = temObj.qty * temObj.rate;
+        } else if (fieldName === "rate") {
+            temObj.rate = value;
+            temObj.finalAmount = temObj.rate * temObj.qty;
+        } else if (fieldName === "qty") {
+            temObj.qty = value;
+            temObj.finalAmount = temObj.rate * temObj.qty;
+        } else if (fieldName === "taxPercent") {
+            temObj.taxPercent = Number(value);
         } else {
+            return NotificationHandler.error("invalid changes")
         }
 
-        items[index] = currentObj;
-        form.setFieldsValue({ items: items });
 
-        const grossTotal = items.reduce(
-            (total, currentItem) => total + currentItem.finalAmount,
+        items[rowName] = temObj
+        let grossTotal = items.reduce(
+            (cur, acc) => cur + acc.finalAmount || 0,
             0
         );
-        form.setFieldsValue({ grossTotal: grossTotal });
-        form.setFieldsValue({ grandTotal: grossTotal });
+        
+        let temArray = items.map((item) => ({
+            ...item,
+            taxAmount: item.finalAmount * (item.taxPercent / 100) || 0
+        }));
 
-        if (subFiled === "taxPercent") {
-            form.setFieldsValue({ taxPercent: Math.ceil(value) });
-        } else if (subFiled === "transPortAmount") {
-            form.setFieldsValue({ transPortAmount: Math.ceil(value) });
-        }
-        const taxAmount = Math.ceil(
-            (form.getFieldValue("taxPercent") * grossTotal) / 100
+        let taxAmount = temArray.reduce(
+            (cur, acc) => (cur + acc.taxAmount || 0, 0)
         );
-        form.setFieldsValue({
-            taxAmount: taxAmount ? Math.ceil(taxAmount) : 0,
-        });
+        let grandTotal = taxAmount+ grossTotal
+         form.setFieldsValue({
+             items: items,
+             grossTotal: Math.ceil(grossTotal),
+             taxAmount: Math.ceil(taxAmount),
+             grandTotal: Math.ceil(grandTotal),
+         });
 
-        const totalTaxAmount = form.getFieldValue("taxAmount")
-            ? form.getFieldValue("taxAmount")
-            : 0;
-        const totalTranportAmount = form.getFieldValue("transPortAmount")
-            ? form.getFieldValue("transPortAmount")
-            : 0;
-        const totalGross = form.getFieldValue("grossTotal")
-            ? form.getFieldValue("grossTotal")
-            : 0;
-
-        const grandTotal = totalTaxAmount + totalTranportAmount + totalGross;
-        form.setFieldsValue({ grandTotal: Math.ceil(grandTotal) });
-    };
-    // const {vendor,purchaseNo,purchaseDate,items,grandTotal,grossTotal,taxPercent,transPortAmount,taxAmount} = value
+    }
     return (
         <div style={{ height: "100vh" }}>
             <FormItemCol
@@ -97,13 +94,16 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled, isModel }) => {
                 ]}
                 type={"model"}
                 entity={"vendors"}
+                fieldName={"vendorName"}
+                updateInForm ={(value)=>{handleItemsUpdate(value,"vendorName",)}}
+
             />
             <FormItemCol
                 label={"#PURCHASE"}
                 name={"purchaseNo"}
                 labelAlign="left"
                 required={true}
-                type={"input"}
+                type={"counters"}
                 labelCol={{ span: 8}}
                 rules={[
                     {
@@ -111,6 +111,7 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled, isModel }) => {
                         message: "Please Provide Quote No",
                     },
                 ]}
+                updateInForm ={(value)=>{handleItemsUpdate(value,"purchaseNo",)}}
             />
             <Row>
                 <FormItemCol
@@ -191,7 +192,7 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled, isModel }) => {
                         span={4}
                         style={{ textAlign: "center" }}
                     >
-                        <Taglabel text={"Total Amount(before tax)"} />
+                        <Taglabel text={"Total Amount(Before tax)"} />
                     </Col>
                 </Row>
                 <Form.List
@@ -201,15 +202,16 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled, isModel }) => {
                             description: "",
                             rate: 0,
                             qty: 1,
+                            taxPercent:0,
                             finalAmount: 0,
                         },
                     ]}
                 >
                     {(subFields, subOpt) => (
                         <div>
-                            {subFields.map((subField) => (
+                            {subFields.map(({key,name ,...restField}) => (
                                 <Row
-                                    key={subField.key}
+                                    key={key}
                                     align={"middle"}
                                     style={{ marginTop: "5px" }}
                                 >
@@ -221,23 +223,26 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled, isModel }) => {
                                         }}
                                     >
                                         <Form.Item
+                                            {...restField}
                                             name={[
-                                                subField.name,
+                                                name,
                                                 "description",
                                             ]}
                                         >
-                                            <ProductModal />{" "}
+                                            <CustomModel 
+                                            entity={"products"}
+                                            fieldName={"productName"}
+                                            updateInForm={(value)=>{handleItemsUpdate(value,"description",name)}}
+                                             />
                                         </Form.Item>
                                     </Col>
                                     <Col span={4}>
                                         <Form.Item
-                                            name={[subField.name, "rate"]}
+                                            {...restField}
+                                            name={[name, "rate"]}
                                         >
                                             <InputNumber
-                                                // onChange={(value) =>
-                                                //     onItemChange(value, {}, index, "rate")
-                                                // }
-                                                // disabled={disabled}
+                                                onChange={(value)=>handleItemsUpdate(value,"rate",name)}
                                                 style={{
                                                     textAlign: "center",
                                                     width: "100%",
@@ -247,12 +252,13 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled, isModel }) => {
                                     </Col>
                                     <Col span={4}>
                                         <Form.Item
-                                            name={[subField.name, "qty"]}
+                                           {...restField}
+                                            name={[name, "qty"]}
                                         >
                                             <InputNumber
-                                                // onChange={(value) =>
-                                                //     //onItemChange(value, {}, index, "qty")
-                                                // }
+                                                onChange={(value) =>
+                                                    handleItemsUpdate(value, "qty",name)
+                                                }
                                                 style={{
                                                     width: "100%",
                                                     textAlign: "center",
@@ -262,16 +268,19 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled, isModel }) => {
                                     </Col>
                                     <Col span={4}>
                                         <Form.Item
-                                            name={[subField.name, "taxPercent"]}
+                                            {...restField}
+                                            name={[name, "taxPercent"]}
                                         >
                                             <CustomSelect
-                                                // onChange={(value) =>
-                                                //     //onItemChange(value, {}, index, "qty")
-                                                // }
+                                                updateInForm={(value) =>
+                                                    handleItemsUpdate(value, "taxPercent",name)
+                                                }
                                                 style={{
                                                     width: "100%",
                                                     textAlign: "center",
                                                 }}
+                                                entity={"taxPercent"}
+                                                entityName={"taxPercent"}
                                             />
                                         </Form.Item>
                                     </Col>
@@ -280,8 +289,9 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled, isModel }) => {
                                         style={{ textAlign: "center" }}
                                     >
                                         <Form.Item
+                                            {...restField}
                                             name={[
-                                                subField.name,
+                                                name,
                                                 "finalAmount",
                                             ]}
                                         >
@@ -294,7 +304,6 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled, isModel }) => {
                                                     width: "100%",
                                                     textAlign: "center",
                                                 }}
-                                                disabled
                                             />
                                         </Form.Item>
                                     </Col>
@@ -311,7 +320,7 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled, isModel }) => {
                                                 }}
                                                 onClick={() => {
                                                     subOpt.remove(
-                                                        subField.name
+                                                        name
                                                     );
                                                 }}
                                             />
@@ -328,6 +337,7 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled, isModel }) => {
                                             description: "",
                                             finalAmount: 0,
                                             qty: 1,
+                                            taxPercent:0,
                                             rate: 0,
                                         });
                                     }}
@@ -353,6 +363,7 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled, isModel }) => {
                     labelAlign="left"
                     type={"number"}
                     labelCol={{ span: 10 }}
+                    readOnly={true}
                     
                 />
             </Row>
@@ -362,25 +373,30 @@ const PurchaseOrder = ({ handleFormFinish, value, disabled, isModel }) => {
                     name={"taxAmount"}
                     labelCol={{ span: 10 }}
                     labelAlign="left"
+                    tooltip={"Tax Amount on Gross Total"}
                     type={"number"}
+                    readOnly={true}
+
                 />
             </Row>
-            <Row align={"middle"} justify={"end"}>
+            {/* <Row align={"middle"} justify={"end"}>
                 <FormItemCol
                     label="Transport(Rs)"
                     name={"transPortAmount"}
                     labelCol={{ span: 10 }}
+                    updateInForm ={(value)=>{handleItemsUpdate(value,"transPortAmount")}}
                     labelAlign="left"
                     type={"number"}
                 />
                
-            </Row>
+            </Row> */}
             <Row align={"middle"} justify={"end"}>
                 <FormItemCol 
                  label="Grand Total"
                  tooltip={"Amount After Tax"}
                  name={"grandTotal"}
                  labelCol={{ span: 10 }}
+                 readOnly={true}
                  labelAlign="left"
                  type={"number"}
                 />

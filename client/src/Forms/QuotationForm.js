@@ -30,7 +30,6 @@ const QuotationForm = ({ form }) => {
         let temObj = items[rowName];
         if (filedName === "description") {
             let { description, rate, hsnCode } = value;
-            console.log(description, rate, hsnCode);
             temObj.description = description;
             temObj.rate = Math.ceil(rate);
             temObj.finalAmount = Math.ceil(temObj.qty * rate);

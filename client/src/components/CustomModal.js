@@ -119,7 +119,7 @@ const CustomModel = ({
                     disabled ={disabled}
                     loading ={isLoading}
                     showSearch
-                    onSearch={handelDebounceSearch}
+                    // onSearch={handelDebounceSearch}
                     filterOption={(input, option) =>
                         (option?.label ?? "")
                             .toLowerCase()
