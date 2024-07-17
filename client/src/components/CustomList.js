@@ -7,26 +7,13 @@ import CustomTable from "./CustomTable";
 import ListModule from "module/ListModule/ListModule";
 import useDataFetching from "Hook/useDataFetching";
 
-const CoustomListPage = () => {
+const CoustomListPage = ({onTableChange,onRowClick}) => {
     const { tenantId,entity,pageNo ,pageSize } = useParams();
     const navigate = useNavigate()
     const { select, listColumns } = ListModule(entity);
     const [selectedRecord, setSelectedRecord] = useState(null); // State to track selected row
     const {data,isLoading,fetchData} = useDataFetching(entity,select,pageNo,pageSize)
 
-    
-    // Handle row click to open new route
-    const handleRowClick = (record) => {
-        setSelectedRecord(record);
-        // Example: Navigate to a new route with reduced width
-        // You can implement your navigation logic here
-        // Example:
-        // history.push(`/app/${record.id}`, { width: '30%' });
-    };
-    const onTableChange = (pagination,filter,sorter)=>{
-        const  {current:pageNo,pageSize} = pagination
-        navigate(`/app/${tenantId}/${entity}/${pageNo}/${pageSize}`);
-    }
     useEffect(()=>{
         fetchData()
     },[pageNo,pageSize])
@@ -39,7 +26,7 @@ const CoustomListPage = () => {
                 columns={listColumns}
                 dataSource={data}
                 isLoading={isLoading}
-                onRowClick={handleRowClick}
+                onRowClick={onRowClick}
                 onTableChange={onTableChange}
             />
             {/* Display additional content or sidebar with selectedRecord details */}
@@ -47,7 +34,7 @@ const CoustomListPage = () => {
                 <div className="sidebar" style={{ width: "30%" }}>
                     {/* Render content related to selectedRecord */}
                     <h2>{selectedRecord.name}</h2>
-                    <p>Email: {selectedRecord.email}</p>
+                    <p>Email: {selectedRecord.customerName}</p>
                     {/* Add more details as needed */}
                 </div>
             )}

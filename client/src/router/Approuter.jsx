@@ -31,6 +31,8 @@ import SimpleWebSocketComponent from "pages/Websocket";
 import CustomListPage from "components/CustomList";
 import CostomForm from "components/CustomForm"
 import CreateModule from "module/Create/CreateModule";
+import DetailsLayout from "pages/layout/DetailsLayout";
+import Details from "components/Details";
 
 const Approuter = ({ profile }) => {
     const tenantId = profile?.tenant?.tenantId;
@@ -50,9 +52,11 @@ const Approuter = ({ profile }) => {
                     element={<Dashbord />}
                 />
                 <Route
-                    path="/app/:tenantId/:entity/:pageNo/:pageSize"
-                    element={<CustomListPage />}
-                />
+                    path="/app/:tenantId/:entity/:id/:pageNo/:pageSize"
+                    element={<DetailsLayout />}
+                >
+                   <Route path=""  element ={<Details />}/>
+                </Route>
                 <Route
                     path="/app/:tenantId/:entity/create"
                     element={<CostomForm  entity ={entity} />}

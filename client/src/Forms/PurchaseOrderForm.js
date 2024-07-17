@@ -21,9 +21,7 @@ import {
     epochInDDMMYY,
     convertUnixTimestampToDate,
 } from "Helper/EpochConveter";
-import dayjs from "dayjs";
 import FormItemCol from "components/SmallComponent/FormItemCol";
-import ProductModal from "components/ProductModal";
 import CustomSelect from "components/SmallComponent/CustomSelect";
 import CustomModel from "components/CustomModal";
 import NotificationHandler from "EventHandler/NotificationHandler";
@@ -229,7 +227,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                                                 "description",
                                             ]}
                                         >
-                                            <CustomModel 
+                                        <CustomModel 
                                             entity={"products"}
                                             fieldName={"productName"}
                                             updateInForm={(value)=>{handleItemsUpdate(value,"description",name)}}
