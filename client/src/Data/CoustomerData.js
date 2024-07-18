@@ -1,81 +1,74 @@
-import { render } from "@testing-library/react";
 import Taglabel from "components/SmallComponent/Taglabel.js";
 
+const getColumns = (details) => [
+    {
+        title: <Taglabel text={" COMPANY NAME"} type={"heading"} details ={details} />,
+        dataIndex: "customerName",
+        key: "customerName",
+        render: (_, record) => (
+            <Taglabel
+                type="customer"
+                text={record?.customerName ? record.customerName : ""}
+                details ={details}
+            />
+        ),
+    },
+    {
+        title: <Taglabel text={"CONTACT PERSON"} type={"heading"} details ={details}/>,
+        dataIndex: "contactPerson",
+        key: "contactPerson",
+        responsive: details ? [] : ["xl"],
+        render: (_, record) => (
+            <Taglabel
+                type="text"
+                text={record?.contactPerson ? record.contactPerson : ""}
+                details ={details}
+            />
+        ),
+    },
+    {
+        title: <Taglabel text={"PHONE NO"} type={"heading"}  details ={details}/>,
+        dataIndex: "customerPhone",
+        key: "customerPhone",
+        responsive: details ? [] : ["lg"],
+        render: (_, record) => (
+            <Taglabel
+                type="text"
+                text={record?.customerPhone ? record.customerPhone : ""}
+                details ={details}
+            />
+        ),
+    },
+    {
+        title: <Taglabel text={"EMAIL ID"} type={"heading"} />,
+        dataIndex: "customerEmail",
+        key: "customerEmail",
+        responsive: details ? [] : ["lg"],
+        render: (_, record) => (
+            <Taglabel
+                type="text"
+                text={record?.customerEmail ? record.customerEmail : ""}
+                details ={details}
+            />
+        ),
+    },
+    // Uncomment and adjust other columns as needed...
+    // {
+    //     title: <Taglabel text={"GST NO"} />,
+    //     dataIndex: "gstNo",
+    //     key: "gstNo",
+    //     responsive: details ? [] : ["lg"],
+    // },
+    // {
+    //     title: <Taglabel text={"PAN NO"} />,
+    //     dataIndex: "panNo",
+    //     key: "panNo",
+    //     responsive: details ? [] : ["lg"],
+    // },
+];
+
 const CoustomerData = {
-    listColumns: [
-        {
-            title: <Taglabel text={" COMPANY NAME"}  type={"heading"}/>,
-            dataIndex: "customerName",
-            key: "customerName",
-            render: (_, record) => (
-                <>
-                    <Taglabel
-                        type="customer"
-                        text={`${
-                            record?.customerName ? record.customerName : ""
-                        }`}
-                    />
-                </>
-            ),
-        },
-        {
-            title: <Taglabel text={"CONTACT PERSON"}  type={"heading"}/>,
-            dataIndex: "contactPerson",
-            key: "customerName",
-            render: (_, record) => (
-                <>
-                    <Taglabel
-                        type="text"
-                        text={`${
-                            record?.contactPerson ? record.contactPerson : ""
-                        }`}
-                    />
-                </>
-            ),
-        },
-        {
-            title: <Taglabel text={"PHONE NO"} type={"heading"}/>,
-            dataIndex: "customerPhone",
-            key: "customerPhone",
-            render: (_, record) => (
-                <>
-                    <Taglabel
-                        type="text"
-                        text={`${
-                            record?.customerPhone ? record.customerPhone : ""
-                        }`}
-                    />
-                </>
-            ),
-        },
-        {
-            title: <Taglabel text={"EMAIL ID"} type={"heading"} />,
-            dataIndex: "customerEmail",
-            key: "customerEmail",
-            render: (_, record) => (
-                <>
-                    <Taglabel
-                        type="text"
-                        text={`${
-                            record?.customerEmail ? record.customerEmail : ""
-                        }`}
-                    />
-                </>
-            ),
-        },
-        // {
-        //     title: <Taglabel text={"GST NO"} />,
-        //     dataIndex: "gstNo",
-        //     key: "gstNo",
-        //     responsive: ["lg"],
-        // },
-        // {
-        //     title: <Taglabel  text={"PAN NO"}/>,
-        //     dataIndex: "panNo",
-        //     key: "panNo",
-        //     responsive: ["lg"],
-        // },
-    ],
+    getColumns,
     formFields: [
         {
             label: "Customer Name",
@@ -236,4 +229,5 @@ const CoustomerData = {
         panNo: 1,
     },
 };
+
 export default CoustomerData;

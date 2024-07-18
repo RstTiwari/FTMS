@@ -16,6 +16,7 @@ const typeColorMapping = {
 const Taglabel = ({
     type,
     text,
+    details,
     weight = 700,
 }) => {
 
@@ -27,6 +28,7 @@ const Taglabel = ({
             style={{
                 fontFamily: "sans-serif",
                 fontWeight: weight,
+                fontSize:details ? "0.65rem":"0.9rem",
                 color: textColor,
             }}
         >

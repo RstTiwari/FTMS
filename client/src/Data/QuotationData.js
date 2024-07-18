@@ -1,86 +1,77 @@
-import { Space, Flex, Dropdown, Typography, Form, Input } from "antd";
-import { DownOutlined } from "@ant-design/icons";
-import { items } from "./LeadData";
-import { TableAction } from "components/TableAction";
-import { convertUnixTimestampToDate, jsDateIntoDayjsDate } from "Helper/EpochConveter";
 import Taglabel from "components/SmallComponent/Taglabel";
-const { Text } = Typography;
+import { jsDateIntoDayjsDate } from "Helper/EpochConveter";
+
+const getColumns = (details) => [
+    {
+        title: <Taglabel text={"NUMBER#"} type={"heading"} details ={details} />,
+        dataIndex: "quoteNo",
+        key: "srno",
+        width: 100,
+    },
+    {
+        title: <Taglabel text={"CUSTOMER"} type={"heading"} details ={details}/>,
+        dataIndex: "client",
+        key: "source",
+        width: 300,
+        render: (_, record) => (
+            <Taglabel type="customer" text={`${record?.customer?.customerName}`} details ={details} />
+        ),
+    },
+    {
+        title: <Taglabel text={"RECEIVED DATE"} type={"heading"} details ={details} />,
+        dataIndex: "quoteDate",
+        key: "company",
+        responsive: details ? [] : ["lg"],
+        width: 150,
+        render: (_, record) => (
+            <Taglabel type={"text"} text={jsDateIntoDayjsDate(record.quoteDate)} details ={details} />
+        ),
+    },
+    {
+        title: <Taglabel text={"DUE DATE"} type={"heading"}  details ={details}/>,
+        dataIndex: "expiryDate",
+        key: "expiryDate",
+        responsive: details ? [] : ["lg"],
+        width: 150,
+        render: (_, record) => (
+            <Taglabel type={"text"} text={jsDateIntoDayjsDate(record.expiryDate)} details ={details} />
+        ),
+    },
+    {
+        title: <Taglabel text={"STATUS"} type={"heading"} details ={details} />,
+        dataIndex: "status",
+        key: "expiryDate",
+        responsive: details ? [] : ["lg"],
+        width: 100,
+        render: (_, record) => (
+            <Taglabel type={"text"} text={record.status} details ={details} />
+        ),
+    },
+    {
+        title: <Taglabel text={"GROSS TOTAL"} type={"heading"} details ={details} />,
+        dataIndex: "grossTotal",
+        width: 200,
+        key: "subTotal",
+        responsive: details ? [] : ["lg"],
+
+        render: (_, record) => (
+            <Taglabel type="amount" text={`${record.grossTotal}`} weight={1000} details ={details} />
+        ),
+    },
+    {
+        title: <Taglabel text={"GRAND TOTAL"} type={"heading"}  details ={details}/>,
+        dataIndex: "grandTotal",
+        key: "subTotal",
+        width: 200,
+        responsive: details ? [] : ["lg"],
+        render: (_, record) => (
+            <Taglabel type="amount" text={`${record.grandTotal}`} weight={1000} details ={details} />
+        ),
+    },
+];
 
 const quotationData = {
-    listColumns: [
-        {
-            title: <Taglabel text={"NUMBER#"}  type={"heading"}/>,
-            dataIndex: "quoteNo",
-            key: "srno",
-            width: 100,
-        },
-        {
-            title:<Taglabel  text={"CUSTOMER"} type={"heading"}/>,
-            dataIndex: "client",
-            key: "source",
-            width: 300,
-            render: (_, record) => (
-                <>
-                    <Taglabel type="customer" text= {`${record?.customer?.customerName}`} />
-                </>
-            ),
-        },
-        {
-            title: <Taglabel text={"RECEIVED DATE"} type={"heading"} />,
-            dataIndex: "quoteDate",
-            key: "company",
-            responsive: ["lg"],
-            width: 150,
-            render: (_, record) => (
-                <>
-                <Taglabel type={"text"} text= {jsDateIntoDayjsDate(record.quoteDate)}/>
-                </>
-            ),
-        },
-        {
-            title: <Taglabel text={"DUE DATE"} type={"heading"} />,
-            dataIndex: "expiryDate",
-            key: "expiryDate",
-            responsive: ["lg"],
-            width: 150,
-            render: (_, record) => (
-                <>
-                <Taglabel type={"text"} text= {jsDateIntoDayjsDate(record.expiryDate)}/>
-                </>
-            ),
-        },
-        {
-            title: <Taglabel text={"STATUS"} type={"heading"} />,
-            dataIndex: "status",
-            key: "expiryDate",
-            responsive: ["lg"],
-            width: 100,
-            render: (_, record) => (
-                <>
-                <Taglabel type={"text"} text= {(record.status)}/>
-                </>
-            ),
-        },
-        {
-            title:<Taglabel text={"GROSS TOTAL"}  type={"heading"}/>,
-            dataIndex: "grossTotal",
-            width: 200,
-            key: "subTotal",
-            render: (_, record) => (
-                <>{<Taglabel  type="amount" text={`${record.grossTotal}`} weight={1000}/>}</>
-            ),
-        },
-        
-        {
-            title:<Taglabel text={"GRAND TOTAL"} type={"heading"} />,
-            dataIndex: "grandTotal",
-            key: "subTotal",
-            width: 200,
-            render: (_, record) => (
-                <>{<Taglabel  type="amount" text={`${record.grandTotal}`} weight={1000}/>}</>
-            ),
-        },
-    ],
+    getColumns,
 };
 
 export default quotationData;
@@ -92,10 +83,10 @@ export const deliveryCondition =
 export const validityCondition =
     "This Quotation shall be valid for 10 / 15 days Only.";
 export const paymentsCondition =
-    "Advance with PO 50% & against Delivery 50 % . After Instoletion % Cheque should be drawn in favour of vipplay";
+    "Advance with PO 50% & against Delivery 50 %. After Installation 50%. Cheque should be drawn in favour of VIP Play";
 export const cancellationCondition =
     "Order once placed will not be cancelled in any circumstances.";
 export const installationCondition =
-    "Civil materials such as cement, metal, sand, water, electricity along with unskilled labours to be arranged by Client.";
+    "Civil materials such as cement, metal, sand, water, electricity along with unskilled labors to be arranged by Client.";
 export const facilityCondition =
-    "Proper storage space will be provided by the client for safety & security of materials at site upon delivery. Security of materials delivered st site shall be responsibility ofclient only";
+    "Proper storage space will be provided by the client for safety & security of materials at site upon delivery. Security of materials delivered at site shall be responsibility of client only.";

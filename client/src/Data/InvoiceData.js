@@ -2,72 +2,72 @@ import { TableAction } from "components/TableAction";
 import { Space, Flex, Dropdown, Typography, Form, Input } from "antd";
 import { convertUnixTimestampToDate, jsDateIntoDayjsDate } from "Helper/EpochConveter";
 import Taglabel from "components/SmallComponent/Taglabel";
+
 const { Text } = Typography;
 
-const invoiceData = {
-    listColumns: [
-        {
-            title: <Taglabel  text={"#INVOICE"}  type={"heading"}/>,
-            dataIndex: "invoiceNo",
-            key: "invoiceNo",
-        },
-        {
-            title: <Taglabel  text={"CUSTOMER"} type={"heading"}/>,
-            dataIndex: "customer",
-            key: "customer",
-            render: (_, record) => (
-                <>
-                    <Taglabel type="customer" text = {record.customer.customerName}/>
-                </>
-            ),
-        },
-        {
-            title: <Taglabel text={"INVOICE DATE"} />,
-            dataIndex: "invoiceDate",
-            key: "customer",
+const getColumns = (details) => [
+    {
+        title: <Taglabel text={"#INVOICE"} type={"heading"} details ={details} />,
+        dataIndex: "invoiceNo",
+        key: "invoiceNo",
+    },
+    {
+        title: <Taglabel text={"CUSTOMER"} type={"heading"}  details ={details}/>,
+        dataIndex: "customer",
+        key: "customer",
+        render: (_, record) => (
+            <Taglabel type="customer" text={record.customer.customerName}  details ={details}/>
+        ),
+    },
+    {
+        title: <Taglabel text={"INVOICE DATE"} />,
+        dataIndex: "invoiceDate",
+        responsive: details ? [] : ["lg"],
+        key: "customer",
+        render: (_, record) => (
+            <Taglabel type={"text"} text={jsDateIntoDayjsDate(record.invoiceDate)}  details ={details}/>
+        ),
+    },
+    {
+        title: <Taglabel text={"DUE DATE"} type={"heading"} />,
+        dataIndex: "invoiceExpiredDate",
+        key: "customer",
+        responsive: details ? [] : ["lg"],
+        render: (_, record) => (
+            <Taglabel type="text" text={jsDateIntoDayjsDate(record.invoiceExpiredDate)} details ={details}/>
+        ),
+    },
+    {
+        title: <Taglabel text={"STATUS"} type={"heading"} details ={details} />,
+        dataIndex: "status",
+        key: "expiryDate",
+        responsive: details ? [] : ["lg"],
+        render: (_, record) => (
+            <Taglabel type={"text"} text={record.status} details ={details} />
+        ),
+    },
+    {
+        title: <Taglabel text={"GROSS TOTAL"} type={"heading"} details ={details} />,
+        dataIndex: "grossTotal",
+        key: "grossTotal",
+        responsive: details ? [] : ["lg"],
+        render: (_, record) => (
+            <Taglabel type="amount" text={record.grossTotal}  details ={details}/>
+        ),
+    },
+    {
+        title: <Taglabel text={"GRAND TOTAL"} type={"heading"} details ={details} />,
+        dataIndex: "grandTotal",
+        key: "grandTotal",
+        responsive: details ? [] : ["lg"],
+        render: (_, record) => (
+            <Taglabel type="amount" text={record.grandTotal} details ={details} />
+        ),
+    },
+];
 
-            render: (_, record) => (
-                <Taglabel type={"text"} text={jsDateIntoDayjsDate(record.invoiceDate)}/>
-            ),
-        },
-        {
-            title: <Taglabel  text={"DUE DATE"} type={"heading"}/>,
-            dataIndex: "invoiceExpiredDate",
-            key: "customer",
-            responsive: ["lg"],
-            render: (_, record) => (
-                <Taglabel  type="text" text= {jsDateIntoDayjsDate(record.invoiceExpiredDate)}/>
-            ),
-        },
-        {
-            title: <Taglabel text={"STATUS"} type={"heading"} />,
-            dataIndex: "status",
-            key: "expiryDate",
-            responsive: ["lg"],
-            render: (_, record) => (
-                <>
-                <Taglabel type={"text"} text= {(record.status)}/>
-                </>
-            ),
-        },
-        {
-            title: <Taglabel  text={"GROSS TOTAL"} type={"heading"}/>,
-            dataIndex: "grossTotal",
-            key: "grossTotal",
-            responsive: ["lg"],
-            render: (_, record) => (
-                <Taglabel  type="amount" text= {(record.grossTotal)}/>
-            ),
-        },
-        {
-            title: <Taglabel text={"GRAND TOTAL"}  type={"heading"}/>,
-            dataIndex: "grandTotal",
-            key: "grandTotal",
-            render: (_, record) => (
-                <Taglabel  type="amount" text= {(record.grandTotal)}/>
-            ),
-        },
-    ],
+const invoiceData = {
+    getColumns,
     formField: {
         customer: {
             label: "Select Customer",
@@ -145,24 +145,3 @@ const invoiceData = {
 };
 
 export default invoiceData;
-
-// export const invoiceData = [
-//     {
-//         invoiceNo:"121",
-//         customer:"Royal Play Equipments",
-//         invoiceDate:"21-1-24",
-//         invoiceExpiredDate:"23-03-24",
-//         grossTotal:23000,
-//         grandTotal:24000,
-//         status:"SEND",
-//     },
-//     {
-//         invoiceNo:"122",
-//         customer:"Vip Play Equipments",
-//         invoiceDate:"21-1-24",
-//         invoiceExpiredDate:"23-03-24",
-//         grossTotal:23000,
-//         grandTotal:24000,
-//         status:"SEND",
-//     }
-// ]

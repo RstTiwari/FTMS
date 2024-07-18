@@ -28,7 +28,6 @@ import PurchaseOrder from "pages/PurchaseOrder";
 import Orgnization from "pages/Orgnization/Orgnization";
 import Templates from "pages/Templates/index";
 import SimpleWebSocketComponent from "pages/Websocket";
-import CustomListPage from "components/CustomList";
 import CostomForm from "components/CustomForm"
 import CreateModule from "module/Create/CreateModule";
 import DetailsLayout from "pages/layout/DetailsLayout";
@@ -52,10 +51,10 @@ const Approuter = ({ profile }) => {
                     element={<Dashbord />}
                 />
                 <Route
-                    path="/app/:tenantId/:entity/:id/:pageNo/:pageSize"
+                    path="/app/:tenantId/:entity/:pageNo/:pageSize"
                     element={<DetailsLayout />}
                 >
-                   <Route path=""  element ={<Details />}/>
+                   <Route path="details/:id"  element ={<Details />}/>
                 </Route>
                 <Route
                     path="/app/:tenantId/:entity/create"

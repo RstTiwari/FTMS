@@ -14,7 +14,7 @@ const CustomTable = ({
         color: "green", // Text color
         backgroundColor: "#f0f0f0", // Light off-white background color
     };
-
+    console.log(window.innerWidth,"width");
     const rowClassName = () => "custom-row";
 
     return (
@@ -31,6 +31,7 @@ const CustomTable = ({
             pagination={{
                 pageSize: pageSize,
                 showSizeChanger: true,
+                hideOnSinglePage:true
             }}
             onChange={onTableChange}
         />
