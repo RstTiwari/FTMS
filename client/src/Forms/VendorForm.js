@@ -8,14 +8,12 @@ import CustomerData from "Data/CoustomerData";
 
 const { Text } = Typography;
 
-const VendorsForm = ({ form, disabled,isModal }) => {
-
+const VendorsForm = ({ form, disabled, isModal }) => {
     const handeCopyBillingAddress = () => {
         const { billingAddress } = form.getFieldsValue(["billingAddress"]);
         form.setFieldsValue({ shippingAddress: billingAddress });
     };
 
-    
     return (
         <div>
             <FormItemCol
@@ -23,7 +21,7 @@ const VendorsForm = ({ form, disabled,isModal }) => {
                 labelAlign="left"
                 name="vendorName"
                 required={true}
-                labelCol={{ span: isModal ? 18:8}}
+                labelCol={{ span: isModal ? 18 : 8 }}
                 rules={[
                     {
                         required: true,
@@ -37,7 +35,7 @@ const VendorsForm = ({ form, disabled,isModal }) => {
                 required={true}
                 labelAlign="left"
                 name="vendorPhone"
-                    labelCol={{ span: isModal ? 18:8}}
+                labelCol={{ span: isModal ? 18 : 8 }}
                 rules={[
                     {
                         required: true,
@@ -50,7 +48,7 @@ const VendorsForm = ({ form, disabled,isModal }) => {
                 label={"Vendors Email"}
                 labelAlign="left"
                 name="vendorEmail"
-                    labelCol={{ span: isModal ? 18:8}}
+                labelCol={{ span: isModal ? 18 : 8 }}
                 required={true}
                 rules={[
                     {
@@ -64,7 +62,7 @@ const VendorsForm = ({ form, disabled,isModal }) => {
                 label={"Contact Person"}
                 name={"contactPerson"}
                 labelAlign="left"
-                    labelCol={{ span: isModal ? 18:8}}
+                labelCol={{ span: isModal ? 18 : 8 }}
                 type={"text"}
             />
 
@@ -73,7 +71,8 @@ const VendorsForm = ({ form, disabled,isModal }) => {
                 labelAlign="left"
                 tooltip="this data  will be Encrypted then stored not visible to other people  accept access given  "
                 name="panNo"
-                    labelCol={{ span: isModal ? 18:8}}
+                labelCol={{ span: isModal ? 18 : 8 }}
+                type={"text"}
             />
 
             <FormItemCol
@@ -81,11 +80,12 @@ const VendorsForm = ({ form, disabled,isModal }) => {
                 labelAlign="left"
                 tooltip="this data  will be Encripted then stored not visible to other pepole  accept acces given  "
                 name="gstNo"
-                    labelCol={{ span: isModal ? 18:8}}
+                labelCol={{ span: isModal ? 18 : 8 }}
+                type={"text"}
             />
-              <Row style={{ padding: 20 }}>
+            <Row style={{ padding: 20 }}>
                 <Col sm={24} xs={24} md={12} lg={12}>
-                    <Row style={{paddingBottom:25}}>
+                    <Row style={{ paddingBottom: 25 }}>
                         <Text type="secondary" style={{ fontWeight: 900 }}>
                             Billing Address
                         </Text>
@@ -96,7 +96,7 @@ const VendorsForm = ({ form, disabled,isModal }) => {
                                 label={<CustomLabel label={"Street1"} />}
                                 name={["billingAddress", "street1"]}
                                 labelAlign="left"
-                                labelCol={{ span: isModal? 8: 5 }}
+                                labelCol={{ span: isModal ? 8 : 5 }}
                             >
                                 <Input.TextArea />
                             </Form.Item>
@@ -108,7 +108,7 @@ const VendorsForm = ({ form, disabled,isModal }) => {
                                 label={<CustomLabel label={"Street2"} />}
                                 name={["billingAddress", "street2"]}
                                 labelAlign="left"
-                                labelCol={{ span: isModal? 8: 5 }}
+                                labelCol={{ span: isModal ? 8 : 5 }}
                             >
                                 <Input.TextArea />
                             </Form.Item>
@@ -121,7 +121,7 @@ const VendorsForm = ({ form, disabled,isModal }) => {
                                 label={<CustomLabel label={"City"} />}
                                 name={["billingAddress", "city"]}
                                 labelAlign="left"
-                                labelCol={{ span: isModal? 8: 5 }}
+                                labelCol={{ span: isModal ? 8 : 5 }}
                             >
                                 <Input />
                             </Form.Item>
@@ -133,7 +133,7 @@ const VendorsForm = ({ form, disabled,isModal }) => {
                                 label={<CustomLabel label={"Pin Code"} />}
                                 name={["billingAddress", "pincode"]}
                                 labelAlign="left"
-                                labelCol={{ span: isModal? 8: 5 }}
+                                labelCol={{ span: isModal ? 8 : 5 }}
                             >
                                 <Input />
                             </Form.Item>
@@ -145,7 +145,7 @@ const VendorsForm = ({ form, disabled,isModal }) => {
                                 label={<CustomLabel label={"State"} />}
                                 name={["billingAddress", "state"]}
                                 labelAlign="left"
-                                labelCol={{ span: isModal? 8: 5 }}
+                                labelCol={{ span: isModal ? 8 : 5 }}
                             >
                                 <Select
                                     options={CustomerData.states}
@@ -156,7 +156,7 @@ const VendorsForm = ({ form, disabled,isModal }) => {
                     </Row>
                 </Col>
                 <Col sm={24} xs={12} md={12} lg={12}>
-                    <Row style={{paddingBottom:25}}>
+                    <Row style={{ paddingBottom: 25 }}>
                         <Text type="secondary" style={{ fontWeight: 900 }}>
                             Shipping Address
                         </Text>
@@ -182,7 +182,7 @@ const VendorsForm = ({ form, disabled,isModal }) => {
                                 label={<CustomLabel label={"Street1"} />}
                                 name={["shippingAddress", "street1"]}
                                 labelAlign="left"
-                                labelCol={{ span: isModal? 8: 5 }}
+                                labelCol={{ span: isModal ? 8 : 5 }}
                             >
                                 <Input.TextArea />
                             </Form.Item>
@@ -194,7 +194,7 @@ const VendorsForm = ({ form, disabled,isModal }) => {
                                 label={<CustomLabel label={"Street2"} />}
                                 name={["shippingAddress", "street2"]}
                                 labelAlign="left"
-                                labelCol={{ span: isModal? 8: 5 }}
+                                labelCol={{ span: isModal ? 8 : 5 }}
                             >
                                 <Input.TextArea />
                             </Form.Item>
@@ -207,7 +207,7 @@ const VendorsForm = ({ form, disabled,isModal }) => {
                                 label={<CustomLabel label={"City"} />}
                                 name={["shippingAddress", "city"]}
                                 labelAlign="left"
-                                labelCol={{ span: isModal? 8: 5 }}
+                                labelCol={{ span: isModal ? 8 : 5 }}
                             >
                                 <Input />
                             </Form.Item>
@@ -219,7 +219,7 @@ const VendorsForm = ({ form, disabled,isModal }) => {
                                 label={<CustomLabel label={"Pin Code"} />}
                                 name={["shippingAddress", "pincode"]}
                                 labelAlign="left"
-                                labelCol={{ span: isModal? 8: 5 }}
+                                labelCol={{ span: isModal ? 8 : 5 }}
                             >
                                 <Input />
                             </Form.Item>
@@ -232,7 +232,7 @@ const VendorsForm = ({ form, disabled,isModal }) => {
                                 label={<CustomLabel label={"State"} />}
                                 name={["shippingAddress", "state"]}
                                 labelAlign="left"
-                                labelCol={{ span: isModal? 8: 5 }}
+                                labelCol={{ span: isModal ? 8 : 5 }}
                             >
                                 <Select
                                     options={CustomerData.states}
@@ -243,7 +243,6 @@ const VendorsForm = ({ form, disabled,isModal }) => {
                     </Row>
                 </Col>
             </Row>
-            
         </div>
     );
 };

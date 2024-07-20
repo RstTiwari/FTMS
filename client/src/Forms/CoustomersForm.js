@@ -40,7 +40,7 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
                         message: "Please Provide Customer Name",
                     },
                 ]}
-                type={"input"}
+                type={"text"}
             />
             <FormItemCol
                 label={"Customer Phone"}
@@ -58,7 +58,7 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
                         message: "Please enter a valid 10-digit phone number",
                     },
                 ]}
-                type={"input"}
+                type={"text"}
             />
             <FormItemCol
                 label={"Customer Email"}
@@ -72,14 +72,14 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
                         message: "Please Provide Customer Email",
                     },
                 ]}
-                type={"input"}
+                type={"text"}
             />
             <FormItemCol
                 label={"Contact Person"}
                 name={"contactPerson"}
                 labelAlign="left"
                 labelCol={{ span: isModal ? 18 : 8 }}
-                type={"input    "}
+                type={"text"}
             />
 
             <FormItemCol
@@ -88,7 +88,7 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
                 tooltip="this data  will be Encrypted then stored not visible to other people  accept access given  "
                 name="panNo"
                 labelCol={{ span: isModal ? 18 : 8 }}
-                type={"input"}
+                type={"text"}
             />
 
             <FormItemCol
