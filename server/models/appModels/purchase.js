@@ -1,4 +1,3 @@
-import { required } from "joi";
 import mongoose from "mongoose";
 import mongooseAutoPopulate from "mongoose-autopopulate";
 const purchaseOrderSchema = new mongoose.Schema({
