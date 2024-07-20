@@ -25,144 +25,57 @@ import CustomLabel from "components/SmallComponent/CustomLabel";
 import CustomSelect from "components/SmallComponent/CustomSelect";
 import CustomModel from "components/CustomModal";
 
-const DeliveryChallan = ({ current }) => {
+const DeliveryChallan = ({ form }) => {
     const isLaptop = useMediaQuery("(min-width:1000px)");
-    const inputWidth = isLaptop ? 700 : 350;
-    const inputFontSize = isLaptop ? "1rem" : "0.4rem";
 
-    const handleCustomerChange = (value) => {
-        current.setFieldsValue({ customer: value });
-    };
+    const handleItemUpdate = (value, filedName, rowName) => {
+        console.log("value", value, "fieldName", filedName);
+        const items = form.getFieldValue("items");
+        let temObj = items[rowName];
+        if (filedName === "description") {
+            let { description, rate, hsnCode } = value;
+            temObj.description = description;
+            temObj.rate = Math.ceil(rate);
+            temObj.finalAmount = Math.ceil(temObj.qty * rate);
+        } else if (filedName === "rate") {
+            temObj.rate = value;
+            temObj.finalAmount = Math.ceil(temObj.qty * value);
+        } else if (filedName === "qty") {
+            temObj.qty = value;
+            temObj.finalAmount = Math.ceil(temObj.qty * temObj.rate);
+        } else if (filedName === "customer") {
+            form.setFieldsValue({ customer: value });
+        } else if (filedName === "challanNo") {
+            form.setFieldsValue({ challanNo: value });
+        } else if (filedName === "transportAmount") {
+            form.setFieldsValue({ transportAmount: value });
+        } else if (filedName === "challanType") {
+            form.setFieldsValue({ challanType: value });
+        }
 
-    const onProductChange = (value, subField) => {
-        // const formData = current.getFieldValue("items");
-        // const items = [...formData];
-        // const index = subField.key; // Use subField.name to get the index
-        // const rowManipulated = items[index];
-        // rowManipulated.description = value.productName;
-        // rowManipulated.rate = Math.ceil(value.rate);
-        // rowManipulated.finalAmount = Math.ceil(
-        //     rowManipulated.rate * rowManipulated.qty
-        // );
-        // items[index] = rowManipulated;
-        // current.setFieldsValue({ items: items });
-        // // now updataing grossTotal ,grandTotal
-        // let { grossTotal, grandTotal, taxPercent, transPortAmount } =
-        //     current.getFieldsValue([
-        //         "grossTotal",
-        //         "grandTotal",
-        //         "taxPercent",
-        //         "transPortAmount",
-        //     ]);
-        // const grossSum = items.reduce(
-        //     (accumulator, currentValue) =>
-        //         accumulator + currentValue.finalAmount,
-        //     0
-        // );
-        // const taxAmount = Math.floor((grossSum * taxPercent) / 100);
-        // const grandSum = grossSum + taxAmount + transPortAmount;
-        // current.setFieldsValue({ grossTotal: Math.ceil(grossSum) });
-        // current.setFieldsValue({ grandTotal: Math.ceil(grandSum) });
-    };
+        items[rowName] = temObj;
+        form.setFieldsValue({ items: items });
 
-    const onRateChange = async (value, subField) => {
-        // const formData = current?.getFieldValue("items");
-        // const items = [...formData];
-        // const rowManipulated = items[subField.key];
-        // rowManipulated.finalAmount = Math.ceil(
-        //     rowManipulated.rate * rowManipulated.qty
-        // );
-        // items[subField.key] = rowManipulated;
-        // current.setFieldsValue({ items: items });
-        // // now updataing grossTotal ,grandTotal
-        // let { grossTotal, grandTotal, taxPercent, transPortAmount } =
-        //     current.getFieldsValue([
-        //         "grossTotal",
-        //         "grandTotal",
-        //         "taxPercent",
-        //         "transPortAmount",
-        //     ]);
-        // const grossSum = items.reduce(
-        //     (accumulator, currentValue) =>
-        //         accumulator + currentValue.finalAmount,
-        //     0
-        // );
-        // const taxAmount = Math.floor((grossSum * taxPercent) / 100);
-        // const grandSum = grossSum + taxAmount + transPortAmount;
-        // current.setFieldsValue({ grossTotal: Math.ceil(grossSum) });
-        // current.setFieldsValue({ grandTotal: Math.ceil(grandSum) });
-    };
+        // Tax Calculator
+        let grossTotal = items.reduce((a, b) => a + b.finalAmount, 0);
+        let transportAmount = form.getFieldValue("transportAmount") || 0;
 
-    const onQtyChange = async (value, subField) => {
-        // const formData = current?.getFieldsValue(["items"]);
-        // const items = [...formData];
-        // const rowManipulated = items[subField.key];
-        // rowManipulated.qty = value;
-        // rowManipulated.finalAmount = Math.ceil(
-        //     rowManipulated.rate * rowManipulated.qty
-        // );
-        // current?.setFieldsValue({ items: items });
-        // let { grossTotal, grandTotal, taxPercent, transPortAmount } =
-        //     current.getFieldsValue([
-        //         "grossTotal",
-        //         "grandTotal",
-        //         "taxPercent",
-        //         "transPortAmount",
-        //     ]);
-        // const grossSum = items.reduce(
-        //     (accumulator, currentValue) =>
-        //         accumulator + currentValue.finalAmount,
-        //     0
-        // );
-        // const taxAmount = Math.floor((grossSum * taxPercent) / 100);
-        // const grandSum = grossSum + taxAmount + transPortAmount;
-        // current.setFieldsValue({ grossTotal: grossSum });
-        // current.setFieldsValue({ grandTotal: grandSum });
-    };
-
-    const onTaxPercentChange = async (value) => {
-        let { grossTotal, grandTotal, taxPercent, transPortAmount } =
-            current.getFieldsValue([
-                "grossTotal",
-                "grandTotal",
-                "taxPercent",
-                "transPortAmount",
-            ]);
-        const taxAmount = Math.floor((grossTotal * value) / 100);
-        const grandSum = grossTotal + taxAmount + transPortAmount;
-        current.setFieldsValue({ grandTotal: Math.ceil(grandSum) });
-    };
-
-    const onTransportAmountChange = (value) => {
-        let { grossTotal, grandTotal, taxPercent, transPortAmount } =
-            current?.getFieldsValue([
-                "grossTotal",
-                "grandTotal",
-                "taxPercent",
-                "transPortAmount",
-            ]);
-        const taxAmount = Math.floor((grossTotal * taxPercent) / 100);
-        const grandSum = grossTotal + taxAmount + value;
-        current.setFieldsValue({ grandTotal: Math.ceil(grandSum) });
-    };
-
-    const addNewRow = (subOpt) => {
-        subOpt.add({
-            finalAmount: 0,
-            qty: 1,
-            rate: 0,
+        let grandTotal = grossTotal + transportAmount;
+        form.setFieldsValue({
+            grossTotal: Math.ceil(grossTotal),
+            grandTotal: Math.ceil(grandTotal),
+            transportAmount: Math.ceil(transportAmount),
         });
     };
 
-    const items = current?.getFieldsValue(["items"]);
     useEffect(() => {}, []);
     return (
-        <div>
+        <div style={{ height: "100vh" }}>
             <FormItemCol
                 label={"Select Customer"}
                 name={"customer"}
                 labelAlign="left"
-                required ={true}
+                required={true}
                 labelCol={{ span: 8 }}
                 rules={[
                     {
@@ -171,8 +84,10 @@ const DeliveryChallan = ({ current }) => {
                     },
                 ]}
                 type="model"
+                entity={"customers"}
+                fieldName={"customerName"}
                 customerSelect=""
-                handleCustomerChange={handleCustomerChange}
+                updateInForm={(value) => handleItemUpdate(value, "customer")}
             />
             <FormItemCol
                 label={"#Delivery Challan"}
@@ -180,43 +95,47 @@ const DeliveryChallan = ({ current }) => {
                 labelAlign="left"
                 required={true}
                 labelCol={{ span: 8 }}
+                type={"counters"}
                 rules={[
                     {
                         required: "true",
                         message: "Please Provide Challan No",
                     },
                 ]}
+                updateInForm={(value) => handleItemUpdate(value, "challanNo")}
             />
-                <FormItemCol
-                    label={"Challan Date"}
-                    name={"challanDate"}
-                    required ={true}
-                    rules={[
-                        {
-                            required: true,
-                            message: "Please Select Challan Date",
-                        },
-                    ]}
-                    labelCol={{ span: 8 }}
-                    labelAlign="left"
-                    type={"date"}
-                />
-                 <FormItemCol
-                    label={"Challan Type"}
-                    name={"challanType"}
-                    required ={true}
-                    rules={[
-                        {
-                            required: true,
-                            message: "Please Select Challan Type",
-                        },
-                    ]}
-                    labelCol={{ span: 8 }}
-                    labelAlign="left"
-                    type={"select"}
-                    entity ={"Challan Type"}
-                />
-              
+            <FormItemCol
+                label={"Challan Date"}
+                name={"challanDate"}
+                required={true}
+                rules={[
+                    {
+                        required: true,
+                        message: "Please Select Challan Date",
+                    },
+                ]}
+                labelCol={{ span: 8 }}
+                labelAlign="left"
+                type={"date"}
+            />
+            <FormItemCol
+                label={"Challan Type"}
+                name={"challanType"}
+                required={true}
+                rules={[
+                    {
+                        required: true,
+                        message: "Please Select Challan Type",
+                    },
+                ]}
+                labelCol={{ span: 8 }}
+                labelAlign="left"
+                type={"select"}
+                entity={"Challan Type"}
+                entityName={"challanType"}
+                updateInForm={(value) => handleItemUpdate(value, "challanType")}
+            />
+
             <Divider dashed />
             <div
                 style={{
@@ -225,7 +144,7 @@ const DeliveryChallan = ({ current }) => {
                     padding: "2px",
                     marginBottom: "20px",
                     overflowY: "auto",
-                    minWidth:700,
+                    minWidth: 700,
                 }}
             >
                 <Row justify={"center"} style={{ marginBottom: "10px" }}>
@@ -267,7 +186,7 @@ const DeliveryChallan = ({ current }) => {
                     >
                         <Taglabel text={"Qty"} />
                     </Col>
-                    <Col
+                    {/* <Col
                         className="gutter-row"
                         span={4}
                         style={{
@@ -276,7 +195,7 @@ const DeliveryChallan = ({ current }) => {
                         }}
                     >
                         <Taglabel text={"Tax(%)"} />
-                    </Col>
+                    </Col> */}
                     <Col
                         className="gutter-row"
                         span={4}
@@ -291,16 +210,16 @@ const DeliveryChallan = ({ current }) => {
                         {
                             description: "",
                             rate: 0,
-                            qty: 1,
+                            qty: 0,
                             finalAmount: 0,
                         },
                     ]}
                 >
                     {(subFields, subOpt) => (
                         <div>
-                            {subFields.map((subField) => (
+                            {subFields.map(({ key, name, ...restField }) => (
                                 <Row
-                                    key={subField.key}
+                                    key={key}
                                     align={"middle"}
                                     style={{ marginTop: "5px" }}
                                 >
@@ -312,23 +231,33 @@ const DeliveryChallan = ({ current }) => {
                                         }}
                                     >
                                         <Form.Item
-                                            name={[
-                                                subField.name,
-                                                "description",
-                                            ]}
+                                            {...restField}
+                                            name={[name, "description"]}
                                         >
-                                            <CustomModel  entity={"products"}/>
+                                            <CustomModel
+                                                entity={"products"}
+                                                fieldName={"productName"}
+                                                updateInForm={(value) =>
+                                                    handleItemUpdate(
+                                                        value,
+                                                        "description",
+                                                        name
+                                                    )
+                                                }
+                                            />
                                         </Form.Item>
                                     </Col>
                                     <Col span={4}>
                                         <Form.Item
-                                            name={[subField.name, "rate"]}
+                                            {...restField}
+                                            name={[name, "rate"]}
                                         >
                                             <InputNumber
                                                 onChange={(value) =>
-                                                    onRateChange(
+                                                    handleItemUpdate(
                                                         value,
-                                                        subField
+                                                        "rate",
+                                                        name
                                                     )
                                                 }
                                                 style={{
@@ -340,11 +269,16 @@ const DeliveryChallan = ({ current }) => {
                                     </Col>
                                     <Col span={4}>
                                         <Form.Item
-                                            name={[subField.name, "qty"]}
+                                            {...restField}
+                                            name={[name, "qty"]}
                                         >
                                             <InputNumber
                                                 onChange={(value) =>
-                                                    onQtyChange(value, subField)
+                                                    handleItemUpdate(
+                                                        value,
+                                                        "qty",
+                                                        name
+                                                    )
                                                 }
                                                 style={{
                                                     width: "100%",
@@ -353,13 +287,15 @@ const DeliveryChallan = ({ current }) => {
                                             />
                                         </Form.Item>
                                     </Col>
-                                    <Col span={4}>
-                                        <Form.Item
-                                            name={[subField.name, "taxPercent"]}
-                                        >
+                                    {/* <Col span={4}>
+                                        <Form.Item name={[name, "taxPercent"]}>
                                             <CustomSelect
                                                 onChange={(value) =>
-                                                    onQtyChange(value, subField)
+                                                    handleItemUpdate(
+                                                        value,
+                                                        "taxPercent",
+                                                        name
+                                                    )
                                                 }
                                                 style={{
                                                     width: "100%",
@@ -367,17 +303,12 @@ const DeliveryChallan = ({ current }) => {
                                                 }}
                                             />
                                         </Form.Item>
-                                    </Col>
+                                    </Col> */}
                                     <Col
                                         span={4}
                                         style={{ textAlign: "center" }}
                                     >
-                                        <Form.Item
-                                            name={[
-                                                subField.name,
-                                                "finalAmount",
-                                            ]}
-                                        >
+                                        <Form.Item name={[name, "finalAmount"]}>
                                             <InputNumber
                                                 readOnly
                                                 className="moneyInput"
@@ -401,9 +332,7 @@ const DeliveryChallan = ({ current }) => {
                                                     cursor: "pointer",
                                                 }}
                                                 onClick={() => {
-                                                    subOpt.remove(
-                                                        subField.name
-                                                    );
+                                                    subOpt.remove(name);
                                                 }}
                                             />
                                         </Form.Item>
@@ -416,7 +345,12 @@ const DeliveryChallan = ({ current }) => {
                                 <Button
                                     type="primary"
                                     onClick={() => {
-                                        subOpt.add(); // Use srNo instead of srN
+                                        subOpt.add({
+                                            description: "",
+                                            rate: 0,
+                                            qty: 0,
+                                            finalAmount: 0,
+                                        }); // Use srNo instead of srN
                                     }}
                                     icon={<PlusOutlined />}
                                     style={{
@@ -437,86 +371,107 @@ const DeliveryChallan = ({ current }) => {
                     label="Gross Total"
                     name={"grossTotal"}
                     width={150}
-                    labelCol={{span:8}}
+                    labelCol={{ span: 8 }}
                     tooltip={"Amount Before Tax"}
                     labelAlign="left"
                     type={"number"}
+                    readOnly={true}
                 />
             </Row>
-            <Row align={"middle"} justify={"end"}>
+            {/* <Row align={"middle"} justify={"end"}>
                 <FormItemCol
                     label="Tax Amount"
                     name={"taxPercent"}
                     type={"number"}
                     width={150}
-                    labelCol={{span:8}}
+                    labelCol={{ span: 8 }}
                     entity={"Tax Percent"}
                 />
-            </Row>
+            </Row> */}
             <Row align={"middle"} justify={"end"}>
                 <FormItemCol
                     label="Transport(Rs)"
                     name={"transPortAmount"}
                     labelAlign="left"
                     width={150}
-                    labelCol={{span:8}}
+                    labelCol={{ span: 8 }}
                     type={"number"}
+                    onChange={(value) =>
+                        handleItemUpdate(value, "transportAmount")
+                    }
                 />
             </Row>
             <Row align={"middle"} justify={"end"}>
                 <FormItemCol
                     label="Grand Total"
                     tooltip={"Amount After Tax"}
-
                     name={"grandTotal"}
                     labelAlign="left"
                     type={"number"}
-                    labelCol={{span:8}}
+                    labelCol={{ span: 8 }}
                     width={150}
-
-                    readOnly
+                    readOnly={true}
                 />
             </Row>
-            <Row justify={"start"} style={{ marginBottom:10 }}>
+            {/* <Row justify={"start"} style={{ marginBottom: 10 }}>
                 <Taglabel text={" Term & Conditions"} weight={1000} />
             </Row>
             <FormItemCol
                 label={"Delivery"}
                 name={"deliveryCondition"}
+                labelCol={{ span: 8 }}
                 type={"select"}
                 width={500}
                 entity={"Delivery Condition"}
+                entityName={"deliveryCondition"}
+                updateInForm={(value) =>
+                    handleItemUpdate(value, "deliveryCondition")
+                }
             />
             <Row justify={"start"}>
-                <Col sm={24} xs={24} >
-                <FormItemCol
-                    label={"Validity"}
-                    name={"validityCondition"}
-                    type={"select"}
-                    width={500}
-                    entity={"Validity Condition"}
-                />
+                <Col sm={24} xs={24}>
+                    <FormItemCol
+                        label={"Validity"}
+                        name={"validityCondition"}
+                        labelCol={{ span: 8 }}
+                        type={"select"}
+                        width={500}
+                        entity={"Validity Condition"}
+                        entityName={"validityCondition"}
+                        updateInForm={(value) =>
+                            handleItemUpdate(value, "deliveryCondition")
+                        }
+                    />
                 </Col>
-             
             </Row>
             <Row justify={"start"}>
-            <FormItemCol
+                <FormItemCol
                     label={"Payments"}
                     name={"paymentsCondition"}
+                    labelCol={{ span: 8 }}
                     type={"select"}
                     width={500}
                     entity={"Payments Condition"}
+                    entityName={"paymentsCondition"}
+                    updateInForm={(value) =>
+                        handleItemUpdate(value, "paymentsCondition")
+                    }
                 />
             </Row>
             <Row justify={"start"}>
                 <FormItemCol
-                 label={"Cancellation"}
-                 name={"cancellationCondition"}
-                 type={"select"}
-                 width={500}
-                 entity={"Cancellation Condition"}
-                 />
-            </Row>
+                    label={"Cancellation"}
+                    name={"cancellationCondition"}
+                    type={"select"}
+                    width={500}
+                    labelCol={{ span: 8 }}
+                    entity={"Cancellation Condition"}
+                    entityName={"cancellationCondition"}
+                    updateInForm={(value) =>
+                        handleItemUpdate(value, "cancellationCondition")
+                    }
+                />
+            </Row> */}
         </div>
     );
 };

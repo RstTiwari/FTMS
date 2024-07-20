@@ -7,7 +7,7 @@ import FormActionButtons from "./FormActionButton";
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
 
-const CustomInputWithModal = ({updateInForm}) => {
+const CustomInputWithModal = ({ updateInForm }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [inputValue, setInputValue] = useState("");
     const [prefix, setPrefix] = useState("");
@@ -18,7 +18,7 @@ const CustomInputWithModal = ({updateInForm}) => {
 
     const handleInputChange = (e) => {
         setInputValue(e.target.value);
-        updateInForm(e.target.value)
+        updateInForm(e.target.value);
     };
 
     const openModal = async () => {
@@ -38,34 +38,41 @@ const CustomInputWithModal = ({updateInForm}) => {
     };
 
     const handleFormFinish = async (values) => {
-        const response = await appApiCall("post", "updateCountersNumber", {entity:"counters",values});
+        const response = await appApiCall("post", "updateCountersNumber", {
+            entity: "counters",
+            values,
+        });
         if (!response.success) {
             NotificationHandler.error(response.message);
         } else {
-            handleModalCancel()
-            fetchCountersNumber()
-            updateInForm(response?.result?.nextNumber)
+            handleModalCancel();
+            fetchCountersNumber();
+            updateInForm(response?.result?.nextNumber);
             NotificationHandler.success("Counters updated successfully");
-
         }
     };
 
     const fetchCountersNumber = async () => {
-        const response = await appApiCall("get", "fetchCountersNumber", {}, { entity: "counters", entityName: entity });
+        const response = await appApiCall(
+            "get",
+            "fetchCountersNumber",
+            {},
+            { entity: "counters", entityName: entity }
+        );
         if (response.success) {
             const { prefix, nextNumber } = response.result;
             setPrefix(prefix);
             setNextNumber(nextNumber);
             form.setFieldsValue({ prefix, nextNumber });
             setInputValue(nextNumber);
-            updateInForm(nextNumber)
+            updateInForm(nextNumber);
         } else {
-           return NotificationHandler.error(response.message);
+            return NotificationHandler.error(response.message);
         }
     };
-    useEffect(()=>{
-        fetchCountersNumber()
-    },[])
+    useEffect(() => {
+        fetchCountersNumber();
+    }, []);
 
     return (
         <div>
@@ -100,7 +107,11 @@ const CustomInputWithModal = ({updateInForm}) => {
                     overflow: "auto",
                 }}
             >
-                <Form form={form} onFinish={handleFormFinish} initialValues={{}}>
+                <Form
+                    form={form}
+                    onFinish={handleFormFinish}
+                    initialValues={{}}
+                >
                     <Counters form={form} />
                     <FormActionButtons />
                 </Form>

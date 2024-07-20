@@ -7,58 +7,79 @@ import { TableAction } from "components/TableAction";
 import Taglabel from "components/SmallComponent/Taglabel";
 const { Text } = Typography;
 
+const getColumns = (details) => [
+    {
+        title: <Taglabel text={"DATE"} details={details} />,
+        dataIndex: "expenseDate",
+        key: "expenseDate",
+        responsive: details ? [] : ["lg"],
+        render: (_, record) => (
+            <Taglabel
+                type="text"
+                text={jsDateIntoDayjsDate(record.expenseDate)}
+                details={details}
+            />
+        ),
+    },
+    {
+        title: <Taglabel text={"EXPENSE#"} details={details} />,
+        dataIndex: "expenseNo",
+        key: "expenseDate",
+        render: (_, record) => (
+            <>
+                <Taglabel
+                    text={record.expenseNo}
+                    type={"no"}
+                    details={details}
+                />
+            </>
+        ),
+    },
+    {
+        title: (
+            <Taglabel text={"CATEGORY"} type={"heading"} details={details} />
+        ),
+        dataIndex: "category",
+        key: "category",
+        render: (_, record) => (
+            <>
+                <Taglabel
+                    type="text"
+                    text={record.categoryName}
+                    details={details}
+                />
+            </>
+        ),
+    },
+    {
+        title: <Taglabel text={"AMOUNT"} type={"heading"} details={details} />,
+        dataIndex: "amount",
+        key: "total",
+        render: (_, record) => (
+            <>
+                <Taglabel
+                    type={"amount"}
+                    text={record.amount}
+                    details={details}
+                />
+            </>
+        ),
+    },
+    {
+        title: <Taglabel type={"heading"} text={"NOTE"} details={details} />,
+        dataIndex: "note",
+        key: "total",
+        responsive: details ? [] : ["lg"],
+        render: (_, record) => (
+            <>
+                <Taglabel type="text" text={record.note} details={details} />
+            </>
+        ),
+    },
+];
+
 export const expenseData = {
-    listColumns: [
-        {
-            title: <Taglabel text={"DATE"} />,
-            dataIndex: "expenseDate",
-            key: "expenseDate",
-            render: (_, record) => (
-                <Taglabel   type = "text" text= {jsDateIntoDayjsDate(record.expenseDate)}/>
-            ),
-        },
-        {
-            title: <Taglabel text={"EXPENSE#"} />,
-            dataIndex: "expenseNo",
-            key: "expenseDate",
-            render: (_, record) => (
-                <>
-                    <Taglabel text={record.expenseNo} type={"no"} />
-                </>
-            ),
-        },
-        {
-            title: <Taglabel text={"EXPENSE CATEGORY"} type={"heading"} />,
-            dataIndex: "category",
-            key: "category",
-            render: (_, record) => (
-                <>
-                    <Taglabel type="text" text={record.categoryName} />
-                </>
-            ),
-        },
-        {
-            title: <Taglabel text={"AMOUNT"} type={"heading"} />,
-            dataIndex: "amount",
-            key: "total",
-            render: (_, record) => (
-                <>
-                    <Taglabel type={"amount"} text={record.amount} />
-                </>
-            ),
-        },
-        {
-            title: <Taglabel type={"heading"} text={"NOTE"} />,
-            dataIndex: "note",
-            key: "total",
-            responsive: ["lg"],
-            render: (_, record) => (
-                <>
-                    <Taglabel  type ="text" text={record.note}/>
-                </>
-            ),
-        },
-    ],
+    getColumns,
 };
 export default expenseData;
 

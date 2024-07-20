@@ -1,3 +1,4 @@
+import { required } from "joi";
 import mongoose from "mongoose";
 import mongooseAutoPopulate from "mongoose-autopopulate";
 const purchaseOrderSchema = new mongoose.Schema({
@@ -9,13 +10,14 @@ const purchaseOrderSchema = new mongoose.Schema({
     },
     purchaseNo: {
         type: String,
-        require: true,
+        required: true,
         unique: true,
     },
     purchaseDate: {
-        type: Number,
-        require: true,
+        type: Date,
+        required: true,
     },
+    status: { type: String, default: "DRAFT", required: true },
     items: [
         {
             description: {
@@ -47,7 +49,7 @@ const purchaseOrderSchema = new mongoose.Schema({
     },
     grandTotal: {
         type: Number,
-    }, 
+    },
     tenantId: {
         type: String,
         required: true,

@@ -22,9 +22,7 @@ import FormItemCol from "components/SmallComponent/FormItemCol";
 import Taglabel from "components/SmallComponent/Taglabel";
 import { genTreeStyle } from "antd/es/tree/style";
 
-
 const QuotationForm = ({ form }) => {
-
     const handleItemsUpdate = (value, filedName, rowName) => {
         const items = form.getFieldValue("items");
         let temObj = items[rowName];
@@ -56,8 +54,7 @@ const QuotationForm = ({ form }) => {
             form.setFieldsValue({ customer: value });
         } else if (filedName === "quoteNo") {
             form.setFieldsValue({ quoteNo: value });
-        }else{
-
+        } else {
         }
 
         items[rowName] = temObj;
@@ -70,7 +67,7 @@ const QuotationForm = ({ form }) => {
         let taxAmount = Math.ceil(
             calculateTax(taxPercent, grossTotal + transportAmount)
         );
-        let grandTotal = grossTotal + taxAmount +transportAmount;
+        let grandTotal = grossTotal + taxAmount + transportAmount;
         form.setFieldsValue({
             grossTotal: grossTotal,
             grandTotal: grandTotal,
@@ -83,7 +80,7 @@ const QuotationForm = ({ form }) => {
         let amount = (taxPercent * total) / 100;
         return Math.ceil(amount);
     }
- 
+
     useEffect(() => {}, []);
     return (
         <div>
@@ -102,8 +99,8 @@ const QuotationForm = ({ form }) => {
                 type="model"
                 entity={"customers"}
                 fieldName="customerName" // filed name form customer modal
-                updateInForm={(value)=>{
-                    handleItemsUpdate(value,"customer")
+                updateInForm={(value) => {
+                    handleItemsUpdate(value, "customer");
                 }}
             />
             <FormItemCol
@@ -119,8 +116,8 @@ const QuotationForm = ({ form }) => {
                         message: "Please Provide Quote No",
                     },
                 ]}
-                updateInForm={(value)=>{
-                    handleItemsUpdate(value,'quoteNo')
+                updateInForm={(value) => {
+                    handleItemsUpdate(value, "quoteNo");
                 }}
             />
             <Row>
@@ -428,18 +425,19 @@ const QuotationForm = ({ form }) => {
                 name={"deliveryCondition"}
                 type={"select"}
                 width={500}
+                labelCol={{ span: 8 }}
                 entity={"Delivery Condition"}
                 entityName={"deliveryCondition"}
                 updateInForm={(value) => {
                     handleItemsUpdate(value, "deliveryCondition");
                 }}
-
             />
             <Row justify={"start"}>
                 <FormItemCol
                     label={"Validity"}
                     name={"validityCondition"}
                     type={"select"}
+                    labelCol={{ span: 8 }}
                     width={500}
                     entity={"Validity Condition"}
                     entityName={"validityCondition"}
@@ -453,13 +451,13 @@ const QuotationForm = ({ form }) => {
                     label={"Payments"}
                     name={"paymentsCondition"}
                     entityName={"paymentsCondition"}
+                    labelCol={{ span: 8 }}
                     type={"select"}
                     width={500}
                     entity={"Payments Condition"}
                     updateInForm={(value) => {
                         handleItemsUpdate(value, "paymentsCondition");
                     }}
-                    
                 />
             </Row>
             <Row justify={"start"}>
@@ -467,13 +465,13 @@ const QuotationForm = ({ form }) => {
                     label={"Cancellation"}
                     name={"cancellationCondition"}
                     type={"select"}
+                    labelCol={{ span: 8 }}
                     width={500}
                     entity={"Cancellation Condition"}
                     entityName={"cancellationCondition"}
                     updateInForm={(value) => {
                         handleItemsUpdate(value, "cancellationCondition");
                     }}
-                    
                 />
             </Row>
         </div>

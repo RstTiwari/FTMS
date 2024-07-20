@@ -1,39 +1,42 @@
 import mongoose from "mongoose";
 import mongooseAutoPopulate from "mongoose-autopopulate";
 
-const expenseSchema = new mongoose.Schema({
-    customer: {
-        type: mongoose.Schema.ObjectId,
-        ref: "customer",
+const expenseSchema = new mongoose.Schema(
+    {
+        customer: {
+            type: mongoose.Schema.ObjectId,
+            ref: "customer",
+        },
+        categoryName: {
+            type: String,
+            required: true,
+        },
+        amount: {
+            type: Number,
+            required: true,
+        },
+        customer: {
+            type: mongoose.Schema.ObjectId,
+            ref: "customer",
+        },
+        note: {
+            type: String,
+        },
+        expenseDate: {
+            type: Date,
+            required: true,
+        },
+        image: {
+            type: String,
+        },
+        expenseNo: { type: Number, unique: true },
+        tenantId: {
+            type: String,
+            required: true,
+        },
     },
-    categoryName: {
-        type: String,
-        required: true,
-    },
-    amount: {
-        type: Number,
-        required: true,
-    },
-    customer: {
-        type: mongoose.Schema.ObjectId,
-        ref: "customer",
-    },
-    note: {
-        type: String,
-    },
-    expenseDate: {
-        type: Date,
-        required: true,
-    },
-    image: {
-        type: String,
-    },
-    expenseNo: { type: Number, unique: true },
-    tenantId: {
-        type: String,
-        required: true,
-    },
-});
+    { timestamps: true }
+);
 
 expenseSchema.plugin(mongooseAutoPopulate);
 
