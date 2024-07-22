@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Select, Divider, Button } from "antd";
-import NewCustomer from "pages/Customer/NewCustomer";
 import { useAuth } from "state/AuthProvider";
 import CoustomButton from "./SmallComponent/CoustomButton";
 import CustomForm from "./CustomForm";

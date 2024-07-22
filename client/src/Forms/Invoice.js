@@ -2,7 +2,6 @@ import React from "react";
 import { Form, Row, Col, Input, InputNumber, Button, Divider } from "antd";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useMediaQuery } from "@mui/material";
-import ProductModal from "components/ProductModal";
 import FormItemCol from "components/SmallComponent/FormItemCol";
 import Taglabel from "components/SmallComponent/Taglabel";
 import CustomSelect from "components/SmallComponent/CustomSelect";

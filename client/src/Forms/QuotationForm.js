@@ -17,10 +17,8 @@ import { PlusOutlined, CloseOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useMediaQuery } from "@mui/material";
 import { useAuth } from "state/AuthProvider";
 import CustomModal from "components/CustomModal";
-import ProductModal from "components/ProductModal";
 import FormItemCol from "components/SmallComponent/FormItemCol";
 import Taglabel from "components/SmallComponent/Taglabel";
-import { genTreeStyle } from "antd/es/tree/style";
 
 const QuotationForm = ({ form }) => {
     const handleItemsUpdate = (value, filedName, rowName) => {

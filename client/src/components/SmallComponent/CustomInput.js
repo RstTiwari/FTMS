@@ -2,7 +2,6 @@ import React from "react";
 import { Input, DatePicker, InputNumber, Select } from "antd";
 import CustomSelect from "./CustomSelect"; // Assuming you have created CustomDrop component
 import CustomModal from "components/CustomModal";
-import VendorModal from "components/VendorModal";
 import UploadImage from "components/UploadImage";
 import CustomCounters from "./CustomCounters";
 
@@ -61,7 +60,7 @@ const CustomInput = ({
         case "image":
             return <UploadImage {...restProps} />;
         default:
-            return <Input readOnly {...restProps} />;
+            return <Input readOnly ={readOnly} {...restProps} />;
     }
 };
 

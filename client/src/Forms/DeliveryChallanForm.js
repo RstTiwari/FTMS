@@ -16,12 +16,8 @@ import {
 import { PlusOutlined, CloseOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useMediaQuery } from "@mui/material";
 import { useAuth } from "state/AuthProvider";
-import CustomerModal from "components/CustomModal";
-import ProductModal from "components/ProductModal";
 import FormItemCol from "components/SmallComponent/FormItemCol";
 import Taglabel from "components/SmallComponent/Taglabel";
-import CoustomButton from "components/SmallComponent/CoustomButton";
-import CustomLabel from "components/SmallComponent/CustomLabel";
 import CustomSelect from "components/SmallComponent/CustomSelect";
 import CustomModel from "components/CustomModal";
 

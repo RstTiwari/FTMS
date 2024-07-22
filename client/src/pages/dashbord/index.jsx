@@ -1,4 +1,3 @@
-import StatBox from "components/StateBox";
 import React, { useEffect } from "react";
 import {
     PointOfSaleOutlined,
@@ -14,8 +13,6 @@ import {
     useTheme,
     useMediaQuery,
 } from "@mui/material";
-import { useGetDashbordDataQuery } from "state/api";
-import OverviewChart from "components/OverviewChart";
 import { Flex ,Row,Col} from "antd";
 import SummaryCard from "./SummaryCard";
 import { useAuth } from "state/AuthProvider";

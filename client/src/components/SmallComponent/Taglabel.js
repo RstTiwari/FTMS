@@ -9,7 +9,7 @@ const typeColorMapping = {
   amount: '#00b700',
   text:"#7f7f7f",
   no: ' #7f7fff',
-  customer: '#E59400',
+  customer:'#408dfb',
   status: '#7feaac', // Default color
 };
 

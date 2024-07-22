@@ -2,7 +2,6 @@ import { items } from "./LeadData";
 import { Space, Dropdown } from "antd";
 
 import { DownOutlined } from "@ant-design/icons";
-import { TableAction } from "components/TableAction";
 import Taglabel from "components/SmallComponent/Taglabel";
 
 const getColumns = (details) => [

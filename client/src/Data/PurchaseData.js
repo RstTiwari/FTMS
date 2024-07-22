@@ -1,7 +1,6 @@
 import { Space, Flex, Dropdown, Typography, Form, Input } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { items } from "./LeadData";
-import { TableAction } from "components/TableAction";
 import {
     convertUnixTimestampToDate,
     jsDateIntoDayjsDate,

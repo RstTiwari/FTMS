@@ -3,7 +3,6 @@ import {
     convertUnixTimestampToDate,
     jsDateIntoDayjsDate,
 } from "Helper/EpochConveter";
-import { TableAction } from "components/TableAction";
 import Taglabel from "components/SmallComponent/Taglabel";
 const getColumns = (details) => [
     {

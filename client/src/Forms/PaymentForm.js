@@ -11,14 +11,6 @@ import {
     Typography,
     message,
 } from "antd";
-import { useParams } from "react-router-dom";
-import PaymentHistoryList from "pages/Payments/PaymentHistory";
-import { epochConveter } from "Helper/EpochConveter";
-import { useAuth } from "state/AuthProvider";
-import { useNavigate } from "react-router-dom";
-import NotificationHandler from "EventHandler/NotificationHandler";
-import { paymentMode } from "Data/PaymentData";
-import SaveBottmComponent from "components/SaveBottomComponent";
 import FormItemCol from "components/SmallComponent/FormItemCol";
 const { Text } = Typography;
 

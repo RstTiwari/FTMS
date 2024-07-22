@@ -7,76 +7,17 @@ import {
     DownloadOutlined,
     DeleteOutlined,
     CloseOutlined,
+    DownCircleOutlined
 } from "@ant-design/icons";
 import { Row, Col } from "antd";
+import { useParams } from "react-router-dom";
 
 const DetailsHeader = () => {
+    const {entity} = useParams()
     const navigate = useNavigate();
     return (
         <>
-            <Row
-                style={{
-                    backgroundColor: "#dbdcdd",
-                    padding: 10,
-                    display: "flex",
-                    alignItems: "center",
-                }}
-            >
-                <Col
-                    style={{
-                        flex: 1,
-                        display: "flex",
-                        alignItems: "center",
-                        borderRight: "1px solid #ccc",
-                    }}
-                >
-                    <EditOutlined style={{ marginRight: 5 }} />
-                    Edit
-                </Col>
-                <Col
-                    style={{
-                        flex: 1,
-                        display: "flex",
-                        alignItems: "center",
-                        borderRight: "1px solid #ccc",
-                    }}
-                >
-                    <MailOutlined style={{ marginRight: 5 }} />
-                    Mails
-                </Col>
-                <Col
-                    style={{
-                        flex: 1,
-                        display: "flex",
-                        alignItems: "center",
-                        borderRight: "1px solid #ccc",
-                    }}
-                >
-                    <ShareAltOutlined style={{ marginRight: 5 }} />
-                    Share
-                </Col>
-                <Col
-                    style={{
-                        flex: 1,
-                        display: "flex",
-                        alignItems: "center",
-                        borderRight: "1px solid #ccc",
-                    }}
-                >
-                    <DownloadOutlined style={{ marginRight: 5 }} />
-                    Download
-                </Col>
-                <Col
-                    style={{
-                        flex: 1,
-                        display: "flex",
-                        alignItems: "center",
-                        borderRight: "1px solid #ccc",
-                    }}
-                >
-                    <DeleteOutlined style={{ marginRight: 5 }} />
-                    Delete
-                </Col>
+            <Row>
                 <Col
                     style={{
                         flex: 1,
@@ -91,11 +32,92 @@ const DetailsHeader = () => {
                             cursor: "pointer",
                             fontSize: 16,
                             padding: "5px 10px",
-                            border: "1px solid red",
                             borderRadius: 4,
                             backgroundColor: "#fff",
                         }}
                     />
+                </Col>
+            </Row>
+            <Row
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    cursor: "pointer",
+                }}
+            >
+                <Col
+                    span={2}
+                    style={{
+                        flex: 1,
+                        display: "flex",
+                        alignItems: "center",
+                    }}
+                >
+                    <EditOutlined style={{ marginRight: 5 }} />
+                    Edit
+                </Col>
+                {entity !== "customers" ? (
+                    <>
+                        <Col
+                            span={2}
+                            style={{
+                                flex: 1,
+                                display: "flex",
+                                alignItems: "center",
+                            }}
+                        >
+                            <MailOutlined style={{ marginRight: 5 }} />
+                            Mail
+                        </Col>
+                        <Col
+                            span={2}
+                            style={{
+                                flex: 1,
+                                display: "flex",
+                                alignItems: "center",
+                            }}
+                        >
+                            <ShareAltOutlined style={{ marginRight: 5 }} />
+                            Share
+                        </Col>
+                        <Col
+                    span={3}
+                    style={{
+                        flex: 1,
+                        display: "flex",
+                        alignItems: "center",
+                    }}
+                >
+                    <DownloadOutlined style={{ marginRight: 5 }} />
+                    Download
+                </Col>
+                    </>
+                ) : (
+                    <Col
+                    span={4}
+                    style={{
+                        flex: 1,
+                        display: "flex",
+                        alignItems: "center",
+                    }}
+                >
+                    <DownCircleOutlined style={{ marginRight: 5 }} />
+                    Record Payment
+                </Col>
+                )}
+
+           
+               
+                <Col
+                    span={2}
+                    style={{
+                        flex: 1,
+                        display: "flex",
+                        alignItems: "center",
+                    }}
+                >
+                    <DeleteOutlined style={{ marginRight: 5 }} />
+                    Delete
                 </Col>
             </Row>
         </>

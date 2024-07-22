@@ -1,6 +1,4 @@
 import { Space, Dropdown, Flex, Typography } from "antd";
-import { DownOutlined } from "@ant-design/icons";
-import { TableAction } from "components/TableAction";
 import { convertUnixTimestampToDate } from "../Helper/EpochConveter";
 const { Text, Link } = Typography;
 export const sourceOptions = [
