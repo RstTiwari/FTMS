@@ -23,6 +23,7 @@ const type = upload.single("file");
 
 router.post("/create", authMethod.isValidAuthtoken, appRoutes.create);
 router.post("/read", authMethod.isValidAuthtoken, appRoutes.read);
+router.get("/get", authMethod.isValidAuthtoken, appRoutes.get);
 router.post("/update", authMethod.isValidAuthtoken, appRoutes.update);
 router.patch("/patch", authMethod.isValidAuthtoken, appRoutes.patch);
 router.get("/pdf", authMethod.isValidAuthtoken, appRoutes.genratePdf);

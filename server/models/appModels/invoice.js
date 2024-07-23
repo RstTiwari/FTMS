@@ -27,11 +27,13 @@ const invoiceSchema = new mongoose.Schema(
             },
         ],
         invoiceDate: {
-            type: Number,
-            require: true,
+            type: Date,
+            required: true,
         },
         dueDate: {
-            type: Number,
+            type: Date,
+            required: true,
+
         },
 
         items: [

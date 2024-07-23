@@ -13,7 +13,7 @@ import { Row, Col } from "antd";
 import { useParams } from "react-router-dom";
 
 const DetailsHeader = () => {
-    const {entity} = useParams()
+    const {entity,tenantId,pageNo,pageSize} = useParams()
     const navigate = useNavigate();
     return (
         <>
@@ -26,7 +26,7 @@ const DetailsHeader = () => {
                     }}
                 >
                     <CloseOutlined
-                        onClick={() => navigate(-1)}
+                        onClick={() => navigate(`/app/${tenantId}/${entity}/${pageNo}/${pageSize}`)}
                         style={{
                             color: "red",
                             cursor: "pointer",

@@ -1,30 +1,35 @@
-import { useState, useEffect } from "react";
-import { fetchDataById } from "./api"; // Adjust import as per your API fetching method
+import { useState, useEffect, useCallback } from "react";
+import NotificationHandler from "EventHandler/NotificationHandler";
+import { useAuth } from "state/AuthProvider";
 
 const useInitialFormValues = (entity, id) => {
     const [initialValues, setInitialValues] = useState(null);
     const [loading, setLoading] = useState(false);
+    const { appApiCall } = useAuth();
+
+    const fetchInitialValues = useCallback(async () => {
+        setLoading(true);
+        try {
+            const response = await appApiCall("get", "get", {}, { entity, id });
+            if (!response.success) {
+                NotificationHandler.error(response.message);
+                setLoading(false);
+                return;
+            }
+            setInitialValues(response.result); // Assuming response.data contains the initial values
+            setLoading(false);
+        } catch (error) {
+            setInitialValues(null);
+            setLoading(false);
+            NotificationHandler.error(error.message);
+        }
+    }, [appApiCall, entity, id]);
 
     useEffect(() => {
-        const fetchInitialValues = async () => {
-            setLoading(true);
-            try {
-                const data = await fetchDataById(entity, id); // Replace with your API call
-                setInitialValues(data);
-                setLoading(false);
-            } catch (error) {
-                console.error("Error fetching initial values:", error);
-                setInitialValues(null);
-                setLoading(false);
-            }
-        };
+        fetchInitialValues();
+    }, [fetchInitialValues]);
 
-        if (entity && id) {
-            fetchInitialValues();
-        }
-    }, [entity, id]);
-
-    return { initialValues, loading };
+    return { initialValues, loading, fetchInitialValues };
 };
 
 export default useInitialFormValues;

@@ -15,7 +15,7 @@ const getColumns = (details) => [
         dataIndex: "customer",
         key: "customer",
         render: (_, record) => (
-            <Taglabel type="customer" text={record.customer.customerName}  details ={details}/>
+            <Taglabel type="customer" text={record?.customer?.customerName}  details ={details}/>
         ),
     },
     {

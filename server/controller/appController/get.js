@@ -1,23 +1,20 @@
 import checkDbForEntity from "../../Helper/databaseSelector.js";
-const read = async (req, res, next) => {
+const get = async (req, res, next) => {
     try {
-        let { entity, pageNo, pageSize, select } = req.body;
-        let tenantId = req.tenantId;
+        let { entity, id } = req.query;
+         let tenantId = req.tenantId
 
-        if (!entity || !pageNo || !pageSize || !tenantId) {
-            throw new Error(`Invalid Payload for ${entity} List`);
+        if (!entity || !tenantId || !id) {
+            throw new Error(`Invalid Payload for ${entity}`);
         }
+
+        let filter = { tenantId: tenantId, _id: id };
 
         // selecting the Database
         const dataBase = checkDbForEntity(entity);
 
-        let skip = (pageNo - 1) * pageSize;
         let data = await dataBase
-            .find({ tenantId: tenantId })
-            .select(select)
-            .sort({ _id: -1 })
-            .skip(skip)
-            .limit(pageSize)
+            .findOne(filter)
             .populate([
                 {
                     path: "customer",
@@ -31,6 +28,9 @@ const read = async (req, res, next) => {
                 },
             ])
             .lean();
+        if (!data) {
+            throw new Error("No Data Found");
+        }
 
         res.status(200).json({
             success: 1,
@@ -41,4 +41,4 @@ const read = async (req, res, next) => {
         next(error);
     }
 };
-export default read;
+export default get;

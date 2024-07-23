@@ -7,6 +7,7 @@ import genratePdf from "./genratePdf.js";
 import upload from "./upload.js";
 import { fetchCountersNumber, updateCountersNumber } from "../appController/counter.js";
 import { addSelectData,fetchSelectData } from "./customSelect.js";
+import get from "./get.js";
 
 const appRoutes = {
     create: async (req, res, next) => {
@@ -17,6 +18,9 @@ const appRoutes = {
     },
     read: async (req, res, next) => {
         read(req, res, next);
+    },
+    get: async (req, res, next) => {
+        get(req, res, next);
     },
     update: async (req, res, next) => {
         update(req, res, next);

@@ -4,7 +4,7 @@ const DetailsModule = ({entity,payload})=>{
     let  component = <NotFound />
     switch (entity) {
         case "customers":
-            component = <Customer />
+            component = <Customer payload = {payload} />
             break;
         default:
             break;
