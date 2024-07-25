@@ -1,25 +1,29 @@
-import myfac8ryTemplate from "../../template/pdfTemplate/myfac8ry/index.js";
+import pdfTemplateSelector from "../../template/pdfTemplate/myfac8ry/index.js";
 import whiteSimple from "../../template/pdfTemplate/whitesample/index.js"
 import tenanDb from "../../models/coreModels/Tenant.js"
-const  generatePdf = async (req, res, next,dataBase) => {
+import checkDbForEntity from "../../Helper/databaseSelector.js";
+import { organizationData ,entityData} from "../../data/orgnization.js";
+const  generatePdf = async (req, res, next,) => {
+    
     try {
-        const { entity,id, entityNo } = req.query;
+        const { entity,id } = req.query;
         let tenantId = req.tenantId ;
-        let data = await dataBase.findOne({_id:id ,tenantId:tenantId})
-        const tenantData = await tenanDb.findOne({tenantId:tenantId})
-        const templateId = tenantData.templateId
-        data["orgnization"] = tenantData
+        let dataBase = checkDbForEntity(entity)
+        // let entityData = await dataBase.findOne({_id:id ,tenantId:tenantId})
+        //await tenanDb.findOne({tenantId:tenantId})
+
+        const templateId = "myfac8ry"
+        // data["orgnization"] = tenantData
         if(templateId ==="myfac8ry"){
-            return myfac8ryTemplate(req,res,next,data,entity)
+            return pdfTemplateSelector(req,res,next,entityData,organizationData,entity)
         }else if(templateId ==="whitesimple"){
                 return whiteSimple(req,res,next,data,entity)
         }else{
 
-        }
+        }   
 
     } catch (error) {
-        console.error(error);
-        res.status(500).send("Failed to generate PDF");
+        next(error)
     }
 };
 

@@ -55,7 +55,7 @@ const Approuter = ({ profile }) => {
                 {/**In case some one acess login page after being logged in */}
                 <Route
                     path="/login"
-                    element={<Navigate to="/app/:tenantId/dashboard" replace />}
+                    element={<Navigate to ={`/app/${tenantId}/dashboard`} replace />}
                 />
             </Route>
         </Routes>

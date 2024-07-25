@@ -1,8 +1,7 @@
 import axios from 'axios'
 import fs from "fs"
 import path from 'path';
-
-const folder = "/upload"
+import  sharp from 'sharp'
 
 
 export const calcultTitlePostion = (companyName) => {
@@ -47,21 +46,36 @@ export const calculateStreetPostion = (street) => {
 };
 
 
-export const  downloadAndSaveImage = async(url, fileName) => {
-  try {
-    const folder = "upload"
-    const response = await axios.get(url, { responseType: 'arraybuffer' });
-    const imageName = `${fileName}`;
-    const imagePath =path.join(folder ,imageName)
-    fs.writeFileSync(imagePath, response.data);
-    console.log(`Image downloaded and saved as ${imageName}`);
-    return imagePath
-  } catch (error) {
-    console.error('Error downloading or saving the image:', error);
-    return null
 
-  }
+ export const downloadAndSaveImage = async (url, fileName) => {
+    try {
+        const folder = "upload"
+        const response = await axios.get(url, { responseType: 'arraybuffer' });
+        const imageName = `${fileName}.png`; // Assuming the image is a PNG
+        const imagePath = path.join(folder, imageName);
+        fs.writeFileSync(imagePath, response.data);
+        console.log(`Image downloaded and saved as ${imageName}`);
+        return imagePath;
+    } catch (error) {
+        console.error('Error downloading or saving the image:', error);
+        return null;
+    }
 }
+
+export  const downloadImage = async (url) => {
+    try {
+        const response = await axios.get(url, { responseType: 'arraybuffer' });
+        const imageBuffer = Buffer.from(response.data, 'binary');
+
+        // Convert image to PNG format
+        const pngBuffer = await sharp(imageBuffer).png().toBuffer();
+        return pngBuffer;
+    } catch (error) {
+        console.error('Error downloading or converting the image:', error);
+        return null;
+    }
+}
+
 
 export const addBankDetails = (doc,orgnization)=>{
     
