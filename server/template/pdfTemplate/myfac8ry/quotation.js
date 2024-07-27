@@ -1,12 +1,12 @@
 import PDFDocument from "pdfkit";
 import { quote } from "../../../data/quote.js";
-import axios from "axios"
-import fs from "fs"
+import axios from "axios";
+import fs from "fs";
 import { epochInDDMMYY } from "../../../Helper/timehelper.js";
 import {
-    calcultTitlePostion,
+    calculateHeaderPosition,
     calculateStreetPostion,
-    downloadAndSaveImage
+    downloadAndSaveImage,
 } from "../../../Helper/pdfHelper.js";
 
 const quotationPdf = async (req, res, next, quoteData) => {
@@ -21,7 +21,7 @@ const quotationPdf = async (req, res, next, quoteData) => {
         doc.image(imagePath, 5, 5, { fit: [100, 100] });
 
         const { orgnizationHeaderText, orgnizationHeaderPostion, fontSize } =
-            calcultTitlePostion(orgnization.companyName);
+            calculateHeaderPosition(orgnization.companyName);
         doc.fontSize(fontSize)
             .fillColor("#0047AB")
             .font("Helvetica-Bold")
@@ -165,8 +165,5 @@ const quotationPdf = async (req, res, next, quoteData) => {
         return error.message;
     }
 };
-
-
-
 
 export default quotationPdf;

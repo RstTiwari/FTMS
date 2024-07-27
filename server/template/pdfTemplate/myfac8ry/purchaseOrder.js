@@ -1,12 +1,12 @@
 import PDFDocument from "pdfkit";
 import { quote } from "../../../data/quote.js";
-import axios from "axios"
-import fs from "fs"
+import axios from "axios";
+import fs from "fs";
 import { epochInDDMMYY } from "../../../Helper/timehelper.js";
 import {
-    calcultTitlePostion,
+    calculateHeaderPosition,
     calculateStreetPostion,
-    downloadAndSaveImage
+    downloadAndSaveImage,
 } from "../../../Helper/pdfHelper.js";
 
 const purchaseOrder = async (req, res, next, purchaseData) => {
@@ -21,7 +21,7 @@ const purchaseOrder = async (req, res, next, purchaseData) => {
         doc.image(imagePath, 5, 5, { fit: [100, 100] });
 
         const { orgnizationHeaderText, orgnizationHeaderPostion, fontSize } =
-            calcultTitlePostion(orgnization.companyName);
+            calculateHeaderPosition(orgnization.companyName);
         doc.fontSize(fontSize)
             .fillColor("#0047AB")
             .font("Helvetica-Bold")
@@ -148,8 +148,5 @@ const purchaseOrder = async (req, res, next, purchaseData) => {
         return error.message;
     }
 };
-
-
-
 
 export default purchaseOrder;

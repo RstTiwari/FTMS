@@ -1,12 +1,14 @@
 import PDFDocument from "pdfkit";
-import { epochInDDMMYY } from "../../../Helper/timehelper.js";
+import { epochInDDMMYY, jsDateIntoDDMMYY } from "../../../Helper/timehelper.js";
 import {
     downloadAndSaveImage,
     downloadImage,
     calculateStreetPostion,
-    calcultTitlePostion,
     addBankDetails,
+    calculateHeaderPosition,
 } from "../../../Helper/pdfHelper.js";
+import dayjs from "dayjs";
+import { quotationData } from "../../../data/orgnization.js";
 
 const defaultPdfTemplate = async (
     req,
@@ -17,30 +19,25 @@ const defaultPdfTemplate = async (
     entity
 ) => {
     try {
-        const { customer, items } = entityData;
         const imageBuffer = await downloadImage(organizationData.companyLogo);
 
-        if (!imageBuffer) {
-            throw new Error("Failed to download the image");
-        }
-
-        const doc = new PDFDocument({ size: [595, 842] });
+        const doc = new PDFDocument({ size: [595, 842], margin: 5 });
         doc.pipe(res);
-        
+
         // Add page border
         addPageBorder(doc);
-        
+
         // Header Section
-        addHeader(doc, organizationData, imageBuffer);
+        addHeader(doc, organizationData, imageBuffer, entity, entityData);
 
-        // // Details Section
-        // addDetails(doc, entityData, entity);
+        // Details Section
+        addDetails(doc, entityData, entity);
 
-        // // Items Section
-        // addItemsTable(doc, items, entity);
+        // Items Section
+        addItemsTable(doc, entityData, entity);
 
-        // // Footer Section
-        // addFooter(doc, entityData);
+        // Footer Section
+        addFooter(doc, entityData, organizationData);
 
         doc.end();
 
@@ -81,210 +78,308 @@ const defaultPdfTemplate = async (
 //     doc.text(`${organization.address.country}`, streetPostion, 85);
 // };
 
-const addHeader = (doc, organization, imageBuffer) => {
+const addHeader = (doc, organization, imageBuffer, entity, entityDetails) => {
     const pageWidth = doc.page.width;
     const pageHeight = doc.page.height;
+    const headerTextColor = "#0047AB"; // Color for the header text
+    const borderColor = "#000000"; // Color for the border
+    const borderWeight = 1; // Weight for the border
+
+    let entityX = 0;
+    let entityY = 10;
+
+    // Adding Entity to Doc
+    doc.fontSize(12)
+        .fillColor("#000000")
+        .font("Helvetica-Bold")
+        .text(entity?.toUpperCase(), entityX, entityY, {
+            align: "center",
+        });
+    doc.moveTo(4, doc.y) // Adjust the Y position if necessary
+        .lineTo(pageWidth - 4, doc.y)
+        .stroke(borderColor);
 
     // Image Section
-    const imageWidth = 100;
-    const imageHeight = 100;
+    const imageWidth = 75;
+    const imageHeight = 75;
     const imageX = 5; // X position for the image
-    const imageY = 5; // Y position for the image
-
+    const imageY = doc.y + 5; // Y position for the image
     if (imageBuffer) {
-        // Check if the imageBuffer is valid
         try {
-            doc.image(imageBuffer, imageX, imageY, { width: imageWidth, height: imageHeight });
-            // Draw a border below the image
-            // const borderWidth = 1;
-            // const borderColor = "#000000"; // Dark black color
-            // const borderX = imageX; // X position for the border
-            // const borderY = imageY + imageHeight + 5; // Y position just below the image
-            // doc.rect(borderX, borderY, imageWidth, borderWidth)
-            //     .lineWidth(borderWidth)
-            //     .fillColor(borderColor)
-            //     .fill();
+            doc.image(imageBuffer, imageX, imageY, {
+                width: imageWidth,
+                height: imageHeight,
+            });
         } catch (error) {
-            console.error('Error adding image to PDF:', error);
+            console.error("Error adding image to PDF:", error);
         }
     } else {
-        console.log('No image buffer provided');
+        console.log("No image buffer provided");
     }
 
-    // Header Text Section
-    const headerText = organization.companyName;
-    const headerFontSize = 16; // Font size for the header
-    const headerTextColor = "#0047AB"; // Color for the header text
-
-    // Calculate header text position
-    const headerTextWidth = doc.widthOfString(headerText, { fontSize: headerFontSize });
-    const headerTextX = (pageWidth - headerTextWidth) / 2;
-    const headerTextY = 20; // Y position for the header text, aligned with image
-
-    doc.fontSize(headerFontSize)
-        .fillColor(headerTextColor)
-        .font("Helvetica-Bold")
-        .text(headerText, headerTextX, headerTextY);
+    const { headerText } = calculateHeaderPosition(
+        organization?.companyName,
+        doc
+    );
 
     // Address Section
     const street1 = organization.address.street1;
-    const street2 = organization.address.street2 || ''; // Handle cases where street2 may be undefined
+    const street2 = organization.address.street2 || ""; // Handle cases where street2 may be undefined
     const city = organization.address.city;
     const state = organization.address.state;
-    const pinCode = organization.address.pinCode;
+    const pincode = organization.address.pincode;
+    const phoneNumber = organization.phone;
+    const email = organization.email;
+    const website = organization.website;
+    const gstNo = organization.gstNo;
 
-    const addressFontSize = 9;
-    const addressColor = "#4B4E4F";
+    const addressFontSize = 8.5;
+    const addressColor = "#000000";
 
     // Concatenate address lines and calculate position
-    const fullAddress = `${street1}${street2 ? ', ' + street2 : ''}\n${city}, ${state}, ${pinCode}`;
-    const addressWidth = doc.widthOfString(fullAddress, { fontSize: addressFontSize });
-    const addressX = (pageWidth - addressWidth) / 2;
+    const fullAddress = `${street1}${
+        street2 ? ", " + street2 : ""
+    }\n${city}, ${state}, ${pincode} \nPhone: ${phoneNumber},\nEmail: ${email}\nWebsite: ${website}\nGST No: ${gstNo}`;
 
-    // Y position for address text, below the company name
-    const addressY = headerTextY + 20; // Add some spacing below the header text
+    const headerTextY = entityY + 20;
+
+    // Y position for text elements
+
+    // Draw text
+    doc.fontSize(12)
+        .fillColor(headerTextColor)
+        .font("Helvetica-Bold")
+        .text(headerText, 80, headerTextY, { width: 275, align: "left" });
 
     doc.fontSize(addressFontSize)
         .fillColor(addressColor)
         .font("Helvetica")
-        .text(fullAddress, addressX, addressY, { lineBreak: true });
+        .text(fullAddress, { width: 275, align: "left" });
 
-    // Move down for additional spacing or elements if needed
+    doc.moveTo(4, doc.y) // Adjust the Y position if necessary
+        .lineTo(pageWidth - 4, doc.y)
+        .stroke(borderColor);
+
+    // Draw line from the end of the address section up to the entity border
+    doc.moveTo(355, doc.y)
+        .lineTo(355, entityY + 13) // Adjust 'entityY + 13' to match the position of the entity border
+        .stroke(borderColor);
+
+    // Add dynamic header details based on entity
+    let detailsY = headerTextY;
+    const detailFontSize = 13;
+    const detailWidth = 150;
+
+    if (entity.toLowerCase() === "invoice") {
+        doc.fontSize(detailFontSize)
+            .fillColor("#000000")
+            .font("Helvetica-Bold")
+            .text(`INVOICE NO:`, 360, detailsY, {
+                width: detailWidth,
+                align: "left",
+            });
+        doc.font("Helvetica").text(
+            `${entityDetails.invoiceNo}`,
+            460,
+            detailsY,
+            { width: detailWidth, align: "left" }
+        );
+        detailsY += 20;
+        doc.font("Helvetica-Bold").text(`INVOICE DATE:`, 360, detailsY, {
+            width: detailWidth,
+            align: "left",
+        });
+        doc.font("Helvetica").text(
+            `${jsDateIntoDDMMYY(entityDetails.invoiceDate)}`,
+            460,
+            detailsY,
+            { width: detailWidth, align: "left" }
+        );
+        detailsY += 20;
+        doc.font("Helvetica-Bold").text(`DUE DATE:`, 360, detailsY, {
+            width: detailWidth,
+            align: "left",
+        });
+        doc.font("Helvetica").text(
+            `${jsDateIntoDDMMYY(entityDetails.dueDate)}`,
+            460,
+            detailsY,
+            { width: detailWidth, align: "left" }
+        );
+    } else if (entity.toLowerCase() === "quotations") {
+        doc.fontSize(detailFontSize)
+            .fillColor("#000000")
+            .font("Helvetica-Bold")
+            .text(`QUOTE NO:`, 360, detailsY, {
+                width: detailWidth,
+                align: "left",
+            });
+        doc.font("Helvetica").text(`${entityDetails.quoteNo}`, 460, detailsY, {
+            width: detailWidth,
+            align: "left",
+        });
+        detailsY += 20;
+        doc.font("Helvetica-Bold").text(`QUOTE DATE:`, 360, detailsY, {
+            width: detailWidth,
+            align: "left",
+        });
+        doc.font("Helvetica").text(
+            `${jsDateIntoDDMMYY(entityDetails.quoteDate)}`,
+            460,
+            detailsY,
+            { width: detailWidth, align: "left" }
+        );
+        detailsY += 20;
+        doc.font("Helvetica-Bold").text(`DUE DATE:`, 360, detailsY, {
+            width: detailWidth,
+            align: "left",
+        });
+        doc.font("Helvetica").text(
+            `${jsDateIntoDDMMYY(entityDetails.dueDate)}`,
+            460,
+            detailsY,
+            {
+                width: detailWidth,
+                align: "left",
+            }
+        );
+    }
+
+    // Optional: Move down for additional spacing or elements if needed
     doc.moveDown(2); // Adjust the spacing as needed
 };
 
-
-
-// Usage Example
-// const doc = new PDFDocument();
-// addHeader(doc, organizationData, imageBuffer);
-
-// Add Details Function
 const addDetails = (doc, entityData, entity) => {
-    const { customer, invoiceData } = entityData;
-    doc.fontSize(15)
-        .fillColor("#1E1F20")
-        .font("Helvetica-Bold")
-        .text(entity.toUpperCase(), 255, doc.y + 10);
+    const borderColor = "#000000"; // Color for the border
+    let detailsFunction = () => {};
 
-    // Customer Details
-    doc.fontSize(14).fillColor("#0047AB").text("TO :", 20, 120);
-    doc.fontSize(13)
-        .fillColor("#1E1F20")
-        .font("Helvetica-Bold")
-        .text(customer.customerName, 20, 140);
-    doc.fontSize(10)
-        .fillColor("#4B4E4F")
-        .text(customer.billingAddress.street, 20, 155, { width: 300 });
-    doc.text(
-        `${customer.billingAddress.city}, ${customer.billingAddress.state}`,
-        20,
-        doc.y + 5,
-        { width: 300 }
-    );
-    doc.text(`${customer.billingAddress.postalCode}`, 20, doc.y + 5, {
-        width: 300,
-    });
+    switch (entity) {
+        case "invoice":
+            detailsFunction = detailsForInvoice;
+            break;
+        case "quotations":
+            detailsFunction = detailsForQuotation;
+            break;
 
-    // Invoice/Quote Details
-    doc.fontSize(13)
-        .font("Helvetica-Bold")
-        .fillColor("#1E1F20")
-        .text(`DATE: ${epochInDDMMYY(invoiceData.invoiceDate)}`, 350, 120, {
-            width: 300,
-        });
-    doc.text(
-        `DUE DATE: ${epochInDDMMYY(invoiceData.invoiceExpiredDate)}`,
-        350,
-        140,
-        {
-            width: 300,
-        }
-    );
-    doc.text(`NO: #${invoiceData.invoiceNo}`, 350, 160, {
-        width: 300,
-    });
+        default:
+            break;
+    }
+
+    detailsFunction(doc, entityData, borderColor);
 };
 
 // Add Items Table Function
-const addItemsTable = (doc, items, entity) => {
-    doc.rect(10, 230, 550, 30).fill("#0047AB");
+const addItemsTable = (doc, entityData, entity) => {
     const headers = getTableHeaders(entity);
+    const headerHeight = 30;
+    const cellPadding = 5;
+    const items = entityData?.items;
+    // Draw header background
+    let tableHeaderY = doc.y + 15;
+    doc.rect(10, doc.y + 2, 575, headerHeight).fill("#0047AB");
+
+    // Draw header text
     let x = 20;
     doc.fontSize(8).font("Helvetica-Bold").fill("#fff");
     headers.forEach((header) => {
-        doc.text(header.title, x, 240);
+        doc.text(header.title, x, tableHeaderY);
         x += header.width;
     });
 
-    let y = 270;
-    doc.fill("#000");
+    // Draw item rows
+    let y = tableHeaderY + headerHeight + cellPadding;
+    doc.fill("#000000").font("Helvetica-Bold");
     items.forEach((item) => {
-        doc.fontSize(7.5).font("Helvetica").text(item.description, 20, y);
-        doc.text(item.hsnCode, 135, y);
-        doc.text(Math.ceil(item.rate), 200, y);
-        doc.text(item.qty, 243, y);
-        doc.text(Math.ceil(item.taxableAmount), 276, y);
-        doc.text(item.sgstPercent, 347, y);
-        doc.text(item.cgstPercent, 390, y);
-        doc.text(item.igstPercent, 429, y);
-        doc.text(Math.ceil(item.finalAmount), 470, y);
-        y += 30;
+        let x = 20;
+        headers.forEach((header, index) => {
+            switch (header.title.toUpperCase()) {
+                case "ITEM & DESCRIPTION":
+                    doc.text(item.description, x, y, {
+                        width: header.width,
+                        align: "left",
+                    });
+                    break;
+                case "HSN CODE":
+                    doc.text(item.hsnCode, x + cellPadding, y);
+                    break;
+                case "RATE":
+                    doc.text(Math.ceil(item.rate), x + cellPadding, y);
+                    break;
+                case "QTY":
+                    doc.text(item.qty, x + cellPadding, y);
+                    break;
+                case "GST%":
+                    doc.text(`${item?.gstPercent || 0}%`, x + cellPadding, y);
+                    break;
+                case "TOTAL AMOUNT":
+                    doc.text(Math.ceil(item.finalAmount), x + cellPadding, y);
+                    break;
+                default:
+                    break;
+            }
+            x += header.width;
+        });
+        y += headerHeight;
     });
-    doc.rect(10, y + 5, 550, 5).fill("#0047AB");
+
+    // Draw footer background
+    doc.rect(10, y + cellPadding, 575, cellPadding).fill("#0047AB");
 };
 
-// Get Table Headers Function
-const getTableHeaders = (entity) => {
-    switch (entity) {
-        case "invoice":
-            return [
-                { title: "Description", width: 100 },
-                { title: "HSN CODE", width: 50 },
-                { title: "RATE", width: 50 },
-                { title: "Qty", width: 50 },
-                { title: "Taxable Amount", width: 70 },
-                { title: "SGST%", width: 50 },
-                { title: "CGST%", width: 50 },
-                { title: "IGST%", width: 50 },
-                { title: "Total Amount", width: 70 },
-            ];
-        case "quote":
-            return [
-                { title: "Description", width: 100 },
-                { title: "RATE", width: 50 },
-                { title: "Qty", width: 50 },
-                { title: "Total Amount", width: 70 },
-            ];
-        default:
-            return [];
-    }
-};
+const addFooter = (doc, entityData, organizationData) => {
+    const initialY = doc.y + 20;
 
-// Add Footer Function
-const addFooter = (doc, entityData) => {    
-    const { invoiceData } = entityData;
     doc.fontSize(10);
     doc.fill("#000");
+
+    // Gross Total and Tax Amount on the right
     doc.font("Helvetica-Bold");
-    doc.text("Gross Total:", 390, doc.y + 30);
-    doc.text("Total Tax Amount:", 390, doc.y + 60);
-    doc.rect(370, doc.y + 80, 200, 30).fill("#0047AB");
+    const startX = 390;
+    const valueX = 475;
+    const startY = initialY + 30;
+
+    doc.text("Gross Total:", startX, startY);
+    doc.text("Tax Amount:", startX, startY + 30);
+    doc.rect(startX - 20, startY + 60, 200, 30).fill("#0047AB");
     doc.fill("#fff");
-    doc.text("Grand Total:", 390, doc.y + 90).fillColor("#000");
+    doc.text("Grand Total:", startX, startY + 70).fillColor("#000");
 
-    doc.text(`${invoiceData.grossTotal}`, 475, doc.y + 30);
-    doc.text(`${invoiceData.totalTaxAmount}`, 475, doc.y + 60);
+    doc.fill("#000");
+    doc.text(`${entityData?.grossTotal}`, valueX, startY);
+    doc.text(`${entityData?.totalTaxAmount}`, valueX, startY + 30);
     doc.fill("#fff");
-    doc.text(`${invoiceData.grossTotal}`, 475, doc.y + 90);
+    doc.text(`${entityData?.grandTotal}`, valueX, startY + 70);
 
-    doc.fill("#0047AB").text("THANK YOU FOR BUISNESS", 225, doc.y + 100);
-    doc.end();
+    // Organization Banking Details on the left
+    const bankDetailsStartX = 30;
+    const bankDetailsStartY = initialY + 30;
 
-    res.setHeader("Content-Type", "application/pdf");
-    res.setHeader("Content-Disposition", 'attachment; filename="outPut.pdf"');
+    doc.fill("#000");
+    doc.font("Helvetica-Bold");
+    doc.text("Banking Details:", bankDetailsStartX, bankDetailsStartY);
+    doc.font("Helvetica-Bold");
+    doc.text(`Bank Name: `, bankDetailsStartX, bankDetailsStartY + 15, {
+        continued: true,
+    })
+        .font("Helvetica")
+        .text(`${organizationData?.bankName}`);
+    doc.font("Helvetica-Bold");
+    doc.text(`Account No: `, bankDetailsStartX, bankDetailsStartY + 30, {
+        continued: true,
+    })
+        .font("Helvetica")
+        .text(`${organizationData?.accountNo}`);
+    doc.font("Helvetica-Bold");
+    doc.text(`IFSC Code: `, bankDetailsStartX, bankDetailsStartY + 45, {
+        continued: true,
+    })
+        .font("Helvetica")
+        .text(`${organizationData?.ifscCode}`);
+
+    // Thank you message
+    const thankYouY = startY + 110; // Adjust this value to position the thank you message properly
+    doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);
 };
-
 const addPageBorder = (doc) => {
     const borderColor = "#000000"; // Dark black color
     const borderWidth = 1; // Border width in points
@@ -293,20 +388,166 @@ const addPageBorder = (doc) => {
     const pageHeight = doc.page.height;
 
     // Calculate the dimensions for the border with the specified margin
-    const innerWidth = pageWidth - (2 * margin);  // Width considering margins on both sides
-    const innerHeight = pageHeight - (2 * margin); // Height considering margins on top and bottom
+    const innerWidth = pageWidth - 2 * margin; // Width considering margins on both sides
+    const innerHeight = pageHeight - 2 * margin; // Height considering margins on top and bottom
 
     // Draw the border around the page
     doc.rect(
         margin, // X position (4px from the left)
         margin, // Y position (4px from the top)
-        innerWidth,  // Width of the rectangle (pageWidth - 2 * margin)
-        innerHeight  // Height of the rectangle (pageHeight - 2 * margin)
+        innerWidth, // Width of the rectangle (pageWidth - 2 * margin)
+        innerHeight // Height of the rectangle (pageHeight - 2 * margin)
     )
-    .lineWidth(borderWidth)
-    .stroke(borderColor);
+        .lineWidth(borderWidth)
+        .stroke(borderColor);
+};
+// Get Table Headers Function
+const getTableHeaders = (entity) => {
+    switch (entity.toLowerCase()) {
+        case "invoice":
+            return [
+                { title: "ITEM & DESCRIPTION", width: 225 },
+                { title: "HSN CODE", width: 70 },
+                { title: "RATE", width: 70 },
+                { title: "QTY", width: 50 },
+                { title: "GST%", width: 50 },
+                { title: "TOTAL AMOUNT", width: 100 },
+            ];
+        case "quotations":
+            return [
+                { title: "ITEM & DESCRIPTION", width: 250 },
+                { title: "RATE", width: 100 },
+                { title: "QTY", width: 100 },
+                { title: "TOTAL AMOUNT", width: 100 },
+            ];
+        default:
+            return [];
+    }
 };
 
+// adding other helper Function as per need
+const detailsForInvoice = (doc, invoiceData, entity, curY) => {
+    const leftX = 20; // X position for the left side
+    const rightX = 320; // X position for the right side
+    const initialY = doc.y; // Initial Y position for the details
+    const detailSpacing = 10; // Spacing between details
+    const borderColor = "#000000"; // Color for the border
+    const { customer } = invoiceData;
 
+    // Customer Billing Details
+    doc.fontSize(12).fillColor("#0047AB").text("BILLING TO:", leftX, initialY);
+    doc.fontSize(10)
+        .fillColor("#1E1F20")
+        .font("Helvetica-Bold")
+        .text(customer?.customerName, leftX, initialY + 15);
+    doc.fontSize(9)
+        .fillColor("#4B4E4F")
+        .text(
+            `${customer?.billingAddress?.street1},${customer?.billingAddress?.street2}`,
+            leftX,
+            doc.y + 5,
+            { width: 250, align: "left" }
+        );
+    doc.text(
+        `${customer?.billingAddress?.city}, ${customer?.billingAddress?.state}, ${customer?.billingAddress?.pincode}`,
+        leftX,
+        doc.y + 5,
+        { width: 250 }
+    );
+
+    // Add GST No and PAN No with bold labels
+    const currentY = doc.y + 5;
+    doc.font("Helvetica-Bold").text("GST No: ", leftX, currentY, {
+        continued: true,
+    });
+    doc.font("Helvetica").text(`${customer?.gstNo}`, { continued: true });
+    doc.font("Helvetica-Bold").text("  PAN No: ", { continued: true });
+    doc.font("Helvetica").text(`${customer?.panNo}`);
+
+    const billingEndY = doc.y;
+
+    // Customer Shipping Details
+    doc.fontSize(12)
+        .fillColor("#0047AB")
+        .text("SHIPPING TO:", rightX, initialY);
+    doc.fontSize(10)
+        .fillColor("#1E1F20")
+        .font("Helvetica-Bold")
+        .text(customer?.customerName, rightX, initialY + 15);
+    doc.fontSize(9)
+        .fillColor("#4B4E4F")
+        .text(
+            `${customer?.shippingAddress?.street1},${customer?.shippingAddress?.street2}`,
+            rightX,
+            doc.y + 5,
+            { width: 250, align: "left" }
+        );
+    doc.text(
+        `${customer?.shippingAddress?.city}, ${customer?.shippingAddress?.state}, ${customer?.shippingAddress?.pincode}`,
+        rightX,
+        doc.y + 5,
+        { width: 250 }
+    );
+
+    const shippingEndY = doc.y;
+
+    // Draw horizontal line after billing details
+    const endY = Math.max(billingEndY, shippingEndY) + 5;
+    doc.moveTo(5, endY)
+        .lineTo(doc.page.width - 4, endY)
+        .stroke(borderColor);
+
+    // Draw vertical line separating billing and shipping sections
+    doc.moveTo(300, initialY - 10)
+        .lineTo(300, endY)
+        .stroke(borderColor);
+
+    // Update doc.y to ensure it starts after the details section
+    doc.y = endY;
+};
+
+const detailsForQuotation = (doc, quotationData, borderColor, curY) => {
+    const customer = quotationData.customer;
+    const sub = quotationData?.sub;
+    const salesPerson = quotationData?.salesPerson;
+    let initialY = doc.y;
+    let leftX = 8;
+
+    // Calculate width of "TO:" text
+    doc.fontSize(12).font("Helvetica-Bold");
+    const toText = "TO:";
+    const toTextWidth = doc.widthOfString(toText);
+
+    // Customer Details
+    doc.fillColor("#1E1F20").text(toText, leftX, initialY);
+    doc.fontSize(12)
+        .fillColor("#1E1F20")
+        .text(customer?.customerName, leftX + toTextWidth + 5, initialY);
+
+    // Optional subject line
+    if (sub) {
+        let subText = `SUB : ${quotationData?.sub}`;
+        doc.fontSize(12)
+            .fillColor("#1E1F20")
+            .font("Helvetica-Bold")
+            .text(subText, leftX, doc.y + 5);
+    }
+    // Optional subject line
+    if (salesPerson) {
+        let subText = `SALES EXCUTIVE : ${quotationData?.salesPerson}`;
+        doc.fontSize(12)
+            .fillColor("#1E1F20")
+            .font("Helvetica-Bold")
+            .text(subText, leftX, doc.y + 5);
+    }
+
+    const customerEndY = doc.y;
+
+    // Draw horizontal line after customer details
+    doc.moveTo(4, customerEndY + 5)
+        .lineTo(doc.page.width - 4, customerEndY + 5)
+        .stroke(borderColor);
+    doc.y = customerEndY + 5;
+};
 
 export default defaultPdfTemplate;

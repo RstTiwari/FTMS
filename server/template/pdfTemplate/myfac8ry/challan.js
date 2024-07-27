@@ -4,7 +4,7 @@ import axios from "axios";
 import fs from "fs";
 import { epochInDDMMYY } from "../../../Helper/timehelper.js";
 import {
-    calcultTitlePostion,
+    calculateHeaderPosition,
     calculateStreetPostion,
     downloadAndSaveImage,
 } from "../../../Helper/pdfHelper.js";
@@ -21,7 +21,7 @@ const challanPdf = async (req, res, next, challanData) => {
         doc.image(imagePath, 5, 5, { fit: [100, 100] });
 
         const { orgnizationHeaderText, orgnizationHeaderPostion, fontSize } =
-            calcultTitlePostion(orgnization.companyName);
+            calculateHeaderPosition(orgnization.companyName);
         doc.fontSize(fontSize)
             .fillColor("#0047AB")
             .font("Helvetica-Bold")
@@ -120,20 +120,19 @@ const challanPdf = async (req, res, next, challanData) => {
         doc.fill("#000");
         doc.font("Helvetica-Bold");
         doc.fill("#000");
-        doc.text(`TOTAL QUANTITY : ${challanData.totalQuantity}`, 350, y +50);
-
+        doc.text(`TOTAL QUANTITY : ${challanData.totalQuantity}`, 350, y + 50);
 
         // Check if adding "THANK YOU FOR BUSINESS" exceeds the page height
         if (doc.y >= doc.page.height) {
             doc.addPage();
         }
 
-        doc.fontSize(10)
+        doc.fontSize(10);
         doc.fill("#000").text("RECIVED BY:", 20);
         doc.fill("#000").text("DATE:", 20);
         doc.fill("#000").text("SIGNATRE:", 20);
 
-        doc.fill("#000").text("DEILVERD BY:", 20 ,doc.y+ 10);
+        doc.fill("#000").text("DEILVERD BY:", 20, doc.y + 10);
         doc.fill("#000").text("DATE:", 20);
         doc.fill("#000").text("SIGNATRE:", 20);
 
