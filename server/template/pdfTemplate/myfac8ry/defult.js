@@ -8,7 +8,7 @@ import {
     calculateHeaderPosition,
 } from "../../../Helper/pdfHelper.js";
 import dayjs from "dayjs";
-import { quotationData } from "../../../data/orgnization.js";
+import invoice from "../../../models/appModels/invoice.js";
 
 const defaultPdfTemplate = async (
     req,
@@ -16,10 +16,11 @@ const defaultPdfTemplate = async (
     next,
     entityData,
     organizationData,
-    entity
+    entity,
+    entityPrefix
 ) => {
     try {
-        const imageBuffer = await downloadImage(organizationData.companyLogo);
+        const imageBuffer = await downloadImage(organizationData?.logo);
 
         const doc = new PDFDocument({ size: [595, 842], margin: 5 });
         doc.pipe(res);
@@ -28,7 +29,7 @@ const defaultPdfTemplate = async (
         addPageBorder(doc);
 
         // Header Section
-        addHeader(doc, organizationData, imageBuffer, entity, entityData);
+        addHeader(doc, organizationData, imageBuffer, entity, entityData,entityPrefix);
 
         // Details Section
         addDetails(doc, entityData, entity);
@@ -37,7 +38,7 @@ const defaultPdfTemplate = async (
         addItemsTable(doc, entityData, entity);
 
         // Footer Section
-        addFooter(doc, entityData, organizationData);
+        addFooter(doc, entityData,entity, organizationData);
 
         doc.end();
 
@@ -78,7 +79,7 @@ const defaultPdfTemplate = async (
 //     doc.text(`${organization.address.country}`, streetPostion, 85);
 // };
 
-const addHeader = (doc, organization, imageBuffer, entity, entityDetails) => {
+const addHeader = (doc, organization, imageBuffer, entity, entityDetails,entityPrefix) => {
     const pageWidth = doc.page.width;
     const pageHeight = doc.page.height;
     const headerTextColor = "#0047AB"; // Color for the header text
@@ -170,7 +171,7 @@ const addHeader = (doc, organization, imageBuffer, entity, entityDetails) => {
     const detailFontSize = 13;
     const detailWidth = 150;
 
-    if (entity.toLowerCase() === "invoice") {
+    if (entity.toLowerCase() === "invoices") {
         doc.fontSize(detailFontSize)
             .fillColor("#000000")
             .font("Helvetica-Bold")
@@ -179,7 +180,7 @@ const addHeader = (doc, organization, imageBuffer, entity, entityDetails) => {
                 align: "left",
             });
         doc.font("Helvetica").text(
-            `${entityDetails.invoiceNo}`,
+            `${entityPrefix}/${entityDetails?.invoiceNo}`,
             460,
             detailsY,
             { width: detailWidth, align: "left" }
@@ -214,7 +215,7 @@ const addHeader = (doc, organization, imageBuffer, entity, entityDetails) => {
                 width: detailWidth,
                 align: "left",
             });
-        doc.font("Helvetica").text(`${entityDetails.quoteNo}`, 460, detailsY, {
+        doc.font("Helvetica").text(`${entityPrefix}/${entityDetails.quoteNo}`, 460, detailsY, {
             width: detailWidth,
             align: "left",
         });
@@ -254,7 +255,7 @@ const addDetails = (doc, entityData, entity) => {
     let detailsFunction = () => {};
 
     switch (entity) {
-        case "invoice":
+        case "invoices":
             detailsFunction = detailsForInvoice;
             break;
         case "quotations":
@@ -326,59 +327,21 @@ const addItemsTable = (doc, entityData, entity) => {
     doc.rect(10, y + cellPadding, 575, cellPadding).fill("#0047AB");
 };
 
-const addFooter = (doc, entityData, organizationData) => {
-    const initialY = doc.y + 20;
+const addFooter = (doc, entityData,entity, organizationData) => {
+    let footerDetails = ()=>{}
+    switch (entity) {
+        case "invoices":
+            footerDetails = footerForInvoice
+            break;
+        case "quotations":
+            footerDetails = footerForQuotation
+            break;
+        default:
+            break;
+    }
+   
+    footerDetails(doc,entityData,organizationData)
 
-    doc.fontSize(10);
-    doc.fill("#000");
-
-    // Gross Total and Tax Amount on the right
-    doc.font("Helvetica-Bold");
-    const startX = 390;
-    const valueX = 475;
-    const startY = initialY + 30;
-
-    doc.text("Gross Total:", startX, startY);
-    doc.text("Tax Amount:", startX, startY + 30);
-    doc.rect(startX - 20, startY + 60, 200, 30).fill("#0047AB");
-    doc.fill("#fff");
-    doc.text("Grand Total:", startX, startY + 70).fillColor("#000");
-
-    doc.fill("#000");
-    doc.text(`${entityData?.grossTotal}`, valueX, startY);
-    doc.text(`${entityData?.totalTaxAmount}`, valueX, startY + 30);
-    doc.fill("#fff");
-    doc.text(`${entityData?.grandTotal}`, valueX, startY + 70);
-
-    // Organization Banking Details on the left
-    const bankDetailsStartX = 30;
-    const bankDetailsStartY = initialY + 30;
-
-    doc.fill("#000");
-    doc.font("Helvetica-Bold");
-    doc.text("Banking Details:", bankDetailsStartX, bankDetailsStartY);
-    doc.font("Helvetica-Bold");
-    doc.text(`Bank Name: `, bankDetailsStartX, bankDetailsStartY + 15, {
-        continued: true,
-    })
-        .font("Helvetica")
-        .text(`${organizationData?.bankName}`);
-    doc.font("Helvetica-Bold");
-    doc.text(`Account No: `, bankDetailsStartX, bankDetailsStartY + 30, {
-        continued: true,
-    })
-        .font("Helvetica")
-        .text(`${organizationData?.accountNo}`);
-    doc.font("Helvetica-Bold");
-    doc.text(`IFSC Code: `, bankDetailsStartX, bankDetailsStartY + 45, {
-        continued: true,
-    })
-        .font("Helvetica")
-        .text(`${organizationData?.ifscCode}`);
-
-    // Thank you message
-    const thankYouY = startY + 110; // Adjust this value to position the thank you message properly
-    doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);
 };
 const addPageBorder = (doc) => {
     const borderColor = "#000000"; // Dark black color
@@ -404,7 +367,7 @@ const addPageBorder = (doc) => {
 // Get Table Headers Function
 const getTableHeaders = (entity) => {
     switch (entity.toLowerCase()) {
-        case "invoice":
+        case "invoices":
             return [
                 { title: "ITEM & DESCRIPTION", width: 225 },
                 { title: "HSN CODE", width: 70 },
@@ -549,5 +512,132 @@ const detailsForQuotation = (doc, quotationData, borderColor, curY) => {
         .stroke(borderColor);
     doc.y = customerEndY + 5;
 };
+
+const footerForInvoice = (doc, invoiceData,organizationData) => {
+    const initialY = doc.y + 20;
+
+    doc.fontSize(10);
+    doc.fill("#000");
+    // Gross Total and Tax Amount on the right
+    doc.font("Helvetica-Bold");
+    const startX = 390;
+    const valueX = 475;
+    const startY = initialY + 30;
+
+    doc.text("Gross Total:", startX, startY);
+    doc.text("Tax Amount:", startX, startY + 30);
+    doc.rect(startX - 20, startY + 60, 200, 30).fill("#0047AB");
+    doc.fill("#fff");
+    doc.text("Grand Total:", startX, startY + 70).fillColor("#000");
+
+    doc.fill("#000");
+    doc.text(`${invoiceData?.grossTotal}`, valueX, startY);
+    doc.text(`${invoiceData?.taxAmount}`, valueX, startY + 30);
+    doc.fill("#fff");
+    doc.text(`${invoiceData?.grandTotal}`, valueX, startY + 70);
+
+    // Organization Banking Details on the left
+    const bankDetailsStartX = 30;
+    const bankDetailsStartY = initialY + 30;
+
+    doc.fill("#000");
+    doc.font("Helvetica-Bold");
+    doc.text("Banking Details:", bankDetailsStartX, bankDetailsStartY);
+    doc.font("Helvetica-Bold");
+    doc.text(`Bank Name: `, bankDetailsStartX, bankDetailsStartY + 15, {
+        continued: true,
+    })
+        .font("Helvetica")
+        .text(`${organizationData?.bankName}`);
+    doc.font("Helvetica-Bold");
+    doc.text(`Account No: `, bankDetailsStartX, bankDetailsStartY + 30, {
+        continued: true,
+    })
+        .font("Helvetica")
+        .text(`${organizationData?.accountNo}`);
+    doc.font("Helvetica-Bold");
+    doc.text(`IFSC Code: `, bankDetailsStartX, bankDetailsStartY + 45, {
+        continued: true,
+    })
+        .font("Helvetica")
+        .text(`${organizationData?.ifscCode}`);
+
+    // Thank you message
+    const thankYouY = startY + 110; // Adjust this value to position the thank you message properly
+    doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);
+};
+
+const footerForQuotation = (doc, quotationData) => {
+    const initialY = doc.y + 20;
+
+    doc.fontSize(10);
+    doc.fill("#000");
+
+    // Gross Total and Grand Total on the right
+    doc.font("Helvetica-Bold");
+    const startX = 390;
+    const valueX = 475;
+    const startY = initialY + 30;
+
+    doc.text("Gross Total:", startX, startY);
+    doc.text("Tax Percent:", startX, startY + 30);
+    doc.rect(startX - 20, startY + 60, 200, 30).fill("#0047AB");
+    doc.fill("#fff");
+    doc.text("Grand Total:", startX, startY + 70).fillColor("#000");
+
+    doc.fill("#000");
+    doc.text(`${quotationData?.grossTotal}`, valueX, startY);
+    doc.text(`${quotationData?.taxPercent}%`, valueX, startY + 30);
+    doc.fill("#fff");
+    doc.text(`${quotationData?.grandTotal}`, valueX, startY + 70);
+
+    // Terms and Conditions on the left
+    const termsStartX = 20;
+    const termsStartY = doc.y + 20; // Adjust this value to position the Terms and Conditions properly
+
+    doc.fill("#000");
+    doc.font("Helvetica-Bold");
+    doc.text("Terms and Conditions:", termsStartX, termsStartY);
+    doc.font("Helvetica");
+    
+    // Define line height and max width for wrapping
+    const lineHeight = 10; // Adjust this value as needed for line spacing
+    const maxWidth = 340; // Adjust this value as needed for text wrapping
+    
+    const termsText = [
+        `Delivery Condition: ${quotationData?.deliveryCondition}`,
+        `Payment Condition: ${quotationData?.paymentsCondition}`,
+        `Validity Condition: ${quotationData?.validityCondition}`,
+        `Cancellation Condition: ${quotationData?.cancellationCondition}`
+    ];
+
+    let currentY = doc.y + lineHeight; // Start position for the first line
+    
+    termsText.forEach((text) => {
+        // Make condition names bold and dark
+        const [conditionName, ...rest] = text.split(":");
+        doc.font("Helvetica-Bold").text(
+            conditionName + ":",
+            termsStartX,
+            currentY,
+        );
+        doc.font("Helvetica").text(
+            rest.join(":"),
+            termsStartX + doc.widthOfString(conditionName + ":" +10),
+            currentY,
+            {width:450,
+            align:"left"
+            }
+        );
+        currentY = doc.y +lineHeight ;
+    });
+
+    // Thank you message
+    const thankYouY = currentY + 20; // Adjust this value to position the thank you message properly
+    doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);
+};
+
+
+
 
 export default defaultPdfTemplate;

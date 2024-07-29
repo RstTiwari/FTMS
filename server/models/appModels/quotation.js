@@ -32,18 +32,16 @@ const quotationSchema = new mongoose.Schema(
         },
         status: {
             type: String,
-            enum: ["DRAFT", "SEND", "CANCELLED", "ON HOLD"],
+            enum: ["DRAFT", "SEND", "CANCELLED", "ON_HOLD"],
             default: "DRAFT",
         },
-        attenPerson: {
+        salesPerson: {
             type: String,
         },
-        subject: {
+        sub: {
             type: String,
         },
-        message: {
-            type: String,
-        },
+
         items: [
             {
                 description: {
@@ -90,13 +88,7 @@ const quotationSchema = new mongoose.Schema(
         },
         cancellationCondition: {
             type: String,
-        },
-        installationCondition: {
-            type: String,
-        },
-        facilityCondition: {
-            type: String,
-        },
+        }, 
         tenantId: {
             type: String,
             required: true,

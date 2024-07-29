@@ -12,6 +12,7 @@ import PaymentFormItem from "../../Forms/PaymentForm";
 import LeadFormItem from "../../Forms/LeadForm";
 import ProductForm from "Forms/ProductFrom";
 import EntityNo from "Forms/Counters";
+import OrganizationForm from "Forms/OrgnizationForm";
 
 const CoustomFormItem = ({ entity, form, isModal }) => {
     // const { entity: entityFromRouter } = useParams();
@@ -51,6 +52,8 @@ const CoustomFormItem = ({ entity, form, isModal }) => {
             break;
         case "counters":
             componentToRender = <EntityNo form={form}  />;
+        case "organization":
+                componentToRender = <OrganizationForm form={form}  />;
             break;
         default:
             break;

@@ -15,10 +15,6 @@ const expenseSchema = new mongoose.Schema(
             type: Number,
             required: true,
         },
-        customer: {
-            type: mongoose.Schema.ObjectId,
-            ref: "customer",
-        },
         note: {
             type: String,
         },

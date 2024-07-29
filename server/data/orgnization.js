@@ -1,4 +1,4 @@
-export const organizationData = {
+ const organizationData = {
     companyName: "Royal Play equipment pvt and Ltd",
     companyLogo:
         "https://st3.depositphotos.com/43745012/44906/i/450/depositphotos_449066958-stock-photo-financial-accounting-logo-financial-logo.jpg",
@@ -23,7 +23,7 @@ export const organizationData = {
 
     tenantId: "q3933292",
 };
-export const entityData = {
+const invoicesData = {
     customer: {
         customerName: "Ramkumar Pvt LTD",
         contactPerson: "Ramkumar",
@@ -79,40 +79,21 @@ export const entityData = {
     tenantId: "667e75df8da55d3c07a22626",
     __v: 0,
 };
-export const quotationData = {
+const quotationsData = {
     customer: {
         customerName: "Ramkumar Pvt LTD",
         contactPerson: "Ramkumar",
-        // customerPhone: 7848286984,
-        // customerEmail: "khbDevlopement@gmail.com",
-        // billingAddress: {
-        //     street1:
-        //         "New Address for the given Value of the concept that utilzes",
-        //     street2: "the nw address dpends",
-        //     city: "New Munbai",
-        //     state: "Goa",
-        //     pincode: 123456,
-        // },
-        // shippingAddress: {
-        //     street1: "New Address for the given Value of the concept ",
-        //     street2: "the nw address dpends",
-        //     city: "New Munbai",
-        //     state: "Goa",
-        //     pincode: 123435,
-        // },
     },
     sub: " Quotation Date for the Rquriment of Your new Taks",
     quoteNo: "00090",
-    quoteDate: {
-        $date: "2024-07-19T10:45:45.194Z",
-    },
+    quoteDate:"2024-07-19T10:45:45.194Z",
     salesPerson: "Rohit Tiwari",
     expiryDate: {
         $date: "2024-07-19T10:45:46.938Z",
     },
     items: [
         {
-            description: "New Product for Testing the Product Value",
+            description: "New Product for Testing the Product Value for the outer product type",
             rate: 12000,
             qty: 1,
             finalAmount: 12000,
@@ -139,7 +120,12 @@ export const quotationData = {
     grossTotal: 12000,
     taxPercent: 18,
     grandTotal: 14160,
-    tenantId: "667e75df8da55d3c07a22626",
+    deliveryCondition:"the Delivery Should be amde in 50 days not more than that time to check the delibar time requiered fot he particular asspects",
+    paymentCondition:"THe payment will be reicev in just 40 days and 30 days",
+    validityCondition:"Only vlaid for thee next 50 days only",
+    cancellationCondition:"Order palced cna not be cancelled"
+
+
 };
 export const industryType = [
     { label: "Automotive", value: "AUTOMOTIVE" },
@@ -157,3 +143,24 @@ export const industryType = [
     { label: "Molding", value: "MOLDING" },
     { label: "Fabrication", value: "FABRICATION" },
 ];
+
+export const fetchEntityData = (entity) => {
+    let data = "";
+    switch (entity) {
+        case "invoices":
+            data = invoicesData;
+
+            break;
+        case "quotations":
+            data = quotationsData;
+
+            break;
+        case "organizations":
+            data = organizationData
+            break;
+
+        default:
+            break;
+    }
+    return data
+};

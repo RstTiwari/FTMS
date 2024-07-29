@@ -4,14 +4,13 @@ import Dashbord from "../pages/dashbord";
 import Layout from "../pages/layout";
 import NotFound from "pages/Notfound";
 import UpdateModule from "module/UpdateModule/UpdateModule";
-import PdfModule from "module/PdfModule/PdfModule.js";
 import Orgnization from "pages/Orgnization/Orgnization";
 import Templates from "pages/Templates/index";
 import SimpleWebSocketComponent from "pages/Websocket";
-import CostomForm from "components/CustomForm"
 import CreateModule from "module/Create/CreateModule";
 import DetailsLayout from "pages/layout/DetailsLayout";
 import Details from "components/Details";
+import CustomForm from "components/CustomForm";
 
 const Approuter = ({ profile }) => {
     const tenantId = profile?.tenant?.tenantId;
@@ -38,17 +37,16 @@ const Approuter = ({ profile }) => {
                 </Route>
                 <Route
                     path="/app/:tenantId/:entity/create"
-                    element={<CostomForm  entity ={entity} />}
+                    element={<CustomForm  entity ={entity} />}
                 />
               
 
                 {/**Routes for Read  Update And Pdf */}
 
                 <Route path="/update/:entity/:id" element={<UpdateModule />} />
-                <Route path="/download/:entity/:id" element={<PdfModule />} />
 
                 {/*Mangaining Orgnization Profile */}
-                <Route path="/app/:tenantId/orgnizationprofile" element={<Orgnization />} />
+                <Route path ={`/app/:tenantId/:entity`}element={<CustomForm  header={false} />} />
                 <Route path="/app/:tenantId/templates" element={<Templates />} />
                 <Route path="*" element={<NotFound />} />
 

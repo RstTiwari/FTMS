@@ -3,6 +3,7 @@ import { Cookies, useCookies } from "react-cookie";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import axios from "axios";
 import { removeLocalData } from "Helper/FetchingLocalData";
+import { toBeEmpty } from "@testing-library/jest-dom/dist/matchers";
 
 let myfac8ryBaseUrl = process.env.REACT_APP_URL_PROD;
 
@@ -197,36 +198,46 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const pdfGenrate = async (entity, params, entityNo) => {
+    const pdfGenerate = async (entity, id, action = "display") => {
+        const token = cookies['token']
         try {
             const headers = {
-                "Content-Type": "application/json", //Example header
-                Authorization: "Bearer YOUR_TOKEN", //Example authorization header
-                token: cookies["token"],
+                "Content-Type": "application/json",
+                "Authorization": "Bearer YOUR_TOKEN",
+                token:token ? token:""
             };
-            let url = `${myfac8ryBaseUrl}app/pdf?entity=${entity}&id=${params}&entityNo=${entityNo}`;
-
-            // Fetch with headers
+    
+            let url = `${myfac8ryBaseUrl}app/pdf?entity=${entity}&id=${id}`;
+    
             const response = await fetch(url, {
                 method: "GET",
                 headers: headers,
             });
+    
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+    
             const blob = await response.blob();
             const pdfUrl = URL.createObjectURL(blob);
-            //you can initiate a download
-            const a = document.createElement("a");
-            a.href = pdfUrl;
-            a.download = `${entity}/${entityNo}`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+    
+            if (action === "download") {
+                const a = document.createElement('a');
+                a.href = pdfUrl;
+                a.download = `${entity}${id}.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } else if (action === "display") {
+                return pdfUrl;
+            }
         } catch (error) {
-            console.error("Failed to generate PDF:", error);
-            return NotificationHandler.error(
-                `Failed to download ${entity} pdf`
-            );
+            NotificationHandler.error(`Failed to handle ${entity} PDF: ${error.message}`);
+            throw error;
         }
     };
+    
+    
 
     const verifyToken = async () => {
         try {
@@ -271,7 +282,7 @@ export const AuthProvider = ({ children }) => {
                 createData,
                 readData,
                 updateData,
-                pdfGenrate,
+                pdfGenerate,
                 patchData,
                 uploadFile
             }}

@@ -217,6 +217,7 @@ const QuotationForm = ({ form }) => {
                 >
                     {(subFields, subOpt) => (
                         <div>
+                            <div style={{overflow:"auto",minHeight:"10vh",maxHeight:"40vh"}}>
                             {subFields.map(({ key, name, ...restField }) => (
                                 <Row
                                     key={key}
@@ -325,6 +326,8 @@ const QuotationForm = ({ form }) => {
                                     </Col>
                                 </Row>
                             ))}
+                            </div>
+                           
 
                             {/* Button to add new item */}
                             <Row justify="start">

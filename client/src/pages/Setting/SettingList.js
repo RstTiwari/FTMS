@@ -29,7 +29,7 @@ const SettingList = ({closeSideBar,setCloseSideBar}) => {
     const items = [
         getItem(
             "Orgnization Profile",
-            `orgnizationprofile`,
+            `organization`,
             <ContainerOutlined /> 
         ),
         getItem("PDF Templates", "templates", <PrinterOutlined />),

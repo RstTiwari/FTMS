@@ -1,5 +1,4 @@
-import dayjs from "dayjs";
-
+import dayjs from 'dayjs';
 export const epochInDDMMYY = (timestamp) => {
     // Convert Unix timestamp to milliseconds by multiplying by 1000
     const milliseconds = timestamp * 1000;
@@ -14,6 +13,8 @@ export const epochInDDMMYY = (timestamp) => {
     return formattedDate;
 };
 
+
+
 export const jsDateIntoDDMMYY = (dateString) => {
-    return dayjs(dateString).format("DD/MM/YYYY");
+    return dayjs(dateString).format("DD-MM-YYYY");
 };

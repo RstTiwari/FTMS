@@ -15,7 +15,7 @@ const invoiceSchema = new mongoose.Schema(
         },
         status: {
             type: String,
-            enum: ["DRAFT", "SEND", "CANCELLED", "ON HOLD"],
+            enum: ["DRAFT", "SEND", "CANCELLED", "ON_HOLD"],
             default: "DRAFT",
         },
 
@@ -51,16 +51,8 @@ const invoiceSchema = new mongoose.Schema(
                 qty: {
                     type: Number,
                 },
-                taxableAmount: {
-                    type: Number,
-                },
-                sgstPercent: {
-                    type: Number,
-                },
-                cgstPercent: {
-                    type: Number,
-                },
-                igstPercent: {
+              
+                gstPercent: {
                     type: Number,
                 },
                 finalAmount: {
@@ -71,7 +63,7 @@ const invoiceSchema = new mongoose.Schema(
         grossTotal: {
             type: Number,
         },
-        totalTaxAmount: {
+        taxAmount: {
             type: Number,
         },
 

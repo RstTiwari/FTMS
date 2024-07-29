@@ -20,12 +20,14 @@ const vendorSchema = new mongoose.Schema({
     },
     panNo: {
         type: String,
-        unique:true
+        unique:true,
+        sparse:true
 
     },
     gstNo: {
         type: String,
-        unique:true
+        unique:true,
+        sparse:true
 
     },
     billingAddress: {

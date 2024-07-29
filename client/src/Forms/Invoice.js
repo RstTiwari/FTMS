@@ -105,7 +105,7 @@ const QuotationForm = ({ form }) => {
             <Row>
                 <FormItemCol
                     label={"Invoice Date"}
-                    name={"quoteDate"}
+                    name={"invoiceDate"}
                     required={true}
                     labelCol={{span:8}}
                     rules={[
@@ -119,7 +119,7 @@ const QuotationForm = ({ form }) => {
                 />
                 <FormItemCol
                     label={"Due Date"}
-                    name={"expiryDate"}
+                    name={"dueDate"}
                     required={true}
                     rules={[
                         {
@@ -199,7 +199,7 @@ const QuotationForm = ({ form }) => {
                             textAlign: "center",
                         }}
                     >
-                        <Taglabel text="Tax%" />
+                        <Taglabel text="GST TAX%" />
                     </Col>
                     <Col
                         className="gutter-row"
@@ -227,6 +227,7 @@ const QuotationForm = ({ form }) => {
                 >
                     {(subFields, subOpt) => (
                         <div>
+                            <div style={{overflow:"auto",minHeight:"10vh",maxHeight:"40vh"}}>
                             {subFields.map(({key,name,...restField}) => (
                                 <Row
                                     key={key}
@@ -275,7 +276,7 @@ const QuotationForm = ({ form }) => {
                                            {...restField}
                                             name={[name, "hsnCode"]}
                                         >
-                                            <Input style={{ width: "100%" }}  readOnly ={true}/>
+                                            <Input type="text" style={{ width: "100%" }} />
                                         </Form.Item>
                                     </Col>
                                     <Col
@@ -381,6 +382,7 @@ const QuotationForm = ({ form }) => {
                                     </Col>
                                 </Row>
                             ))}
+                            </div>
 
                             <Button
                                 type="primary"

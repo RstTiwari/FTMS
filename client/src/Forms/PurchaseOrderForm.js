@@ -40,7 +40,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
         } else if (fieldName === "qty") {
             temObj.qty = value;
             temObj.finalAmount = temObj.rate * temObj.qty;
-        } else if (fieldName === "taxPercent") {
+        } else if (fieldName === "gstPercent") {
             temObj.taxPercent = Number(value);
         } else {
             return NotificationHandler.error("invalid changes");
@@ -178,7 +178,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                             textAlign: "center",
                         }}
                     >
-                        <Taglabel text={"Tax%"} />
+                        <Taglabel text={"GST Tax %"} />
                     </Col>
                     <Col
                         className="gutter-row"
@@ -202,6 +202,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                 >
                     {(subFields, subOpt) => (
                         <div>
+                            <div style={{overflow:"auto",minHeight:"10vh",maxHeight:"40vh"}}>
                             {subFields.map(({ key, name, ...restField }) => (
                                 <Row
                                     key={key}
@@ -281,7 +282,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                                                 updateInForm={(value) =>
                                                     handleItemsUpdate(
                                                         value,
-                                                        "taxPercent",
+                                                        "gstPercent",
                                                         name
                                                     )
                                                 }
@@ -289,8 +290,8 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                                                     width: "100%",
                                                     textAlign: "center",
                                                 }}
-                                                entity={"taxPercent"}
-                                                entityName={"taxPercent"}
+                                                entity={"gstPercent"}
+                                                entityName={"gstPercent"}
                                             />
                                         </Form.Item>
                                     </Col>
@@ -333,6 +334,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                                     </Col>
                                 </Row>
                             ))}
+                            </div>
                             <Row justify="start">
                                 <Button
                                     type="primary"

@@ -39,7 +39,10 @@ const tenantSchema = new mongoose.Schema(
             type: String,
         },
         address: {
-            street: {
+            street1: {
+                type: String,
+            },
+            street2: {
                 type: String,
             },
             city: {
@@ -74,9 +77,6 @@ const tenantSchema = new mongoose.Schema(
             type: Number,
             unique: true,
             sparse: true,
-        },
-        templateId: {
-            type: String,
         },
     },
     { timestamps: true }

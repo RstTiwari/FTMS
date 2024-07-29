@@ -29,6 +29,9 @@ const purchaseOrderSchema = new mongoose.Schema({
             qty: {
                 type: Number,
             },
+            gstPercent: {
+                type: Number,
+            },
             finalAmount: {
                 type: Number,
             },

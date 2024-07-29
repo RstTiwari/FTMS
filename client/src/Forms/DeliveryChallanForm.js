@@ -45,6 +45,10 @@ const DeliveryChallan = ({ form }) => {
             form.setFieldsValue({ challanNo: value });
         } else if (filedName === "transportAmount") {
             form.setFieldsValue({ transportAmount: value });
+        }
+        else if (filedName === "gstPercent") {
+                   temObj.gstPercent = value
+
         } else if (filedName === "challanType") {
             form.setFieldsValue({ challanType: value });
         }
@@ -55,18 +59,25 @@ const DeliveryChallan = ({ form }) => {
         // Tax Calculator
         let grossTotal = items.reduce((a, b) => a + b.finalAmount, 0);
         let transportAmount = form.getFieldValue("transportAmount") || 0;
+        const temItems = items.map((item)=>({
+            ...item,
+            taxAmount:item.finalAmount*(item.gstPercent/100)
+        }));
 
-        let grandTotal = grossTotal + transportAmount;
+        let taxAmount = temItems.reduce((acc,item)=>acc + (item.taxAmount ||0),0)
+
+        let grandTotal = grossTotal + transportAmount +taxAmount;
         form.setFieldsValue({
             grossTotal: Math.ceil(grossTotal),
             grandTotal: Math.ceil(grandTotal),
+            taxAmount:Math.ceil(taxAmount),
             transportAmount: Math.ceil(transportAmount),
         });
     };
 
     useEffect(() => {}, []);
     return (
-        <div style={{ height: "100vh" }}>
+        <div>
             <FormItemCol
                 label={"Select Customer"}
                 name={"customer"}
@@ -139,8 +150,6 @@ const DeliveryChallan = ({ form }) => {
                     border: "1px solid #bfbfbb",
                     padding: "2px",
                     marginBottom: "20px",
-                    overflowY: "auto",
-                    minWidth: 700,
                 }}
             >
                 <Row justify={"center"} style={{ marginBottom: "10px" }}>
@@ -182,7 +191,7 @@ const DeliveryChallan = ({ form }) => {
                     >
                         <Taglabel text={"Qty"} />
                     </Col>
-                    {/* <Col
+                    <Col
                         className="gutter-row"
                         span={4}
                         style={{
@@ -190,8 +199,8 @@ const DeliveryChallan = ({ form }) => {
                             textAlign: "center",
                         }}
                     >
-                        <Taglabel text={"Tax(%)"} />
-                    </Col> */}
+                        <Taglabel text={"GST(%)"} />
+                    </Col>
                     <Col
                         className="gutter-row"
                         span={4}
@@ -206,13 +215,14 @@ const DeliveryChallan = ({ form }) => {
                         {
                             description: "",
                             rate: 0,
-                            qty: 0,
+                            qty: 1,
                             finalAmount: 0,
                         },
                     ]}
                 >
                     {(subFields, subOpt) => (
                         <div>
+                            <div style={{overflow:"auto",minHeight:"10vh",maxHeight:"40vh"}}>
                             {subFields.map(({ key, name, ...restField }) => (
                                 <Row
                                     key={key}
@@ -283,23 +293,25 @@ const DeliveryChallan = ({ form }) => {
                                             />
                                         </Form.Item>
                                     </Col>
-                                    {/* <Col span={4}>
-                                        <Form.Item name={[name, "taxPercent"]}>
+                                    <Col span={4}>
+                                        <Form.Item name={[name, "gstPercent"]}>
                                             <CustomSelect
-                                                onChange={(value) =>
+                                                updateInForm={(value) =>
                                                     handleItemUpdate(
                                                         value,
-                                                        "taxPercent",
+                                                        "gstPercent",
                                                         name
                                                     )
                                                 }
+                                                
+                                                entityName={"gstPercent"}
                                                 style={{
                                                     width: "100%",
                                                     textAlign: "center",
                                                 }}
                                             />
                                         </Form.Item>
-                                    </Col> */}
+                                    </Col>
                                     <Col
                                         span={4}
                                         style={{ textAlign: "center" }}
@@ -335,6 +347,7 @@ const DeliveryChallan = ({ form }) => {
                                     </Col>
                                 </Row>
                             ))}
+                            </div>
 
                             {/* Button to add new item */}
                             <Row justify="start">
@@ -344,7 +357,7 @@ const DeliveryChallan = ({ form }) => {
                                         subOpt.add({
                                             description: "",
                                             rate: 0,
-                                            qty: 0,
+                                            qty: 1,
                                             finalAmount: 0,
                                         }); // Use srNo instead of srN
                                     }}
@@ -395,6 +408,17 @@ const DeliveryChallan = ({ form }) => {
                     onChange={(value) =>
                         handleItemUpdate(value, "transportAmount")
                     }
+                />
+            </Row>
+            <Row align={"middle"} justify={"end"}>
+                <FormItemCol
+                    label="Tax Amount(Rs)"
+                    name={"taxAmount"}
+                    labelAlign="left"
+                    width={150}
+                    labelCol={{ span: 8 }}
+                    type={"number"}
+                    readOnly={true}
                 />
             </Row>
             <Row align={"middle"} justify={"end"}>

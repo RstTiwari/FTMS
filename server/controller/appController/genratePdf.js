@@ -1,26 +1,39 @@
 import pdfTemplateSelector from "../../template/pdfTemplate/myfac8ry/index.js";
 import whiteSimple from "../../template/pdfTemplate/whitesample/index.js";
-import tenanDb from "../../models/coreModels/Tenant.js";
+import tenantDb from "../../models/coreModels/Tenant.js";
 import checkDbForEntity from "../../Helper/databaseSelector.js";
-import { organizationData, quotationData } from "../../data/orgnization.js";
+import countersDb from "../../models/appModels/counters.js";
+
 const generatePdf = async (req, res, next) => {
+
     try {
         const { entity, id } = req.query;
         let tenantId = req.tenantId;
         let dataBase = checkDbForEntity(entity);
-        // let quotationData = await dataBase.findOne({_id:id ,tenantId:tenantId})
-        //await tenanDb.findOne({tenantId:tenantId})
+        let entityData = await dataBase.findOne({
+            _id: id,
+            tenantId: tenantId,
+        });
+
+        let organizationData = await tenantDb.findOne({ _id: tenantId });
+        let prefix = await countersDb.findOne({
+            entityName: entity,
+            tenantId: tenantId,
+        });
+        let entityPrefix = prefix?.prefix ? prefix.prefix : "";
+        console.log(entityData,organizationData,prefix)
 
         const templateId = "myfac8ry";
-        // data["orgnization"] = tenantData
         if (templateId === "myfac8ry") {
             return pdfTemplateSelector(
                 req,
                 res,
                 next,
-                quotationData,
+                entityData,
                 organizationData,
-                entity
+                entity,
+                entityPrefix
+,
             );
         } else if (templateId === "whitesimple") {
             return whiteSimple(req, res, next, data, entity);

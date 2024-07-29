@@ -9,7 +9,8 @@ const pdfTemplateSelector = (
     next,
     entityData,
     organizationData,
-    entity
+    entity,
+    entityPrefix
 ) => {
     return defaultPdfTemplate(
         req,
@@ -17,7 +18,8 @@ const pdfTemplateSelector = (
         next,
         entityData,
         organizationData,
-        entity
+        entity,
+        entityPrefix
     );
 };
 
