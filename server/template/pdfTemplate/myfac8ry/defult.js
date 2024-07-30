@@ -29,7 +29,14 @@ const defaultPdfTemplate = async (
         addPageBorder(doc);
 
         // Header Section
-        addHeader(doc, organizationData, imageBuffer, entity, entityData,entityPrefix);
+        addHeader(
+            doc,
+            organizationData,
+            imageBuffer,
+            entity,
+            entityData,
+            entityPrefix
+        );
 
         // Details Section
         addDetails(doc, entityData, entity);
@@ -38,7 +45,7 @@ const defaultPdfTemplate = async (
         addItemsTable(doc, entityData, entity);
 
         // Footer Section
-        addFooter(doc, entityData,entity, organizationData);
+        addFooter(doc, entityData, entity, organizationData);
 
         doc.end();
 
@@ -79,7 +86,14 @@ const defaultPdfTemplate = async (
 //     doc.text(`${organization.address.country}`, streetPostion, 85);
 // };
 
-const addHeader = (doc, organization, imageBuffer, entity, entityDetails,entityPrefix) => {
+const addHeader = (
+    doc,
+    organization,
+    imageBuffer,
+    entity,
+    entityDetails,
+    entityPrefix
+) => {
     const pageWidth = doc.page.width;
     const pageHeight = doc.page.height;
     const headerTextColor = "#0047AB"; // Color for the header text
@@ -215,10 +229,15 @@ const addHeader = (doc, organization, imageBuffer, entity, entityDetails,entityP
                 width: detailWidth,
                 align: "left",
             });
-        doc.font("Helvetica").text(`${entityPrefix}/${entityDetails.quoteNo}`, 460, detailsY, {
-            width: detailWidth,
-            align: "left",
-        });
+        doc.font("Helvetica").text(
+            `${entityPrefix}/${entityDetails.quoteNo}`,
+            460,
+            detailsY,
+            {
+                width: detailWidth,
+                align: "left",
+            }
+        );
         detailsY += 20;
         doc.font("Helvetica-Bold").text(`QUOTE DATE:`, 360, detailsY, {
             width: detailWidth,
@@ -327,21 +346,20 @@ const addItemsTable = (doc, entityData, entity) => {
     doc.rect(10, y + cellPadding, 575, cellPadding).fill("#0047AB");
 };
 
-const addFooter = (doc, entityData,entity, organizationData) => {
-    let footerDetails = ()=>{}
+const addFooter = (doc, entityData, entity, organizationData) => {
+    let footerDetails = () => {};
     switch (entity) {
         case "invoices":
-            footerDetails = footerForInvoice
+            footerDetails = footerForInvoice;
             break;
         case "quotations":
-            footerDetails = footerForQuotation
+            footerDetails = footerForQuotation;
             break;
         default:
             break;
     }
-   
-    footerDetails(doc,entityData,organizationData)
 
+    footerDetails(doc, entityData, organizationData);
 };
 const addPageBorder = (doc) => {
     const borderColor = "#000000"; // Dark black color
@@ -513,7 +531,7 @@ const detailsForQuotation = (doc, quotationData, borderColor, curY) => {
     doc.y = customerEndY + 5;
 };
 
-const footerForInvoice = (doc, invoiceData,organizationData) => {
+const footerForInvoice = (doc, invoiceData, organizationData) => {
     const initialY = doc.y + 20;
 
     doc.fontSize(10);
@@ -580,8 +598,12 @@ const footerForQuotation = (doc, quotationData) => {
     const startY = initialY + 30;
 
     doc.text("Gross Total:", startX, startY);
-    doc.text("Tax Percent:", startX, startY + 30);
+    if (quotationData?.transportAmount) {
+        doc.text("Transport:", startX, startY + 30);
+    }
+    doc.text("Tax Percent:", startX, startY + 60);
     doc.rect(startX - 20, startY + 60, 200, 30).fill("#0047AB");
+    doc.rect(startX - 20, startY + 90, 200, 30).fill("#0047AB");
     doc.fill("#fff");
     doc.text("Grand Total:", startX, startY + 70).fillColor("#000");
 
@@ -599,45 +621,40 @@ const footerForQuotation = (doc, quotationData) => {
     doc.font("Helvetica-Bold");
     doc.text("Terms and Conditions:", termsStartX, termsStartY);
     doc.font("Helvetica");
-    
+
     // Define line height and max width for wrapping
     const lineHeight = 10; // Adjust this value as needed for line spacing
     const maxWidth = 340; // Adjust this value as needed for text wrapping
-    
+
     const termsText = [
         `Delivery Condition: ${quotationData?.deliveryCondition}`,
         `Payment Condition: ${quotationData?.paymentsCondition}`,
         `Validity Condition: ${quotationData?.validityCondition}`,
-        `Cancellation Condition: ${quotationData?.cancellationCondition}`
+        `Cancellation Condition: ${quotationData?.cancellationCondition}`,
     ];
 
     let currentY = doc.y + lineHeight; // Start position for the first line
-    
+
     termsText.forEach((text) => {
         // Make condition names bold and dark
         const [conditionName, ...rest] = text.split(":");
         doc.font("Helvetica-Bold").text(
             conditionName + ":",
             termsStartX,
-            currentY,
+            currentY
         );
         doc.font("Helvetica").text(
             rest.join(":"),
-            termsStartX + doc.widthOfString(conditionName + ":" +10),
+            termsStartX + doc.widthOfString(conditionName + ":" + 10),
             currentY,
-            {width:450,
-            align:"left"
-            }
+            { width: 450, align: "left" }
         );
-        currentY = doc.y +lineHeight ;
+        currentY = doc.y + lineHeight;
     });
 
     // Thank you message
     const thankYouY = currentY + 20; // Adjust this value to position the thank you message properly
     doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);
 };
-
-
-
 
 export default defaultPdfTemplate;

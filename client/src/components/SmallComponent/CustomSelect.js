@@ -1,36 +1,38 @@
 import React, { useEffect, useState } from "react";
-import {
-    Select,
-    Button,
-    Divider,
-    Modal,
-    Input,
-    Row,
-    Spin,
-} from "antd";
+import { Select, Button, Divider, Modal, Input, Row, Spin } from "antd";
 import { useAuth } from "../../state/AuthProvider";
 import CoustomButton from "./CoustomButton";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import PageLoader from "pages/PageLoader";
 
-const CustomSelect = ({ entity,entityName, defaultSelect, width ,updateInForm}) => {
+const CustomSelect = ({
+    entity,
+    entityName,
+    defaultSelect,
+    width = "15vw",
+    updateInForm,
+}) => {
     const [options, setOptions] = useState([]);
     const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false); // for Loader
     const [addValue, setAddValue] = useState("");
     const [selected, setSelected] = useState(defaultSelect);
-    const {appApiCall} = useAuth()
+    const { appApiCall } = useAuth();
 
     const handelClick = async () => {
-        const response = await appApiCall("get","fetchSelectData",{},{entityName})
-        if(!response.success){
-            setIsLoading(false)
+        const response = await appApiCall(
+            "get",
+            "fetchSelectData",
+            {},
+            { entityName }
+        );
+        if (!response.success) {
+            setIsLoading(false);
         }
         setOptions(response.result);
         setIsLoading(false);
     };
 
-  
     useEffect(() => {
         if (defaultSelect) {
             setSelected(defaultSelect);
@@ -40,12 +42,10 @@ const CustomSelect = ({ entity,entityName, defaultSelect, width ,updateInForm}) 
     const handleChange = (value) => {
         setSelected(value);
         updateInForm(value);
-
     };
 
-
     const addNewOption = async () => {
-        setIsLoading(true)
+        setIsLoading(true);
         const payload = {
             entityName: entityName,
             data: [{ label: addValue, value: addValue }],
@@ -55,14 +55,13 @@ const CustomSelect = ({ entity,entityName, defaultSelect, width ,updateInForm}) 
             handelClick();
             setSelected(addValue);
             updateInForm(addValue);
-            setIsLoading(false)
+            setIsLoading(false);
             setOpen(false);
         } else {
-            setIsLoading(false)
+            setIsLoading(false);
             return NotificationHandler.error(response.message);
         }
     };
-
 
     return (
         <>
@@ -81,15 +80,14 @@ const CustomSelect = ({ entity,entityName, defaultSelect, width ,updateInForm}) 
                     }}
                     getPopupContainer={(trigger) => trigger.parentElement}
                     dropdownRender={(menu) => (
-                        <div style={{
-                        }}>
+                        <div style={{}}>
                             {menu}
                             <Divider />
-                          
-                                <CoustomButton
-                                    text="New"
-                                    onClick={() => setOpen(true)}
-                                />
+
+                            <CoustomButton
+                                text="New"
+                                onClick={() => setOpen(true)}
+                            />
                         </div>
                     )}
                 />
