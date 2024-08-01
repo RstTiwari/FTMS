@@ -3,11 +3,9 @@ import { Form, message } from "antd";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 
-
-
 import "../App.css";
 import Header from "./Header";
-import FormActionButtons from "../components/SmallComponent/FormActionButton";
+import FormActionButtons from "./Comman/FormActionButton";
 import CustomFormItem from "../module/Create/CreateModule";
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
@@ -23,14 +21,13 @@ const CustomForm = ({
 }) => {
     //Checking the Enttiy of the Form if or fetch fromt the Router
 
-    const { entity: entityOfForm,action } = useParams();
+    const { entity: entityOfForm, action } = useParams();
     const entity = isModal ? entityOfModal : entityOfForm;
-    const isUpdate = action ? true:false
-    const {appApiCall} = useAuth()
+    const isUpdate = action ? true : false;
+    const { appApiCall } = useAuth();
 
     const [form] = Form.useForm();
-    const [initialValues, setInitialValues] = useState({
-    });
+    const [initialValues, setInitialValues] = useState({});
     const [unfilledField, setUnfilledField] = useState(null);
 
     useEffect(() => {
@@ -42,7 +39,6 @@ const CustomForm = ({
         entity,
         isUpdate
     );
-
 
     const handleFormFinish = async (values) => {
         //Checking if form contains any image file then uploading that
@@ -69,7 +65,7 @@ const CustomForm = ({
 
         console.log(formattedValues, values, "===");
         //Handle Form Finish Logic and Loading after that if modal pass value
-        handleFormSubmit(values,isModal ,passToModal);
+        handleFormSubmit(values, isModal, passToModal);
     };
 
     // Validating Filed and setting the Values at that moment only
@@ -81,8 +77,7 @@ const CustomForm = ({
         } catch (error) {
             const firstField = error.errorFields[0].errors[0];
             setUnfilledField(firstField); // Set the first unfilled field
-           return NotificationHandler.error(`${firstField}`)
-           
+            return NotificationHandler.error(`${firstField}`);
         }
     };
     return (

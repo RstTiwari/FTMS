@@ -1,13 +1,22 @@
-import CollapsibleTable from "components/SmallComponent/ColapsableTable";
+import CollapsibleTable from "components/Comman/ColapsableTable";
 import invoiceData from "Data/InvoiceData";
 import paymentData from "Data/PaymentData";
 import quotationData from "Data/QuotationData";
 const TransactionTab = () => (
     <>
-        <CollapsibleTable columns={invoiceData.getColumns()}  panelHeader={"Invoice"}/>
-        <CollapsibleTable panelHeader={"Payments"}  columns={paymentData.getColumns()}/>
-        <CollapsibleTable  panelHeader={"Quotations"} columns={quotationData.getColumns()}/>
+        <CollapsibleTable
+            columns={invoiceData.getColumns()}
+            panelHeader={"Invoice"}
+        />
+        <CollapsibleTable
+            panelHeader={"Payments"}
+            columns={paymentData.getColumns()}
+        />
+        <CollapsibleTable
+            panelHeader={"Quotations"}
+            columns={quotationData.getColumns()}
+        />
     </>
 );
 
-export default TransactionTab
+export default TransactionTab;

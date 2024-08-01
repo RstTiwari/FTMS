@@ -12,15 +12,14 @@ import {
 import { categoryOption } from "../Data/ExpensesData";
 import CustomerModal from "components/CustomModal";
 import UploadImage from "components/UploadImage";
-import FormItemCol from "components/SmallComponent/FormItemCol";
+import FormItemCol from "components/Comman/FormItemCol";
 
-const ExpenseForm = ({form}) => {
-
-    const handleItemUpdate = (value,fieldName) => {
-        if(fieldName ==="customer"){
+const ExpenseForm = ({ form }) => {
+    const handleItemUpdate = (value, fieldName) => {
+        if (fieldName === "customer") {
             form.setFieldsValue({ customer: value });
-        }else if(fieldName ==="categoryName"){
-            form.setFieldsValue({categoryName:value})
+        } else if (fieldName === "categoryName") {
+            form.setFieldsValue({ categoryName: value });
         }
     };
     return (
@@ -47,7 +46,9 @@ const ExpenseForm = ({form}) => {
                 entity={"Category Name"}
                 entityName={"categoryName"}
                 labelCol={{ span: 8 }}
-                updateInForm = {(value)=>handleItemUpdate(value,"categoryName")}
+                updateInForm={(value) =>
+                    handleItemUpdate(value, "categoryName")
+                }
             />
 
             <FormItemCol
@@ -79,11 +80,11 @@ const ExpenseForm = ({form}) => {
                 label="Select Customer"
                 name="customer"
                 labelAlign="left"
-                labelCol={{span:8}}
+                labelCol={{ span: 8 }}
                 type={"model"}
                 entity="customers"
                 fieldName={"customerName"}
-                updateInForm = {(value)=>handleItemUpdate(value,"customer")}
+                updateInForm={(value) => handleItemUpdate(value, "customer")}
             ></FormItemCol>
         </div>
     );

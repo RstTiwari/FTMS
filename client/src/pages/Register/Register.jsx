@@ -7,8 +7,8 @@ import { useAuth } from "state/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import PageLoader from "pages/PageLoader";
-import CoustomButton from "components/SmallComponent/CoustomButton";
-import Taglabel from "components/SmallComponent/Taglabel";
+import CoustomButton from "components/Comman/CoustomButton";
+import Taglabel from "components/Comman/Taglabel";
 
 const Register = () => {
     const [isLoading, setIsLoading] = useState(false);

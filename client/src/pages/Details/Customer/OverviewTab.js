@@ -1,13 +1,21 @@
-import { Tabs, Table, Descriptions, Layout,Row ,Col,Card,Avatar} from 'antd';
+import {
+    Tabs,
+    Table,
+    Descriptions,
+    Layout,
+    Row,
+    Col,
+    Card,
+    Avatar,
+} from "antd";
 
-
-import CustomerAddressCard from "components/SmallComponent/CustomerCard";
-import PaymentDetails from "components/SmallComponent/PaymentDetails";
-import CommentDetails from "components/SmallComponent/CommnetsDetails";
+import CustomerAddressCard from "components/Comman/CustomerCard";
+import PaymentDetails from "components/Comman/PaymentDetails";
+import CommentDetails from "components/Comman/CommnetsDetails";
 const { TabPane } = Tabs;
 const { Content } = Layout;
 
-const OverviewTab = ({customerData}) => (
+const OverviewTab = ({ customerData }) => (
     <Layout style={{ display: "flex", flexDirection: "row" }}>
         <Content style={{ width: "30%", backgroundColor: "#fff" }}>
             <CustomerAddressCard
@@ -23,4 +31,4 @@ const OverviewTab = ({customerData}) => (
     </Layout>
 );
 
-export default OverviewTab
+export default OverviewTab;

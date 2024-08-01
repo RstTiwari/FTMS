@@ -1,4 +1,4 @@
-import Taglabel from "components/SmallComponent/Taglabel";
+import Taglabel from "components/Comman/Taglabel";
 import { jsDateIntoDayjsDate } from "Helper/EpochConveter";
 
 const getColumns = (details) => [

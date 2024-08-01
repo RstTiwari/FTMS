@@ -1,9 +1,9 @@
 import { Flex, Form, Input, Col, Row, Button, Typography, Select } from "antd";
 import { useMediaQuery } from "@mui/material";
 import React, { useState } from "react";
-import CustomLabel from "components/SmallComponent/CustomLabel";
-import CustomInput from "components/SmallComponent/CustomInput";
-import FormItemCol from "components/SmallComponent/FormItemCol";
+import CustomLabel from "components/Comman/CustomLabel";
+import CustomInput from "components/Comman/CustomInput";
+import FormItemCol from "components/Comman/FormItemCol";
 import CustomerData from "Data/CoustomerData";
 import CustomTable from "components/CustomTable";
 

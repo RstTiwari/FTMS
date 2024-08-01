@@ -10,8 +10,8 @@ import {
     Divider,
     Typography,
 } from "antd";
-import CustomLabel from "components/SmallComponent/CustomLabel";
-import FormItemCol from "components/SmallComponent/FormItemCol";
+import CustomLabel from "components/Comman/CustomLabel";
+import FormItemCol from "components/Comman/FormItemCol";
 import CustomerData from "Data/CoustomerData";
 
 const { Dragger } = Upload;
@@ -26,7 +26,7 @@ const OrganizationForm = ({ form }) => {
         <div>
             <Row>
                 <FormItemCol
-                   label={"Company Logo"}
+                    label={"Company Logo"}
                     required={true}
                     name={"logo"}
                     type={"image"}
@@ -39,22 +39,31 @@ const OrganizationForm = ({ form }) => {
                         },
                     ]}
                 />
-             
             </Row>
             <FormItemCol
-                    label={"Company Name"}  
-                    required ={true}
-                    name={"companyName"}
-                    type={"text"}
-                    rules={[
-                        {
-                            required: true,
-                            message: "Please Provide companyName",
-                        },
-                    ]}
-                />
-                <FormItemCol label={"Email"}  required ={true} name={"Email"} type={"text"} />
-                <FormItemCol label={"Phone"} required ={true}name={"phone"} type={"text"} />
+                label={"Company Name"}
+                required={true}
+                name={"companyName"}
+                type={"text"}
+                rules={[
+                    {
+                        required: true,
+                        message: "Please Provide companyName",
+                    },
+                ]}
+            />
+            <FormItemCol
+                label={"Email"}
+                required={true}
+                name={"Email"}
+                type={"text"}
+            />
+            <FormItemCol
+                label={"Phone"}
+                required={true}
+                name={"phone"}
+                type={"text"}
+            />
             <Col sm={24} xs={24} md={12} lg={12}>
                 <Row style={{ paddingBottom: 25 }}>
                     <Text type="secondary" style={{ fontWeight: 900 }}>

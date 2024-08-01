@@ -4,45 +4,45 @@ import { sourceOptions, companyDetails, leadStatus } from "Data/LeadData";
 import { useAuth } from "state/AuthProvider";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import CustomerModal from "components/CustomModal";
-import CustomLabel from "components/SmallComponent/CustomLabel";
-import FormItemCol from "components/SmallComponent/FormItemCol";
+import CustomLabel from "components/Comman/CustomLabel";
+import FormItemCol from "components/Comman/FormItemCol";
 const LeadForm = ({ current }) => {
     const handleCustomerChange = (value) => {
         current.setFieldsValue({ customer: value });
     };
     // const customerId = current.getFieldValue("customer");
     return (
-        <div style={{height:"100vh"}}>
-           <Col span={8}>
-           <Form.Item
-                label={<CustomLabel label={"Source"} />}
-                name="source"
-                hasFeedback
-                labelCol={{span:10}}
-                labelAlign="left"
-                allowClear={true}
-                rules={[
-                    {
-                        required: true,
-                        message: "Please Select Source",
-                    },
-                ]}
-            >
-                <Select>
-                    {sourceOptions.map((item) => {
-                        const { label, value } = item;
-                        return (
-                            <>
-                                <Select.Option value={value}>
-                                    {label}
-                                </Select.Option>
-                            </>
-                        );
-                    })}
-                </Select>
-            </Form.Item>
-           </Col>
-          
+        <div style={{ height: "100vh" }}>
+            <Col span={8}>
+                <Form.Item
+                    label={<CustomLabel label={"Source"} />}
+                    name="source"
+                    hasFeedback
+                    labelCol={{ span: 10 }}
+                    labelAlign="left"
+                    allowClear={true}
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please Select Source",
+                        },
+                    ]}
+                >
+                    <Select>
+                        {sourceOptions.map((item) => {
+                            const { label, value } = item;
+                            return (
+                                <>
+                                    <Select.Option value={value}>
+                                        {label}
+                                    </Select.Option>
+                                </>
+                            );
+                        })}
+                    </Select>
+                </Form.Item>
+            </Col>
+
             <FormItemCol
                 label={"Select Customer"}
                 name={"customer"}
@@ -56,21 +56,21 @@ const LeadForm = ({ current }) => {
                 customerSelect={handleCustomerChange}
                 type={"model"}
             />
-             <Col span={8}>
-             <Form.Item
-                label={<CustomLabel label={"Status"} />}
-                name="status"
-                hasFeedback
-                rules={[
-                    {
-                        required: true,
-                        message: "Plese Select Status",
-                    },
-                ]}
-            >
-                <Select options={leadStatus} />
-            </Form.Item>
-             </Col>
+            <Col span={8}>
+                <Form.Item
+                    label={<CustomLabel label={"Status"} />}
+                    name="status"
+                    hasFeedback
+                    rules={[
+                        {
+                            required: true,
+                            message: "Plese Select Status",
+                        },
+                    ]}
+                >
+                    <Select options={leadStatus} />
+                </Form.Item>
+            </Col>
 
             <Form.List name={"comments"}>
                 {(subFileds, subOpt) => (
