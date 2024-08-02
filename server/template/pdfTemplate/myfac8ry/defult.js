@@ -496,7 +496,7 @@ const detailsForQuotation = (doc, quotationData, borderColor, curY) => {
 
     // Calculate width of "TO:" text
     doc.fontSize(12).font("Helvetica-Bold");
-    const toText = "TO:";
+    const toText = "To:";
     const toTextWidth = doc.widthOfString(toText);
 
     // Customer Details
@@ -507,7 +507,7 @@ const detailsForQuotation = (doc, quotationData, borderColor, curY) => {
 
     // Optional subject line
     if (sub) {
-        let subText = `SUB : ${quotationData?.sub}`;
+        let subText = `Sub : ${quotationData?.sub}`;
         doc.fontSize(12)
             .fillColor("#1E1F20")
             .font("Helvetica-Bold")
@@ -515,7 +515,7 @@ const detailsForQuotation = (doc, quotationData, borderColor, curY) => {
     }
     // Optional subject line
     if (salesPerson) {
-        let subText = `SALES EXCUTIVE : ${quotationData?.salesPerson}`;
+        let subText = `Sales Executive : ${quotationData?.salesPerson}`;
         doc.fontSize(12)
             .fillColor("#1E1F20")
             .font("Helvetica-Bold")
@@ -590,32 +590,41 @@ const footerForQuotation = (doc, quotationData) => {
 
     doc.fontSize(10);
     doc.fill("#000");
-
+    
     // Gross Total and Grand Total on the right
     doc.font("Helvetica-Bold");
     const startX = 390;
     const valueX = 475;
-    const startY = initialY + 30;
-
+    let startY = initialY + 30;
+    
     doc.text("Gross Total:", startX, startY);
-    if (quotationData?.transportAmount) {
-        doc.text("Transport:", startX, startY + 30);
-    }
-    doc.text("Tax Percent:", startX, startY + 60);
-    doc.rect(startX - 20, startY + 60, 200, 30).fill("#0047AB");
-    doc.rect(startX - 20, startY + 90, 200, 30).fill("#0047AB");
-    doc.fill("#fff");
-    doc.text("Grand Total:", startX, startY + 70).fillColor("#000");
-
-    doc.fill("#000");
     doc.text(`${quotationData?.grossTotal}`, valueX, startY);
-    doc.text(`${quotationData?.taxPercent}%`, valueX, startY + 30);
+    
+    // Adjust startY if there is a transport amount
+    if (quotationData?.transportAmount) {
+        startY += 30;
+        doc.text("Transport:", startX, startY);
+        doc.text(`${quotationData?.transportAmount}`, valueX, startY);
+    }
+    
+    // Move to the next line for Tax Percent if it exists
+    if (quotationData?.taxPercent) {
+        startY += 30;
+        doc.text("Tax Percent:", startX, startY);
+        doc.text(`${quotationData?.taxPercent}%`, valueX, startY);
+    }
+    
+    // Draw rectangles and Grand Total text
+    startY += 30;
+    doc.rect(startX - 20, startY, 200, 30).fill("#0047AB");
     doc.fill("#fff");
-    doc.text(`${quotationData?.grandTotal}`, valueX, startY + 70);
+    doc.text("Grand Total:", startX, startY + 10).fillColor("#000");
+    doc.fill("#fff");
+    doc.text(`${quotationData?.grandTotal}`, valueX, startY + 10).fillColor("#000");    
 
     // Terms and Conditions on the left
     const termsStartX = 20;
-    const termsStartY = doc.y + 20; // Adjust this value to position the Terms and Conditions properly
+    let termsStartY = doc.y + 20; // Adjust this value to position the Terms and Conditions properly
 
     doc.fill("#000");
     doc.font("Helvetica-Bold");
@@ -623,38 +632,33 @@ const footerForQuotation = (doc, quotationData) => {
     doc.font("Helvetica");
 
     // Define line height and max width for wrapping
-    const lineHeight = 10; // Adjust this value as needed for line spacing
-    const maxWidth = 340; // Adjust this value as needed for text wrapping
+    const lineHeight = 5; // Adjust this value as needed for line spacing
+    const maxWidth = 450; // Adjust this value as needed for text wrapping
 
-    const termsText = [
-        `Delivery Condition: ${quotationData?.deliveryCondition}`,
-        `Payment Condition: ${quotationData?.paymentsCondition}`,
-        `Validity Condition: ${quotationData?.validityCondition}`,
-        `Cancellation Condition: ${quotationData?.cancellationCondition}`,
-    ];
+    let currentY = termsStartY + lineHeight * 2; // Start position for the first line after the "Terms and Conditions" heading
 
-    let currentY = doc.y + lineHeight; // Start position for the first line
+    const addCondition = (conditionName, conditionValue) => {
+        if (conditionValue) {
+            doc.font("Helvetica-Bold").text(`${conditionName} : `, termsStartX, currentY);
+            doc.font("Helvetica").text(
+                conditionValue,
+                termsStartX + 110 + 5,
+                currentY,
+                { width: maxWidth, align: "left" }
+            );
+            currentY =   doc.y + lineHeight ; // Adjust Y position for the next condition
+        }
+    };
 
-    termsText.forEach((text) => {
-        // Make condition names bold and dark
-        const [conditionName, ...rest] = text.split(":");
-        doc.font("Helvetica-Bold").text(
-            conditionName + ":",
-            termsStartX,
-            currentY
-        );
-        doc.font("Helvetica").text(
-            rest.join(":"),
-            termsStartX + doc.widthOfString(conditionName + ":" + 10),
-            currentY,
-            { width: 450, align: "left" }
-        );
-        currentY = doc.y + lineHeight;
-    });
+    addCondition("Delivery Condition", quotationData?.deliveryCondition);
+    addCondition("Payment Condition", quotationData?.paymentsCondition);
+    addCondition("Validity Condition", quotationData?.validityCondition);
+    addCondition("Cancellation Condition", quotationData?.cancellationCondition);
 
     // Thank you message
     const thankYouY = currentY + 20; // Adjust this value to position the thank you message properly
     doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);
 };
+
 
 export default defaultPdfTemplate;

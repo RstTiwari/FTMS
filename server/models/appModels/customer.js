@@ -36,14 +36,14 @@ const coustomerSchema = new mongoose.Schema(
             street2: String,
             city: String,
             state: String,
-            pinCode: Number,
+            pincode: Number,
         },
         shippingAddress: {
             street1: String,
             street2: String,
             city: String,
             state: String,
-            pinCode: Number,
+            pincode: Number,
         },
         tenantId: {
             type: mongoose.Types.ObjectId,

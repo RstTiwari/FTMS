@@ -41,7 +41,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
             temObj.qty = value;
             temObj.finalAmount = temObj.rate * temObj.qty;
         } else if (fieldName === "gstPercent") {
-            temObj.taxPercent = Number(value);
+            temObj.gstPercent = Number(value);
         } else {
             return NotificationHandler.error("invalid changes");
         }
@@ -53,7 +53,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
 
         let temArray = items.map((item) => ({
             ...item,
-            taxAmount: item.finalAmount * (item.taxPercent / 100) || 0,
+            taxAmount: item.finalAmount * (item.gstPercent / 100) || 0,
         }));
 
         const totalTaxAmount = temArray.reduce((accumulator, currentValue) => {
@@ -182,8 +182,8 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                     </Col>
                     <Col
                         className="gutter-row"
-                        span={4}
                         style={{ textAlign: "center" }}
+                        span ={5}
                     >
                         <Taglabel text={"Total Amount(Before tax)"} />
                     </Col>
@@ -195,7 +195,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                             description: "",
                             rate: 0,
                             qty: 1,
-                            taxPercent: 0,
+                            gstPercent: 0,
                             finalAmount: 0,
                         },
                     ]}
@@ -276,7 +276,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                                     <Col span={4}>
                                         <Form.Item
                                             {...restField}
-                                            name={[name, "taxPercent"]}
+                                            name={[name, "gstPercent"]}
                                         >
                                             <CustomSelect
                                                 updateInForm={(value) =>
@@ -287,9 +287,9 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                                                     )
                                                 }
                                                 style={{
-                                                    width: "100%",
                                                     textAlign: "center",
                                                 }}
+                                                width="100%"
                                                 entity={"gstPercent"}
                                                 entityName={"gstPercent"}
                                             />
@@ -344,7 +344,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                                             description: "",
                                             finalAmount: 0,
                                             qty: 1,
-                                            taxPercent: 0,
+                                            gstPercent: 0,
                                             rate: 0,
                                         });
                                     }}

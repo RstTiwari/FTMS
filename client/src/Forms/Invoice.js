@@ -35,9 +35,9 @@ const QuotationForm = ({ form }) => {
         }else if(fieldName === "rate"){
             temObj.rate = value ;
             temObj.finalAmount = (temObj.qty * value)
-        }else if(fieldName ==="taxPercent"){
+        }else if(fieldName ==="gstPercent"){
             value = Number(value)
-            temObj.taxPercent = value
+            temObj.gstPercent = value
         }
         else {
            return NotificationHandler.error("Invalid")
@@ -47,7 +47,7 @@ const QuotationForm = ({ form }) => {
         let grossTotal = items.reduce((acc, item) => acc + (item.finalAmount || 0), 0);
         const temItems = items.map((item)=>({
             ...item,
-            taxAmount:item.finalAmount*(item.taxPercent/100)
+            taxAmount:item.finalAmount*(item.gstPercent/100)
         }));
 
         let taxAmount = temItems.reduce((acc,item)=>acc + (item.taxAmount ||0),0)
@@ -219,7 +219,7 @@ const QuotationForm = ({ form }) => {
                             finalAmount: 0,
                             qty: 1,
                             rate: 0,
-                            taxPercent: 0,
+                            gstPercent: 0,
                             finalAmount: 0,
                             description: "",
                         },
@@ -328,12 +328,13 @@ const QuotationForm = ({ form }) => {
                                     >
                                         <Form.Item
                                             {...restField}
-                                            name={[name, "taxPercent"]}
+                                            name={[name, "gstPercent"]}
                                         >
                                             <CustomSelect
-                                                entity={"taxPercent"}
-                                                entityName={"taxPercent"}
-                                                updateInForm={(value)=>handleItemsUpdate(value,"taxPercent",name)}
+                                                entity={"gstPercent"}
+                                                entityName={"gstPercent"}
+                                                updateInForm={(value)=>handleItemsUpdate(value,"gstPercent",name)}
+                                                width="100%"
                                             />
                                         </Form.Item>
                                     </Col>
@@ -392,7 +393,7 @@ const QuotationForm = ({ form }) => {
                                         qty: 1,
                                         hsnCode:"",
                                         rate: 0,
-                                        taxPercent: 0,
+                                        gstPercent: 0,
                                     });
                                 }}
                                 icon={<PlusOutlined />}

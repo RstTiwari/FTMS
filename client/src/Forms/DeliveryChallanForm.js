@@ -222,7 +222,7 @@ const DeliveryChallan = ({ form }) => {
                 >
                     {(subFields, subOpt) => (
                         <div>
-                            <div style={{overflow:"auto",minHeight:"10vh",maxHeight:"40vh"}}>
+                            <div style={{overflow:"auto",minHeight:"40vh",maxHeight:"40vh"}}>
                             {subFields.map(({ key, name, ...restField }) => (
                                 <Row
                                     key={key}
@@ -303,10 +303,10 @@ const DeliveryChallan = ({ form }) => {
                                                         name
                                                     )
                                                 }
-                                                
+                                                entity={"Gst Percent"}
                                                 entityName={"gstPercent"}
+                                                width="100%"
                                                 style={{
-                                                    width: "100%",
                                                     textAlign: "center",
                                                 }}
                                             />

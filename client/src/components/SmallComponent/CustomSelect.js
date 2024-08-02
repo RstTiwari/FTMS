@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Select, Button, Divider, Modal, Input, Row, Spin } from "antd";
 import { useAuth } from "../../state/AuthProvider";
-import CoustomButton from "./CoustomButton";
+import CustomButton from "./CoustomButton";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import PageLoader from "pages/PageLoader";
 
@@ -78,18 +78,19 @@ const CustomSelect = ({
                             handelClick();
                         }
                     }}
-                    getPopupContainer={(trigger) => trigger.parentElement}
+                    getPopupContainer={(trigger) => document.body}
+                    dropdownStyle={{ position: 'fixed', zIndex: 1050 }}
                     dropdownRender={(menu) => (
-                        <div style={{}}>
+                        <div style={{ display: 'flex', flexDirection: 'column', height: '200px', overflow: 'auto' }}>
+                          <div style={{ flexGrow: 1 }}>
                             {menu}
-                            <Divider />
-
-                            <CoustomButton
-                                text="New"
-                                onClick={() => setOpen(true)}
-                            />
+                          </div>
+                          <Divider style={{ margin: 0 }} />
+                          <div style={{ backgroundColor: '#fff', padding: '8px' }}>
+                            <CustomButton text="New" onClick={()=>setOpen(true)}/>
+                          </div>
                         </div>
-                    )}
+                      )}
                 />
             ) : (
                 <Modal
@@ -119,7 +120,7 @@ const CustomSelect = ({
                                 />
                             </Row>
 
-                            <CoustomButton
+                            <CustomButton
                                 text={"SAVE"}
                                 onClick={addNewOption}
                             />
