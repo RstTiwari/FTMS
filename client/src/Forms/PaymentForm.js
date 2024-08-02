@@ -11,24 +11,21 @@ import {
     Typography,
     message,
 } from "antd";
-import FormItemCol from "components/SmallComponent/FormItemCol";
+import FormItemCol from "components/Comman/FormItemCol";
 const { Text } = Typography;
 
 const { Option } = Select;
 const entity = "payments";
 
-const PaymentForm = ({form, initialValue = {} }) => {
- 
-    const handleItemUpdate = (value,fieldName)=>{
-        if(fieldName ==="customer"){
-            form.setFieldsValue({customer:value})
-        }else if(fieldName ==="paymentMode"){
-            form.setFieldsValue({paymentMode:value})
-        }else{
-
+const PaymentForm = ({ form, initialValue = {} }) => {
+    const handleItemUpdate = (value, fieldName) => {
+        if (fieldName === "customer") {
+            form.setFieldsValue({ customer: value });
+        } else if (fieldName === "paymentMode") {
+            form.setFieldsValue({ paymentMode: value });
+        } else {
         }
-    }
-
+    };
 
     return (
         <div style={{ height: "100vh" }}>
@@ -48,8 +45,8 @@ const PaymentForm = ({form, initialValue = {} }) => {
                         labelAlign="left"
                         entity={"customers"}
                         fieldName={"customerName"}
-                        updateInForm ={(value)=>{
-                               handleItemUpdate(value,"customer")
+                        updateInForm={(value) => {
+                            handleItemUpdate(value, "customer");
                         }}
                         type={"model"}
                     />
@@ -79,8 +76,8 @@ const PaymentForm = ({form, initialValue = {} }) => {
                         type={"select"}
                         entity="Payment Mode"
                         entityName={"paymentMode"}
-                        updateInForm ={(value)=>{
-                            handleItemUpdate(value,'paymentMode')
+                        updateInForm={(value) => {
+                            handleItemUpdate(value, "paymentMode");
                         }}
                     />
                 </Col>

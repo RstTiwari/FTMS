@@ -16,9 +16,9 @@ import {
 import { PlusOutlined, CloseOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useMediaQuery } from "@mui/material";
 import { useAuth } from "state/AuthProvider";
-import FormItemCol from "components/SmallComponent/FormItemCol";
-import Taglabel from "components/SmallComponent/Taglabel";
-import CustomSelect from "components/SmallComponent/CustomSelect";
+import FormItemCol from "components/Comman/FormItemCol";
+import Taglabel from "components/Comman/Taglabel";
+import CustomSelect from "components/Comman/CustomSelect";
 import CustomModel from "components/CustomModal";
 
 const DeliveryChallan = ({ form }) => {
@@ -222,7 +222,7 @@ const DeliveryChallan = ({ form }) => {
                 >
                     {(subFields, subOpt) => (
                         <div>
-                            <div style={{overflow:"auto",minHeight:"40vh",maxHeight:"40vh"}}>
+                            <div style={{overflow:"auto",minHeight:"10vh"}}>
                             {subFields.map(({ key, name, ...restField }) => (
                                 <Row
                                     key={key}

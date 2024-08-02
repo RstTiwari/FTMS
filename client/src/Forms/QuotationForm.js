@@ -17,8 +17,8 @@ import { PlusOutlined, CloseOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useMediaQuery } from "@mui/material";
 import { useAuth } from "state/AuthProvider";
 import CustomModal from "components/CustomModal";
-import FormItemCol from "components/SmallComponent/FormItemCol";
-import Taglabel from "components/SmallComponent/Taglabel";
+import FormItemCol from "components/Comman/FormItemCol";
+import Taglabel from "components/Comman/Taglabel";
 
 const QuotationForm = ({ form }) => {
     const handleItemsUpdate = (value, filedName, rowName) => {

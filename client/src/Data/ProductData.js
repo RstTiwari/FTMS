@@ -1,8 +1,6 @@
-
-
 import { Space, Flex, Dropdown, Typography, Form, Input, Image } from "antd";
 import Details from "components/Details";
-import Taglabel from "components/SmallComponent/Taglabel";
+import Taglabel from "components/Comman/Taglabel";
 const { Text } = Typography;
 
 const getColumns = (details) => [

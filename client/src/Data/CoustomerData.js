@@ -1,20 +1,32 @@
-import Taglabel from "components/SmallComponent/Taglabel.js";
+import Taglabel from "components/Comman/Taglabel.js";
 
 const getColumns = (details) => [
     {
-        title: <Taglabel text={" COMPANY NAME"} type={"heading"} details ={details} />,
+        title: (
+            <Taglabel
+                text={" COMPANY NAME"}
+                type={"heading"}
+                details={details}
+            />
+        ),
         dataIndex: "customerName",
         key: "customerName",
         render: (_, record) => (
             <Taglabel
                 type="customer"
                 text={record?.customerName ? record.customerName : ""}
-                details ={details}
+                details={details}
             />
         ),
     },
     {
-        title: <Taglabel text={"CONTACT PERSON"} type={"heading"} details ={details}/>,
+        title: (
+            <Taglabel
+                text={"CONTACT PERSON"}
+                type={"heading"}
+                details={details}
+            />
+        ),
         dataIndex: "contactPerson",
         key: "contactPerson",
         responsive: details ? [] : ["xl"],
@@ -22,12 +34,14 @@ const getColumns = (details) => [
             <Taglabel
                 type="text"
                 text={record?.contactPerson ? record.contactPerson : ""}
-                details ={details}
+                details={details}
             />
         ),
     },
     {
-        title: <Taglabel text={"PHONE NO"} type={"heading"}  details ={details}/>,
+        title: (
+            <Taglabel text={"PHONE NO"} type={"heading"} details={details} />
+        ),
         dataIndex: "customerPhone",
         key: "customerPhone",
         responsive: details ? [] : ["lg"],
@@ -35,7 +49,7 @@ const getColumns = (details) => [
             <Taglabel
                 type="text"
                 text={record?.customerPhone ? record.customerPhone : ""}
-                details ={details}
+                details={details}
             />
         ),
     },
@@ -48,7 +62,7 @@ const getColumns = (details) => [
             <Taglabel
                 type="text"
                 text={record?.customerEmail ? record.customerEmail : ""}
-                details ={details}
+                details={details}
             />
         ),
     },

@@ -3,7 +3,7 @@ import { Form, Row, Col, Button, Input, Typography, InputNumber } from "antd";
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import { useNavigate } from "react-router-dom";
-import CoustomButton from "components/SmallComponent/CoustomButton";
+import CoustomButton from "components/Comman/CoustomButton";
 const { Text, Link, Title } = Typography;
 
 const UpdatePasswordForm = ({ userId, tenantId }) => {

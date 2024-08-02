@@ -2,9 +2,9 @@ import React from "react";
 import { Form, Row, Col, Input, InputNumber, Button, Divider } from "antd";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useMediaQuery } from "@mui/material";
-import FormItemCol from "components/SmallComponent/FormItemCol";
-import Taglabel from "components/SmallComponent/Taglabel";
-import CustomSelect from "components/SmallComponent/CustomSelect";
+import FormItemCol from "components/Comman/FormItemCol";
+import Taglabel from "components/Comman/Taglabel";
+import CustomSelect from "components/Comman/CustomSelect";
 import CustomModel from "components/CustomModal";
 import NotificationHandler from "EventHandler/NotificationHandler";
 
@@ -13,23 +13,22 @@ const QuotationForm = ({ form }) => {
     const inputWidth = isLaptop ? 700 : 350;
     const inputFontSize = isLaptop ? "1rem" : "0.4rem";
 
-
-    const handleItemsUpdate = (value,fieldName, rowName) => {
+    const handleItemsUpdate = (value, fieldName, rowName) => {
         const items = form.getFieldValue("items");
         let temObj = items[rowName];
 
         if (fieldName === "customer") {
             form.setFieldsValue({ customer: value });
-        }else if (fieldName ==="invoiceNo"){
-             form.setFieldsValue({invoiceNo:value})
-        }else if(fieldName === "description"){
-        let {description,rate,hsnCode} = value;
-            console.log(description,rate,hsnCode);
+        } else if (fieldName === "invoiceNo") {
+            form.setFieldsValue({ invoiceNo: value });
+        } else if (fieldName === "description") {
+            let { description, rate, hsnCode } = value;
+            console.log(description, rate, hsnCode);
             temObj.description = description;
             temObj.hsnCode = hsnCode;
-            temObj.rate = rate
-            temObj.finalAmount = temObj.rate*temObj.qty
-        }else if(fieldName === "qty"){
+            temObj.rate = rate;
+            temObj.finalAmount = temObj.rate * temObj.qty;
+        } else if (fieldName === "qty") {
             temObj.qty = value;
             temObj.finalAmount = (temObj.rate * value)
         }else if(fieldName === "rate"){
@@ -43,16 +42,22 @@ const QuotationForm = ({ form }) => {
            return NotificationHandler.error("Invalid")
         }
 
-        items[rowName]= temObj
-        let grossTotal = items.reduce((acc, item) => acc + (item.finalAmount || 0), 0);
-        const temItems = items.map((item)=>({
+        items[rowName] = temObj;
+        let grossTotal = items.reduce(
+            (acc, item) => acc + (item.finalAmount || 0),
+            0
+        );
+        const temItems = items.map((item) => ({
             ...item,
+            taxAmount: item.finalAmount * (item.taxPercent / 100),
             taxAmount:item.finalAmount*(item.gstPercent/100)
         }));
 
-        let taxAmount = temItems.reduce((acc,item)=>acc + (item.taxAmount ||0),0)
-        console.log(taxAmount,items);
-        let grandTotal = taxAmount + grossTotal
+        let taxAmount = temItems.reduce(
+            (acc, item) => acc + (item.taxAmount || 0),
+            0
+        );
+        let grandTotal = taxAmount + grossTotal;
         form.setFieldsValue({
             items: items,
             grandTotal: Math.ceil(grandTotal),
@@ -61,17 +66,14 @@ const QuotationForm = ({ form }) => {
         });
     };
 
-
-
     return (
-        <div style={{ height: "100vh" }}>
+        <div >
             <FormItemCol
                 label={"Select Customer"}
                 name={"customer"}
                 labelAlign="left"
-                labelCol={{ span: 8}}
+                labelCol={{ span: 8 }}
                 required={true}
-                
                 rules={[
                     {
                         required: "true",
@@ -79,11 +81,11 @@ const QuotationForm = ({ form }) => {
                     },
                 ]}
                 type="model"
-                entity ="customers"
+                entity="customers"
                 width="35%"
                 customerSelect=""
                 fieldName={"customerName"}
-                updateInForm={(value)=>handleItemsUpdate(value,'customer')}
+                updateInForm={(value) => handleItemsUpdate(value, "customer")}
             />
 
             <FormItemCol
@@ -99,7 +101,7 @@ const QuotationForm = ({ form }) => {
                         message: "Please Provide Quote No",
                     },
                 ]}
-                updateInForm = {(value)=>handleItemsUpdate(value,"invoiceNo")}
+                updateInForm={(value) => handleItemsUpdate(value, "invoiceNo")}
             />
 
             <Row>
@@ -107,7 +109,7 @@ const QuotationForm = ({ form }) => {
                     label={"Invoice Date"}
                     name={"invoiceDate"}
                     required={true}
-                    labelCol={{span:8}}
+                    labelCol={{ span: 8 }}
                     rules={[
                         {
                             required: true,
@@ -139,7 +141,6 @@ const QuotationForm = ({ form }) => {
                     position: "relative",
                     border: "1px solid #bfbfbb",
                     marginBottom: "20px",
-
                 }}
             >
                 <Row justify={"center"}>
@@ -225,6 +226,7 @@ const QuotationForm = ({ form }) => {
                         },
                     ]}
                 >
+                    
                     {(subFields, subOpt) => (
                         <div>
                             <div style={{overflow:"auto",minHeight:"10vh",maxHeight:"40vh"}}>
@@ -391,7 +393,7 @@ const QuotationForm = ({ form }) => {
                                     subOpt.add({
                                         description: "",
                                         qty: 1,
-                                        hsnCode:"",
+                                        hsnCode: "",
                                         rate: 0,
                                         gstPercent: 0,
                                     });
@@ -426,7 +428,6 @@ const QuotationForm = ({ form }) => {
                     labelAlign="left"
                     readOnly={true}
                     type={"number"}
-                
                 />
             </Row>
             <Row align={"middle"} justify={"end"}>
@@ -439,7 +440,6 @@ const QuotationForm = ({ form }) => {
                 />
             </Row>
 
-        
             {/* Other form items go here */}
         </div>
     );

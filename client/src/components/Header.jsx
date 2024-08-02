@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, Row, Button, Divider } from "antd";
 import { useParams, useNavigate } from "react-router-dom";
-import CoustomButton from "./SmallComponent/CoustomButton";
+import CoustomButton from "./Comman/CoustomButton";
 
 const HeaderComponent = ({ onlyTitle = false, details }) => {
     const { tenantId, entity } = useParams();

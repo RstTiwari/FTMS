@@ -2,7 +2,7 @@ import { items } from "./LeadData";
 import { Space, Dropdown } from "antd";
 
 import { DownOutlined } from "@ant-design/icons";
-import Taglabel from "components/SmallComponent/Taglabel";
+import Taglabel from "components/Comman/Taglabel";
 
 const getColumns = (details) => [
     {

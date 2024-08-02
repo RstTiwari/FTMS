@@ -1,16 +1,21 @@
 import React from "react";
 import { Form, Input, Button } from "antd";
 import { Formik } from "formik";
-import FormItemCol from "components/SmallComponent/FormItemCol";
+import FormItemCol from "components/Comman/FormItemCol";
 
-const ProductForm = ({form, onFormFinish, initalValue: initialValue ,isModal}) => {
+const ProductForm = ({
+    form,
+    onFormFinish,
+    initalValue: initialValue,
+    isModal,
+}) => {
     const handleSubmit = (values) => {
         // Handle form submission here
         onFormFinish(values);
     };
-    const handleImageUpdate = (file)=>{
-        form.setFieldsValue({image:file})
-    }
+    const handleImageUpdate = (file) => {
+        form.setFieldsValue({ image: file });
+    };
 
     // const { name, price, hsnCode } = initalValue;
     return (
@@ -18,17 +23,16 @@ const ProductForm = ({form, onFormFinish, initalValue: initialValue ,isModal}) =
             <FormItemCol
                 label="Product Code"
                 labelAlign="left"
-                labelCol={{ span: isModal? 18: 8 }}
+                labelCol={{ span: isModal ? 18 : 8 }}
                 name="code"
                 type={"select"}
                 entity={"Product Code"}
-
             />
             <FormItemCol
                 label="Product Name"
                 labelAlign="left"
                 required={true}
-                labelCol={{ span: isModal? 18: 8 }}
+                labelCol={{ span: isModal ? 18 : 8 }}
                 name="productName"
                 type={"input"}
                 rules={[
@@ -40,14 +44,14 @@ const ProductForm = ({form, onFormFinish, initalValue: initialValue ,isModal}) =
             />
             <FormItemCol
                 labelAlign="left"
-                labelCol={{ span: isModal? 18: 8 }}
+                labelCol={{ span: isModal ? 18 : 8 }}
                 label="HSN CODE"
                 name="hsnCode"
                 type={"input"}
             />
             <FormItemCol
                 labelAlign="left"
-                labelCol={{ span: isModal? 18: 8 }}
+                labelCol={{ span: isModal ? 18 : 8 }}
                 label="Selling Price"
                 name="rate"
                 required={true}
@@ -60,12 +64,12 @@ const ProductForm = ({form, onFormFinish, initalValue: initialValue ,isModal}) =
             />
             <FormItemCol
                 labelAlign="left"
-                labelCol={{ span: isModal ? 18: 8 }}
+                labelCol={{ span: isModal ? 18 : 8 }}
                 label="Product Image"
                 name="image"
                 type={"image"}
                 url=""
-                updateImageInForm ={handleImageUpdate}
+                updateImageInForm={handleImageUpdate}
             />
         </div>
     );

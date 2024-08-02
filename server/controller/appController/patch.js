@@ -1,10 +1,23 @@
-const patch = async (req, res, next, database) => {
+import checkDbForEntity from "../../Helper/databaseSelector.js";
+
+const patch = async (req, res, next) => {
     try {
+        const { action, keyName, values, id } = req.body;
+        let {entity} = req.query;
         let tenantId = req.tenantId;
-        const { entity, value ,_id} = req.body;
-        let filter = { _id: _id, tenantId: tenantId };
-        let updatedData = await database.updateOne(filter, { $push: value });
-        console.log(updatedData);
+        if (!action || !keyName || !values || !id || !entity || !tenantId) {
+            throw new Error("Invalid Payload");
+        }
+        let filter = { _id: id, tenantId: tenantId };
+        let updateObj = {};
+
+        if (action == "set") {
+            updateObj = { $set: { [keyName]: values } };
+        } else if (action == "push") {
+            updateObj = { $push: { [keyName]: values } };
+        }
+        let database = checkDbForEntity(entity);
+        let updatedData = await database.updateOne(filter, updateObj);
         if (updatedData.modifiedCount === 0) {
             throw new Error(`Failed to Update ${entity}`);
         }
@@ -14,11 +27,7 @@ const patch = async (req, res, next, database) => {
             message: `Successfully updated the ${entity}`,
         });
     } catch (error) {
-        res.status(403).json({
-            success: 0,
-            result: [],
-            message: error.message,
-        });
+        next(error);
     }
 };
 

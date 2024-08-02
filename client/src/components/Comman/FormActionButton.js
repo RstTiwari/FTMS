@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import CustomButton from "./CoustomButton"; // Assuming your CustomButton is imported from the correct path
 import useWindowWidth from "Hook/useWindowWidth";
 
-const FormActionButtons = ({ isUpdating }) => {
+const FormActionButtons = ({ isUpdating, showCancel = true }) => {
     const navigate = useNavigate();
     const mariginLeft = 200;
     const width = useWindowWidth();
@@ -14,20 +14,22 @@ const FormActionButtons = ({ isUpdating }) => {
     };
 
     return (
-        <Row
-        style={{marginTop:10}}
-        >
+        <Row style={{ marginTop: 10 }}>
             <Form.Item>
                 {isUpdating ? (
                     <CustomButton htmlType="submit" text="Update" />
                 ) : (
                     <CustomButton htmlType="submit" text="Save" />
                 )}
-                <CustomButton
-                    onClick={handleCancelClick}
-                    isCancel={true}
-                    text="Cancel"
-                />
+                {showCancel ? (
+                    <CustomButton
+                        onClick={handleCancelClick}
+                        isCancel={true}
+                        text="Cancel"
+                    />
+                ) : (
+                    ""
+                )}
             </Form.Item>
         </Row>
     );
