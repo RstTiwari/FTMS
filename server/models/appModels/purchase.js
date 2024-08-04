@@ -5,7 +5,7 @@ const purchaseOrderSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: "vendors",
         autopopulate: true,
-        require: true,
+        required: true,
     },
     purchaseNo: {
         type: String,
@@ -21,10 +21,11 @@ const purchaseOrderSchema = new mongoose.Schema({
         {
             description: {
                 type: String,
-                require: true,
             },
             rate: {
                 type: Number,
+                required: true,
+                
             },
             qty: {
                 type: Number,
@@ -37,6 +38,13 @@ const purchaseOrderSchema = new mongoose.Schema({
             },
         },
     ],
+    deliveryAddress:{
+        street1: String,
+        street2: String,
+        city: String,
+        state: String,
+        pincode: Number,
+    },
     grossTotal: {
         type: Number,
     },

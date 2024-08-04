@@ -15,6 +15,7 @@ const AddressDetails = ({
     keyName,
     id,
     address,
+    updateInForm,
     updateInCustomModal
 }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -50,7 +51,8 @@ const AddressDetails = ({
                 return NotificationHandler.error(response.message);
             }
             setIsModalVisible(false);
-            updateInCustomModal(values, keyName);
+            updateInCustomModal(values, keyName)
+            updateInForm(values);
         } catch (errorInfo) {
             return NotificationHandler.error(errorInfo.message);
         }
@@ -105,7 +107,6 @@ const AddressDetails = ({
                     )}
                 </>
             )}
-
             <Modal
                 title={isEditing ? `EDIT ${entityName?.toUpperCase()} ADDRESS` : `ADD ${entityName.toUpperCase()} ADDRESS`}
                 open={isModalVisible}

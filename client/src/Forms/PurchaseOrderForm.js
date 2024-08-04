@@ -26,8 +26,15 @@ import AddressDetails from "components/Comman/AddressDetails";
 const PurchaseOrder = ({ form, value, disabled, isModel }) => {
     const [isOrganizationChecked, setIsOrganizationChecked] = useState(false);
     const [isCustomerChecked, setIsCustomerChecked] = useState(false);
+    const [deliveryAddress,setDeliveryAddress ]  = useState("")
+    const updateDeliveryAddress = (values)=>{
+             form.setFieldsValue({deliveryAddress:values})
+    } 
     const handleCheckboxChange = (type) => {
         if (type === "organization") {
+            const response = { street1: "A-1o near gorai pada vasai virat", street2: "near Sb road cap", city: "vasai", state: "Maharastra", pincode: 401209 }
+            setDeliveryAddress(response)
+            form.setFieldsValue({deliveryAddress:response})
             setIsOrganizationChecked(true);
             setIsCustomerChecked(false);
         } else if (type === "customer") {
@@ -127,6 +134,13 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                     labelAlign="left"
                     type={"date"}
                     labelCol={{ span: 8 }}
+                    required={true}
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please Select Delivery Date",
+                        },
+                    ]}
                 />
             </Row>
             <Row>
@@ -158,6 +172,8 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                             label={<Taglabel text={"Deliver Address"} />}
                             labelCol={{ span: 8 }}
                             labelAlign="left"
+                            name={"deliveryAddress"}
+                            rules={[{ required: true, message: "Delivery Address Required" }]}
                         >
                             <Checkbox
                                 checked={isOrganizationChecked}
@@ -187,10 +203,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                         xl={{ span: 24, offset: 3}}
                     >
                         {isOrganizationChecked && (
-                            <div>
-                                <Taglabel text={"Delivery Address"} weight={500}/>
-                               <AddressDetails initialRender={true} entityName={"Delivery Address"}/>
-                            </div>
+                               <AddressDetails id={"orinization"} initialRender={true} entityName={"Delivery Address"} address={deliveryAddress}  />
                         )}
 
                         {isCustomerChecked && (
@@ -201,7 +214,9 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                                 type={"model"}
                                 entity={"customers"}
                                 fieldName={"customerName"}
-                                updateInForm={() => {}}
+                                isForAddress = {true}
+                                updateInForm ={updateDeliveryAddress}
+
                             />
                         )}
                     </Col>

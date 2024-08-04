@@ -35,14 +35,14 @@ const vendorSchema = new mongoose.Schema({
         street2: String,
         city: String,
         state: String,
-        pinCode: Number,
+        pincode: Number,
     },
     shippingAddress: {
         street1: String,
         street2: String,
         city: String,
         state: String,
-        pinCode: Number,
+        pincode: Number,
     },
     tenantId:{
         type:String,

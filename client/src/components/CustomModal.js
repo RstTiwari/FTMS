@@ -13,19 +13,19 @@ const CustomModel = ({
     disabled,
     updateInForm,
     customerId,
+    isForAddress
 }) => {
     const [open, setOpen] = useState(false);
     const { appApiCall } = useAuth();
     const [value, setValue] = useState("");
     const [options, setOptions] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [id,setId] = useState("")
+    const [id, setId] = useState("")
     const [address, setAddress] = useState(null);
     const [initialRender, setInitialRender] = useState(false);  // intia Render of Address when cusotmer selected
 
 
     const [char, setChar] = useState("");
-
     // fucntion for clicking the select tab
     const handelClick = async () => {
         setIsLoading(true);
@@ -77,20 +77,21 @@ const CustomModel = ({
     const handleChange = (value, label) => {
         setValue(value);
         if (entity === "customers") {
-           if (!initialRender) {
-               setInitialRender(true);
-           } 
-
-           //   upaditng address as per avalibilty       
-           if (label?.item?.billingAddress || !label?.item?.shippingAddress) {
-               setAddress({ billingAddress: null, shippingAddress: null });
-           }
-              
+            if (!initialRender) {
+                setInitialRender(true);
+            }
+            //   upaditng address as per avalibilty       
+            if (label?.item?.billingAddress || !label?.item?.shippingAddress) {
+                setAddress({ billingAddress: null, shippingAddress: null });
+            }
             setAddress({
                 billingAddress: label?.item?.billingAddress,
                 shippingAddress: label?.item?.shippingAddress,
             });
             setId(label?.item?._id);
+            if (isForAddress) {
+                return updateInForm(label?.item?.shippingAddress)
+            }
             return updateInForm(value);
         } else if (entity === "products") {
             return updateInForm({
@@ -129,12 +130,15 @@ const CustomModel = ({
                 hsnCode: result.hsnCode,
             });
             // if anything else needed we can add from here
-        } else {
+        } else if (entity === "vendors") {
+            return updateInForm()
+        }
+        else {
         }
     };
 
-    const updateInCustomModal =(values,keyName)=>{
-        setAddress({...address,[keyName]:values})
+    const updateInCustomModal = (values, keyName) => {
+        setAddress({ ...address, [keyName]: values })
     }
     useEffect(() => {
         setValue(customerId);
@@ -166,11 +170,14 @@ const CustomModel = ({
                                     >
                                         {menu}
                                     </div>
-                                    <Divider />
+                                   
                                     <div
                                         style={{
-                                            backgroundColor: "#fff",
-                                            width: "100%",
+                                            backgroundColor: "#ffffff",
+                                            zIndex: "100",
+                                            width: "100vw",
+                                            paddingTop:"75px",
+                                            alignItems: 'center', // Center the button vertically
                                         }}
                                     >
                                         <CoustomButton
@@ -189,7 +196,7 @@ const CustomModel = ({
                             }
                         }}
                     />
-                    {entity === "customers"  ? (
+                    {entity === "customers" ? (
                         <Row
                             style={{
                                 display: "flex",
@@ -203,8 +210,8 @@ const CustomModel = ({
                                 entityName={"Billing Address"}
                                 keyName={"billingAddress"}
                                 address={address?.billingAddress || null}
-                                setAddress ={setAddress}
-                                id= {id}
+                                setAddress={setAddress}
+                                id={id}
                                 entity={"customers"}
                                 updateInCustomModal={updateInCustomModal}
 
@@ -215,10 +222,11 @@ const CustomModel = ({
                                 entityName={"Shipping Address"}
                                 keyName={"shippingAddress"}
                                 address={address?.shippingAddress || null}
-                                setAddress ={setAddress}
-                                id= {id}
+                                setAddress={setAddress}
+                                id={id}
                                 entity={"customers"}
                                 updateInCustomModal={updateInCustomModal}
+                                updateInForm={updateInForm}
 
                             />
                         </Row>

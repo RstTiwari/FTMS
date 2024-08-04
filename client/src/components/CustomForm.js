@@ -41,29 +41,29 @@ const CustomForm = ({
     );
 
     const handleFormFinish = async (values) => {
+        console.log(values);
         //Checking if form contains any image file then uploading that
-        if (values.hasOwnProperty("image")) {
-            //then now upload the file before saving it
-            const formData = new FormData();
-            formData.append("file", values.image);
-            const response = await appApiCall("post", "upload", formData, {});
-            if (!response.success) {
-                return NotificationHandler.error("failed to Upload Image");
-            }
-            values.image = response.result;
-        }
+        // if (values.hasOwnProperty("image")) {
+        //     //then now upload the file before saving it
+        //     const formData = new FormData();
+        //     formData.append("file", values.image);
+        //     const response = await appApiCall("post", "upload", formData, {});
+        //     if (!response.success) {
+        //         return NotificationHandler.error("failed to Upload Image");
+        //     }
+        //     values.image = response.result;
+        // }
 
-        // Formatting the Dates Dynamically
-        const formattedValues = Object.keys(values).reduce((acc, key) => {
-            if (key.includes("Date")) {
-                acc[key] = values[key].toDate(); // Convert dayjs to Date oject in js
-            } else {
-                acc[key] = values[key];
-            }
-            return acc;
-        }, {});
+        // // Formatting the Dates Dynamically
+        // const formattedValues = Object.keys(values).reduce((acc, key) => {
+        //     if (key.includes("Date")) {
+        //         acc[key] = values[key].toDate(); // Convert dayjs to Date oject in js
+        //     } else {
+        //         acc[key] = values[key];
+        //     }
+        //     return acc;
+        // }, {});
 
-        console.log(formattedValues, values, "===");
         //Handle Form Finish Logic and Loading after that if modal pass value
         handleFormSubmit(values, isModal, passToModal);
     };
