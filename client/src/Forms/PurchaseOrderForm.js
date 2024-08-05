@@ -105,7 +105,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                 ]}
                 type={"model"}
                 entity={"vendors"}
-                fieldName={"vendorName"}
+                fieldName={"name"}
                 updateInForm={(value) => {
                     handleItemsUpdate(value, "vendorName");
                 }}
@@ -213,7 +213,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                                 labelAlign="left"
                                 type={"model"}
                                 entity={"customers"}
-                                fieldName={"customerName"}
+                                fieldName={"name"}
                                 isForAddress = {true}
                                 updateInForm ={updateDeliveryAddress}
 

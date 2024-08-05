@@ -32,7 +32,7 @@ const getColumns = (details) => [
         render: (_, record) => (
             <Taglabel
                 type="customer"
-                text={record?.customer?.customerName || ""}
+                text={record?.customer?.name || ""}
                 details={details}
             />
         ),

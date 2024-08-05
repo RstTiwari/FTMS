@@ -21,12 +21,12 @@ const read = async (req, res, next) => {
             .populate([
                 {
                     path: "customer",
-                    select: "customerName",
+                    select: "name",
                     options: { strictPopulate: false },
                 },
                 {
                     path: "vendor",
-                    select: "vendorName",
+                    select: "name",
                     options: { strictPopulate: false },
                 },
             ])

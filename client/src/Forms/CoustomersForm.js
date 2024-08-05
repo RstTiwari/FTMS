@@ -31,7 +31,7 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
             <FormItemCol
                 label={"Customer Name"}
                 labelAlign="left"
-                name="customerName"
+                name="name"
                 required={true}
                 labelCol={{ span: isModal ? 18 : 8 }}
                 rules={[
@@ -46,7 +46,7 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
                 label={"Customer Phone"}
                 required={true}
                 labelAlign="left"
-                name="customerPhone"
+                name="phone"
                 labelCol={{ span: isModal ? 18 : 8 }}
                 rules={[
                     {
@@ -63,7 +63,7 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
             <FormItemCol
                 label={"Customer Email"}
                 labelAlign="left"
-                name="customerEmail"
+                name="email"
                 labelCol={{ span: isModal ? 18 : 8 }}
                 required={true}
                 rules={[

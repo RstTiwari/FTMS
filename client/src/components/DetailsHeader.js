@@ -56,7 +56,7 @@ const DetailsHeader = () => {
                     <EditOutlined style={{ marginRight: 5 }} />
                     Edit
                 </Col>
-                {entity !== "customers" ? (
+                {(entity !== "customers" &&  entity !=="vendors" )? (
                     <>
                         <Col
                             span={2}

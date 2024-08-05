@@ -80,7 +80,7 @@ const CustomModel = ({
             if (!initialRender) {
                 setInitialRender(true);
             }
-            //   upaditng address as per avalibilty       
+            //   updating address as per availability       
             if (label?.item?.billingAddress || !label?.item?.shippingAddress) {
                 setAddress({ billingAddress: null, shippingAddress: null });
             }
@@ -122,6 +122,21 @@ const CustomModel = ({
         setValue(result?._id);
         setOpen(!open);
         if (entity === "customers") {
+
+            setId(result?._id)
+            // If new Customer is having billing and shipping Address
+            if (result?.billingAddress && result.shippingAddress) {
+                setAddress({
+                    billingAddress: result?.billingAddress,
+                    shippingAddress: result?.shippingAddress,
+                });
+            }
+ 
+            // Its used In as For address in any form
+            if(isForAddress){
+                updateInForm(result?.shippingAddress)
+            }
+        
             return updateInForm(result._id);
         } else if (entity === "products") {
             return updateInForm({

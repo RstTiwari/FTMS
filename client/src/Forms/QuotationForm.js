@@ -99,7 +99,7 @@ const QuotationForm = ({ form }) => {
                 ]}
                 type="model"
                 entity={"customers"}
-                fieldName="customerName" // filed name form customer modal
+                fieldName="name" // filed name form customer modal
                 updateInForm={(value) => {
                     handleItemsUpdate(value, "customer");
                 }}

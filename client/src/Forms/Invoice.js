@@ -84,7 +84,7 @@ const QuotationForm = ({ form }) => {
                 entity="customers"
                 width="35%"
                 customerSelect=""
-                fieldName={"customerName"}
+                fieldName={"name"}
                 updateInForm={(value) => handleItemsUpdate(value, "customer")}
             />
 

@@ -22,8 +22,12 @@ const ExpenseForm = ({ form }) => {
             form.setFieldsValue({ categoryName: value });
         }
     };
+    const handleImageUpdate = (file)=>{
+        form.setFieldsValue({image:file})
+    }
     return (
-        <div style={{ height: "100vh" }}>
+        <div >
+            <Row>
             <FormItemCol
                 label="Expense Date"
                 required={true}
@@ -35,8 +39,9 @@ const ExpenseForm = ({ form }) => {
                 labelCol={{ span: 8 }}
                 type={"date"}
             />
-
-            <FormItemCol
+            </Row>
+         
+                <FormItemCol
                 label="Category Name"
                 name="categoryName"
                 required={true}
@@ -50,6 +55,7 @@ const ExpenseForm = ({ form }) => {
                     handleItemUpdate(value, "categoryName")
                 }
             />
+               
 
             <FormItemCol
                 label="Amount"
@@ -60,7 +66,15 @@ const ExpenseForm = ({ form }) => {
                 labelCol={{ span: 8 }}
                 type={"number"}
             />
-
+           <FormItemCol
+                labelAlign="left"
+                labelCol={{ span: 8}}
+                label="Receipt Image"
+                name="image"
+                type={"image"}
+                url=""
+                updateImageInForm={handleImageUpdate}
+            />
             <FormItemCol
                 label="#WorkOrder"
                 name="workOrder"
@@ -83,7 +97,7 @@ const ExpenseForm = ({ form }) => {
                 labelCol={{ span: 8 }}
                 type={"model"}
                 entity="customers"
-                fieldName={"customerName"}
+                fieldName={"name"}
                 updateInForm={(value) => handleItemUpdate(value, "customer")}
             ></FormItemCol>
         </div>

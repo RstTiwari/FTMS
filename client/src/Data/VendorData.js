@@ -7,12 +7,12 @@ import Taglabel from "components/Comman/Taglabel";
 const getColumns = (details) => [
     {
         title: <Taglabel text={"VENDOR NAME"} details={details} />,
-        dataIndex: "vendorName",
+        dataIndex: "name",
         key: "vendorName",
         render: (_, record) => (
             <>
                 <Taglabel
-                    text={record.vendorName}
+                    text={record.name}
                     type={"customer"}
                     details={details}
                 />
@@ -29,7 +29,7 @@ const getColumns = (details) => [
         render: (_, record) => (
             <>
                 <Taglabel
-                    text={record.vendorPhone}
+                    text={record.phone}
                     type={"text"}
                     details={details}
                 />
@@ -46,7 +46,7 @@ const getColumns = (details) => [
         render: (_, record) => (
             <>
                 <Taglabel
-                    text={record.vendorEmail}
+                    text={record.email}
                     type={"text"}
                     details={details}
                 />

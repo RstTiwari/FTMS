@@ -92,7 +92,7 @@ const DeliveryChallan = ({ form }) => {
                 ]}
                 type="model"
                 entity={"customers"}
-                fieldName={"customerName"}
+                fieldName={"name"}
                 customerSelect=""
                 updateInForm={(value) => handleItemUpdate(value, "customer")}
             />

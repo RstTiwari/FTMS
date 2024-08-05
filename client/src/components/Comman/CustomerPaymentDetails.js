@@ -2,13 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { List, Spin, Row, Col } from 'antd';
 import Taglabel from './Taglabel';
 import PageLoader from 'pages/PageLoader';
+import { useParams } from 'react-router-dom';
 
 const PaymentDetails = ({ apiUrl }) => {
-  const [data, setData] = useState([
+  const {entity} = useParams()
+  const [data, setData] = useState(entity  ==="customers" ?(
+    [
+      { title: "Total Amount", value: 200000, id: "1323" },
+      { title: "Total Received", value: 10000, id: "1322" },
+      { title: "Total Pending", value: 1000, id: "132123" },
+      { title: "Total Advance", value: 0, id: "132123" },
+      // Add more items if needed
+    ]
+  ):[
     { title: "Total Amount", value: 200000, id: "1323" },
-    { title: "Total Received", value: 10000, id: "1322" },
+    { title: "Total Paid", value: 10000, id: "1322" },
     { title: "Total Pending", value: 1000, id: "132123" },
-    { title: "Total Advance", value: 0, id: "132123" },
     // Add more items if needed
   ]);
   const [loading, setLoading] = useState(true);

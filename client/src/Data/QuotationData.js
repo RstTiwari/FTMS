@@ -11,12 +11,12 @@ const getColumns = (details) => [
         title: (
             <Taglabel text={"CUSTOMER"} type={"heading"} details={details} />
         ),
-        dataIndex: "client",
+        dataIndex: "name",
         key: "source",
         render: (_, record) => (
             <Taglabel
                 type="customer"
-                text={`${record?.customer?.customerName}`}
+                text={`${record?.customer?.name}`}
                 details={details}
             />
         ),

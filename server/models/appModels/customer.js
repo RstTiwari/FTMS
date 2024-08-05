@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const coustomerSchema = new mongoose.Schema(
     {
-        customerName: {
+        name: {
             type: String,
             required: true,
             sparse: true,
@@ -9,13 +9,13 @@ const coustomerSchema = new mongoose.Schema(
         contactPerson: {
             type: String,
         },
-        customerPhone: {
+        phone: {
             type: Number,
             required: true,
             unique: true,
             sparse: true,
         },
-        customerEmail: {
+        email: {
             type: String,
             required: true,
             sparse: true,

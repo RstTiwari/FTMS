@@ -9,12 +9,12 @@ const getColumns = (details) => [
                 details={details}
             />
         ),
-        dataIndex: "customerName",
-        key: "customerName",
+        dataIndex: "name",
+        key: "name",
         render: (_, record) => (
             <Taglabel
                 type="customer"
-                text={record?.customerName ? record.customerName : ""}
+                text={record?.name ? record.name : ""}
                 details={details}
             />
         ),
@@ -42,26 +42,26 @@ const getColumns = (details) => [
         title: (
             <Taglabel text={"PHONE NO"} type={"heading"} details={details} />
         ),
-        dataIndex: "customerPhone",
+        dataIndex: "phone",
         key: "customerPhone",
         responsive: details ? [] : ["lg"],
         render: (_, record) => (
             <Taglabel
                 type="text"
-                text={record?.customerPhone ? record.customerPhone : ""}
+                text={record?.phone ? record.phone : ""}
                 details={details}
             />
         ),
     },
     {
         title: <Taglabel text={"EMAIL ID"} type={"heading"} />,
-        dataIndex: "customerEmail",
+        dataIndex: "email",
         key: "customerEmail",
         responsive: details ? [] : ["lg"],
         render: (_, record) => (
             <Taglabel
                 type="text"
-                text={record?.customerEmail ? record.customerEmail : ""}
+                text={record?.email ? record.email : ""}
                 details={details}
             />
         ),
@@ -235,9 +235,9 @@ const CoustomerData = {
         { label: "Jammu and Kashmir", value: "Jammu and Kashmir" },
     ],
     select: {
-        customerName: 1,
-        customerPhone: 1,
-        customerEmail: 1,
+        name: 1,
+        phone: 1,
+        email: 1,
         contactPerson: 1,
         gstNo: 1,
         panNo: 1,

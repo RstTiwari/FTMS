@@ -138,24 +138,23 @@ const addHeader = (
     );
 
     // Address Section
-    const street1 = organization.address.street1;
-    const street2 = organization.address.street2 || ""; // Handle cases where street2 may be undefined
-    const city = organization.address.city;
-    const state = organization.address.state;
-    const pincode = organization.address.pincode;
-    const phoneNumber = organization.phone;
-    const email = organization.email;
-    const website = organization.website;
-    const gstNo = organization.gstNo;
+    let address = ""
+    if(organization.billingAddress){
+        address = `${organization?.address?.street1||""},${organization?.address?.street2||""},${organization?.address?.city || ""},${organization?.address?.state || ""},${organization?.address?.pincode || ""}`
+    }else{
+        address = "No address Found:"
+    }
+
+    const phoneNumber = organization?.phone || "";
+    const email = organization?.email || "";
+    const website = organization?.website || "";
+    const gstNo = organization?.gstNo || "";
 
     const addressFontSize = 8.5;
     const addressColor = "#000000";
 
     // Concatenate address lines and calculate position
-    const fullAddress = `${street1}${
-        street2 ? ", " + street2 : ""
-    }\n${city}, ${state}, ${pincode} \nPhone: ${phoneNumber},\nEmail: ${email}\nWebsite: ${website}\nGST No: ${gstNo}`;
-
+    let fullAddress = `${address}\nPhone: ${phoneNumber},\nEmail: ${email}\nWebsite: ${website}\nGST No: ${gstNo}`;
     const headerTextY = entityY + 20;
 
     // Y position for text elements
@@ -254,6 +253,7 @@ const addHeader = (
             width: detailWidth,
             align: "left",
         });
+
         doc.font("Helvetica").text(
             `${jsDateIntoDDMMYY(entityDetails.dueDate)}`,
             460,
@@ -488,7 +488,7 @@ const detailsForInvoice = (doc, invoiceData, entity, curY) => {
 };
 
 const detailsForQuotation = (doc, quotationData, borderColor, curY) => {
-    const customer = quotationData.customer;
+    const customer = quotationData?.customer;
     const sub = quotationData?.sub;
     const salesPerson = quotationData?.salesPerson;
     let initialY = doc.y;
@@ -503,11 +503,11 @@ const detailsForQuotation = (doc, quotationData, borderColor, curY) => {
     doc.fillColor("#1E1F20").text(toText, leftX, initialY);
     doc.fontSize(12)
         .fillColor("#1E1F20")
-        .text(customer?.customerName, leftX + toTextWidth + 5, initialY);
+        .text(customer?.name || "", leftX + toTextWidth + 5, initialY);
 
     // Optional subject line
     if (sub) {
-        let subText = `Sub : ${quotationData?.sub}`;
+        let subText = `Sub : ${quotationData?.sub || ""}`;
         doc.fontSize(12)
             .fillColor("#1E1F20")
             .font("Helvetica-Bold")
@@ -515,7 +515,7 @@ const detailsForQuotation = (doc, quotationData, borderColor, curY) => {
     }
     // Optional subject line
     if (salesPerson) {
-        let subText = `Sales Executive : ${quotationData?.salesPerson}`;
+        let subText = `Sales Executive : ${quotationData?.salesPerson || ""}`;
         doc.fontSize(12)
             .fillColor("#1E1F20")
             .font("Helvetica-Bold")
@@ -530,6 +530,96 @@ const detailsForQuotation = (doc, quotationData, borderColor, curY) => {
         .stroke(borderColor);
     doc.y = customerEndY + 5;
 };
+
+const detailsForPurchaseOrder = (doc, purchaseOrderData, curY) => {
+    const leftX = 20; // X position for the left side
+    const rightX = 320; // X position for the right side
+    const initialY = doc.y; // Initial Y position for the details
+    const detailSpacing = 10; // Spacing between details
+    const borderColor = "#000000"; // Color for the border
+    const { vendor, buyer } = purchaseOrderData;
+
+    // Supplier Details
+    doc.fontSize(12).fillColor("#0047AB").text("SUPPLIER:", leftX, initialY);
+    doc.fontSize(10)
+        .fillColor("#1E1F20")
+        .font("Helvetica-Bold")
+        .text(vendor?.name || "", leftX, initialY + 15);
+    doc.fontSize(9)
+        .fillColor("#4B4E4F")
+        .text(
+            `${vendor?.address?.street1 || ""},${vendor?.address?.street2 || ""}`,
+            leftX,
+            doc.y + 5,
+            { width: 250, align: "left" }
+        );
+    doc.text(
+        `${vendor?.address?.city || ""}, ${vendor?.address?.state || ""}, ${vendor?.address?.pincode ||""}`,
+        leftX,
+        doc.y + 5,
+        { width: 250 }
+    );
+
+    // Add GST No and PAN No with bold labels for vendor
+    const supplierCurrentY = doc.y + 5;
+    doc.font("Helvetica-Bold").text("GST No: ", leftX, supplierCurrentY, {
+        continued: true,
+    });
+    doc.font("Helvetica").text(`${vendor?.gstNo || ""}`, { continued: true });
+    doc.font("Helvetica-Bold").text("  PAN No: ", { continued: true });
+    doc.font("Helvetica").text(`${vendor?.panNo ||""}`);
+
+    const supplierEndY = doc.y;
+
+    // Buyer Details
+    doc.fontSize(12)
+        .fillColor("#0047AB")
+        .text("BUYER:", rightX, initialY);
+    doc.fontSize(10)
+        .fillColor("#1E1F20")
+        .font("Helvetica-Bold")
+        .text(buyer?.buyerName, rightX, initialY + 15);
+    doc.fontSize(9)
+        .fillColor("#4B4E4F")
+        .text(
+            `${buyer?.address?.street1},${buyer?.address?.street2}`,
+            rightX,
+            doc.y + 5,
+            { width: 250, align: "left" }
+        );
+    doc.text(
+        `${buyer?.address?.city}, ${buyer?.address?.state}, ${buyer?.address?.pincode}`,
+        rightX,
+        doc.y + 5,
+        { width: 250 }
+    );
+
+    // Add GST No and PAN No with bold labels for buyer
+    const buyerCurrentY = doc.y + 5;
+    doc.font("Helvetica-Bold").text("GST No: ", rightX, buyerCurrentY, {
+        continued: true,
+    });
+    doc.font("Helvetica").text(`${buyer?.gstNo}`, { continued: true });
+    doc.font("Helvetica-Bold").text("  PAN No: ", { continued: true });
+    doc.font("Helvetica").text(`${buyer?.panNo}`);
+
+    const buyerEndY = doc.y;
+
+    // Draw horizontal line after vendor and buyer details
+    const endY = Math.max(supplierEndY, buyerEndY) + 5;
+    doc.moveTo(5, endY)
+        .lineTo(doc.page.width - 4, endY)
+        .stroke(borderColor);
+
+    // Draw vertical line separating vendor and buyer sections
+    doc.moveTo(300, initialY - 10)
+        .lineTo(300, endY)
+        .stroke(borderColor);
+
+    // Update doc.y to ensure it starts after the details section
+    doc.y = endY;
+};
+
 
 const footerForInvoice = (doc, invoiceData, organizationData) => {
     const initialY = doc.y + 20;
@@ -549,8 +639,8 @@ const footerForInvoice = (doc, invoiceData, organizationData) => {
     doc.text("Grand Total:", startX, startY + 70).fillColor("#000");
 
     doc.fill("#000");
-    doc.text(`${invoiceData?.grossTotal}`, valueX, startY);
-    doc.text(`${invoiceData?.taxAmount}`, valueX, startY + 30);
+    doc.text(`${invoiceData?.grossTotal || ""}`, valueX, startY);
+    doc.text(`${invoiceData?.taxAmount || ""}`, valueX, startY + 30);
     doc.fill("#fff");
     doc.text(`${invoiceData?.grandTotal}`, valueX, startY + 70);
 
@@ -566,7 +656,7 @@ const footerForInvoice = (doc, invoiceData, organizationData) => {
         continued: true,
     })
         .font("Helvetica")
-        .text(`${organizationData?.bankName}`);
+        .text(`${organizationData?.bankName ||""}`);
     doc.font("Helvetica-Bold");
     doc.text(`Account No: `, bankDetailsStartX, bankDetailsStartY + 30, {
         continued: true,

@@ -43,7 +43,7 @@ const PaymentForm = ({ form, initialValue = {} }) => {
                         ]}
                         labelAlign="left"
                         entity={"customers"}
-                        fieldName={"customerName"}
+                        fieldName={"name"}
                         updateInForm={(value) => {
                             handleItemUpdate(value, "customer");
                         }}

@@ -3,7 +3,7 @@ import { Card, Row, Col, Avatar, Collapse } from "antd";
 import { UserOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons";
 import Taglabel from "./Taglabel"; // Adjust the import based on your actual file structure
 import AddressDetails from "./AddressDetails";
-
+import { useParams,useNavigate } from "react-router-dom";
 const { Panel } = Collapse;
 
 const CustomerAddressCard = ({
@@ -11,6 +11,12 @@ const CustomerAddressCard = ({
     billingAddress,
     shippingAddress,
 }) => {
+    const {entity} = useParams()
+    const navigate = useNavigate()
+    // j
+    const updateInForm =()=>{
+        window.location.reload()
+    }
     return (
         <>
             <Row align="middle" style={{ maxWidth: "500px", margin: "0 auto" }}>
@@ -19,9 +25,8 @@ const CustomerAddressCard = ({
                         span={24}
                         style={{ textAlign: "center", wordWrap: "break-word" }}
                     >
-                        {console.log(customerData,"===")}
                         <Taglabel
-                            text={`${customerData?.customerName}`}
+                            text={`${customerData?.name}`}
                             weight={1000}
                         />
                         <p>
@@ -30,7 +35,7 @@ const CustomerAddressCard = ({
                             </Row>
                             <Row justify={"center"}>
                                 <Taglabel
-                                    text={`${customerData?.customerPhone}`}
+                                    text={`${customerData?.phone}`}
                                     type={"text"}
                                     weight={900}
                                 />
@@ -42,7 +47,7 @@ const CustomerAddressCard = ({
                             </Row>
                             <Row justify={"center"}>
                                 <Taglabel
-                                    text={`${customerData?.customerEmail}`}
+                                    text={`${customerData?.email}`}
                                     type={"text"}
                                     weight={900}
                                 />
@@ -51,8 +56,8 @@ const CustomerAddressCard = ({
                     </Col>
                 </>
             </Row>
-            <AddressDetails  initialRender={true} entityName={"Billing Address"} address={billingAddress}/>
-            <AddressDetails  initialRender={true} entityName={"Shipping Address"} address={shippingAddress}/>
+            <AddressDetails  initialRender={true} id={customerData?._id} entity={entity} keyName={"billingAddress"} entityName={"Billing Address"} address={billingAddress} updateInForm={updateInForm}/>
+            <AddressDetails  initialRender={true} id={customerData?._id} entity={entity}  keyName ={"shippingAddress"}entityName={"Shipping Address"} address={shippingAddress} updateInForm={updateInForm}/>
 
           
         </>

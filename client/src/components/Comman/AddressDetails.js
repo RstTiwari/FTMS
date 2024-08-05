@@ -47,11 +47,15 @@ const AddressDetails = ({
                 { action: "set", keyName: keyName, values: values, id: id },
                 { entity }
             );
+            
             if (!response.success) {
                 return NotificationHandler.error(response.message);
             }
             setIsModalVisible(false);
-            updateInCustomModal(values, keyName)
+            if(updateInCustomModal){
+                updateInCustomModal(values, keyName)
+
+            }
             updateInForm(values);
         } catch (errorInfo) {
             return NotificationHandler.error(errorInfo.message);
@@ -68,6 +72,10 @@ const AddressDetails = ({
             form.resetFields(); // Reset form fields again when the modal opens for adding a new address
         }
     }, [isModalVisible, isEditing, form]);
+
+    useEffect(()=>{
+
+    },[handleEditClick])
 
     return (
         <div>

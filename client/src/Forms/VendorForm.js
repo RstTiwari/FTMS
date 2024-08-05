@@ -19,7 +19,7 @@ const VendorsForm = ({ form, disabled, isModal }) => {
             <FormItemCol
                 label={"Vendors Name"}
                 labelAlign="left"
-                name="vendorName"
+                name="name"
                 required={true}
                 labelCol={{ span: isModal ? 18 : 8 }}
                 rules={[
@@ -34,7 +34,7 @@ const VendorsForm = ({ form, disabled, isModal }) => {
                 label={"Vendors Phone"}
                 required={true}
                 labelAlign="left"
-                name="vendorPhone"
+                name="phone"
                 labelCol={{ span: isModal ? 18 : 8 }}
                 rules={[
                     {
@@ -47,7 +47,7 @@ const VendorsForm = ({ form, disabled, isModal }) => {
             <FormItemCol
                 label={"Vendors Email"}
                 labelAlign="left"
-                name="vendorEmail"
+                name="email"
                 labelCol={{ span: isModal ? 18 : 8 }}
                 required={true}
                 rules={[

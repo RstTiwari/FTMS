@@ -1,34 +1,31 @@
 import mongoose from "mongoose";
 const vendorSchema = new mongoose.Schema({
-    vendorName: {
+    name: {
         type: String,
         require: true,
     },
     contactPerson: {
         type: String,
     },
-    vendorPhone: {
+    phone: {
         type: Number,
         require: true,
-        unique:true
+        unique: true,
     },
-    vendorEmail: {
+    email: {
         type: String,
         require: true,
-        unique:true
-
+        unique: true,
     },
     panNo: {
         type: String,
-        unique:true,
-        sparse:true
-
+        unique: true,
+        sparse: true,
     },
     gstNo: {
         type: String,
-        unique:true,
-        sparse:true
-
+        unique: true,
+        sparse: true,
     },
     billingAddress: {
         street1: String,
@@ -44,10 +41,10 @@ const vendorSchema = new mongoose.Schema({
         state: String,
         pincode: Number,
     },
-    tenantId:{
-        type:String,
-        required:true
-    }
+    tenantId: {
+        type: String,
+        required: true,
+    },
 });
 
-export default mongoose.model("vendors",vendorSchema)
+export default mongoose.model("vendors", vendorSchema);

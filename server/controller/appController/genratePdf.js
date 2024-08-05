@@ -14,14 +14,12 @@ const generatePdf = async (req, res, next) => {
             _id: id,
             tenantId: tenantId,
         });
-
         let organizationData = await tenantDb.findOne({ _id: tenantId });
         let prefix = await countersDb.findOne({
             entityName: entity,
             tenantId: tenantId,
         });
         let entityPrefix = prefix?.prefix ? prefix.prefix : "";
-        console.log(entityData,organizationData,prefix)
 
         const templateId = "myfac8ry";
         if (templateId === "myfac8ry") {

@@ -17,7 +17,7 @@ import useInitialFormValues from "Hook/useIntialFormValues";
 import PageLoader from "pages/PageLoader";
 const { TabPane } = Tabs;
 
-const CustomerDetails = ({ payload }) => {
+const CustomerDetails = ({ values }) => {
     const { entity, id } = useParams();
     const { initialValues, loading, fetchInitialValues } = useInitialFormValues(
         entity,
@@ -37,7 +37,7 @@ const CustomerDetails = ({ payload }) => {
                 tab={<Taglabel text={"Overview"} weight={200} type={"text"} />}
                 key="1"
             >
-                <OverviewTab customerData={initialValues} />
+                <OverviewTab customerData={values} />
             </TabPane>
             <TabPane
                 tab={

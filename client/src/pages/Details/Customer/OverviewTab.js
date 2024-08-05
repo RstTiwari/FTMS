@@ -10,7 +10,7 @@ import {
 } from "antd";
 
 import CustomerAddressCard from "components/Comman/CustomerCard";
-import PaymentDetails from "components/Comman/PaymentDetails";
+import PaymentDetails from "components/Comman/CustomerPaymentDetails";
 import CommentDetails from "components/Comman/CommnetsDetails";
 import AddressDetails from "components/Comman/AddressDetails";
 const { TabPane } = Tabs;
