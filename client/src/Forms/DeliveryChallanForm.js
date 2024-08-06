@@ -125,7 +125,7 @@ const DeliveryChallan = ({ form }) => {
                 labelAlign="left"
                 type={"date"}
             />
-            <FormItemCol
+                      <FormItemCol
                 label={"Challan Type"}
                 name={"challanType"}
                 required={true}
@@ -141,6 +141,22 @@ const DeliveryChallan = ({ form }) => {
                 entity={"Challan Type"}
                 entityName={"challanType"}
                 updateInForm={(value) => handleItemUpdate(value, "challanType")}
+            />
+            <FormItemCol
+                label={"Vehicle No"}
+                name={"vehicleNo"}
+                labelCol={{ span: 8 }}
+                labelAlign="left"
+                type={"input"}
+                width={"100px"}
+            />
+                <FormItemCol
+                label={"Contact No"}
+                name={"contactNo"}
+                labelCol={{ span: 8 }}
+                labelAlign="left"
+                type={"input"}
+                width={"100px"}
             />
 
             <Divider dashed />
@@ -400,7 +416,7 @@ const DeliveryChallan = ({ form }) => {
             <Row align={"middle"} justify={"end"}>
                 <FormItemCol
                     label="Transport(Rs)"
-                    name={"transPortAmount"}
+                    name={"transportAmount"}
                     labelAlign="left"
                     width={150}
                     labelCol={{ span: 8 }}

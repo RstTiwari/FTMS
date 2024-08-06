@@ -26,11 +26,20 @@ const challanSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        vehicleNo:{
+            type:String
+        },
+        contactNo:{
+            type:String
+        },
         items: [
             {
                 description: {
                     type: String,
                     require: true,
+                },
+                rate:{
+                    type:Number
                 },
                 qty: {
                     type: Number,
@@ -47,7 +56,7 @@ const challanSchema = new mongoose.Schema(
             type: Number,
             default: 0,
         },
-        transport: {
+        transportAmount: {
             type: Number,
             default: 0,
         },

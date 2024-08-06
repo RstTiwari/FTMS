@@ -35,7 +35,7 @@ const getColumns = (details) => [
             <>
                 <Taglabel
                     type="customer"
-                    text={record.customer ? record.customer.customerName : ""}
+                    text={record.customer ? record.customer.name : ""}
                     details={details}
                 />
             </>

@@ -1,10 +1,18 @@
- const organizationData = {
-    companyName: "Royal Play equipment pvt and Ltd",
-    companyLogo:
+ export const organizationData = {
+    companyName: "HKB DEVELOPMENT PVT",
+    logo:
         "https://st3.depositphotos.com/43745012/44906/i/450/depositphotos_449066958-stock-photo-financial-accounting-logo-financial-logo.jpg",
     gstNo: "22AAAAA0000A1Z5",
     panNo: "AAAAA1234A",
-    address: {
+    billingAddress: {
+        street1: "123, Tech Park and the valley road ",
+        street2: "Silicon Valley near the hospital road",
+        city: "Bangalore",
+        state: "Karnataka",
+        pincode: "560001",
+        country: "India",
+    },
+    shippingAddress: {
         street1: "123, Tech Park and the valley road ",
         street2: "Silicon Valley near the hospital road",
         city: "Bangalore",

@@ -13,7 +13,7 @@ const CustomModel = ({
     disabled,
     updateInForm,
     customerId,
-    isForAddress
+    isForDelivery
 }) => {
     const [open, setOpen] = useState(false);
     const { appApiCall } = useAuth();
@@ -89,8 +89,11 @@ const CustomModel = ({
                 shippingAddress: label?.item?.shippingAddress,
             });
             setId(label?.item?._id);
-            if (isForAddress) {
-                return updateInForm(label?.item?.shippingAddress)
+            if (isForDelivery) {
+                return updateInForm({
+                    name: label?.item?.name,
+                    shippingAddress: label?.item?.shippingAddress,
+                });
             }
             return updateInForm(value);
         } else if (entity === "products") {
@@ -122,8 +125,7 @@ const CustomModel = ({
         setValue(result?._id);
         setOpen(!open);
         if (entity === "customers") {
-
-            setId(result?._id)
+            setId(result?._id);
             // If new Customer is having billing and shipping Address
             if (result?.billingAddress && result.shippingAddress) {
                 setAddress({
@@ -131,12 +133,15 @@ const CustomModel = ({
                     shippingAddress: result?.shippingAddress,
                 });
             }
- 
+
             // Its used In as For address in any form
-            if(isForAddress){
-                updateInForm(result?.shippingAddress)
+            if (isForDelivery) {
+                return updateInForm({
+                    name: result?.name,
+                    shippingAddress: result?.shippingAddress,
+                });
             }
-        
+
             return updateInForm(result._id);
         } else if (entity === "products") {
             return updateInForm({
@@ -146,9 +151,8 @@ const CustomModel = ({
             });
             // if anything else needed we can add from here
         } else if (entity === "vendors") {
-            return updateInForm()
-        }
-        else {
+            return updateInForm();
+        } else {
         }
     };
 
@@ -185,14 +189,14 @@ const CustomModel = ({
                                     >
                                         {menu}
                                     </div>
-                                   
+
                                     <div
                                         style={{
                                             backgroundColor: "#ffffff",
                                             zIndex: "100",
                                             width: "100vw",
-                                            paddingTop:"75px",
-                                            alignItems: 'center', // Center the button vertically
+                                            paddingTop: "75px",
+                                            alignItems: "center", // Center the button vertically
                                         }}
                                     >
                                         <CoustomButton
@@ -219,18 +223,21 @@ const CustomModel = ({
                                 justifyContent: "space-between",
                             }}
                         >
-                            <AddressDetails
-                                style={{ flex: 1, marginRight: "10px" }} // Adjust margin as needed
-                                initialRender={initialRender}
-                                entityName={"Billing Address"}
-                                keyName={"billingAddress"}
-                                address={address?.billingAddress || null}
-                                setAddress={setAddress}
-                                id={id}
-                                entity={"customers"}
-                                updateInCustomModal={updateInCustomModal}
-
-                            />
+                            {!isForDelivery ? (
+                                <AddressDetails
+                                    style={{ flex: 1, marginRight: "10px" }} // Adjust margin as needed
+                                    initialRender={initialRender}
+                                    entityName={"Billing Address"}
+                                    keyName={"billingAddress"}
+                                    address={address?.billingAddress || null}
+                                    setAddress={setAddress}
+                                    id={id}
+                                    entity={"customers"}
+                                    updateInCustomModal={updateInCustomModal}
+                                />
+                            ) : (
+                                ""
+                            )}
                             <AddressDetails
                                 style={{ flex: 1, marginLeft: "10px" }} // Adjust margin as needed
                                 initialRender={initialRender}
@@ -242,7 +249,6 @@ const CustomModel = ({
                                 entity={"customers"}
                                 updateInCustomModal={updateInCustomModal}
                                 updateInForm={updateInForm}
-
                             />
                         </Row>
                     ) : (

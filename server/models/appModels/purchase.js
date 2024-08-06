@@ -25,7 +25,6 @@ const purchaseOrderSchema = new mongoose.Schema({
             rate: {
                 type: Number,
                 required: true,
-                
             },
             qty: {
                 type: Number,
@@ -38,7 +37,10 @@ const purchaseOrderSchema = new mongoose.Schema({
             },
         },
     ],
-    deliveryAddress:{
+    deliverTo:{
+        type:String
+    },
+    deliveryAddress: {
         street1: String,
         street2: String,
         city: String,
@@ -64,6 +66,12 @@ const purchaseOrderSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    paymentCondition:{
+        type:String
+    },
+    cancellationCondition:{
+        type:String
+    }
 });
 
 purchaseOrderSchema.plugin(mongooseAutoPopulate);

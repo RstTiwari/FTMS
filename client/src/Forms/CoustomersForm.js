@@ -98,15 +98,15 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
                 name="gstNo"
                 labelCol={{ span: isModal ? 18 : 8 }}
             />
-            <Row style={{ margin: 5, padding: 5 }}>
-                <Col sm={24} xs={24} md={12} lg={12}>
+            <Row style={{display:"flex",padding:2}} >
+                <Col sm={24} xs={24} md={12} lg={12} style={{padding:2}}>
                     <Row style={{ paddingBottom: 25 }}>
                         <Text type="secondary" style={{ fontWeight: 900 }}>
                             Billing Address
                         </Text>
                     </Row>
                     <Row>
-                        <Col xs={24} sm={24} lg={12} xl={12}>
+                        <Col xs={24} sm={24} lg={24} xl={24}>
                             <Form.Item
                                 label={<CustomLabel label={"Street1"} />}
                                 name={["billingAddress", "street1"]}
@@ -118,7 +118,7 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
                         </Col>
                     </Row>
                     <Row>
-                        <Col xs={24} sm={24} lg={12} xl={12}>
+                        <Col xs={24} sm={24} lg={24} xl={24}>
                             <Form.Item
                                 label={<CustomLabel label={"Street2"} />}
                                 name={["billingAddress", "street2"]}
@@ -131,7 +131,7 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
                     </Row>
 
                     <Row>
-                        <Col xs={24} sm={24} lg={12} xl={12}>
+                        <Col xs={24} sm={24} lg={24} xl={24}>
                             <Form.Item
                                 label={<CustomLabel label={"City"} />}
                                 name={["billingAddress", "city"]}
@@ -143,7 +143,7 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
                         </Col>
                     </Row>
                     <Row>
-                        <Col xs={24} sm={24} lg={12} xl={12}>
+                        <Col xs={24} sm={24} lg={24} xl={24}>
                             <Form.Item
                                 label={<CustomLabel label={"Pincode"} />}
                                 name={["billingAddress", "pincode"]}
@@ -155,7 +155,7 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
                         </Col>
                     </Row>
                     <Row>
-                        <Col xs={24} sm={24} lg={12} xl={12}>
+                        <Col xs={24} sm={24} lg={24} xl={24}>
                             <Form.Item
                                 label={<CustomLabel label={"State"} />}
                                 name={["billingAddress", "state"]}
@@ -165,14 +165,14 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
                                 <Select
                                     options={CustomerData.states}
                                     style={{
-                                        width: isModal ? "150px" : "250px",
+                                        width: isModal ? "100%" : "100%",
                                     }}
                                 />
                             </Form.Item>
                         </Col>
                     </Row>
                 </Col>
-                <Col sm={24} xs={12} md={12} lg={12}>
+                <Col sm={24} xs={12} md={12} lg={12} style={{padding:2}}>
                     <Row style={{ paddingBottom: 25 }}>
                         <Text type="secondary" style={{ fontWeight: 900 }}>
                             Shipping Address
@@ -194,7 +194,7 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
                     </Row>
 
                     <Row>
-                        <Col xs={24} sm={24} lg={12} xl={12}>
+                        <Col xs={24} sm={24} lg={24} xl={24}>
                             <Form.Item
                                 label={<CustomLabel label={"Street1"} />}
                                 name={["shippingAddress", "street1"]}
@@ -206,7 +206,7 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
                         </Col>
                     </Row>
                     <Row>
-                        <Col xs={24} sm={24} lg={12} xl={12}>
+                        <Col xs={24} sm={24} lg={24} xl={24}>
                             <Form.Item
                                 label={<CustomLabel label={"Street2"} />}
                                 name={["shippingAddress", "street2"]}
@@ -219,7 +219,7 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
                     </Row>
 
                     <Row>
-                        <Col xs={24} sm={24} lg={12} xl={12}>
+                        <Col xs={24} sm={24} lg={24} xl={24}>
                             <Form.Item
                                 label={<CustomLabel label={"City"} />}
                                 name={["shippingAddress", "city"]}
@@ -231,7 +231,7 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
                         </Col>
                     </Row>
                     <Row>
-                        <Col xs={24} sm={24} lg={12} xl={12}>
+                        <Col xs={24} sm={24} lg={24} xl={24}>
                             <Form.Item
                                 label={<CustomLabel label={"Pincode"} />}
                                 name={["shippingAddress", "pincode"]}
@@ -244,7 +244,7 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
                     </Row>
 
                     <Row>
-                        <Col xs={24} sm={24} lg={12} xl={12}>
+                        <Col xs={24} sm={24} lg={24} xl={24}>
                             <Form.Item
                                 label={<CustomLabel label={"State"} />}
                                 name={["shippingAddress", "state"]}
@@ -254,7 +254,7 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
                                 <Select
                                     options={CustomerData.states}
                                     style={{
-                                        width: isModal ? "150px" : "250px",
+                                        width: isModal ? "100%" : "100%",
                                     }}
                                 />
                             </Form.Item>

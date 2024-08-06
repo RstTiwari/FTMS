@@ -26,15 +26,33 @@ import AddressDetails from "components/Comman/AddressDetails";
 const PurchaseOrder = ({ form, value, disabled, isModel }) => {
     const [isOrganizationChecked, setIsOrganizationChecked] = useState(false);
     const [isCustomerChecked, setIsCustomerChecked] = useState(false);
-    const [deliveryAddress,setDeliveryAddress ]  = useState("")
-    const updateDeliveryAddress = (values)=>{
-             form.setFieldsValue({deliveryAddress:values})
-    } 
+    const [delivery,setDelivery ]  = useState("")
+
+    const updateDeliveryAddress = (values) => {
+        form.setFieldsValue({
+            deliverTo: values?.name,
+            deliveryAddress: values?.shippingAddress,
+        });
+    }; 
+
     const handleCheckboxChange = (type) => {
         if (type === "organization") {
-            const response = { street1: "A-1o near gorai pada vasai virat", street2: "near Sb road cap", city: "vasai", state: "Maharastra", pincode: 401209 }
-            setDeliveryAddress(response)
-            form.setFieldsValue({deliveryAddress:response})
+            // Probally call the api and get the Organization Data
+            const response = {
+                companyName: "HKB Development Pvt LtD",
+                shippingAddress: {
+                    street1: "A-1o near gorai pada vasai virat",
+                    street2: "near Sb road cap",
+                    city: "vasai",
+                    state: "Maharastra",
+                    pincode: 401209,
+                },
+            };
+            setDelivery({...delivery,companyName:response?.companyName,shippingAddress:response?.shippingAddress})
+            updateDeliveryAddress({
+                name: response?.companyName,
+                shippingAddress: response?.shippingAddress,
+            });
             setIsOrganizationChecked(true);
             setIsCustomerChecked(false);
         } else if (type === "customer") {
@@ -42,7 +60,6 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
             setIsCustomerChecked(true);
         }
     };
-
     const handleItemsUpdate = (value, fieldName, rowName) => {
         const items = form.getFieldValue("items");
         const temObj = items[rowName];
@@ -63,6 +80,10 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
             temObj.finalAmount = temObj.rate * temObj.qty;
         } else if (fieldName === "gstPercent") {
             temObj.gstPercent = Number(value);
+        }else if(fieldName ==="paymentCondition"){
+            form.setFieldsValue({ paymentCondition: value });
+        }else if (fieldName ==="cancellationCondition"){
+            form.setFieldsValue({ cancellationCondition: value });          
         } else {
             return NotificationHandler.error("invalid changes");
         }
@@ -89,6 +110,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
             grandTotal: Math.ceil(grandTotal),
         });
     };
+    console.log(form.getFieldsValue())
     return (
         <div>
             <FormItemCol
@@ -164,16 +186,22 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                     <Col
                         xs={24}
                         sm={24}
-                        md={{ span: 12}}
+                        md={{ span: 12 }}
                         lg={{ span: 8 }}
-                        xl={{ span: 8}}
+                        xl={{ span: 8 }}
                     >
+                        <Form.Item name={"deliverTo"} hidden={true}></Form.Item>
                         <Form.Item
-                            label={<Taglabel text={"Deliver Address"} />}
+                            label={<Taglabel text={"Delivery Address"} />}
                             labelCol={{ span: 8 }}
                             labelAlign="left"
                             name={"deliveryAddress"}
-                            rules={[{ required: true, message: "Delivery Address Required" }]}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Delivery Address Required",
+                                },
+                            ]}
                         >
                             <Checkbox
                                 checked={isOrganizationChecked}
@@ -195,18 +223,33 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                     </Col>
                 </Row>
                 <Row>
-                    <Col
-                        xs={24}
-                        sm={24}
-                        md={{ span: 24, offset: 3 }}
-                        lg={{ span: 24, offset: 3}}
-                        xl={{ span: 24, offset: 3}}
-                    >
-                        {isOrganizationChecked && (
-                               <AddressDetails id={"orinization"} initialRender={true} entityName={"Delivery Address"} address={deliveryAddress}  />
-                        )}
+                    {isOrganizationChecked && (
+                        <Col
+                            xs={24}
+                            sm={24}
+                            md={{ span: 6, offset: 3 }}
+                            lg={{ span: 6, offset: 3 }}
+                            xl={{ span: 6, offset: 3 }}
+                        >
+                            <AddressDetails
+                                id={"organization"}
+                                initialRender={true}
+                                entityName={"Delivery Address"}
+                                isForDelivery={true}
+                                address={delivery.shippingAddress}
+                                deliverTo={delivery.companyName}
+                            />
+                        </Col>
+                    )}
 
-                        {isCustomerChecked && (
+                    {isCustomerChecked && (
+                        <Col
+                            xs={24}
+                            sm={24}
+                            md={{ span: 24, offset: 3 }}
+                            lg={{ span: 24, offset: 3 }}
+                            xl={{ span: 24, offset: 3 }}
+                        >
                             <FormItemCol
                                 label={"Select Customer"}
                                 name={"customer"}
@@ -214,13 +257,12 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                                 type={"model"}
                                 entity={"customers"}
                                 fieldName={"name"}
-                                isForAddress = {true}
-                                updateInForm ={updateDeliveryAddress}
-
+                                isForDelivery={true}
+                                updateInForm={updateDeliveryAddress}
                             />
-                        )}
-                    </Col>
-                </Row>
+                        </Col>
+                    )}
+                </Row>{" "}
             </div>
 
             <Divider dashed />
@@ -398,8 +440,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                                                                 name
                                                             )
                                                         }
-                                                        width = {"100%"}
-
+                                                        width={"100%"}
                                                         style={{
                                                             textAlign: "center",
                                                         }}
@@ -511,7 +552,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                 />
                
             </Row> */}
-            <Row align={"middle"} justify={"end"}>
+             <Row align={"middle"} justify={"end"}>
                 <FormItemCol
                     label="Grand Total"
                     tooltip={"Amount After Tax"}
@@ -520,6 +561,42 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                     readOnly={true}
                     labelAlign="left"
                     type={"number"}
+                />
+            </Row>
+            <Row justify={"start"}>
+                <Taglabel
+                    text={"Terms and Condition"}
+                    type={"heading"}
+                    weight={900}
+                />
+            </Row>
+           
+            <Row justify={"start"}>
+                <FormItemCol
+                    label={"Payments"}
+                    name={"paymentCondition"}
+                    labelCol={{ span: 8 }}
+                    type={"select"}
+                    width={500}
+                    entity={"Payments Condition"}
+                    entityName={"purchasePaymentsCondition"}
+                    updateInForm={(value) =>
+                        handleItemsUpdate(value, "paymentCondition")
+                    }
+                />
+            </Row>
+            <Row justify={"start"}>
+                <FormItemCol
+                    label={"Cancellation"}
+                    name={"cancellationCondition"}
+                    type={"select"}
+                    width={500}
+                    labelCol={{ span: 8 }}
+                    entity={"Cancellation Condition"}
+                    entityName={"purchaseCancellationCondition"}
+                    updateInForm={(value) =>
+                        handleItemsUpdate(value, "cancellationCondition")
+                    }
                 />
             </Row>
         </div>

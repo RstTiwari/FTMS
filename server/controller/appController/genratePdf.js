@@ -3,6 +3,7 @@ import whiteSimple from "../../template/pdfTemplate/whitesample/index.js";
 import tenantDb from "../../models/coreModels/Tenant.js";
 import checkDbForEntity from "../../Helper/databaseSelector.js";
 import countersDb from "../../models/appModels/counters.js";
+import { organizationData } from "../../data/orgnization.js";
 
 const generatePdf = async (req, res, next) => {
 
@@ -14,7 +15,7 @@ const generatePdf = async (req, res, next) => {
             _id: id,
             tenantId: tenantId,
         });
-        let organizationData = await tenantDb.findOne({ _id: tenantId });
+        let organization =  organizationData//await tenantDb.findOne({ _id: tenantId });
         let prefix = await countersDb.findOne({
             entityName: entity,
             tenantId: tenantId,
@@ -28,7 +29,7 @@ const generatePdf = async (req, res, next) => {
                 res,
                 next,
                 entityData,
-                organizationData,
+                organization,
                 entity,
                 entityPrefix
 ,

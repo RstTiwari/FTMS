@@ -41,7 +41,7 @@ const CustomForm = ({
     );
 
     const handleFormFinish = async (values) => {
-        console.log(values);
+        console.log(values,"===");
         //Checking if form contains any image file then uploading that
         if (values.hasOwnProperty("image")) {
             //then now upload the file before saving it

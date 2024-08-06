@@ -30,6 +30,16 @@ const DetailsModule = ({ entity, values, id }) => {
                     <Customer entity={entity} id={id} values={values} />
                 );
                 break;
+        case "purchases":
+                    component = (
+                        <PDFGenerator entity={entity} id={id}  />
+                    );
+                    break;
+        case "challans":
+                        component = (
+                            <PDFGenerator entity={entity} id={id}  />
+                        );
+                        break;
         default:
             break;
     }

@@ -16,7 +16,9 @@ const AddressDetails = ({
     id,
     address,
     updateInForm,
-    updateInCustomModal
+    updateInCustomModal,
+    isForDelivery,
+    deliverTo
 }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -83,11 +85,24 @@ const AddressDetails = ({
                 <>
                     {address ? (
                         <>
-                            <Row align="middle" style={{ marginBottom: "2px" }}>
-                                <Col span={20}>
+                            <Row align="middle" style={{ marginBottom: "2Ppx" }}>
+                               {
+                                isForDelivery ? (
+                                    <Col span={16}>
                                     <Taglabel
-                                        text={entityName.toUpperCase()}
+                                        text={deliverTo?.toUpperCase() ||""}
                                         details={true}
+                                    />
+                                </Col>
+                                ):(
+                                    ""
+                                )
+                               }
+                                <Col span={16}>
+                                    <Taglabel
+                                        text={entityName?.toUpperCase() ||""}
+                                        details={true}
+                                        type={"heading"}
                                     />
                                 </Col>
                                 <Col span={4} style={{ textAlign: "right" }}>

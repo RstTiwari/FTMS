@@ -2,7 +2,7 @@ import React from "react";
 import { message } from "antd";
 
 message.config({
-    duration: 30, // Duration in seconds
+    duration: 5, // Duration in seconds
     maxCount: 1, // Maximum count of messages at one time
 });
 
