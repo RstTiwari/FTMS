@@ -1,5 +1,5 @@
 import PDFDocument from "pdfkit";
-import {jsDateIntoDDMMYY } from "../../../Helper/timehelper.js";
+import { jsDateIntoDDMMYY } from "../../../Helper/timehelper.js";
 import {
     downloadAndSaveImage,
     downloadImage,
@@ -163,7 +163,7 @@ const addHeader = (
     const email = organization?.email || "";
     const website = organization?.website || "";
     const gstNo = organization?.gstNo || "";
-    const panNo = organization?.panNo ||""
+    const panNo = organization?.panNo || "";
 
     const addressFontSize = 8.5;
     const addressColor = "#000000";
@@ -321,7 +321,7 @@ const addHeader = (
                 align: "left",
             }
         );
-    }else if (entity.toLowerCase() === "challans") {
+    } else if (entity.toLowerCase() === "challans") {
         doc.fontSize(detailFontSize)
             .fillColor("#000000")
             .font("Helvetica-Bold")
@@ -349,7 +349,7 @@ const addHeader = (
             detailsY,
             { width: detailWidth, align: "left" }
         );
-        doc.y = detailsY
+        doc.y = detailsY;
         detailsY += 20;
         doc.font("Helvetica-Bold").text(`Challan Type:`, 360, detailsY, {
             width: detailWidth,
@@ -366,27 +366,19 @@ const addHeader = (
             }
         );
         detailsY += 20;
-        let vehicleDetails = `VehicleNo : ${entityDetails?.vehicleNo || ""} `
-        doc.font("Helvetica-Bold").fontSize(9).text(
-            `${vehicleDetails}`,
-            360,
-            detailsY,
-            {
+        let vehicleDetails = `VehicleNo : ${entityDetails?.vehicleNo || ""} `;
+        doc.font("Helvetica-Bold")
+            .fontSize(9)
+            .text(`${vehicleDetails}`, 360, detailsY, {
                 width: 150,
                 align: "left",
-            }
-        );
-        let deriveDetails = `Mob : ${entityDetails?.contactNo || ""}`
-        doc.font("Helvetica-Bold").text(
-            `${deriveDetails}`,
-            485,
-            detailsY,
-            {
-                width: 150,
-                align: "left",
-            }
-        );
-        doc.y = detailsY
+            });
+        let deriveDetails = `Mob : ${entityDetails?.contactNo || ""}`;
+        doc.font("Helvetica-Bold").text(`${deriveDetails}`, 485, detailsY, {
+            width: 150,
+            align: "left",
+        });
+        doc.y = detailsY;
     }
 
     // Optional: Move down for additional spacing or elements if needed
@@ -407,8 +399,8 @@ const addDetails = (doc, entityData, entity, organizationData) => {
             detailsFunction = detailsForPurchaseOrder;
             break;
         case "challans":
-                detailsFunction = detailsForChallan;
-                break;
+            detailsFunction = detailsForChallan;
+            break;
         default:
             break;
     }
@@ -534,14 +526,14 @@ const getTableHeaders = (entity) => {
                 { title: "QTY", width: 100 },
                 { title: "TOTAL AMOUNT", width: 100 },
             ];
-        case "purchases" :
+        case "purchases":
             return [
                 { title: "ITEM & DESCRIPTION", width: 275 },
                 { title: "RATE", width: 70 },
                 { title: "QTY", width: 50 },
                 { title: "GST%", width: 50 },
                 { title: "TOTAL AMOUNT", width: 100 },
-            ]
+            ];
         case "challans":
             return [
                 { title: "ITEM & DESCRIPTION", width: 275 },
@@ -549,7 +541,7 @@ const getTableHeaders = (entity) => {
                 { title: "QTY", width: 50 },
                 { title: "GST%", width: 50 },
                 { title: "TOTAL AMOUNT", width: 100 },
-            ]
+            ];
         default:
             return [];
     }
@@ -566,8 +558,9 @@ const detailsForInvoice = (doc, invoiceData, entity, curY) => {
 
     // Customer Billing Details
     doc.fontSize(12)
-    .font("Helvetica-Bold")
-    .fillColor("#0047AB").text("BILLING TO:", leftX, initialY);
+        .font("Helvetica-Bold")
+        .fillColor("#0047AB")
+        .text("BILLING TO:", leftX, initialY);
     doc.fontSize(10)
         .fillColor("#1E1F20")
         .font("Helvetica-Bold")
@@ -589,8 +582,8 @@ const detailsForInvoice = (doc, invoiceData, entity, curY) => {
 
     // Add GST No and PAN No with bold labels
     const currentY = doc.y + 5;
-    let gst = `GST No :${customer?.gstNo ||""}`
-    let pan = `PAN No :${customer?.panNo || ""}`
+    let gst = `GST No :${customer?.gstNo || ""}`;
+    let pan = `PAN No :${customer?.panNo || ""}`;
 
     doc.font("Helvetica-Bold").text(gst, leftX, currentY, {
         width: 200,
@@ -684,7 +677,12 @@ const detailsForQuotation = (doc, quotationData, organizationData, curY) => {
     doc.y = customerEndY + 5;
 };
 
-const detailsForPurchaseOrder = (doc, purchaseOrderData, organizationData, curY) => {
+const detailsForPurchaseOrder = (
+    doc,
+    purchaseOrderData,
+    organizationData,
+    curY
+) => {
     const leftX = 20; // X position for the left side
     const rightX = 310; // X position for the right side
     const initialY = doc.y; // Initial Y position for the details
@@ -693,16 +691,16 @@ const detailsForPurchaseOrder = (doc, purchaseOrderData, organizationData, curY)
     const { vendor, deliveryAddress, deliverTo } = purchaseOrderData;
 
     // Supplier Details
-    let vendorAddress = ""
-    if(vendor?.billingAddress){
-        let street1 = vendor?.billingAddress?.street1 || "" ;
+    let vendorAddress = "";
+    if (vendor?.billingAddress) {
+        let street1 = vendor?.billingAddress?.street1 || "";
         let street2 = vendor?.billingAddress?.street2 || "";
         let city = vendor?.billingAddress?.city || "";
         let state = vendor?.billingAddress?.state || "";
         let pincode = vendor?.billingAddress?.pincode;
-        let gstNo = vendor?.gstNo || ""
-        let panNo = vendor?.panNo ||""
-        vendorAddress =`${street1} ${street2} \n${city} ${state} ${pincode} \nGST No: ${gstNo} , PAN No: ${panNo}`
+        let gstNo = vendor?.gstNo || "";
+        let panNo = vendor?.panNo || "";
+        vendorAddress = `${street1} ${street2} \n${city} ${state} ${pincode} \nGST No: ${gstNo} , PAN No: ${panNo}`;
     }
     doc.fontSize(12).fillColor("#0047AB").text("SUPPLIER:", leftX, initialY);
     doc.fontSize(10)
@@ -714,7 +712,6 @@ const detailsForPurchaseOrder = (doc, purchaseOrderData, organizationData, curY)
         .text(vendorAddress, leftX, doc.y + 5, { width: 300, align: "left" });
 
     const supplierEndY = doc.y;
-
 
     // Delivery To Details
     doc.fontSize(12)
@@ -762,10 +759,13 @@ const detailsForChallan = (doc, challanDataa, organizationData, curY) => {
     const detailSpacing = 10; // Spacing between details
     const borderColor = "#000000"; // Color for the border
     const { customer } = challanDataa;
-    console.log(challanDataa,"==");
+    console.log(challanDataa, "==");
 
     // Dispatch To (Customer Billing Details)
-    doc.fontSize(12).font("Helvetica-Bold").fillColor("#0047AB").text("DISPATCH TO:", leftX, initialY);
+    doc.fontSize(12)
+        .font("Helvetica-Bold")
+        .fillColor("#0047AB")
+        .text("DISPATCH TO:", leftX, initialY);
     doc.fontSize(10)
         .fillColor("#1E1F20")
         .font("Helvetica-Bold")
@@ -787,17 +787,18 @@ const detailsForChallan = (doc, challanDataa, organizationData, curY) => {
 
     // Add GST No and PAN No with bold labels
     const currentY = doc.y + 5;
-    let gst = `GST No :${customer?.gstNo|| ""}`
-    let pan = `PAN No :${customer?.panNo || ""}`
+    let gst = `GST No :${customer?.gstNo || ""}`;
+    let pan = `PAN No :${customer?.panNo || ""}`;
     doc.font("Helvetica-Bold").text(gst, leftX, currentY, {
         width: 150,
     });
-    doc.font("Helvetica-Bold").text(pan,165,currentY, { width: 150 });
+    doc.font("Helvetica-Bold").text(pan, 165, currentY, { width: 150 });
 
     const dispatchToEndY = doc.y;
 
-
-    doc.fontSize(12).fillColor("#0047AB").text("DISPATCH FROM:", rightX, initialY);
+    doc.fontSize(12)
+        .fillColor("#0047AB")
+        .text("DISPATCH FROM:", rightX, initialY);
     doc.fontSize(10)
         .fillColor("#1E1F20")
         .font("Helvetica-Bold")
@@ -833,7 +834,6 @@ const detailsForChallan = (doc, challanDataa, organizationData, curY) => {
     // Update doc.y to ensure it starts after the details section
     doc.y = endY;
 };
-
 
 const footerForInvoice = (doc, invoiceData, organizationData) => {
     const initialY = doc.y + 20;
@@ -912,10 +912,16 @@ const footerForQuotation = (doc, quotationData) => {
     }
 
     // Move to the next line for Tax Percent if it exists
-    if (quotationData?.taxPercent) {
+    if (quotationData?.gstPercent) {
         startY += 30;
         doc.text("Tax Percent:", startX, startY);
-        doc.text(`${quotationData?.taxPercent}%`, valueX, startY);
+        doc.text(`${quotationData?.gstPercent}%`, valueX, startY);
+    }
+
+    if (quotationData?.taxAmount) {
+        startY += 30;
+        doc.text("Tax Amount:", startX, startY);
+        doc.text(`${quotationData?.taxAmount}%`, valueX, startY);
     }
 
     // Draw rectangles and Grand Total text
@@ -1132,12 +1138,10 @@ const footerForChallan = (doc, quotationData) => {
     //         quotationData?.cancellationCondition
     //     );
 
-        // Thank you message
-        const thankYouY = doc.y + 20; // Adjust this value to position the thank you message properly
-        doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);
+    // Thank you message
+    const thankYouY = doc.y + 20; // Adjust this value to position the thank you message properly
+    doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);
     // }
 };
-
-
 
 export default defaultPdfTemplate;

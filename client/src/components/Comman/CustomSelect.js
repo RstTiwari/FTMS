@@ -11,12 +11,13 @@ const CustomSelect = ({
     defaultSelect,
     width = "15vw",
     updateInForm,
+    preFillValue,
 }) => {
     const [options, setOptions] = useState([]);
     const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false); // for Loader
     const [addValue, setAddValue] = useState("");
-    const [selected, setSelected] = useState(defaultSelect);
+    const [value, setValue] = useState(preFillValue);
     const { appApiCall } = useAuth();
 
     const handelClick = async () => {
@@ -35,12 +36,12 @@ const CustomSelect = ({
 
     useEffect(() => {
         if (defaultSelect) {
-            setSelected(defaultSelect);
+            setValue(defaultSelect);
         }
     }, [defaultSelect]);
 
     const handleChange = (value) => {
-        setSelected(value);
+        setValue(value);
         updateInForm(value);
     };
 
@@ -53,7 +54,7 @@ const CustomSelect = ({
         const response = await appApiCall("post", "addSelectData", payload);
         if (response.success) {
             handelClick();
-            setSelected(addValue);
+            setValue(addValue);
             updateInForm(addValue);
             setIsLoading(false);
             setOpen(false);
@@ -67,7 +68,7 @@ const CustomSelect = ({
         <>
             {!open ? (
                 <Select
-                    value={selected || ""}
+                    value={value || ""}
                     options={options}
                     onChange={handleChange}
                     style={{ width: width }}
@@ -79,18 +80,31 @@ const CustomSelect = ({
                         }
                     }}
                     getPopupContainer={(trigger) => document.body}
-                    dropdownStyle={{ position: 'fixed', zIndex: 1050 }}
+                    dropdownStyle={{ position: "fixed", zIndex: 1050 }}
                     dropdownRender={(menu) => (
-                        <div style={{ display: 'flex', flexDirection: 'column', height: '200px', overflow: 'auto' }}>
-                          <div style={{ flexGrow: 1 }}>
-                            {menu}
-                          </div>
-                          <Divider style={{ margin: 0 }} />
-                          <div style={{ backgroundColor: '#fff', padding: '8px' }}>
-                            <CustomButton text="New" onClick={()=>setOpen(true)}/>
-                          </div>
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                height: "200px",
+                                overflow: "auto",
+                            }}
+                        >
+                            <div style={{ flexGrow: 1 }}>{menu}</div>
+                            <Divider style={{ margin: 0 }} />
+                            <div
+                                style={{
+                                    backgroundColor: "#fff",
+                                    padding: "8px",
+                                }}
+                            >
+                                <CustomButton
+                                    text="New"
+                                    onClick={() => setOpen(true)}
+                                />
+                            </div>
                         </div>
-                      )}
+                    )}
                 />
             ) : (
                 <Modal

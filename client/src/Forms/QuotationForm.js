@@ -36,9 +36,9 @@ const QuotationForm = ({ form }) => {
         } else if (filedName === "qty") {
             temObj.qty = value;
             temObj.finalAmount = Math.ceil(value * temObj.rate);
-        } else if (filedName === "taxPercent") {
+        } else if (filedName === "gstPercent") {
             value = Number(value);
-            form.setFieldsValue({ taxPercent: value });
+            form.setFieldsValue({ gstPercent: value });
         } else if (filedName === "transportAmount") {
             form.setFieldsValue({ transportAmount: value });
         } else if (filedName === "paymentsCondition") {
@@ -57,6 +57,10 @@ const QuotationForm = ({ form }) => {
             form.setFieldsValue({ sub: value });
         } else if (filedName === "salesPerson") {
             form.setFieldsValue({ salesPerson: value });
+        } else if (filedName === "quoteDate") {
+            form.setFieldsValue({ quoteDate: value });
+        } else if (filedName === "expiryDate") {
+            form.setFieldsValue({ expiryDate: value });
         }
 
         items[rowName] = temObj;
@@ -64,10 +68,10 @@ const QuotationForm = ({ form }) => {
 
         // Tax Calculator
         let grossTotal = items.reduce((a, b) => a + b.finalAmount, 0);
-        let taxPercent = form.getFieldValue("taxPercent") || 0;
+        let gstPercent = form.getFieldValue("gstPercent") || 0;
         let transportAmount = form.getFieldValue("transportAmount") || 0;
         let taxAmount = Math.ceil(
-            calculateTax(taxPercent, grossTotal + transportAmount)
+            calculateTax(gstPercent, grossTotal + transportAmount)
         );
         let grandTotal = grossTotal + taxAmount + transportAmount;
         form.setFieldsValue({
@@ -78,8 +82,8 @@ const QuotationForm = ({ form }) => {
         });
     };
 
-    function calculateTax(taxPercent = 0, total) {
-        let amount = (taxPercent * total) / 100;
+    function calculateTax(gstPercent = 0, total) {
+        let amount = (gstPercent * total) / 100;
         return Math.ceil(amount);
     }
 
@@ -138,6 +142,9 @@ const QuotationForm = ({ form }) => {
                     labelAlign="left"
                     type={"date"}
                     preFillValue={form.getFieldValue("quoteDate")}
+                    updateInForm={(value) => {
+                        handleItemsUpdate(value, "quoteDate");
+                    }}
                 />
                 <FormItemCol
                     label={"Expiry Date"}
@@ -152,6 +159,10 @@ const QuotationForm = ({ form }) => {
                     labelAlign="left"
                     labelCol={{ span: 6 }}
                     type={"date"}
+                    preFillValue={form.getFieldValue("expiryDate")}
+                    updateInForm={(value) => {
+                        handleItemsUpdate(value, "expiryDate");
+                    }}
                 />
             </Row>
             <FormItemCol
@@ -166,6 +177,7 @@ const QuotationForm = ({ form }) => {
                 updateInForm={(value) => {
                     handleItemsUpdate(value, "sub");
                 }}
+                preFillValue={form.getFieldValue("sub")}
             />
             <FormItemCol
                 label={"Sales Person"}
@@ -178,6 +190,7 @@ const QuotationForm = ({ form }) => {
                 updateInForm={(value) => {
                     handleItemsUpdate(value, "salesPerson");
                 }}
+                preFillValue={form.getFieldValue("salesPerson")}
             />
             <Divider dashed />
             <div
@@ -284,6 +297,12 @@ const QuotationForm = ({ form }) => {
                                                                 "description",
                                                                 name
                                                             )
+                                                        }
+                                                        preFillValue={
+                                                            form.getFieldValue(
+                                                                "items"
+                                                            )?.[name]
+                                                                ?.description
                                                         }
                                                     />
                                                 </Form.Item>
@@ -422,16 +441,17 @@ const QuotationForm = ({ form }) => {
             <Row align={"middle"} justify={"end"}>
                 <FormItemCol
                     label="Tax(%)"
-                    name={"taxPercent"}
+                    name={"gstPercent"}
                     labelCol={{ span: 8 }}
                     labelAlign="left"
                     type={"select"}
                     width={150}
                     entity={"Tax Percent"}
-                    entityName="taxPercent"
+                    entityName="gstPercent"
                     updateInForm={(value) => {
-                        handleItemsUpdate(value, "taxPercent");
+                        handleItemsUpdate(value, "gstPercent");
                     }}
+                    preFillValue={form.getFieldValue("gstPercent")}
                 />
             </Row>
 
@@ -472,6 +492,7 @@ const QuotationForm = ({ form }) => {
                 updateInForm={(value) => {
                     handleItemsUpdate(value, "deliveryCondition");
                 }}
+                preFillValue={form.getFieldValue("deliveryCondition")}
             />
             <Row justify={"start"}>
                 <FormItemCol
@@ -485,6 +506,7 @@ const QuotationForm = ({ form }) => {
                     updateInForm={(value) => {
                         handleItemsUpdate(value, "validityCondition");
                     }}
+                    preFillValue={form.getFieldValue("validityCondition")}
                 />
             </Row>
             <Row justify={"start"}>
@@ -499,6 +521,7 @@ const QuotationForm = ({ form }) => {
                     updateInForm={(value) => {
                         handleItemsUpdate(value, "paymentsCondition");
                     }}
+                    preFillValue={form.getFieldValue("paymentsCondition")}
                 />
             </Row>
             <Row justify={"start"}>
@@ -513,6 +536,7 @@ const QuotationForm = ({ form }) => {
                     updateInForm={(value) => {
                         handleItemsUpdate(value, "cancellationCondition");
                     }}
+                    preFillValue={form.getFieldValue("cancellationCondition")}
                 />
             </Row>
         </div>

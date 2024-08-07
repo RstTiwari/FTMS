@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Form, message, DatePicker } from "antd";
 import { useParams } from "react-router-dom";
-import dayjs from 'dayjs';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
+import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
 import "../App.css";
 import Header from "./Header";
 import FormActionButtons from "./Comman/FormActionButton";
@@ -16,7 +16,7 @@ import PageLoader from "pages/PageLoader";
 import { epochInDDMMYY, jsDateIntoDayjsDate } from "Helper/EpochConveter";
 
 dayjs.extend(localizedFormat);
-dayjs.locale('en'); // Set the locale globally
+dayjs.locale("en"); // Set the locale globally
 
 const UpdateCustomForm = ({
     entityOfModal,
@@ -27,7 +27,10 @@ const UpdateCustomForm = ({
     const { entity, id } = useParams();
     const [form] = Form.useForm();
     const [unfilledField, setUnfilledField] = useState(null);
-    const { loading, initialValues, fetchInitialValues } = useInitialFormValues(entity, id);
+    const { loading, initialValues, fetchInitialValues } = useInitialFormValues(
+        entity,
+        id
+    );
 
     useEffect(() => {
         const fetchAndSetInitialValues = async () => {
@@ -38,23 +41,23 @@ const UpdateCustomForm = ({
         fetchAndSetInitialValues();
     }, []);
 
-    console.log(form.getFieldsValue(),"===")
-    const { isLoading, error, handleFormSubmit } = useFormActions(entity, true, id);
+    const { isLoading, error, handleFormSubmit } = useFormActions(
+        entity,
+        true,
+        id
+    );
 
     const handleFormUpdate = async (values) => {
-        const transformedValues = {};
-        Object.keys(values).forEach(key => {
-            if (key.includes("Date")) {
-                transformedValues[key] = dayjs(transformedValues[values],"DD/MM/YYYY");
-            } else {
-                transformedValues[key] = values[key];
-            }
-        });
-        handleFormSubmit(transformedValues);
+        console.log(values);
     };
 
     if (loading) {
-        return <PageLoader isLoading={true} text={"Fetching Details Please Wait"} />
+        return (
+            <PageLoader
+                isLoading={true}
+                text={"Fetching Details Please Wait"}
+            />
+        );
     }
 
     return (
@@ -67,7 +70,14 @@ const UpdateCustomForm = ({
                 borderRadius: "1rem",
             }}
         >
-            {header ? <Header onlyTitle={true} title={`EDIT ${entity.slice(0, entity.length - 1)?.toUpperCase()} DETAILS`} /> : null}
+            {header ? (
+                <Header
+                    onlyTitle={true}
+                    title={`EDIT ${entity
+                        .slice(0, entity.length - 1)
+                        ?.toUpperCase()} DETAILS`}
+                />
+            ) : null}
 
             <Form
                 name={`${entity}Form`}
@@ -75,14 +85,12 @@ const UpdateCustomForm = ({
                 initialValues={initialValues}
                 onFinish={handleFormUpdate}
                 validateTrigger={unfilledField}
+                onValuesChange={hande}
                 requiredMark={false}
                 layout={isModal ? "vertical" : "horizontal"}
             >
                 <div>
-                    <UpdateModule
-                        entity={entity}
-                        form={form}
-                    />
+                    <UpdateModule entity={entity} form={form} />
                 </div>
                 <div
                     style={{

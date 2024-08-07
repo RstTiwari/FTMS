@@ -19,9 +19,8 @@ const CustomForm = ({
     isModal = false,
     modalFieldKey,
     passToModal,
-    isUpdate = false
+    isUpdate = false,
 }) => {
-
     //Checking the Enttiy of the Form if or fetch fromt the Router
     const { entity: entityOfForm, id } = useParams();
     const entity = isModal ? entityOfModal : entityOfForm;
@@ -49,19 +48,8 @@ const CustomForm = ({
             values.image = response.result;
         }
 
-        
-        // Formatting the Dates Dynamically
-        const formattedValues = Object.keys(values).reduce((acc, key) => {
-            if (key.includes("Date")) {
-                acc[key] = values[key].toDate(); // Convert dayjs to Date oject in js
-            } else {
-                acc[key] = values[key];
-            }
-            return acc;
-        }, {});
-
         //Handle Form Finish Logic and Loading after that if modal pass value
-        handleFormSubmit(formattedValues, isModal, passToModal);
+        handleFormSubmit(values, isModal, passToModal);
     };
     // Validating Filed and setting the Values at that moment only
     const validateFields = async () => {
@@ -86,7 +74,14 @@ const CustomForm = ({
             }}
         >
             {/**Only show in page now on the Mode */}
-            {header ? <Header onlyTitle={true}  title = {`NEW ${entity.slice(0, entity.length - 1)?.toUpperCase()}`}/> : null}
+            {header ? (
+                <Header
+                    onlyTitle={true}
+                    title={`NEW ${entity
+                        .slice(0, entity.length - 1)
+                        ?.toUpperCase()}`}
+                />
+            ) : null}
 
             <Form
                 name={`${entity}Form`}

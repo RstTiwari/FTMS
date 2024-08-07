@@ -1,6 +1,6 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Input, DatePicker, InputNumber, Select } from "antd";
-import dayjs from "dayjs"
+import dayjs from "dayjs";
 import CustomSelect from "./CustomSelect"; // Assuming you have created CustomDrop component
 import CustomModal from "components/CustomModal";
 import UploadImage from "components/UploadImage";
@@ -15,21 +15,24 @@ const CustomInput = ({
     width = "150px",
     ...restProps
 }) => {
-    const { onChange, preFillValue, ...otherProps } = restProps;
+    const { onChange, preFillValue, updateInForm, ...otherProps } = restProps;
     const [date, setDate] = useState("");
-  // Convert preFillValue to dayjs object if it's a date
-  useEffect(() => {
-    if (preFillValue && type === "date") {
-        setDate(dayjs(preFillValue));
-    }
-}, [preFillValue, type]);
+    // Convert preFillValue to dayjs object if it's a date
+    useEffect(() => {
+        if (preFillValue && type === "date") {
+            setDate(dayjs(preFillValue));
+        }
+    }, [preFillValue, type]);
 
-const handleDateChange = (date) => {
-    setDate(date);
-    if (onChange) {
-        onChange(date ? date.toDate() : null); // Convert dayjs to JS Date object
-    }
-};
+    const handleDateChange = (date) => {
+        // update the dateStatus
+        setDate(date);
+        if (onChange) {
+            let dateString = date.toDate();
+            onChange(dateString); // Convert dayjs to JS Date object
+            updateInForm(dateString);
+        }
+    };
     switch (type) {
         case "text":
             return (
@@ -64,6 +67,7 @@ const handleDateChange = (date) => {
                     entity={entity}
                     entityName={entityName}
                     width={width}
+                    preFillValue
                     {...restProps}
                 />
             );
