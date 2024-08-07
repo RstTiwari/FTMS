@@ -19,6 +19,7 @@ import { useAuth } from "state/AuthProvider";
 import CustomModal from "components/CustomModal";
 import FormItemCol from "components/Comman/FormItemCol";
 import Taglabel from "components/Comman/Taglabel";
+import { jsDateIntoDayjsDate } from "Helper/EpochConveter";
 
 const QuotationForm = ({ form }) => {
     const handleItemsUpdate = (value, filedName, rowName) => {
@@ -103,6 +104,7 @@ const QuotationForm = ({ form }) => {
                 updateInForm={(value) => {
                     handleItemsUpdate(value, "customer");
                 }}
+                preFillValue={form.getFieldValue("customer")?.name}
             />
             <FormItemCol
                 label={"#Quote"}
@@ -135,6 +137,7 @@ const QuotationForm = ({ form }) => {
                     ]}
                     labelAlign="left"
                     type={"date"}
+                    preFillValue={form.getFieldValue("quoteDate")}
                 />
                 <FormItemCol
                     label={"Expiry Date"}

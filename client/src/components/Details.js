@@ -22,7 +22,7 @@ const Details = () => {
     return (
         <>
             <DetailsHeader />
-            <DetailsModule entity={entity}  id ={id} values={initialValues}/>
+            <DetailsModule entity={entity}  id ={id} values={initialValues} loading/>
         </>
     );
 }

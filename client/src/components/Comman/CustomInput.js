@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState,useEffect } from "react";
 import { Input, DatePicker, InputNumber, Select } from "antd";
+import dayjs from "dayjs"
 import CustomSelect from "./CustomSelect"; // Assuming you have created CustomDrop component
 import CustomModal from "components/CustomModal";
 import UploadImage from "components/UploadImage";
@@ -14,7 +15,21 @@ const CustomInput = ({
     width = "150px",
     ...restProps
 }) => {
-    const { onChange, ...otherProps } = restProps;
+    const { onChange, preFillValue, ...otherProps } = restProps;
+    const [date, setDate] = useState("");
+  // Convert preFillValue to dayjs object if it's a date
+  useEffect(() => {
+    if (preFillValue && type === "date") {
+        setDate(dayjs(preFillValue));
+    }
+}, [preFillValue, type]);
+
+const handleDateChange = (date) => {
+    setDate(date);
+    if (onChange) {
+        onChange(date ? date.toDate() : null); // Convert dayjs to JS Date object
+    }
+};
     switch (type) {
         case "text":
             return (
@@ -25,7 +40,13 @@ const CustomInput = ({
                 />
             );
         case "date":
-            return <DatePicker {...restProps} format={"DD/MM/YYYY"} />;
+            return (
+                <DatePicker
+                    value={date}
+                    format={"DD/MM/YYYY"}
+                    onChange={handleDateChange}
+                />
+            );
         case "number":
             return (
                 <InputNumber
@@ -60,7 +81,7 @@ const CustomInput = ({
         case "image":
             return <UploadImage {...restProps} />;
         default:
-            return <Input readOnly ={readOnly} {...restProps} />;
+            return <Input readOnly={readOnly} {...restProps} />;
     }
 };
 

@@ -31,7 +31,7 @@ const Sidebar = ({
             const newItem = {
                 key: item.key,
                 label: item.label,
-                icon: IconComponent ? <IconComponent    /> : null,
+                icon: IconComponent ? <IconComponent   style={{color:"yellow"}}  /> : null,
             };
 
             if (item.children && item.children.length > 0) {

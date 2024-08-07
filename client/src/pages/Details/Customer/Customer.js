@@ -17,16 +17,7 @@ import useInitialFormValues from "Hook/useIntialFormValues";
 import PageLoader from "pages/PageLoader";
 const { TabPane } = Tabs;
 
-const CustomerDetails = ({ values }) => {
-    const { entity, id } = useParams();
-    const { initialValues, loading, fetchInitialValues } = useInitialFormValues(
-        entity,
-        id
-    );
-    useEffect(() => {
-        fetchInitialValues();
-    }, [fetchInitialValues]);
-
+const CustomerDetails = ({ values,loading }) => {
     if (loading) {
         return <PageLoader isLoading={loading} />;
     }

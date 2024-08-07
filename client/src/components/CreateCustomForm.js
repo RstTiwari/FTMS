@@ -10,6 +10,7 @@ import CustomFormItem from "../module/Create/CreateModule";
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import useFormActions from "Hook/useFormAction";
+import useInitialFormValues from "Hook/useIntialFormValues";
 
 const CustomForm = ({
     entityOfModal,
@@ -18,30 +19,24 @@ const CustomForm = ({
     isModal = false,
     modalFieldKey,
     passToModal,
+    isUpdate = false
 }) => {
-    //Checking the Enttiy of the Form if or fetch fromt the Router
 
-    const { entity: entityOfForm, action } = useParams();
+    //Checking the Enttiy of the Form if or fetch fromt the Router
+    const { entity: entityOfForm, id } = useParams();
     const entity = isModal ? entityOfModal : entityOfForm;
-    const isUpdate = action ? true : false;
     const { appApiCall } = useAuth();
 
     const [form] = Form.useForm();
-    const [initialValues, setInitialValues] = useState({});
     const [unfilledField, setUnfilledField] = useState(null);
-
-    useEffect(() => {
-        // Fetch initial values based on the entity
-        setInitialValues({});
-    }, [entity]);
 
     const { isLoading, error, handleFormSubmit } = useFormActions(
         entity,
-        isUpdate
+        isUpdate,
+        id
     );
 
     const handleFormFinish = async (values) => {
-        console.log(values,"===");
         //Checking if form contains any image file then uploading that
         if (values.hasOwnProperty("image")) {
             //then now upload the file before saving it
@@ -54,6 +49,7 @@ const CustomForm = ({
             values.image = response.result;
         }
 
+        
         // Formatting the Dates Dynamically
         const formattedValues = Object.keys(values).reduce((acc, key) => {
             if (key.includes("Date")) {
@@ -65,9 +61,8 @@ const CustomForm = ({
         }, {});
 
         //Handle Form Finish Logic and Loading after that if modal pass value
-        handleFormSubmit(values, isModal, passToModal);
+        handleFormSubmit(formattedValues, isModal, passToModal);
     };
-
     // Validating Filed and setting the Values at that moment only
     const validateFields = async () => {
         try {
@@ -91,12 +86,12 @@ const CustomForm = ({
             }}
         >
             {/**Only show in page now on the Mode */}
-            {header ? <Header onlyTitle={true} /> : null}
+            {header ? <Header onlyTitle={true}  title = {`NEW ${entity.slice(0, entity.length - 1)?.toUpperCase()}`}/> : null}
 
             <Form
                 name={`${entity}Form`}
                 form={form}
-                initialValues={initialValues}
+                initialValues={{}}
                 onFinish={handleFormFinish}
                 onFinishFailed={validateFields}
                 validateTrigger={unfilledField}

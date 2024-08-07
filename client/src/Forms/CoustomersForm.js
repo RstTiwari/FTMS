@@ -10,20 +10,9 @@ import CustomTable from "components/CustomTable";
 const { Text } = Typography;
 
 const CoustomersForm = ({ form, disabled, isModal }) => {
-    const isLaptop = useMediaQuery("(min-width:600px)");
-    const [billing, setBilling] = useState({
-        street: "",
-        city: "",
-        state: "",
-        pincode: "",
-    });
     const handeCopyBillingAddress = () => {
         const { billingAddress } = form.getFieldsValue(["billingAddress"]);
         form.setFieldsValue({ shippingAddress: billingAddress });
-        // current.setFieldsValue({ shippingStreet: billing.street });
-        // current.setFieldsValue({ shippingCity: billing.city });
-        // current.setFieldsValue({ shippingState: billing.state });
-        // current.setFieldsValue({ shippingPincode: billing.pincode });
     };
 
     return (
@@ -98,8 +87,8 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
                 name="gstNo"
                 labelCol={{ span: isModal ? 18 : 8 }}
             />
-            <Row style={{display:"flex",padding:2}} >
-                <Col sm={24} xs={24} md={12} lg={12} style={{padding:2}}>
+            <Row style={{display:"flex",padding:5}} >
+                <Col sm={24} xs={24} md={12} lg={12} style={{padding:10}}>
                     <Row style={{ paddingBottom: 25 }}>
                         <Text type="secondary" style={{ fontWeight: 900 }}>
                             Billing Address
@@ -172,7 +161,7 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
                         </Col>
                     </Row>
                 </Col>
-                <Col sm={24} xs={12} md={12} lg={12} style={{padding:2}}>
+                <Col sm={24} xs={12} md={12} lg={12} style={{padding:10}}>
                     <Row style={{ paddingBottom: 25 }}>
                         <Text type="secondary" style={{ fontWeight: 900 }}>
                             Shipping Address
@@ -238,7 +227,7 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
                                 labelAlign="left"
                                 labelCol={{ span: isModal ? 8 : 5 }}
                             >
-                                <Input value={billing.pincode} />
+                                <Input />
                             </Form.Item>
                         </Col>
                     </Row>

@@ -10,7 +10,8 @@ import SimpleWebSocketComponent from "pages/Websocket";
 import CreateModule from "module/Create/CreateModule";
 import DetailsLayout from "pages/layout/DetailsLayout";
 import Details from "components/Details";
-import CustomForm from "components/CustomForm";
+import CustomForm from "components/CreateCustomForm";
+import UpdateCustomForm from "components/UpdateCustomForm";
 
 const Approuter = ({ profile }) => {
     const tenantId = profile?.tenant?.tenantId;
@@ -24,6 +25,12 @@ const Approuter = ({ profile }) => {
                         <Navigate to={`/app/${tenantId}/dashboard`} replace /> // it replaces show it the details basically
                     }
                 />
+                       <Route
+                    path="/app/:tenantId/"
+                    element={
+                        <Navigate to={`/app/${tenantId}/dashboard`} replace /> // it replaces show it the details basically
+                    }
+                />
                 <Route
                     path="/app/:tenantId/dashboard"
                     exact
@@ -33,27 +40,42 @@ const Approuter = ({ profile }) => {
                     path="/app/:tenantId/:entity/:pageNo/:pageSize"
                     element={<DetailsLayout />}
                 >
-                   <Route path="details/:id"  element ={<Details />}/>
+                    <Route path="details/:id" element={<Details />} />
+
                 </Route>
+
                 <Route
                     path="/app/:tenantId/:entity/create"
-                    element={<CustomForm  entity ={entity} />}
+                    element={<CustomForm entity={entity} />}
                 />
-              
+
+                {/**Update Routes */}
+                <Route
+                    path="/app/:tenantId/update/:entity/:id"
+                    element={<UpdateCustomForm />}
+                />
 
                 {/**Routes for Read  Update And Pdf */}
 
                 <Route path="/update/:entity/:id" element={<UpdateModule />} />
 
                 {/*Mangaining Orgnization Profile */}
-                <Route path ={`/app/:tenantId/:entity`}element={<CustomForm  header={false} />} />
-                <Route path="/app/:tenantId/templates" element={<Templates />} />
+                <Route
+                    path={`/app/:tenantId/:entity`}
+                    element={<CustomForm header={false} />}
+                />
+                <Route
+                    path="/app/:tenantId/templates"
+                    element={<Templates />}
+                />
                 <Route path="*" element={<NotFound />} />
 
                 {/**In case some one acess login page after being logged in */}
                 <Route
                     path="/login"
-                    element={<Navigate to ={`/app/${tenantId}/dashboard`} replace />}
+                    element={
+                        <Navigate to={`/app/${tenantId}/dashboard`} replace />
+                    }
                 />
             </Route>
         </Routes>

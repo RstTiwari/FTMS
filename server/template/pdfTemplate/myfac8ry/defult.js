@@ -357,7 +357,7 @@ const addHeader = (
         });
 
         doc.font("Helvetica").text(
-            `${entityDetails.challanType}`,
+            `${entityDetails?.challanType}`,
             460,
             detailsY,
             {
@@ -366,7 +366,7 @@ const addHeader = (
             }
         );
         detailsY += 20;
-        let vehicleDetails = `VehicleNo : ${entityDetails.vehicleNo || ""} `
+        let vehicleDetails = `VehicleNo : ${entityDetails?.vehicleNo || ""} `
         doc.font("Helvetica-Bold").fontSize(9).text(
             `${vehicleDetails}`,
             360,
@@ -762,6 +762,7 @@ const detailsForChallan = (doc, challanDataa, organizationData, curY) => {
     const detailSpacing = 10; // Spacing between details
     const borderColor = "#000000"; // Color for the border
     const { customer } = challanDataa;
+    console.log(challanDataa,"==");
 
     // Dispatch To (Customer Billing Details)
     doc.fontSize(12).font("Helvetica-Bold").fillColor("#0047AB").text("DISPATCH TO:", leftX, initialY);

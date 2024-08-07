@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Modal, Select, Divider, Button, Row } from "antd";
 import { useAuth } from "state/AuthProvider";
 import CoustomButton from "./Comman/CoustomButton";
-import CustomForm from "./CustomForm";
+import CustomForm from "./CreateCustomForm";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import AddressDetails from "./Comman/AddressDetails";
 
@@ -12,12 +12,12 @@ const CustomModel = ({
     width,
     disabled,
     updateInForm,
-    customerId,
+    preFillValue,
     isForDelivery
 }) => {
     const [open, setOpen] = useState(false);
     const { appApiCall } = useAuth();
-    const [value, setValue] = useState("");
+    const [value, setValue] = useState(preFillValue);
     const [options, setOptions] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [id, setId] = useState("")
@@ -114,8 +114,8 @@ const CustomModel = ({
 
     const onCancel = () => {
         setOpen(!open);
-        if (customerId) {
-            setValue(customerId);
+        if (preFillValue) {
+            setValue(preFillValue);
         }
     };
 
@@ -160,7 +160,7 @@ const CustomModel = ({
         setAddress({ ...address, [keyName]: values })
     }
     useEffect(() => {
-        setValue(customerId);
+        setValue(preFillValue);
     }, []);
 
     return (

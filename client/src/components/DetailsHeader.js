@@ -13,8 +13,11 @@ import { Row, Col } from "antd";
 import { useParams } from "react-router-dom";
 
 const DetailsHeader = () => {
-    const {entity,tenantId,pageNo,pageSize} = useParams()
+    const {entity,tenantId,pageNo,pageSize,id} = useParams()
     const navigate = useNavigate();
+    const handleEditClick = () => {
+        navigate(`/app/${tenantId}/update/${entity}/${id}`);
+    };
     return (
         <>
             <Row>
@@ -52,6 +55,7 @@ const DetailsHeader = () => {
                         display: "flex",
                         alignItems: "center",
                     }}
+                    onClick={handleEditClick} 
                 >
                     <EditOutlined style={{ marginRight: 5 }} />
                     Edit

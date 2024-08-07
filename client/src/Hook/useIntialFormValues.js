@@ -4,7 +4,7 @@ import { useAuth } from "state/AuthProvider";
 
 const useInitialFormValues = (entity, id) => {
     const [initialValues, setInitialValues] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const { appApiCall } = useAuth();
 
     const fetchInitialValues = useCallback(async () => {
@@ -16,7 +16,7 @@ const useInitialFormValues = (entity, id) => {
                 setLoading(false);
                 return;
             }
-            setInitialValues(response.result); // Assuming response.data contains the initial values
+            setInitialValues(response.result); //Assuming response.data contains the initial values
             setLoading(false);
         } catch (error) {
             setInitialValues(null);
