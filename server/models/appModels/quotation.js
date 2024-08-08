@@ -17,8 +17,8 @@ const quotationSchema = new mongoose.Schema(
             enum: ["DRAFT", "SEND", "CANCELLED", "ON HOLD"],
             default: "DRAFT",
         },
-        quoteNo: {
-            type: String,
+        no: {
+            type: Number,
             required: true,
             unique: true,
         },

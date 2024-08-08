@@ -55,7 +55,7 @@ async function generateCustomerInformation(doc, customer, quoteData) {
     doc.fontSize(10)
         .text("Quotation Number:", 50, customerInformationTop)
         .font("Helvetica-Bold")
-        .text(quoteData.quoteNo, 150, customerInformationTop)
+        .text(quoteData.no, 150, customerInformationTop)
         .font("Helvetica")
         .text("Quotation Date:", 50, customerInformationTop + 15)
         .text(

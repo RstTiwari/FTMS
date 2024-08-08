@@ -12,7 +12,7 @@ import tenantDataDb from "../../models/coreModels/tenantData.js";
  * @returns  {sucess:1, userId:string , name:string}
  */
 
-const login = async (req, res, next, userDb, userPassworDb, tenantDb) => {
+const login = async (req, res, next, userDb, userPasswordDb) => {
     const { email, password } = req.body;
     // validate the input values
     const ObjectSchema = joi.object({
@@ -38,13 +38,18 @@ const login = async (req, res, next, userDb, userPassworDb, tenantDb) => {
         return res.status(409).json({
             success: 0,
             result: null,
-            message: "No user regitred with this email",
+            message: "No user registered with this email",
         });
     }
 
-    const userPassword = await userPassworDb.findOne({
+    if (!user.enabled) {
+        return res.redirect("/verifyEmail");
+    }
+
+    const userPassword = await userPasswordDb.findOne({
         userId: user._id,
         removed: false,
+        enabled:true
     });
 
     const isMatch = await bcrypt.compare(
@@ -65,10 +70,10 @@ const login = async (req, res, next, userDb, userPassworDb, tenantDb) => {
             userId: user._id,
         },
         process.env.JWT_SECRET,
-        { expiresIn: req.body.remember ? 365 * 24 + "h" : "24h" }
+        { expiresIn: req.body.remember ? 30 * 24 + "h" : "24h" }
     );
 
-    await userPassworDb
+    await userPasswordDb
         .findOneAndUpdate(
             { userId: user._id },
             { $push: { loggedSessions: { token: token } } },

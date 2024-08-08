@@ -54,7 +54,7 @@ async function generateCustomerInformation(doc, customer, invoiceData) {
     doc.fontSize(10)
         .text("Invoice Number:", 50, customerInformationTop)
         .font("Helvetica-Bold")
-        .text(invoiceData.invoiceNo, 150, customerInformationTop)
+        .text(invoiceData.no, 150, customerInformationTop)
         .font("Helvetica")
         .text("Invoice Date:", 50, customerInformationTop + 15)
         .text(

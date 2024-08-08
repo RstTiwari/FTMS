@@ -9,7 +9,7 @@ import {
     Button,
     Upload,
 } from "antd";
-import { categoryOption } from "../Data/ExpensesData";
+import { categoryOption } from "../../Data/ExpensesData";
 import CustomerModal from "components/CustomModal";
 import UploadImage from "components/UploadImage";
 import FormItemCol from "components/Comman/FormItemCol";
@@ -20,11 +20,14 @@ const ExpenseForm = ({ form }) => {
             form.setFieldsValue({ customer: value });
         } else if (fieldName === "categoryName") {
             form.setFieldsValue({ categoryName: value });
+        } else if (fieldName === "expenseDate") {
+            form.setFieldsValue({ expenseDate: value });
         }
     };
     const handleImageUpdate = (file)=>{
         form.setFieldsValue({image:file})
     }
+
     return (
         <div >
             <Row>
@@ -38,6 +41,8 @@ const ExpenseForm = ({ form }) => {
                 ]}
                 labelCol={{ span: 8 }}
                 type={"date"}
+                preFillValue = {form.getFieldValue("expenseDate")}
+                updateInForm ={(value)=>{handleItemUpdate(value,"expenseDate")}}
             />
             </Row>
          
@@ -54,6 +59,7 @@ const ExpenseForm = ({ form }) => {
                 updateInForm={(value) =>
                     handleItemUpdate(value, "categoryName")
                 }
+                preFillValue ={form.getFieldValue("categoryName")}
             />
                
 
@@ -72,8 +78,8 @@ const ExpenseForm = ({ form }) => {
                 label="Receipt Image"
                 name="image"
                 type={"image"}
-                url=""
                 updateImageInForm={handleImageUpdate}
+                url = {form.getFieldValue("image")}
             />
             <FormItemCol
                 label="#WorkOrder"
@@ -99,6 +105,7 @@ const ExpenseForm = ({ form }) => {
                 entity="customers"
                 fieldName={"name"}
                 updateInForm={(value) => handleItemUpdate(value, "customer")}
+                preFillValue = {form.getFieldValue("customer")?.name?.name}
             ></FormItemCol>
         </div>
     );

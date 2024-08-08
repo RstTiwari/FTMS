@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, Descriptions, Typography } from "antd";
 import { jsDateIntoDayjsDate } from "Helper/EpochConveter";
+import Taglabel from "components/Comman/Taglabel";
 
 const { Title } = Typography;
 
@@ -14,7 +15,7 @@ const PaymentDetails = ({ values }) => {
             </Title>
             <Descriptions column={1} bordered>
                 <Descriptions.Item label="Payment No">
-                    {values?.paymentNo || ""}
+                    {values?.no || ""}
                 </Descriptions.Item>
                 <Descriptions.Item label="Customer Name">
                     {values?.customer?.name ||""}
@@ -27,6 +28,12 @@ const PaymentDetails = ({ values }) => {
                 </Descriptions.Item>
                 <Descriptions.Item label="Payment Mode">
                     {values?.paymentMode || ""}
+                </Descriptions.Item>
+                <Descriptions.Item label="Note">
+                    <Taglabel text={`${values?.note || ""}`}  type={"heading"}  weight={100}/>
+                </Descriptions.Item>
+                <Descriptions.Item label="Reference">
+                    <Taglabel text={`${values?.ref || ""}`}  type={"heading"}  weight={100}/>
                 </Descriptions.Item>
             </Descriptions>
         </Card>

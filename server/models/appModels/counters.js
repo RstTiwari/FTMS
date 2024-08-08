@@ -7,8 +7,8 @@ const counterSchema = new mongoose.Schema(
             required: true,
         },
         entityName: { type: String },
-        prefix: { type: String },
-        nextNumber: { type: String },
+        prefix: { type: String ,required:true},
+        nextNumber: { type: Number,required:true },
     },
     { timestamps: true }
 );

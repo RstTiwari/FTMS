@@ -92,7 +92,7 @@ const quotationPdf = async (req, res, next, quoteData) => {
         doc.fontSize(13)
             .fillColor("#1E1F20")
             .font("Helvetica-Bold")
-            .text(`QUOTATION NO : #${quoteData.quoteNo}`, 370, 160, {
+            .text(`QUOTATION NO : #${quoteData.no}`, 370, 160, {
                 width: 300,
             });
 

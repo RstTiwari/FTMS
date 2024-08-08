@@ -7,12 +7,17 @@ const purchaseOrderSchema = new mongoose.Schema({
         autopopulate: true,
         required: true,
     },
-    purchaseNo: {
-        type: String,
+    no: {
+        type: Number,
         required: true,
         unique: true,
+        sparse:true
     },
     purchaseDate: {
+        type: Date,
+        required: true,
+    },
+    deliveryDate: {
         type: Date,
         required: true,
     },

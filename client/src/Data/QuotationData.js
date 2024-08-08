@@ -4,7 +4,7 @@ import { jsDateIntoDayjsDate } from "Helper/EpochConveter";
 const getColumns = (details) => [
     {
         title: <Taglabel text={"QUOTE#"} type={"heading"} details={details} />,
-        dataIndex: "quoteNo",
+        dataIndex: "no",
         key: "srno",
     },
     {

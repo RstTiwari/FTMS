@@ -54,7 +54,7 @@ async function generateCustomerInformation(doc, customer, challanData) {
     doc.fontSize(10)
         .text("Challan Number:", 50, customerInformationTop)
         .font("Helvetica-Bold")
-        .text(challanData.challanNo, 150, customerInformationTop)
+        .text(challanData.no, 150, customerInformationTop)
         .font("Helvetica")
         .text("Challan Date:", 50, customerInformationTop + 15)
         .text(

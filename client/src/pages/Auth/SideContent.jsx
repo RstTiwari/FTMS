@@ -1,6 +1,6 @@
 import React from "react";
 import { Row, Col, Layout, Typography ,Space,} from "antd";
-import "../../pages/Login/Login.css"
+import "./Login.css"
 import price  from "../../Assets/myfac8ryPrice.svg"
 import Quality from "../../Assets/myfac8ryQualityAssurance.svg"
 import Fastest from "../../Assets/myfac8ryFasted.svg"

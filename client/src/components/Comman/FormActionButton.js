@@ -2,12 +2,10 @@ import React from "react";
 import { Form, Row } from "antd";
 import { useNavigate } from "react-router-dom";
 import CustomButton from "./CoustomButton"; // Assuming your CustomButton is imported from the correct path
-import useWindowWidth from "Hook/useWindowWidth";
 
 const FormActionButtons = ({ isUpdating, showCancel = true }) => {
     const navigate = useNavigate();
     const mariginLeft = 200;
-    const width = useWindowWidth();
 
     const handleCancelClick = () => {
         navigate(-1);

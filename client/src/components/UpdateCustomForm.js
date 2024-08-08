@@ -13,10 +13,6 @@ import useFormActions from "Hook/useFormAction";
 import useInitialFormValues from "Hook/useIntialFormValues";
 import UpdateModule from "module/UpdateModule/UpdateModule";
 import PageLoader from "pages/PageLoader";
-import { epochInDDMMYY, jsDateIntoDayjsDate } from "Helper/EpochConveter";
-
-dayjs.extend(localizedFormat);
-dayjs.locale("en"); // Set the locale globally
 
 const UpdateCustomForm = ({
     entityOfModal,
@@ -25,10 +21,15 @@ const UpdateCustomForm = ({
     isModal = false,
 }) => {
     const { entity, id } = useParams();
+    const { appApiCall } = useAuth();
     const [form] = Form.useForm();
     const [unfilledField, setUnfilledField] = useState(null);
-    const { loading, initialValues, fetchInitialValues } = useInitialFormValues(
+    const [changedField, setChangedField] = useState({});
+    const { isFetching, initialValues, fetchInitialValues } =
+        useInitialFormValues(entity, id);
+    const { isLoading, error, handleFormSubmit } = useFormActions(
         entity,
+        true,
         id
     );
 
@@ -41,22 +42,58 @@ const UpdateCustomForm = ({
         fetchAndSetInitialValues();
     }, []);
 
-    const { isLoading, error, handleFormSubmit } = useFormActions(
-        entity,
-        true,
-        id
-    );
-
-    const handleFormUpdate = async (values) => {
-        console.log(values);
+    const validateFields = async () => {
+        try {
+            const values = await form.validateFields();
+            setUnfilledField(null); // Clear unfilledField state if validation succeeds
+            handleFormUpdate(values); // Proceed with form submission logic
+        } catch (error) {
+            const firstField = error.errorFields[0].errors[0];
+            setUnfilledField(firstField); // Set the first unfilled field
+            return NotificationHandler.error(`${firstField}`);
+        }
     };
 
-    if (loading) {
+    const handleFormUpdate = async (values) => {
+        // Checking if image contains image object and is updated
+        if (values.hasOwnProperty("image")) {
+            let image = values?.image;
+            if (typeof image ==="object") {
+                //then now upload the file before saving it
+                const formData = new FormData();
+                formData.append("file", values.image);
+                const response = await appApiCall(
+                    "post",
+                    "upload",
+                    formData,
+                    {}
+                );
+
+                if (!response.success) {
+                    return NotificationHandler.error("failed to Upload Image");
+                }
+                values.image = response.result;
+            }
+        }
+        await handleFormSubmit(values);
+    };
+
+    const handleValueChange = (changeValues, allValues) => {
+        console.log(changeValues,"--")
+        setChangedField({ ...changedField, ...changeValues });
+    };
+
+    if (isFetching) {
         return (
             <PageLoader
                 isLoading={true}
                 text={"Fetching Details Please Wait"}
             />
+        );
+    }
+    if (isLoading) {
+        return (
+            <PageLoader isLoading={true} text={"...Hold on Updating Data"} />
         );
     }
 
@@ -84,8 +121,9 @@ const UpdateCustomForm = ({
                 form={form}
                 initialValues={initialValues}
                 onFinish={handleFormUpdate}
+                onFinishFailed={validateFields}
+                onValuesChange={handleValueChange}
                 validateTrigger={unfilledField}
-                onValuesChange={hande}
                 requiredMark={false}
                 layout={isModal ? "vertical" : "horizontal"}
             >

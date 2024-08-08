@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Input, Button, Modal, Form } from "antd";
 import { SettingOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
-import Counters from "Forms/Counters";
+import Counters from "Forms/App/Counters";
 import FormActionButtons from "./FormActionButton";
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
 
-const CustomInputWithModal = ({ updateInForm }) => {
+const CustomInputWithModal = ({ preFillValue,updateInForm }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [inputValue, setInputValue] = useState("");
     const [prefix, setPrefix] = useState("");
@@ -47,7 +47,7 @@ const CustomInputWithModal = ({ updateInForm }) => {
         } else {
             handleModalCancel();
             fetchCountersNumber();
-            updateInForm(response?.result?.nextNumber);
+            updateInForm(values?.nextNumber);
             NotificationHandler.success("Counters updated successfully");
         }
     };
@@ -57,7 +57,7 @@ const CustomInputWithModal = ({ updateInForm }) => {
             "get",
             "fetchCountersNumber",
             {},
-            { entity: "counters", entityName: entity }
+            { entity: "counters", entityName: entity } // entityName is name of entity like invoice ,quoations, payments
         );
         if (response.success) {
             const { prefix, nextNumber } = response.result;
@@ -70,8 +70,13 @@ const CustomInputWithModal = ({ updateInForm }) => {
             return NotificationHandler.error(response.message);
         }
     };
+
     useEffect(() => {
-        fetchCountersNumber();
+        if(preFillValue){
+            setInputValue(preFillValue)
+        }else{
+            fetchCountersNumber()
+        }
     }, []);
 
     return (

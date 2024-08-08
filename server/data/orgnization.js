@@ -53,7 +53,7 @@ const invoicesData = {
             pincode: 123435,
         },
     },
-    invoiceNo: "11",
+    no: "11",
     invoiceDate: "2024-07-19T10:45:45.194+00:00",
     dueDate: "2024-07-19T10:45:45.194+00:00",
     status: "DRAFT",
@@ -93,7 +93,7 @@ const quotationsData = {
         contactPerson: "Ramkumar",
     },
     sub: " Quotation Date for the Rquriment of Your new Taks",
-    quoteNo: "00090",
+    no: "00090",
     quoteDate:"2024-07-19T10:45:45.194Z",
     salesPerson: "Rohit Tiwari",
     expiryDate: {

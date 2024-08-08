@@ -1,11 +1,25 @@
-const update = async (req, res, next, database) => {
+import checkDbForEntity from "../../Helper/databaseSelector.js";
+
+const update = async (req, res, next) => {
     try {
+
         let tenantId = req.tenantId;
-        const { entity, value } = req.body;
-        let filter = { _id: value._id, tenantId: tenantId };
-        let updatedData = await database.updateOne(filter, {$set:value});
+        const {values } = req.body;
+        const {entity,id} = req.query ;
+        let filter = { _id:id, tenantId: tenantId };
+        const database = checkDbForEntity(entity)
+
+        //Fist find the Document You want to update .
+        let existingObj = await database.findOne(filter)
+        if(!existingObj){
+            throw new Error(`No ${entity} data against this ${id}`)
+        }
+        
+        // Now let compare the data in both coming existing
+        let modifiedObj = Object.assign(existingObj,values) ;
+        let updatedData = await database.updateOne(filter, {$set:modifiedObj});
         if (updatedData.modifiedCount === 0) {
-            throw new Error(`Nothing to Updated ${entity}`);
+            throw new Error(`Nothing to Update ${entity}`);
         }
         res.status(200).json({
             success: 1,
@@ -13,11 +27,7 @@ const update = async (req, res, next, database) => {
             message: `Successfully updated the ${entity}`,
         });
     } catch (error) {
-        res.status(403).json({
-            success: 0,
-            result: [],
-            message: error.message,
-        });
+        next(error)
     }
 };
 

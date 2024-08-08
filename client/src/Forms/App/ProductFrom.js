@@ -67,7 +67,7 @@ const ProductForm = ({
                 label="Product Image"
                 name="image"
                 type={"image"}
-                url=""
+                url= {form.getFieldValue("image")}
                 updateImageInForm={handleImageUpdate}
             />
         </div>

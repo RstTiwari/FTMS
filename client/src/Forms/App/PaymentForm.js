@@ -22,6 +22,8 @@ const PaymentForm = ({ form, initialValue = {} }) => {
             form.setFieldsValue({ customer: value });
         } else if (fieldName === "paymentMode") {
             form.setFieldsValue({ paymentMode: value });
+        } else if (fieldName === "paymentDate") {
+            form.setFieldsValue({ paymentDate: value });
         } else {
         }
     };
@@ -47,6 +49,7 @@ const PaymentForm = ({ form, initialValue = {} }) => {
                         updateInForm={(value) => {
                             handleItemUpdate(value, "customer");
                         }}
+                        preFillValue = {form.getFieldValue("customer")?.name}
                         type={"model"}
                     />
                 </Col>
@@ -64,6 +67,8 @@ const PaymentForm = ({ form, initialValue = {} }) => {
                         labelAlign="left"
                         labelCol={{ span: 8 }}
                         type={"date"}
+                        updateInForm = {(value)=>handleItemUpdate(value,"paymentDate")}
+                        preFillValue ={form.getFieldValue("paymentDate")}
                     />
                 </Col>
                 <Col span={24}>
@@ -78,12 +83,13 @@ const PaymentForm = ({ form, initialValue = {} }) => {
                         updateInForm={(value) => {
                             handleItemUpdate(value, "paymentMode");
                         }}
+                        preFillValue ={form.getFieldValue("paymentMode")}
                     />
                 </Col>
                 <Col span={24}>
                     <FormItemCol
                         label="Reference"
-                        name="refer"
+                        name="ref"
                         tooltip={"Check No or UPI Transaction No"}
                         labelAlign="left"
                         labelCol={{ span: 8 }}

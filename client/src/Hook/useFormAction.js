@@ -13,8 +13,8 @@ const useFormActions = (entity, isUpdate,id) => {
     const handleUpdate = async (values, isModal, passToModal) => {
         setIsLoading(true);
         try {
-            const payLoad = { entity: entity, values: values };
-            const response = await appApiCall("post", "update", payLoad);
+            const payLoad = { values: values };
+            const response = await appApiCall("post", "update", payLoad ,{entity ,id});
             if (response.success) {
                 NotificationHandler.success(response?.message);
                 if (isModal) {

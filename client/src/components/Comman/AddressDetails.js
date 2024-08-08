@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, Modal, Form, Input, Button } from "antd";
 import { EditOutlined, PlusOutlined } from "@ant-design/icons";
 import Taglabel from "./Taglabel";
-import AddressForm from "Forms/AddressForm";
+import AddressForm from "../../Forms/App/AddressForm";
 import CoustomButton from "./CoustomButton";
 import FormActionButtons from "./FormActionButton";
 import NotificationHandler from "EventHandler/NotificationHandler";

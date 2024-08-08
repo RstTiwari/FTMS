@@ -1,26 +1,30 @@
 import React, { useState } from "react";
-import { Form, Input, Checkbox, Col, Row, Button, Typography } from "antd";
+import { Form, Input, Checkbox, Col, Row, Button, Typography, Tooltip } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useAuth } from "state/AuthProvider";
 import CustomLabel from "components/Comman/CustomLabel";
 import CoustomButton from "components/Comman/CoustomButton";
-
+import useAuthApiCall from "Hook/useAuthApiCall";
+import PageLoader from "pages/PageLoader";
 const { Text } = Typography;
 
-const LoginForm = ({ handleLoginChange }) => {
-    const [login, setLogin] = useState({
-        email: "",
-        password: "",
-        remember: false,
-    });
+const LoginForm = () => {
+    const [form] = Form.useForm()
+    const handleCheckBoxChange =(e)=>{
+        form.setFieldsValue({remember:e.target.checked})
+    }
+    const {isLoading ,error,handleAuthApi} = useAuthApiCall("user","login","/")
+    const handleLoginChange = async (values) => {
+           await handleAuthApi(values)
+    };
+    if(isLoading){
+        return <PageLoader isLoading={true} text={"...Hold On Making things Perfect for You"} />
+    }
 
-    // const handleLoginClick = () => {
-    //     handleLoginChange(login);
-    // };
     return (
         <div style={{ width: "50%" }}>
-            <Form onFinish={handleLoginChange}>
+            <Form onFinish={handleLoginChange} form={form}>
                 <Form.Item
                     label={<CustomLabel label={"Email"} required={true} />}
                     name={"email"}
@@ -40,9 +44,6 @@ const LoginForm = ({ handleLoginChange }) => {
                         type={"email"}
                         placeholder="Email"
                         size={"large"}
-                        onChange={(e) =>
-                            setLogin({ ...login, email: e.target.value })
-                        }
                     />
                 </Form.Item>
                 <Form.Item
@@ -60,36 +61,21 @@ const LoginForm = ({ handleLoginChange }) => {
                         prefix={<LockOutlined />}
                         placeHolder="password"
                         size="large"
-                        onChange={(e) =>
-                            setLogin({ ...login, password: e.target.value })
-                        }
                     />
                 </Form.Item>
 
-                <Form.Item>
-                    <Row align={"middle"}>
-                        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-                            <Checkbox
-                                onChange={(e) =>
-                                    setLogin({
-                                        ...login,
-                                        remember: e.target.checked,
-                                    })
-                                }
-                            >
+                <Row justify={"center"}>
+                    <Col xs={24} sm={24} md={12} lg={24} xl={24}>
+                        <Form.Item name={"remember"}>
+                            <Checkbox onChange={handleCheckBoxChange}>
                                 Remember-Me
                             </Checkbox>
-                        </Col>
-                        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-                            <a
-                                className="login-form-forgot"
-                                href="/forgotPassword"
-                            >
-                                Forgot Password
-                            </a>
-                        </Col>
-                    </Row>
-                </Form.Item>
+                        </Form.Item>
+                    </Col>
+                    <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                        <Link to={"/forgotPassword"}>Forgot Password</Link>
+                    </Col>
+                </Row>
                 <Row justify={"center"} style={{ margin: "1rem" }}>
                     <Col>New to Myfac8ry - </Col>
                     <Col>
@@ -100,7 +86,7 @@ const LoginForm = ({ handleLoginChange }) => {
                 </Row>
                 <Form.Item>
                     <Row justify={"center"}>
-                        <CoustomButton htmlType="submit" text={" Sign-In"} />
+                        <CoustomButton htmlType="submit" text={"LOGIN"} />
                     </Row>
                 </Form.Item>
             </Form>

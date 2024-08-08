@@ -4,6 +4,7 @@ import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import { useNavigate } from "react-router-dom";
 import CoustomButton from "components/Comman/CoustomButton";
+import Taglabel from "components/Comman/Taglabel";
 const { Text, Link, Title } = Typography;
 
 const UpdatePasswordForm = ({ userId, tenantId }) => {
@@ -25,14 +26,14 @@ const UpdatePasswordForm = ({ userId, tenantId }) => {
         <Form name="updatePassword" form={form} onFinish={handleFormFinish}>
             <Row justify={"center"}>
                 <Title level={3} type="success">
-                    Please Check Your Mail and ENTER OTP
+                    Please check mail and enter otp
                 </Title>
             </Row>
             <Form.Item
                 name={"otp"}
-                label="Enter RECIVED OTP"
+                label={<Taglabel text={"Enter Received OTP"} />}
                 labelAlign="left"
-                labelCol={{ span: 10 }}
+                labelCol={{ span: 12 }}
                 rules={[
                     {
                         required: true,
@@ -40,13 +41,13 @@ const UpdatePasswordForm = ({ userId, tenantId }) => {
                     },
                 ]}
             >
-                <InputNumber maxLength={6} />
+                <Input  />
             </Form.Item>
             <Form.Item
                 name={"password"}
-                label="Enter The New Password"
+                label={<Taglabel text={"Enter The New Password"} />}
                 labelAlign="left"
-                labelCol={{ span: 10 }}
+                labelCol={{ span: 12 }}
                 rules={[
                     {
                         required: true,
@@ -58,10 +59,10 @@ const UpdatePasswordForm = ({ userId, tenantId }) => {
             </Form.Item>
             <Form.Item
                 name={"password2"}
-                label="Re-Enter The New Password"
+                label={<Taglabel text={"Re-Enter The New Password"} />}
                 dependencies={["password"]}
                 labelAlign="left"
-                labelCol={{ span: 10 }}
+                labelCol={{ span: 12 }}
                 rules={[
                     {
                         required: true,

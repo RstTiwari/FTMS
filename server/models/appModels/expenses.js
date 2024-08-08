@@ -25,7 +25,7 @@ const expenseSchema = new mongoose.Schema(
         image: {
             type: String,
         },
-        expenseNo: { type: Number, unique: true },
+        no: { type: Number, unique: true },
         tenantId: {
             type: String,
             required: true,
@@ -41,7 +41,7 @@ expenseSchema.pre("save", async function (next) {
     if (this.isNew) {
         try {
             const count = await mongoose.model("expenses").countDocuments();
-            this.expenseNo = count + 1;
+            this.no = count + 1;
             next();
         } catch (error) {
             next(error);

@@ -12,8 +12,8 @@ const getColumns = (details) => [
         title: (
             <Taglabel text={"#INVOICE"} type={"heading"} details={details} />
         ),
-        dataIndex: "invoiceNo",
-        key: "invoiceNo",
+        dataIndex: "no",
+        key: "no",
     },
     {
         title: (
@@ -107,9 +107,9 @@ const invoiceData = {
             show: true,
             rules: [{ required: true, message: "Please Select Customer" }],
         },
-        invoiceNo: {
+        no: {
             label: "#Invoice",
-            name: "invoiceNo",
+            name: "no",
             type: "input",
             show: true,
             rules: [{ required: true, message: "Please Provide Invoice No" }],

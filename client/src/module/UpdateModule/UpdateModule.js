@@ -1,18 +1,18 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import NotFound from "../../pages/Notfound";
-import CoustomerItem from "../../Forms/CoustomersForm";
-import QuotesFormItems from "../../Forms/QuotationForm";
-import InvoicesFormItems from "../../Forms/Invoice";
-import ChallanFormItem from "../../Forms/DeliveryChallanForm";
-import VendorFormItem from "../../Forms/VendorForm";
-import PurchaseFormItem from "../../Forms/PurchaseOrderForm";
-import ExpensesItem from "../../Forms/ExpenseForm";
-import PaymentFormItem from "../../Forms/PaymentForm";
-import LeadFormItem from "../../Forms/LeadForm";
-import ProductForm from "Forms/ProductFrom";
-import EntityNo from "Forms/Counters";
-import OrganizationForm from "Forms/OrgnizationForm";
+import CoustomerItem from "../../Forms/App/CoustomersForm";
+import QuotesFormItems from "../../Forms/App/QuotationForm";
+import InvoicesFormItems from "../../Forms/App/Invoice";
+import ChallanFormItem from "../../Forms/App/DeliveryChallanForm";
+import VendorFormItem from "../../Forms/App/VendorForm";
+import PurchaseFormItem from "../../Forms/App/PurchaseOrderForm";
+import ExpensesItem from "../../Forms/App/ExpenseForm";
+import PaymentFormItem from "../../Forms/App/PaymentForm";
+import LeadFormItem from "../../Forms/App/LeadForm";
+import ProductForm from "../../Forms/App/ProductFrom";
+import EntityNo from "../../Forms/App/Counters";
+import OrganizationForm from "../../Forms/App/OrgnizationForm";
 
 const UpdateModule = ({ entity, form }) => {
     // const { entity: entityFromRouter } = useParams();

@@ -22,12 +22,12 @@ const getColumns = (details) => [
     },
     {
         title: <Taglabel text={"EXPENSE#"} details={details} />,
-        dataIndex: "expenseNo",
+        dataIndex: "no",
         key: "expenseDate",
         render: (_, record) => (
             <>
                 <Taglabel
-                    text={record.expenseNo}
+                    text={record.no}
                     type={"no"}
                     details={details}
                 />

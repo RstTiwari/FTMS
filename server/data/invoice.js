@@ -23,7 +23,7 @@ export const invoice =       {
         "tenantId": "TrL_PhLoH",
         "__v": 0
     },
-    "invoiceNo": "12345",
+    "no": "12345",
     "orderNo": "1234",
     "invoiceDate": 1709100355,
     "invoiceExpiredDate": 1709186758,

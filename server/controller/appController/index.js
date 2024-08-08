@@ -58,9 +58,9 @@ const appRoutes = {
     //             });
     //         } else if (action === "update") {
     //             if (!value) throw new Error("Please give update object");
-    //             const { challanNo, items } = value;
+    //             const { no, items } = value;
     //             const updateData = await deliveryChallanDb.updateOne(
-    //                 { challanNumber: challanNo },
+    //                 { challanNumber: no },
     //                 { $set: { items } }
     //             );
     //             if (updateData.modifiedCount >= 1) {

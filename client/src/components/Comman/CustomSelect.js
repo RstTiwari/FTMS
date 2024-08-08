@@ -8,7 +8,6 @@ import PageLoader from "pages/PageLoader";
 const CustomSelect = ({
     entity,
     entityName,
-    defaultSelect,
     width = "15vw",
     updateInForm,
     preFillValue,
@@ -19,7 +18,7 @@ const CustomSelect = ({
     const [addValue, setAddValue] = useState("");
     const [value, setValue] = useState(preFillValue);
     const { appApiCall } = useAuth();
-
+    
     const handelClick = async () => {
         const response = await appApiCall(
             "get",
@@ -33,12 +32,12 @@ const CustomSelect = ({
         setOptions(response.result);
         setIsLoading(false);
     };
-
+    console.log(preFillValue,"preFill")
     useEffect(() => {
-        if (defaultSelect) {
-            setValue(defaultSelect);
+        if (preFillValue) {
+            setValue(preFillValue);
         }
-    }, [defaultSelect]);
+    }, []);
 
     const handleChange = (value) => {
         setValue(value);
@@ -68,7 +67,7 @@ const CustomSelect = ({
         <>
             {!open ? (
                 <Select
-                    value={value || ""}
+                    value={value ? value :""}
                     options={options}
                     onChange={handleChange}
                     style={{ width: width }}

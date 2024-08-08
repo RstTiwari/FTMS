@@ -81,7 +81,7 @@ const CustomInput = ({
                 />
             );
         case "counters":
-            return <CustomCounters entity={entity} {...restProps} />;
+            return <CustomCounters entity={entity}  preFillValue ={preFillValue} {...restProps} />;
         case "image":
             return <UploadImage {...restProps} />;
         default:

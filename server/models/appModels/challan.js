@@ -13,7 +13,7 @@ const challanSchema = new mongoose.Schema(
             type: mongoose.Schema.ObjectId,
             ref: "invoice",
         },
-        challanNo: {
+        no: {
             type: Number,
             required: true,
             unique: true,

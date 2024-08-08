@@ -53,7 +53,7 @@ async function generateCustomerInformation(doc, vendor, purchaseData) {
     doc.fontSize(10)
         .text("Purchase Number:", 50, customerInformationTop)
         .font("Helvetica-Bold")
-        .text(purchaseData.challanNo, 150, customerInformationTop)
+        .text(purchaseData.no, 150, customerInformationTop)
         .font("Helvetica")
         .text("Purchase Date:", 50, customerInformationTop + 15)
         .text(

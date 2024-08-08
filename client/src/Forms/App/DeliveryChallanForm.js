@@ -41,9 +41,12 @@ const DeliveryChallan = ({ form }) => {
             temObj.finalAmount = Math.ceil(temObj.qty * temObj.rate);
         } else if (filedName === "customer") {
             form.setFieldsValue({ customer: value });
-        } else if (filedName === "challanNo") {
-            form.setFieldsValue({ challanNo: value });
-        } else if (filedName === "transportAmount") {
+        } else if (filedName === "no") {
+            form.setFieldsValue({ no: value });
+        }else if (filedName === "challanDate") {
+            form.setFieldsValue({ challanDate: value });
+        }
+         else if (filedName === "transportAmount") {
             form.setFieldsValue({ transportAmount: value });
         }
         else if (filedName === "gstPercent") {
@@ -66,7 +69,7 @@ const DeliveryChallan = ({ form }) => {
 
         let taxAmount = temItems.reduce((acc,item)=>acc + (item.taxAmount ||0),0)
 
-        let grandTotal = grossTotal + transportAmount +taxAmount;
+        let grandTotal = Number(grossTotal) + Number(transportAmount) +Number(taxAmount);
         form.setFieldsValue({
             grossTotal: Math.ceil(grossTotal),
             grandTotal: Math.ceil(grandTotal),
@@ -95,10 +98,11 @@ const DeliveryChallan = ({ form }) => {
                 fieldName={"name"}
                 customerSelect=""
                 updateInForm={(value) => handleItemUpdate(value, "customer")}
+                preFillValue = {form.getFieldValue("customer")?.name}
             />
             <FormItemCol
                 label={"#Delivery Challan"}
-                name={"challanNo"}
+                name={"no"}
                 labelAlign="left"
                 required={true}
                 labelCol={{ span: 8 }}
@@ -109,7 +113,8 @@ const DeliveryChallan = ({ form }) => {
                         message: "Please Provide Challan No",
                     },
                 ]}
-                updateInForm={(value) => handleItemUpdate(value, "challanNo")}
+                updateInForm={(value) => handleItemUpdate(value, "no")}
+                preFillValue ={form.getFieldValue("no")}
             />
             <FormItemCol
                 label={"Challan Date"}
@@ -124,6 +129,8 @@ const DeliveryChallan = ({ form }) => {
                 labelCol={{ span: 8 }}
                 labelAlign="left"
                 type={"date"}
+                preFillValue ={form.getFieldValue("challanDate")}
+                updateInForm ={(value)=>handleItemUpdate(value,"challanDate")}
             />
                       <FormItemCol
                 label={"Challan Type"}
@@ -141,6 +148,7 @@ const DeliveryChallan = ({ form }) => {
                 entity={"Challan Type"}
                 entityName={"challanType"}
                 updateInForm={(value) => handleItemUpdate(value, "challanType")}
+                preFillValue ={form.getFieldValue("challanType")}
             />
             <FormItemCol
                 label={"Vehicle No"}
@@ -266,6 +274,7 @@ const DeliveryChallan = ({ form }) => {
                                                         name
                                                     )
                                                 }
+                                                preFillValue={form.getFieldValue("items")?.[name].description}
                                             />
                                         </Form.Item>
                                     </Col>
@@ -325,6 +334,8 @@ const DeliveryChallan = ({ form }) => {
                                                 style={{
                                                     textAlign: "center",
                                                 }}
+                                                preFillValue={form.getFieldValue("items")?.[name]?.gstPercent}
+
                                             />
                                         </Form.Item>
                                     </Col>

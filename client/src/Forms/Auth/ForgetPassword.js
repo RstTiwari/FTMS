@@ -1,12 +1,27 @@
 import React, { useState } from "react";
-import { Form, Input, Typography, Row, Button } from "antd";
+import { Form, Input, Typography, Row,} from "antd";
+import { Link } from "react-router-dom";
 import { MailOutlined } from "@ant-design/icons";
 import CoustomButton from "components/Comman/CoustomButton";
-const { Text, Link, Title } = Typography;
+import { useAuth } from "state/AuthProvider";
+import NotificationHandler from "EventHandler/NotificationHandler";
+const { Text, Title } = Typography;
+
 
 const ForgetPassword = () => {
+    const [form] = Form.useForm()
+    const {authApiCall} = useAuth()
+    const handleReciveOTP = async (value) => {
+        const response = await authApiCall("forgetPassword", value);
+        if (response.success === 1) {
+        
+        } else {
+            return NotificationHandler.error(response.message);
+        }
+    };
+   
     return (
-        <div>
+        <Form name="forgetPassword" form={form} onFinish={handleReciveOTP}>
             <Row>
                 <Title level={4} type="warning">
                     Please Enter Your Register Email To Reset Password
@@ -35,7 +50,10 @@ const ForgetPassword = () => {
                     <CoustomButton htmlType="submit" text={"Send OTP"} />
                 </Form.Item>
             </Row>
-        </div>
+            <Row justify={"center"}>
+                <Link to="/"> BACK TO LOGIN</Link>
+            </Row>
+        </Form>
     );
 };
 

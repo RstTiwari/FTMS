@@ -29,6 +29,10 @@ const UploadImage = ({
             updateImageInForm(file);
         }
     };
+    const handleEdit = ()=>{
+        setImageUrl(null)
+         setEdit(true)
+    }
 
     // const uploadImage = async () => {
     //     if (!file) {
@@ -67,10 +71,10 @@ const UploadImage = ({
                 <Col span={8}>
                     {!edit && (
                         <Button
-                            style={{ width: "5rem" }}
-                            onClick={() => setEdit(true)}
+                            style={{ width: "3rem",height:"2rem",fontSize:"10px",color:"#ffffff" ,background:'green'}}
+                            onClick={() => handleEdit()}
                         >
-                            Change
+                            EDIT
                         </Button>
                     )}
                 </Col>

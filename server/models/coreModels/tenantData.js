@@ -12,7 +12,7 @@ const tenantData = new mongoose.Schema(
             required: true,
             unique: true,
         },
-        quoteNo:{
+        no:{
             preFix:String,
             nextNumber:Number,         
         },

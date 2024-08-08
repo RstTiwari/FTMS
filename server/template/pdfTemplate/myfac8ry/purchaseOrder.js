@@ -81,7 +81,7 @@ const purchaseOrder = async (req, res, next, purchaseData) => {
         doc.fontSize(13)
             .fillColor("#1E1F20")
             .font("Helvetica-Bold")
-            .text(`PURCHASE NO : #${purchaseData.purchaseNo}`, 370, 140, {
+            .text(`PURCHASE NO : #${purchaseData.no}`, 370, 140, {
                 width: 300,
             });
 

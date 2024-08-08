@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Flex } from "antd";
-import OrganizationForm from "Forms/OrgnizationForm";
+import OrganizationForm from "Forms/App/OrgnizationForm";
 import { useAuth } from "state/AuthProvider";
 import { useParams } from "react-router-dom";
 import Header from "components/Header";

@@ -34,7 +34,7 @@ const paymentsSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    paymentNo: {
+    no: {
         type: Number,
         unique: true, // Ensure the incremented field is unique
     },
@@ -48,7 +48,7 @@ paymentsSchema.pre("save", async function (next) {
     if (this.isNew) {
         try {
             const count = await mongoose.model("payments").countDocuments();
-            this.paymentNo = count + 1;
+            this.no = count + 1;
             next();
         } catch (error) {
             next(error);

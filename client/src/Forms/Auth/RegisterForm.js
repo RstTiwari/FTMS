@@ -3,10 +3,24 @@ import { Form, Input, Checkbox, Col, Row, Button } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import CoustomButton from "components/Comman/CoustomButton";
+import { useAuth } from "state/AuthProvider";
+import NotificationHandler from "EventHandler/NotificationHandler";
 
-export const RegisterForm = () => {
+
+ const RegisterForm = () => {
+    const {authApiCall} = useAuth()
+
+    const handleRegisterFormFinish = async (values) => {
+        let response = await authApiCall("register", values);
+        if (response.success === 1) {
+            return NotificationHandler.success(response.message);
+        } else {
+            return NotificationHandler.error(response.message);
+        }
+    };
+    
     return (
-        <div>
+        <Form name="registerFrom" onFinish={handleRegisterFormFinish}>
             <Form.Item
                 label={"Company Name"}
                 name={"companyName"}
@@ -76,15 +90,18 @@ export const RegisterForm = () => {
             </Form.Item>
             <Form.Item>
                 <Row justify={"center"}>
-                    ExistingUser - <Link to={"/login"}> LogIn</Link>
+                    ExistingUser - <Link to={"/login"}> LOGIN</Link>
                 </Row>
             </Form.Item>
 
             <Form.Item>
                 <Row justify={"center"}>
-                    <CoustomButton htmlType="submit" text={"Register"} />
+                    <CoustomButton htmlType="submit" text={"REGISTER"} />
                 </Row>
             </Form.Item>
-        </div>
+        </Form>
     );
 };
+
+
+export default RegisterForm

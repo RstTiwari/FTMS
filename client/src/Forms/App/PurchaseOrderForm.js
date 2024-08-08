@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import Taglabel from "components/Comman/Taglabel";
 import {
     Form,
     Select,
@@ -11,112 +12,143 @@ import {
     DatePicker,
     InputNumber,
     Typography,
+    Checkbox,
 } from "antd";
 
 import { PlusOutlined, CloseOutlined, DeleteOutlined } from "@ant-design/icons";
-import { useMediaQuery } from "@mui/material";
-import { useAuth } from "state/AuthProvider";
-import CustomModal from "components/CustomModal";
-import FormItemCol from "components/Comman/FormItemCol";
-import Taglabel from "components/Comman/Taglabel";
-import { jsDateIntoDayjsDate } from "Helper/EpochConveter";
 
-const QuotationForm = ({ form }) => {
-    const handleItemsUpdate = (value, filedName, rowName) => {
+import FormItemCol from "components/Comman/FormItemCol";
+import CustomSelect from "components/Comman/CustomSelect";
+import CustomModel from "components/CustomModal";
+import NotificationHandler from "EventHandler/NotificationHandler";
+import AddressDetails from "components/Comman/AddressDetails";
+
+const PurchaseOrder = ({ form, value, disabled, isModel }) => {
+    const [isOrganizationChecked, setIsOrganizationChecked] = useState(false);
+    const [isCustomerChecked, setIsCustomerChecked] = useState(false);
+    const [delivery,setDelivery ]  = useState("")
+
+    const updateDeliveryAddress = (values) => {
+        form.setFieldsValue({
+            deliverTo: values?.name,
+            deliveryAddress: values?.shippingAddress,
+        });
+    }; 
+
+    const handleCheckboxChange = (type) => {
+        if (type === "organization") {
+            // Probally call the api and get the Organization Data
+            const response = {
+                companyName: "HKB Development Pvt LtD",
+                shippingAddress: {
+                    street1: "A-1o near gorai pada vasai virat",
+                    street2: "near Sb road cap",
+                    city: "vasai",
+                    state: "Maharastra",
+                    pincode: 401209,
+                },
+            };
+            setDelivery({...delivery,companyName:response?.companyName,shippingAddress:response?.shippingAddress})
+            updateDeliveryAddress({
+                name: response?.companyName,
+                shippingAddress: response?.shippingAddress,
+            });
+            setIsOrganizationChecked(true);
+            setIsCustomerChecked(false);
+        } else if (type === "customer") {
+            setIsOrganizationChecked(false);
+            setIsCustomerChecked(true);
+        }
+    };
+    const handleItemsUpdate = (value, fieldName, rowName) => {
         const items = form.getFieldValue("items");
-        let temObj = items[rowName];
-        if (filedName === "description") {
+        const temObj = items[rowName];
+        if (fieldName === "vendorName") {
+            form.setFieldsValue({ vendor: value });
+        } else if (fieldName === "no") {
+            form.setFieldsValue({ no: value });
+        } else if (fieldName === "description") {
             let { description, rate, hsnCode } = value;
             temObj.description = description;
-            temObj.rate = Math.ceil(rate);
-            temObj.finalAmount = Math.ceil(temObj.qty * rate);
-        } else if (filedName === "rate") {
+            temObj.rate = rate;
+            temObj.finalAmount = temObj.qty * temObj.rate;
+        } else if (fieldName === "rate") {
             temObj.rate = value;
-            temObj.finalAmount = Math.ceil(temObj.qty * value);
-        } else if (filedName === "qty") {
+            temObj.finalAmount = temObj.rate * temObj.qty;
+        } else if (fieldName === "qty") {
             temObj.qty = value;
-            temObj.finalAmount = Math.ceil(value * temObj.rate);
-        } else if (filedName === "gstPercent") {
-            value = Number(value);
-            form.setFieldsValue({ gstPercent: value });
-        } else if (filedName === "transportAmount") {
-            form.setFieldsValue({ transportAmount: value });
-        } else if (filedName === "paymentsCondition") {
-            form.setFieldsValue({ paymentsCondition: value });
-        } else if (filedName === "deliveryCondition") {
-            form.setFieldsValue({ deliveryCondition: value });
-        } else if (filedName === "cancellationCondition") {
-            form.setFieldsValue({ cancellationCondition: value });
-        } else if (filedName === "validityCondition") {
-            form.setFieldsValue({ validityCondition: value });
-        } else if (filedName === "customer") {
-            form.setFieldsValue({ customer: value });
-        } else if (filedName === "quoteNo") {
-            form.setFieldsValue({ quoteNo: value });
-        } else if (filedName === "sub") {
-            form.setFieldsValue({ sub: value });
-        } else if (filedName === "salesPerson") {
-            form.setFieldsValue({ salesPerson: value });
-        } else if (filedName === "quoteDate") {
-            form.setFieldsValue({ quoteDate: value });
-        } else if (filedName === "expiryDate") {
-            form.setFieldsValue({ expiryDate: value });
+            temObj.finalAmount = temObj.rate * temObj.qty;
+        } else if (fieldName === "gstPercent") {
+            temObj.gstPercent = Number(value);
+        }else if(fieldName ==="paymentCondition"){
+            form.setFieldsValue({ paymentCondition: value });
+        }else if (fieldName ==="cancellationCondition"){
+            form.setFieldsValue({ cancellationCondition: value });          
+        }else if (fieldName ==="purchaseDate"){
+            form.setFieldsValue({ purchaseDate: value });          
+        }else if (fieldName ==="deliveryDate"){
+            form.setFieldsValue({deliveryDate : value });          
+        }
+         else {
+            return NotificationHandler.error("invalid changes");
         }
 
         items[rowName] = temObj;
-        form.setFieldsValue({ items: items });
+        const grossTotal = items.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue.finalAmount;
+        }, 0);
 
-        // Tax Calculator
-        let grossTotal = items.reduce((a, b) => a + b.finalAmount, 0);
-        let gstPercent = form.getFieldValue("gstPercent") || 0;
-        let transportAmount = form.getFieldValue("transportAmount") || 0;
-        let taxAmount = Math.ceil(
-            calculateTax(gstPercent, grossTotal + transportAmount)
-        );
-        let grandTotal = grossTotal + taxAmount + transportAmount;
+        let temArray = items.map((item) => ({
+            ...item,
+            taxAmount: item.finalAmount * (item.gstPercent / 100) || 0,
+        }));
+
+        const totalTaxAmount = temArray.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue.taxAmount;
+        }, 0);
+
+        let grandTotal = totalTaxAmount + grossTotal;
         form.setFieldsValue({
-            grossTotal: grossTotal,
-            grandTotal: grandTotal,
-            transportAmount: transportAmount,
-            taxAmount: taxAmount,
+            items: items,
+            grossTotal: Math.ceil(grossTotal),
+            taxAmount: Math.ceil(totalTaxAmount),
+            grandTotal: Math.ceil(grandTotal),
         });
     };
-
-    function calculateTax(gstPercent = 0, total) {
-        let amount = (gstPercent * total) / 100;
-        return Math.ceil(amount);
-    }
-
-    useEffect(() => {}, []);
+    useEffect(()=>{
+        if(form.getFieldValue("deliverTo")){
+        
+        }
+    })
     return (
         <div>
             <FormItemCol
-                label={"Select Customer"}
-                name={"customer"}
+                label={"Select Vendor"}
+                name={"vendor"}
                 labelAlign="left"
-                required={true}
                 labelCol={{ span: 8 }}
+                required={true}
                 rules={[
                     {
                         required: "true",
-                        message: "Please Select Customer",
+                        message: "Please Select Vendor",
                     },
                 ]}
-                type="model"
-                entity={"customers"}
-                fieldName="name" // filed name form customer modal
+                type={"model"}
+                entity={"vendors"}
+                fieldName={"name"}
                 updateInForm={(value) => {
-                    handleItemsUpdate(value, "customer");
+                    handleItemsUpdate(value, "vendorName");
                 }}
-                preFillValue={form.getFieldValue("customer")?.name}
+                preFillValue ={form.getFieldValue("vendor")?.name}
             />
             <FormItemCol
-                label={"#Quote"}
-                name={"quoteNo"}
+                label={"#PURCHASE"}
+                name={"no"}
                 labelAlign="left"
                 required={true}
-                labelCol={{ span: 8 }}
                 type={"counters"}
+                labelCol={{ span: 8 }}
                 rules={[
                     {
                         required: "true",
@@ -124,74 +156,132 @@ const QuotationForm = ({ form }) => {
                     },
                 ]}
                 updateInForm={(value) => {
-                    handleItemsUpdate(value, "quoteNo");
+                    handleItemsUpdate(value, "no");
                 }}
+                preFillValue = {form.getFieldValue("no")}
             />
             <Row>
                 <FormItemCol
-                    label={"Quote Date"}
-                    name={"quoteDate"}
-                    required={true}
+                    label={"Purchase Date"}
+                    name={"purchaseDate"}
+                    labelAlign="left"
+                    type={"date"}
                     labelCol={{ span: 8 }}
-                    rules={[
-                        {
-                            required: true,
-                            message: "Please Select Quote Date",
-                        },
-                    ]}
-                    labelAlign="left"
-                    type={"date"}
-                    preFillValue={form.getFieldValue("quoteDate")}
-                    updateInForm={(value) => {
-                        handleItemsUpdate(value, "quoteDate");
-                    }}
-                />
-                <FormItemCol
-                    label={"Expiry Date"}
-                    name={"expiryDate"}
                     required={true}
                     rules={[
                         {
                             required: true,
-                            message: "Please Select Quote Expiry Date",
+                            message: "Please Select Delivery Date",
                         },
                     ]}
-                    labelAlign="left"
-                    labelCol={{ span: 6 }}
-                    type={"date"}
-                    preFillValue={form.getFieldValue("expiryDate")}
-                    updateInForm={(value) => {
-                        handleItemsUpdate(value, "expiryDate");
-                    }}
+                    updateInForm ={(value)=>handleItemsUpdate(value,"purchaseDate")}
+                    preFillValue ={form.getFieldValue("purchaseDate")}
                 />
             </Row>
-            <FormItemCol
-                label={"Sub"}
-                name={"sub"}
-                type={"select"}
-                tooltip={"Let your customer know what this quote is for"}
-                width={"25vw"}
-                entity={"Quotation Sub"}
-                labelCol={{ span: 8 }}
-                entityName="sub"
-                updateInForm={(value) => {
-                    handleItemsUpdate(value, "sub");
-                }}
-                preFillValue={form.getFieldValue("sub")}
-            />
-            <FormItemCol
-                label={"Sales Person"}
-                name={"salesPerson"}
-                type={"select"}
-                entity={"Sales Person"}
-                entityName="salesPerson"
-                width={"10vw"}
-                labelCol={{ span: 8 }}
-                updateInForm={(value) => {
-                    handleItemsUpdate(value, "salesPerson");
-                }}
-                preFillValue={form.getFieldValue("salesPerson")}
-            />
+            <Row>
+                <FormItemCol
+                    label={"Delivery Date"}
+                    name={"deliveryDate"}
+                    required={true}
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please Select Delivery Date",
+                        },
+                    ]}
+                    labelAlign="left"
+                    type={"date"}
+                    labelCol={{ span: 8 }}
+                    updateInForm ={(value)=>handleItemsUpdate(value,"deliveryDate")}
+                    preFillValue ={form.getFieldValue("deliveryDate")}
+                />
+            </Row>
+            <div>
+                <Row>
+                    <Col
+                        xs={24}
+                        sm={24}
+                        md={{ span: 12 }}
+                        lg={{ span: 8 }}
+                        xl={{ span: 8 }}
+                    >
+                        <Form.Item name={"deliverTo"} hidden={true}></Form.Item>
+                        <Form.Item
+                            label={<Taglabel text={"Delivery Address"} />}
+                            labelCol={{ span: 8 }}
+                            labelAlign="left"
+                            name={"deliveryAddress"}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Delivery Address Required",
+                                },
+                            ]}
+                        >
+                            <Checkbox
+                                checked={isOrganizationChecked}
+                                onChange={() =>
+                                    handleCheckboxChange("organization")
+                                }
+                            >
+                                ORGANIZATION
+                            </Checkbox>
+                            <Checkbox
+                                checked={isCustomerChecked}
+                                onChange={() =>
+                                    handleCheckboxChange("customer")
+                                }
+                            >
+                                CUSTOMER
+                            </Checkbox>
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row>
+
+                    {isOrganizationChecked && (
+                        <Col
+                            xs={24}
+                            sm={24}
+                            md={{ span: 6, offset: 3 }}
+                            lg={{ span: 6, offset: 3 }}
+                            xl={{ span: 6, offset: 3 }}
+                        >
+                            <AddressDetails
+                                id={"organization"}
+                                initialRender={true}
+                                entityName={"Delivery Address"}
+                                isForDelivery={true}
+                                address={delivery.shippingAddress}
+                                deliverTo={delivery.companyName}
+                            />
+                        </Col>
+                    )}
+
+                    {isCustomerChecked && (
+                        <Col
+                            xs={24}
+                            sm={24}
+                            md={{ span: 24, offset: 3 }}
+                            lg={{ span: 24, offset: 3 }}
+                            xl={{ span: 24, offset: 3 }}
+                        >
+                            <FormItemCol
+                                label={"Select Customer"}
+                                name={"customer"}
+                                labelAlign="left"
+                                type={"model"}
+                                entity={"customers"}
+                                fieldName={"name"}
+                                isForDelivery={true}
+                                updateInForm={updateDeliveryAddress}
+                                preFillValue ={form.getFieldValue("deliveryAddress")}
+                            />
+                        </Col>
+                    )}
+                </Row>{" "}
+            </div>
+
             <Divider dashed />
             <div
                 style={{
@@ -212,7 +302,7 @@ const QuotationForm = ({ form }) => {
                 >
                     <Col
                         className="gutter-row"
-                        span={9}
+                        span={7}
                         style={{
                             borderRight: "1px solid #bfbfbb",
                             textAlign: "center",
@@ -222,7 +312,7 @@ const QuotationForm = ({ form }) => {
                     </Col>
                     <Col
                         className="gutter-row"
-                        span={5}
+                        span={4}
                         style={{
                             borderRight: "1px solid #bfbfbb",
                             textAlign: "center",
@@ -232,7 +322,7 @@ const QuotationForm = ({ form }) => {
                     </Col>
                     <Col
                         className="gutter-row"
-                        span={5}
+                        span={4}
                         style={{
                             borderRight: "1px solid #bfbfbb",
                             textAlign: "center",
@@ -242,10 +332,20 @@ const QuotationForm = ({ form }) => {
                     </Col>
                     <Col
                         className="gutter-row"
-                        span={5}
-                        style={{ textAlign: "center" }}
+                        span={4}
+                        style={{
+                            borderRight: "1px solid #bfbfbb",
+                            textAlign: "center",
+                        }}
                     >
-                        <Taglabel text={"Final Amount(Before Tax)"} />
+                        <Taglabel text={"GST Tax %"} />
+                    </Col>
+                    <Col
+                        className="gutter-row"
+                        style={{ textAlign: "center" }}
+                        span={5}
+                    >
+                        <Taglabel text={"Total Amount(Before tax)"} />
                     </Col>
                 </Row>
                 <Form.List
@@ -255,6 +355,7 @@ const QuotationForm = ({ form }) => {
                             description: "",
                             rate: 0,
                             qty: 1,
+                            gstPercent: 0,
                             finalAmount: 0,
                         },
                     ]}
@@ -277,7 +378,7 @@ const QuotationForm = ({ form }) => {
                                         >
                                             <Col
                                                 className="gutter-row"
-                                                span={9}
+                                                span={7}
                                                 style={{
                                                     textAlign: "center",
                                                 }}
@@ -286,28 +387,25 @@ const QuotationForm = ({ form }) => {
                                                     {...restField}
                                                     name={[name, "description"]}
                                                 >
-                                                    <CustomModal
+                                                    <CustomModel
                                                         entity={"products"}
                                                         fieldName={
                                                             "productName"
                                                         }
-                                                        updateInForm={(value) =>
+                                                        updateInForm={(
+                                                            value
+                                                        ) => {
                                                             handleItemsUpdate(
                                                                 value,
                                                                 "description",
                                                                 name
-                                                            )
-                                                        }
-                                                        preFillValue={
-                                                            form.getFieldValue(
-                                                                "items"
-                                                            )?.[name]
-                                                                ?.description
-                                                        }
+                                                            );
+                                                        }}
+                                                        preFillValue={form.getFieldValue("items")?.[name]?.description}
                                                     />
                                                 </Form.Item>
                                             </Col>
-                                            <Col span={5}>
+                                            <Col span={4}>
                                                 <Form.Item
                                                     {...restField}
                                                     name={[name, "rate"]}
@@ -327,7 +425,7 @@ const QuotationForm = ({ form }) => {
                                                     />
                                                 </Form.Item>
                                             </Col>
-                                            <Col span={5}>
+                                            <Col span={4}>
                                                 <Form.Item
                                                     {...restField}
                                                     name={[name, "qty"]}
@@ -347,6 +445,31 @@ const QuotationForm = ({ form }) => {
                                                     />
                                                 </Form.Item>
                                             </Col>
+                                            <Col span={4}>
+                                                <Form.Item
+                                                    {...restField}
+                                                    name={[name, "gstPercent"]}
+                                                >
+                                                    <CustomSelect
+                                                        updateInForm={(value) =>
+                                                            handleItemsUpdate(
+                                                                value,
+                                                                "gstPercent",
+                                                                name
+                                                            )
+                                                        }
+                                                        width={"100%"}
+                                                        style={{
+                                                            textAlign: "center",
+                                                        }}
+                                                        entity={"gstPercent"}
+                                                        entityName={
+                                                            "gstPercent"
+                                                        }
+                                                        preFillValue={form.getFieldValue("items")?.[name]?.gstPercent}
+                                                    />
+                                                </Form.Item>
+                                            </Col>
                                             <Col
                                                 span={4}
                                                 style={{ textAlign: "center" }}
@@ -359,6 +482,7 @@ const QuotationForm = ({ form }) => {
                                                         readOnly
                                                         className="moneyInput"
                                                         min={0}
+                                                        controls={false}
                                                         style={{
                                                             width: "100%",
                                                             textAlign: "center",
@@ -372,7 +496,7 @@ const QuotationForm = ({ form }) => {
                                             >
                                                 <Form.Item>
                                                     <DeleteOutlined
-                                                        disabled
+                                                        disabled={disabled}
                                                         style={{
                                                             color: "red",
                                                             cursor: "pointer",
@@ -387,18 +511,18 @@ const QuotationForm = ({ form }) => {
                                     )
                                 )}
                             </div>
-
-                            {/* Button to add new item */}
                             <Row justify="start">
                                 <Button
                                     type="primary"
+                                    disabled={disabled}
                                     onClick={() => {
                                         subOpt.add({
                                             description: "",
                                             finalAmount: 0,
                                             qty: 1,
+                                            gstPercent: 0,
                                             rate: 0,
-                                        }); // Use srNo instead of srN
+                                        });
                                     }}
                                     icon={<PlusOutlined />}
                                     style={{
@@ -416,112 +540,69 @@ const QuotationForm = ({ form }) => {
             </div>
             <Row align={"middle"} justify={"end"}>
                 <FormItemCol
-                    label="Gross Total"
-                    tooltip={"Amount before Tax"}
+                    label="Grand Total"
                     name={"grossTotal"}
+                    tooltip={"Amount Before Tax"}
                     labelAlign="left"
-                    labelCol={{ span: 8 }}
                     type={"number"}
-                    width={150}
+                    labelCol={{ span: 10 }}
                     readOnly={true}
                 />
             </Row>
             <Row align={"middle"} justify={"end"}>
+                <FormItemCol
+                    label="Tax Amount(Rs)"
+                    name={"taxAmount"}
+                    labelCol={{ span: 10 }}
+                    labelAlign="left"
+                    tooltip={"Tax Amount on Gross Total"}
+                    type={"number"}
+                    readOnly={true}
+                />
+            </Row>
+            {/* <Row align={"middle"} justify={"end"}>
                 <FormItemCol
                     label="Transport(Rs)"
-                    name={"transportAmount"}
+                    name={"transPortAmount"}
+                    labelCol={{ span: 10 }}
+                    updateInForm ={(value)=>{handleItemsUpdate(value,"transPortAmount")}}
                     labelAlign="left"
                     type={"number"}
-                    labelCol={{ span: 8 }}
-                    onChange={(value) => {
-                        handleItemsUpdate(value, "transportAmount");
-                    }}
                 />
-            </Row>
-            <Row align={"middle"} justify={"end"}>
-                <FormItemCol
-                    label="Tax(%)"
-                    name={"gstPercent"}
-                    labelCol={{ span: 8 }}
-                    labelAlign="left"
-                    type={"select"}
-                    width={150}
-                    entity={"Tax Percent"}
-                    entityName="gstPercent"
-                    updateInForm={(value) => {
-                        handleItemsUpdate(value, "gstPercent");
-                    }}
-                    preFillValue={form.getFieldValue("gstPercent")}
-                />
-            </Row>
-
-            <Row align={"middle"} justify={"end"}>
-                <FormItemCol
-                    label="Tax Amount"
-                    name={"taxAmount"}
-                    labelCol={{ span: 8 }}
-                    labelAlign="left"
-                    tooltip={"Tax Amount on total + transport"}
-                    type={"number"}
-                    entity={"Tax Percent"}
-                    readOnly={true}
-                />
-            </Row>
-            <Row align={"middle"} justify={"end"}>
+               
+            </Row> */}
+             <Row align={"middle"} justify={"end"}>
                 <FormItemCol
                     label="Grand Total"
+                    tooltip={"Amount After Tax"}
                     name={"grandTotal"}
-                    labelCol={{ span: 8 }}
+                    labelCol={{ span: 10 }}
+                    readOnly={true}
                     labelAlign="left"
-                    tooltip={"Total Amount including Tax + total"}
                     type={"number"}
-                    readOnly
                 />
             </Row>
-            <Row justify={"start"} style={{ marginBottom: 10 }}>
-                <Taglabel text={" Term & Conditions"} weight={1000} />
-            </Row>
-            <FormItemCol
-                label={"Delivery"}
-                name={"deliveryCondition"}
-                type={"select"}
-                width={500}
-                labelCol={{ span: 8 }}
-                entity={"Delivery Condition"}
-                entityName={"deliveryCondition"}
-                updateInForm={(value) => {
-                    handleItemsUpdate(value, "deliveryCondition");
-                }}
-                preFillValue={form.getFieldValue("deliveryCondition")}
-            />
             <Row justify={"start"}>
-                <FormItemCol
-                    label={"Validity"}
-                    name={"validityCondition"}
-                    type={"select"}
-                    labelCol={{ span: 8 }}
-                    width={500}
-                    entity={"Validity Condition"}
-                    entityName={"validityCondition"}
-                    updateInForm={(value) => {
-                        handleItemsUpdate(value, "validityCondition");
-                    }}
-                    preFillValue={form.getFieldValue("validityCondition")}
+                <Taglabel
+                    text={"Terms and Condition"}
+                    type={"heading"}
+                    weight={900}
                 />
             </Row>
+           
             <Row justify={"start"}>
                 <FormItemCol
                     label={"Payments"}
-                    name={"paymentsCondition"}
-                    entityName={"paymentsCondition"}
+                    name={"paymentCondition"}
                     labelCol={{ span: 8 }}
                     type={"select"}
                     width={500}
                     entity={"Payments Condition"}
-                    updateInForm={(value) => {
-                        handleItemsUpdate(value, "paymentsCondition");
-                    }}
-                    preFillValue={form.getFieldValue("paymentsCondition")}
+                    entityName={"purchasePaymentsCondition"}
+                    updateInForm={(value) =>
+                        handleItemsUpdate(value, "paymentCondition")
+                    }
+                    preFillValue={form.getFieldValue("paymentCondition")}
                 />
             </Row>
             <Row justify={"start"}>
@@ -529,18 +610,19 @@ const QuotationForm = ({ form }) => {
                     label={"Cancellation"}
                     name={"cancellationCondition"}
                     type={"select"}
-                    labelCol={{ span: 8 }}
                     width={500}
+                    labelCol={{ span: 8 }}
                     entity={"Cancellation Condition"}
-                    entityName={"cancellationCondition"}
-                    updateInForm={(value) => {
-                        handleItemsUpdate(value, "cancellationCondition");
-                    }}
+                    entityName={"purchaseCancellationCondition"}
+                    updateInForm={(value) =>
+                        handleItemsUpdate(value, "cancellationCondition")
+                    }
                     preFillValue={form.getFieldValue("cancellationCondition")}
+
                 />
             </Row>
         </div>
     );
 };
 
-export default QuotationForm;
+export default PurchaseOrder;

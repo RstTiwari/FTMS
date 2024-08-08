@@ -23,7 +23,7 @@ export const quote = {
         tenantId: "TrL_PhLoH",
         __v: 0,
     },
-    quoteNo: "12345600000",
+    no: "12345600000",
     quoteDate: 1709023665,
     attenPerson:"Rohit kumar",
     sub:"Please Find the attached person",

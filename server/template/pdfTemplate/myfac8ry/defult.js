@@ -208,7 +208,7 @@ const addHeader = (
                 align: "left",
             });
         doc.font("Helvetica").text(
-            `${entityPrefix}/${entityDetails?.invoiceNo}`,
+            `${entityPrefix}/${entityDetails?.no}`,
             460,
             detailsY,
             { width: detailWidth, align: "left" }
@@ -244,7 +244,7 @@ const addHeader = (
                 align: "left",
             });
         doc.font("Helvetica").text(
-            `${entityPrefix}/${entityDetails.quoteNo}`,
+            `${entityPrefix}/${entityDetails.no}`,
             460,
             detailsY,
             {
@@ -270,7 +270,7 @@ const addHeader = (
         });
 
         doc.font("Helvetica").text(
-            `${jsDateIntoDDMMYY(entityDetails.dueDate)}`,
+            `${jsDateIntoDDMMYY(entityDetails.expiryDate)}`,
             460,
             detailsY,
             {
@@ -287,7 +287,7 @@ const addHeader = (
                 align: "left",
             });
         doc.font("Helvetica").text(
-            `${entityPrefix}/${entityDetails.purchaseNo}`,
+            `${entityPrefix}/${entityDetails.no}`,
             460,
             detailsY,
             {
@@ -330,7 +330,7 @@ const addHeader = (
                 align: "left",
             });
         doc.font("Helvetica").text(
-            `${entityPrefix}/${entityDetails?.challanNo}`,
+            `${entityPrefix}/${entityDetails?.no}`,
             460,
             detailsY,
             {

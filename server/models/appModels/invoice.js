@@ -8,8 +8,8 @@ const invoiceSchema = new mongoose.Schema(
             autopopulate: true,
             require: true,
         },
-        invoiceNo: {
-            type: String,
+        no: {
+            type: Number,
             require: true,
             unique: true,
         },
