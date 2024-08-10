@@ -7,6 +7,7 @@ import isValidAuthtoken from './isValidAuthtoken.js';
 import tenantDb from "../../models/coreModels/Tenant.js"
 import forgetpassword from "./forgetPassword.js";
 import updatePassword from "./updatePassword.js"
+import tenantData from "../../models/coreModels/tenantData.js";
 
 const authRoutes = {
     verify: (req, res, next) => {
@@ -16,7 +17,7 @@ const authRoutes = {
         register(req, res, next, userDb, userPasswordDb, tenantDb);
     },
     login: (req, res, next) => {
-        login(req, res, next, userDb, userPasswordDb, tenantDb);
+        login(req, res, next, userDb, userPasswordDb, tenantDb, tenantData);
     },
     isValidAuthtoken: (req, res, next) => {
         isValidAuthtoken(req, res, next, userDb, userPasswordDb, tenantDb);

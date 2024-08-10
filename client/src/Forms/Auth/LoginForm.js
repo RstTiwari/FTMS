@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Form, Input, Checkbox, Col, Row, Button, Typography, Tooltip } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { useAuth } from "state/AuthProvider";
 import CustomLabel from "components/Comman/CustomLabel";
 import CoustomButton from "components/Comman/CoustomButton";
 import useAuthApiCall from "Hook/useAuthApiCall";
@@ -14,9 +13,9 @@ const LoginForm = () => {
     const handleCheckBoxChange =(e)=>{
         form.setFieldsValue({remember:e.target.checked})
     }
-    const {isLoading ,error,handleAuthApi} = useAuthApiCall("user","login","/")
+    const { isLoading, handleAuthApi } = useAuthApiCall("login");
     const handleLoginChange = async (values) => {
-           await handleAuthApi(values)
+           await handleAuthApi(values,)
     };
     if(isLoading){
         return <PageLoader isLoading={true} text={"...Hold On Making things Perfect for You"} />

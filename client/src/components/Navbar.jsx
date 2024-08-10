@@ -5,24 +5,20 @@ import {
     LogoutOutlined
 } from "@ant-design/icons";
 import { Layout, Typography, Button, Avatar, Dropdown, Menu } from "antd";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "state/AuthProvider";
 import SettingSidebar from "pages/Setting/SettingSidebar";
 import SettingList from "../pages/Setting/SettingList";
-import PageLoader from "pages/PageLoader";
 
 const { Header } = Layout;
 
 const NavBar = ({ user, width }) => {
-    const navigate = useNavigate();
-    const { logoutUser } = useAuth();
+    const { removeLocalData } = useAuth();
     const [openSettingSideBar, setOpenSettingSidebar] = useState(false);
-    const [isLoggingOut, setIsLoggingOut] = useState(false);
     const isLaptop = window.innerWidth >= 900;
 
     const handleLogout = () => {
-        logoutUser();
-    
+        removeLocalData("token");
+        removeLocalData("profile");    
     };
     const menu = (
         <Menu style={{ width: 150 }}>

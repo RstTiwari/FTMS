@@ -1,31 +1,19 @@
-import ForgetPasswordForm from "Forms/Auth/ForgetPassword";
-import React, { useState } from "react";
-import { Form, Row, Input, Col, Button } from "antd";
-import { useAuth } from "state/AuthProvider";
-import NotificationHandler from "EventHandler/NotificationHandler";
+import React from "react";
 import SideContent from "pages/Auth/SideContent";
-import PageLoader from "../PageLoader";
+import UpdatePasswordForm from "../../Forms/Auth/UpdatePasswordForm";
 import "./Login.css";
-import ForgotPassword from "../../Forms/Auth/ForgetPassword";
+
 
 const UpdatePassword = () => {
-    const [form] = Form.useForm();
-    const [verifyOtp, setVerifyOtp] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [userId, setUserId] = useState("");
-    const [tenantId, setTenantId] = useState("");
-
-    const { authApiCall } = useAuth();
-
+ 
     return (
         <>
             <div className="parent_clearfix">
                 <SideContent />
                 <div className="login">
                     <div className="container">
-                        <UpdatePassword
-                            userId={userId}
-                            tenantId={tenantId}
+                        <UpdatePasswordForm
+                           
                         />
                     </div>
                 </div>

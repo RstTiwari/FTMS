@@ -3,25 +3,27 @@ import { Form, Input, Typography, Row,} from "antd";
 import { Link } from "react-router-dom";
 import { MailOutlined } from "@ant-design/icons";
 import CoustomButton from "components/Comman/CoustomButton";
-import { useAuth } from "state/AuthProvider";
-import NotificationHandler from "EventHandler/NotificationHandler";
+import useAuthApiCall from "Hook/useAuthApiCall";
+import PageLoader from "pages/PageLoader";
 const { Text, Title } = Typography;
 
 
 const ForgetPassword = () => {
     const [form] = Form.useForm()
-    const {authApiCall} = useAuth()
-    const handleReciveOTP = async (value) => {
-        const response = await authApiCall("forgetPassword", value);
-        if (response.success === 1) {
+        const { isLoading, handleAuthApi } = useAuthApiCall("forgetPassword");
         
-        } else {
-            return NotificationHandler.error(response.message);
+        const handleForgotPassword = async (values) => {
+          await handleAuthApi(values);
+        };
+
+        if(isLoading){
+            return <PageLoader  isLoading={true} text={"Hold .. on"}
+            />
         }
-    };
    
+
     return (
-        <Form name="forgetPassword" form={form} onFinish={handleReciveOTP}>
+        <Form name="forgetPassword" form={form} onFinish={handleForgotPassword}>
             <Row>
                 <Title level={4} type="warning">
                     Please Enter Your Register Email To Reset Password

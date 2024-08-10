@@ -18,39 +18,40 @@ const verify = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
         });
 
         if (error) {
-            return res.status(409).json({
-                success: 0,
-                result: null,
-                message: "Invalid/Missing credentials ",
-            });
+          return res.status(409).json({
+            success: 0,
+            result: null,
+            message: "Invalid/Missing credentials ",
+          });
         }
 
         const userPasswordResult = await userPasswordDb.findOne({
-            userId: userId,
-            removed: false,
+          userId: userId,
+          removed: false,
         });
 
         if (!userPasswordResult)
-            return res.status(404).json({
-                success: 0,
-                result: null,
-                message: "No account with this email has been registered.",
-            });
+          return res.status(404).json({
+            success: 0,
+            result: null,
+            message: "No account with this email has been registered.",
+          });
 
         if (userPasswordResult.emailVerified) {
-            return res.status(404).json({
-                success: 0,
-                result: null,
-                message: "email of your Account has been Verified",
-            });
+          return res.status(404).json({
+            success: 0,
+            result: null,
+            message: "Email is Verified Pls Login to Access",
+          });
         }
+       
+        console.log(emailOtp, typeof emailOtp)
+        const isMatch = Number(emailOtp) == userPasswordResult?.emailOtp ? true : false;
+        console.log(isMatch, "==", userPasswordResult);
 
-        const isMatch = emailOtp === userPasswordResult.emailOtp;
 
         if (
-            !isMatch ||
-            userPasswordResult.emailOtp === undefined ||
-            userPasswordResult.emailOtp === null
+            !isMatch
         )
             return res.status(403).json({
                 success: 0,
@@ -88,7 +89,7 @@ const verify = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
 
         const tenantData = await tenantDataDb.findOne({ tenantId: tenantId });
 
-        // Destructure aother tenat Sppecifi data in future if needed
+        // Destructure another tenant Specify data in future if needed
         const sidebar = tenantData?.sidebar;
 
         res.status(200).json({

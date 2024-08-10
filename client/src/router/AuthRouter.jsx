@@ -14,8 +14,9 @@ export default function AuthRouter() {
                 <Route path="*" element={<Navigate to="/login" />} replace />
                 <Route path="/register" element={<Register />} />
                 <Route path="/forgotPassword" element={<ForgotPassword />} />
-                <Route path="/updatePassword" element={<UpdatePassword />} />
-                <Route path="/verifyEmail" element={<VerifyEmail />} />
+                <Route path="/verifyEmail/:userId/:tenantId" element={<VerifyEmail />} />
+                <Route path="/updatePassword/:userId/:tenantId" element={<UpdatePassword />} />
+
             </Routes>
         </App>
     );

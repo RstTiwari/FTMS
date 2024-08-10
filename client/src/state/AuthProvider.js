@@ -1,9 +1,7 @@
-import { createContext, useContext, useEffect } from "react";
-import { Cookies, useCookies } from "react-cookie";
+import { createContext, useContext } from "react";
+import {  useCookies } from "react-cookie";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import axios from "axios";
-import { removeLocalData } from "Helper/FetchingLocalData";
-import { toBeEmpty } from "@testing-library/jest-dom/dist/matchers";
 
 let myfac8ryBaseUrl = process.env.REACT_APP_URL_PROD;
 
@@ -15,27 +13,15 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
-    const loginUser = (result) => {
-        setCookie("token", result.token, { maxAge: result.expiresIn });
-        setCookie("profile", JSON.stringify(result), {
-            maxAge: result.expiresIn,
-        });
-    };
+    const storeLocalData = (key, value ,maxAge= 3600) =>{
+        setCookie(key,value ,{maxAge:maxAge})
+    }
 
-    const logoutUser = async() => {
-        removeCookie("token");
-        removeCookie("profile");
-        removeLocalData("customer");
-        removeLocalData("invoice")
-        removeLocalData("payments");
-        removeLocalData("quote");
-        removeLocalData("challan");
-        removeLocalData("lead");
-        removeLocalData("expenses");
-        removeLocalData("vendors");
-        removeLocalData("deliverychallan");
-        removeLocalData("purchaseorder");
-        removeLocalData("vendors");
+    const removeLocalData = async (key) => {
+      removeCookie(key);
+    };
+    const fetchLocalData = (key) => {
+      return cookies[key];
     };
 
     const authApiCall = async (path, data) => {
@@ -52,7 +38,7 @@ export const AuthProvider = ({ children }) => {
         };
         try {
             let response = await axios(axiosConfig);
-            return response.data;
+            return response?.data;
         } catch (error) {
             let response = {
                 success: 0,
@@ -272,8 +258,9 @@ export const AuthProvider = ({ children }) => {
     return (
         <AuthContext.Provider
             value={{
-                loginUser,
-                logoutUser,
+                storeLocalData,
+                removeLocalData,
+                fetchLocalData,
                 authApiCall,
                 appApiCall,
                 adminApiCall,

@@ -1,47 +1,82 @@
 import { useState } from "react";
-import { message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
 
-const useAuthApiCall = (entity, route ,nextRoute) => {
-    const { authApiCall,loginUser,logOutUser } = useAuth();
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const navigate = useNavigate();
+const useAuthApiCall = (backendApi) => {  // backendApi is backend backendApi
+  const { authApiCall,storeLocalData } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
-    const handleApiCall = async (values) => {
-        setIsLoading(true);
-        console.log(values,"==")
-        try {
-            const response = await authApiCall("post", route, values );
-            if (response.success) {
-                NotificationHandler.success(response?.message);
-                if(route ==="login"){
-                    loginUser(response.result)
-                }
-                navigate(nextRoute);
-            } else {
-                throw new Error(response.message);
-            }
-        } catch (error) {
-            NotificationHandler.error(error.message);
-        } finally {
-            setIsLoading(false);
+  const handleApiCall = async (values) => {
+    setIsLoading(true);
+    try {
+      const response = await authApiCall(backendApi, values);
+      if (response.success) {
+        const {result} = response
+        const {user,tenant} = result
+        if (result?.emailVerified === false) {
+          storeLocalData(user?.userId, response?.result)
+          navigate(`/verifyEmail/${user?.userId}/${tenant?.tenantId}`);
+          return NotificationHandler.success(
+            "Please Verify Your Email Before Proceeding"
+          );
+        };
+
+        if (backendApi === "login") {
+          // Storing Data for login
+          storeLocalData(
+            "token",
+            response?.result?.token,
+            response?.result?.expiresIn
+          );
+          storeLocalData(
+            "profile",
+            JSON.stringify(response?.result),
+            response?.result?.expiresIn
+          );
+          navigate("/");
+        } else if (backendApi === "register") {
+          storeLocalData(user?.userId, response.result);
+          navigate(`/verifyEmail/${user?.userId}/${tenant?.tenantId}`);
+        } else if (backendApi === "verify") {
+          //Storing Data for login
+          storeLocalData(
+            "token",
+            response?.result?.token,
+            response?.result?.expiresIn
+          );
+          storeLocalData(
+            "profile",
+            JSON.stringify(response?.result),
+            response?.result?.expiresIn
+          );
+          navigate("/");
+        } else if (backendApi === "forgetPassword") {
+          storeLocalData(user?.userId, response.result);
+          navigate(`/updatePassword/${user?.userId}/${tenant?.tenantId}`);
+        } else if (backendApi === "updatePassword") {
+          navigate("/login");
         }
-    };
+          return NotificationHandler.success(response?.message);
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      NotificationHandler.error(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-   
+  const handleAuthApi = async (values) => {
+    handleApiCall(values);
+  };
 
-    const handleAuthApi = async (values) => {
-        handleApiCall(values)
-    };
-
-    return {
-        isLoading,
-        error,
-        handleAuthApi,
-    };
+  return {
+    isLoading,
+    handleAuthApi,
+  };
 };
 
 export default useAuthApiCall;

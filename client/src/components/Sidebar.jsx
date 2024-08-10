@@ -7,7 +7,6 @@ import ftmsLogo from "../Assets/favicon.png";
 import { useCookies } from "react-cookie";
 
 const { Sider } = Layout;
-console.log(Icons)
 const Sidebar = ({
     drawerWidth,
     isSideBarClosed,
@@ -26,7 +25,7 @@ const Sidebar = ({
     }, [pathname]);
 
     const convertDataToNavItems = (data) => {
-        return data.map((item) => {
+        return data?.map((item) => {
             const IconComponent = Icons[item.icon];
             const newItem = {
                 key: item.key,

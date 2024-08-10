@@ -15,7 +15,7 @@ import clientRoutes from "./routes/client.js";
 import salesRoutes from "./routes/sales.js";
 import generalRoutes from "./routes/general.js";
 import managmentRoutes from "./routes/managment.js";
-import auth from "./routes/auth.js";
+import auth from "./routes/authRoutes.js";
 import appRoutes from "./routes/appRoutes.js";
 
 import cron from "./controller/CronController/Cron.js";

@@ -15,19 +15,21 @@ const updatePassword = async (
         const ObjectSchema = joi.object({
             userId: joi.string().required(),
             password: joi.string().required(),
-            otp: joi.number().required(),
+            otp: joi.string().required(),
             tenantId: joi.string().required(),
         });
-
+        
+        console.log(userId,tenantId,otp,password,"==")
         const { error, value } = ObjectSchema.validate({
             userId,
             tenantId,
             otp,
             password,
         });
+
         if (error) {
             return res.status(409).json({
-                sucess: 0,
+                success: 0,
                 result: null,
                 message: "Invalid/Missing credentials",
                 errorMessage: error.message,
@@ -42,7 +44,7 @@ const updatePassword = async (
             return res.status(404).json({
                 success: 0,
                 result: null,
-                message: "Failed to Update the Dataa",
+            message: "Failed to Update the Data",
             });
         }
         const match = userPasswordData.resetOtp === Number(otp) ? true : false;
@@ -72,8 +74,8 @@ const updatePassword = async (
         }
         return res.status(200).json({
             success: 1,
-            result: null,
-            message: "Password update Succefull Please Login",
+            result: {},
+            message: "Password update Successful Please Login",
         });
     } catch (error) {
         res.status(400).json({
