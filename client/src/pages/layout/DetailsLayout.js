@@ -8,6 +8,7 @@ import CustomTable from "components/CustomTable";
 import Headers from "components/Header";
 import useDataFetching from "Hook/useDataFetching";
 import ListModule from "module/ListModule/ListModule";
+import NotificationHandler from "EventHandler/NotificationHandler";
 
 const DetailsLayout = () => {
     const { tenantId, entity, id, pageNo, pageSize } = useParams();
@@ -29,6 +30,12 @@ const DetailsLayout = () => {
     };
 
     const handleRowClick = (record) => {
+        let innerWidth = window.innerWidth;
+        if (innerWidth < 1200) {
+            return NotificationHandler.error(
+                "To See Details Open in Laptop/Desktop"
+            );
+        }
         setSelectedRowKey(record._id);
         setDetails(true);
         navigate(
@@ -50,8 +57,8 @@ const DetailsLayout = () => {
     return (
         <Row>
             <Col
-                xs={6}
-                sm={6}
+                xs={details ? 12 : 24}
+                sm={details ? 12 : 24}
                 md={details ? 6 : 24}
                 lg={details ? 6 : 24}
                 xl={details ? 6 : 24}
@@ -67,7 +74,7 @@ const DetailsLayout = () => {
                 />
             </Col>
             {details && (
-                <Col xs={24} sm={24} md={18} lg={18} xl={18}>
+                <Col xs={12} sm={12} md={18} lg={18} xl={18}>
                     <Outlet />
                 </Col>
             )}

@@ -13,14 +13,13 @@ import useFormActions from "Hook/useFormAction";
 
 const CustomForm = ({
     entityOfModal,
-    height = "100vh",
     header = true,
+    height,
     isModal = false,
     modalFieldKey,
     passToModal,
     isUpdate = false,
 }) => {
-    //Checking the Enttiy of the Form if or fetch fromt the Router
     const { entity: entityOfForm, id } = useParams();
     const entity = isModal ? entityOfModal : entityOfForm;
     const { appApiCall } = useAuth();
@@ -35,9 +34,7 @@ const CustomForm = ({
     );
 
     const handleFormFinish = async (values) => {
-        //Checking if form contains any image file then uploading that
         if (values.hasOwnProperty("image")) {
-            //then now upload the file before saving it
             const formData = new FormData();
             formData.append("file", values.image);
             const response = await appApiCall("post", "upload", formData, {});
@@ -46,42 +43,39 @@ const CustomForm = ({
             }
             values.image = response.result;
         }
-
-        //Handle Form Finish Logic and Loading after that if modal pass value
         handleFormSubmit(values, isModal, passToModal);
     };
-    // Validating Filed and setting the Values at that moment only
+
     const validateFields = async () => {
         try {
             const values = await form.validateFields();
-            setUnfilledField(null); // Clear unfilledField state if validation succeeds
-            handleFormFinish(values); // Proceed with form submission logic
+            setUnfilledField(null);
+            handleFormFinish(values);
         } catch (error) {
             const firstField = error.errorFields[0].errors[0];
-            setUnfilledField(firstField); // Set the first unfilled field
+            setUnfilledField(firstField);
             return NotificationHandler.error(`${firstField}`);
         }
     };
+
     return (
         <div
             style={{
                 display: "flex",
                 flexDirection: "column",
-                height: height,
+                height: "100vh",
                 backgroundColor: "#ffffff",
                 borderRadius: "1rem",
             }}
         >
-            {/**Only show in page now on the Mode */}
-            {header ? (
+            {header && (
                 <Header
                     onlyTitle={true}
                     title={`NEW ${entity
                         .slice(0, entity.length - 1)
                         ?.toUpperCase()}`}
                 />
-            ) : null}
-
+            )}
             <Form
                 name={`${entity}Form`}
                 form={form}
@@ -91,8 +85,19 @@ const CustomForm = ({
                 validateTrigger={unfilledField}
                 requiredMark={false}
                 layout={isModal ? "vertical" : "horizontal"}
+                style={{
+                    flexGrow: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                }}
             >
-                <div>
+                <div
+                    style={{
+                        flexGrow: 1,
+                        overflowY: "auto",
+                        padding: "10px ",
+                    }}
+                >
                     <CustomFormItem
                         entity={entity}
                         form={form}
@@ -110,7 +115,7 @@ const CustomForm = ({
                         width: "100%",
                     }}
                 >
-                    <FormActionButtons isUpdating={false} />
+                    <FormActionButtons isUpdating={isUpdate} />
                 </div>
             </Form>
         </div>

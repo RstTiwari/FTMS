@@ -3,7 +3,7 @@ import { Col, Row, Button, Divider } from "antd";
 import { useParams, useNavigate } from "react-router-dom";
 import CoustomButton from "./Comman/CoustomButton";
 
-const HeaderComponent = ({ onlyTitle = false,title, details }) => {
+const HeaderComponent = ({ onlyTitle = false, title, details }) => {
     const { tenantId, entity } = useParams();
     const navigate = useNavigate();
     const handelAddNewClick = () => {
@@ -17,17 +17,17 @@ const HeaderComponent = ({ onlyTitle = false,title, details }) => {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "space-between",
-                        marginTop: "5px 0px 5px 0px",
+                        margin: "0px 5px 0px 5px",
                     }}
                 >
                     <Col
-                        xs={24}
-                        sm={24}
+                        xs={12}
+                        sm={12}
                         md={12}
                         lg={12}
                         style={{
                             color: "black",
-                            fontSize: details ? "0.8rem" : "1.5rem",
+                            fontSize: details ? "0.8rem" : "1rem",
                             color: "#22b378",
                         }}
                     >
@@ -70,7 +70,7 @@ const HeaderComponent = ({ onlyTitle = false,title, details }) => {
                             marginRight: 5,
                         }}
                     >
-                         {title}
+                        {title}
                     </Col>
                 </Row>
             )}

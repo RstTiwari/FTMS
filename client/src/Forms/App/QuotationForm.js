@@ -197,8 +197,8 @@ const QuotationForm = ({ form }) => {
                 style={{
                     position: "relative",
                     border: "1px solid #bfbfbb",
-                    padding: "2px",
                     marginBottom: "20px",
+                    margin: "20px",
                 }}
             >
                 <Row justify={"center"} style={{ marginBottom: "10px" }}>

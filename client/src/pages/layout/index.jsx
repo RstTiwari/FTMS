@@ -15,7 +15,7 @@ const CustomLayout = ({ profile }) => {
     const contentMarginLeft = isSideBarClosed ? 80 : 200;
 
     return (
-        <Layout style={{ minHeight: "100vh",backgroundColor:"#ffffff" }}>
+        <Layout style={{ minHeight: "100vh", backgroundColor: "#ffffff" }}>
             {/* Sidebar */}
             <Sidebar
                 drawerWidth="200px"
@@ -39,11 +39,16 @@ const CustomLayout = ({ profile }) => {
                     width={contentWidth}
                     margin={contentMarginLeft}
                 />
-                <Content style={{ marginTop: "24px", overflow: "initial" ,backgroundColor:"#ffffff"}}>
+                <Content
+                    style={{
+                        marginTop: "50px",
+                        overflow: "initial",
+                        backgroundColor: "#ffffff",
+                    }}
+                >
                     <div
                         className="site-layout-background"
                         style={{
-                            padding: 24,
                             minHeight: 360,
                             width: contentWidth,
                         }}

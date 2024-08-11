@@ -9,7 +9,7 @@ import CustomTable from "components/CustomTable";
 
 const { Text } = Typography;
 
-const CoustomersForm = ({ form, disabled, isModal }) => {
+const CoustomersForm = ({ form, disabled, isModal, style }) => {
     const handeCopyBillingAddress = () => {
         const { billingAddress } = form.getFieldsValue(["billingAddress"]);
         form.setFieldsValue({ shippingAddress: billingAddress });
@@ -87,8 +87,8 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
                 name="gstNo"
                 labelCol={{ span: isModal ? 18 : 8 }}
             />
-            <Row style={{display:"flex",padding:5}} >
-                <Col sm={24} xs={24} md={12} lg={12} style={{padding:10}}>
+            <Row style={{ display: "flex", padding: 5 }}>
+                <Col sm={24} xs={24} md={12} lg={12} style={{ padding: 10 }}>
                     <Row style={{ paddingBottom: 25 }}>
                         <Text type="secondary" style={{ fontWeight: 900 }}>
                             Billing Address
@@ -161,7 +161,7 @@ const CoustomersForm = ({ form, disabled, isModal }) => {
                         </Col>
                     </Row>
                 </Col>
-                <Col sm={24} xs={12} md={12} lg={12} style={{padding:10}}>
+                <Col sm={24} xs={12} md={12} lg={12} style={{ padding: 10 }}>
                     <Row style={{ paddingBottom: 25 }}>
                         <Text type="secondary" style={{ fontWeight: 900 }}>
                             Shipping Address

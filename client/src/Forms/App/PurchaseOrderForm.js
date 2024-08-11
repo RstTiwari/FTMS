@@ -26,14 +26,14 @@ import AddressDetails from "components/Comman/AddressDetails";
 const PurchaseOrder = ({ form, value, disabled, isModel }) => {
     const [isOrganizationChecked, setIsOrganizationChecked] = useState(false);
     const [isCustomerChecked, setIsCustomerChecked] = useState(false);
-    const [delivery,setDelivery ]  = useState("")
+    const [delivery, setDelivery] = useState("");
 
     const updateDeliveryAddress = (values) => {
         form.setFieldsValue({
             deliverTo: values?.name,
             deliveryAddress: values?.shippingAddress,
         });
-    }; 
+    };
 
     const handleCheckboxChange = (type) => {
         if (type === "organization") {
@@ -48,7 +48,11 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                     pincode: 401209,
                 },
             };
-            setDelivery({...delivery,companyName:response?.companyName,shippingAddress:response?.shippingAddress})
+            setDelivery({
+                ...delivery,
+                companyName: response?.companyName,
+                shippingAddress: response?.shippingAddress,
+            });
             updateDeliveryAddress({
                 name: response?.companyName,
                 shippingAddress: response?.shippingAddress,
@@ -80,16 +84,15 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
             temObj.finalAmount = temObj.rate * temObj.qty;
         } else if (fieldName === "gstPercent") {
             temObj.gstPercent = Number(value);
-        }else if(fieldName ==="paymentCondition"){
+        } else if (fieldName === "paymentCondition") {
             form.setFieldsValue({ paymentCondition: value });
-        }else if (fieldName ==="cancellationCondition"){
-            form.setFieldsValue({ cancellationCondition: value });          
-        }else if (fieldName ==="purchaseDate"){
-            form.setFieldsValue({ purchaseDate: value });          
-        }else if (fieldName ==="deliveryDate"){
-            form.setFieldsValue({deliveryDate : value });          
-        }
-         else {
+        } else if (fieldName === "cancellationCondition") {
+            form.setFieldsValue({ cancellationCondition: value });
+        } else if (fieldName === "purchaseDate") {
+            form.setFieldsValue({ purchaseDate: value });
+        } else if (fieldName === "deliveryDate") {
+            form.setFieldsValue({ deliveryDate: value });
+        } else {
             return NotificationHandler.error("invalid changes");
         }
 
@@ -115,11 +118,10 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
             grandTotal: Math.ceil(grandTotal),
         });
     };
-    useEffect(()=>{
-        if(form.getFieldValue("deliverTo")){
-        
+    useEffect(() => {
+        if (form.getFieldValue("deliverTo")) {
         }
-    })
+    });
     return (
         <div>
             <FormItemCol
@@ -140,7 +142,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                 updateInForm={(value) => {
                     handleItemsUpdate(value, "vendorName");
                 }}
-                preFillValue ={form.getFieldValue("vendor")?.name}
+                preFillValue={form.getFieldValue("vendor")?.name}
             />
             <FormItemCol
                 label={"#PURCHASE"}
@@ -158,7 +160,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                 updateInForm={(value) => {
                     handleItemsUpdate(value, "no");
                 }}
-                preFillValue = {form.getFieldValue("no")}
+                preFillValue={form.getFieldValue("no")}
             />
             <Row>
                 <FormItemCol
@@ -174,8 +176,10 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                             message: "Please Select Delivery Date",
                         },
                     ]}
-                    updateInForm ={(value)=>handleItemsUpdate(value,"purchaseDate")}
-                    preFillValue ={form.getFieldValue("purchaseDate")}
+                    updateInForm={(value) =>
+                        handleItemsUpdate(value, "purchaseDate")
+                    }
+                    preFillValue={form.getFieldValue("purchaseDate")}
                 />
             </Row>
             <Row>
@@ -192,8 +196,10 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                     labelAlign="left"
                     type={"date"}
                     labelCol={{ span: 8 }}
-                    updateInForm ={(value)=>handleItemsUpdate(value,"deliveryDate")}
-                    preFillValue ={form.getFieldValue("deliveryDate")}
+                    updateInForm={(value) =>
+                        handleItemsUpdate(value, "deliveryDate")
+                    }
+                    preFillValue={form.getFieldValue("deliveryDate")}
                 />
             </Row>
             <div>
@@ -238,7 +244,6 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                     </Col>
                 </Row>
                 <Row>
-
                     {isOrganizationChecked && (
                         <Col
                             xs={24}
@@ -275,7 +280,9 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                                 fieldName={"name"}
                                 isForDelivery={true}
                                 updateInForm={updateDeliveryAddress}
-                                preFillValue ={form.getFieldValue("deliveryAddress")}
+                                preFillValue={form.getFieldValue(
+                                    "deliveryAddress"
+                                )}
                             />
                         </Col>
                     )}
@@ -287,7 +294,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                 style={{
                     position: "relative",
                     border: "1px solid #bfbfbb",
-                    padding: "2px",
+                    margin: "20px",
                     marginBottom: "20px",
                 }}
             >
@@ -401,7 +408,12 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                                                                 name
                                                             );
                                                         }}
-                                                        preFillValue={form.getFieldValue("items")?.[name]?.description}
+                                                        preFillValue={
+                                                            form.getFieldValue(
+                                                                "items"
+                                                            )?.[name]
+                                                                ?.description
+                                                        }
                                                     />
                                                 </Form.Item>
                                             </Col>
@@ -466,7 +478,12 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                                                         entityName={
                                                             "gstPercent"
                                                         }
-                                                        preFillValue={form.getFieldValue("items")?.[name]?.gstPercent}
+                                                        preFillValue={
+                                                            form.getFieldValue(
+                                                                "items"
+                                                            )?.[name]
+                                                                ?.gstPercent
+                                                        }
                                                     />
                                                 </Form.Item>
                                             </Col>
@@ -571,7 +588,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                 />
                
             </Row> */}
-             <Row align={"middle"} justify={"end"}>
+            <Row align={"middle"} justify={"end"}>
                 <FormItemCol
                     label="Grand Total"
                     tooltip={"Amount After Tax"}
@@ -589,7 +606,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                     weight={900}
                 />
             </Row>
-           
+
             <Row justify={"start"}>
                 <FormItemCol
                     label={"Payments"}
@@ -618,7 +635,6 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                         handleItemsUpdate(value, "cancellationCondition")
                     }
                     preFillValue={form.getFieldValue("cancellationCondition")}
-
                 />
             </Row>
         </div>

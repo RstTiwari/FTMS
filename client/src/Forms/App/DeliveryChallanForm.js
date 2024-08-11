@@ -43,15 +43,12 @@ const DeliveryChallan = ({ form }) => {
             form.setFieldsValue({ customer: value });
         } else if (filedName === "no") {
             form.setFieldsValue({ no: value });
-        }else if (filedName === "challanDate") {
+        } else if (filedName === "challanDate") {
             form.setFieldsValue({ challanDate: value });
-        }
-         else if (filedName === "transportAmount") {
+        } else if (filedName === "transportAmount") {
             form.setFieldsValue({ transportAmount: value });
-        }
-        else if (filedName === "gstPercent") {
-                   temObj.gstPercent = value
-
+        } else if (filedName === "gstPercent") {
+            temObj.gstPercent = value;
         } else if (filedName === "challanType") {
             form.setFieldsValue({ challanType: value });
         }
@@ -62,18 +59,22 @@ const DeliveryChallan = ({ form }) => {
         // Tax Calculator
         let grossTotal = items.reduce((a, b) => a + b.finalAmount, 0);
         let transportAmount = form.getFieldValue("transportAmount") || 0;
-        const temItems = items.map((item)=>({
+        const temItems = items.map((item) => ({
             ...item,
-            taxAmount:item.finalAmount*(item.gstPercent/100)
+            taxAmount: item.finalAmount * (item.gstPercent / 100),
         }));
 
-        let taxAmount = temItems.reduce((acc,item)=>acc + (item.taxAmount ||0),0)
+        let taxAmount = temItems.reduce(
+            (acc, item) => acc + (item.taxAmount || 0),
+            0
+        );
 
-        let grandTotal = Number(grossTotal) + Number(transportAmount) +Number(taxAmount);
+        let grandTotal =
+            Number(grossTotal) + Number(transportAmount) + Number(taxAmount);
         form.setFieldsValue({
             grossTotal: Math.ceil(grossTotal),
             grandTotal: Math.ceil(grandTotal),
-            taxAmount:Math.ceil(taxAmount),
+            taxAmount: Math.ceil(taxAmount),
             transportAmount: Math.ceil(transportAmount),
         });
     };
@@ -98,7 +99,7 @@ const DeliveryChallan = ({ form }) => {
                 fieldName={"name"}
                 customerSelect=""
                 updateInForm={(value) => handleItemUpdate(value, "customer")}
-                preFillValue = {form.getFieldValue("customer")?.name}
+                preFillValue={form.getFieldValue("customer")?.name}
             />
             <FormItemCol
                 label={"#Delivery Challan"}
@@ -114,7 +115,7 @@ const DeliveryChallan = ({ form }) => {
                     },
                 ]}
                 updateInForm={(value) => handleItemUpdate(value, "no")}
-                preFillValue ={form.getFieldValue("no")}
+                preFillValue={form.getFieldValue("no")}
             />
             <FormItemCol
                 label={"Challan Date"}
@@ -129,10 +130,10 @@ const DeliveryChallan = ({ form }) => {
                 labelCol={{ span: 8 }}
                 labelAlign="left"
                 type={"date"}
-                preFillValue ={form.getFieldValue("challanDate")}
-                updateInForm ={(value)=>handleItemUpdate(value,"challanDate")}
+                preFillValue={form.getFieldValue("challanDate")}
+                updateInForm={(value) => handleItemUpdate(value, "challanDate")}
             />
-                      <FormItemCol
+            <FormItemCol
                 label={"Challan Type"}
                 name={"challanType"}
                 required={true}
@@ -148,7 +149,7 @@ const DeliveryChallan = ({ form }) => {
                 entity={"Challan Type"}
                 entityName={"challanType"}
                 updateInForm={(value) => handleItemUpdate(value, "challanType")}
-                preFillValue ={form.getFieldValue("challanType")}
+                preFillValue={form.getFieldValue("challanType")}
             />
             <FormItemCol
                 label={"Vehicle No"}
@@ -158,7 +159,7 @@ const DeliveryChallan = ({ form }) => {
                 type={"input"}
                 width={"100px"}
             />
-                <FormItemCol
+            <FormItemCol
                 label={"Contact No"}
                 name={"contactNo"}
                 labelCol={{ span: 8 }}
@@ -172,7 +173,7 @@ const DeliveryChallan = ({ form }) => {
                 style={{
                     position: "relative",
                     border: "1px solid #bfbfbb",
-                    padding: "2px",
+                    margin: "20px",
                     marginBottom: "20px",
                 }}
             >
@@ -246,134 +247,155 @@ const DeliveryChallan = ({ form }) => {
                 >
                     {(subFields, subOpt) => (
                         <div>
-                            <div style={{overflow:"auto",minHeight:"10vh"}}>
-                            {subFields.map(({ key, name, ...restField }) => (
-                                <Row
-                                    key={key}
-                                    align={"middle"}
-                                    style={{ marginTop: "5px" }}
-                                >
-                                    <Col
-                                        className="gutter-row"
-                                        span={7}
-                                        style={{
-                                            textAlign: "center",
-                                        }}
-                                    >
-                                        <Form.Item
-                                            {...restField}
-                                            name={[name, "description"]}
+                            <div
+                                style={{ overflow: "auto", minHeight: "10vh" }}
+                            >
+                                {subFields.map(
+                                    ({ key, name, ...restField }) => (
+                                        <Row
+                                            key={key}
+                                            align={"middle"}
+                                            style={{ marginTop: "5px" }}
                                         >
-                                            <CustomModel
-                                                entity={"products"}
-                                                fieldName={"productName"}
-                                                updateInForm={(value) =>
-                                                    handleItemUpdate(
-                                                        value,
-                                                        "description",
-                                                        name
-                                                    )
-                                                }
-                                                preFillValue={form.getFieldValue("items")?.[name].description}
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={4}>
-                                        <Form.Item
-                                            {...restField}
-                                            name={[name, "rate"]}
-                                        >
-                                            <InputNumber
-                                                onChange={(value) =>
-                                                    handleItemUpdate(
-                                                        value,
-                                                        "rate",
-                                                        name
-                                                    )
-                                                }
-                                                style={{
-                                                    textAlign: "center",
-                                                    width: "100%",
-                                                }}
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={4}>
-                                        <Form.Item
-                                            {...restField}
-                                            name={[name, "qty"]}
-                                        >
-                                            <InputNumber
-                                                onChange={(value) =>
-                                                    handleItemUpdate(
-                                                        value,
-                                                        "qty",
-                                                        name
-                                                    )
-                                                }
-                                                style={{
-                                                    width: "100%",
-                                                    textAlign: "center",
-                                                }}
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={4}>
-                                        <Form.Item name={[name, "gstPercent"]}>
-                                            <CustomSelect
-                                                updateInForm={(value) =>
-                                                    handleItemUpdate(
-                                                        value,
-                                                        "gstPercent",
-                                                        name
-                                                    )
-                                                }
-                                                entity={"Gst Percent"}
-                                                entityName={"gstPercent"}
-                                                width="100%"
+                                            <Col
+                                                className="gutter-row"
+                                                span={7}
                                                 style={{
                                                     textAlign: "center",
                                                 }}
-                                                preFillValue={form.getFieldValue("items")?.[name]?.gstPercent}
-
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col
-                                        span={4}
-                                        style={{ textAlign: "center" }}
-                                    >
-                                        <Form.Item name={[name, "finalAmount"]}>
-                                            <InputNumber
-                                                readOnly
-                                                className="moneyInput"
-                                                min={0}
-                                                style={{
-                                                    width: "100%",
-                                                    textAlign: "center",
-                                                }}
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col
-                                        span={1}
-                                        style={{ textAlign: "center" }}
-                                    >
-                                        <Form.Item>
-                                            <DeleteOutlined
-                                                disabled
-                                                style={{
-                                                    color: "red",
-                                                    cursor: "pointer",
-                                                }}
-                                                onClick={() => {
-                                                    subOpt.remove(name);
-                                                }}
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                </Row>
-                            ))}
+                                            >
+                                                <Form.Item
+                                                    {...restField}
+                                                    name={[name, "description"]}
+                                                >
+                                                    <CustomModel
+                                                        entity={"products"}
+                                                        fieldName={
+                                                            "productName"
+                                                        }
+                                                        updateInForm={(value) =>
+                                                            handleItemUpdate(
+                                                                value,
+                                                                "description",
+                                                                name
+                                                            )
+                                                        }
+                                                        preFillValue={
+                                                            form.getFieldValue(
+                                                                "items"
+                                                            )?.[name]
+                                                                .description
+                                                        }
+                                                    />
+                                                </Form.Item>
+                                            </Col>
+                                            <Col span={4}>
+                                                <Form.Item
+                                                    {...restField}
+                                                    name={[name, "rate"]}
+                                                >
+                                                    <InputNumber
+                                                        onChange={(value) =>
+                                                            handleItemUpdate(
+                                                                value,
+                                                                "rate",
+                                                                name
+                                                            )
+                                                        }
+                                                        style={{
+                                                            textAlign: "center",
+                                                            width: "100%",
+                                                        }}
+                                                    />
+                                                </Form.Item>
+                                            </Col>
+                                            <Col span={4}>
+                                                <Form.Item
+                                                    {...restField}
+                                                    name={[name, "qty"]}
+                                                >
+                                                    <InputNumber
+                                                        onChange={(value) =>
+                                                            handleItemUpdate(
+                                                                value,
+                                                                "qty",
+                                                                name
+                                                            )
+                                                        }
+                                                        style={{
+                                                            width: "100%",
+                                                            textAlign: "center",
+                                                        }}
+                                                    />
+                                                </Form.Item>
+                                            </Col>
+                                            <Col span={4}>
+                                                <Form.Item
+                                                    name={[name, "gstPercent"]}
+                                                >
+                                                    <CustomSelect
+                                                        updateInForm={(value) =>
+                                                            handleItemUpdate(
+                                                                value,
+                                                                "gstPercent",
+                                                                name
+                                                            )
+                                                        }
+                                                        entity={"Gst Percent"}
+                                                        entityName={
+                                                            "gstPercent"
+                                                        }
+                                                        width="100%"
+                                                        style={{
+                                                            textAlign: "center",
+                                                        }}
+                                                        preFillValue={
+                                                            form.getFieldValue(
+                                                                "items"
+                                                            )?.[name]
+                                                                ?.gstPercent
+                                                        }
+                                                    />
+                                                </Form.Item>
+                                            </Col>
+                                            <Col
+                                                span={4}
+                                                style={{ textAlign: "center" }}
+                                            >
+                                                <Form.Item
+                                                    name={[name, "finalAmount"]}
+                                                >
+                                                    <InputNumber
+                                                        readOnly
+                                                        className="moneyInput"
+                                                        min={0}
+                                                        style={{
+                                                            width: "100%",
+                                                            textAlign: "center",
+                                                        }}
+                                                    />
+                                                </Form.Item>
+                                            </Col>
+                                            <Col
+                                                span={1}
+                                                style={{ textAlign: "center" }}
+                                            >
+                                                <Form.Item>
+                                                    <DeleteOutlined
+                                                        disabled
+                                                        style={{
+                                                            color: "red",
+                                                            cursor: "pointer",
+                                                        }}
+                                                        onClick={() => {
+                                                            subOpt.remove(name);
+                                                        }}
+                                                    />
+                                                </Form.Item>
+                                            </Col>
+                                        </Row>
+                                    )
+                                )}
                             </div>
 
                             {/* Button to add new item */}

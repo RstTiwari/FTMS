@@ -30,7 +30,9 @@ const Sidebar = ({
             const newItem = {
                 key: item.key,
                 label: item.label,
-                icon: IconComponent ? <IconComponent   style={{color:"yellow"}}  /> : null,
+                icon: IconComponent ? (
+                    <IconComponent style={{ color: "yellow" }} />
+                ) : null,
             };
 
             if (item.children && item.children.length > 0) {
@@ -120,7 +122,7 @@ const Sidebar = ({
                 style={{
                     background: "#181c2e",
                     color: "white",
-                    fontSize: "0.7rem",
+                    fontSize: "0.85rem",
                     textAlign: "left",
                 }}
             />

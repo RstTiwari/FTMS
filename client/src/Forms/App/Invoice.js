@@ -30,21 +30,19 @@ const QuotationForm = ({ form }) => {
             temObj.finalAmount = temObj.rate * temObj.qty;
         } else if (fieldName === "qty") {
             temObj.qty = value;
-            temObj.finalAmount = (temObj.rate * value)
-        }else if(fieldName === "rate"){
-            temObj.rate = value ;
-            temObj.finalAmount = (temObj.qty * value)
-        }else if(fieldName ==="gstPercent"){
-            value = Number(value)
-            temObj.gstPercent = value
-        }else if(fieldName ==="invoiceDate"){
-            form.setFieldsValue({invoiceDate:value})
-        }
-        else if(fieldName ==="dueDate"){
-            form.setFieldsValue({dueDate:value})
-        }
-        else {
-           return NotificationHandler.error("Invalid")
+            temObj.finalAmount = temObj.rate * value;
+        } else if (fieldName === "rate") {
+            temObj.rate = value;
+            temObj.finalAmount = temObj.qty * value;
+        } else if (fieldName === "gstPercent") {
+            value = Number(value);
+            temObj.gstPercent = value;
+        } else if (fieldName === "invoiceDate") {
+            form.setFieldsValue({ invoiceDate: value });
+        } else if (fieldName === "dueDate") {
+            form.setFieldsValue({ dueDate: value });
+        } else {
+            return NotificationHandler.error("Invalid");
         }
 
         items[rowName] = temObj;
@@ -55,7 +53,7 @@ const QuotationForm = ({ form }) => {
         const temItems = items.map((item) => ({
             ...item,
             taxAmount: item.finalAmount * (item.taxPercent / 100),
-            taxAmount:item.finalAmount*(item.gstPercent/100)
+            taxAmount: item.finalAmount * (item.gstPercent / 100),
         }));
 
         let taxAmount = temItems.reduce(
@@ -155,6 +153,7 @@ const QuotationForm = ({ form }) => {
                     position: "relative",
                     border: "1px solid #bfbfbb",
                     marginBottom: "20px",
+                    margin: "20px",
                 }}
             >
                 <Row justify={"center"}>
@@ -386,7 +385,12 @@ const QuotationForm = ({ form }) => {
                                                                 name
                                                             )
                                                         }
-                                                        preFillValue={form.getFieldValue("items")?.[name]?.gstPercent}
+                                                        preFillValue={
+                                                            form.getFieldValue(
+                                                                "items"
+                                                            )?.[name]
+                                                                ?.gstPercent
+                                                        }
                                                         width="100%"
                                                     />
                                                 </Form.Item>

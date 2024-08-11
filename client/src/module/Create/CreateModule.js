@@ -27,33 +27,35 @@ const CoustomFormItem = ({ entity, form, isModal }) => {
             componentToRender = <QuotesFormItems form={form} />;
             break;
         case "invoices":
-            componentToRender = <InvoicesFormItems  form={form} />;
+            componentToRender = <InvoicesFormItems form={form} />;
             break;
         case "leads":
-            componentToRender = <LeadFormItem form={form}  />;
+            componentToRender = <LeadFormItem form={form} />;
             break;
         case "challans":
-            componentToRender = <ChallanFormItem form={form}  />;
+            componentToRender = <ChallanFormItem form={form} />;
             break;
         case "purchases":
-            componentToRender = <PurchaseFormItem  form={form} />;
+            componentToRender = <PurchaseFormItem form={form} />;
             break;
         case "vendors":
-            componentToRender = <VendorFormItem form={form}   isModal={isModal} />;
+            componentToRender = (
+                <VendorFormItem form={form} isModal={isModal} />
+            );
             break;
         case "expenses":
-            componentToRender = <ExpensesItem  form={form} />;
+            componentToRender = <ExpensesItem form={form} />;
             break;
         case "products":
-            componentToRender = <ProductForm form={form}   isModal={isModal} />;
+            componentToRender = <ProductForm form={form} isModal={isModal} />;
             break;
         case "payments":
-            componentToRender = <PaymentFormItem form={form}  />;
+            componentToRender = <PaymentFormItem form={form} />;
             break;
         case "counters":
-            componentToRender = <EntityNo form={form}  />;
+            componentToRender = <EntityNo form={form} />;
         case "organization":
-                componentToRender = <OrganizationForm form={form}  />;
+            componentToRender = <OrganizationForm form={form} />;
             break;
         default:
             break;

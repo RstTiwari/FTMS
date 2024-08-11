@@ -13,20 +13,19 @@ const CustomModel = ({
     disabled,
     updateInForm,
     preFillValue,
-    isForDelivery
+    isForDelivery,
 }) => {
     const [open, setOpen] = useState(false);
     const { appApiCall } = useAuth();
     const [value, setValue] = useState(preFillValue);
     const [options, setOptions] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [id, setId] = useState("")
+    const [id, setId] = useState("");
     const [address, setAddress] = useState(null);
-    const [initialRender, setInitialRender] = useState(false);  // intia Render of Address when cusotmer selected
-
+    const [initialRender, setInitialRender] = useState(false);
 
     const [char, setChar] = useState("");
-    // fucntion for clicking the select tab
+
     const handelClick = async () => {
         setIsLoading(true);
         let response = await appApiCall(
@@ -44,7 +43,6 @@ const CustomModel = ({
         setIsLoading(false);
     };
 
-    // deboucne function to manage the search
     const debounce = (fun, delay) => {
         let debounceTimer;
         return function (...args) {
@@ -54,7 +52,6 @@ const CustomModel = ({
         };
     };
 
-    // Fucntion whean serching the Vaiue
     const handelSearch = async (char) => {
         setChar(char);
         setIsLoading(true);
@@ -80,7 +77,6 @@ const CustomModel = ({
             if (!initialRender) {
                 setInitialRender(true);
             }
-            //   updating address as per availability       
             if (label?.item?.billingAddress || !label?.item?.shippingAddress) {
                 setAddress({ billingAddress: null, shippingAddress: null });
             }
@@ -101,7 +97,7 @@ const CustomModel = ({
                 description: label?.label,
                 rate: label?.item?.rate,
                 hsnCode: label?.item?.hsnCode,
-            }); // add if anything else needed from here Bro
+            });
         } else if (entity === "vendors") {
             return updateInForm(value);
         } else {
@@ -126,7 +122,6 @@ const CustomModel = ({
         setOpen(!open);
         if (entity === "customers") {
             setId(result?._id);
-            // If new Customer is having billing and shipping Address
             if (result?.billingAddress && result.shippingAddress) {
                 setAddress({
                     billingAddress: result?.billingAddress,
@@ -134,7 +129,6 @@ const CustomModel = ({
                 });
             }
 
-            // Its used In as For address in any form
             if (isForDelivery) {
                 return updateInForm({
                     name: result?.name,
@@ -149,7 +143,6 @@ const CustomModel = ({
                 rate: result.rate,
                 hsnCode: result.hsnCode,
             });
-            // if anything else needed we can add from here
         } else if (entity === "vendors") {
             return updateInForm();
         } else {
@@ -157,8 +150,8 @@ const CustomModel = ({
     };
 
     const updateInCustomModal = (values, keyName) => {
-        setAddress({ ...address, [keyName]: values })
-    }
+        setAddress({ ...address, [keyName]: values });
+    };
     useEffect(() => {
         setValue(preFillValue);
     }, []);
@@ -173,7 +166,6 @@ const CustomModel = ({
                         disabled={disabled}
                         loading={isLoading}
                         showSearch
-                        // onSearch={handelDebounceSearch}
                         filterOption={(input, option) =>
                             (option?.label ?? "")
                                 .toLowerCase()
@@ -196,7 +188,7 @@ const CustomModel = ({
                                             zIndex: "100",
                                             width: "100vw",
                                             paddingTop: "75px",
-                                            alignItems: "center", // Center the button vertically
+                                            alignItems: "center",
                                         }}
                                     >
                                         <CoustomButton
@@ -225,7 +217,7 @@ const CustomModel = ({
                         >
                             {!isForDelivery ? (
                                 <AddressDetails
-                                    style={{ flex: 1, marginRight: "10px" }} // Adjust margin as needed
+                                    style={{ flex: 1, marginRight: "10px" }}
                                     initialRender={initialRender}
                                     entityName={"Billing Address"}
                                     keyName={"billingAddress"}
@@ -239,7 +231,7 @@ const CustomModel = ({
                                 ""
                             )}
                             <AddressDetails
-                                style={{ flex: 1, marginLeft: "10px" }} // Adjust margin as needed
+                                style={{ flex: 1, marginLeft: "10px" }}
                                 initialRender={initialRender}
                                 entityName={"Shipping Address"}
                                 keyName={"shippingAddress"}
@@ -267,7 +259,8 @@ const CustomModel = ({
                     onCancel={onCancel}
                     footer={null}
                     bodyStyle={{
-                        overflow: "auto",
+                        height: "50vh",
+                        overflowY: "auto",
                     }}
                     keyboard={false}
                 >

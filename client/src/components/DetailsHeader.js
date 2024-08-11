@@ -7,13 +7,13 @@ import {
     DownloadOutlined,
     DeleteOutlined,
     CloseOutlined,
-    DownCircleOutlined
+    DownCircleOutlined,
 } from "@ant-design/icons";
 import { Row, Col } from "antd";
 import { useParams } from "react-router-dom";
 
 const DetailsHeader = () => {
-    const {entity,tenantId,pageNo,pageSize,id} = useParams()
+    const { entity, tenantId, pageNo, pageSize, id } = useParams();
     const navigate = useNavigate();
     const handleEditClick = () => {
         navigate(`/app/${tenantId}/update/${entity}/${id}`);
@@ -29,12 +29,16 @@ const DetailsHeader = () => {
                     }}
                 >
                     <CloseOutlined
-                        onClick={() => navigate(`/app/${tenantId}/${entity}/${pageNo}/${pageSize}`)}
+                        onClick={() =>
+                            navigate(
+                                `/app/${tenantId}/${entity}/${pageNo}/${pageSize}`
+                            )
+                        }
                         style={{
                             color: "red",
                             cursor: "pointer",
                             fontSize: 16,
-                            padding: "5px 10px",
+                            padding: "5px 20px",
                             borderRadius: 4,
                             backgroundColor: "#fff",
                         }}
@@ -55,12 +59,12 @@ const DetailsHeader = () => {
                         display: "flex",
                         alignItems: "center",
                     }}
-                    onClick={handleEditClick} 
+                    onClick={handleEditClick}
                 >
                     <EditOutlined style={{ marginRight: 5 }} />
                     Edit
                 </Col>
-                {(entity !== "customers" &&  entity !=="vendors" )? (
+                {entity !== "customers" && entity !== "vendors" ? (
                     <>
                         <Col
                             span={2}
@@ -85,33 +89,31 @@ const DetailsHeader = () => {
                             Share
                         </Col>
                         <Col
-                    span={3}
-                    style={{
-                        flex: 1,
-                        display: "flex",
-                        alignItems: "center",
-                    }}
-                >
-                    <DownloadOutlined style={{ marginRight: 5 }} />
-                    Download
-                </Col>
+                            span={3}
+                            style={{
+                                flex: 1,
+                                display: "flex",
+                                alignItems: "center",
+                            }}
+                        >
+                            <DownloadOutlined style={{ marginRight: 5 }} />
+                            Download
+                        </Col>
                     </>
                 ) : (
                     <Col
-                    span={4}
-                    style={{
-                        flex: 1,
-                        display: "flex",
-                        alignItems: "center",
-                    }}
-                >
-                    <DownCircleOutlined style={{ marginRight: 5 }} />
-                    Record Payment
-                </Col>
+                        span={4}
+                        style={{
+                            flex: 1,
+                            display: "flex",
+                            alignItems: "center",
+                        }}
+                    >
+                        <DownCircleOutlined style={{ marginRight: 5 }} />
+                        Record Payment
+                    </Col>
                 )}
 
-           
-               
                 <Col
                     span={2}
                     style={{
