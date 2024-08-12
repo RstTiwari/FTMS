@@ -85,7 +85,7 @@ const QuotationForm = ({ form }) => {
                 ]}
                 type="model"
                 entity="customers"
-                width="35%"
+                width={"25vw"}
                 customerSelect=""
                 fieldName={"name"}
                 updateInForm={(value) => handleItemsUpdate(value, "customer")}
@@ -106,7 +106,7 @@ const QuotationForm = ({ form }) => {
                     },
                 ]}
                 updateInForm={(value) => handleItemsUpdate(value, "no")}
-                preFillValue ={form.getFieldValue("no")}
+                preFillValue={form.getFieldValue("no")}
             />
 
             <Row>
@@ -150,7 +150,7 @@ const QuotationForm = ({ form }) => {
 
             <Divider dashed />
             <Row justify={"center"}>
-                    <Taglabel text={"ITEM TABLE"} />
+                <Taglabel text={"ITEM TABLE"} />
             </Row>
             <div
                 style={{
@@ -158,83 +158,83 @@ const QuotationForm = ({ form }) => {
                     border: "2px solid #bfbfbb",
                     marginBottom: "20px",
                     margin: "20px",
-                    overflow:"auto"
-
+                    overflow: "auto",
                 }}
             >
-                 <div style={{
-                    minWidth:1200,
-                    overflow:"auto",
-
-                 }}>
-                 <Row
+                <div
                     style={{
-                        position: "relative",
-                        border: "1px solid #bfbfbb",
+                        minWidth: 1200,
+                        overflow: "auto",
                     }}
                 >
-                    <Col
-                        className="gutter-row"
-                        span={6}
+                    <Row
                         style={{
-                            borderRight: "1px solid #bfbfbb",
-                            textAlign: "center",
+                            position: "relative",
+                            border: "1px solid #bfbfbb",
                         }}
                     >
-                        <Taglabel text="Description" />
-                    </Col>
-                    <Col
-                        className="gutter-row"
-                        span={3}
-                        style={{
-                            borderRight: "1px solid #bfbfbb",
-                            textAlign: "center",
-                        }}
-                    >
-                        <Taglabel text="HSN CODE" />
-                    </Col>
-                    <Col
-                        className="gutter-row"
-                        span={3}
-                        style={{
-                            borderRight: "1px solid #bfbfbb",
-                            textAlign: "center",
-                        }}
-                    >
-                        <Taglabel text="Qty" />
-                    </Col>
-                    <Col
-                        className="gutter-row"
-                        span={4}
-                        style={{
-                            borderRight: "1px solid #bfbfbb",
-                            textAlign: "center",
-                        }}
-                    >
-                        <Taglabel text="Rate" />
-                    </Col>
-                    <Col
-                        className="gutter-row"
-                        span={4}
-                        style={{
-                            borderRight: "1px solid #bfbfbb",
-                            textAlign: "center",
-                        }}
-                    >
-                        <Taglabel text="GST TAX%" />
-                    </Col>
-                    <Col
-                        className="gutter-row"
-                        span={4}
-                        style={{
-                            borderRight: "1px solid #bfbfbb",
-                            textAlign: "center",
-                        }}
-                    >
-                        <Taglabel text="Final Amount" />
-                    </Col>
-                </Row>
-                 </div>
+                        <Col
+                            className="gutter-row"
+                            span={6}
+                            style={{
+                                borderRight: "1px solid #bfbfbb",
+                                textAlign: "center",
+                            }}
+                        >
+                            <Taglabel text="Description" />
+                        </Col>
+                        <Col
+                            className="gutter-row"
+                            span={3}
+                            style={{
+                                borderRight: "1px solid #bfbfbb",
+                                textAlign: "center",
+                            }}
+                        >
+                            <Taglabel text="HSN CODE" />
+                        </Col>
+                        <Col
+                            className="gutter-row"
+                            span={3}
+                            style={{
+                                borderRight: "1px solid #bfbfbb",
+                                textAlign: "center",
+                            }}
+                        >
+                            <Taglabel text="Qty" />
+                        </Col>
+                        <Col
+                            className="gutter-row"
+                            span={4}
+                            style={{
+                                borderRight: "1px solid #bfbfbb",
+                                textAlign: "center",
+                            }}
+                        >
+                            <Taglabel text="Rate" />
+                        </Col>
+                        <Col
+                            className="gutter-row"
+                            span={4}
+                            style={{
+                                borderRight: "1px solid #bfbfbb",
+                                textAlign: "center",
+                            }}
+                        >
+                            <Taglabel text="GST TAX%" />
+                        </Col>
+                        <Col
+                            className="gutter-row"
+                            span={4}
+                            style={{
+                                borderRight: "1px solid #bfbfbb",
+                                textAlign: "center",
+                            }}
+                        >
+                            <Taglabel text="Final Amount" />
+                        </Col>
+                    </Row>
+                </div>
                 <Form.List
                     name={"items"}
                     initialValue={[
@@ -253,10 +253,10 @@ const QuotationForm = ({ form }) => {
                             <div
                                 style={{
                                     overflowX: "auto",
-                                    overflow:"auto",
+                                    overflow: "auto",
                                     minHeight: "10vh",
                                     maxHeight: "40vh",
-                                    minWidth:1200
+                                    minWidth: 1200,
                                 }}
                             >
                                 {subFields.map(
@@ -348,7 +348,8 @@ const QuotationForm = ({ form }) => {
                                                                 name
                                                             )
                                                         }
-                                                        controls ={false}                                                    />
+                                                        controls={false}
+                                                    />
                                                 </Form.Item>
                                             </Col>
                                             <Col
@@ -373,7 +374,7 @@ const QuotationForm = ({ form }) => {
                                                                 name
                                                             )
                                                         }
-                                                        controls ={false}
+                                                        controls={false}
                                                     />
                                                 </Form.Item>
                                             </Col>

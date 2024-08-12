@@ -11,7 +11,7 @@ import purchaseDb from "../models/appModels/purchase.js";
 import tenantDb from "../models/coreModels/Tenant.js";
 import tenantData from "../models/coreModels/tenantData.js";
 import counters from "../models/appModels/counters.js";
-import customSelect from "../models/appModels/customSelect.js"
+import customSelect from "../models/appModels/customSelect.js";
 
 const dbMapping = {
     customers: customerDb,
@@ -24,10 +24,10 @@ const dbMapping = {
     challans: deliveryChallanDb,
     vendors: vendorDb,
     purchases: purchaseDb,
-    orgnizationprofile: tenantDb,
+    orgnizations: tenantDb,
     tenantData: tenantData,
-    counters:counters,
-    customSelect:customSelect
+    counters: counters,
+    customSelect: customSelect,
 };
 
 const checkDbForEntity = (entity) => dbMapping[entity] || false;

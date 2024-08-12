@@ -58,7 +58,7 @@ const UpdateCustomForm = ({
         // Checking if image contains image object and is updated
         if (values.hasOwnProperty("image")) {
             let image = values?.image;
-            if (typeof image ==="object") {
+            if (typeof image === "object") {
                 //then now upload the file before saving it
                 const formData = new FormData();
                 formData.append("file", values.image);
@@ -79,7 +79,6 @@ const UpdateCustomForm = ({
     };
 
     const handleValueChange = (changeValues, allValues) => {
-        console.log(changeValues,"--")
         setChangedField({ ...changedField, ...changeValues });
     };
 
@@ -107,17 +106,16 @@ const UpdateCustomForm = ({
                 borderRadius: "1rem",
             }}
         >
-
-        <Divider orientation="left">
-        {header ? (
-                <Header
-                    onlyTitle={true}
-                    title={`EDIT ${entity
-                        .slice(0, entity.length - 1)
-                        ?.toUpperCase()} DETAILS`}
-                />
-            ) : null}
-        </Divider>
+            <Divider orientation="center">
+                {header ? (
+                    <Header
+                        onlyTitle={true}
+                        title={`EDIT ${entity
+                            .slice(0, entity.length - 1)
+                            ?.toUpperCase()} DETAILS`}
+                    />
+                ) : null}
+            </Divider>
 
             <Form
                 name={`${entity}Form`}
@@ -129,8 +127,19 @@ const UpdateCustomForm = ({
                 validateTrigger={unfilledField}
                 requiredMark={false}
                 layout={isModal ? "vertical" : "horizontal"}
+                style={{
+                    flexGrow: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                }}
             >
-                <div style={{marginLeft:"10px",marginTop:"10px"}}>
+                <div
+                    style={{
+                        marginLeft: "10px",
+                        marginTop: "10px",
+                        flexGrow: 1,
+                    }}
+                >
                     <UpdateModule entity={entity} form={form} />
                 </div>
                 <div
@@ -142,7 +151,7 @@ const UpdateCustomForm = ({
                         padding: "5px",
                         boxShadow: "0 -2px 5px rgba(0, 0, 0, 0.1)",
                         width: "100%",
-                        zIndex:10000
+                        zIndex: 10000,
                     }}
                 >
                     <FormActionButtons isUpdating={true} />

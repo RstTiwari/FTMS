@@ -95,6 +95,7 @@ const DeliveryChallan = ({ form }) => {
                     },
                 ]}
                 type="model"
+                width="35%"
                 entity={"customers"}
                 fieldName={"name"}
                 customerSelect=""
@@ -170,77 +171,79 @@ const DeliveryChallan = ({ form }) => {
 
             <Divider dashed />
             <Row justify={"center"} style={{ marginBottom: "10px" }}>
-                    <Taglabel text={"ITEM TABLE"} weight={1000}  />
-                </Row>
+                <Taglabel text={"ITEM TABLE"} weight={1000} />
+            </Row>
             <div
                 style={{
                     position: "relative",
                     border: "2px solid #bfbfbb",
                     margin: "20px",
                     marginBottom: "20px",
-                    overflow:"auto",
+                    overflow: "auto",
                 }}
             >
-               <div style={{
-                   overflow:'auto',
-                   minWidth:1200
-               }}>
-               <Row
+                <div
                     style={{
-                        position: "relative",
-                        border: "1px solid #bfbfbb",
+                        overflow: "auto",
+                        minWidth: 1200,
                     }}
                 >
-                    <Col
-                        className="gutter-row"
-                        span={7}
+                    <Row
                         style={{
-                            borderRight: "1px solid #bfbfbb",
-                            textAlign: "center",
+                            position: "relative",
+                            border: "1px solid #bfbfbb",
                         }}
                     >
-                        <Taglabel text={"ITEM DESCRIPTION"} weight={700} />
-                    </Col>
-                    <Col
-                        className="gutter-row"
-                        span={4}
-                        style={{
-                            borderRight: "1px solid #bfbfbb",
-                            textAlign: "center",
-                        }}
-                    >
-                        <Taglabel text={"Rate"} />
-                    </Col>
-                    <Col
-                        className="gutter-row"
-                        span={4}
-                        style={{
-                            borderRight: "1px solid #bfbfbb",
-                            textAlign: "center",
-                        }}
-                    >
-                        <Taglabel text={"Qty"} />
-                    </Col>
-                    <Col
-                        className="gutter-row"
-                        span={4}
-                        style={{
-                            borderRight: "1px solid #bfbfbb",
-                            textAlign: "center",
-                        }}
-                    >
-                        <Taglabel text={"GST(%)"} />
-                    </Col>
-                    <Col
-                        className="gutter-row"
-                        span={4}
-                        style={{ textAlign: "center" }}
-                    >
-                        <Taglabel text={"Final Amount"} />
-                    </Col>
-                </Row>
-               </div>
-               
+                        <Col
+                            className="gutter-row"
+                            span={7}
+                            style={{
+                                borderRight: "1px solid #bfbfbb",
+                                textAlign: "center",
+                            }}
+                        >
+                            <Taglabel text={"ITEM DESCRIPTION"} weight={700} />
+                        </Col>
+                        <Col
+                            className="gutter-row"
+                            span={4}
+                            style={{
+                                borderRight: "1px solid #bfbfbb",
+                                textAlign: "center",
+                            }}
+                        >
+                            <Taglabel text={"Rate"} />
+                        </Col>
+                        <Col
+                            className="gutter-row"
+                            span={4}
+                            style={{
+                                borderRight: "1px solid #bfbfbb",
+                                textAlign: "center",
+                            }}
+                        >
+                            <Taglabel text={"Qty"} />
+                        </Col>
+                        <Col
+                            className="gutter-row"
+                            span={4}
+                            style={{
+                                borderRight: "1px solid #bfbfbb",
+                                textAlign: "center",
+                            }}
+                        >
+                            <Taglabel text={"GST(%)"} />
+                        </Col>
+                        <Col
+                            className="gutter-row"
+                            span={4}
+                            style={{ textAlign: "center" }}
+                        >
+                            <Taglabel text={"Final Amount"} />
+                        </Col>
+                    </Row>
+                </div>
+
                 <Form.List
                     name={"items"}
                     initialValue={[
@@ -255,7 +258,12 @@ const DeliveryChallan = ({ form }) => {
                     {(subFields, subOpt) => (
                         <div>
                             <div
-                                style={{ overflow: "auto", minHeight: "10vh" ,maxHeight:"40vh",minWidth:1200}}
+                                style={{
+                                    overflow: "auto",
+                                    minHeight: "10vh",
+                                    maxHeight: "40vh",
+                                    minWidth: 1200,
+                                }}
                             >
                                 {subFields.map(
                                     ({ key, name, ...restField }) => (
@@ -309,7 +317,7 @@ const DeliveryChallan = ({ form }) => {
                                                                 name
                                                             )
                                                         }
-                                                        controls ={false}
+                                                        controls={false}
                                                         min={0}
                                                         style={{
                                                             textAlign: "center",
@@ -331,7 +339,7 @@ const DeliveryChallan = ({ form }) => {
                                                                 name
                                                             )
                                                         }
-                                                        controls ={false}
+                                                        controls={false}
                                                         min={0}
                                                         style={{
                                                             width: "100%",
@@ -380,7 +388,7 @@ const DeliveryChallan = ({ form }) => {
                                                         readOnly
                                                         className="moneyInput"
                                                         min={0}
-                                                        controls ={false}
+                                                        controls={false}
                                                         style={{
                                                             width: "100%",
                                                             textAlign: "center",

@@ -44,12 +44,13 @@ const PaymentForm = ({ form, initialValue = {} }) => {
                             },
                         ]}
                         labelAlign="left"
+                        width="35%"
                         entity={"customers"}
                         fieldName={"name"}
                         updateInForm={(value) => {
                             handleItemUpdate(value, "customer");
                         }}
-                        preFillValue = {form.getFieldValue("customer")?.name}
+                        preFillValue={form.getFieldValue("customer")?.name}
                         type={"model"}
                     />
                 </Col>
@@ -67,8 +68,10 @@ const PaymentForm = ({ form, initialValue = {} }) => {
                         labelAlign="left"
                         labelCol={{ span: 8 }}
                         type={"date"}
-                        updateInForm = {(value)=>handleItemUpdate(value,"paymentDate")}
-                        preFillValue ={form.getFieldValue("paymentDate")}
+                        updateInForm={(value) =>
+                            handleItemUpdate(value, "paymentDate")
+                        }
+                        preFillValue={form.getFieldValue("paymentDate")}
                     />
                 </Col>
                 <Col span={24}>
@@ -83,7 +86,7 @@ const PaymentForm = ({ form, initialValue = {} }) => {
                         updateInForm={(value) => {
                             handleItemUpdate(value, "paymentMode");
                         }}
-                        preFillValue ={form.getFieldValue("paymentMode")}
+                        preFillValue={form.getFieldValue("paymentMode")}
                     />
                 </Col>
                 <Col span={24}>

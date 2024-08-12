@@ -137,6 +137,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                     },
                 ]}
                 type={"model"}
+                width="35%"
                 entity={"vendors"}
                 fieldName={"name"}
                 updateInForm={(value) => {
@@ -291,74 +292,73 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
 
             <Divider dashed />
             <Row justify={"center"} style={{ marginBottom: "10px" }}>
-                    <Taglabel text={"ITEM TABLE"} weight={1000} />
-                </Row>
+                <Taglabel text={"ITEM TABLE"} weight={1000} />
+            </Row>
             <div
                 style={{
                     position: "relative",
                     border: "2px solid #bfbfbb",
                     margin: "20px",
                     marginBottom: "20px",
-                    overflow:'auto'
+                    overflow: "auto",
                 }}
             >
-                
-               <div style={{overflow:"auto",minWidth:1200}}>
-               <Row
-                    style={{
-                        position: "relative",
-                        border: "1px solid #bfbfbb",
-                    }}
-                >
-                    <Col
-                        className="gutter-row"
-                        span={7}
+                <div style={{ overflow: "auto", minWidth: 1200 }}>
+                    <Row
                         style={{
-                            borderRight: "1px solid #bfbfbb",
-                            textAlign: "center",
+                            position: "relative",
+                            border: "1px solid #bfbfbb",
                         }}
                     >
-                        <Taglabel text={"ITEM DESCRIPTION"} weight={700} />
-                    </Col>
-                    <Col
-                        className="gutter-row"
-                        span={4}
-                        style={{
-                            borderRight: "1px solid #bfbfbb",
-                            textAlign: "center",
-                        }}
-                    >
-                        <Taglabel text={"Rate"} />
-                    </Col>
-                    <Col
-                        className="gutter-row"
-                        span={4}
-                        style={{
-                            borderRight: "1px solid #bfbfbb",
-                            textAlign: "center",
-                        }}
-                    >
-                        <Taglabel text={"Qty"} />
-                    </Col>
-                    <Col
-                        className="gutter-row"
-                        span={4}
-                        style={{
-                            borderRight: "1px solid #bfbfbb",
-                            textAlign: "center",
-                        }}
-                    >
-                        <Taglabel text={"GST Tax %"} />
-                    </Col>
-                    <Col
-                        className="gutter-row"
-                        style={{ textAlign: "center" }}
-                        span={5}
-                    >
-                        <Taglabel text={"Total Amount(Before tax)"} />
-                    </Col>
-                </Row>
-               </div>
+                        <Col
+                            className="gutter-row"
+                            span={7}
+                            style={{
+                                borderRight: "1px solid #bfbfbb",
+                                textAlign: "center",
+                            }}
+                        >
+                            <Taglabel text={"ITEM DESCRIPTION"} weight={700} />
+                        </Col>
+                        <Col
+                            className="gutter-row"
+                            span={4}
+                            style={{
+                                borderRight: "1px solid #bfbfbb",
+                                textAlign: "center",
+                            }}
+                        >
+                            <Taglabel text={"Rate"} />
+                        </Col>
+                        <Col
+                            className="gutter-row"
+                            span={4}
+                            style={{
+                                borderRight: "1px solid #bfbfbb",
+                                textAlign: "center",
+                            }}
+                        >
+                            <Taglabel text={"Qty"} />
+                        </Col>
+                        <Col
+                            className="gutter-row"
+                            span={4}
+                            style={{
+                                borderRight: "1px solid #bfbfbb",
+                                textAlign: "center",
+                            }}
+                        >
+                            <Taglabel text={"GST Tax %"} />
+                        </Col>
+                        <Col
+                            className="gutter-row"
+                            style={{ textAlign: "center" }}
+                            span={5}
+                        >
+                            <Taglabel text={"Total Amount(Before tax)"} />
+                        </Col>
+                    </Row>
+                </div>
                 <Form.List
                     name={"items"}
                     initialValue={[
@@ -378,7 +378,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                                     overflow: "auto",
                                     minHeight: "10vh",
                                     maxHeight: "40vh",
-                                    minWidth:1200
+                                    minWidth: 1200,
                                 }}
                             >
                                 {subFields.map(

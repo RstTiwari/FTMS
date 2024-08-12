@@ -21,39 +21,39 @@ const UpdateModule = ({ entity, form }) => {
 
     switch (entity) {
         case "customers":
-            componentToRender = <CoustomerItem form={form}  />;
+            componentToRender = <CoustomerItem form={form} />;
             break;
         case "quotations":
             componentToRender = <QuotesFormItems form={form} />;
             break;
         case "invoices":
-            componentToRender = <InvoicesFormItems  form={form} />;
+            componentToRender = <InvoicesFormItems form={form} />;
             break;
         case "leads":
-            componentToRender = <LeadFormItem form={form}  />;
+            componentToRender = <LeadFormItem form={form} />;
             break;
         case "challans":
-            componentToRender = <ChallanFormItem form={form}  />;
+            componentToRender = <ChallanFormItem form={form} />;
             break;
         case "purchases":
-            componentToRender = <PurchaseFormItem  form={form} />;
+            componentToRender = <PurchaseFormItem form={form} />;
             break;
         case "vendors":
             componentToRender = <VendorFormItem form={form} />;
             break;
         case "expenses":
-            componentToRender = <ExpensesItem  form={form} />;
+            componentToRender = <ExpensesItem form={form} />;
             break;
         case "products":
-            componentToRender = <ProductForm form={form}  />;
+            componentToRender = <ProductForm form={form} />;
             break;
         case "payments":
-            componentToRender = <PaymentFormItem form={form}  />;
+            componentToRender = <PaymentFormItem form={form} />;
             break;
         case "counters":
-            componentToRender = <EntityNo form={form}  />;
-        case "organization":
-                componentToRender = <OrganizationForm form={form}  />;
+            componentToRender = <EntityNo form={form} />;
+        case "orgnizations":
+            componentToRender = <OrganizationForm form={form} />;
             break;
         default:
             break;

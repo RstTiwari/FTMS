@@ -68,7 +68,7 @@ const CustomForm = ({
                 borderRadius: "1rem",
             }}
         >
-            <Divider orientation="left">
+            <Divider orientation="center">
                 {header && (
                     <Header
                         onlyTitle={true}

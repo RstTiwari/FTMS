@@ -103,6 +103,7 @@ const QuotationForm = ({ form }) => {
                     },
                 ]}
                 type="model"
+                width={"25vw"}
                 entity={"customers"}
                 fieldName="name" // filed name form customer modal
                 updateInForm={(value) => {
@@ -126,7 +127,7 @@ const QuotationForm = ({ form }) => {
                 updateInForm={(value) => {
                     handleItemsUpdate(value, "no");
                 }}
-                preFillValue ={form.getFieldValue("no")}
+                preFillValue={form.getFieldValue("no")}
             />
             <Row>
                 <FormItemCol
@@ -353,7 +354,7 @@ const QuotationForm = ({ form }) => {
                                                                 name
                                                             )
                                                         }
-                                                        controls ={false}
+                                                        controls={false}
                                                         min={0}
                                                         style={{
                                                             textAlign: "center",
@@ -379,7 +380,7 @@ const QuotationForm = ({ form }) => {
                                                             )
                                                         }
                                                         min={false}
-                                                        controls ={false}
+                                                        controls={false}
                                                         style={{
                                                             width: "100%",
                                                             textAlign: "center",
@@ -402,7 +403,7 @@ const QuotationForm = ({ form }) => {
                                                         readOnly
                                                         className="moneyInput"
                                                         min={0}
-                                                        controls ={true}
+                                                        controls={true}
                                                         style={{
                                                             width: "100%",
                                                             textAlign: "center",

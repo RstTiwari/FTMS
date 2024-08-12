@@ -15,7 +15,7 @@ import UpdateCustomForm from "components/UpdateCustomForm";
 
 const Approuter = ({ profile }) => {
     const tenantId = profile?.tenant?.tenantId;
-    const {entity}  = useParams()
+    const { entity } = useParams();
     return (
         <Routes>
             <Route element={<Layout profile={profile} />}>
@@ -25,7 +25,7 @@ const Approuter = ({ profile }) => {
                         <Navigate to={`/app/${tenantId}/dashboard`} replace /> // it replaces show it the details basically
                     }
                 />
-                       <Route
+                <Route
                     path="/app/:tenantId/"
                     element={
                         <Navigate to={`/app/${tenantId}/dashboard`} replace /> // it replaces show it the details basically
@@ -41,7 +41,6 @@ const Approuter = ({ profile }) => {
                     element={<DetailsLayout />}
                 >
                     <Route path="details/:id" element={<Details />} />
-
                 </Route>
 
                 <Route
@@ -59,13 +58,13 @@ const Approuter = ({ profile }) => {
 
                 <Route path="/update/:entity/:id" element={<UpdateModule />} />
 
-                {/*Mangaining Orgnization Profile */}
+                {/*Mangaining setting Sidebar Profile */}
                 <Route
-                    path={`/app/:tenantId/:entity`}
-                    element={<CustomForm header={false} />}
+                    path={`/app/:tenantId/settings/:entity/:id`}
+                    element={<UpdateCustomForm />}
                 />
                 <Route
-                    path="/app/:tenantId/templates"
+                    path="/app/:tenantId/setting/templates"
                     element={<Templates />}
                 />
                 <Route path="*" element={<NotFound />} />
