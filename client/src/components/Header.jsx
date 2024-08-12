@@ -27,7 +27,7 @@ const HeaderComponent = ({ onlyTitle = false, title, details }) => {
                         lg={12}
                         style={{
                             color: "black",
-                            fontSize: details ? "0.8rem" : "1rem",
+                            fontSize: details ? "10px" : "1rem",
                             color: "#22b378",
                         }}
                     >
@@ -60,12 +60,12 @@ const HeaderComponent = ({ onlyTitle = false, title, details }) => {
                     }}
                 >
                     <Col
-                        xs={12}
-                        sm={12}
+                        xs={24}
+                        sm={24}
                         md={12}
                         lg={12}
                         style={{
-                            fontSize: "1.5rem",
+                            fontSize: details ? "0.9rem":"1.5rem",
                             color: "#22b378",
                             marginRight: 5,
                         }}

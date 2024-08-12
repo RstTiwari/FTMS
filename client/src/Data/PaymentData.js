@@ -9,7 +9,7 @@ const { Text } = Typography;
 const getColumns = (details) => [
     {
         title: (
-            <Taglabel text={"PAYMENT#"} type={"heading"} details={details} />
+            <Taglabel text={"#No"} type={"heading"} details={details} />
         ),
         dataIndex: "no",
         key: "no",

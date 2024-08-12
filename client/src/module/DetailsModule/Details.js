@@ -3,11 +3,11 @@ import Customer from "../../pages/Details/Customer/Customer";
 import PDFGenerator from "pages/Details/PdfGenrator";
 import PaymentDetails from "../../pages/Details/PayementDetails";
 import ExpenseDetails from "pages/Details/ExpenseDetails";
-const DetailsModule = ({ entity, values, id }) => {
+const DetailsModule = ({ entity, values, id,loading }) => {
     let component = <NotFound />;
     switch (entity) {
         case "customers" || "vend":
-            component = <Customer values={values} />;
+            component = <Customer values={values} loading />;
             break;
         case "invoices":
             component = <PDFGenerator entity={entity} id={id} />;

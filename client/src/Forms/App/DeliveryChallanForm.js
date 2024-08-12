@@ -169,18 +169,23 @@ const DeliveryChallan = ({ form }) => {
             />
 
             <Divider dashed />
+            <Row justify={"center"} style={{ marginBottom: "10px" }}>
+                    <Taglabel text={"ITEM TABLE"} weight={1000}  />
+                </Row>
             <div
                 style={{
                     position: "relative",
-                    border: "1px solid #bfbfbb",
+                    border: "2px solid #bfbfbb",
                     margin: "20px",
                     marginBottom: "20px",
+                    overflow:"auto",
                 }}
             >
-                <Row justify={"center"} style={{ marginBottom: "10px" }}>
-                    <Taglabel text={"Item Table"} weight={1000} />
-                </Row>
-                <Row
+               <div style={{
+                   overflow:'auto',
+                   minWidth:1200
+               }}>
+               <Row
                     style={{
                         position: "relative",
                         border: "1px solid #bfbfbb",
@@ -234,6 +239,8 @@ const DeliveryChallan = ({ form }) => {
                         <Taglabel text={"Final Amount"} />
                     </Col>
                 </Row>
+               </div>
+               
                 <Form.List
                     name={"items"}
                     initialValue={[
@@ -248,7 +255,7 @@ const DeliveryChallan = ({ form }) => {
                     {(subFields, subOpt) => (
                         <div>
                             <div
-                                style={{ overflow: "auto", minHeight: "10vh" }}
+                                style={{ overflow: "auto", minHeight: "10vh" ,maxHeight:"40vh",minWidth:1200}}
                             >
                                 {subFields.map(
                                     ({ key, name, ...restField }) => (
@@ -302,6 +309,8 @@ const DeliveryChallan = ({ form }) => {
                                                                 name
                                                             )
                                                         }
+                                                        controls ={false}
+                                                        min={0}
                                                         style={{
                                                             textAlign: "center",
                                                             width: "100%",
@@ -322,6 +331,8 @@ const DeliveryChallan = ({ form }) => {
                                                                 name
                                                             )
                                                         }
+                                                        controls ={false}
+                                                        min={0}
                                                         style={{
                                                             width: "100%",
                                                             textAlign: "center",
@@ -369,6 +380,7 @@ const DeliveryChallan = ({ form }) => {
                                                         readOnly
                                                         className="moneyInput"
                                                         min={0}
+                                                        controls ={false}
                                                         style={{
                                                             width: "100%",
                                                             textAlign: "center",
@@ -414,7 +426,7 @@ const DeliveryChallan = ({ form }) => {
                                     style={{
                                         marginTop: "1rem",
                                         background: "#22b378",
-                                        width: "15%",
+                                        width: "200px",
                                     }}
                                 >
                                     Add Item

@@ -77,7 +77,7 @@ const CustomInputWithModal = ({ preFillValue,updateInForm }) => {
         }else{
             fetchCountersNumber()
         }
-    }, []);
+    }, [preFillValue]);
 
     return (
         <div>

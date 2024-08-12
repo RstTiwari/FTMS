@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, message } from "antd";
+import { Divider, Form, message } from "antd";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 
@@ -68,14 +68,16 @@ const CustomForm = ({
                 borderRadius: "1rem",
             }}
         >
-            {header && (
-                <Header
-                    onlyTitle={true}
-                    title={`NEW ${entity
-                        .slice(0, entity.length - 1)
-                        ?.toUpperCase()}`}
-                />
-            )}
+            <Divider orientation="left">
+                {header && (
+                    <Header
+                        onlyTitle={true}
+                        title={`NEW ${entity
+                            .slice(0, entity.length - 1)
+                            ?.toUpperCase()}`}
+                    />
+                )}
+            </Divider>
             <Form
                 name={`${entity}Form`}
                 form={form}
@@ -113,6 +115,7 @@ const CustomForm = ({
                         padding: "5px",
                         boxShadow: "0 -2px 5px rgba(0, 0, 0, 0.1)",
                         width: "100%",
+                        zIndex: 1000000,
                     }}
                 >
                     <FormActionButtons isUpdating={isUpdate} />

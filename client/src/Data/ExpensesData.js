@@ -21,7 +21,7 @@ const getColumns = (details) => [
         ),
     },
     {
-        title: <Taglabel text={"EXPENSE#"} details={details} />,
+        title: <Taglabel text={"#No"} details={details} />,
         dataIndex: "no",
         key: "expenseDate",
         render: (_, record) => (

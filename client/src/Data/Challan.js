@@ -7,7 +7,7 @@ import Taglabel from "components/Comman/Taglabel";
 const getColumns = (details) => [
     {
         title: (
-            <Taglabel text={"CHALLAN #"} type={"heading"} details={details} />
+            <Taglabel text={"#No"} type={"heading"} details={details} />
         ),
         dataIndex: "no",
         key: "challanNumber",

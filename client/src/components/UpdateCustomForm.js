@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, message, DatePicker } from "antd";
+import { Form, message, DatePicker, Divider } from "antd";
 import { useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
@@ -107,7 +107,9 @@ const UpdateCustomForm = ({
                 borderRadius: "1rem",
             }}
         >
-            {header ? (
+
+        <Divider orientation="left">
+        {header ? (
                 <Header
                     onlyTitle={true}
                     title={`EDIT ${entity
@@ -115,6 +117,7 @@ const UpdateCustomForm = ({
                         ?.toUpperCase()} DETAILS`}
                 />
             ) : null}
+        </Divider>
 
             <Form
                 name={`${entity}Form`}
@@ -127,7 +130,7 @@ const UpdateCustomForm = ({
                 requiredMark={false}
                 layout={isModal ? "vertical" : "horizontal"}
             >
-                <div>
+                <div style={{marginLeft:"10px",marginTop:"10px"}}>
                     <UpdateModule entity={entity} form={form} />
                 </div>
                 <div
@@ -139,6 +142,7 @@ const UpdateCustomForm = ({
                         padding: "5px",
                         boxShadow: "0 -2px 5px rgba(0, 0, 0, 0.1)",
                         width: "100%",
+                        zIndex:10000
                     }}
                 >
                     <FormActionButtons isUpdating={true} />

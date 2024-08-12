@@ -7,7 +7,7 @@ const tenSpecificData = {
         },
         {
             key: "sales",
-            label: "Sales & Marketing",
+            label: "Sales",
             icon: "LineChartOutlined",
             children: [
                 {
@@ -56,7 +56,7 @@ const tenSpecificData = {
         },
         {
             key: "design",
-            label: "Design & Development",
+            label: "Design",
             icon: "DatabaseOutlined",
             children: [
                 {

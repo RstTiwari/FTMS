@@ -126,6 +126,7 @@ const QuotationForm = ({ form }) => {
                 updateInForm={(value) => {
                     handleItemsUpdate(value, "no");
                 }}
+                preFillValue ={form.getFieldValue("no")}
             />
             <Row>
                 <FormItemCol
@@ -170,7 +171,7 @@ const QuotationForm = ({ form }) => {
                 name={"sub"}
                 type={"select"}
                 tooltip={"Let your customer know what this quote is for"}
-                width={"25vw"}
+                width={"50vw"}
                 entity={"Quotation Sub"}
                 labelCol={{ span: 8 }}
                 entityName="sub"
@@ -185,7 +186,7 @@ const QuotationForm = ({ form }) => {
                 type={"select"}
                 entity={"Sales Person"}
                 entityName="salesPerson"
-                width={"10vw"}
+                width={"200px"}
                 labelCol={{ span: 8 }}
                 updateInForm={(value) => {
                     handleItemsUpdate(value, "salesPerson");
@@ -193,61 +194,87 @@ const QuotationForm = ({ form }) => {
                 preFillValue={form.getFieldValue("salesPerson")}
             />
             <Divider dashed />
+            <Row
+                justify={"center"}
+                style={{
+                    marginBottom: "10px",
+                    top: 0,
+                    background: "#fff",
+                    zIndex: 1,
+                }}
+            >
+                <Taglabel text={"ITEM TABLE"} weight={1000} />
+            </Row>
             <div
                 style={{
                     position: "relative",
-                    border: "1px solid #bfbfbb",
+                    border: "2px solid #bfbfbb",
                     marginBottom: "20px",
+                    zIndex: 10,
                     margin: "20px",
+                    overflow: "auto",
                 }}
             >
-                <Row justify={"center"} style={{ marginBottom: "10px" }}>
-                    <Taglabel text={"Item Table"} weight={1000} />
-                </Row>
-                <Row
+                <div
                     style={{
-                        position: "relative",
-                        border: "1px solid #bfbfbb",
+                        overflowX: "auto",
+                        overflowY: "auto",
+                        paddingBottom: "10px",
+                        minWidth: 1200,
                     }}
                 >
-                    <Col
-                        className="gutter-row"
-                        span={9}
+                    <Row
                         style={{
-                            borderRight: "1px solid #bfbfbb",
-                            textAlign: "center",
+                            position: "sticky",
+                            top: "30px", // Adjust according to the height of the Taglabel Row
+                            background: "#fff",
+                            border: "1px solid #bfbfbb",
+                            zIndex: 1,
                         }}
                     >
-                        <Taglabel text={"ITEM DESCRIPTION"} weight={700} />
-                    </Col>
-                    <Col
-                        className="gutter-row"
-                        span={5}
-                        style={{
-                            borderRight: "1px solid #bfbfbb",
-                            textAlign: "center",
-                        }}
-                    >
-                        <Taglabel text={"Rate"} />
-                    </Col>
-                    <Col
-                        className="gutter-row"
-                        span={5}
-                        style={{
-                            borderRight: "1px solid #bfbfbb",
-                            textAlign: "center",
-                        }}
-                    >
-                        <Taglabel text={"Qty"} />
-                    </Col>
-                    <Col
-                        className="gutter-row"
-                        span={5}
-                        style={{ textAlign: "center" }}
-                    >
-                        <Taglabel text={"Final Amount(Before Tax)"} />
-                    </Col>
-                </Row>
+                        <Col
+                            className="gutter-row"
+                            span={9}
+                            style={{
+                                borderRight: "1px solid #bfbfbb",
+                                textAlign: "center",
+                                minWidth: "300px",
+                            }}
+                        >
+                            <Taglabel text={"ITEM DESCRIPTION"} weight={700} />
+                        </Col>
+                        <Col
+                            className="gutter-row"
+                            span={5}
+                            style={{
+                                borderRight: "1px solid #bfbfbb",
+                                textAlign: "center",
+                                minWidth: "200px",
+                            }}
+                        >
+                            <Taglabel text={"Rate"} />
+                        </Col>
+                        <Col
+                            className="gutter-row"
+                            span={5}
+                            style={{
+                                borderRight: "1px solid #bfbfbb",
+                                textAlign: "center",
+                                minWidth: "200px",
+                            }}
+                        >
+                            <Taglabel text={"Qty"} />
+                        </Col>
+                        <Col
+                            className="gutter-row"
+                            span={5}
+                            style={{ textAlign: "center", minWidth: "200px" }}
+                        >
+                            <Taglabel text={"Final Amount (Before Tax)"} />
+                        </Col>
+                    </Row>
+                </div>
+
                 <Form.List
                     name={"items"}
                     initialValue={[
@@ -263,9 +290,11 @@ const QuotationForm = ({ form }) => {
                         <div>
                             <div
                                 style={{
-                                    overflow: "auto",
+                                    overflowX: "auto",
+                                    overflowY: "auto",
                                     minHeight: "10vh",
                                     maxHeight: "40vh",
+                                    minWidth: 1200,
                                 }}
                             >
                                 {subFields.map(
@@ -280,6 +309,7 @@ const QuotationForm = ({ form }) => {
                                                 span={9}
                                                 style={{
                                                     textAlign: "center",
+                                                    minWidth: "300px",
                                                 }}
                                             >
                                                 <Form.Item
@@ -307,7 +337,10 @@ const QuotationForm = ({ form }) => {
                                                     />
                                                 </Form.Item>
                                             </Col>
-                                            <Col span={5}>
+                                            <Col
+                                                span={5}
+                                                style={{ minWidth: "200px" }}
+                                            >
                                                 <Form.Item
                                                     {...restField}
                                                     name={[name, "rate"]}
@@ -320,6 +353,8 @@ const QuotationForm = ({ form }) => {
                                                                 name
                                                             )
                                                         }
+                                                        controls ={false}
+                                                        min={0}
                                                         style={{
                                                             textAlign: "center",
                                                             width: "100%",
@@ -327,7 +362,10 @@ const QuotationForm = ({ form }) => {
                                                     />
                                                 </Form.Item>
                                             </Col>
-                                            <Col span={5}>
+                                            <Col
+                                                span={5}
+                                                style={{ minWidth: "200px" }}
+                                            >
                                                 <Form.Item
                                                     {...restField}
                                                     name={[name, "qty"]}
@@ -340,6 +378,8 @@ const QuotationForm = ({ form }) => {
                                                                 name
                                                             )
                                                         }
+                                                        min={false}
+                                                        controls ={false}
                                                         style={{
                                                             width: "100%",
                                                             textAlign: "center",
@@ -349,7 +389,10 @@ const QuotationForm = ({ form }) => {
                                             </Col>
                                             <Col
                                                 span={4}
-                                                style={{ textAlign: "center" }}
+                                                style={{
+                                                    textAlign: "center",
+                                                    minWidth: "200px",
+                                                }}
                                             >
                                                 <Form.Item
                                                     {...restField}
@@ -359,6 +402,7 @@ const QuotationForm = ({ form }) => {
                                                         readOnly
                                                         className="moneyInput"
                                                         min={0}
+                                                        controls ={true}
                                                         style={{
                                                             width: "100%",
                                                             textAlign: "center",
@@ -398,13 +442,16 @@ const QuotationForm = ({ form }) => {
                                             finalAmount: 0,
                                             qty: 1,
                                             rate: 0,
-                                        }); // Use srNo instead of srN
+                                        });
                                     }}
                                     icon={<PlusOutlined />}
                                     style={{
                                         marginTop: "1rem",
                                         background: "#22b378",
-                                        width: "15%",
+                                        width: "200px",
+                                        position: "sticky",
+                                        bottom: 0,
+                                        zIndex: 10,
                                     }}
                                 >
                                     Add Item
@@ -414,6 +461,7 @@ const QuotationForm = ({ form }) => {
                     )}
                 </Form.List>
             </div>
+
             <Row align={"middle"} justify={"end"}>
                 <FormItemCol
                     label="Gross Total"
@@ -485,7 +533,7 @@ const QuotationForm = ({ form }) => {
                 label={"Delivery"}
                 name={"deliveryCondition"}
                 type={"select"}
-                width={500}
+                width={"50vw"}
                 labelCol={{ span: 8 }}
                 entity={"Delivery Condition"}
                 entityName={"deliveryCondition"}
@@ -500,7 +548,7 @@ const QuotationForm = ({ form }) => {
                     name={"validityCondition"}
                     type={"select"}
                     labelCol={{ span: 8 }}
-                    width={500}
+                    width={"50vw"}
                     entity={"Validity Condition"}
                     entityName={"validityCondition"}
                     updateInForm={(value) => {
@@ -516,7 +564,7 @@ const QuotationForm = ({ form }) => {
                     entityName={"paymentsCondition"}
                     labelCol={{ span: 8 }}
                     type={"select"}
-                    width={500}
+                    width={"50vw"}
                     entity={"Payments Condition"}
                     updateInForm={(value) => {
                         handleItemsUpdate(value, "paymentsCondition");
@@ -530,7 +578,7 @@ const QuotationForm = ({ form }) => {
                     name={"cancellationCondition"}
                     type={"select"}
                     labelCol={{ span: 8 }}
-                    width={500}
+                    width={"50vw"}
                     entity={"Cancellation Condition"}
                     entityName={"cancellationCondition"}
                     updateInForm={(value) => {

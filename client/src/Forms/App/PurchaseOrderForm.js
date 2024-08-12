@@ -290,18 +290,21 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
             </div>
 
             <Divider dashed />
+            <Row justify={"center"} style={{ marginBottom: "10px" }}>
+                    <Taglabel text={"ITEM TABLE"} weight={1000} />
+                </Row>
             <div
                 style={{
                     position: "relative",
-                    border: "1px solid #bfbfbb",
+                    border: "2px solid #bfbfbb",
                     margin: "20px",
                     marginBottom: "20px",
+                    overflow:'auto'
                 }}
             >
-                <Row justify={"center"} style={{ marginBottom: "10px" }}>
-                    <Taglabel text={"Item Table"} weight={1000} />
-                </Row>
-                <Row
+                
+               <div style={{overflow:"auto",minWidth:1200}}>
+               <Row
                     style={{
                         position: "relative",
                         border: "1px solid #bfbfbb",
@@ -355,6 +358,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                         <Taglabel text={"Total Amount(Before tax)"} />
                     </Col>
                 </Row>
+               </div>
                 <Form.List
                     name={"items"}
                     initialValue={[
@@ -374,6 +378,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                                     overflow: "auto",
                                     minHeight: "10vh",
                                     maxHeight: "40vh",
+                                    minWidth:1200
                                 }}
                             >
                                 {subFields.map(
@@ -430,6 +435,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                                                                 name
                                                             )
                                                         }
+                                                        controls={false}
                                                         style={{
                                                             textAlign: "center",
                                                             width: "100%",
@@ -450,6 +456,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                                                                 name
                                                             )
                                                         }
+                                                        controls={false}
                                                         style={{
                                                             width: "100%",
                                                             textAlign: "center",
@@ -545,7 +552,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                                     style={{
                                         marginTop: "1rem",
                                         background: "#22b378",
-                                        width: "15%",
+                                        width: "200px",
                                     }}
                                 >
                                     Add Item
@@ -613,7 +620,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                     name={"paymentCondition"}
                     labelCol={{ span: 8 }}
                     type={"select"}
-                    width={500}
+                    width={"50vw"}
                     entity={"Payments Condition"}
                     entityName={"purchasePaymentsCondition"}
                     updateInForm={(value) =>
@@ -627,7 +634,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                     label={"Cancellation"}
                     name={"cancellationCondition"}
                     type={"select"}
-                    width={500}
+                    width={"50vw"}
                     labelCol={{ span: 8 }}
                     entity={"Cancellation Condition"}
                     entityName={"purchaseCancellationCondition"}

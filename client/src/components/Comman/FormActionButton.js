@@ -12,24 +12,26 @@ const FormActionButtons = ({ isUpdating, showCancel = true }) => {
     };
 
     return (
-        <Row style={{ marginTop: 10 }}>
-            <Form.Item>
-                {isUpdating ? (
-                    <CustomButton htmlType="submit" text="Update" />
-                ) : (
-                    <CustomButton htmlType="submit" text="Save" />
-                )}
-                {showCancel ? (
-                    <CustomButton
-                        onClick={handleCancelClick}
-                        isCancel={true}
-                        text="Cancel"
-                    />
-                ) : (
-                    ""
-                )}
-            </Form.Item>
-        </Row>
+        <div style={{zIndex: 1000 }}>
+            <Row >
+                <Form.Item>
+                    {isUpdating ? (
+                        <CustomButton htmlType="submit" text="Update" />
+                    ) : (
+                        <CustomButton htmlType="submit" text="Save" />
+                    )}
+                    {showCancel ? (
+                        <CustomButton
+                            onClick={handleCancelClick}
+                            isCancel={true}
+                            text="Cancel"
+                        />
+                    ) : (
+                        ""
+                    )}
+                </Form.Item>
+            </Row>
+        </div>
     );
 };
 

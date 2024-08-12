@@ -161,7 +161,7 @@ const CoustomersForm = ({ form, disabled, isModal, style }) => {
                         </Col>
                     </Row>
                 </Col>
-                <Col sm={24} xs={12} md={12} lg={12} style={{ padding: 10 }}>
+                <Col sm={24} xs={24} md={12} lg={12} style={{ padding: 10 }}>
                     <Row style={{ paddingBottom: 25 }}>
                         <Text type="secondary" style={{ fontWeight: 900 }}>
                             Shipping Address

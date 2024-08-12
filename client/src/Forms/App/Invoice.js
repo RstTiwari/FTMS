@@ -106,6 +106,7 @@ const QuotationForm = ({ form }) => {
                     },
                 ]}
                 updateInForm={(value) => handleItemsUpdate(value, "no")}
+                preFillValue ={form.getFieldValue("no")}
             />
 
             <Row>
@@ -148,18 +149,25 @@ const QuotationForm = ({ form }) => {
             </Row>
 
             <Divider dashed />
+            <Row justify={"center"}>
+                    <Taglabel text={"ITEM TABLE"} />
+            </Row>
             <div
                 style={{
                     position: "relative",
-                    border: "1px solid #bfbfbb",
+                    border: "2px solid #bfbfbb",
                     marginBottom: "20px",
                     margin: "20px",
+                    overflow:"auto"
+
                 }}
             >
-                <Row justify={"center"}>
-                    <Taglabel text={"ITEM TABLE"} />
-                </Row>
-                <Row
+                 <div style={{
+                    minWidth:1200,
+                    overflow:"auto",
+
+                 }}>
+                 <Row
                     style={{
                         position: "relative",
                         border: "1px solid #bfbfbb",
@@ -226,6 +234,7 @@ const QuotationForm = ({ form }) => {
                         <Taglabel text="Final Amount" />
                     </Col>
                 </Row>
+                 </div>
                 <Form.List
                     name={"items"}
                     initialValue={[
@@ -243,9 +252,11 @@ const QuotationForm = ({ form }) => {
                         <div>
                             <div
                                 style={{
-                                    overflow: "auto",
+                                    overflowX: "auto",
+                                    overflow:"auto",
                                     minHeight: "10vh",
                                     maxHeight: "40vh",
+                                    minWidth:1200
                                 }}
                             >
                                 {subFields.map(
@@ -337,7 +348,7 @@ const QuotationForm = ({ form }) => {
                                                                 name
                                                             )
                                                         }
-                                                    />
+                                                        controls ={false}                                                    />
                                                 </Form.Item>
                                             </Col>
                                             <Col
@@ -362,6 +373,7 @@ const QuotationForm = ({ form }) => {
                                                                 name
                                                             )
                                                         }
+                                                        controls ={false}
                                                     />
                                                 </Form.Item>
                                             </Col>
@@ -455,7 +467,7 @@ const QuotationForm = ({ form }) => {
                                 style={{
                                     marginTop: "1rem",
                                     background: "green",
-                                    width: "10%",
+                                    width: "200px",
                                 }}
                                 block
                             >

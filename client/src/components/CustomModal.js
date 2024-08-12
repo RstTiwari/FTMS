@@ -166,6 +166,9 @@ const CustomModel = ({
                         disabled={disabled}
                         loading={isLoading}
                         showSearch
+                        style={{width:width}}
+                        getPopupContainer={(trigger) => document.body}
+                        dropdownStyle={{ position: "fixed", zIndex: 1050 }}
                         filterOption={(input, option) =>
                             (option?.label ?? "")
                                 .toLowerCase()

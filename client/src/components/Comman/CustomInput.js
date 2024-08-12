@@ -53,11 +53,12 @@ const CustomInput = ({
         case "number":
             return (
                 <InputNumber
-                    {...restProps}
-                    readOnly={readOnly}
-                    style={{ width: width }}
-                    onChange={onChange}
-                />
+                {...restProps}
+                readOnly={readOnly}
+                style={{ width: width }}
+                controls={false} // Remove the up/down controls
+                min={0} // Prevent value from being less than 0
+            />
             );
         case "box":
             return <Input.TextArea {...restProps} style={{ width: width }} />;
