@@ -84,7 +84,7 @@ const NavBar = ({ user, width }) => {
                     <Avatar icon={<UserOutlined />} style={{ cursor: "pointer" }} />
                 </Dropdown>
             </div>
-
+ 
             <SettingSidebar
                 open={openSettingSideBar}
                 setOpen={setOpenSettingSidebar}

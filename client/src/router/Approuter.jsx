@@ -4,14 +4,13 @@ import Dashbord from "../pages/dashbord";
 import Layout from "../pages/layout";
 import NotFound from "pages/Notfound";
 import UpdateModule from "module/UpdateModule/UpdateModule";
-import Orgnization from "pages/Orgnization/Orgnization";
+import Organization from "pages/Orgnization/Orgnization";
 import Templates from "pages/Templates/index";
-import SimpleWebSocketComponent from "pages/Websocket";
-import CreateModule from "module/Create/CreateModule";
 import DetailsLayout from "pages/layout/DetailsLayout";
 import Details from "components/Details";
 import CustomForm from "components/CreateCustomForm";
 import UpdateCustomForm from "components/UpdateCustomForm";
+import Organization from "pages/Orgnization/Orgnization";
 
 const Approuter = ({ profile }) => {
     const tenantId = profile?.tenant?.tenantId;
@@ -60,8 +59,8 @@ const Approuter = ({ profile }) => {
 
                 {/*Mangaining setting Sidebar Profile */}
                 <Route
-                    path={`/app/:tenantId/settings/:entity/:id`}
-                    element={<UpdateCustomForm />}
+                    path={`/app/:tenantId/settings/organization`}
+                    element={<Organization />}
                 />
                 <Route
                     path="/app/:tenantId/setting/templates"

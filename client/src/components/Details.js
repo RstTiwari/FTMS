@@ -13,7 +13,7 @@ const Details = () => {
     useEffect(() => {
         if(entity ==="customers" || entity ==="payments")
         fetchInitialValues();
-    }, [fetchInitialValues]);
+    }, [fetchInitialValues,loading]);
 
     if (loading) {
         return <PageLoader isLoading={loading} />;
@@ -22,7 +22,7 @@ const Details = () => {
     return (
         <>
             <DetailsHeader />
-            <DetailsModule entity={entity}  id ={id} values={initialValues} loading/>
+            <DetailsModule entity={entity}  id ={id} values={initialValues} loading ={loading}/>
         </>
     );
 }

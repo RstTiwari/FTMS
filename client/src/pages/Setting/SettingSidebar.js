@@ -9,7 +9,8 @@ const SettingSidebar = ({ open, setOpen, children }) => {
             open={open}
             onClose={() => setOpen(!open)}
             maskClosable={false}
-            closeIcon={<CloseOutlined style={{right:0,color:"red"}} />}
+            closeIcon={<CloseOutlined style={{right:0,color:"red",}} />}
+           
         >
             {children}
         </Drawer>

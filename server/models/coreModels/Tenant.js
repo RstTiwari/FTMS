@@ -38,7 +38,7 @@ const tenantSchema = new mongoose.Schema(
         industry: {
             type: String,
         },
-        address: {
+        billingAddress: {
             street1: {
                 type: String,
             },
@@ -55,24 +55,47 @@ const tenantSchema = new mongoose.Schema(
                 type: String,
             },
         },
-        bankDetails: {
-            bankName: {
+        deliveryAddress: {
+            street1: {
                 type: String,
             },
-            accountNo: {
+            street2: {
                 type: String,
             },
-            branch: {
+            city: {
                 type: String,
             },
-            ifscCode: {
+            state: {
+                type: String,
+            },
+            pinCode: {
                 type: String,
             },
         },
+        bankDetails: [
+            {
+                bankName: {
+                    type: String,
+                },
+                isPrimary: {
+                    type: Boolean,
+                },
+                accountNo: {
+                    type: String,
+                },
+                ifscCode: {
+                    type: String,
+                },
+            },
+        ],
         email: {
             type: String,
             unique: true,
         },
+        website:{
+            type:String
+        },
+
         phone: {
             type: Number,
             unique: true,

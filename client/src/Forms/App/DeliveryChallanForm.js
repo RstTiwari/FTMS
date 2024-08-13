@@ -95,10 +95,10 @@ const DeliveryChallan = ({ form }) => {
                     },
                 ]}
                 type="model"
-                width="35%"
+                width={"25vw"}
                 entity={"customers"}
                 fieldName={"name"}
-                customerSelect=""
+                onlyShippingAddress ={true}
                 updateInForm={(value) => handleItemUpdate(value, "customer")}
                 preFillValue={form.getFieldValue("customer")?.name}
             />

@@ -22,16 +22,21 @@ import CustomSelect from "components/Comman/CustomSelect";
 import CustomModel from "components/CustomModal";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import AddressDetails from "components/Comman/AddressDetails";
+import { useParams } from "react-router-dom";
 
 const PurchaseOrder = ({ form, value, disabled, isModel }) => {
     const [isOrganizationChecked, setIsOrganizationChecked] = useState(false);
     const [isCustomerChecked, setIsCustomerChecked] = useState(false);
     const [delivery, setDelivery] = useState("");
+    const {tenantId} = useParams()
 
     const updateDeliveryAddress = (values) => {
         form.setFieldsValue({
-            deliverTo: values?.name,
-            deliveryAddress: values?.shippingAddress,
+            delivery: {
+                type: values?.type,
+                to: values?.to,
+                address: values?.address,
+            },
         });
     };
 
@@ -40,7 +45,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
             // Probally call the api and get the Organization Data
             const response = {
                 companyName: "HKB Development Pvt LtD",
-                shippingAddress: {
+                deliveryAddress: {
                     street1: "A-1o near gorai pada vasai virat",
                     street2: "near Sb road cap",
                     city: "vasai",
@@ -50,12 +55,15 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
             };
             setDelivery({
                 ...delivery,
-                companyName: response?.companyName,
-                shippingAddress: response?.shippingAddress,
+                type:"organization",
+                to:response?.companyName,
+                address: response?.deliveryAddress,
             });
+            console.log(delivery,"===")
             updateDeliveryAddress({
-                name: response?.companyName,
-                shippingAddress: response?.shippingAddress,
+                type:"organization",
+                to:response?.companyName,
+                address: response?.deliveryAddress,
             });
             setIsOrganizationChecked(true);
             setIsCustomerChecked(false);
@@ -64,6 +72,8 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
             setIsCustomerChecked(true);
         }
     };
+
+    // Updating Form Item Values
     const handleItemsUpdate = (value, fieldName, rowName) => {
         const items = form.getFieldValue("items");
         const temObj = items[rowName];
@@ -119,9 +129,8 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
         });
     };
     useEffect(() => {
-        if (form.getFieldValue("deliverTo")) {
-        }
-    });
+        
+    },[delivery]);
     return (
         <div>
             <FormItemCol
@@ -137,7 +146,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                     },
                 ]}
                 type={"model"}
-                width="35%"
+                width={"25vw"}
                 entity={"vendors"}
                 fieldName={"name"}
                 updateInForm={(value) => {
@@ -212,16 +221,15 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                         lg={{ span: 8 }}
                         xl={{ span: 8 }}
                     >
-                        <Form.Item name={"deliverTo"} hidden={true}></Form.Item>
                         <Form.Item
                             label={<Taglabel text={"Delivery Address"} />}
                             labelCol={{ span: 8 }}
                             labelAlign="left"
-                            name={"deliveryAddress"}
+                            name={"delivery"}
                             rules={[
                                 {
                                     required: true,
-                                    message: "Delivery Address Required",
+                                    message: "Delivery Required",
                                 },
                             ]}
                         >
@@ -254,12 +262,15 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                             xl={{ span: 6, offset: 3 }}
                         >
                             <AddressDetails
-                                id={"organization"}
+                                id={tenantId}
                                 initialRender={true}
                                 entityName={"Delivery Address"}
-                                isForDelivery={true}
-                                address={delivery.shippingAddress}
-                                deliverTo={delivery.companyName}
+                                onlyShippingAddress={true}
+                                address={delivery?.address}
+                                to={delivery?.to}
+                                keyName={"delivery.address"}
+                                entity={"tenant"}
+                                updateInForm={updateDeliveryAddress}
                             />
                         </Col>
                     )}
@@ -278,8 +289,9 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                                 labelAlign="left"
                                 type={"model"}
                                 entity={"customers"}
+                                width={"25vw"}
                                 fieldName={"name"}
-                                isForDelivery={true}
+                                onlyShippingAddress={true}
                                 updateInForm={updateDeliveryAddress}
                                 preFillValue={form.getFieldValue(
                                     "deliveryAddress"

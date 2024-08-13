@@ -13,7 +13,7 @@ const CustomModel = ({
     disabled,
     updateInForm,
     preFillValue,
-    isForDelivery,
+    onlyShippingAddress,
 }) => {
     const [open, setOpen] = useState(false);
     const { appApiCall } = useAuth();
@@ -85,10 +85,12 @@ const CustomModel = ({
                 shippingAddress: label?.item?.shippingAddress,
             });
             setId(label?.item?._id);
-            if (isForDelivery) {
+            // Updating in Purchase Order Forms
+            if (onlyShippingAddress) {
                 return updateInForm({
-                    name: label?.item?.name,
-                    shippingAddress: label?.item?.shippingAddress,
+                    to: label?.item?.name,
+                    address: label?.item?.shippingAddress,
+                    type: "customer",
                 });
             }
             return updateInForm(value);
@@ -129,7 +131,7 @@ const CustomModel = ({
                 });
             }
 
-            if (isForDelivery) {
+            if (onlyShippingAddress) {
                 return updateInForm({
                     name: result?.name,
                     shippingAddress: result?.shippingAddress,
@@ -218,7 +220,7 @@ const CustomModel = ({
                                 justifyContent: "space-between",
                             }}
                         >
-                            {!isForDelivery ? (
+                            {!onlyShippingAddress ? (
                                 <AddressDetails
                                     style={{ flex: 1, marginRight: "10px" }}
                                     initialRender={initialRender}

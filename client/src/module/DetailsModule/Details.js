@@ -7,7 +7,7 @@ const DetailsModule = ({ entity, values, id,loading }) => {
     let component = <NotFound />;
     switch (entity) {
         case "customers" || "vend":
-            component = <Customer values={values} loading />;
+            component = <Customer values={values} loading ={loading} />;
             break;
         case "invoices":
             component = <PDFGenerator entity={entity} id={id} />;

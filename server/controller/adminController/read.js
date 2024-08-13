@@ -1,18 +1,21 @@
-const read = async (req, res, next, database) => {
+import checkDbForEntity from "../../Helper/databaseSelector.js";
+
+const read = async (req, res, next) => {
     try {
-        const { entity } = req.query;
-        const { userId, role, tenantId,email } = req;
+        const { entity,tenantId} = req.query;
+        const { userId, role,email } = req;
         let filter = { _id: userId, tenantId: tenantId };
-        if (entity === "orgnizationprofile") {
-            filter = { tenantId: tenantId };
+
+        if (entity === "tenant") {
+            filter = { _id: tenantId };
         }
-        const data = await database.findOne(filter);
-        data["email"] = email
+        const dataBase = checkDbForEntity(entity)
+        const data = await dataBase.findOne(filter);
         if (!data) {
             return res.status(400).json({
                 success: 0,
                 result: null,
-                message: "Failed to Find Orgnization Data",
+                message: "Failed to Find Organization Data",
             });
         }
         res.status(200).json({

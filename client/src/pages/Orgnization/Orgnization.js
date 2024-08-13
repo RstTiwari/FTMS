@@ -1,87 +1,138 @@
 import React, { useEffect, useState } from "react";
-import { Flex } from "antd";
+import { Form, Divider } from "antd";
 import OrganizationForm from "Forms/App/OrgnizationForm";
 import { useAuth } from "state/AuthProvider";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Header from "components/Header";
-import SaveBottmComponent from "components/SaveBottomComponent";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import PageLoader from "pages/PageLoader";
-import { useNavigate } from "react-router-dom";
+import FormActionButtons from "components/Comman/FormActionButton";
 
-const Orgnization = () => {
+const Organization = () => {
+    const [form] = Form.useForm();
     const [isLoading, setIsLoading] = useState(true);
-    const [data, setData] = useState({});
-    const [formUpdated,setFormUpdate] = useState(false)
-    const { adminApiCall } = useAuth();
-    const { entity, id } = useParams();
-    const navigate = useNavigate()
+    const [unfilledField, setUnfilledField] = useState(null);
 
-    let fetchData = async () => {
+    const { adminApiCall, appApiCall } = useAuth();
+    const { tenantId } = useParams();
+    const navigate = useNavigate();
+
+    const fetchData = async () => {
+        setIsLoading(true);
         const payload = {};
-        const params = { entity: entity };
-        const {success,result,message} = await adminApiCall(
+        const params = { entity: "tenant" };
+        const { success, result, message } = await adminApiCall(
             "get",
             "read",
             payload,
-            params
+            { entity: "tenant", tenantId: tenantId }
         );
         if (!success) {
-            return NotificationHandler.error(message);
+            NotificationHandler.error(message);
         } else {
-            setData(result);
-            setIsLoading(false);
+            form.setFieldsValue(result);
         }
+        setIsLoading(false);
     };
 
     useEffect(() => {
         fetchData();
     }, []);
 
-    const onFormSubmit = async (value) => {
-        setIsLoading(true)
-        const payload = {entity:entity,value}
-        const {success,result, message} = await adminApiCall("post","update",payload)
+    const handleFormUpdate = async (values) => {
+        setIsLoading(true);
+        if (values.hasOwnProperty("logo")) {
+            let logo = values?.logo;
+            if (typeof logo === "object") {
+                const formData = new FormData();
+                formData.append("file", values.logo);
+                const response = await appApiCall(
+                    "post",
+                    "upload",
+                    formData,
+                    {}
+                );
+
+                if (!response.success) {
+                    NotificationHandler.error("Failed to Upload Image");
+                    setIsLoading(false);
+                    return;
+                }
+                values.logo = response.result;
+            }
+        }
+        const payload = { values };
+        const { success, result, message } = await adminApiCall(
+            "post",
+            "update",
+            payload,
+            { entity: "tenant", tenantId: tenantId }
+        );
         if (!success) {
-            setIsLoading(false);
             NotificationHandler.error(message);
         } else {
-            navigate("/dashboard");
-            return NotificationHandler.success(message);
+            navigate(-1);
+            NotificationHandler.success(message);
+        }
+        setIsLoading(false);
+    };
+
+    const validateFields = async () => {
+        try {
+            const values = await form.validateFields();
+            setUnfilledField(null); // Clear unfilledField state if validation succeeds
+            handleFormUpdate(values); // Proceed with form submission logic
+        } catch (error) {
+            const firstField = error.errorFields[0].errors[0];
+            setUnfilledField(firstField); // Set the first unfilled field
+            NotificationHandler.error(`${firstField}`);
         }
     };
-    const handleValueChange =()=>{
-        setFormUpdate(true)
+
+    if (isLoading) {
+        return <PageLoader isLoading={true} text={"Hold on Fetching Organization Details"} />;
     }
 
     return (
-        <Flex
-            gap={"middle"}
-            vertical
-            style={{
-                padding: "2rem",
-                backgroundColor: "#f1f1f1",
-                borderRadius: "1rem",
-                marginBottom: "2rem",
-            }}
-        >
-            <Header
-                title={"SETUP ORGNIZATION DETAILS"}
-                cancelRoute={"dashboard"}
-            />
-            <PageLoader
-                isLoading={isLoading}
-                text={" PLEASE WAIT"}
-            />
-            {!isLoading && data ? (
-                <>
-                    <OrganizationForm  value ={data} handleFormSubmit = {onFormSubmit} handleValueChange={handleValueChange} />
-                </>
-            ) : (
-                ""
-            )}
-        </Flex>
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+            <Form
+                form={form}
+                name="organizationForm"
+                requiredMark={false}
+                style={{
+                    flex: 1, // Makes the form container grow to fill available space
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}
+                onFinish={handleFormUpdate}
+                onFinishFailed={validateFields}
+            >
+                <Divider>
+                    <Header
+                        title={"SETUP ORGANIZATION DETAILS"}
+                        onlyTitle={true}
+                    />
+                </Divider>
+                <div style={{ flex: 1, marginLeft: "10px" }}>
+                    <OrganizationForm form={form} />
+                </div>
+                <div
+                    style={{
+                        position: "sticky",
+                        bottom: 0,
+                        left: 0,
+                        backgroundColor: "#ffffff",
+                        padding: "10px",
+                        boxShadow: "0 -2px 5px rgba(0, 0, 0, 0.1)",
+                        width: "100%",
+                        zIndex: 10000,
+                    }}
+                >
+                    <FormActionButtons isUpdating={true} />
+                </div>
+            </Form>
+        </div>
     );
 };
 
-export default Orgnization;
+export default Organization;

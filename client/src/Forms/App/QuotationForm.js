@@ -106,6 +106,7 @@ const QuotationForm = ({ form }) => {
                 width={"25vw"}
                 entity={"customers"}
                 fieldName="name" // filed name form customer modal
+                onlyShippingAddress = {true}
                 updateInForm={(value) => {
                     handleItemsUpdate(value, "customer");
                 }}

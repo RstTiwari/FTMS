@@ -10,12 +10,12 @@ const UploadImage = ({
     pageTitle,
     uploadTitle,
     aboutImage,
-    url,
+    preFillValue,
     updateImageInForm
 }) => {
     const [loading, setLoading] = useState(false);
     const [edit, setEdit] = useState(true);
-    const [imageUrl, setImageUrl] = useState(url || "");
+    const [imageUrl, setImageUrl] = useState(preFillValue || "");
     const [file, setFile] = useState(null);
 
     const handleChange = async (info) => {
@@ -57,10 +57,10 @@ const UploadImage = ({
     // };
 
     useEffect(() => {
-        if (url && url !== "") {
+        if (preFillValue && preFillValue !== "") {
             setEdit(false);
         }
-    }, [url]);
+    }, [preFillValue]);
 
     return (
         <>
@@ -97,7 +97,7 @@ const UploadImage = ({
                 </>
             ) : (
                 <Row justify="center">
-                    <Image src={url} style={{ width: "100%", maxHeight: "200px" }} />
+                    <Image src={preFillValue} style={{ width: "100%", maxHeight: "200px" }} />
                 </Row>
             )}
         </>

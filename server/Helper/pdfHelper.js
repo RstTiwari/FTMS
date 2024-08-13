@@ -91,3 +91,10 @@ export const addBankDetails = (doc, orgnization) => {
     doc.text(`PAN NO: ${orgnization.panNo}`, 20, doc.y + 10);
     doc.text(`GST NO: ${orgnization.gstNo}`, 20, doc.y + 10);
 };
+export const getPrimaryOrFirstBank = (bankDetails) => {
+    // Find the primary bank (if any)
+    let primaryBank = bankDetails.find((item) => item.isPrimary);
+
+    // If no primary bank is found, return the first item
+    return primaryBank || bankDetails[0];
+};

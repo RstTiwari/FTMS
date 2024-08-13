@@ -1,15 +1,21 @@
-const update = async (req, res, next, database) => {
+import checkDbForEntity from "../../Helper/databaseSelector.js";
+
+const update = async (req, res, next) => {
     try {
-        const { entity, value } = req.body;
-        const { email, tenantId, role, userId } = req;
+        const { entity,tenantId,userId } = req.query;
+        const { values } = req.body;
         let filter = { tenantId: tenantId, _id: userId };
-        const updateObj = { $set: value };
-        if (entity === "orgnizationprofile") {
-            filter = { tenantId: tenantId };
+        const updateObj = {};
+
+        if (entity === "tenant") {
+            filter = { _id: tenantId };
         }
-        console.log(filter,updateObj);
-        const updateData = await database.updateOne(filter, updateObj);
-        console.log(updateData);
+        const dataBase = checkDbForEntity(entity)
+        // get the Data of same entity before update it
+        let existingObj = await dataBase.findOne(filter)
+        let modified = Object.assign(existingObj,values)
+        updateObj["$set"] = modified
+        const updateData = await dataBase.updateOne(filter, updateObj);
 
         if (!updateData.acknowledged) {
             return res.status(400).json({
@@ -19,7 +25,7 @@ const update = async (req, res, next, database) => {
             });
         }
 
-        if ((updateData.modifiedCount <= 0) && (updateData.acknowledged === true)) {
+        if ((updateData.modifiedCount <= 0)) {
             return res.status(200).json({
                 success: 1,
                 result: {},

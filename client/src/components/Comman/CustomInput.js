@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Input, DatePicker, InputNumber, Select } from "antd";
+import { Input, DatePicker, InputNumber, Select, Checkbox } from "antd";
 import dayjs from "dayjs";
 import CustomSelect from "./CustomSelect"; // Assuming you have created CustomDrop component
 import CustomModal from "components/CustomModal";
@@ -17,6 +17,7 @@ const CustomInput = ({
 }) => {
     const { onChange, preFillValue, updateInForm, ...otherProps } = restProps;
     const [date, setDate] = useState("");
+    console.log(preFillValue,"===")
     // Convert preFillValue to dayjs object if it's a date
     useEffect(() => {
         if (preFillValue && type === "date") {
@@ -25,7 +26,6 @@ const CustomInput = ({
     }, [preFillValue, type]);
 
     const handleDateChange = (date) => {
-        // update the dateStatus
         setDate(date);
         if (onChange) {
             let dateString = date.toDate();
@@ -33,6 +33,13 @@ const CustomInput = ({
             updateInForm(dateString);
         }
     };
+
+    const handleCheckboxChange = (e) => {
+           if(onChange){}
+            onChange(e.target.checked);
+            updateInForm(e.target.checked);
+    };
+
     switch (type) {
         case "text":
             return (
@@ -53,12 +60,12 @@ const CustomInput = ({
         case "number":
             return (
                 <InputNumber
-                {...restProps}
-                readOnly={readOnly}
-                style={{ width: width }}
-                controls={false} // Remove the up/down controls
-                min={0} // Prevent value from being less than 0
-            />
+                    {...restProps}
+                    readOnly={readOnly}
+                    style={{ width: width }}
+                    controls={false} // Remove the up/down controls
+                    min={0} // Prevent value from being less than 0
+                />
             );
         case "box":
             return <Input.TextArea {...restProps} style={{ width: width }} />;
@@ -82,9 +89,19 @@ const CustomInput = ({
                 />
             );
         case "counters":
-            return <CustomCounters entity={entity}  preFillValue ={preFillValue} {...restProps} />;
+            return <CustomCounters entity={entity} preFillValue={preFillValue} {...restProps} />;
         case "image":
             return <UploadImage {...restProps} />;
+        case "checkbox":
+            return (
+                <Checkbox
+                    onChange={handleCheckboxChange}
+                    checked={preFillValue}
+                    {...otherProps}
+                >
+                    {restProps.label}
+                </Checkbox>
+            );
         default:
             return <Input readOnly={readOnly} {...restProps} />;
     }

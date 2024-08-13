@@ -17,8 +17,8 @@ const AddressDetails = ({
     address,
     updateInForm,
     updateInCustomModal,
-    isForDelivery,
-    deliverTo
+    onlyShippingAddress,
+    to
 }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -26,7 +26,6 @@ const AddressDetails = ({
     const { appApiCall } = useAuth();
 
     const addressString = `${address?.street1 || ""}, ${address?.street2 || ""}, ${address?.city || ""}, ${address?.state || ""}, ${address?.pincode || ""}`;
-
     const handleEditClick = () => {
         setIsEditing(true);
         setIsModalVisible(true);
@@ -58,7 +57,11 @@ const AddressDetails = ({
                 updateInCustomModal(values, keyName)
 
             }
-            updateInForm(values);
+            updateInForm({
+                to:to,
+                type:"organization",
+                address:values
+            });
         } catch (errorInfo) {
             return NotificationHandler.error(errorInfo.message);
         }
@@ -87,10 +90,10 @@ const AddressDetails = ({
                         <>
                             <Row align="middle" style={{ marginBottom: "2Ppx" }}>
                                {
-                                isForDelivery ? (
+                                onlyShippingAddress ? (
                                     <Col span={16}>
                                     <Taglabel
-                                        text={deliverTo?.toUpperCase() ||""}
+                                        text={to?.toUpperCase() ||""}
                                         details={true}
                                     />
                                 </Col>

@@ -11,7 +11,7 @@ const purchaseOrderSchema = new mongoose.Schema({
         type: Number,
         required: true,
         unique: true,
-        sparse:true
+        sparse: true,
     },
     purchaseDate: {
         type: Date,
@@ -42,15 +42,17 @@ const purchaseOrderSchema = new mongoose.Schema({
             },
         },
     ],
-    deliverTo:{
-        type:String
-    },
-    deliveryAddress: {
-        street1: String,
-        street2: String,
-        city: String,
-        state: String,
-        pincode: Number,
+
+    delivery: {
+        type: { type: String },
+        to: { type: String },
+        address: {
+            street1: String,
+            street2: String,
+            city: String,
+            state: String,
+            pincode: Number,
+        },
     },
     grossTotal: {
         type: Number,
@@ -71,12 +73,12 @@ const purchaseOrderSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    paymentCondition:{
-        type:String
+    paymentCondition: {
+        type: String,
     },
-    cancellationCondition:{
-        type:String
-    }
+    cancellationCondition: {
+        type: String,
+    },
 });
 
 purchaseOrderSchema.plugin(mongooseAutoPopulate);

@@ -6,6 +6,7 @@ import {
     calculateStreetPostion,
     addBankDetails,
     calculateHeaderPosition,
+    getPrimaryOrFirstBank,
 } from "../../../Helper/pdfHelper.js";
 
 const borderColor = "#000000"; // Color for the border
@@ -837,7 +838,8 @@ const detailsForChallan = (doc, challanDataa, organizationData, curY) => {
 
 const footerForInvoice = (doc, invoiceData, organizationData) => {
     const initialY = doc.y + 20;
-
+    const { bankDetails } = organizationData;
+    let primaryBank = getPrimaryOrFirstBank(bankDetails);
     doc.fontSize(10);
     doc.fill("#000");
     // Gross Total and Tax Amount on the right
@@ -870,19 +872,19 @@ const footerForInvoice = (doc, invoiceData, organizationData) => {
         continued: true,
     })
         .font("Helvetica")
-        .text(`${organizationData?.bankName || ""}`);
+        .text(`${primaryBank?.bankName || ""}`);
     doc.font("Helvetica-Bold");
     doc.text(`Account No: `, bankDetailsStartX, bankDetailsStartY + 30, {
         continued: true,
     })
         .font("Helvetica")
-        .text(`${organizationData?.accountNo}`);
+        .text(`${primaryBank?.accountNo}`);
     doc.font("Helvetica-Bold");
     doc.text(`IFSC Code: `, bankDetailsStartX, bankDetailsStartY + 45, {
         continued: true,
     })
         .font("Helvetica")
-        .text(`${organizationData?.ifscCode}`);
+        .text(`${primaryBank?.ifscCode}`);
 
     // Thank you message
     const thankYouY = startY + 110; // Adjust this value to position the thank you message properly

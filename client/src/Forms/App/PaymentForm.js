@@ -44,12 +44,13 @@ const PaymentForm = ({ form, initialValue = {} }) => {
                             },
                         ]}
                         labelAlign="left"
-                        width="35%"
+                        width={"25vw"}
                         entity={"customers"}
                         fieldName={"name"}
                         updateInForm={(value) => {
                             handleItemUpdate(value, "customer");
                         }}
+                        onlyShippingAddress ={true}
                         preFillValue={form.getFieldValue("customer")?.name}
                         type={"model"}
                     />

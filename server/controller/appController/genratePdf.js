@@ -15,8 +15,7 @@ const generatePdf = async (req, res, next) => {
             _id: id,
             tenantId: tenantId,
         });
-        console.log(entityData,"entity",entity,tenantId,id)
-        let organization =  organizationData//await tenantDb.findOne({ _id: tenantId });
+        let organization =  await tenantDb.findOne({ _id: tenantId });
         let prefix = await countersDb.findOne({
             entityName: entity,
             tenantId: tenantId,

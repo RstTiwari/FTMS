@@ -24,7 +24,7 @@ const dbMapping = {
     challans: deliveryChallanDb,
     vendors: vendorDb,
     purchases: purchaseDb,
-    orgnizations: tenantDb,
+    tenant: tenantDb,
     tenantData: tenantData,
     counters: counters,
     customSelect: customSelect,

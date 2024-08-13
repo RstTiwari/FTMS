@@ -29,16 +29,16 @@ const SettingList = ({ closeSideBar, setCloseSideBar }) => {
     const tenantId = cookie["profile"]["tenant"]["tenantId"];
 
     const handleClick = (e) => {
-        navigate(`/app/${tenantId}/settings/${e.key}/${tenantId}`);
+        navigate(`/app/${tenantId}/settings/${e.key}`);
         setCloseSideBar(!closeSideBar);
     };
     const items = [
-        getItem("Orgnization Profile", `orgnizations`, <ContainerOutlined />),
+        getItem("Organization Profile", `organization`, <ContainerOutlined />),
         getItem("PDF Templates", "templates", <PrinterOutlined />),
         getItem("Dashbord Users", "dashbordusers", <TeamOutlined />),
         // getItem("Employess", "emloyess", < />),
     ];
-    return <Menu items={items} onClick={(e) => handleClick(e)} />;
+    return <Menu selectedKeys={null} items={items} onClick={(e) => handleClick(e)} />;
 };
 
 export default SettingList;
