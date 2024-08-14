@@ -1,122 +1,26 @@
 import React, { useEffect } from "react";
-import {
-    PointOfSaleOutlined,
-    RequestQuote,
-    AccountBoxOutlined,
-    PaymentOutlined,
-} from "@mui/icons-material";
-
-import {
-    Box,
-    Button,
-    Typography,
-    useTheme,
-    useMediaQuery,
-} from "@mui/material";
-import { Flex ,Row,Col} from "antd";
+import { Flex, Row, Col, Tabs } from "antd";
 import SummaryCard from "./SummaryCard";
 import { useAuth } from "state/AuthProvider";
-
+import TotalReceivables from "./TotalRecivables";
+import Taglabel from "components/Comman/Taglabel";
+import TabPane from "antd/es/tabs/TabPane";
+import SalesExpensesDashboard from "./SalesExpenses";
+import TopExpenses from "./TopExpenses";
 
 const Dashbord = () => {
-    const {verifyToken}  = useAuth()
-    const theme = useTheme();
-    const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
-    // const { data, isLoading } = useGetDashbordDataQuery();
-    const columns = [
-        {
-            field: "_id",
-            headerName: "ID",
-            flex: 1,
-        },
-        {
-            field: "userId",
-            headerName: "User ID",
-            flex: 1,
-        },
-        {
-            field: "createdAt",
-            headerName: "CreatedAt",
-            flex: 1,
-        },
-        {
-            field: "products",
-            headerName: "# of Products",
-            flex: 0.5,
-            sortable: false,
-            renderCell: (params) => params.value.length,
-        },
-        {
-            field: "cost",
-            headerName: "Cost",
-            flex: 1,
-            renderCell: (params) => `$${Number(params.value).toFixed(2)}`,
-        },
-    ];
-    const entityData = [
-        {
-            result: 100,
-            isLoading: false,
-            entity: "lead",
-            title: "Lead Genrated",
-            icon :<PointOfSaleOutlined/>
-        },
-        {
-            result: 12334,
-            isLoading: false,
-            entity: "quote",
-            title: "Quotes Send",
-            icon:<RequestQuote/>
-        },
-        {
-            result: 1234,
-            isLoading: false,
-            entity: "invoice",
-            title: "Invoices ",
-            icon:<AccountBoxOutlined/>
-        },
-
-        {
-            result: 1200000,
-            isLoading: false,
-            entity: "payment",
-            title: "Payments Due",
-            icon:<PaymentOutlined/>
-        },
-    ];
-    const cards = entityData.map((item, index)=>{
-      if(item.entity === 'payment'){
-          item.result = `${item.result}Rs`
-      }
-      return (
-        
-          <SummaryCard
-              key={index}
-              title={item.title}
-              cardContent={item.result}
-              prefix={"This Month"}
-              tagColor={
-                  item.entity === "invoice"
-                      ? "cyan"
-                      : item.entity === "quote"
-                      ? "purple"
-                      : item.entity === "lead"
-                      ? "green"
-                      : "blue"
-              }
-              icon={item.icon}
-              isLoading={item.isLoading}
-          />
-      );
-    })
     return (
-        <Flex vertical style={{ margin: "1rem" }} gap={"large"}>
-            <Row align={"middle"} gutter={[32,10]}>
-                {cards}
-            </Row>
-            <Row align={"middle"} gutter={[32,10]} >
-            </Row>
-        </Flex>
+        <div style={{padding:"20px"}}>
+            <Tabs>
+                <TabPane tab="DASHBOARD" key={1}>
+                    <TotalReceivables />
+                    <SalesExpensesDashboard />
+                    <TopExpenses/>
+                </TabPane>
+                <TabPane tab="MYFAC8RY SERVICES" key={2}>
+                </TabPane>
+            </Tabs>
+        </div>
     );
 };
 

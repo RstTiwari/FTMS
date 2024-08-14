@@ -4,7 +4,7 @@ import {
     UserOutlined,
     LogoutOutlined
 } from "@ant-design/icons";
-import { Layout, Typography, Button, Avatar, Dropdown, Menu } from "antd";
+import { Layout, Typography, Button, Avatar, Dropdown, Menu, Image } from "antd";
 import { useAuth } from "state/AuthProvider";
 import SettingSidebar from "pages/Setting/SettingSidebar";
 import SettingList from "../pages/Setting/SettingList";
@@ -58,16 +58,16 @@ const NavBar = ({ user, width }) => {
             <div className="center" style={{ display: "flex", alignItems: "center", flexGrow: 1, justifyContent: "center" }}>
                 {isLaptop && (
                     <>
-                        {user && user.companyLogo && (
-                            <Avatar
-                                src={user?.companyLogo}
+                        {user && user.logo && (
+                            <Image
+                                src={user?.logo}
                                 alt="Company Logo"
                                 size="small"
-                                style={{ marginRight: 8 }}
+                                style={{ marginRight: 8 ,width:35,height:35,borderRadius:"10px"}}
                             />
                         )}
                         <Typography.Text style={{ textTransform: "uppercase", color: "#000",fontWeight:500, marginLeft: "0.5rem" }}>
-                            {user?.companyName}
+                        {user?.companyName}
                         </Typography.Text>
                     </>
                 )}

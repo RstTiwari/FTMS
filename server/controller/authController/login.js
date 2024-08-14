@@ -1,6 +1,7 @@
 import joi from "joi";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import sendEmail from "./sendEmail.js";
 /**
  *
  * @param {*} req
@@ -34,7 +35,7 @@ const login = async (req, res, next,userDb,userPasswordDb,tenantDb,tenantDataDb)
       });
     }
 
-    const user = await userDb.findOne({ email: email, removed: false });
+    const user = await userDb.findOne({ email: email, removed: false, });
     if (!user) {
       return res.status(409).json({
         success: 0,
@@ -43,7 +44,22 @@ const login = async (req, res, next,userDb,userPasswordDb,tenantDb,tenantDataDb)
       });
     }
 
-    if (!user.enabled) {
+   // check user email is verified
+   let userPasswordData = await userPasswordDb.findOne({userId:user._id})
+    if (!userPasswordData?.emailVerified) {
+       // sending an OTP to verify 
+       const emailOtp = Math.floor(100000 + Math.random() * 900000);
+       const emailOtpExpireTime = Math.floor(Date.now() / 1000) + 900;
+       sendEmail(email,user.name,emailOtp,"emailVerification")
+       await userPasswordData.updateOne(
+           { userId: user?._id },
+           {
+               $set: {
+                   emailOtp: emailOtp,
+                   emailOtpExpireTime: emailOtpExpireTime,
+               },
+           }
+       );
       return res.status(200).json({
         success: 1,
         emailVerified: false,
@@ -112,6 +128,7 @@ const login = async (req, res, next,userDb,userPasswordDb,tenantDb,tenantDataDb)
           email: user?.email,
           photo: user?.photo,
           companyName: tenantData?.tenantId?.companyName,
+          logo:tenantData?.tenantId?.logo
         },
         tenant: {
           tenantId: tenantId,

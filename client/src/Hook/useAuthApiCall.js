@@ -15,7 +15,7 @@ const useAuthApiCall = (backendApi) => {  // backendApi is backend backendApi
       if (response.success) {
         const {result} = response
         const {user,tenant} = result
-        if (result?.emailVerified === false) {
+        if (response?.emailVerified == false) {
           storeLocalData(user?.userId, response?.result)
           navigate(`/verifyEmail/${user?.userId}/${tenant?.tenantId}`);
           return NotificationHandler.success(
@@ -37,7 +37,7 @@ const useAuthApiCall = (backendApi) => {  // backendApi is backend backendApi
           );
           navigate("/");
         } else if (backendApi === "register") {
-          storeLocalData(user?.userId, response.result);
+          storeLocalData(user?.userId, response.result)
           navigate(`/verifyEmail/${user?.userId}/${tenant?.tenantId}`);
         } else if (backendApi === "verify") {
           //Storing Data for login

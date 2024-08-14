@@ -23,15 +23,18 @@ const VerifyEmail = () => {
   };
 
   useEffect(() => {
-    let localData = fetchLocalData(userId);
-    setVerifyData({
-      ...verifyData,
-      email: localData?.user?.email,
-      userId: userId,
-      tenantId:tenantId,
-    });
-  }, [useAuthApiCall]);
-  
+    const fetchData = async () => {
+      const localData = await fetchLocalData(userId);
+      setVerifyData({
+        email: localData?.user?.email,
+        userId: userId,
+        tenantId: tenantId,
+      });
+    };
+
+    fetchData();
+  }, [fetchLocalData, userId, tenantId]);
+
   if (isLoading) {
     return (
       <PageLoader
@@ -40,15 +43,18 @@ const VerifyEmail = () => {
       />
     );
   }
+
+  if(!verifyData){
+    return <PageLoader  isLoading={true}  text={"HOld On.."} />
+  }
   return (
     <Form form={form} onFinish={handleVerifyOtp}>
       <Row justify={"center"}>
         <Taglabel
-          text={`OTP has been  send to - `}
+          text={`OTP sent to email please verify it`}
           type={"amount"}
           weight={500}
         />
-        <Taglabel text={verifyData?.email} type={"customer"} weight={1000} />
       </Row>
       <Row justify={"center"}>
         <Taglabel text={"Enter OTP to verify"} type="counter" />
