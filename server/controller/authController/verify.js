@@ -45,9 +45,7 @@ const verify = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
           });
         }
        
-        console.log(emailOtp, typeof emailOtp)
         const isMatch = Number(emailOtp) == userPasswordResult?.emailOtp ? true : false;
-        console.log(isMatch, "==", userPasswordResult);
 
 
         if (

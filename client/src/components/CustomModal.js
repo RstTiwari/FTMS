@@ -5,6 +5,7 @@ import CoustomButton from "./Comman/CoustomButton";
 import CustomForm from "./CreateCustomForm";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import AddressDetails from "./Comman/AddressDetails";
+import PageLoader from "pages/PageLoader";
 
 const CustomModel = ({
     entity,
@@ -168,7 +169,7 @@ const CustomModel = ({
                         disabled={disabled}
                         loading={isLoading}
                         showSearch
-                        style={{width:width}}
+                        style={{ width: width }}
                         getPopupContainer={(trigger) => document.body}
                         dropdownStyle={{ position: "fixed", zIndex: 1050 }}
                         filterOption={(input, option) =>
@@ -179,28 +180,38 @@ const CustomModel = ({
                         dropdownRender={(menu) => {
                             return (
                                 <>
-                                    <div
-                                        style={{
-                                            height: "200px",
-                                        }}
-                                    >
-                                        {menu}
-                                    </div>
+                                    {!isLoading ? (
+                                        <>
+                                            <div
+                                                style={{
+                                                    height: "200px",
+                                                }}
+                                            >
+                                                {menu}
+                                            </div>
 
-                                    <div
-                                        style={{
-                                            backgroundColor: "#ffffff",
-                                            zIndex: "100",
-                                            width: "100vw",
-                                            paddingTop: "75px",
-                                            alignItems: "center",
-                                        }}
-                                    >
-                                        <CoustomButton
-                                            text="New"
-                                            onClick={openModal}
+                                            <div
+                                                style={{
+                                                    backgroundColor: "#ffffff",
+                                                    zIndex: "100",
+                                                    width: "100vw",
+                                                    paddingTop: "75px",
+                                                    alignItems: "center",
+                                                }}
+                                            >
+                                                <CoustomButton
+                                                    text="New"
+                                                    onClick={openModal}
+                                                />
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <PageLoader
+                                            isLoading={true}
+                                            height="30px"
+                                            text={"Hold on"}
                                         />
-                                    </div>
+                                    )}
                                 </>
                             );
                         }}

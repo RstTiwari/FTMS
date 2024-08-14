@@ -23,7 +23,6 @@ const QuotationForm = ({ form }) => {
             form.setFieldsValue({ no: value });
         } else if (fieldName === "description") {
             let { description, rate, hsnCode } = value;
-            console.log(description, rate, hsnCode);
             temObj.description = description;
             temObj.hsnCode = hsnCode;
             temObj.rate = rate;

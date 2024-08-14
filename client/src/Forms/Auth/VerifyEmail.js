@@ -32,8 +32,6 @@ const VerifyEmail = () => {
     });
   }, [useAuthApiCall]);
   
-  console.log(verifyData,"==")
-
   if (isLoading) {
     return (
       <PageLoader

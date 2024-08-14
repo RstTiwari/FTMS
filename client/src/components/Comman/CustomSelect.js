@@ -18,7 +18,7 @@ const CustomSelect = ({
     const [addValue, setAddValue] = useState("");
     const [value, setValue] = useState(preFillValue);
     const { appApiCall } = useAuth();
-    
+
     const handelClick = async () => {
         const response = await appApiCall(
             "get",
@@ -32,7 +32,6 @@ const CustomSelect = ({
         setOptions(response.result);
         setIsLoading(false);
     };
-    console.log(preFillValue,"preFill")
     useEffect(() => {
         if (preFillValue) {
             setValue(preFillValue);
@@ -67,7 +66,7 @@ const CustomSelect = ({
         <>
             {!open ? (
                 <Select
-                    value={value ? value :""}
+                    value={value ? value : ""}
                     options={options}
                     onChange={handleChange}
                     style={{ width: width }}
@@ -91,17 +90,21 @@ const CustomSelect = ({
                         >
                             <div style={{ flexGrow: 1 }}>{menu}</div>
                             <Divider style={{ margin: 0 }} />
-                            <div
-                                style={{
-                                    backgroundColor: "#fff",
-                                    padding: "8px",
-                                }}
-                            >
-                                <CustomButton
-                                    text="New"
-                                    onClick={() => setOpen(true)}
-                                />
-                            </div>
+                            {!isLoading ? (
+                                <div
+                                    style={{
+                                        backgroundColor: "#fff",
+                                        padding: "8px",
+                                    }}
+                                >
+                                    <CustomButton
+                                        text="New"
+                                        onClick={() => setOpen(true)}
+                                    />
+                                </div>
+                            ) : (
+                                <PageLoader isLoading={true} height="30px" text={"hold On"} />
+                            )}
                         </div>
                     )}
                 />

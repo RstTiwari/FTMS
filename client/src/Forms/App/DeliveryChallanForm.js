@@ -25,7 +25,6 @@ const DeliveryChallan = ({ form }) => {
     const isLaptop = useMediaQuery("(min-width:1000px)");
 
     const handleItemUpdate = (value, filedName, rowName) => {
-        console.log("value", value, "fieldName", filedName);
         const items = form.getFieldValue("items");
         let temObj = items[rowName];
         if (filedName === "description") {

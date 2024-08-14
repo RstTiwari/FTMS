@@ -17,7 +17,6 @@ const CustomInput = ({
 }) => {
     const { onChange, preFillValue, updateInForm, ...otherProps } = restProps;
     const [date, setDate] = useState("");
-    console.log(preFillValue,"===")
     // Convert preFillValue to dayjs object if it's a date
     useEffect(() => {
         if (preFillValue && type === "date") {

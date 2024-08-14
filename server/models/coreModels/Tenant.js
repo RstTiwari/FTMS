@@ -51,7 +51,7 @@ const tenantSchema = new mongoose.Schema(
             state: {
                 type: String,
             },
-            pinCode: {
+            pincode: {
                 type: String,
             },
         },
@@ -68,7 +68,7 @@ const tenantSchema = new mongoose.Schema(
             state: {
                 type: String,
             },
-            pinCode: {
+            pincode: {
                 type: String,
             },
         },

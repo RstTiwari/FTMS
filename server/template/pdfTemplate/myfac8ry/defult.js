@@ -689,7 +689,7 @@ const detailsForPurchaseOrder = (
     const initialY = doc.y; // Initial Y position for the details
     const detailSpacing = 10; // Spacing between details
     const borderColor = "#000000"; // Color for the border
-    const { vendor, deliveryAddress, deliverTo } = purchaseOrderData;
+    const { vendor, deliveryAddress, delivery } = purchaseOrderData;
 
     // Supplier Details
     let vendorAddress = "";
@@ -703,7 +703,8 @@ const detailsForPurchaseOrder = (
         let panNo = vendor?.panNo || "";
         vendorAddress = `${street1} ${street2} \n${city} ${state} ${pincode} \nGST No: ${gstNo} , PAN No: ${panNo}`;
     }
-    doc.fontSize(12).fillColor("#0047AB").text("SUPPLIER:", leftX, initialY);
+    
+    doc.fontSize(12).fillColor("#0047AB").font("Helvetica-Bold").text("SUPPLIER:", leftX, initialY);
     doc.fontSize(10)
         .fillColor("#1E1F20")
         .font("Helvetica-Bold")
@@ -715,23 +716,24 @@ const detailsForPurchaseOrder = (
     const supplierEndY = doc.y;
 
     // Delivery To Details
+    const {to,address} = delivery
     doc.fontSize(12)
         .fillColor("#0047AB")
         .text("DELIVERY TO:", rightX, initialY);
     doc.fontSize(10)
         .fillColor("#1E1F20")
         .font("Helvetica-Bold")
-        .text(deliverTo, rightX, initialY + 15);
+        .text(to || "", rightX, initialY + 15);
     doc.fontSize(9)
         .fillColor("#4B4E4F")
         .text(
-            `${deliveryAddress?.street1},${deliveryAddress?.street2}`,
+            `${address?.street1},${address?.street2}`,
             rightX,
             doc.y + 5,
             { width: 280, align: "left" }
         );
     doc.text(
-        `${deliveryAddress?.city}, ${deliveryAddress?.state}, ${deliveryAddress?.pincode}`,
+        `${address?.city}, ${address?.state}, ${address?.pincode}`,
         rightX,
         doc.y + 5,
         { width: 280 }
@@ -760,7 +762,6 @@ const detailsForChallan = (doc, challanDataa, organizationData, curY) => {
     const detailSpacing = 10; // Spacing between details
     const borderColor = "#000000"; // Color for the border
     const { customer } = challanDataa;
-    console.log(challanDataa, "==");
 
     // Dispatch To (Customer Billing Details)
     doc.fontSize(12)

@@ -18,3 +18,4 @@ export const epochInDDMMYY = (timestamp) => {
 export const jsDateIntoDDMMYY = (dateString) => {
     return dayjs(dateString).format("DD-MM-YYYY");
 };
+

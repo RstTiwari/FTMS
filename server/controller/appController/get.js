@@ -9,6 +9,10 @@ const get = async (req, res, next) => {
         }
 
         let filter = { tenantId: tenantId, _id: id };
+        if (entity === "tenant") {
+            // For fetching data from tenant Database
+            filter = { _id: tenantId };
+        } 
 
         // selecting the Database
         const dataBase = checkDbForEntity(entity);

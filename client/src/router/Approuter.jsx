@@ -10,7 +10,6 @@ import DetailsLayout from "pages/layout/DetailsLayout";
 import Details from "components/Details";
 import CustomForm from "components/CreateCustomForm";
 import UpdateCustomForm from "components/UpdateCustomForm";
-import Organization from "pages/Orgnization/Orgnization";
 
 const Approuter = ({ profile }) => {
     const tenantId = profile?.tenant?.tenantId;

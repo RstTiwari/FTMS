@@ -3,6 +3,7 @@ import Customer from "../../pages/Details/Customer/Customer";
 import PDFGenerator from "pages/Details/PdfGenrator";
 import PaymentDetails from "../../pages/Details/PayementDetails";
 import ExpenseDetails from "pages/Details/ExpenseDetails";
+import ProductDetails from "pages/Details/ProductDetails";
 const DetailsModule = ({ entity, values, id,loading }) => {
     let component = <NotFound />;
     switch (entity) {
@@ -20,6 +21,11 @@ const DetailsModule = ({ entity, values, id,loading }) => {
                 <PaymentDetails entity={entity} id={id} values={values} />
             );
             break;
+        case "products":
+                component = (
+                    <ProductDetails entity={entity} id={id} values={values} />
+                );
+                break;
         case "expenses":
             component = (
                 <ExpenseDetails entity={entity} id={id} values={values} />

@@ -51,7 +51,6 @@ export const downloadAndSaveImage = async (url, fileName) => {
         const imageName = `${fileName}.png`; // Assuming the image is a PNG
         const imagePath = path.join(folder, imageName);
         fs.writeFileSync(imagePath, response.data);
-        console.log(`Image downloaded and saved as ${imageName}`);
         return imagePath;
     } catch (error) {
         console.error("Error downloading or saving the image:", error);

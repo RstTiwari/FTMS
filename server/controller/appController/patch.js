@@ -9,9 +9,9 @@ const patch = async (req, res, next) => {
             throw new Error("Invalid Payload");
         }
         let filter = { _id: id, tenantId: tenantId };
-        
+
         if (entity === "tenant") {
-            filter = { _id: id };
+            filter = { _id:tenantId};
         }
         let updateObj = {};
 

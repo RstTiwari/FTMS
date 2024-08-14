@@ -23,12 +23,14 @@ import CustomModel from "components/CustomModal";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import AddressDetails from "components/Comman/AddressDetails";
 import { useParams } from "react-router-dom";
+import useInitialFormValues from "Hook/useIntialFormValues";
 
 const PurchaseOrder = ({ form, value, disabled, isModel }) => {
     const [isOrganizationChecked, setIsOrganizationChecked] = useState(false);
     const [isCustomerChecked, setIsCustomerChecked] = useState(false);
     const [delivery, setDelivery] = useState("");
-    const {tenantId} = useParams()
+    const {tenantId,id} = useParams()
+    const {initialValues, isFetching, fetchInitialValues } = useInitialFormValues("tenant",tenantId)
 
     const updateDeliveryAddress = (values) => {
         form.setFieldsValue({
@@ -40,34 +42,29 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
         });
     };
 
-    const handleCheckboxChange = (type) => {
+    const handleCheckboxChange = async(type) => {
         if (type === "organization") {
             // Probally call the api and get the Organization Data
-            const response = {
-                companyName: "HKB Development Pvt LtD",
-                deliveryAddress: {
-                    street1: "A-1o near gorai pada vasai virat",
-                    street2: "near Sb road cap",
-                    city: "vasai",
-                    state: "Maharastra",
-                    pincode: 401209,
-                },
-            };
+            if (!initialValues) {
+                await fetchInitialValues();
+            }
+
             setDelivery({
                 ...delivery,
                 type:"organization",
-                to:response?.companyName,
-                address: response?.deliveryAddress,
+                to:initialValues?.companyName,
+                address: initialValues?.deliveryAddress,
             });
-            console.log(delivery,"===")
+
             updateDeliveryAddress({
                 type:"organization",
-                to:response?.companyName,
-                address: response?.deliveryAddress,
+                to:initialValues?.companyName,
+                address: initialValues?.deliveryAddress,
             });
             setIsOrganizationChecked(true);
             setIsCustomerChecked(false);
         } else if (type === "customer") {
+            form.setFieldsValue({delivery:''})
             setIsOrganizationChecked(false);
             setIsCustomerChecked(true);
         }
@@ -128,9 +125,25 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
             grandTotal: Math.ceil(grandTotal),
         });
     };
+
     useEffect(() => {
-        
-    },[delivery]);
+        //Checking delivery Address Type
+        let delivery = form.getFieldValue("delivery");
+        if (id) {
+            delivery?.type === "customer"
+                ? setIsCustomerChecked(true)
+                : setIsOrganizationChecked(true);
+            setDelivery({
+                ...delivery,
+                to: delivery?.to,
+                address: delivery?.address,
+            });
+        }
+    }, []);
+
+    useEffect(()=>{
+
+    },[form])
     return (
         <div>
             <FormItemCol
@@ -268,7 +281,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                                 onlyShippingAddress={true}
                                 address={delivery?.address}
                                 to={delivery?.to}
-                                keyName={"delivery.address"}
+                                keyName={"deliveryAddress"}
                                 entity={"tenant"}
                                 updateInForm={updateDeliveryAddress}
                             />
@@ -294,8 +307,9 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                                 onlyShippingAddress={true}
                                 updateInForm={updateDeliveryAddress}
                                 preFillValue={form.getFieldValue(
-                                    "deliveryAddress"
-                                )}
+                                    "delivery"
+                                )?.to}
+                                preFillAddress = {form.getFieldValue("delivery")?.address}
                             />
                         </Col>
                     )}
@@ -387,7 +401,8 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                         <div>
                             <div
                                 style={{
-                                    overflow: "auto",
+                                    overflowA: "auto",
+                                    overflowY:"auto",
                                     minHeight: "10vh",
                                     maxHeight: "40vh",
                                     minWidth: 1200,
