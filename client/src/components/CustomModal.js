@@ -134,10 +134,11 @@ const CustomModel = ({
                 });
             }
 
-            if (onlyShippingAddress) {
+            if (forDeliveryAddress) {
                 return updateInForm({
-                    name: result?.name,
-                    shippingAddress: result?.shippingAddress,
+                    to: result?.name,
+                    address: result?.shippingAddress,
+                    type: "customer",
                 });
             }
 
