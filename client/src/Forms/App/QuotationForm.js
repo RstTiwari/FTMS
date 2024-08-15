@@ -23,6 +23,7 @@ import { jsDateIntoDayjsDate } from "Helper/EpochConveter";
 
 const QuotationForm = ({ form }) => {
     const handleItemsUpdate = (value, filedName, rowName) => {
+        console.log(value, "==");
         const items = form.getFieldValue("items");
         let temObj = items[rowName];
         if (filedName === "description") {
@@ -106,7 +107,7 @@ const QuotationForm = ({ form }) => {
                 width={"25vw"}
                 entity={"customers"}
                 fieldName="name" // filed name form customer modal
-                onlyShippingAddress = {true}
+                onlyShippingAddress={true}
                 updateInForm={(value) => {
                     handleItemsUpdate(value, "customer");
                 }}

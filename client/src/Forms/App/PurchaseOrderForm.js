@@ -29,8 +29,9 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
     const [isOrganizationChecked, setIsOrganizationChecked] = useState(false);
     const [isCustomerChecked, setIsCustomerChecked] = useState(false);
     const [delivery, setDelivery] = useState("");
-    const {tenantId,id} = useParams()
-    const {initialValues, isFetching, fetchInitialValues } = useInitialFormValues("tenant",tenantId)
+    const { tenantId, id } = useParams();
+    const { initialValues, isFetching, fetchInitialValues } =
+        useInitialFormValues("tenant", tenantId);
 
     const updateDeliveryAddress = (values) => {
         form.setFieldsValue({
@@ -42,7 +43,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
         });
     };
 
-    const handleCheckboxChange = async(type) => {
+    const handleCheckboxChange = async (type) => {
         if (type === "organization") {
             // Probally call the api and get the Organization Data
             if (!initialValues) {
@@ -51,20 +52,20 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
 
             setDelivery({
                 ...delivery,
-                type:"organization",
-                to:initialValues?.companyName,
+                type: "organization",
+                to: initialValues?.companyName,
                 address: initialValues?.deliveryAddress,
             });
 
             updateDeliveryAddress({
-                type:"organization",
-                to:initialValues?.companyName,
+                type: "organization",
+                to: initialValues?.companyName,
                 address: initialValues?.deliveryAddress,
             });
             setIsOrganizationChecked(true);
             setIsCustomerChecked(false);
         } else if (type === "customer") {
-            form.setFieldsValue({delivery:''})
+            form.setFieldsValue({ delivery: "" });
             setIsOrganizationChecked(false);
             setIsCustomerChecked(true);
         }
@@ -141,9 +142,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
         }
     }, []);
 
-    useEffect(()=>{
-
-    },[form])
+    useEffect(() => {}, [form]);
     return (
         <div>
             <FormItemCol
@@ -306,10 +305,13 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                                 fieldName={"name"}
                                 onlyShippingAddress={true}
                                 updateInForm={updateDeliveryAddress}
-                                preFillValue={form.getFieldValue(
-                                    "delivery"
-                                )?.to}
-                                preFillAddress = {form.getFieldValue("delivery")?.address}
+                                preFillValue={
+                                    form.getFieldValue("delivery")?.to
+                                }
+                                preFillAddress={
+                                    form.getFieldValue("delivery")?.address
+                                }
+                                forDeliveryAddress={true}
                             />
                         </Col>
                     )}
@@ -402,7 +404,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                             <div
                                 style={{
                                     overflowA: "auto",
-                                    overflowY:"auto",
+                                    overflowY: "auto",
                                     minHeight: "10vh",
                                     maxHeight: "40vh",
                                     minWidth: 1200,

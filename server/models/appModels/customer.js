@@ -50,6 +50,10 @@ const coustomerSchema = new mongoose.Schema(
             ref: "tenant",
             required: true,
         },
+        advanceAmount: {
+            type: Number,
+            deafult: 0,
+        },
     },
     { timestamps: true }
 );

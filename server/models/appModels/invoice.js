@@ -1,29 +1,42 @@
 import mongoose from "mongoose";
 import mongooseAutoPopulate from "mongoose-autopopulate";
+
 const invoiceSchema = new mongoose.Schema(
     {
         customer: {
             type: mongoose.Schema.ObjectId,
             ref: "customer",
             autopopulate: true,
-            require: true,
+            required: true,
         },
         no: {
             type: Number,
-            require: true,
+            required: true,
             unique: true,
         },
         status: {
             type: String,
-            enum: ["DRAFT", "SEND", "CANCELLED", "ON_HOLD"],
+            enum: [
+                "DRAFT",
+                "SEND",
+                "CANCELLED",
+                "ON_HOLD",
+                "PARTIALLY_PAID",
+                "PAID",
+            ],
             default: "DRAFT",
         },
-
-        payment: [
+        payments: [
             {
-                type: mongoose.Schema.ObjectId,
-                autopopulate: true,
-                ref: "payments",
+                paymentId: {
+                    type: mongoose.Schema.ObjectId,
+                    ref: "payments",
+                    autopopulate: true,
+                },
+                amount: {
+                    type: Number,
+                    required: true,
+                },
             },
         ],
         invoiceDate: {
@@ -33,14 +46,12 @@ const invoiceSchema = new mongoose.Schema(
         dueDate: {
             type: Date,
             required: true,
-
         },
-
         items: [
             {
                 description: {
                     type: String,
-                    require: true,
+                    required: true,
                 },
                 hsnCode: {
                     type: String,
@@ -51,7 +62,6 @@ const invoiceSchema = new mongoose.Schema(
                 qty: {
                     type: Number,
                 },
-              
                 gstPercent: {
                     type: Number,
                 },
@@ -66,7 +76,6 @@ const invoiceSchema = new mongoose.Schema(
         taxAmount: {
             type: Number,
         },
-
         grandTotal: {
             type: Number,
         },
@@ -79,4 +88,5 @@ const invoiceSchema = new mongoose.Schema(
 );
 
 invoiceSchema.plugin(mongooseAutoPopulate);
+
 export default mongoose.model("invoice", invoiceSchema);

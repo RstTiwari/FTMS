@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Select, Divider, Button, Row } from "antd";
+import { Modal, Select, Divider, Button, Row, Space } from "antd";
 import { useAuth } from "state/AuthProvider";
 import CoustomButton from "./Comman/CoustomButton";
 import CustomForm from "./CreateCustomForm";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import AddressDetails from "./Comman/AddressDetails";
 import PageLoader from "pages/PageLoader";
+import FormList from "antd/es/form/FormList";
 
 const CustomModel = ({
     entity,
@@ -15,6 +16,7 @@ const CustomModel = ({
     updateInForm,
     preFillValue,
     onlyShippingAddress,
+    forDeliveryAddress,
 }) => {
     const [open, setOpen] = useState(false);
     const { appApiCall } = useAuth();
@@ -87,14 +89,14 @@ const CustomModel = ({
             });
             setId(label?.item?._id);
             // Updating in Purchase Order Forms
-            if (onlyShippingAddress) {
+            if (forDeliveryAddress) {
                 return updateInForm({
                     to: label?.item?.name,
                     address: label?.item?.shippingAddress,
                     type: "customer",
                 });
             }
-            return updateInForm(value);
+            return updateInForm(label?.value);
         } else if (entity === "products") {
             return updateInForm({
                 description: label?.label,
@@ -184,26 +186,28 @@ const CustomModel = ({
                                         <>
                                             <div
                                                 style={{
-                                                    height: "200px",
+                                                    maxHeight: "200px",
+                                                    overflow: "auto",
                                                 }}
                                             >
                                                 {menu}
                                             </div>
-
-                                            <div
+                                            <Divider
                                                 style={{
-                                                    backgroundColor: "#ffffff",
-                                                    zIndex: "100",
-                                                    width: "100vw",
-                                                    paddingTop: "75px",
-                                                    alignItems: "center",
+                                                    margin: "8px 0",
+                                                }}
+                                            />
+                                            <Space
+                                                style={{
+                                                    padding: "0 8px 4px",
                                                 }}
                                             >
                                                 <CoustomButton
-                                                    text="New"
+                                                    text={"ADD NEW"}
+                                                    details={true}
                                                     onClick={openModal}
                                                 />
-                                            </div>
+                                            </Space>
                                         </>
                                     ) : (
                                         <PageLoader

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Divider, Form, message } from "antd";
 import { useParams } from "react-router-dom";
-import moment from "moment";
+import useFormActions from "Hook/useFormAction";
 
 import "../App.css";
 import Header from "./Header";
@@ -9,7 +9,6 @@ import FormActionButtons from "./Comman/FormActionButton";
 import CustomFormItem from "../module/Create/CreateModule";
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
-import useFormActions from "Hook/useFormAction";
 
 const CustomForm = ({
     entityOfModal,
@@ -35,13 +34,22 @@ const CustomForm = ({
 
     const handleFormFinish = async (values) => {
         if (values.hasOwnProperty("image")) {
-            const formData = new FormData();
-            formData.append("file", values.image);
-            const response = await appApiCall("post", "upload", formData, {});
-            if (!response.success) {
-                return NotificationHandler.error("failed to Upload Image");
+            let image = values?.image;
+            if (typeof image === "object") {
+                //then now upload the file before saving it
+                const formData = new FormData();
+                formData.append("file", values.image);
+                const response = await appApiCall(
+                    "post",
+                    "upload",
+                    formData,
+                    {}
+                );
+                if (!response.success) {
+                    return NotificationHandler.error("failed to Upload Image");
+                }
+                values.image = response.result;
             }
-            values.image = response.result;
         }
         handleFormSubmit(values, isModal, passToModal);
     };

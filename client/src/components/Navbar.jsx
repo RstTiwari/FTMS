@@ -2,9 +2,17 @@ import React, { useState } from "react";
 import {
     SettingOutlined,
     UserOutlined,
-    LogoutOutlined
+    LogoutOutlined,
 } from "@ant-design/icons";
-import { Layout, Typography, Button, Avatar, Dropdown, Menu, Image } from "antd";
+import {
+    Layout,
+    Typography,
+    Button,
+    Avatar,
+    Dropdown,
+    Menu,
+    Image,
+} from "antd";
 import { useAuth } from "state/AuthProvider";
 import SettingSidebar from "pages/Setting/SettingSidebar";
 import SettingList from "../pages/Setting/SettingList";
@@ -18,24 +26,25 @@ const NavBar = ({ user, width }) => {
 
     const handleLogout = () => {
         removeLocalData("token");
-        removeLocalData("profile");    
+        removeLocalData("profile");
     };
     const menu = (
         <Menu style={{ width: 150 }}>
             <Menu.Item key="user" icon={<UserOutlined />}>
                 <div style={{ display: "flex", alignItems: "center" }}>
-                    <Typography.Text>{user?.name?.toUpperCase()}</Typography.Text>
+                    <Typography.Text>
+                        {user?.name?.toUpperCase()}
+                    </Typography.Text>
                 </div>
             </Menu.Item>
             <Menu.Item
                 key="logout"
                 icon={<LogoutOutlined />}
                 onClick={handleLogout}
-                style={{ marginTop: "1rem",color:'red' }}
+                style={{ marginTop: "1rem", color: "red" }}
             >
                 Logout
             </Menu.Item>
-           
         </Menu>
     );
 
@@ -55,7 +64,15 @@ const NavBar = ({ user, width }) => {
                 alignItems: "center",
             }}
         >
-            <div className="center" style={{ display: "flex", alignItems: "center", flexGrow: 1, justifyContent: "center" }}>
+            <div
+                className="center"
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    flexGrow: 1,
+                    justifyContent: "center",
+                }}
+            >
                 {isLaptop && (
                     <>
                         {user && user.logo && (
@@ -63,32 +80,61 @@ const NavBar = ({ user, width }) => {
                                 src={user?.logo}
                                 alt="Company Logo"
                                 size="small"
-                                style={{ marginRight: 8 ,width:35,height:35,borderRadius:"10px"}}
+                                preview={false}
+                                style={{
+                                    marginRight: 8,
+                                    width: 35,
+                                    height: 35,
+                                    borderRadius: "10px",
+                                }}
                             />
                         )}
-                        <Typography.Text style={{ textTransform: "uppercase", color: "#000",fontWeight:500, marginLeft: "0.5rem" }}>
-                        {user?.companyName}
+                        <Typography.Text
+                            style={{
+                                textTransform: "uppercase",
+                                color: "#000",
+                                fontWeight: 500,
+                                marginLeft: "0.5rem",
+                            }}
+                        >
+                            {user?.companyName}
                         </Typography.Text>
                     </>
                 )}
             </div>
-            
-            <div className="right" style={{ display: "flex", alignItems: "center" }}>
+
+            <div
+                className="right"
+                style={{ display: "flex", alignItems: "center" }}
+            >
                 <Button
                     icon={<SettingOutlined />}
                     onClick={() => setOpenSettingSidebar(!openSettingSideBar)}
-                    style={{ color: "#333", border: "none", background: "transparent", marginRight: "1rem" }}
+                    style={{
+                        color: "#333",
+                        border: "none",
+                        background: "transparent",
+                        marginRight: "1rem",
+                    }}
                 />
-              
-                <Dropdown overlay={menu} trigger={['click']}>
-                    <Avatar icon={<UserOutlined />} style={{ cursor: "pointer" }} />
+
+                <Dropdown overlay={menu} trigger={["click"]}>
+                    <Avatar
+                        icon={<UserOutlined />}
+                        style={{ cursor: "pointer" }}
+                    />
                 </Dropdown>
             </div>
- 
+
             <SettingSidebar
                 open={openSettingSideBar}
                 setOpen={setOpenSettingSidebar}
-                children={<SettingList closeSideBar={openSettingSideBar}  setCloseSideBar={setOpenSettingSidebar}/>}
+                children={
+                    <SettingList
+                        closeSideBar={openSettingSideBar}
+                        setCloseSideBar={setOpenSettingSidebar}
+                    />
+                }
             />
         </Header>
     );

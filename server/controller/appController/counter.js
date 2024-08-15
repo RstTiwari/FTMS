@@ -15,14 +15,19 @@ export const fetchCountersNumber = async (req, res, next) => {
         query["entityName"] = entityName;
 
         // Before checking in counter data base let first find the last save no for entity;
-        let entityDataBase = checkDbForEntity(entityName)
-        let entityData = await entityDataBase.findOne().sort({no:-1})
-        let no = entityData?.no
-        
+        let entityDataBase = checkDbForEntity(entityName);
+        let entityData = await entityDataBase.findOne().sort({ no: -1 });
+        let no = entityData?.no;
+
         const existingCounters = await dataBase.findOne(query);
-        
-        if (existingCounters) {
-            let { prefix, nextNumber } = existingCounters;
+
+        if (entityData) {
+            let prefix = existingCounters?.prefix
+                ? existingCounters?.prefix
+                : entityName.slice(0, 2).toUpperCase();
+            let nextNumber = existingCounters?.nextNumber
+                ? existingCounters?.nextNumber
+                : 1;
             return res.status(200).json({
                 success: 1,
                 result: {
@@ -47,9 +52,9 @@ export const fetchCountersNumber = async (req, res, next) => {
 
 export const updateCountersNumber = async (req, res, next) => {
     try {
-        const { entity, values  } = req.body;
+        const { entity, values } = req.body;
         const tenantId = req["tenantId"];
-       let { entityName, prefix, nextNumber } = values
+        let { entityName, prefix, nextNumber } = values;
 
         if (!entity || !entityName || !prefix || !nextNumber) {
             throw new Error("Invalid Payload");
@@ -75,7 +80,7 @@ export const updateCountersNumber = async (req, res, next) => {
             const response = {
                 success: 1,
                 result: updateObj,
-                message:`${entityName} counter updated`
+                message: `${entityName} counter updated`,
             };
             res.status(200).json(response);
         } else {
@@ -85,8 +90,7 @@ export const updateCountersNumber = async (req, res, next) => {
             const response = {
                 success: 1,
                 result: newData,
-                message:`${entityName} counter updated`
-
+                message: `${entityName} counter updated`,
             };
             res.status(200).json(response);
         }

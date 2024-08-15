@@ -15,17 +15,25 @@ const ProductForm = ({
     const handleImageUpdate = (file) => {
         form.setFieldsValue({ image: file });
     };
+    const handelItemUpdate = (value, keyName) => {
+        if (keyName === "code") {
+            form.setFieldsValue({ code: value });
+        }
+    };
 
     // const { name, price, hsnCode } = initalValue;
     return (
-        <div style={{ height: "100vh" }}>
+        <div>
             <FormItemCol
                 label="Product Code"
                 labelAlign="left"
                 labelCol={{ span: isModal ? 18 : 8 }}
                 name="code"
+                width={"15vw"}
                 type={"select"}
                 entity={"Product Code"}
+                entityName={"product"}
+                updateInform={(value) => handelItemUpdate(value, "code")}
             />
             <FormItemCol
                 label="Product Name"
@@ -67,7 +75,7 @@ const ProductForm = ({
                 label="Product Image"
                 name="image"
                 type={"image"}
-                url= {form.getFieldValue("image")}
+                url={form.getFieldValue("image")}
                 updateImageInForm={handleImageUpdate}
             />
         </div>

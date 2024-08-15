@@ -10,10 +10,10 @@ const FormActionButtons = ({ isUpdating, showCancel = true }) => {
     const handleCancelClick = () => {
         navigate(-1);
     };
-
+    console.log("called");
     return (
-        <div style={{zIndex: 1000 }}>
-            <Row >
+        <div>
+            <Row>
                 <Form.Item>
                     {isUpdating ? (
                         <CustomButton htmlType="submit" text="Update" />

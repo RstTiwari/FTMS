@@ -84,7 +84,7 @@ const CustomSelect = ({
                             style={{
                                 display: "flex",
                                 flexDirection: "column",
-                                height: "200px",
+                                maxHeight: "200px",
                                 overflow: "auto",
                             }}
                         >
@@ -103,7 +103,11 @@ const CustomSelect = ({
                                     />
                                 </div>
                             ) : (
-                                <PageLoader isLoading={true} height="30px" text={"hold On"} />
+                                <PageLoader
+                                    isLoading={true}
+                                    height="30px"
+                                    text={"hold On"}
+                                />
                             )}
                         </div>
                     )}
