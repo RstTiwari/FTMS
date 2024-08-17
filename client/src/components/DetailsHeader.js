@@ -100,7 +100,7 @@ const DetailsHeader = () => {
                             Download
                         </Col>
                     </>
-                ) : (
+                ) : entity === "customers" ? (
                     <Col
                         span={4}
                         style={{
@@ -112,6 +112,8 @@ const DetailsHeader = () => {
                         <DownCircleOutlined style={{ marginRight: 5 }} />
                         Record Payment
                     </Col>
+                ) : (
+                    ""
                 )}
 
                 <Col

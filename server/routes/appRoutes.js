@@ -28,15 +28,46 @@ router.post("/update", authMethod.isValidAuthtoken, appRoutes.update);
 router.patch("/patch", authMethod.isValidAuthtoken, appRoutes.patch);
 router.get("/pdf", authMethod.isValidAuthtoken, appRoutes.genratePdf);
 router.post("/upload", type, authMethod.isValidAuthtoken, appRoutes.upload);
-router.get("/fetchCountersNumber", authMethod.isValidAuthtoken, appRoutes.fetchCountersNumber);
-router.post("/updateCountersNumber", authMethod.isValidAuthtoken, appRoutes.updateCountersNumber);
-router.post("/fetchCustomModalData", authMethod.isValidAuthtoken, appRoutes.fetchCustomModalData);
-router.post("/addSelectData", authMethod.isValidAuthtoken , appRoutes.addSelectData)
-router.get("/fetchSelectData", authMethod.isValidAuthtoken , appRoutes.fetchSelectData)
-
-
-
-
+router.get(
+    "/fetchCountersNumber",
+    authMethod.isValidAuthtoken,
+    appRoutes.fetchCountersNumber
+);
+router.post(
+    "/updateCountersNumber",
+    authMethod.isValidAuthtoken,
+    appRoutes.updateCountersNumber
+);
+router.post(
+    "/fetchCustomModalData",
+    authMethod.isValidAuthtoken,
+    appRoutes.fetchCustomModalData
+);
+router.post(
+    "/addSelectData",
+    authMethod.isValidAuthtoken,
+    appRoutes.addSelectData
+);
+router.get(
+    "/fetchSelectData",
+    authMethod.isValidAuthtoken,
+    appRoutes.fetchSelectData
+);
+router.post(
+    "/recordPayment",
+    authMethod.isValidAuthtoken,
+    appRoutes.recordPayment
+);
+router.post(
+    "/updatePayment",
+    authMethod.isValidAuthtoken,
+    appRoutes.updatePayment
+);
+router.get(
+    "/totalReciveables",
+    authMethod.isValidAuthtoken,
+    appRoutes.totalReciveables
+);
 
 // //just for app Data
 // router.post("/challan", appRoutes.challan);

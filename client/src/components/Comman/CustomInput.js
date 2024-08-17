@@ -15,7 +15,8 @@ const CustomInput = ({
     width = "150px",
     ...restProps
 }) => {
-    const { onChange, preFillValue, updateInForm, ...otherProps } = restProps;
+    const { onChange, preFillValue, updateInForm, disabled, ...otherProps } =
+        restProps;
     const [date, setDate] = useState("");
     // Convert preFillValue to dayjs object if it's a date
     useEffect(() => {
@@ -34,9 +35,10 @@ const CustomInput = ({
     };
 
     const handleCheckboxChange = (e) => {
-           if(onChange){}
-            onChange(e.target.checked);
-            updateInForm(e.target.checked);
+        if (onChange) {
+        }
+        onChange(e.target.checked);
+        updateInForm(e.target.checked);
     };
 
     switch (type) {
@@ -64,6 +66,7 @@ const CustomInput = ({
                     style={{ width: width }}
                     controls={false} // Remove the up/down controls
                     min={0} // Prevent value from being less than 0
+                    disabled={disabled}
                 />
             );
         case "box":
@@ -88,7 +91,13 @@ const CustomInput = ({
                 />
             );
         case "counters":
-            return <CustomCounters entity={entity} preFillValue={preFillValue} {...restProps} />;
+            return (
+                <CustomCounters
+                    entity={entity}
+                    preFillValue={preFillValue}
+                    {...restProps}
+                />
+            );
         case "image":
             return <UploadImage {...restProps} />;
         case "checkbox":

@@ -16,7 +16,7 @@ const { Text } = Typography;
 const { Option } = Select;
 const entity = "payments";
 
-const PaymentForm = ({ form, initialValue = {} }) => {
+const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
     const handleItemUpdate = (value, fieldName) => {
         if (fieldName === "customer") {
             form.setFieldsValue({ customer: value });
@@ -50,9 +50,10 @@ const PaymentForm = ({ form, initialValue = {} }) => {
                         updateInForm={(value) => {
                             handleItemUpdate(value, "customer");
                         }}
-                        onlyShippingAddress ={true}
+                        onlyShippingAddress={true}
                         preFillValue={form.getFieldValue("customer")?.name}
                         type={"model"}
+                        disabled={isUpdate}
                     />
                 </Col>
                 <Col span={24}>
@@ -115,6 +116,7 @@ const PaymentForm = ({ form, initialValue = {} }) => {
                                 message: "Amount need to specified",
                             },
                         ]}
+                        disabled={isUpdate}
                     />
                 </Col>
 

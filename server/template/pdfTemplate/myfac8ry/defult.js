@@ -127,8 +127,8 @@ const addHeader = (
 
     // Image Section
     const imageWidth = 75;
-    const imageHeight = 75;
-    const imageX = 5; // X position for the image
+    const imageHeight = 65;
+    const imageX = 10; // X position for the image
     const imageY = doc.y + 5; // Y position for the image
     if (imageBuffer) {
         try {
@@ -142,11 +142,6 @@ const addHeader = (
     } else {
         console.log("No image buffer provided");
     }
-
-    const { headerText } = calculateHeaderPosition(
-        organization?.companyName,
-        doc
-    );
 
     // Address Section
     let address = "";
@@ -179,7 +174,10 @@ const addHeader = (
     doc.fontSize(12)
         .fillColor(headerTextColor)
         .font("Helvetica-Bold")
-        .text(headerText, 80, headerTextY, { width: 275, align: "left" });
+        .text(organization?.companyName, 100, headerTextY, {
+            width: 275,
+            align: "left",
+        });
 
     doc.fontSize(addressFontSize)
         .fillColor(addressColor)
@@ -703,8 +701,11 @@ const detailsForPurchaseOrder = (
         let panNo = vendor?.panNo || "";
         vendorAddress = `${street1} ${street2} \n${city} ${state} ${pincode} \nGST No: ${gstNo} , PAN No: ${panNo}`;
     }
-    
-    doc.fontSize(12).fillColor("#0047AB").font("Helvetica-Bold").text("SUPPLIER:", leftX, initialY);
+
+    doc.fontSize(12)
+        .fillColor("#0047AB")
+        .font("Helvetica-Bold")
+        .text("SUPPLIER:", leftX, initialY);
     doc.fontSize(10)
         .fillColor("#1E1F20")
         .font("Helvetica-Bold")
@@ -716,7 +717,7 @@ const detailsForPurchaseOrder = (
     const supplierEndY = doc.y;
 
     // Delivery To Details
-    const {to,address} = delivery
+    const { to, address } = delivery;
     doc.fontSize(12)
         .fillColor("#0047AB")
         .text("DELIVERY TO:", rightX, initialY);
@@ -726,12 +727,10 @@ const detailsForPurchaseOrder = (
         .text(to || "", rightX, initialY + 15);
     doc.fontSize(9)
         .fillColor("#4B4E4F")
-        .text(
-            `${address?.street1},${address?.street2}`,
-            rightX,
-            doc.y + 5,
-            { width: 280, align: "left" }
-        );
+        .text(`${address?.street1},${address?.street2}`, rightX, doc.y + 5, {
+            width: 280,
+            align: "left",
+        });
     doc.text(
         `${address?.city}, ${address?.state}, ${address?.pincode}`,
         rightX,

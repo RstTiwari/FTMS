@@ -7,9 +7,7 @@ const { Title } = Typography;
 
 const PaymentDetails = ({ values }) => {
     return (
-        <Card
-            bordered={false}
-        >
+        <Card bordered={false}>
             <Title level={3} style={{ textAlign: "center" }}>
                 PAYMENT DETAILS
             </Title>
@@ -18,22 +16,23 @@ const PaymentDetails = ({ values }) => {
                     {values?.no || ""}
                 </Descriptions.Item>
                 <Descriptions.Item label="Customer Name">
-                    {values?.customer?.name ||""}
+                    {values?.customer?.name || ""}
                 </Descriptions.Item>
                 <Descriptions.Item label="Payment Date">
                     {jsDateIntoDayjsDate(values?.paymentDate || "")}
                 </Descriptions.Item>
                 <Descriptions.Item label="Amount">
-                           ₹{values?.amount.toFixed(2) || ""}
+                    ₹{values?.amount.toFixed(2) || ""}
                 </Descriptions.Item>
                 <Descriptions.Item label="Payment Mode">
                     {values?.paymentMode || ""}
                 </Descriptions.Item>
-                <Descriptions.Item label="Note">
-                    <Taglabel text={`${values?.note || ""}`}  type={"heading"}  weight={100}/>
-                </Descriptions.Item>
                 <Descriptions.Item label="Reference">
-                    <Taglabel text={`${values?.ref || ""}`}  type={"heading"}  weight={100}/>
+                    <Taglabel
+                        text={`${values?.ref || ""}`}
+                        type={"heading"}
+                        weight={100}
+                    />
                 </Descriptions.Item>
             </Descriptions>
         </Card>

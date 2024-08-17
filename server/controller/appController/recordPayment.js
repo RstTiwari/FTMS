@@ -2,9 +2,15 @@ import checkDbForEntity from "../../Helper/databaseSelector.js";
 
 const recordPayment = async (req, res, next) => {
     try {
-        const { id } = req.query; // Customer ID
-        const { values } = req.body; // Payment values
+        const { entity, values } = req.body; // Payment values
 
+        let id = values?.customer;
+
+        if (!id || !values) {
+            throw new Error("Invalid Payload");
+        }
+        let tenantId = req.tenantId;
+        values.tenantId = tenantId;
         // Create the payment record first
         const PaymentDatabase = checkDbForEntity("payments");
         const payment = new PaymentDatabase(values);
@@ -13,11 +19,27 @@ const recordPayment = async (req, res, next) => {
         // Fetch the customer's invoices ordered by oldest first and by status
         let InvoiceDatabase = checkDbForEntity("invoices"); // Fixed typo "invocies" to "invoices"
         const invoices = await InvoiceDatabase.find({
-            customerId: id, // Use the correct customerId
+            customer: id, // Use the correct customerId
             status: { $in: ["DRAFT", "PARTIALLY_PAID"] },
         }).sort({ createdAt: 1 });
 
-        let remainingAmount = values.amount; // Use payment amount from request body
+        let remainingAmount = values.amount; // Use payment amount from request
+
+        // Check it Customer i having any Advance Amount
+        let CustomerDatabase = checkDbForEntity("customers");
+
+        let customerData = await CustomerDatabase.findOne({
+            _id: values.customer,
+        });
+
+        // IF Customer is Having Advance take into account then Update account
+        if (customerData?.advanceAmount > 0) {
+            remainingAmount = customerData?.advanceAmount + remainingAmount;
+            await CustomerDatabase.updateOne(
+                { _id: values.customer },
+                { $set: { advanceAmount: 0 } }
+            );
+        }
 
         // Distribute the payment across invoices and update them with the payment ID
         for (const invoice of invoices) {
@@ -34,8 +56,8 @@ const recordPayment = async (req, res, next) => {
             const amountToApply = Math.min(remainingAmount, amountDue);
 
             // Update invoice status
-            if (amountToApply >= amountDue) {
-                invoice.status = "PAID";
+            if (remainingAmount >= amountDue) {
+                invoice.status = "FULL_PAID";
             } else {
                 invoice.status = "PARTIALLY_PAID";
             }

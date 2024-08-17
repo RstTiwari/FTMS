@@ -22,7 +22,7 @@ const invoiceSchema = new mongoose.Schema(
                 "CANCELLED",
                 "ON_HOLD",
                 "PARTIALLY_PAID",
-                "PAID",
+                "FULL_PAID",
             ],
             default: "DRAFT",
         },

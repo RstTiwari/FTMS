@@ -9,6 +9,7 @@ import FormActionButtons from "./Comman/FormActionButton";
 import CustomFormItem from "../module/Create/CreateModule";
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
+import PageLoader from "pages/PageLoader";
 
 const CustomForm = ({
     entityOfModal,
@@ -51,6 +52,7 @@ const CustomForm = ({
                 values.image = response.result;
             }
         }
+
         handleFormSubmit(values, isModal, passToModal);
     };
 
@@ -65,6 +67,9 @@ const CustomForm = ({
             return NotificationHandler.error(`${firstField}`);
         }
     };
+    if (isLoading) {
+        return <PageLoader isLoading={true} text={"wait Creating the Data"} />;
+    }
 
     return (
         <div

@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Row, Col, Button, Upload, Image } from 'antd';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import NotificationHandler from '../EventHandler/NotificationHandler'; // Update the path as necessary
-import { useAuth } from '../state/AuthProvider'; // Update the path as necessary
+import React, { useState, useEffect } from "react";
+import { Row, Col, Button, Upload, Image } from "antd";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import NotificationHandler from "../EventHandler/NotificationHandler"; // Update the path as necessary
+import imageCompression from "browser-image-compression";
+import { useAuth } from "../state/AuthProvider"; // Update the path as necessary
 
 const { Dragger } = Upload;
 
@@ -11,7 +12,7 @@ const UploadImage = ({
     uploadTitle,
     aboutImage,
     preFillValue,
-    updateImageInForm
+    updateImageInForm,
 }) => {
     const [loading, setLoading] = useState(false);
     const [edit, setEdit] = useState(true);
@@ -20,19 +21,36 @@ const UploadImage = ({
 
     const handleChange = async (info) => {
         const file = info.file.originFileObj;
-        setFile(file);
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => setImageUrl(reader.result);
 
-        if (updateImageInForm) {
-            updateImageInForm(file);
+        if (!file) return;
+
+        // Set options for image compression
+        const options = {
+            maxWidthOrHeight: 300,
+            useWebWorker: true,
+        };
+
+        try {
+            // Resize the image
+            const resizedFile = await imageCompression(file, options);
+            setFile(resizedFile);
+
+            const reader = new FileReader();
+            reader.readAsDataURL(resizedFile);
+            reader.onload = () => setImageUrl(reader.result);
+
+            if (updateImageInForm) {
+                updateImageInForm(resizedFile);
+            }
+        } catch (error) {
+            console.error("Error resizing the image:", error);
+            NotificationHandler.error("Failed to resize image");
         }
     };
-    const handleEdit = ()=>{
-        setImageUrl(null)
-         setEdit(true)
-    }
+    const handleEdit = () => {
+        setImageUrl(null);
+        setEdit(true);
+    };
 
     // const uploadImage = async () => {
     //     if (!file) {
@@ -71,7 +89,13 @@ const UploadImage = ({
                 <Col span={8}>
                     {!edit && (
                         <Button
-                            style={{ width: "3rem",height:"2rem",fontSize:"10px",color:"#ffffff" ,background:'green'}}
+                            style={{
+                                width: "3rem",
+                                height: "2rem",
+                                fontSize: "10px",
+                                color: "#ffffff",
+                                background: "green",
+                            }}
                             onClick={() => handleEdit()}
                         >
                             EDIT
@@ -83,11 +107,19 @@ const UploadImage = ({
                 <>
                     <Dragger onChange={handleChange} showUploadList={false}>
                         {imageUrl ? (
-                            <img src={imageUrl} alt="Preview" style={{ width: "100%", maxHeight: "200px" }} />
+                            <img
+                                src={imageUrl}
+                                alt="Preview"
+                                style={{ width: "100%", maxHeight: "200px" }}
+                            />
                         ) : (
                             <>
                                 <p className="ant-upload-drag-icon">
-                                    {loading ? <LoadingOutlined /> : <PlusOutlined />}
+                                    {loading ? (
+                                        <LoadingOutlined />
+                                    ) : (
+                                        <PlusOutlined />
+                                    )}
                                 </p>
                                 <p className="ant-upload-text">{uploadTitle}</p>
                                 <p className="ant-upload-hint">{aboutImage}</p>
@@ -97,7 +129,10 @@ const UploadImage = ({
                 </>
             ) : (
                 <Row justify="center">
-                    <Image src={preFillValue} style={{ width: "100%", maxHeight: "200px" }} />
+                    <Image
+                        src={preFillValue}
+                        style={{ width: "100%", maxHeight: "200px" }}
+                    />
                 </Row>
             )}
         </>

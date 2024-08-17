@@ -1,8 +1,7 @@
 import { v2 as Cloudinary } from "cloudinary";
 import fs from "fs";
 
-const upload = async (req, res, next,) => {
-
+const upload = async (req, res, next) => {
     //Taking file from the Frontend
     const tenantId = req.tenantId;
     if (!req.file || !tenantId) {
@@ -13,11 +12,12 @@ const upload = async (req, res, next,) => {
         };
         return res.status(400).json(response);
     }
-    
+
     const file = req.file.path;
 
     try {
-        const cloudName = `${tenantId}`;
+        // Upload the resized image to Cloudinary
+        const cloudName = `myfac8ry${tenantId}`;
         const uploadImage = await Cloudinary.uploader.upload(file, {
             public_id: cloudName,
         });

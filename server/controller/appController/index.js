@@ -5,10 +5,15 @@ import update from "./update.js";
 import patch from "./patch.js";
 import genratePdf from "./genratePdf.js";
 import upload from "./upload.js";
-import { fetchCountersNumber, updateCountersNumber } from "../appController/counter.js";
-import { addSelectData,fetchSelectData } from "./customSelect.js";
+import {
+    fetchCountersNumber,
+    updateCountersNumber,
+} from "../appController/counter.js";
+import { addSelectData, fetchSelectData } from "./customSelect.js";
 import get from "./get.js";
-
+import recordPayment from "./recordPayment.js";
+import updatePayment from "./updatePayment.js";
+import totalReciveables from "./totalReciveables.js";
 const appRoutes = {
     create: async (req, res, next) => {
         create(req, res, next);
@@ -37,15 +42,24 @@ const appRoutes = {
     fetchCountersNumber: async (req, res, next) => {
         fetchCountersNumber(req, res, next);
     },
-    updateCountersNumber:async (req,res,next) =>{
-        updateCountersNumber(req,res,next)
+    updateCountersNumber: async (req, res, next) => {
+        updateCountersNumber(req, res, next);
     },
-    addSelectData:async (req,res,next)=>{
-        addSelectData(req,res,next)
+    addSelectData: async (req, res, next) => {
+        addSelectData(req, res, next);
     },
-    fetchSelectData:async(req,res,next)=>{
-        fetchSelectData(req,res,next)
-    }
+    fetchSelectData: async (req, res, next) => {
+        fetchSelectData(req, res, next);
+    },
+    recordPayment: async (req, res, next) => {
+        recordPayment(req, res, next);
+    },
+    updatePayment: async (req, res, next) => {
+        updatePayment(req, res, next);
+    },
+    totalReciveables: async (req, res, next) => {
+        totalReciveables(req, res, next);
+    },
     // challan: async (req, res, next) => {
     //     try {
     //         const { action, value } = req.body;

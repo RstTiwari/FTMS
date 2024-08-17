@@ -4,17 +4,21 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
 
-const useFormActions = (entity, isUpdate,id) => {
+const useFormActions = (entity, isUpdate, id) => {
     const { appApiCall } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     const handleUpdate = async (values, isModal, passToModal) => {
+        let route = entity === "payments" ? "updatePayment" : "update"; // Changin for Only record and Updating the payments
         setIsLoading(true);
         try {
             const payLoad = { values: values };
-            const response = await appApiCall("post", "update", payLoad ,{entity ,id});
+            const response = await appApiCall("post", route, payLoad, {
+                entity,
+                id,
+            });
             if (response.success) {
                 NotificationHandler.success(response?.message);
                 if (isModal) {
@@ -31,11 +35,13 @@ const useFormActions = (entity, isUpdate,id) => {
         }
     };
 
-    const handleCreate = async (values,isModal,passToModal) => {
+    const handleCreate = async (values, isModal, passToModal) => {
         setIsLoading(true);
+        let route = entity === "payments" ? "recordPayment" : "create"; // Changin for Only record and Updating the payments
+
         try {
             const payLoad = { entity: entity, values: values };
-            const response = await appApiCall("post", "create", payLoad);
+            const response = await appApiCall("post", route, payLoad);
             if (response.success) {
                 NotificationHandler.success(response?.message);
                 if (isModal) {

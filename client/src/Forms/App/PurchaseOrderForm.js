@@ -31,7 +31,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
     const [delivery, setDelivery] = useState("");
     const { tenantId, id } = useParams();
     const { initialValues, isFetching, fetchInitialValues } =
-        useInitialFormValues("tenant", tenantId);
+        useInitialFormValues("tenant", "get", tenantId);
 
     const updateDeliveryAddress = (values) => {
         form.setFieldsValue({

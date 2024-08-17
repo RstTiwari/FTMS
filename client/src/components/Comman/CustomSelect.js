@@ -78,7 +78,7 @@ const CustomSelect = ({
                         }
                     }}
                     getPopupContainer={(trigger) => document.body}
-                    dropdownStyle={{ position: "fixed", zIndex: 1050 }}
+                    dropdownStyle={{ position: "fixed", zIndex: 20000000 }}
                     dropdownRender={(menu) => (
                         <div
                             style={{

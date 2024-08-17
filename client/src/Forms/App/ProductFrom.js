@@ -33,7 +33,8 @@ const ProductForm = ({
                 type={"select"}
                 entity={"Product Code"}
                 entityName={"product"}
-                updateInform={(value) => handelItemUpdate(value, "code")}
+                updateInForm={(value) => handelItemUpdate(value, "code")}
+                preFillValue={form.getFieldValue("code")}
             />
             <FormItemCol
                 label="Product Name"

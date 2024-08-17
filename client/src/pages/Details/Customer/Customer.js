@@ -17,11 +17,12 @@ import useInitialFormValues from "Hook/useIntialFormValues";
 import PageLoader from "pages/PageLoader";
 const { TabPane } = Tabs;
 
-const CustomerDetails = ({ values,loading }) => {
-    if (loading) {
-        return <PageLoader isLoading={loading} />;
-    }
-
+const CustomerDetails = ({ values, loading }) => {
+    useEffect(() => {
+        if (loading) {
+            return <PageLoader isLoading={loading} />;
+        }
+    }, [loading]);
     return (
         <Tabs defaultActiveKey="1" style={{ marginLeft: "10px" }}>
             <TabPane

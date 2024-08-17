@@ -138,6 +138,12 @@ const Sidebar = ({
                 .ant-menu-submenu > .ant-menu-sub {
                     background-color: #181c2e !important;
                 }
+                .ant-menu-submenu-title {
+                    font-size: 0.85rem; /* Adjust the size for parent items */
+                }
+                .ant-menu-submenu .ant-menu-item {
+                    font-size: 0.6rem; /* Adjust the size for child items */
+                }
             `}</style>
         </Sider>
     );

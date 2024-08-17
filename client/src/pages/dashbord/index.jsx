@@ -17,8 +17,7 @@ const Dashbord = () => {
                     <SalesExpensesDashboard />
                     <TopExpenses />
                 </TabPane>
-                {/* <TabPane tab="MYFAC8RY SERVICES" key={2}>
-                </TabPane> */}
+                <TabPane tab="MYFAC8RY SERVICES" key={2}></TabPane>
             </Tabs>
         </div>
     );

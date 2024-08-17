@@ -26,7 +26,7 @@ const UpdateCustomForm = ({
     const [unfilledField, setUnfilledField] = useState(null);
     const [changedField, setChangedField] = useState({});
     const { isFetching, initialValues, fetchInitialValues } =
-        useInitialFormValues(entity, id);
+        useInitialFormValues(entity, "get", id);
     const { isLoading, error, handleFormSubmit } = useFormActions(
         entity,
         true,
