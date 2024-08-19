@@ -21,7 +21,9 @@ const recordPayment = async (req, res, next) => {
         const invoices = await InvoiceDatabase.find({
             customer: id, // Use the correct customerId
             status: { $in: ["DRAFT", "PARTIALLY_PAID"] },
-        }).sort({ createdAt: 1 });
+        })
+            .sort({ createdAt: 1 })
+            .populate("payments");
 
         let remainingAmount = values.amount; // Use payment amount from request
 
@@ -64,10 +66,7 @@ const recordPayment = async (req, res, next) => {
 
             // Add the payment reference to the invoice
             invoice.payments = invoice.payments || [];
-            invoice.payments.push({
-                paymentId: payment._id,
-                amount: amountToApply,
-            });
+            invoice.payments.push(payment._id);
 
             await invoice.save();
             remainingAmount -= amountToApply;

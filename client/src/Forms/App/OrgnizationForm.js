@@ -50,7 +50,6 @@ const OrganizationForm = ({ form }) => {
             form.setFieldsValue({ bankDetails: updatedDetails });
         }
     };
- 
 
     return (
         <div>
@@ -208,11 +207,24 @@ const OrganizationForm = ({ form }) => {
                                                                         color: "black",
                                                                     }}
                                                                     onClick={() => {
-                                                                        const isPrimary = form.getFieldValue(['bankDetails', name, 'isPrimary']);
-                                                                        if (isPrimary) {
-                                                                           return NotificationHandler.error("Change Primary bank Account before Deleting It")
+                                                                        const isPrimary =
+                                                                            form.getFieldValue(
+                                                                                [
+                                                                                    "bankDetails",
+                                                                                    name,
+                                                                                    "isPrimary",
+                                                                                ]
+                                                                            );
+                                                                        if (
+                                                                            isPrimary
+                                                                        ) {
+                                                                            return NotificationHandler.error(
+                                                                                "Change Primary bank Account before Deleting It"
+                                                                            );
                                                                         } else {
-                                                                            remove(name);
+                                                                            remove(
+                                                                                name
+                                                                            );
                                                                         }
                                                                     }}
                                                                 />
@@ -588,9 +600,9 @@ const OrganizationForm = ({ form }) => {
                                 type={"text"}
                                 rules={[
                                     {
-                                        required:true,
-                                        message:"Fill Gst No Details "
-                                    }
+                                        required: true,
+                                        message: "Fill Gst No Details ",
+                                    },
                                 ]}
                                 labelCol={{ span: 8 }}
                             />
@@ -602,9 +614,9 @@ const OrganizationForm = ({ form }) => {
                                 labelCol={{ span: 8 }}
                                 rules={[
                                     {
-                                        required:true,
-                                        message:"Fill Gst No Details "
-                                    }
+                                        required: true,
+                                        message: "Fill Gst No Details ",
+                                    },
                                 ]}
                             />
                             <FormItemCol

@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import { useAuth } from "state/AuthProvider";
 
-const useInitialFormValues = (entity, route, id) => {
+const useInitialFormValues = (entity, route, id, period) => {
     const [initialValues, setInitialValues] = useState(null);
     const [isFetching, setIsFetching] = useState(true);
     const { appApiCall } = useAuth();
@@ -10,7 +10,12 @@ const useInitialFormValues = (entity, route, id) => {
     const fetchInitialValues = useCallback(async () => {
         setIsFetching(true);
         try {
-            const response = await appApiCall("get", route, {}, { entity, id });
+            const response = await appApiCall(
+                "get",
+                route,
+                {},
+                { entity, id, period }
+            );
             if (!response.success) {
                 NotificationHandler.error(response.message);
                 setIsFetching(false);

@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import {  useCookies } from "react-cookie";
+import { useCookies } from "react-cookie";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import axios from "axios";
 
@@ -7,21 +7,21 @@ let myfac8ryBaseUrl = process.env.REACT_APP_URL_PROD;
 
 if (process.env.NODE_ENV === "development") {
     myfac8ryBaseUrl = process.env.REACT_APP_URL_LOCAL;
-};
+}
 
 const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
-    const storeLocalData = (key, value ,maxAge= 3600) =>{
-        setCookie(key,value ,{maxAge:maxAge})
-    }
+    const storeLocalData = (key, value, maxAge = 3600) => {
+        setCookie(key, value, { maxAge: maxAge });
+    };
 
     const removeLocalData = async (key) => {
-      removeCookie(key);
+        removeCookie(key);
     };
     const fetchLocalData = (key) => {
-      return cookies[key];
+        return cookies[key];
     };
 
     const authApiCall = async (path, data) => {
@@ -60,8 +60,8 @@ export const AuthProvider = ({ children }) => {
                 "Content-Type": "application/json",
                 token: token ? token : null,
             },
-            data: data ? data :"",
-            params : params ? params :""
+            data: data ? data : "",
+            params: params ? params : "",
         };
         try {
             let response = await axios(axiosConfig);
@@ -118,99 +118,33 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const getDropDownData = async (entity, fieldName) => {
-        let data = await appApiCall("post", "getList", { entity: entity });
-        if (data.success === 0) {
-            return (data = []);
-        } else {
-            data = data.result.map((item) => {
-                item["label"] = item[fieldName];
-                item["value"] = item._id;
-                return item;
-            });
-            return data;
-        }
-    };
-
-    const createData = async (payload) => {
-        let data = await appApiCall("post", "create", payload);
-        if (data.success === 0) {
-            return { success: 0, result: null, message: data.message };
-        } else {
-            return { success: 1, result: data.result, message: data.message };
-        }
-    };
-
-    const readData = async (params) => {
-        let data = await appApiCall("get", "read", {}, params);
-        if (data.success === 0) {
-            return { success: 0, result: null, message: data.message };
-        } else {
-            return { success: 1, result: data.result, message: data.message };
-        }
-    };
-
-    const updateData = async (payload) => {
-        let data = await appApiCall("post", "update", payload, {});
-        if (data.success === 0) {
-            return { success: 0, result: null, message: data.message };
-        } else {
-            return { success: 1, result: data.result, message: data.message };
-        }
-    };
-    const uploadFile = async (payload) => {
-        let data = await appApiCall("post", "upload", payload, {});
-        if (data.success === 0) {
-            return { success: 0, result: null, message: data.message };
-        } else {
-            return { success: 1, result: data.result, message: data.message };
-        }
-    };
-    const patchData = async (payload) => {
-        let data = await appApiCall("patch", "patch", payload, {});
-        if (data.success === 0) {
-            return { success: 0, result: null, message: data.message };
-        } else {
-            return { success: 1, result: data.result, message: data.message };
-        }
-    };
-
-    const getTableData = async (entity) => {
-        let data = await appApiCall("post", "getList", { entity: entity });
-        if (data.success === 0) {
-            return { success: 0, result: null, message: data.message };
-        } else {
-            return { success: 1, result: data.result, message: data.message };
-        }
-    };
-
-    const pdfGenerate = async (entity, id, action = "display") => {
-        const token = cookies['token']
+    const pdfGenerate = async (entity, id, no, action = "display") => {
+        const token = cookies["token"];
         try {
             const headers = {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer YOUR_TOKEN",
-                token:token ? token:""
+                Authorization: "Bearer YOUR_TOKEN",
+                token: token ? token : "",
             };
-    
+
             let url = `${myfac8ryBaseUrl}app/pdf?entity=${entity}&id=${id}`;
-    
+
             const response = await fetch(url, {
                 method: "GET",
                 headers: headers,
             });
-    
+
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error("Network response was not ok");
             }
-    
+
             const blob = await response.blob();
             const pdfUrl = URL.createObjectURL(blob);
-    
+
             if (action === "download") {
-                const a = document.createElement('a');
+                const a = document.createElement("a");
                 a.href = pdfUrl;
-                a.download = `${entity}${id}.pdf`;
+                a.download = `${entity.toUpperCase()}${no}.pdf`;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
@@ -218,12 +152,12 @@ export const AuthProvider = ({ children }) => {
                 return pdfUrl;
             }
         } catch (error) {
-            NotificationHandler.error(`Failed to handle ${entity} PDF: ${error.message}`);
+            NotificationHandler.error(
+                `Failed to handle ${entity} PDF: ${error.message}`
+            );
             throw error;
         }
     };
-    
-    
 
     const verifyToken = async () => {
         try {
@@ -264,14 +198,7 @@ export const AuthProvider = ({ children }) => {
                 authApiCall,
                 appApiCall,
                 adminApiCall,
-                getDropDownData,
-                getTableData,
-                createData,
-                readData,
-                updateData,
                 pdfGenerate,
-                patchData,
-                uploadFile
             }}
         >
             {children}

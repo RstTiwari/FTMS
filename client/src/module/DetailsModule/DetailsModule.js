@@ -5,6 +5,10 @@ import PaymentDetails from "../../pages/Details/PayementDetails";
 import ExpenseDetails from "pages/Details/ExpenseDetails";
 import ProductDetails from "pages/Details/ProductDetails";
 import VendorDetails from "pages/Details/Vendor/Vendor";
+import InvoiceDetails from "pages/Details/InvoiceDetails";
+import QuotationDetailsPage from "pages/Details/QuotationDetails";
+import PurchaseOrderDetails from "pages/Details/PurchaseOrderDetails";
+import DeliveryChallanDetails from "pages/Details/DeliveryChallanDetails";
 const DetailsModule = ({ entity, values, id, loading }) => {
     let component = <NotFound />;
     switch (entity) {
@@ -12,10 +16,12 @@ const DetailsModule = ({ entity, values, id, loading }) => {
             component = <Customer values={values} loading={loading} />;
             break;
         case "invoices":
-            component = <PDFGenerator entity={entity} id={id} />;
+            component = <InvoiceDetails invoice={values} loading={loading} />;
             break;
         case "quotations":
-            component = <PDFGenerator entity={entity} id={id} />;
+            component = (
+                <QuotationDetailsPage quotation={values} loading={loading} />
+            );
             break;
         case "payments":
             component = (
@@ -38,10 +44,22 @@ const DetailsModule = ({ entity, values, id, loading }) => {
             );
             break;
         case "purchases":
-            component = <PDFGenerator entity={entity} id={id} />;
+            component = (
+                <PurchaseOrderDetails
+                    entity={entity}
+                    id={id}
+                    purchaseOrder={values}
+                />
+            );
             break;
         case "challans":
-            component = <PDFGenerator entity={entity} id={id} />;
+            component = (
+                <DeliveryChallanDetails
+                    entity={entity}
+                    id={id}
+                    deliveryChallan={values}
+                />
+            );
             break;
         default:
             break;

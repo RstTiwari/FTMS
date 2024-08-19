@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Select, Button, Divider, Modal, Input, Row, Spin } from "antd";
+import { Select, Button, Divider, Modal, Input, Row, Space } from "antd";
 import { useAuth } from "../../state/AuthProvider";
 import CustomButton from "./CoustomButton";
 import NotificationHandler from "EventHandler/NotificationHandler";
@@ -32,11 +32,12 @@ const CustomSelect = ({
         setOptions(response.result);
         setIsLoading(false);
     };
+
     useEffect(() => {
         if (preFillValue) {
             setValue(preFillValue);
         }
-    }, []);
+    }, [preFillValue]);
 
     const handleChange = (value) => {
         setValue(value);
@@ -79,38 +80,48 @@ const CustomSelect = ({
                     }}
                     getPopupContainer={(trigger) => document.body}
                     dropdownStyle={{ position: "fixed", zIndex: 20000000 }}
-                    dropdownRender={(menu) => (
-                        <div
-                            style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                maxHeight: "200px",
-                                overflow: "auto",
-                            }}
-                        >
-                            <div style={{ flexGrow: 1 }}>{menu}</div>
-                            <Divider style={{ margin: 0 }} />
-                            {!isLoading ? (
-                                <div
-                                    style={{
-                                        backgroundColor: "#fff",
-                                        padding: "8px",
-                                    }}
-                                >
-                                    <CustomButton
-                                        text="New"
-                                        onClick={() => setOpen(true)}
+                    dropdownRender={(menu) => {
+                        return (
+                            <>
+                                {!isLoading ? (
+                                    <>
+                                        <div
+                                            style={{
+                                                maxHeight: "200px",
+                                                overflow: "auto",
+                                            }}
+                                        >
+                                            {menu}
+                                        </div>
+                                        <Divider
+                                            style={{
+                                                margin: "8px 0",
+                                            }}
+                                        />
+                                        <Space
+                                            style={{
+                                                padding: "0 8px 4px",
+                                            }}
+                                        >
+                                            <CustomButton
+                                                text={"ADD NEW"}
+                                                details={true}
+                                                onClick={() => {
+                                                    setOpen(!open);
+                                                }}
+                                            />
+                                        </Space>
+                                    </>
+                                ) : (
+                                    <PageLoader
+                                        isLoading={true}
+                                        height="30px"
+                                        text={"Hold on"}
                                     />
-                                </div>
-                            ) : (
-                                <PageLoader
-                                    isLoading={true}
-                                    height="30px"
-                                    text={"hold On"}
-                                />
-                            )}
-                        </div>
-                    )}
+                                )}
+                            </>
+                        );
+                    }}
                 />
             ) : (
                 <Modal

@@ -38,6 +38,7 @@ const QuotationForm = ({ form }) => {
             temObj.qty = value;
             temObj.finalAmount = Math.ceil(value * temObj.rate);
         } else if (filedName === "gstPercent") {
+            console.log(value, "===");
             value = Number(value);
             form.setFieldsValue({ gstPercent: value });
         } else if (filedName === "transportAmount") {

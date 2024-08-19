@@ -10,6 +10,7 @@ import DetailsLayout from "pages/layout/DetailsLayout";
 import Details from "components/Details";
 import CustomForm from "components/CreateCustomForm";
 import UpdateCustomForm from "components/UpdateCustomForm";
+import RecordPayment from "pages/Payment/RecordPayment";
 
 const Approuter = ({ profile }) => {
     const tenantId = profile?.tenant?.tenantId;
@@ -52,9 +53,11 @@ const Approuter = ({ profile }) => {
                     element={<UpdateCustomForm />}
                 />
 
-                {/**Routes for Read  Update And Pdf */}
-
-                <Route path="/update/:entity/:id" element={<UpdateModule />} />
+                {/**Convet Modules */}
+                <Route
+                    path="/app/:tenantId/:entity/:id/recordPayment"
+                    element={<RecordPayment />}
+                />
 
                 {/*Mangaining setting Sidebar Profile */}
                 <Route
@@ -65,6 +68,7 @@ const Approuter = ({ profile }) => {
                     path="/app/:tenantId/setting/templates"
                     element={<Templates />}
                 />
+
                 <Route path="*" element={<NotFound />} />
 
                 {/**In case some one acess login page after being logged in */}

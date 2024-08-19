@@ -29,14 +29,14 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
     };
 
     return (
-        <div style={{ height: "100vh" }}>
+        <div>
             <Row>
                 <Col span={24}>
                     <FormItemCol
                         label="Select Customer"
                         name="customer"
                         required={true}
-                        labelCol={{ span: 8 }}
+                        labelCol={{ span: 12 }}
                         rules={[
                             {
                                 required: true,
@@ -53,7 +53,7 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
                         onlyShippingAddress={true}
                         preFillValue={form.getFieldValue("customer")?.name}
                         type={"model"}
-                        disabled={isUpdate}
+                        disabled={form.getFieldValue("customer")?.name} // if value availbel mark as disabled
                     />
                 </Col>
                 <Col span={24}>
@@ -68,7 +68,7 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
                             },
                         ]}
                         labelAlign="left"
-                        labelCol={{ span: 8 }}
+                        labelCol={{ span: 12 }}
                         type={"date"}
                         updateInForm={(value) =>
                             handleItemUpdate(value, "paymentDate")
@@ -81,7 +81,7 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
                         label="Payment Mode"
                         name="paymentMode"
                         labelAlign="left"
-                        labelCol={{ span: 8 }}
+                        labelCol={{ span: 12 }}
                         type={"select"}
                         entity="Payment Mode"
                         entityName={"paymentMode"}
@@ -97,7 +97,7 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
                         name="ref"
                         tooltip={"Check No or UPI Transaction No"}
                         labelAlign="left"
-                        labelCol={{ span: 8 }}
+                        labelCol={{ span: 12 }}
                         type={"input"}
                     />
                 </Col>
@@ -109,7 +109,7 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
                         required={true}
                         type={"number"}
                         width={250}
-                        labelCol={{ span: 8 }}
+                        labelCol={{ span: 12 }}
                         rules={[
                             {
                                 required: true,
@@ -126,7 +126,7 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
                         name={"note"}
                         labelAlign="left"
                         tooltip={"Remark or Comment"}
-                        labelCol={{ span: 8 }}
+                        labelCol={{ span: 12 }}
                         type={"input"}
                     />
                 </Col>

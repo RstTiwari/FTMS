@@ -3,30 +3,26 @@ import { useParams } from "react-router-dom";
 import useInitialFormValues from "Hook/useIntialFormValues";
 import DetailsHeader from "./DetailsHeader";
 import PageLoader from "pages/PageLoader";
-import DetailsModule from "module/DetailsModule/Details";
+import DetailsModule from "module/DetailsModule/DetailsModule";
 const Details = () => {
     const { entity, id } = useParams();
-    const { initialValues, loading, fetchInitialValues } = useInitialFormValues(
-        entity,
-        "get",
-        id
-    );
+    const { initialValues, isFetching, fetchInitialValues } =
+        useInitialFormValues(entity, "get", id);
     useEffect(() => {
-        if (entity === "customers" || entity === "payments")
-            fetchInitialValues();
-    }, [fetchInitialValues, loading]);
+        fetchInitialValues();
+    }, [fetchInitialValues, entity, id]);
 
-    if (loading) {
-        return <PageLoader isLoading={loading} />;
+    if (isFetching) {
+        return <PageLoader isLoading={true} text={"Fetching ...."} />;
     }
     return (
         <>
-            <DetailsHeader />
+            <DetailsHeader values={initialValues} />
             <DetailsModule
                 entity={entity}
                 id={id}
                 values={initialValues}
-                loading={loading}
+                loading={isFetching}
             />
         </>
     );

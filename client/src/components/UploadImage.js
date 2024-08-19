@@ -26,7 +26,7 @@ const UploadImage = ({
 
         // Set options for image compression
         const options = {
-            maxWidthOrHeight: 300,
+            maxWidthOrHeight: 200,
             useWebWorker: true,
         };
 
@@ -73,10 +73,9 @@ const UploadImage = ({
     //         return NotificationHandler.error("Upload failed");
     //     }
     // };
-
     useEffect(() => {
-        if (preFillValue && preFillValue !== "") {
-            setEdit(false);
+        if (preFillValue) {
+            setImageUrl(preFillValue);
         }
     }, [preFillValue]);
 

@@ -1,54 +1,40 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Typography, Card, Select } from "antd";
+import { Row, Col, Typography, Card, Select, Tooltip } from "antd";
 import {
     BarChart,
     Bar,
     XAxis,
     YAxis,
     CartesianGrid,
-    Tooltip,
+    Tooltip as RechartsTooltip,
     ResponsiveContainer,
 } from "recharts";
+import useInitialFormValues from "Hook/useIntialFormValues";
+import { useParams } from "react-router-dom";
+import PageLoader from "pages/PageLoader";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
 
-const SalesExpensesDashboard = () => {
-    const [data, setData] = useState(null);
-    const [total, setTotal] = useState(null);
-    const [selectedYear, setSelectedYear] = useState("This Fiscal Year");
+const PurchaseExpenses = () => {
+    const [period, setPeriod] = useState("this_fiscal_year");
+    const { tenantId } = useParams();
+    let { initialValues, isFetching, fetchInitialValues } =
+        useInitialFormValues(
+            "purchaseAndExpenses",
+            "totalReciveables",
+            tenantId,
+            period
+        );
 
     useEffect(() => {
-        // Simulate data fetching
-        const fetchData = async () => {
-            const salesExpensesData = [
-                { name: "Jan 2024", Sales: 0, Expenses: 0 },
-                { name: "Feb 2024", Sales: 0, Expenses: 0 },
-                { name: "Mar 2024", Sales: 0, Expenses: 0 },
-                { name: "Apr 2024", Sales: 0, Expenses: 0 },
-                { name: "May 2024", Sales: 0, Expenses: 0 },
-                { name: "Jun 2024", Sales: 4000000, Expenses: 0 },
-                { name: "Jul 2024", Sales: 0, Expenses: 12000000 },
-                { name: "Aug 2024", Sales: 0, Expenses: 0 },
-                { name: "Sep 2024", Sales: 0, Expenses: 0 },
-                { name: "Oct 2024", Sales: 0, Expenses: 0 },
-                { name: "Nov 2024", Sales: 0, Expenses: 0 },
-                { name: "Dec 2024", Sales: 0, Expenses: 0 },
-            ];
-            setData(salesExpensesData);
-            setTotal({
-                totalSales: "53,540.00",
-                totalReceipts: "50,16,102.00",
-                totalExpenses: "1,23,45,666.00",
-            });
-        };
+        fetchInitialValues();
+    }, [period]);
 
-        fetchData();
-    }, []);
+    useEffect(() => {}, [period]);
 
     const handleYearChange = (value) => {
-        setSelectedYear(value);
-        // You can add logic to fetch data based on the selected year
+        setPeriod(value);
     };
 
     return (
@@ -67,21 +53,22 @@ const SalesExpensesDashboard = () => {
             >
                 <Col>
                     <Title level={4}>
-                        Sales and Purchases <Text type="secondary">ⓘ</Text>
+                        Purchases and Expenses
+                        <Tooltip title="Total Expense and Purchase">
+                            <Text type="secondary">ⓘ</Text>
+                        </Tooltip>
                     </Title>
                 </Col>
                 <Col>
                     <Select
-                        value={selectedYear}
+                        value={period}
                         onChange={handleYearChange}
                         style={{ width: 150 }}
                     >
                         <Option value="this_fiscal_year">
                             This Fiscal Year
                         </Option>
-                        <Option value="last_fisacal_year">
-                            Last Fiscal Year
-                        </Option>
+
                         {/* Add more years as needed */}
                     </Select>
                 </Col>
@@ -89,10 +76,10 @@ const SalesExpensesDashboard = () => {
 
             <Row gutter={[16, 16]}>
                 <Col xs={24} sm={18}>
-                    {data ? (
+                    {initialValues ? (
                         <ResponsiveContainer width="100%" height={300}>
                             <BarChart
-                                data={data}
+                                data={initialValues.purchaseAndExpense}
                                 margin={{
                                     top: 20,
                                     right: 30,
@@ -103,9 +90,9 @@ const SalesExpensesDashboard = () => {
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="name" />
                                 <YAxis />
-                                <Tooltip />
+                                <RechartsTooltip />
                                 <Bar
-                                    dataKey="Sales"
+                                    dataKey="Purchase"
                                     stackId="a"
                                     fill="#82ca9d"
                                 />
@@ -124,21 +111,12 @@ const SalesExpensesDashboard = () => {
                 <Col xs={24} sm={6}>
                     <div>
                         <Text type="secondary" style={{ display: "block" }}>
-                            Total Sales
+                            Total Purchase
                         </Text>
                         <Title
                             level={5}
                             style={{ color: "#1890ff" }}
-                        >{`₹${total?.totalSales}`}</Title>
-                    </div>
-                    <div>
-                        <Text type="secondary" style={{ display: "block" }}>
-                            Total Receipts
-                        </Text>
-                        <Title
-                            level={5}
-                            style={{ color: "#52c41a" }}
-                        >{`₹${total?.totalReceipts}`}</Title>
+                        >{`₹${initialValues?.totalPurchase}`}</Title>
                     </div>
                     <div>
                         <Text type="secondary" style={{ display: "block" }}>
@@ -146,8 +124,17 @@ const SalesExpensesDashboard = () => {
                         </Text>
                         <Title
                             level={5}
+                            style={{ color: "#52c41a" }}
+                        >{`₹${initialValues?.totalExpenses}`}</Title>
+                    </div>
+                    <div>
+                        <Text type="secondary" style={{ display: "block" }}>
+                            Overall Total
+                        </Text>
+                        <Title
+                            level={5}
                             style={{ color: "#ff4d4f" }}
-                        >{`₹${total?.totalExpenses}`}</Title>
+                        >{`₹${initialValues?.total}`}</Title>
                     </div>
                 </Col>
             </Row>
@@ -163,4 +150,4 @@ const SalesExpensesDashboard = () => {
     );
 };
 
-export default SalesExpensesDashboard;
+export default PurchaseExpenses;

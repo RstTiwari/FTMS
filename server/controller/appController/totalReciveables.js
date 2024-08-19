@@ -2,12 +2,13 @@ import checkDbForEntity from "../../Helper/databaseSelector.js";
 
 const totalReciveables = async (req, res, next) => {
     try {
-        let { id, entity } = req.query;
+        let { id, entity, period } = req.query;
         let tenantId = req.tenantId;
         let InvoiceDatabase = checkDbForEntity("invoices");
         let PaymentDataBase = checkDbForEntity("payments");
         let CustomerDatabase = checkDbForEntity("customers");
         let PurchaseOrderDatabase = checkDbForEntity("purchases");
+        let ExpenseDataBase = checkDbForEntity("expenses");
         let result = [];
 
         if (entity === "customers") {
@@ -121,7 +122,139 @@ const totalReciveables = async (req, res, next) => {
                 categorizedInvoices.totalReceivables += pendingAmount;
             });
             result = categorizedInvoices;
+        } else if (entity === "purchaseAndExpenses") {
+            let startOfYear, endOfYear;
+            let currentYear = new Date().getFullYear();
+
+            if (period === "this_fiscal_year") {
+                startOfYear = new Date(currentYear, 0, 1); // january Month 1 date
+                endOfYear = new Date(currentYear, 11, 31); // 31 of Decemebr of this year
+            } else if (period === "last_fiscal_year") {
+                startOfYear = new Date(currentYear - 1, 0, 1); // last year Jaunary
+                endOfYear = new Date(currentYear - 1, 11, 31);
+            } else {
+                throw new Error("invlaid Period");
+            }
+            // Fetch data from the database within the determined date range
+            const expenses = await ExpenseDataBase.find({
+                expenseDate: { $gte: startOfYear, $lte: endOfYear },
+                tenantId: id,
+            });
+
+            const purchases = await PurchaseOrderDatabase.find({
+                purchaseDate: { $gte: startOfYear, $lte: endOfYear },
+                tenantId: id,
+            });
+
+            // Initialize the response array with months and 0 values
+            const months = Array.from({ length: 12 }, (_, i) => ({
+                name: new Date(startOfYear.getFullYear(), i).toLocaleString(
+                    "default",
+                    { month: "short", year: "numeric" }
+                ),
+                Purchase: 0,
+                Expenses: 0,
+            }));
+
+            // Sum up the expenses
+            expenses.forEach((expense) => {
+                const monthIndex = new Date(expense.expenseDate).getMonth();
+                months[monthIndex].Expenses += expense.amount;
+            });
+
+            // Sum up the purchases
+            purchases.forEach((purchase) => {
+                const monthIndex = new Date(purchase.purchaseDate).getMonth();
+                months[monthIndex].Purchase += purchase.grandTotal;
+            });
+
+            // Calculate totals
+            const totalExpenses = expenses.reduce(
+                (sum, expense) => sum + expense.amount,
+                0
+            );
+            const totalPurchase = purchases.reduce(
+                (sum, purchase) => sum + purchase.grossTotal,
+                0
+            );
+            const total = totalExpenses + totalPurchase;
+
+            let response = {
+                purchaseAndExpense: months,
+                totalExpenses: totalExpenses ? totalExpenses.toFixed(2) : 0,
+                totalPurchase: totalPurchase ? totalPurchase.toFixed(2) : 0,
+                total: total ? total.toFixed(2) : 0,
+            };
+            result = response;
+        } else if (entity === "topExpenses") {
+            // Determine the date range based on the query parameter
+            let startOfYear, endOfYear;
+            const currentYear = new Date().getFullYear();
+
+            if (period === "this_fiscal_year") {
+                startOfYear = new Date(currentYear, 0, 1); // January 1st of this year
+                endOfYear = new Date(currentYear, 11, 31); // December 31st of this year
+            } else if (period === "last_fiscal_year") {
+                startOfYear = new Date(currentYear - 1, 0, 1); // January 1st of last year
+                endOfYear = new Date(currentYear - 1, 11, 31); // December 31st of last year
+            } else {
+                return res
+                    .status(400)
+                    .json({ message: "Invalid period specified" });
+            }
+
+            // Fetch data from the database within the determined date range
+            const expenses = await ExpenseDataBase.aggregate([
+                {
+                    $match: {
+                        expenseDate: {
+                            $gte: startOfYear,
+                            $lte: endOfYear,
+                        },
+                        tenantId: id,
+                    },
+                },
+                {
+                    $group: {
+                        _id: "$categoryName", // Group by the `category` field
+                        value: { $sum: "$amount" }, // Sum the `amount` field for each category
+                    },
+                },
+                {
+                    $project: {
+                        _id: 0, // Exclude the `_id` field
+                        name: "$_id", // Rename `_id` to `category`
+                        value: 1, // Include `totalAmount`
+                    },
+                },
+            ]);
+            result = expenses;
+            // const expenses = await ExpenseDataBase.find({
+            //     expenseDate: {
+            //         $gte: startOfYear,
+            //         $lte: endOfYear,
+            //     },
+            //     tenantId: id,
+            // });
+            // console.log(expenses, "==");
+
+            // // Map and group expenses by category
+            // const expensesData = expenses.reduce((acc, expense) => {
+            //     const categoryName = expense.categoryName || "Unknown Category";
+            //     const existingCategory = acc.find(
+            //         (item) => item.name === categoryName
+            //     );
+
+            //     if (existingCategory) {
+            //         existingCategory.value += expense.amount;
+            //     } else {
+            //         acc.push({ name: categoryName, value: expense.amount });
+            //     }
+            // }, []);
+            // console.log(expensesData, "==");
+            // result = expensesData;
         }
+
         return res.status(200).json({
             success: 1,
             result: result,

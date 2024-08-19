@@ -14,7 +14,7 @@ import ProductForm from "../../Forms/App/ProductFrom";
 import EntityNo from "../../Forms/App/Counters";
 import OrganizationForm from "Forms/App/OrgnizationForm";
 
-const CoustomFormItem = ({ entity, form, isModal }) => {
+const CoustomFormItem = ({ entity, form, isModal, isUpdate }) => {
     // const { entity: entityFromRouter } = useParams();
     let componentToRender = <NotFound />;
     // const entity = entityOfForm || entityFromRouter;
@@ -50,7 +50,9 @@ const CoustomFormItem = ({ entity, form, isModal }) => {
             componentToRender = <ProductForm form={form} isModal={isModal} />;
             break;
         case "payments":
-            componentToRender = <PaymentFormItem form={form} />;
+            componentToRender = (
+                <PaymentFormItem form={form} isUpdate={isUpdate} />
+            );
             break;
         case "counters":
             componentToRender = <EntityNo form={form} />;

@@ -20,7 +20,7 @@ const CustomModel = ({
 }) => {
     const [open, setOpen] = useState(false);
     const { appApiCall } = useAuth();
-    const [value, setValue] = useState(preFillValue);
+    const [value, setValue] = useState("");
     const [options, setOptions] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [id, setId] = useState("");
@@ -159,8 +159,10 @@ const CustomModel = ({
         setAddress({ ...address, [keyName]: values });
     };
     useEffect(() => {
-        setValue(preFillValue);
-    }, []);
+        if (preFillValue) {
+            setValue(preFillValue);
+        }
+    }, [preFillValue, value]);
 
     return (
         <>

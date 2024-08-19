@@ -24,29 +24,31 @@ const ExpenseForm = ({ form }) => {
             form.setFieldsValue({ expenseDate: value });
         }
     };
-    const handleImageUpdate = (file)=>{
-        form.setFieldsValue({image:file})
-    }
+    const handleImageUpdate = (file) => {
+        form.setFieldsValue({ image: file });
+    };
 
     return (
-        <div >
+        <div>
             <Row>
-            <FormItemCol
-                label="Expense Date"
-                required={true}
-                name="expenseDate"
-                labelAlign="left"
-                rules={[
-                    { required: true, message: "Expense Date is Required" },
-                ]}
-                labelCol={{ span: 8 }}
-                type={"date"}
-                preFillValue = {form.getFieldValue("expenseDate")}
-                updateInForm ={(value)=>{handleItemUpdate(value,"expenseDate")}}
-            />
-            </Row>
-         
                 <FormItemCol
+                    label="Expense Date"
+                    required={true}
+                    name="expenseDate"
+                    labelAlign="left"
+                    rules={[
+                        { required: true, message: "Expense Date is Required" },
+                    ]}
+                    labelCol={{ span: 8 }}
+                    type={"date"}
+                    preFillValue={form.getFieldValue("expenseDate")}
+                    updateInForm={(value) => {
+                        handleItemUpdate(value, "expenseDate");
+                    }}
+                />
+            </Row>
+
+            <FormItemCol
                 label="Category Name"
                 name="categoryName"
                 required={true}
@@ -59,9 +61,8 @@ const ExpenseForm = ({ form }) => {
                 updateInForm={(value) =>
                     handleItemUpdate(value, "categoryName")
                 }
-                preFillValue ={form.getFieldValue("categoryName")}
+                preFillValue={form.getFieldValue("categoryName")}
             />
-               
 
             <FormItemCol
                 label="Amount"
@@ -72,14 +73,14 @@ const ExpenseForm = ({ form }) => {
                 labelCol={{ span: 8 }}
                 type={"number"}
             />
-           <FormItemCol
+            <FormItemCol
                 labelAlign="left"
-                labelCol={{ span: 8}}
+                labelCol={{ span: 8 }}
                 label="Receipt Image"
                 name="image"
                 type={"image"}
                 updateImageInForm={handleImageUpdate}
-                url = {form.getFieldValue("image")}
+                url={form.getFieldValue("image")}
             />
             <FormItemCol
                 label="#WorkOrder"
@@ -93,7 +94,7 @@ const ExpenseForm = ({ form }) => {
                 name="note"
                 labelAlign="left"
                 labelCol={{ span: 8 }}
-                type={"box"}
+                type={"text"}
             />
 
             <FormItemCol
@@ -102,10 +103,11 @@ const ExpenseForm = ({ form }) => {
                 labelAlign="left"
                 labelCol={{ span: 8 }}
                 type={"model"}
+                width={"25vw"}
                 entity="customers"
                 fieldName={"name"}
                 updateInForm={(value) => handleItemUpdate(value, "customer")}
-                preFillValue = {form.getFieldValue("customer")?.name?.name}
+                preFillValue={form.getFieldValue("customer")?.name?.name}
             ></FormItemCol>
         </div>
     );

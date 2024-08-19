@@ -28,15 +28,9 @@ const invoiceSchema = new mongoose.Schema(
         },
         payments: [
             {
-                paymentId: {
-                    type: mongoose.Schema.ObjectId,
-                    ref: "payments",
-                    autopopulate: true,
-                },
-                amount: {
-                    type: Number,
-                    required: true,
-                },
+                type: mongoose.Schema.ObjectId,
+                ref: "payments",
+                autopopulate: true,
             },
         ],
         invoiceDate: {

@@ -13,11 +13,12 @@ const CustomInput = ({
     entityName,
     fieldName,
     width = "150px",
+    preFillValue,
     ...restProps
 }) => {
-    const { onChange, preFillValue, updateInForm, disabled, ...otherProps } =
-        restProps;
+    const { onChange, updateInForm, disabled, ...otherProps } = restProps;
     const [date, setDate] = useState("");
+    console.log(preFillValue, "in the customInput");
     // Convert preFillValue to dayjs object if it's a date
     useEffect(() => {
         if (preFillValue && type === "date") {
@@ -77,7 +78,7 @@ const CustomInput = ({
                     entity={entity}
                     entityName={entityName}
                     width={width}
-                    preFillValue
+                    preFillValue={preFillValue}
                     {...restProps}
                 />
             );
@@ -87,6 +88,7 @@ const CustomInput = ({
                     entity={entity}
                     fieldName={fieldName}
                     width={width}
+                    preFillValue={preFillValue}
                     {...restProps}
                 />
             );
@@ -99,7 +101,7 @@ const CustomInput = ({
                 />
             );
         case "image":
-            return <UploadImage {...restProps} />;
+            return <UploadImage {...restProps} preFillValue={preFillValue} />;
         case "checkbox":
             return (
                 <Checkbox

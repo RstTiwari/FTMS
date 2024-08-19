@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
 import { Flex, Row, Col, Tabs } from "antd";
-import SummaryCard from "./SummaryCard";
 import { useAuth } from "state/AuthProvider";
 import TotalReceivables from "./TotalRecivables";
 import Taglabel from "components/Comman/Taglabel";
 import TabPane from "antd/es/tabs/TabPane";
-import SalesExpensesDashboard from "./SalesExpenses";
+import PurchaseExpenses from "./PurchaseExpenses";
 import TopExpenses from "./TopExpenses";
 
 const Dashbord = () => {
@@ -14,7 +13,7 @@ const Dashbord = () => {
             <Tabs>
                 <TabPane tab="DASHBOARD" key={1}>
                     <TotalReceivables />
-                    <SalesExpensesDashboard />
+                    <PurchaseExpenses />
                     <TopExpenses />
                 </TabPane>
                 <TabPane tab="MYFAC8RY SERVICES" key={2}></TabPane>

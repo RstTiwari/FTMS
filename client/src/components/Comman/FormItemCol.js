@@ -16,6 +16,7 @@ const FormItemCol = ({
     entityName,
     fieldName,
     width,
+    preFillValue,
     ...restProps
 }) => (
     <Col xs={24} sm={24} md={8} lg={8}>
@@ -38,6 +39,7 @@ const FormItemCol = ({
                 entityName={entityName}
                 fieldName={fieldName}
                 width={width}
+                preFillValue={preFillValue}
                 {...restProps}
             />
         </Form.Item>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
     EditOutlined,
@@ -9,15 +9,26 @@ import {
     CloseOutlined,
     DownCircleOutlined,
 } from "@ant-design/icons";
-import { Row, Col } from "antd";
+import { Row, Col, Modal, Form } from "antd";
 import { useParams } from "react-router-dom";
+import { useAuth } from "state/AuthProvider";
 
-const DetailsHeader = () => {
+const DetailsHeader = ({ values }) => {
     const { entity, tenantId, pageNo, pageSize, id } = useParams();
     const navigate = useNavigate();
+    const { pdfGenerate } = useAuth();
+
     const handleEditClick = () => {
         navigate(`/app/${tenantId}/update/${entity}/${id}`);
     };
+    const handleRecordPaymentClick = () => {
+        navigate(`/app/${tenantId}/payments/${id}/recordPayment`);
+    };
+    useEffect(() => {}, [id]);
+    const handlePdfDownload = async () => {
+        await pdfGenerate(entity, values?._id, values?.no, "download");
+    };
+
     return (
         <>
             <Row>
@@ -95,6 +106,7 @@ const DetailsHeader = () => {
                                 display: "flex",
                                 alignItems: "center",
                             }}
+                            onClick={() => handlePdfDownload()}
                         >
                             <DownloadOutlined style={{ marginRight: 5 }} />
                             Download
@@ -108,6 +120,7 @@ const DetailsHeader = () => {
                             display: "flex",
                             alignItems: "center",
                         }}
+                        onClick={handleRecordPaymentClick}
                     >
                         <DownCircleOutlined style={{ marginRight: 5 }} />
                         Record Payment

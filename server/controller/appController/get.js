@@ -2,7 +2,7 @@ import checkDbForEntity from "../../Helper/databaseSelector.js";
 const get = async (req, res, next) => {
     try {
         let { entity, id } = req.query;
-         let tenantId = req.tenantId
+        let tenantId = req.tenantId;
 
         if (!entity || !tenantId || !id) {
             throw new Error(`Invalid Payload for ${entity}`);
@@ -12,7 +12,7 @@ const get = async (req, res, next) => {
         if (entity === "tenant") {
             // For fetching data from tenant Database
             filter = { _id: tenantId };
-        } 
+        }
 
         // selecting the Database
         const dataBase = checkDbForEntity(entity);
@@ -22,12 +22,17 @@ const get = async (req, res, next) => {
             .populate([
                 {
                     path: "customer",
-                    select: "name",
+                    select: "name billingAddress shippingAddress",
                     options: { strictPopulate: false },
                 },
                 {
                     path: "vendor",
                     select: "name",
+                    options: { strictPopulate: false },
+                },
+                {
+                    path: "payments", // Populate payment details
+                    select: "amount paymentDate no", // Select relevant payment fields
                     options: { strictPopulate: false },
                 },
             ])
