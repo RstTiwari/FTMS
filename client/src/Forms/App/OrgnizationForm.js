@@ -72,6 +72,7 @@ const OrganizationForm = ({ form }) => {
                                     },
                                 ]}
                                 preFillValue={form.getFieldValue("logo")}
+                                imageType ="logo"
                             />
                         </Col>
                     </Row>

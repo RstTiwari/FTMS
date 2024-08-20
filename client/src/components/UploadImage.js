@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Button, Upload, Image } from "antd";
+import { Row, Col, Button, Upload } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import NotificationHandler from "../EventHandler/NotificationHandler"; // Update the path as necessary
 import imageCompression from "browser-image-compression";
@@ -13,40 +13,82 @@ const UploadImage = ({
     aboutImage,
     preFillValue,
     updateImageInForm,
+    imageType,
 }) => {
     const [loading, setLoading] = useState(false);
     const [edit, setEdit] = useState(true);
     const [imageUrl, setImageUrl] = useState(preFillValue || "");
-    const [file, setFile] = useState(null);
 
     const handleChange = async (info) => {
         const file = info.file.originFileObj;
-
         if (!file) return;
-
-        // Set options for image compression
-        const options = {
-            maxWidthOrHeight: 200,
-            useWebWorker: true,
-        };
-
+    
+        setLoading(true); // Show loading indicator
+    
         try {
-            // Resize the image
-            const resizedFile = await imageCompression(file, options);
-            setFile(resizedFile);
-
             const reader = new FileReader();
-            reader.readAsDataURL(resizedFile);
-            reader.onload = () => setImageUrl(reader.result);
-
-            if (updateImageInForm) {
-                updateImageInForm(resizedFile);
-            }
+            reader.onload = (e) => {
+                const img = new Image();
+                img.src = e.target.result;
+                console.log("e",e)
+    
+                img.onload = () => {
+                    console.log(`Original Dimensions: ${img.height}x${img.width}`);
+    
+                    const canvas = document.createElement("canvas");
+                    const maxSize = imageType === "product" ? 350 : 200; // Adjust to your desired size
+                    const ctx = canvas.getContext("2d");
+    
+                    let width = img.width;
+                    let height = img.height;
+    
+                    // Resize logic
+                    if (width > height) {
+                        if (width > maxSize) {
+                            height = (height * maxSize) / width;
+                            width = maxSize;
+                        }
+                    } else {
+                        if (height > maxSize) {
+                            width = (width * maxSize) / height;
+                            height = maxSize;
+                        }
+                    }
+    
+                    console.log(`Resized Dimensions: ${height}x${width}`);
+    
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+    
+                    // Convert canvas to blob and set it as the image
+                    canvas.toBlob((blob) => {
+                        const resizedImage = new File([blob], file.name, {
+                            type: file.type,
+                            lastModified: Date.now(),
+                        });
+    
+                        // Update the image URL with the resized image
+                        setImageUrl(URL.createObjectURL(resizedImage));
+    
+                        // Pass the resized image to the parent component or perform further actions
+                        if (updateImageInForm) {
+                            updateImageInForm(resizedImage);
+                        }
+    
+                        setLoading(false); // Hide loading indicator
+                    }, file.type);
+                };
+            };
+    
+            reader.readAsDataURL(file);
         } catch (error) {
             console.error("Error resizing the image:", error);
             NotificationHandler.error("Failed to resize image");
+            setLoading(false); // Hide loading indicator
         }
     };
+    
     const handleEdit = () => {
         setImageUrl(null);
         setEdit(true);
@@ -76,6 +118,7 @@ const UploadImage = ({
     useEffect(() => {
         if (preFillValue) {
             setImageUrl(preFillValue);
+            setEdit(false)
         }
     }, [preFillValue]);
 
@@ -104,7 +147,7 @@ const UploadImage = ({
             </Row>
             {edit ? (
                 <>
-                    <Dragger onChange={handleChange} showUploadList={false}>
+                    <Dragger onChange={handleChange} showUploadList={false} listType="picture-circle" >
                         {imageUrl ? (
                             <img
                                 src={imageUrl}
@@ -128,7 +171,8 @@ const UploadImage = ({
                 </>
             ) : (
                 <Row justify="center">
-                    <Image
+                    <img
+                        
                         src={preFillValue}
                         style={{ width: "100%", maxHeight: "200px" }}
                     />
