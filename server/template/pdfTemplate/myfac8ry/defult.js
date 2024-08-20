@@ -17,8 +17,13 @@ const defaultPdfTemplate = async (
 ) => {
     try {
         const imageBuffer = await downloadImage(organizationData?.logo);
+        console.log(entityData, "==");
 
-        const doc = new PDFDocument({ size: [595, 842], margin: 5 });
+        const doc = new PDFDocument({
+            size: [595, 842],
+            margin: 5,
+            bufferPages: true,
+        });
         doc.pipe(res);
 
         // Add page border
@@ -37,8 +42,61 @@ const defaultPdfTemplate = async (
         // Details Section
         addDetails(doc, entityData, entity, organizationData);
 
-        // Items Section
-        addItemsTable(doc, entityData, entity, organizationData);
+        // Items Section with Logic for Page Breaks
+        const itemsPerPage = 18; // Number of items per page
+        const totalItems = entityData.items.length;
+
+        // Calculate the number of pages needed
+        let totalPages = Math.ceil(totalItems / itemsPerPage);
+
+        // Ensure the number of pages based on total items and rules
+        if (totalItems <= 15) {
+            totalPages = 1;
+        } else if (totalItems > 15 && totalItems <= 30) {
+            totalPages = 2;
+        } else if (totalItems > 30 && totalItems <= 45) {
+            totalPages = 3;
+        } else {
+            totalPages = Math.ceil(totalItems / itemsPerPage);
+        }
+
+        // Function to add items to pages
+        const addItemsWithPagination = (doc, entityData, itemsPerPage) => {
+            let currentPage = 1;
+            let itemIndex = 0;
+            doc.rect(10, doc.y + 2, 575, 30).fill("#0047AB");
+
+            while (currentPage <= totalPages) {
+                const itemsForPage = entityData.items.slice(
+                    itemIndex,
+                    itemIndex + itemsPerPage
+                );
+
+                // Add Items Table for the current page
+                addItemsTable(
+                    doc,
+                    { ...entityData, items: itemsForPage },
+                    entity,
+                    organizationData
+                );
+
+                itemIndex += itemsPerPage;
+
+                if (currentPage < totalPages) {
+                    doc.addPage();
+                    addPageBorder(doc); // Add border for the new page
+                }
+
+                currentPage++;
+            }
+            // After the last page's table, calculate and add the bottom border
+            const bottomBorderY = doc.page.height - 20; // Adjust y position as needed
+
+            // Draw footer background
+        };
+
+        // Add items with pagination logic
+        addItemsWithPagination(doc, entityData, itemsPerPage);
 
         // Footer Section
         addFooter(doc, entityData, entity, organizationData);
@@ -370,18 +428,16 @@ const addHeader = (
     // Draw a horizontal line after the header details
     const horizontalLineY = headerY + 10;
     doc.moveTo(4, horizontalLineY) // Starting at x=4, y=horizontalLineY
-        .lineTo(pageWidth - 4, horizontalLineY-2) // Ending at x=pageWidth - 4, y=horizontalLineY
+        .lineTo(pageWidth - 4, horizontalLineY - 2) // Ending at x=pageWidth - 4, y=horizontalLineY
         .stroke(borderColor);
     // Draw a horizontal line after the header details
     doc.moveTo(350, horizontalLineY)
         .lineTo(350, titleBorder)
         .stroke(borderColor);
-    doc.y = horizontalLineY ;
+    doc.y = horizontalLineY;
 
     return doc;
 };
-
-
 
 const addDetails = (doc, entityData, entity, organizationData) => {
     let detailsFunction = () => {};
@@ -406,17 +462,14 @@ const addDetails = (doc, entityData, entity, organizationData) => {
     detailsFunction(doc, entityData, organizationData);
 };
 
+// Add Items Table Function
 const addItemsTable = (doc, entityData, entity) => {
     const headers = getTableHeaders(entity);
     const headerHeight = 30;
     const cellPadding = 5;
     const items = entityData?.items;
-    let initial = doc.y
-
     // Draw header background
     let tableHeaderY = doc.y + 15;
-    doc.rect(10, doc.y + 2, 575, headerHeight).fill("#0047AB");
-
     // Draw header text
     let x = 20;
     doc.fontSize(8).font("Helvetica-Bold").fill("#fff");
@@ -425,27 +478,10 @@ const addItemsTable = (doc, entityData, entity) => {
         x += header.width;
     });
 
-    // Function to check and add a new page if needed
-    const ensureSpace = (doc, rowHeight) => {
-        const remainingSpace = doc.page.height - doc.y - 50; // 50 units as a buffer
-        if (remainingSpace < rowHeight) {
-            doc.addPage();
-            doc.y = 20; // Reset y position for the new page
-            return 20; // Return the new y position
-        }
-        return doc.y;
-    };
-
     // Draw item rows
     let y = tableHeaderY + headerHeight + cellPadding;
     doc.fill("#000000").font("Helvetica-Bold");
-
-    items.forEach((item) => {
-        const rowHeight = 20;
-        
-        // Ensure there is enough space for the row
-        y = doc.y + 30;
-
+    items?.forEach((item, index) => {
         let x = 20;
         headers.forEach((header) => {
             switch (header.title.toUpperCase()) {
@@ -475,16 +511,9 @@ const addItemsTable = (doc, entityData, entity) => {
             }
             x += header.width;
         });
-
-        // Update the y position for the next row
-        y += rowHeight;
+        y += headerHeight;
     });
-
-    // Draw footer background
-    doc.rect(10, y + cellPadding, 575, cellPadding).fill("#0047AB");
 };
-
-
 const addFooter = (doc, entityData, entity, organizationData) => {
     let footerDetails = () => {};
     switch (entity) {
@@ -579,7 +608,7 @@ const detailsForInvoice = (doc, invoiceData, entity, curY) => {
     doc.fontSize(12)
         .font("Helvetica-Bold")
         .fillColor("#0047AB")
-        .text("BILLING TO:", leftX, initialY +10);
+        .text("BILLING TO:", leftX, initialY + 10);
     doc.fontSize(10)
         .fillColor("#1E1F20")
         .font("Helvetica-Bold")
@@ -616,7 +645,7 @@ const detailsForInvoice = (doc, invoiceData, entity, curY) => {
     doc.fontSize(12)
         .fillColor("#0047AB")
         .font("Helvetica-Bold")
-        .text("SHIPPING TO:", rightX, initialY+10);
+        .text("SHIPPING TO:", rightX, initialY + 10);
     doc.fontSize(10)
         .fillColor("#1E1F20")
         .font("Helvetica-Bold")
@@ -645,9 +674,7 @@ const detailsForInvoice = (doc, invoiceData, entity, curY) => {
         .stroke(borderColor);
 
     // Draw vertical line separating billing and shipping sections
-    doc.moveTo(300, initialY)
-        .lineTo(300, endY)
-        .stroke(borderColor);
+    doc.moveTo(300, initialY).lineTo(300, endY).stroke(borderColor);
 
     // Update doc.y to ensure it starts after the details section
     doc.y = endY;
@@ -666,10 +693,10 @@ const detailsForQuotation = (doc, quotationData, organizationData, curY) => {
     const toTextWidth = doc.widthOfString(toText);
 
     // Customer Details
-    doc.fillColor("#1E1F20").text(toText, leftX, initialY+10);
+    doc.fillColor("#1E1F20").text(toText, leftX, initialY + 10);
     doc.fontSize(12)
         .fillColor("#1E1F20")
-        .text(customer?.name || "", leftX + toTextWidth + 5, initialY +10);
+        .text(customer?.name || "", leftX + toTextWidth + 5, initialY + 10);
 
     // Optional subject line
     if (sub) {
@@ -685,7 +712,7 @@ const detailsForQuotation = (doc, quotationData, organizationData, curY) => {
         doc.fontSize(12)
             .fillColor("#1E1F20")
             .font("Helvetica-Bold")
-            .text(subText, leftX, doc.y +10);
+            .text(subText, leftX, doc.y + 10);
     }
 
     const customerEndY = doc.y;
@@ -726,7 +753,7 @@ const detailsForPurchaseOrder = (
     doc.fontSize(12)
         .fillColor("#0047AB")
         .font("Helvetica-Bold")
-        .text("SUPPLIER:", leftX, initialY +10);
+        .text("SUPPLIER:", leftX, initialY + 10);
     doc.fontSize(10)
         .fillColor("#1E1F20")
         .font("Helvetica-Bold")
@@ -741,7 +768,7 @@ const detailsForPurchaseOrder = (
     const { to, address } = delivery;
     doc.fontSize(12)
         .fillColor("#0047AB")
-        .text("DELIVERY TO:", rightX, initialY+10);
+        .text("DELIVERY TO:", rightX, initialY + 10);
     doc.fontSize(10)
         .fillColor("#1E1F20")
         .font("Helvetica-Bold")
@@ -768,9 +795,7 @@ const detailsForPurchaseOrder = (
         .stroke(borderColor);
 
     // Draw vertical line separating supplier and delivery sections
-    doc.moveTo(300, initialY)
-        .lineTo(300, endY)
-        .stroke(borderColor);
+    doc.moveTo(300, initialY).lineTo(300, endY).stroke(borderColor);
 
     // Update doc.y to ensure it starts after the details section
     doc.y = endY;
@@ -787,7 +812,7 @@ const detailsForChallan = (doc, challanDataa, organizationData, curY) => {
     doc.fontSize(12)
         .font("Helvetica-Bold")
         .fillColor("#0047AB")
-        .text("DISPATCH TO:", leftX, initialY+10);
+        .text("DISPATCH TO:", leftX, initialY + 10);
     doc.fontSize(10)
         .fillColor("#1E1F20")
         .font("Helvetica-Bold")
@@ -815,7 +840,7 @@ const detailsForChallan = (doc, challanDataa, organizationData, curY) => {
 
     doc.fontSize(12)
         .fillColor("#0047AB")
-        .text("DISPATCH FROM:", rightX, initialY+10);
+        .text("DISPATCH FROM:", rightX, initialY + 10);
     doc.fontSize(10)
         .fillColor("#1E1F20")
         .font("Helvetica-Bold")
@@ -844,9 +869,7 @@ const detailsForChallan = (doc, challanDataa, organizationData, curY) => {
         .stroke(borderColor);
 
     // Draw vertical line separating Dispatch To and Dispatch From sections
-    doc.moveTo(300, initialY )
-        .lineTo(300, endY)
-        .stroke(borderColor);
+    doc.moveTo(300, initialY).lineTo(300, endY).stroke(borderColor);
 
     // Update doc.y to ensure it starts after the details section
     doc.y = endY;
@@ -909,7 +932,7 @@ const footerForInvoice = (doc, invoiceData, organizationData) => {
 
 const footerForQuotation = (doc, quotationData) => {
     const initialY = doc.y + 20;
-    console.log("function is called")
+    console.log("function is called");
 
     doc.fontSize(10);
     doc.fill("#000");
@@ -978,7 +1001,7 @@ const footerForQuotation = (doc, quotationData) => {
             currentY = doc.y + lineHeight; // Adjust Y position for the next condition
         }
     };
-     console.log(quotationData,"==")
+    console.log(quotationData, "==");
     // Add each condition
     addCondition("Delivery Condition", quotationData?.deliveryCondition);
     addCondition("Payment Condition", quotationData?.paymentsCondition);

@@ -31,13 +31,13 @@ const DeliveryChallan = ({ form }) => {
             let { description, rate, hsnCode } = value;
             temObj.description = description;
             temObj.rate = Math.ceil(rate);
-            temObj.finalAmount = Math.ceil(temObj.qty * rate);
+            temObj.finalAmount = Math.ceil(temObj.qty * Number(rate));
         } else if (filedName === "rate") {
             temObj.rate = value;
-            temObj.finalAmount = Math.ceil(temObj.qty * value);
+            temObj.finalAmount = Number(Math.ceil(temObj.qty * value));
         } else if (filedName === "qty") {
             temObj.qty = value;
-            temObj.finalAmount = Math.ceil(temObj.qty * temObj.rate);
+            temObj.finalAmount = Number(Math.ceil(temObj.qty * temObj.rate));
         } else if (filedName === "customer") {
             form.setFieldsValue({ customer: value });
         } else if (filedName === "no") {
@@ -56,7 +56,7 @@ const DeliveryChallan = ({ form }) => {
         form.setFieldsValue({ items: items });
 
         // Tax Calculator
-        let grossTotal = items.reduce((a, b) => a + b.finalAmount, 0);
+        let grossTotal = items.reduce((sum, item) => sum + item.finalAmount, 0);
         let transportAmount = form.getFieldValue("transportAmount") || 0;
         const temItems = items.map((item) => ({
             ...item,
@@ -97,7 +97,7 @@ const DeliveryChallan = ({ form }) => {
                 width={"25vw"}
                 entity={"customers"}
                 fieldName={"name"}
-                onlyShippingAddress ={true}
+                onlyShippingAddress={true}
                 updateInForm={(value) => handleItemUpdate(value, "customer")}
                 preFillValue={form.getFieldValue("customer")?.name}
             />
