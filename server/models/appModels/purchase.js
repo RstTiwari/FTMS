@@ -21,7 +21,18 @@ const purchaseOrderSchema = new mongoose.Schema({
         type: Date,
         required: true,
     },
-    status: { type: String, default: "DRAFT", required: true },
+    status: {
+        type: String,
+        enum: [
+            "DRAFT",
+            "SEND",
+            "CANCELLED",
+            "ON_HOLD",
+            "PARTIALLY_PAID",
+            "FULL_PAID",
+        ],
+        default: "DRAFT",
+    },
     items: [
         {
             description: {
@@ -40,6 +51,13 @@ const purchaseOrderSchema = new mongoose.Schema({
             finalAmount: {
                 type: Number,
             },
+        },
+    ],
+    payments: [
+        {
+            type: mongoose.Schema.ObjectId,
+            ref: "paymentsMade",
+            autopopulate: true,
         },
     ],
 

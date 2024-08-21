@@ -5,7 +5,7 @@ const totalReciveables = async (req, res, next) => {
         let { id, entity, period } = req.query;
         let tenantId = req.tenantId;
         let InvoiceDatabase = checkDbForEntity("invoices");
-        let PaymentDataBase = checkDbForEntity("payments");
+        let PaymentDataBase = checkDbForEntity("paymentsrecived");
         let CustomerDatabase = checkDbForEntity("customers");
         let PurchaseOrderDatabase = checkDbForEntity("purchases");
         let ExpenseDataBase = checkDbForEntity("expenses");
@@ -19,8 +19,8 @@ const totalReciveables = async (req, res, next) => {
                 (sum, invocie) => sum + invocie?.grossTotal,
                 0
             );
-            let payments = await PaymentDataBase.find(filter);
-            let totalRecived = payments.reduce(
+            let paymentsrecived = await PaymentDataBase.find(filter);
+            let totalRecived = paymentsrecived.reduce(
                 (sum, payment) => sum + payment?.amount,
                 0
             );
@@ -83,7 +83,7 @@ const totalReciveables = async (req, res, next) => {
                 totalReceivables: 0,
             };
 
-            let invoices = await InvoiceDatabase.find(filter).populate("payments");
+            let invoices = await InvoiceDatabase.find(filter).populate("paymentsrecived");
             invoices.forEach((invoice) => {
                 const dueDate = new Date(invoice.dueDate);
                 let pendingAmount = 0;
@@ -92,8 +92,8 @@ const totalReciveables = async (req, res, next) => {
                     // If the status is DRAFT, the entire grandTotal is pending
                     pendingAmount = invoice.grandTotal;
                 } else if (invoice.status === "PARTIALLY_PAID") {
-                    // Calculate total received from payments array
-                    const totalReceived = invoice.payments?.reduce(
+                    // Calculate total received from paymentsrecived array
+                    const totalReceived = invoice.paymentsrecived?.reduce(
                         (acc, payment) => acc + payment.amount,
                         0
                     );

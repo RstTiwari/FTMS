@@ -7,13 +7,14 @@ import useFormActions from "Hook/useFormAction";
 import PageLoader from "pages/PageLoader";
 import Header from "components/Header";
 import FormActionButtons from "components/Comman/FormActionButton";
+import CoustomFormItem from "module/Create/CreateModule";
 
 const RecordPayment = () => {
     const [form] = Form.useForm();
     const { tenantId, entity, id } = useParams();
-
+    let preFillEntity = entity ==="paymentsmade" ? "vendors":"customers"
     const { initialValues, isFetching, fetchInitialValues } =
-        useInitialFormValues("customers", "get", id);
+        useInitialFormValues(preFillEntity, "get", id);
     const { isLoading, error, handleFormSubmit } = useFormActions(
         entity,
         false,
@@ -25,9 +26,10 @@ const RecordPayment = () => {
     }, []);
 
     useEffect(() => {
+        let preFilledkey = entity ==="paymentsreceived" ? "customer":"vendor"
         if (initialValues) {
             const { name, _id } = initialValues;
-            form.setFieldsValue({ customer: { _id, name } });
+            form.setFieldsValue({ [preFilledkey]: { _id, name } });
         }
     }, [form, initialValues]);
 
@@ -77,7 +79,7 @@ const RecordPayment = () => {
                         padding: "10px ",
                     }}
                 >
-                    <PaymentForm form={form} isUpdate={false} />
+                 <CoustomFormItem  entity={entity} isUpdate={false} form={form}/>
                 </div>
                 <div
                     style={{

@@ -3,9 +3,9 @@ import mongooseAutoPopulate from "mongoose-autopopulate";
 
 const paymentsSchema = new mongoose.Schema(
     {
-        customer: {
+        vendor: {
             type: mongoose.Schema.ObjectId,
-            ref: "customer",
+            ref: "vendors",
             required: true,
             autopopulate: true,
         },
@@ -46,17 +46,7 @@ paymentsSchema.plugin(mongooseAutoPopulate);
 
 // Pre-save middleware to count documents and set incrementField
 paymentsSchema.pre("save", async function (next) {
-    if (this.isNew) {
-        try {
-            const count = await mongoose.model("payments").countDocuments();
-            this.no = count + 1;
-            next();
-        } catch (error) {
-            next(error);
-        }
-    } else {
-        next();
-    }
+
 });
 
-export default mongoose.model("payments", paymentsSchema);
+export default mongoose.model("paymentsmade", paymentsSchema,"paymentsmade");

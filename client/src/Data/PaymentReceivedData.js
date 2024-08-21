@@ -8,18 +8,12 @@ import Taglabel from "components/Comman/Taglabel";
 const { Text } = Typography;
 const getColumns = (details) => [
     {
-        title: (
-            <Taglabel text={"#No"} type={"heading"} details={details} />
-        ),
+        title: <Taglabel text={"#No"} type={"heading"} details={details} />,
         dataIndex: "no",
         key: "no",
         width: 100,
         render: (_, record) => (
-            <Taglabel
-                type={"no"}
-                text={`${record.no}`}
-                details={details}
-            />
+            <Taglabel type={"no"} text={`${record.no}`} details={details} />
         ),
     },
     {
@@ -104,19 +98,20 @@ export default paymentData;
 
 export const paymentMode = [
     {
-        label: "UPI",
-        value: "UPI",
-    },
-    {
-        label: "DEBIT CARD",
-        value: "DEBIT CARD",
-    },
-    {
         label: "CASH",
         value: "CASH",
     },
     {
-        label: "CHECK",
-        value: "CHECK",
+        label: "CHEQUE",
+        value: "CHEQUE",
+    },
+    {
+        label: "BANK TRANSFER",
+        value: "BANK TRANSFER",
+    },
+
+    {
+        label: "CREDIT CARD",
+        value: "CREDIT CARD",
     },
 ];

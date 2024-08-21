@@ -5,7 +5,9 @@ import invoiceData from "Data/InvoiceData";
 import challanData from "Data/Challan";
 import purchaseData from "Data/PurchaseData";
 import vendorData from "Data/VendorData";
-import paymentData from "Data/PaymentData";
+import paymentReceivedData from "Data/PaymentReceivedData";
+import paymentMadeData from "Data/PaymnetMadeData";
+
 import productData from "Data/ProductData";
 import expenseData from "Data/ExpensesData";
 
@@ -34,8 +36,11 @@ const ListModule = (entity) => {
         case "vendors":
             data = vendorData;
             break;
-        case "payments":
-            data = paymentData;
+        case "paymentsrecived":
+            data = paymentReceivedData;
+            break;
+        case "paymentsmade":
+            data = paymentMadeData;
             break;
         case "products":
             data = productData;

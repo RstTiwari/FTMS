@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Input, Button, Modal, Form } from "antd";
+import { Input, Button, Modal, Form ,Row,Col} from "antd";
 import { SettingOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import Counters from "Forms/App/Counters";
@@ -7,7 +7,7 @@ import FormActionButtons from "./FormActionButton";
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
 
-const CustomInputWithModal = ({ preFillValue,updateInForm }) => {
+const CustomInputWithModal = ({ preFillValue,updateInForm,width }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [inputValue, setInputValue] = useState("");
     const [prefix, setPrefix] = useState("");
@@ -57,7 +57,7 @@ const CustomInputWithModal = ({ preFillValue,updateInForm }) => {
             "get",
             "fetchCountersNumber",
             {},
-            { entity: "counters", entityName: entity } // entityName is name of entity like invoice ,quoations, payments
+            { entity: "counters", entityName: entity } // entityName is name of entity like invoice ,quoations, paymentsrecived
         );
         if (response.success) {
             const { prefix, nextNumber } = response.result;
@@ -81,10 +81,11 @@ const CustomInputWithModal = ({ preFillValue,updateInForm }) => {
 
     return (
         <div>
+               <Row style={{ position: 'relative', width: width }}>
             <Input
                 value={inputValue}
                 onChange={handleInputChange}
-                style={{ paddingRight: "30px" }} // Adjust padding-right to accommodate button width
+                style={{ paddingRight: "30px", width: "100%" }} // Adjust padding-right to accommodate button width
             />
 
             <Button
@@ -92,13 +93,18 @@ const CustomInputWithModal = ({ preFillValue,updateInForm }) => {
                 onClick={openModal}
                 style={{
                     position: "absolute",
-                    top: 0,
-                    right: 0,
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    right: "10px", // Adjust this value based on your preference
                     zIndex: 1,
                     border: "none",
                     background: "transparent",
+                    padding: 0,
+                    height: "100%", // Ensure the button height matches the input height
                 }}
             />
+        </Row>
+  
 
             <Modal
                 title={`CONFIGURE YOUR ${entity.toLocaleUpperCase()} NUMBER PREFERENCES`}

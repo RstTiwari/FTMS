@@ -1,6 +1,6 @@
 import CollapsibleTable from "components/Comman/ColapsableTable";
 import invoiceData from "Data/InvoiceData";
-import paymentData from "Data/PaymentData";
+import paymentData from "Data/PaymentReceivedData";
 import quotationData from "Data/QuotationData";
 const TransactionTab = () => (
     <>

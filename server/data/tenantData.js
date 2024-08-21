@@ -30,8 +30,12 @@ const tenSpecificData = {
                     label: "Invoices",
                 },
                 {
-                    key: "payments",
-                    label: "Payments",
+                    key: "paymentsreceived",
+                    label: "Payments Received",
+                },
+                {
+                    key: "paymentsmade",
+                    label: "Payments Made",
                 },
                 {
                     key: "expenses",

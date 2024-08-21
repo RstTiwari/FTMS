@@ -3,7 +3,8 @@ import customerDb from "../models/appModels/customer.js";
 import productDb from "../models/appModels/product.js";
 import quoteDb from "../models/appModels/quotation.js";
 import invoiceDb from "../models/appModels/invoice.js";
-import paymentDb from "../models/appModels/payments.js";
+import paymentDb from "../models/appModels/paymentsReceived.js";
+import paymentsMade from "../models/appModels/paymentsMade.js";
 import expensesDb from "../models/appModels/expenses.js";
 import deliveryChallanDb from "../models/appModels/challan.js";
 import vendorDb from "../models/appModels/vendor.js";
@@ -19,7 +20,8 @@ const dbMapping = {
     products: productDb,
     quotations: quoteDb,
     invoices: invoiceDb,
-    payments: paymentDb,
+    paymentsrecived: paymentDb,
+    paymentsmade: paymentsMade,
     expenses: expensesDb,
     challans: deliveryChallanDb,
     vendors: vendorDb,

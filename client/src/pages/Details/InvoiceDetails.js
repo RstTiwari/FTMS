@@ -16,7 +16,7 @@ const InvoiceDetails = ({ invoice }) => {
         grossTotal,
         taxAmount,
         grandTotal,
-        payments,
+        paymentsrecived,
     } = invoice;
 
     const statusColors = {
@@ -170,7 +170,7 @@ const InvoiceDetails = ({ invoice }) => {
             <Typography.Title level={5}>Payments Recived</Typography.Title>
             <List
                 bordered
-                dataSource={payments}
+                dataSource={paymentsrecived}
                 renderItem={(payment) => (
                     <List.Item>
                         <Row style={{ width: "100%" }}>

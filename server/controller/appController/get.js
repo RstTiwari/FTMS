@@ -31,7 +31,7 @@ const get = async (req, res, next) => {
                     options: { strictPopulate: false },
                 },
                 {
-                    path: "payments", // Populate payment details
+                    path: "paymentsrecived", // Populate payment details
                     select: "amount paymentDate no", // Select relevant payment fields
                     options: { strictPopulate: false },
                 },

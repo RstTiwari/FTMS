@@ -22,7 +22,8 @@ const DetailsHeader = ({ values }) => {
         navigate(`/app/${tenantId}/update/${entity}/${id}`);
     };
     const handleRecordPaymentClick = () => {
-        navigate(`/app/${tenantId}/payments/${id}/recordPayment`);
+        let paymentEntity =  entity ==="customers" ? "paymentsrecived":"paymentsmade"
+        navigate(`/app/${tenantId}/${paymentEntity}/${id}/recordPayment`);
     };
     useEffect(() => {}, [id]);
     const handlePdfDownload = async () => {
@@ -112,7 +113,7 @@ const DetailsHeader = ({ values }) => {
                             Download
                         </Col>
                     </>
-                ) : entity === "customers" ? (
+                ) : entity === "customers" ||  entity ==="vendors" ?   (
                     <Col
                         span={4}
                         style={{

@@ -4,7 +4,7 @@ const updatePayment = async (req, res, next) => {
         let tenantId = req.tenantId;
         const { values } = req.body;
         const { entity, id } = req.query;
-        const PaymentDatabase = checkDbForEntity("payments");
+        const PaymentDatabase = checkDbForEntity(entity);
 
         // check the existing payement Obj
         let existingPayment = await PaymentDatabase.findOne({
@@ -62,14 +62,14 @@ const redistributePayment = async (payment, amountDifference) => {
 
     // Fetch the invoice associated with this payment
     const invoice = await InvoiceDatabase.findOne({
-        "payments.paymentId": payment._id,
+        "paymentsrecived.paymentId": payment._id,
     });
 
     if (!invoice) {
         throw new Error("Invoice not found");
     }
 
-    const totalPaid = (invoice.payments || []).reduce((sum, paymentEntry) => {
+    const totalPaid = (invoice.paymentsrecived || []).reduce((sum, paymentEntry) => {
         if (paymentEntry.paymentId.equals(payment._id)) {
             return sum + paymentEntry.amount;
         }
@@ -90,13 +90,13 @@ const redistributePayment = async (payment, amountDifference) => {
         }
 
         // Update or add the payment reference to the invoice
-        const paymentEntry = invoice.payments.find((p) =>
+        const paymentEntry = invoice.paymentsrecived.find((p) =>
             p.paymentId.equals(payment._id)
         );
         if (paymentEntry) {
             paymentEntry.amount += amountToApply; // Update the existing payment entry
         } else {
-            invoice.payments.push({
+            invoice.paymentsrecived.push({
                 paymentId: payment._id,
                 amount: amountToApply,
             }); // Add a new payment entry
@@ -106,7 +106,7 @@ const redistributePayment = async (payment, amountDifference) => {
     } else if (amountDifference < 0) {
         // Payment amount decreased
         const decreaseAmount = -amountDifference;
-        const paymentEntry = invoice.payments.find((p) =>
+        const paymentEntry = invoice.paymentsrecived.find((p) =>
             p.paymentId.equals(payment._id)
         );
 

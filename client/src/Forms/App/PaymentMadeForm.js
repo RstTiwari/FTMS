@@ -18,13 +18,16 @@ const entity = "paymentsrecived";
 
 const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
     const handleItemUpdate = (value, fieldName) => {
-        if (fieldName === "customer") {
-            form.setFieldsValue({ customer: value });
+        if (fieldName === "vendor") {
+            form.setFieldsValue({ vendor: value });
         } else if (fieldName === "paymentMode") {
             form.setFieldsValue({ paymentMode: value });
         } else if (fieldName === "paymentDate") {
             form.setFieldsValue({ paymentDate: value });
-        } else {
+        } else if (fieldName === "no") {
+            form.setFieldsValue({ no: value });
+        } 
+         else {
         }
     };
 
@@ -33,33 +36,55 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
             <Row>
                 <Col span={24}>
                     <FormItemCol
-                        label="Select Customer"
-                        name="customer"
+                        label="Select Vendor"
+                        name="vendor"
                         required={true}
                         labelCol={{ span: 12 }}
                         rules={[
                             {
                                 required: true,
-                                message: "Plese Select Customer",
+                                message: "Plese Select Vendor",
                             },
                         ]}
                         labelAlign="left"
                         width={"25vw"}
-                        entity={"customers"}
+                        entity={"vendors"}
                         fieldName={"name"}
                         updateInForm={(value) => {
-                            handleItemUpdate(value, "customer");
+                            handleItemUpdate(value, "vendor");
                         }}
                         onlyShippingAddress={true}
-                        preFillValue={form.getFieldValue("customer")?.name}
+                        preFillValue={form.getFieldValue("vendor")?.name}
                         type={"model"}
-                        disabled={form.getFieldValue("customer")?.name} // if value availbel mark as disabled
+                        disabled={form.getFieldValue("vendor")?.name} // if value availbel mark as disabled
+                    />
+                </Col>
+                <Col span={24}>
+                    <FormItemCol
+                        label="Payment No"
+                        name="no"
+                        width={"25vw"}
+                        required={true}
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please Select Date",
+                            },
+                        ]}
+                        labelAlign="left"
+                        labelCol={{ span: 12 }}
+                        type={"counters"}
+                        updateInForm={(value) =>
+                            handleItemUpdate(value, "no")
+                        }
+                        preFillValue={form.getFieldValue("no")}
                     />
                 </Col>
                 <Col span={24}>
                     <FormItemCol
                         label="Payment Date"
                         name="paymentDate"
+                        width={"25vw"}
                         required={true}
                         rules={[
                             {
@@ -82,7 +107,8 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
                         name="paymentMode"
                         labelAlign="left"
                         labelCol={{ span: 12 }}
-                        type={"select"}
+                        width={"25vw"}
+                        type={"paymentmode"}
                         entity="Payment Mode"
                         entityName={"paymentMode"}
                         updateInForm={(value) => {
@@ -97,18 +123,19 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
                         name="ref"
                         tooltip={"Check No or UPI Transaction No"}
                         labelAlign="left"
+                        width={"25vw"}
                         labelCol={{ span: 12 }}
                         type={"input"}
                     />
                 </Col>
                 <Col span={24}>
                     <FormItemCol
-                        label="Amount(Rs)"
+                        label="Paid Amount(Rs)"
                         name="amount"
                         labelAlign="left"
                         required={true}
                         type={"number"}
-                        width={250}
+                        width={"25vw"}
                         labelCol={{ span: 12 }}
                         rules={[
                             {
@@ -127,6 +154,7 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
                         labelAlign="left"
                         tooltip={"Remark or Comment"}
                         labelCol={{ span: 12 }}
+                        width={"25vw"}
                         type={"input"}
                     />
                 </Col>

@@ -21,15 +21,15 @@ const invoiceSchema = new mongoose.Schema(
                 "SEND",
                 "CANCELLED",
                 "ON_HOLD",
-                "PARTIALLY_PAID",
-                "FULL_PAID",
+                "PARTIALLY_RECEIVED",
+                "FULL_RECEIVED",
             ],
             default: "DRAFT",
         },
         payments: [
             {
                 type: mongoose.Schema.ObjectId,
-                ref: "payments",
+                ref: "paymentsReceived",
                 autopopulate: true,
             },
         ],

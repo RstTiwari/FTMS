@@ -5,6 +5,7 @@ import CustomSelect from "./CustomSelect"; // Assuming you have created CustomDr
 import CustomModal from "components/CustomModal";
 import UploadImage from "components/UploadImage";
 import CustomCounters from "./CustomCounters";
+import PaymentMode from "./PaymentMode";
 
 const CustomInput = ({
     type,
@@ -48,7 +49,7 @@ const CustomInput = ({
                 <Input
                     readOnly={readOnly}
                     {...restProps}
-                    style={{ width: "100%" }}
+                    style={{ width: width }}
                 />
             );
         case "date":
@@ -57,6 +58,7 @@ const CustomInput = ({
                     value={date}
                     format={"DD/MM/YYYY"}
                     onChange={handleDateChange}
+                    style={{width:width}}
                 />
             );
         case "number":
@@ -68,10 +70,11 @@ const CustomInput = ({
                     controls={false} // Remove the up/down controls
                     min={0} // Prevent value from being less than 0
                     disabled={disabled}
+
                 />
             );
         case "box":
-            return <Input.TextArea {...restProps} style={{ width: width }} />;
+            return <Input.TextArea {...restProps} style={{ width: width }}  />;
         case "select":
             return (
                 <CustomSelect
@@ -92,28 +95,44 @@ const CustomInput = ({
                     {...restProps}
                 />
             );
+        case "paymentmode":
+                return (
+                    <PaymentMode
+                        entity={entity}
+                        fieldName={fieldName}
+                        width={width}
+                        preFillValue={preFillValue}
+                        {...restProps}
+                    />
+                );
         case "counters":
             return (
                 <CustomCounters
                     entity={entity}
                     preFillValue={preFillValue}
                     {...restProps}
+                    width ={width}
+
                 />
             );
         case "image":
-            return <UploadImage {...restProps} preFillValue={preFillValue} />;
+            return <UploadImage {...restProps} preFillValue={preFillValue} 
+            style={{width:width}}
+
+             />;
         case "checkbox":
             return (
                 <Checkbox
                     onChange={handleCheckboxChange}
                     checked={preFillValue}
+                    style={{width:width}}
                     {...otherProps}
                 >
                     {restProps.label}
                 </Checkbox>
             );
         default:
-            return <Input readOnly={readOnly} {...restProps} />;
+            return <Input readOnly={readOnly} {...restProps}  style={{width:width}}/>;
     }
 };
 

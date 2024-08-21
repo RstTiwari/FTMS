@@ -24,7 +24,7 @@ const TotalReceivables = () => {
         },
         {
             key: "2",
-            label: <Link to={`/app/${tenantId}/payments/create`}>Payment</Link>,
+            label: <Link to={`/app/${tenantId}/paymentsrecived/create`}>Payment</Link>,
         },
     ];
     const { initialValues, isFetching, fetchInitialValues } =
