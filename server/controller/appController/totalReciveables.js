@@ -93,7 +93,7 @@ const totalReciveables = async (req, res, next) => {
                     pendingAmount = invoice.grandTotal;
                 } else if (invoice.status === "PARTIALLY_PAID") {
                     // Calculate total received from payments array
-                    const totalReceived = invoice.payments.reduce(
+                    const totalReceived = invoice.payments?.reduce(
                         (acc, payment) => acc + payment.amount,
                         0
                     );
