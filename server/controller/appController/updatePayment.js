@@ -17,7 +17,6 @@ const updatePayment = async (req, res, next) => {
         }
         //now update the old payment\
         let newPaymentObj = Object.assign(existingPayment, values);
-        console.log(newPaymentObj, "==");
         let response = await PaymentDatabase.updateOne(
             { _id: id, tenantId: tenantId },
             { $set: newPaymentObj }
@@ -69,12 +68,15 @@ const redistributePayment = async (payment, amountDifference) => {
         throw new Error("Invoice not found");
     }
 
-    const totalPaid = (invoice.paymentsrecived || []).reduce((sum, paymentEntry) => {
-        if (paymentEntry.paymentId.equals(payment._id)) {
-            return sum + paymentEntry.amount;
-        }
-        return sum;
-    }, 0);
+    const totalPaid = (invoice.paymentsrecived || []).reduce(
+        (sum, paymentEntry) => {
+            if (paymentEntry.paymentId.equals(payment._id)) {
+                return sum + paymentEntry.amount;
+            }
+            return sum;
+        },
+        0
+    );
 
     const amountDue = invoice.grandTotal - totalPaid;
 

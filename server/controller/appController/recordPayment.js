@@ -3,13 +3,14 @@ import checkDbForEntity from "../../Helper/databaseSelector.js";
 const recordPayment = async (req, res, next) => {
     try {
         const { values } = req.body; // Payment values
-        const { entity,id } = req.query; // Payment values
+        let { entity, id } = req.query; // Payment values
 
-        if (!id || !values) {
+        if (!values) {
             throw new Error("Invalid Payload");
         }
         let tenantId = req.tenantId;
         values.tenantId = tenantId;
+        id = id ? id : values.id;
         // Create the payment record first
         const PaymentDatabase = checkDbForEntity(entity);
         const payment = new PaymentDatabase(values);
@@ -46,9 +47,8 @@ const recordPayment = async (req, res, next) => {
             // Distribute the payment across invoices and update them with the payment ID
             for (const invoice of invoices) {
                 if (remainingAmount <= 0) break;
-
                 // Calculate the total amount already paid on this invoice
-                let totalPaid = (invoice.paymentsrecived || []).reduce(
+                let totalPaid = (invoice.payments || []).reduce(
                     (sum, payment) => sum + payment.amount,
                     0
                 );
@@ -65,8 +65,8 @@ const recordPayment = async (req, res, next) => {
                 }
 
                 // Add the payment reference to the invoice
-                invoice.paymentsrecived = invoice.paymentsrecived || [];
-                invoice.paymentsrecived.push(payment._id);
+                invoice.payments = invoice.payments || [];
+                invoice.payments.push(payment._id);
 
                 await invoice.save();
                 remainingAmount -= amountToApply;
@@ -115,7 +115,7 @@ const recordPayment = async (req, res, next) => {
                 if (remainingAmount <= 0) break;
 
                 // Calculate the total amount already paid on this purchase
-                let totalPaid = (purchase.paymentsmade || []).reduce(
+                let totalPaid = (purchase.payments || []).reduce(
                     (sum, payment) => sum + payment.amount,
                     0
                 );
@@ -132,8 +132,8 @@ const recordPayment = async (req, res, next) => {
                 }
 
                 // Add the payment reference to the purchase
-                purchase.paymentsmade = purchase.paymentsmade || [];
-                purchase.paymentsmade.push(payment._id);
+                purchase.payments = purchase.payments || [];
+                purchase.payments.push(payment._id);
 
                 await purchase.save();
                 remainingAmount -= amountToApply;

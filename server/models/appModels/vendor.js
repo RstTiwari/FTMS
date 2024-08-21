@@ -41,6 +41,9 @@ const vendorSchema = new mongoose.Schema({
         state: String,
         pincode: Number,
     },
+    advanceAmount: {
+        type: Number,
+    },
     tenantId: {
         type: String,
         required: true,

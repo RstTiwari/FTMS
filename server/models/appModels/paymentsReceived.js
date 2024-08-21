@@ -37,6 +37,7 @@ const paymentsSchema = new mongoose.Schema(
         no: {
             type: Number,
             unique: true, // Ensure the incremented field is unique
+            sparse: true,
         },
     },
     { timestamps: true }
@@ -45,8 +46,10 @@ const paymentsSchema = new mongoose.Schema(
 paymentsSchema.plugin(mongooseAutoPopulate);
 
 // Pre-save middleware to count documents and set incrementField
-paymentsSchema.pre("save", async function (next) {
-   
-});
+paymentsSchema.pre("save", async function (next) {});
 
-export default mongoose.model("paymentsreceived", paymentsSchema,"paymentsreceived");
+export default mongoose.model(
+    "paymentsreceived",
+    paymentsSchema,
+    "paymentsreceived"
+);
