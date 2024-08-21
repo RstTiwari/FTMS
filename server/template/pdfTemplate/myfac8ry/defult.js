@@ -17,8 +17,6 @@ const defaultPdfTemplate = async (
 ) => {
     try {
         const imageBuffer = await downloadImage(organizationData?.logo);
-        console.log(entityData, "==");
-
         const doc = new PDFDocument({
             size: [595, 842],
             margin: 5,
@@ -64,7 +62,7 @@ const defaultPdfTemplate = async (
         const addItemsWithPagination = (doc, entityData, itemsPerPage) => {
             let currentPage = 1;
             let itemIndex = 0;
-            doc.rect(10, doc.y + 2, 575, 30).fill("#0047AB");
+            doc.rect(4, doc.y + 2, 587, 30).fill("#0047AB");
 
             while (currentPage <= totalPages) {
                 const itemsForPage = entityData.items.slice(
@@ -468,8 +466,11 @@ const addItemsTable = (doc, entityData, entity) => {
     const headerHeight = 30;
     const cellPadding = 5;
     const items = entityData?.items;
+    const borderColor = "#000000"; // Border color
+
     // Draw header background
     let tableHeaderY = doc.y + 15;
+
     // Draw header text
     let x = 20;
     doc.fontSize(8).font("Helvetica-Bold").fill("#fff");
@@ -481,8 +482,10 @@ const addItemsTable = (doc, entityData, entity) => {
     // Draw item rows
     let y = tableHeaderY + headerHeight + cellPadding;
     doc.fill("#000000").font("Helvetica-Bold");
-    items?.forEach((item, index) => {
+
+    items?.forEach((item) => {
         let x = 20;
+
         headers.forEach((header) => {
             switch (header.title.toUpperCase()) {
                 case "ITEM & DESCRIPTION":
@@ -511,9 +514,16 @@ const addItemsTable = (doc, entityData, entity) => {
             }
             x += header.width;
         });
+
+        // Draw the bottom border for each row
+        doc.moveTo(4, y + headerHeight - 5)
+           .lineTo(591, y + headerHeight - 5) // Line covering the width of the table
+           .stroke(borderColor);
+
         y += headerHeight;
     });
 };
+
 const addFooter = (doc, entityData, entity, organizationData) => {
     let footerDetails = () => {};
     switch (entity) {
@@ -522,6 +532,7 @@ const addFooter = (doc, entityData, entity, organizationData) => {
             break;
         case "quotations":
             footerDetails = footerForQuotation;
+            break;
         case "purchases":
             footerDetails = footerForPurchaseOrder;
             break;
@@ -612,7 +623,7 @@ const detailsForInvoice = (doc, invoiceData, entity, curY) => {
     doc.fontSize(10)
         .fillColor("#1E1F20")
         .font("Helvetica-Bold")
-        .text(customer?.name, leftX, initialY + 25);
+        .text(customer?.name, leftX, doc.y +5);
     doc.fontSize(9)
         .fillColor("#4B4E4F")
         .text(
@@ -630,14 +641,11 @@ const detailsForInvoice = (doc, invoiceData, entity, curY) => {
 
     // Add GST No and PAN No with bold labels
     const currentY = doc.y + 5;
-    let gst = `GST No :${customer?.gstNo || ""}`;
-    let pan = `PAN No :${customer?.panNo || ""}`;
+    let pagGst = `GST No :${customer?.gstNo || ""}\nPAN No :${customer?.panNo ||""}`;
 
-    doc.font("Helvetica-Bold").text(gst, leftX, currentY, {
+    doc.font("Helvetica-Bold").text(pagGst, leftX, currentY, {
         width: 200,
     });
-
-    doc.font("Helvetica-Bold").text(pan, 160, currentY, { width: 200 });
 
     const billingEndY = doc.y;
 
@@ -649,7 +657,7 @@ const detailsForInvoice = (doc, invoiceData, entity, curY) => {
     doc.fontSize(10)
         .fillColor("#1E1F20")
         .font("Helvetica-Bold")
-        .text(customer?.name, rightX, initialY + 25);
+        .text(customer?.name, rightX, doc.y + 5);
     doc.fontSize(9)
         .fillColor("#4B4E4F")
         .text(
@@ -757,7 +765,7 @@ const detailsForPurchaseOrder = (
     doc.fontSize(10)
         .fillColor("#1E1F20")
         .font("Helvetica-Bold")
-        .text(vendor?.name || "", leftX, doc.y + 10);
+        .text(vendor?.name?.toUpperCase() || "", leftX, doc.y +5);
     doc.fontSize(9)
         .fillColor("#4B4E4F")
         .text(vendorAddress, leftX, doc.y + 5, { width: 300, align: "left" });
@@ -768,11 +776,12 @@ const detailsForPurchaseOrder = (
     const { to, address } = delivery;
     doc.fontSize(12)
         .fillColor("#0047AB")
-        .text("DELIVERY TO:", rightX, initialY + 10);
+        .font("Helvetica-Bold")
+        .text("BUYER:", rightX, initialY + 10);
     doc.fontSize(10)
         .fillColor("#1E1F20")
         .font("Helvetica-Bold")
-        .text(to || "", rightX, doc.y + 10);
+        .text(to?.toUpperCase() || "", rightX, doc.y + 5);
     doc.fontSize(9)
         .fillColor("#4B4E4F")
         .text(`${address?.street1},${address?.street2}`, rightX, doc.y + 5, {
@@ -816,7 +825,7 @@ const detailsForChallan = (doc, challanDataa, organizationData, curY) => {
     doc.fontSize(10)
         .fillColor("#1E1F20")
         .font("Helvetica-Bold")
-        .text(customer?.name, leftX, doc.y + 10);
+        .text(customer?.name, leftX, doc.y + 5);
     doc.fontSize(9)
         .fillColor("#4B4E4F")
         .text(
@@ -844,7 +853,7 @@ const detailsForChallan = (doc, challanDataa, organizationData, curY) => {
     doc.fontSize(10)
         .fillColor("#1E1F20")
         .font("Helvetica-Bold")
-        .text(organizationData?.companyName, rightX, doc.y + 10);
+        .text(organizationData?.companyName, rightX, doc.y + 5);
     doc.fontSize(9)
         .fillColor("#4B4E4F")
         .text(
@@ -926,7 +935,7 @@ const footerForInvoice = (doc, invoiceData, organizationData) => {
         .text(`${primaryBank?.ifscCode || ""}`);
 
     // Thank you message
-    const thankYouY = startY + 110; // Adjust this value to position the thank you message properly
+    const thankYouY =  doc.y+ 100; // Adjust this value to position the thank you message properly
     doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);
 };
 
@@ -963,7 +972,7 @@ const footerForQuotation = (doc, quotationData) => {
     if (quotationData?.taxAmount) {
         startY += 30;
         doc.text("Tax Amount:", startX, startY);
-        doc.text(`${quotationData?.taxAmount}%`, valueX, startY);
+        doc.text(`${quotationData?.taxAmount}`, valueX, startY);
     }
 
     // Draw rectangles and Grand Total text
@@ -980,39 +989,70 @@ const footerForQuotation = (doc, quotationData) => {
     const termsStartX = 20;
     let termsStartY = doc.y + 20; // Adjust this value to position the Terms and Conditions properly
 
-    doc.fill("#000");
-    doc.font("Helvetica-Bold");
-    doc.text("Terms and Conditions:", termsStartX, termsStartY);
-    doc.font("Helvetica");
-
     // Define line height and max width for wrapping
     const lineHeight = 5; // Adjust this value as needed for line spacing
     const maxWidth = 450; // Adjust this value as needed for text wrapping
 
     let currentY = termsStartY + lineHeight * 2; // Start position for the first line after the "Terms and Conditions" heading
 
-    // Function to add conditions if they exist
-    const addCondition = (conditionName, conditionValue) => {
-        if (conditionValue) {
-            let conditionText = `${conditionName.toUpperCase()} : ${conditionValue}`;
-            doc.font("Helvetica").text(conditionText, termsStartX, currentY, {
-                width: maxWidth,
-            });
-            currentY = doc.y + lineHeight; // Adjust Y position for the next condition
-        }
-    };
-    console.log(quotationData, "==");
-    // Add each condition
-    addCondition("Delivery Condition", quotationData?.deliveryCondition);
-    addCondition("Payment Condition", quotationData?.paymentsCondition);
-    addCondition("Validity Condition", quotationData?.validityCondition);
-    addCondition(
-        "Cancellation Condition",
-        quotationData?.cancellationCondition
-    );
 
+    if (
+        quotationData?.deliveryCondition?.trim() ||
+        quotationData?.cancellationCondition?.trim() ||
+        quotationData?.paymentsCondition?.trim() ||
+        quotationData?.validityCondition?.trim()
+    ) {
+        const termsStartX = 20;
+        let termsStartY = doc.y + 20; // Adjust this value to position the Terms and Conditions properly
+    
+
+        doc.fill("#000");
+        doc.font("Helvetica-Bold");
+        doc.text("Terms and Conditions:", termsStartX, termsStartY);
+        doc.font("Helvetica");
+
+        // Define line height and max width for wrapping
+        const lineHeight = 5; // Adjust this value as needed for line spacing
+        let currentY = termsStartY + 20; // Start position for the first line after the "Terms and Conditions" heading
+        const addCondition = (conditionName, conditionValue) => {
+            if (conditionValue) {
+                // Get the uppercase condition name
+                let conditionText = `${conditionName.toUpperCase()} :`;
+            
+                // Calculate the width of the condition name text
+                const conditionTextWidth = doc.font("Helvetica-Bold").widthOfString(conditionText);
+            
+                // Define the x position for the condition value based on the width of the condition name
+                const conditionValueX = termsStartX + conditionTextWidth + 5; // Adding a small gap (5 units)
+            
+                // Draw the condition name
+                doc.font("Helvetica-Bold").text(
+                    `${conditionText}`,
+                    termsStartX,
+                    currentY,
+                    { width: 100, align: "left" }
+                );
+            
+                // Draw the condition value
+                doc.font("Helvetica").text(
+                    `${conditionValue}.`,
+                    conditionValueX,
+                    currentY,
+                    { width: 400, align: "left" } // Adjusting width based on condition name width
+                );
+            
+                // Update currentY for the next condition
+                currentY = doc.y + lineHeight; // Adjust Y position for the next condition           
+            }
+        };
+
+        addCondition("Payment", quotationData?.paymentsCondition);
+        addCondition("Delivery", quotationData?.deliveryCondition);
+        addCondition("Cancellation", quotationData?.cancellationCondition);
+        addCondition("Validity", quotationData?.validityCondition);
+    }
     // Thank you message
-    const thankYouY = currentY + 20; // Adjust this value to position the thank you message properly
+    const thankYouY = doc.y + 50; // Adjust this value to position the thank you message properly
     doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);
 };
 
@@ -1067,31 +1107,48 @@ const footerForPurchaseOrder = (doc, purchaseOrderData) => {
 
         const addCondition = (conditionName, conditionValue) => {
             if (conditionValue) {
-                let conditionText = `${conditionName.toUpperCase()} : ${conditionValue}`;
+                // Get the uppercase condition name
+                let conditionText = `${conditionName.toUpperCase()} :`;
+            
+                // Calculate the width of the condition name text
+                const conditionTextWidth = doc.font("Helvetica-Bold").widthOfString(conditionText);
+            
+                // Define the x position for the condition value based on the width of the condition name
+                const conditionValueX = termsStartX + conditionTextWidth + 5; // Adding a small gap (5 units)
+            
+                // Draw the condition name
                 doc.font("Helvetica-Bold").text(
-                    `${conditionText}.`,
+                    `${conditionText}`,
                     termsStartX,
                     currentY,
-                    { width: 500, align: "left" }
+                    { width: 100, align: "left" }
                 );
-                currentY = doc.y + lineHeight; // Adjust Y position for the next condition
+            
+                // Draw the condition value
+                doc.font("Helvetica").text(
+                    `${conditionValue}.`,
+                    conditionValueX,
+                    currentY,
+                    { width: 400, align: "left" } // Adjusting width based on condition name width
+                );
+            
+                // Update currentY for the next condition
+                currentY = doc.y + lineHeight; // Adjust Y position for the next condition           
             }
         };
 
-        addCondition("Payment Condition", purchaseOrderData?.paymentCondition);
+    
+        addCondition("Payment", purchaseOrderData?.paymentCondition);
         addCondition(
-            "Cancellation Condition",
+            "Cancellation",
             purchaseOrderData?.cancellationCondition
         );
 
-        // Thank you message
-        const thankYouY = currentY + 20; // Adjust this value to position the thank you message properly
-        doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);
-    } else {
-        // Thank you message, in case there are no terms and conditions
-        const thankYouY = doc.y + 40; // Adjust this value to position the thank you message properly
-        doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);
-    }
+      
+    } 
+      // Thank you message
+      const thankYouY = currentY + 20; // Adjust this value to position the thank you message properly
+      doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);
 };
 const footerForChallan = (doc, quotationData) => {
     const initialY = doc.y + 20;

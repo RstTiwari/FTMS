@@ -19,7 +19,6 @@ const generatePdf = async (req, res, next) => {
             entityName: entity,
             tenantId: tenantId,
         });
-        console.log(entityData);
         let entityPrefix = prefix?.prefix
             ? prefix.prefix
             : entity.slice(0, 2).toUpperCase();
