@@ -83,8 +83,8 @@ const totalReciveables = async (req, res, next) => {
                 totalReceivables: 0,
             };
 
-            let invoices = await InvoiceDatabase.find(filter);
-            invoices?.forEach((invoice) => {
+            let invoices = await InvoiceDatabase.find(filter).populate("payments");
+            invoices.forEach((invoice) => {
                 const dueDate = new Date(invoice.dueDate);
                 let pendingAmount = 0;
 
@@ -93,7 +93,7 @@ const totalReciveables = async (req, res, next) => {
                     pendingAmount = invoice.grandTotal;
                 } else if (invoice.status === "PARTIALLY_PAID") {
                     // Calculate total received from payments array
-                    const totalReceived = invoice?.payments?.reduce(
+                    const totalReceived = invoice.payments.reduce(
                         (acc, payment) => acc + payment.amount,
                         0
                     );
