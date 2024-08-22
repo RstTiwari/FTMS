@@ -70,9 +70,15 @@ const invoiceSchema = new mongoose.Schema(
         taxAmount: {
             type: Number,
         },
+        totalWithTax: {
+            type: Number,
+        },
+        otherCharges: [],
         grandTotal: {
             type: Number,
         },
+        notes: [],
+        terms: [],
         tenantId: {
             type: String,
             required: true,

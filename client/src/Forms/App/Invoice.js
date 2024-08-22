@@ -7,6 +7,7 @@ import Taglabel from "components/Comman/Taglabel";
 import CustomSelect from "components/Comman/CustomSelect";
 import CustomModel from "components/CustomModal";
 import NotificationHandler from "EventHandler/NotificationHandler";
+import TaxPercent from "components/Comman/TaxPercent";
 
 const QuotationForm = ({ form }) => {
     const isLaptop = useMediaQuery("(min-width:1000px)");
@@ -384,11 +385,7 @@ const QuotationForm = ({ form }) => {
                                                     {...restField}
                                                     name={[name, "gstPercent"]}
                                                 >
-                                                    <CustomSelect
-                                                        entity={"gstPercent"}
-                                                        entityName={
-                                                            "gstPercent"
-                                                        }
+                                                    <TaxPercent
                                                         updateInForm={(value) =>
                                                             handleItemsUpdate(
                                                                 value,
@@ -396,13 +393,16 @@ const QuotationForm = ({ form }) => {
                                                                 name
                                                             )
                                                         }
-                                                        preFillValue={
-                                                            form.getFieldValue(
-                                                                "items"
-                                                            )?.[name]
-                                                                ?.gstPercent
-                                                        }
+                                                        min={false}
+                                                        controls={false}
                                                         width="100%"
+                                                        style={{
+                                                            width: "100%",
+                                                            textAlign: "center",
+                                                        }}
+                                                        preFillValue={form.getFieldValue(
+                                                            "gstPercent"
+                                                        )}
                                                     />
                                                 </Form.Item>
                                             </Col>
@@ -476,34 +476,61 @@ const QuotationForm = ({ form }) => {
                     )}
                 </Form.List>
             </div>
-            <Row align={"middle"} justify={"end"}>
-                <FormItemCol
-                    label="Gross Total"
-                    name={"grossTotal"}
-                    labelAlign="left"
-                    type={"number"}
-                    readOnly={true}
-                />
+            <Row>
+                <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                    <FormItemCol form={form} type={"notes"} width={"50vw"} />
+                </Col>
+                <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                    <Row align={"middle"} justify={"end"}>
+                        <FormItemCol
+                            label="Total(Before Tax)"
+                            name={"grossTotal"}
+                            labelAlign="left"
+                            type={"number"}
+                            disabled={true}
+                            labelCol={{ span: 12 }}
+                        />
+                    </Row>
+                    <Row align={"middle"} justify={"end"}>
+                        <FormItemCol
+                            label="Tax Amount"
+                            name={"taxAmount"}
+                            labelAlign="left"
+                            disabled={true}
+                            type={"number"}
+                            labelCol={{ span: 12 }}
+                        />
+                    </Row>
+                    <Row align={"middle"} justify={"end"}>
+                        <FormItemCol
+                            label="Total(After Tax)"
+                            name={"taxAmount"}
+                            labelAlign="left"
+                            disabled={true}
+                            type={"number"}
+                            labelCol={{ span: 12 }}
+                        />
+                    </Row>
+                    <Row>
+                        <FormItemCol
+                            form={form}
+                            type={"othercharges"}
+                            width={"400px"}
+                        />
+                    </Row>
+                    <Row align={"middle"} justify={"end"}>
+                        <FormItemCol
+                            label="GrandTotal"
+                            name={"grandTotal"}
+                            labelAlign="left"
+                            type={"number"}
+                            disabled={true}
+                            labelCol={{ span: 12 }}
+                        />
+                    </Row>
+                </Col>
             </Row>
-            <Row align={"middle"} justify={"end"}>
-                <FormItemCol
-                    label="Tax Amount"
-                    name={"taxAmount"}
-                    labelAlign="left"
-                    readOnly={true}
-                    type={"number"}
-                />
-            </Row>
-            <Row align={"middle"} justify={"end"}>
-                <FormItemCol
-                    label="GrandTotal"
-                    name={"grandTotal"}
-                    labelAlign="left"
-                    type={"number"}
-                    readOnly={true}
-                />
-            </Row>
-
+            <FormItemCol form={form} type={"terms"} />
             {/* Other form items go here */}
         </div>
     );

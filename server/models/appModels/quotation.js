@@ -68,27 +68,15 @@ const quotationSchema = new mongoose.Schema(
         taxAmount: {
             type: Number,
         },
-        totalWithTax:{
-            type:Number,
+        totalWithTax: {
+            type: Number,
         },
-        otherCharges:[
-
-        ],
+        otherCharges: [],
         grandTotal: {
             type: Number,
         },
-        deliveryCondition: {
-            type: String,
-        },
-        validityCondition: {
-            type: String,
-        },
-        paymentsCondition: {
-            type: String,
-        },
-        cancellationCondition: {
-            type: String,
-        },
+        terms: [],
+        notes: [],
         tenantId: {
             type: String,
             required: true,

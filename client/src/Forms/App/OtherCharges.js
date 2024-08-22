@@ -1,11 +1,25 @@
 import React, { useEffect } from "react";
-import { Form, Row, Col, Button, Select, Input, InputNumber, Collapse } from "antd";
-import { PlusOutlined, MinusCircleOutlined, CaretRightOutlined } from "@ant-design/icons";
+import {
+    Form,
+    Row,
+    Col,
+    Button,
+    Select,
+    Input,
+    InputNumber,
+    Collapse,
+} from "antd";
+import {
+    PlusOutlined,
+    MinusCircleOutlined,
+    CaretRightOutlined,
+} from "@ant-design/icons";
+import CoustomButton from "../../components/Comman/CoustomButton";
 
 const { Option } = Select;
 const { Panel } = Collapse;
 
-const OtherChargesForm = ({ form, updateInForm, collapseWidth = "100%" }) => {
+const OtherChargesForm = ({ form, updateInForm, width = "30vw" }) => {
     // Capitalize the first letter of a string
     const capitalizeFirstLetter = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
@@ -16,15 +30,20 @@ const OtherChargesForm = ({ form, updateInForm, collapseWidth = "100%" }) => {
         updateInForm();
     };
 
-    // Handle changes in the form fields
-    // useEffect(() => {
-    //     const subscription = form.onValuesChange((changedValues) => {
-    //         handleFieldChange();
-    //     });
+    //Handle changes in the form fields
+    // Add a default term when the component mounts
+    useEffect(() => {
+        const otherCharges = form.getFieldValue("otherCharges") || [];
+        if (otherCharges.length <= 0) {
+            addDefaultTerm();
+        }
+    }, [form]);
 
-    //     // Clean up subscription on unmount
-    //     return () => subscription.unsubscribe();
-    // }, [form]);
+    const addDefaultTerm = () => {
+        const otherCharges = form.getFieldValue("otherCharges") || [];
+        otherCharges.push({ chargeName: "", amount: "" });
+        form.setFieldsValue({ otherCharges });
+    };
 
     return (
         <Collapse
@@ -34,7 +53,7 @@ const OtherChargesForm = ({ form, updateInForm, collapseWidth = "100%" }) => {
             )}
             style={{
                 background: "transparent",
-                width: collapseWidth,
+                width: width,
             }}
         >
             <Panel
@@ -192,17 +211,13 @@ const OtherChargesForm = ({ form, updateInForm, collapseWidth = "100%" }) => {
                                 )
                             )}
                             <Row justify="start">
-                                <Button
-                                    type="primary"
-                                    onClick={() => add()}
-                                    icon={<PlusOutlined />}
-                                    style={{
-                                        width: "30%",
-                                        background: "green",
-                                    }}
-                                >
-                                    Add Charge
-                                </Button>
+                                <Row justify="start">
+                                    <CoustomButton
+                                        text={"Add Charge"}
+                                        onClick={() => add()}
+                                        withIcon={true}
+                                    />
+                                </Row>
                             </Row>
                         </>
                     )}

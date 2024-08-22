@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Select, Button, Divider, Modal, Input, Row, Space } from "antd";
-import { taxPercent } from "Data/PaymentReceivedData";
+import { taxPercent } from "../../Data/PaymentReceivedData";
 const TaxPercent = ({
     entity,
     entityName,
@@ -9,7 +9,6 @@ const TaxPercent = ({
     preFillValue,
 }) => {
     const [value, setValue] = useState(preFillValue);
-
 
     useEffect(() => {
         if (preFillValue) {
@@ -21,8 +20,6 @@ const TaxPercent = ({
         setValue(value);
         updateInForm(value);
     };
-
-  
 
     return (
         <>

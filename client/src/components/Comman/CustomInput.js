@@ -7,7 +7,9 @@ import UploadImage from "components/UploadImage";
 import CustomCounters from "./CustomCounters";
 import PaymentMode from "./PaymentMode";
 import TaxPercent from "./TaxPercent";
-import OtherChargesForm from "./OtherCharges";
+import OtherChargesForm from "../../Forms/App/OtherCharges";
+import TermsAndConditionsForm from "../../Forms/App/TermsAndCondition";
+import NotesForm from "Forms/App/NoteForm";
 
 const CustomInput = ({
     type,
@@ -19,7 +21,7 @@ const CustomInput = ({
     preFillValue,
     ...restProps
 }) => {
-    const { onChange, updateInForm, disabled, form,...otherProps } = restProps;
+    const { onChange, updateInForm, disabled, form, ...otherProps } = restProps;
     const [date, setDate] = useState("");
     //Convert preFillValue to dayjs object if it's a date
     useEffect(() => {
@@ -59,7 +61,7 @@ const CustomInput = ({
                     value={date}
                     format={"DD/MM/YYYY"}
                     onChange={handleDateChange}
-                    style={{width:width}}
+                    style={{ width: width }}
                 />
             );
         case "number":
@@ -71,18 +73,18 @@ const CustomInput = ({
                     controls={false} // Remove the up/down controls
                     min={0} // Prevent value from being less than 0
                     disabled={disabled}
-
                 />
             );
         case "othercharges":
-                return (
-                    <OtherChargesForm
-                     form={form}
-                     updateInForm={updateInForm}
-                    />
-                );
+            return (
+                <OtherChargesForm
+                    form={form}
+                    updateInForm={updateInForm}
+                    width={width}
+                />
+            );
         case "box":
-            return <Input.TextArea {...restProps} style={{ width: width }}  />;
+            return <Input.TextArea {...restProps} style={{ width: width }} />;
         case "select":
             return (
                 <CustomSelect
@@ -104,53 +106,77 @@ const CustomInput = ({
                 />
             );
         case "paymentmode":
-                return (
-                    <PaymentMode
-                        entity={entity}
-                        fieldName={fieldName}
-                        width={width}
-                        preFillValue={preFillValue}
-                        {...restProps}
-                    />
-                );
+            return (
+                <PaymentMode
+                    entity={entity}
+                    fieldName={fieldName}
+                    width={width}
+                    preFillValue={preFillValue}
+                    {...restProps}
+                />
+            );
         case "taxpercent":
-                    return (
-                        <TaxPercent
-                            entity={entity}
-                            fieldName={fieldName}
-                            width={width}
-                            preFillValue={preFillValue}
-                            {...restProps}
-                        />
-                    );
+            return (
+                <TaxPercent
+                    entity={entity}
+                    fieldName={fieldName}
+                    width={width}
+                    preFillValue={preFillValue}
+                    {...restProps}
+                />
+            );
         case "counters":
             return (
                 <CustomCounters
                     entity={entity}
                     preFillValue={preFillValue}
                     {...restProps}
-                    width ={width}
-
+                    width={width}
                 />
             );
         case "image":
-            return <UploadImage {...restProps} preFillValue={preFillValue} 
-            style={{width:width}}
-
-             />;
+            return (
+                <UploadImage
+                    {...restProps}
+                    preFillValue={preFillValue}
+                    style={{ width: width }}
+                />
+            );
         case "checkbox":
             return (
                 <Checkbox
                     onChange={handleCheckboxChange}
                     checked={preFillValue}
-                    style={{width:width}}
+                    style={{ width: width }}
                     {...otherProps}
                 >
                     {restProps.label}
                 </Checkbox>
             );
+        case "terms":
+            return (
+                <TermsAndConditionsForm
+                    form={form}
+                    updateInForm={updateInForm}
+                />
+            );
+        case "notes":
+            return (
+                <NotesForm
+                    form={form}
+                    updateInForm={updateInForm}
+                    width={width}
+                />
+            );
+
         default:
-            return <Input readOnly={readOnly} {...restProps}  style={{width:width}}/>;
+            return (
+                <Input
+                    readOnly={readOnly}
+                    {...restProps}
+                    style={{ width: width }}
+                />
+            );
     }
 };
 

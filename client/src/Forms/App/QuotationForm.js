@@ -38,7 +38,7 @@ const QuotationForm = ({ form }) => {
             temObj.qty = value;
             temObj.finalAmount = Math.ceil(value * temObj.rate);
         } else if (filedName === "gstPercent") {
-            value =Number(value)
+            value = Number(value);
             temObj.gstPercent = value;
         } else if (filedName === "transportAmount") {
             form.setFieldsValue({ transportAmount: value });
@@ -62,8 +62,7 @@ const QuotationForm = ({ form }) => {
             form.setFieldsValue({ quoteDate: value });
         } else if (filedName === "expiryDate") {
             form.setFieldsValue({ expiryDate: value });
-        }else{
-
+        } else {
         }
 
         items[rowName] = temObj;
@@ -83,7 +82,7 @@ const QuotationForm = ({ form }) => {
         let totalWithTax = grossTotal + taxAmount;
         let grandTotal = totalWithTax;
         // Calculate grandTotal based on otherCharges
-        let otherCharges = form.getFieldValue("otherCharges") || []        
+        let otherCharges = form.getFieldValue("otherCharges") || [];
         otherCharges.forEach((charge) => {
             if (charge.rsOrPercent === "percent") {
                 const amountToAdjust =
@@ -103,7 +102,7 @@ const QuotationForm = ({ form }) => {
         });
         form.setFieldsValue({
             grossTotal: grossTotal,
-            taxAmount:taxAmount,
+            taxAmount: taxAmount,
             totalWithTax: totalWithTax,
             grandTotal: grandTotal,
         });
@@ -183,7 +182,7 @@ const QuotationForm = ({ form }) => {
                         },
                     ]}
                     labelAlign="left"
-                    labelCol={{ span: 6 }}
+                    labelCol={{ span: 8 }}
                     type={"date"}
                     preFillValue={form.getFieldValue("expiryDate")}
                     updateInForm={(value) => {
@@ -422,9 +421,7 @@ const QuotationForm = ({ form }) => {
                                                     />
                                                 </Form.Item>
                                             </Col>
-                                            <Col
-                                                span={2}
-                                            >
+                                            <Col span={2}>
                                                 <Form.Item
                                                     {...restField}
                                                     name={[name, "gstPercent"]}
@@ -444,7 +441,9 @@ const QuotationForm = ({ form }) => {
                                                             width: "100%",
                                                             textAlign: "center",
                                                         }}
-                                                        preFillValue={form.getFieldValue("gstPercent")}
+                                                        preFillValue={form.getFieldValue(
+                                                            "gstPercent"
+                                                        )}
                                                     />
                                                 </Form.Item>
                                             </Col>
@@ -523,166 +522,80 @@ const QuotationForm = ({ form }) => {
                 </Form.List>
             </div>
 
-            <Row align={"middle"} justify={"end"}>
-                <FormItemCol
-                    label="Total(Before Tax)"
-                    tooltip={"Amount before Tax"}
-                    name={"grossTotal"}
-                    labelAlign="left"
-                    labelCol={{ span: 12 }}
-                    type={"number"}
-                    width={150}
-                    disabled ={true}
-                />
-            </Row>
-            <Row align={"middle"} justify={"end"}>
-                <FormItemCol
-                    label="Tax Amount"
-                    name={"taxAmount"}
-                    labelCol={{ span: 12}}
-                    labelAlign="left"
-                    tooltip={"Tax Amount on total + transport"}
-                    type={"number"}
-                    entity={"Tax Percent"}
-                    disabled ={true}
-                    
-                />
+            <Row>
+                {/* Left Column */}
+                <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                    <Row>
+                        <FormItemCol
+                            type={"notes"}
+                            form={form}
+                            width={"50vw"} // Adjust width to fill the column
+                        />
+                    </Row>
+                </Col>
+
+                {/* Right Column */}
+                <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                    <Row span={24} justify={"end"}>
+                        <FormItemCol
+                            label="Total (Before Tax)"
+                            tooltip={"Amount before Tax"}
+                            name={"grossTotal"}
+                            labelAlign="left"
+                            labelCol={{ span: 12 }}
+                            type={"number"}
+                            width={150}
+                            disabled={true}
+                        />
+                    </Row>
+                    <Row span={24} justify={"end"}>
+                        <FormItemCol
+                            label="Tax Amount"
+                            name={"taxAmount"}
+                            labelCol={{ span: 12 }}
+                            labelAlign="left"
+                            tooltip={"Tax Amount on total + transport"}
+                            type={"number"}
+                            entity={"Tax Percent"}
+                            disabled={true}
+                        />
+                    </Row>
+                    <Row span={24} justify={"end"}>
+                        <FormItemCol
+                            label="Total (After Tax)"
+                            tooltip={"Amount With Tax"}
+                            name={"totalWithTax"}
+                            labelAlign="left"
+                            labelCol={{ span: 12 }}
+                            type={"number"}
+                            width={150}
+                            disabled={true}
+                        />
+                    </Row>
+                    <Row span={24} justify={"end"}>
+                        <FormItemCol
+                            type={"othercharges"}
+                            form={form}
+                            tooltip={"Charges with no tax"}
+                            width={"400px"}
+                            updateInForm={() => handleItemsUpdate()}
+                        />
+                    </Row>
+                    <Row span={24} justify={"end"}>
+                        <FormItemCol
+                            label="Grand Total"
+                            name={"grandTotal"}
+                            labelCol={{ span: 12 }}
+                            labelAlign="left"
+                            tooltip={"Total Amount including Amount"}
+                            type={"number"}
+                            disabled={true}
+                        />
+                    </Row>
+                </Col>
             </Row>
 
-            <Row align={"middle"} justify={"end"}>
-                <FormItemCol
-                    label="Total(After Tax)"
-                    tooltip={"Amount With Tax"}
-                    name={"totalWithTax"}
-                    labelAlign="left"
-                    labelCol={{ span: 12 }}
-                    type={"number"}
-                    width={150}
-                    disabled ={true}
-
-                />
-            </Row>
-            {/* <Row align={"middle"} justify={"end"}>
-                <FormItemCol
-                    label="Total(After Discount)"
-                    tooltip={"Amount before Tax"}
-                    name={"grossTotal"}
-                    labelAlign="left"
-                    labelCol={{ span: 12 }}
-                    type={"number"}
-                    width={150}
-                    disabled ={true}
-                />
-            </Row> */}
-            {/* <Row align={"middle"} justify={"end"}>
-                <FormItemCol
-                    label="Tax(%)"
-                    name={"gstPercent"}
-                    labelCol={{ span: 12 }}
-                    labelAlign="left"
-                    type={"taxpercent"}
-                    width={150}
-                    entity={"Tax Percent"}
-                    entityName="gstPercent"
-                    updateInForm={(value) => {
-                        handleItemsUpdate(value, "gstPercent");
-                    }}
-                    preFillValue={form.getFieldValue("gstPercent")}
-                />
-            </Row> */}
-            {/* <Row align={"middle"} justify={"end"}>
-                <FormItemCol
-                    label="Transport(Rs)"
-                    name={"transportAmount"}
-                    labelAlign="left"
-                    type={"number"}
-                    labelCol={{ span: 12 }}
-                    onChange={(value) => {
-                        handleItemsUpdate(value, "transportAmount");
-                    }}
-                />
-            </Row> */}
-            <Row justify={"end"} style={{marginRight:"50px"}}>
-               <FormItemCol
-                 type={"othercharges"}
-                 form ={form}
-                 tooltip={"Charges with no tax"}
-                 updateInForm ={()=>handleItemsUpdate()}
-                />
-            </Row>
-    
-            <Row align={"middle"} justify={"end"}>
-                <FormItemCol
-                    label="Grand Total"
-                    name={"grandTotal"}
-                    labelCol={{ span: 12 }}
-                    labelAlign="left"
-                    tooltip={"Total Amount including Amount"}
-                    type={"number"}
-                    disabled ={true}
-                />
-            </Row>
-            <Row justify={"start"} style={{ marginBottom: 10 }}>
-                <Taglabel text={" Term & Conditions"} weight={1000} />
-            </Row>
-            <FormItemCol
-                label={"Delivery"}
-                name={"deliveryCondition"}
-                type={"select"}
-                width={"50vw"}
-                labelCol={{ span: 8 }}
-                entity={"Delivery Condition"}
-                entityName={"deliveryCondition"}
-                updateInForm={(value) => {
-                    handleItemsUpdate(value, "deliveryCondition");
-                }}
-                preFillValue={form.getFieldValue("deliveryCondition")}
-            />
-            <Row justify={"start"}>
-                <FormItemCol
-                    label={"Validity"}
-                    name={"validityCondition"}
-                    type={"select"}
-                    labelCol={{ span: 8 }}
-                    width={"50vw"}
-                    entity={"Validity Condition"}
-                    entityName={"validityCondition"}
-                    updateInForm={(value) => {
-                        handleItemsUpdate(value, "validityCondition");
-                    }}
-                    preFillValue={form.getFieldValue("validityCondition")}
-                />
-            </Row>
-            <Row justify={"start"}>
-                <FormItemCol
-                    label={"Payments"}
-                    name={"paymentsCondition"}
-                    entityName={"paymentsCondition"}
-                    labelCol={{ span: 8 }}
-                    type={"select"}
-                    width={"50vw"}
-                    entity={"Payments Condition"}
-                    updateInForm={(value) => {
-                        handleItemsUpdate(value, "paymentsCondition");
-                    }}
-                    preFillValue={form.getFieldValue("paymentsCondition")}
-                />
-            </Row>
-            <Row justify={"start"}>
-                <FormItemCol
-                    label={"Cancellation"}
-                    name={"cancellationCondition"}
-                    type={"select"}
-                    labelCol={{ span: 8 }}
-                    width={"50vw"}
-                    entity={"Cancellation Condition"}
-                    entityName={"cancellationCondition"}
-                    updateInForm={(value) => {
-                        handleItemsUpdate(value, "cancellationCondition");
-                    }}
-                    preFillValue={form.getFieldValue("cancellationCondition")}
-                />
-            </Row>
+            <FormItemCol type={"terms"} form={form} labelCol={{ span: 12 }} />
         </div>
     );
 };

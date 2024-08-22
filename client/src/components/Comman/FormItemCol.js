@@ -19,7 +19,7 @@ const FormItemCol = ({
     preFillValue,
     ...restProps
 }) => (
-    <Col xs={24} sm={24} md={8} lg={8}>
+    <Col xs={24} sm={24} md={12} lg={12} xl={12}>
         <Form.Item
             label={
                 label ? <CustomLabel required={required} label={label} /> : null
