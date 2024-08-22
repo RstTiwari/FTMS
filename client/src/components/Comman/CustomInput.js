@@ -6,6 +6,8 @@ import CustomModal from "components/CustomModal";
 import UploadImage from "components/UploadImage";
 import CustomCounters from "./CustomCounters";
 import PaymentMode from "./PaymentMode";
+import TaxPercent from "./TaxPercent";
+import OtherChargesForm from "./OtherCharges";
 
 const CustomInput = ({
     type,
@@ -17,10 +19,9 @@ const CustomInput = ({
     preFillValue,
     ...restProps
 }) => {
-    const { onChange, updateInForm, disabled, ...otherProps } = restProps;
+    const { onChange, updateInForm, disabled, form,...otherProps } = restProps;
     const [date, setDate] = useState("");
-    console.log(preFillValue, "in the customInput");
-    // Convert preFillValue to dayjs object if it's a date
+    //Convert preFillValue to dayjs object if it's a date
     useEffect(() => {
         if (preFillValue && type === "date") {
             setDate(dayjs(preFillValue));
@@ -73,6 +74,13 @@ const CustomInput = ({
 
                 />
             );
+        case "othercharges":
+                return (
+                    <OtherChargesForm
+                     form={form}
+                     updateInForm={updateInForm}
+                    />
+                );
         case "box":
             return <Input.TextArea {...restProps} style={{ width: width }}  />;
         case "select":
@@ -105,6 +113,16 @@ const CustomInput = ({
                         {...restProps}
                     />
                 );
+        case "taxpercent":
+                    return (
+                        <TaxPercent
+                            entity={entity}
+                            fieldName={fieldName}
+                            width={width}
+                            preFillValue={preFillValue}
+                            {...restProps}
+                        />
+                    );
         case "counters":
             return (
                 <CustomCounters

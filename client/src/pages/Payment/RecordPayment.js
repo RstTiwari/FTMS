@@ -32,7 +32,7 @@ const RecordPayment = () => {
             form.setFieldsValue({ [preFilledkey]: { _id, name } });
         }
     }, [form, initialValues]);
-
+     console.log(form.getFieldsValue(),"---")
     if (isFetching) {
         return (
             <PageLoader isLoading={true} text={"Fetching payment Records"} />

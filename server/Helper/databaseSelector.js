@@ -20,7 +20,7 @@ const dbMapping = {
     products: productDb,
     quotations: quoteDb,
     invoices: invoiceDb,
-    paymentsrecived: paymentDb,
+    paymentsreceived: paymentDb,
     paymentsmade: paymentsMade,
     expenses: expensesDb,
     challans: deliveryChallanDb,

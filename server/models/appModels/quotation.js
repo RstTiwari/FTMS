@@ -51,10 +51,7 @@ const quotationSchema = new mongoose.Schema(
                 rate: {
                     type: Number,
                 },
-                percentDiscount: {
-                    type: Number,
-                },
-                bestOffer: {
+                gstPercent: {
                     type: Number,
                 },
                 qty: {
@@ -68,15 +65,15 @@ const quotationSchema = new mongoose.Schema(
         grossTotal: {
             type: Number,
         },
-        gstPercent: {
-            type: Number,
-        },
         taxAmount: {
             type: Number,
         },
-        transportAmount: {
-            type: Number,
+        totalWithTax:{
+            type:Number,
         },
+        otherCharges:[
+
+        ],
         grandTotal: {
             type: Number,
         },

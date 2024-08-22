@@ -22,7 +22,7 @@ const DetailsHeader = ({ values }) => {
         navigate(`/app/${tenantId}/update/${entity}/${id}`);
     };
     const handleRecordPaymentClick = () => {
-        let paymentEntity =  entity ==="customers" ? "paymentsrecived":"paymentsmade"
+        let paymentEntity =  entity ==="customers" ? "paymentsreceived":"paymentsmade"
         navigate(`/app/${tenantId}/${paymentEntity}/${id}/recordPayment`);
     };
     useEffect(() => {}, [id]);

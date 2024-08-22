@@ -47,7 +47,7 @@ const UpdateModule = ({ entity, form }) => {
         case "products":
             componentToRender = <ProductForm form={form} />;
             break;
-        case "paymentsrecived":
+        case "paymentsreceived":
             componentToRender = <PaymentFormItem form={form} isUpdate={true} />;
             break;
         case "counters":

@@ -3,7 +3,9 @@ import { jsDateIntoDDMMYY } from "../../../Helper/timehelper.js";
 import {
     downloadImage,
     getPrimaryOrFirstBank,
+    capitalizeFirstLetter
 } from "../../../Helper/pdfHelper.js";
+import { syncIndexes } from "mongoose";
 
 const borderColor = "#000000"; // Color for the border
 const defaultPdfTemplate = async (
@@ -469,7 +471,7 @@ const addItemsTable = (doc, entityData, entity) => {
     const borderColor = "#000000"; // Border color
 
     // Draw header background
-    let tableHeaderY = doc.y + 15;
+    let tableHeaderY = doc.y + 12.5;
 
     // Draw header text
     let x = 20;
@@ -485,7 +487,6 @@ const addItemsTable = (doc, entityData, entity) => {
 
     items?.forEach((item) => {
         let x = 20;
-
         headers.forEach((header) => {
             switch (header.title.toUpperCase()) {
                 case "ITEM & DESCRIPTION":
@@ -522,6 +523,7 @@ const addItemsTable = (doc, entityData, entity) => {
 
         y += headerHeight;
     });
+
 };
 
 const addFooter = (doc, entityData, entity, organizationData) => {
@@ -580,9 +582,10 @@ const getTableHeaders = (entity) => {
             ];
         case "quotations":
             return [
-                { title: "ITEM & DESCRIPTION", width: 275 },
-                { title: "RATE", width: 100 },
-                { title: "QTY", width: 100 },
+                { title: "ITEM & DESCRIPTION", width: 270 },
+                { title: "RATE", width: 75 },
+                { title: "QTY", width: 50 },
+                { title: "GST%", width: 50 },
                 { title: "TOTAL AMOUNT", width: 100 },
             ];
         case "purchases":
@@ -697,14 +700,14 @@ const detailsForQuotation = (doc, quotationData, organizationData, curY) => {
 
     // Calculate width of "TO:" text
     doc.fontSize(12).font("Helvetica-Bold");
-    const toText = "To:";
+    const toText = "Buyer:";
     const toTextWidth = doc.widthOfString(toText);
 
     // Customer Details
     doc.fillColor("#1E1F20").text(toText, leftX, initialY + 10);
     doc.fontSize(12)
         .fillColor("#1E1F20")
-        .text(customer?.name || "", leftX + toTextWidth + 5, initialY + 10);
+        .text(customer?.name?.toUpperCase()|| "", leftX + toTextWidth + 5, initialY + 10);
 
     // Optional subject line
     if (sub) {
@@ -941,8 +944,6 @@ const footerForInvoice = (doc, invoiceData, organizationData) => {
 
 const footerForQuotation = (doc, quotationData) => {
     const initialY = doc.y + 20;
-    console.log("function is called");
-
     doc.fontSize(10);
     doc.fill("#000");
 
@@ -950,40 +951,53 @@ const footerForQuotation = (doc, quotationData) => {
     doc.font("Helvetica-Bold");
     const startX = 390;
     const valueX = 475;
-    let startY = initialY + 30;
-
+    let startY = initialY;
+    let amountSideLineStart = startY - 3
     doc.text("Gross Total:", startX, startY);
     doc.text(`${quotationData?.grossTotal}`, valueX, startY);
 
-    // Adjust startY if there is a transport amount
-    if (quotationData?.transportAmount) {
-        startY += 30;
-        doc.text("Transport:", startX, startY);
-        doc.text(`${quotationData?.transportAmount}`, valueX, startY);
-    }
-
-    // Move to the next line for Tax Percent if it exists
-    if (quotationData?.gstPercent) {
-        startY += 30;
-        doc.text("Tax Percent:", startX, startY);
-        doc.text(`${quotationData?.gstPercent}%`, valueX, startY);
-    }
+    doc.moveTo(startX-20, doc.y+1)
+    .lineTo(doc.page.width - 4, doc.y+1)
+    .stroke(borderColor);
 
     if (quotationData?.taxAmount) {
-        startY += 30;
+        startY += 20;
         doc.text("Tax Amount:", startX, startY);
         doc.text(`${quotationData?.taxAmount}`, valueX, startY);
+        doc.moveTo(startX-20, doc.y+1)
+        .lineTo(doc.page.width - 4, doc.y+1)
+        .stroke(borderColor);
+    }
+      // Draw a table for the other charges
+    if (quotationData?.otherCharges?.length > 0) {
+        // Draw other charges
+        startY += 20
+        quotationData.otherCharges.forEach((charge, index) => {
+            doc.text(capitalizeFirstLetter(`${charge.chargeName}:`), startX, startY);
+            doc.text(`${charge.amount}`, valueX, startY);
+        startY += 20
+        let othersy = doc.y + 1
+        doc.moveTo(startX-20, othersy)
+        .lineTo(doc.page.width - 4, othersy)
+        .stroke(borderColor);
+
+        });
     }
 
     // Draw rectangles and Grand Total text
-    startY += 30;
-    doc.rect(startX - 20, startY, 200, 30).fill("#0047AB");
+    startY += 20;
+    doc.moveTo(startX-20, doc.y+2)
+    .lineTo(startX-20 , amountSideLineStart)
+    .stroke(borderColor);
+    doc.rect(startX - 20,doc.y+2,220, 30).fill("#0047AB");
     doc.fill("#fff");
-    doc.text("Grand Total:", startX, startY + 10).fillColor("#000");
+    let grandY = doc.y+12.5
+    doc.text("Grand Total:", startX, grandY).fillColor("#000");
     doc.fill("#fff");
-    doc.text(`${quotationData?.grandTotal}`, valueX, startY + 10).fillColor(
+    doc.text(`${quotationData?.grandTotal}`, valueX, grandY ).fillColor(
         "#000"
     );
+   
 
     // Terms and Conditions on the left
     const termsStartX = 20;

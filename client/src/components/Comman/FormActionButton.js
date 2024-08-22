@@ -10,7 +10,6 @@ const FormActionButtons = ({ isUpdating, showCancel = true }) => {
     const handleCancelClick = () => {
         navigate(-1);
     };
-    console.log("called");
     return (
         <div>
             <Row>

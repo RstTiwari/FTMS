@@ -56,7 +56,7 @@ const purchaseOrderSchema = new mongoose.Schema({
     payments: [
         {
             type: mongoose.Schema.ObjectId,
-            ref: "paymentsMade",
+            ref: "paymentsmade",
             autopopulate: true,
         },
     ],

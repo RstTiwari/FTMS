@@ -11,12 +11,8 @@ const useFormActions = (entity, isUpdate, id) => {
     const navigate = useNavigate();
 
     const handleUpdate = async (values, isModal, passToModal) => {
-        let route =
-            entity === "paymentsrecived"
-                ? "updatePayment"
-                : entity === "paymentsmade"
-                ? "updatePayment"
-                : "update"; // Changin for Only record and Updating the paymentsrecived
+        let route = entity === "paymentsreceived" || entity === "paymentsmade" ? "updatePayment": "update"
+        // Changing for Only record and Updating the paymentsreceived
         setIsLoading(true);
         try {
             const payLoad = { values: values };
@@ -42,14 +38,14 @@ const useFormActions = (entity, isUpdate, id) => {
 
     const handleCreate = async (values, isModal, passToModal) => {
         setIsLoading(true);
+
+        // managing create route payment Api
         let route =
-            entity === "paymentsrecived"
-                ? "recordPayment"
-                : entity === "paymentsmade"
+            entity === "paymentsreceived" || entity == "paymentsmade"
                 ? "recordPayment"
                 : "create";
-        // Changin for Only record and Updating the paymentsrecived
-
+        // Changin for Only record and Updating the paymentsreceived
+        let id = entity == 'paymentsreceived' ? values?.customer?._id :values?.vendor?._id
         try {
             const payLoad = { values: values };
             const response = await appApiCall("post", route, payLoad,{entity:entity,id:id});

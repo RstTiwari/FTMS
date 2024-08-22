@@ -2,7 +2,8 @@ import checkDbForEntity from "../../Helper/databaseSelector.js";
 
 const create = async (req, res, next) => {
     try {
-        let { entity, values } = req.body;
+        let { values } = req.body;
+        let {entity} = req.query
         let tenantId = req.tenantId;
 
         if(!entity || !values){

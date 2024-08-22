@@ -50,7 +50,7 @@ const CoustomFormItem = ({ entity, form, isModal, isUpdate }) => {
         case "products":
             componentToRender = <ProductForm form={form} isModal={isModal} />;
             break;
-        case "paymentsrecived":
+        case "paymentsreceived":
             componentToRender = (
                 <PaymentFormItem form={form} isUpdate={isUpdate} />
             );

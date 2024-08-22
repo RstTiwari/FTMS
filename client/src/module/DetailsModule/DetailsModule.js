@@ -23,7 +23,7 @@ const DetailsModule = ({ entity, values, id, loading }) => {
                 <QuotationDetailsPage quotation={values} loading={loading} />
             );
             break;
-        case "paymentsrecived":
+        case "paymentsreceived":
             component = (
                 <PaymentDetails entity={entity} id={id} values={values} />
             );

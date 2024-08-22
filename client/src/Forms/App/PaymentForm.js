@@ -11,10 +11,7 @@ import {
     message,
 } from "antd";
 import FormItemCol from "components/Comman/FormItemCol";
-const { Text } = Typography;
 
-const { Option } = Select;
-const entity = "paymentsrecived";
 
 const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
     const handleItemUpdate = (value, fieldName) => {
@@ -24,6 +21,8 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
             form.setFieldsValue({ paymentMode: value });
         } else if (fieldName === "paymentDate") {
             form.setFieldsValue({ paymentDate: value });
+        } else if (fieldName === "no") {
+            form.setFieldsValue({ no: value });
         } else {
         }
     };
@@ -58,9 +57,34 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
                 </Col>
                 <Col span={24}>
                     <FormItemCol
+                        label="Payment No"
+                        name="no"
+                        required={true}
+                        labelCol={{ span: 12 }}
+                        rules={[
+                            {
+                                required: true,
+                                message: "Plese Select Customer",
+                            },
+                        ]}
+                        labelAlign="left"
+                        width={"25vw"}
+                        fieldName={"name"}
+                        updateInForm={(value) => {
+                            handleItemUpdate(value, "no");
+                        }}
+                        onlyShippingAddress={true}
+                        preFillValue={form.getFieldValue("no")?.name}
+                        type={"counters"}
+                        disabled={form.getFieldValue("no")?.name} // if value availbel mark as disabled
+                    />
+                </Col>
+                <Col span={24}>
+                    <FormItemCol
                         label="Payment Date"
                         name="paymentDate"
                         required={true}
+                        width={"25vw"}
                         rules={[
                             {
                                 required: true,
@@ -82,7 +106,8 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
                         name="paymentMode"
                         labelAlign="left"
                         labelCol={{ span: 12 }}
-                        type={"select"}
+                        type={"paymentmode"}
+                        width={"25vw"}
                         entity="Payment Mode"
                         entityName={"paymentMode"}
                         updateInForm={(value) => {
@@ -99,16 +124,18 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
                         labelAlign="left"
                         labelCol={{ span: 12 }}
                         type={"input"}
+                        width={"25vw"}
+
                     />
                 </Col>
                 <Col span={24}>
                     <FormItemCol
-                        label="Amount(Rs)"
+                        label="Received Amount(Rs)"
                         name="amount"
                         labelAlign="left"
                         required={true}
                         type={"number"}
-                        width={250}
+                        width={"25vw"}
                         labelCol={{ span: 12 }}
                         rules={[
                             {
@@ -128,6 +155,7 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
                         tooltip={"Remark or Comment"}
                         labelCol={{ span: 12 }}
                         type={"input"}
+                        width={"25vw"}
                     />
                 </Col>
             </Row>

@@ -52,7 +52,6 @@ const QuotationForm = ({ form }) => {
         const temItems = items.map((item) => ({
             ...item,
             taxAmount: item.finalAmount * (item.taxPercent / 100),
-            taxAmount: item.finalAmount * (item.gstPercent / 100),
         }));
 
         let taxAmount = temItems.reduce(

@@ -5,7 +5,7 @@ const totalReciveables = async (req, res, next) => {
         let { id, entity, period } = req.query;
         let tenantId = req.tenantId;
         let InvoiceDatabase = checkDbForEntity("invoices");
-        let PaymentDataBase = checkDbForEntity("paymentsrecived");
+        let PaymentDataBase = checkDbForEntity("paymentsreceived");
         let CustomerDatabase = checkDbForEntity("customers");
         let PurchaseOrderDatabase = checkDbForEntity("purchases");
         let ExpenseDataBase = checkDbForEntity("expenses");
@@ -16,11 +16,11 @@ const totalReciveables = async (req, res, next) => {
 
             let invoices = await InvoiceDatabase.find(filter);
             let totalReciveables = invoices.reduce(
-                (sum, invocie) => sum + invocie?.grossTotal,
+                (sum, invocie) => sum + invocie?.grandTotal,
                 0
             );
-            let paymentsrecived = await PaymentDataBase.find(filter);
-            let totalRecived = paymentsrecived.reduce(
+            let paymentsreceived = await PaymentDataBase.find(filter);
+            let totalRecived = paymentsreceived.reduce(
                 (sum, payment) => sum + payment?.amount,
                 0
             );
@@ -63,7 +63,7 @@ const totalReciveables = async (req, res, next) => {
         } else if (entity === "tenant") {
             let filter = {
                 tenantId: tenantId,
-                status: { $in: ["DRAFT", "PARTIALLY_PAID"] },
+                status: { $in: ["DRAFT", "PARTIALLY_RECEIVED"] },
             };
             const today = new Date();
             const fifteenDaysAgo = new Date(today);
@@ -83,7 +83,7 @@ const totalReciveables = async (req, res, next) => {
                 totalReceivables: 0,
             };
 
-            let invoices = await InvoiceDatabase.find(filter).populate("paymentsrecived");
+            let invoices = await InvoiceDatabase.find(filter).populate("payments");
             invoices.forEach((invoice) => {
                 const dueDate = new Date(invoice.dueDate);
                 let pendingAmount = 0;
@@ -91,9 +91,9 @@ const totalReciveables = async (req, res, next) => {
                 if (invoice.status === "DRAFT") {
                     // If the status is DRAFT, the entire grandTotal is pending
                     pendingAmount = invoice.grandTotal;
-                } else if (invoice.status === "PARTIALLY_PAID") {
-                    // Calculate total received from paymentsrecived array
-                    const totalReceived = invoice.paymentsrecived?.reduce(
+                } else if (invoice.status === "PARTIALLY_RECEIVED") {
+                    // Calculate total received from paymentsreceived array
+                    const totalReceived = invoice.payments?.reduce(
                         (acc, payment) => acc + payment.amount,
                         0
                     );

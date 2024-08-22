@@ -14,7 +14,7 @@ import FormItemCol from "components/Comman/FormItemCol";
 const { Text } = Typography;
 
 const { Option } = Select;
-const entity = "paymentsrecived";
+const entity = "paymentsreceived";
 
 const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
     const handleItemUpdate = (value, fieldName) => {

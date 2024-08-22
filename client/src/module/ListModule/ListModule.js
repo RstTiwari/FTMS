@@ -36,7 +36,7 @@ const ListModule = (entity) => {
         case "vendors":
             data = vendorData;
             break;
-        case "paymentsrecived":
+        case "paymentsreceived":
             data = paymentReceivedData;
             break;
         case "paymentsmade":

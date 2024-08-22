@@ -29,7 +29,7 @@ const invoiceSchema = new mongoose.Schema(
         payments: [
             {
                 type: mongoose.Schema.ObjectId,
-                ref: "paymentsReceived",
+                ref: "paymentsreceived",
                 autopopulate: true,
             },
         ],

@@ -20,10 +20,10 @@ import CustomModal from "components/CustomModal";
 import FormItemCol from "components/Comman/FormItemCol";
 import Taglabel from "components/Comman/Taglabel";
 import { jsDateIntoDayjsDate } from "Helper/EpochConveter";
+import TaxPercent from "components/Comman/TaxPercent";
 
 const QuotationForm = ({ form }) => {
     const handleItemsUpdate = (value, filedName, rowName) => {
-        console.log(value, "==");
         const items = form.getFieldValue("items");
         let temObj = items[rowName];
         if (filedName === "description") {
@@ -38,9 +38,8 @@ const QuotationForm = ({ form }) => {
             temObj.qty = value;
             temObj.finalAmount = Math.ceil(value * temObj.rate);
         } else if (filedName === "gstPercent") {
-            console.log(value, "===");
-            value = Number(value);
-            form.setFieldsValue({ gstPercent: value });
+            value =Number(value)
+            temObj.gstPercent = value;
         } else if (filedName === "transportAmount") {
             form.setFieldsValue({ transportAmount: value });
         } else if (filedName === "paymentsCondition") {
@@ -63,6 +62,8 @@ const QuotationForm = ({ form }) => {
             form.setFieldsValue({ quoteDate: value });
         } else if (filedName === "expiryDate") {
             form.setFieldsValue({ expiryDate: value });
+        }else{
+
         }
 
         items[rowName] = temObj;
@@ -70,24 +71,43 @@ const QuotationForm = ({ form }) => {
 
         // Tax Calculator
         let grossTotal = items.reduce((a, b) => a + b.finalAmount, 0);
-        let gstPercent = form.getFieldValue("gstPercent") || 0;
-        let transportAmount = form.getFieldValue("transportAmount") || 0;
-        let taxAmount = Math.ceil(
-            calculateTax(gstPercent, grossTotal + transportAmount)
+        const temItems = items.map((item) => ({
+            ...item,
+            taxAmount: item.finalAmount * (item.gstPercent / 100),
+        }));
+
+        let taxAmount = temItems.reduce(
+            (acc, item) => acc + (item.taxAmount || 0),
+            0
         );
-        let grandTotal = grossTotal + taxAmount + transportAmount;
+        let totalWithTax = grossTotal + taxAmount;
+        let grandTotal = totalWithTax;
+        // Calculate grandTotal based on otherCharges
+        let otherCharges = form.getFieldValue("otherCharges") || []        
+        otherCharges.forEach((charge) => {
+            if (charge.rsOrPercent === "percent") {
+                const amountToAdjust =
+                    (totalWithTax * (charge.amount || 0)) / 100;
+                if (charge.action === "add") {
+                    grandTotal += amountToAdjust;
+                } else {
+                    grandTotal -= amountToAdjust;
+                }
+            } else {
+                if (charge.action === "add") {
+                    grandTotal += charge.amount || 0;
+                } else {
+                    grandTotal -= charge.amount || 0;
+                }
+            }
+        });
         form.setFieldsValue({
             grossTotal: grossTotal,
+            taxAmount:taxAmount,
+            totalWithTax: totalWithTax,
             grandTotal: grandTotal,
-            transportAmount: transportAmount,
-            taxAmount: taxAmount,
         });
     };
-
-    function calculateTax(gstPercent = 0, total) {
-        let amount = (gstPercent * total) / 100;
-        return Math.ceil(amount);
-    }
 
     useEffect(() => {}, []);
     return (
@@ -105,7 +125,7 @@ const QuotationForm = ({ form }) => {
                     },
                 ]}
                 type="model"
-                width={"25vw"}
+                width={"30vw"}
                 entity={"customers"}
                 fieldName="name" // filed name form customer modal
                 onlyShippingAddress={true}
@@ -120,6 +140,7 @@ const QuotationForm = ({ form }) => {
                 labelAlign="left"
                 required={true}
                 labelCol={{ span: 8 }}
+                width={"30vw"}
                 type={"counters"}
                 rules={[
                     {
@@ -175,7 +196,7 @@ const QuotationForm = ({ form }) => {
                 name={"sub"}
                 type={"select"}
                 tooltip={"Let your customer know what this quote is for"}
-                width={"50vw"}
+                width={"30vw"}
                 entity={"Quotation Sub"}
                 labelCol={{ span: 8 }}
                 entityName="sub"
@@ -190,7 +211,7 @@ const QuotationForm = ({ form }) => {
                 type={"select"}
                 entity={"Sales Person"}
                 entityName="salesPerson"
-                width={"200px"}
+                width={"30vw"}
                 labelCol={{ span: 8 }}
                 updateInForm={(value) => {
                     handleItemsUpdate(value, "salesPerson");
@@ -238,7 +259,7 @@ const QuotationForm = ({ form }) => {
                     >
                         <Col
                             className="gutter-row"
-                            span={9}
+                            span={8}
                             style={{
                                 borderRight: "1px solid #bfbfbb",
                                 textAlign: "center",
@@ -249,7 +270,7 @@ const QuotationForm = ({ form }) => {
                         </Col>
                         <Col
                             className="gutter-row"
-                            span={5}
+                            span={4}
                             style={{
                                 borderRight: "1px solid #bfbfbb",
                                 textAlign: "center",
@@ -260,7 +281,7 @@ const QuotationForm = ({ form }) => {
                         </Col>
                         <Col
                             className="gutter-row"
-                            span={5}
+                            span={4}
                             style={{
                                 borderRight: "1px solid #bfbfbb",
                                 textAlign: "center",
@@ -271,7 +292,17 @@ const QuotationForm = ({ form }) => {
                         </Col>
                         <Col
                             className="gutter-row"
-                            span={5}
+                            span={2}
+                            style={{
+                                borderRight: "1px solid #bfbfbb",
+                                textAlign: "center",
+                            }}
+                        >
+                            <Taglabel text={"GST Tax%"} />
+                        </Col>
+                        <Col
+                            className="gutter-row"
+                            span={4}
                             style={{ textAlign: "center", minWidth: "200px" }}
                         >
                             <Taglabel text={"Final Amount (Before Tax)"} />
@@ -310,7 +341,7 @@ const QuotationForm = ({ form }) => {
                                         >
                                             <Col
                                                 className="gutter-row"
-                                                span={9}
+                                                span={8}
                                                 style={{
                                                     textAlign: "center",
                                                     minWidth: "300px",
@@ -342,7 +373,7 @@ const QuotationForm = ({ form }) => {
                                                 </Form.Item>
                                             </Col>
                                             <Col
-                                                span={5}
+                                                span={4}
                                                 style={{ minWidth: "200px" }}
                                             >
                                                 <Form.Item
@@ -367,7 +398,7 @@ const QuotationForm = ({ form }) => {
                                                 </Form.Item>
                                             </Col>
                                             <Col
-                                                span={5}
+                                                span={4}
                                                 style={{ minWidth: "200px" }}
                                             >
                                                 <Form.Item
@@ -392,7 +423,33 @@ const QuotationForm = ({ form }) => {
                                                 </Form.Item>
                                             </Col>
                                             <Col
-                                                span={4}
+                                                span={2}
+                                            >
+                                                <Form.Item
+                                                    {...restField}
+                                                    name={[name, "gstPercent"]}
+                                                >
+                                                    <TaxPercent
+                                                        updateInForm={(value) =>
+                                                            handleItemsUpdate(
+                                                                value,
+                                                                "gstPercent",
+                                                                name
+                                                            )
+                                                        }
+                                                        min={false}
+                                                        controls={false}
+                                                        width="100%"
+                                                        style={{
+                                                            width: "100%",
+                                                            textAlign: "center",
+                                                        }}
+                                                        preFillValue={form.getFieldValue("gstPercent")}
+                                                    />
+                                                </Form.Item>
+                                            </Col>
+                                            <Col
+                                                span={5}
                                                 style={{
                                                     textAlign: "center",
                                                     minWidth: "200px",
@@ -468,35 +525,62 @@ const QuotationForm = ({ form }) => {
 
             <Row align={"middle"} justify={"end"}>
                 <FormItemCol
-                    label="Gross Total"
+                    label="Total(Before Tax)"
                     tooltip={"Amount before Tax"}
                     name={"grossTotal"}
                     labelAlign="left"
-                    labelCol={{ span: 8 }}
+                    labelCol={{ span: 12 }}
                     type={"number"}
                     width={150}
-                    readOnly={true}
+                    disabled ={true}
                 />
             </Row>
             <Row align={"middle"} justify={"end"}>
                 <FormItemCol
-                    label="Transport(Rs)"
-                    name={"transportAmount"}
+                    label="Tax Amount"
+                    name={"taxAmount"}
+                    labelCol={{ span: 12}}
                     labelAlign="left"
+                    tooltip={"Tax Amount on total + transport"}
                     type={"number"}
-                    labelCol={{ span: 8 }}
-                    onChange={(value) => {
-                        handleItemsUpdate(value, "transportAmount");
-                    }}
+                    entity={"Tax Percent"}
+                    disabled ={true}
+                    
                 />
             </Row>
+
             <Row align={"middle"} justify={"end"}>
+                <FormItemCol
+                    label="Total(After Tax)"
+                    tooltip={"Amount With Tax"}
+                    name={"totalWithTax"}
+                    labelAlign="left"
+                    labelCol={{ span: 12 }}
+                    type={"number"}
+                    width={150}
+                    disabled ={true}
+
+                />
+            </Row>
+            {/* <Row align={"middle"} justify={"end"}>
+                <FormItemCol
+                    label="Total(After Discount)"
+                    tooltip={"Amount before Tax"}
+                    name={"grossTotal"}
+                    labelAlign="left"
+                    labelCol={{ span: 12 }}
+                    type={"number"}
+                    width={150}
+                    disabled ={true}
+                />
+            </Row> */}
+            {/* <Row align={"middle"} justify={"end"}>
                 <FormItemCol
                     label="Tax(%)"
                     name={"gstPercent"}
-                    labelCol={{ span: 8 }}
+                    labelCol={{ span: 12 }}
                     labelAlign="left"
-                    type={"select"}
+                    type={"taxpercent"}
                     width={150}
                     entity={"Tax Percent"}
                     entityName="gstPercent"
@@ -505,29 +589,37 @@ const QuotationForm = ({ form }) => {
                     }}
                     preFillValue={form.getFieldValue("gstPercent")}
                 />
-            </Row>
-
-            <Row align={"middle"} justify={"end"}>
+            </Row> */}
+            {/* <Row align={"middle"} justify={"end"}>
                 <FormItemCol
-                    label="Tax Amount"
-                    name={"taxAmount"}
-                    labelCol={{ span: 8 }}
+                    label="Transport(Rs)"
+                    name={"transportAmount"}
                     labelAlign="left"
-                    tooltip={"Tax Amount on total + transport"}
                     type={"number"}
-                    entity={"Tax Percent"}
-                    readOnly={true}
+                    labelCol={{ span: 12 }}
+                    onChange={(value) => {
+                        handleItemsUpdate(value, "transportAmount");
+                    }}
+                />
+            </Row> */}
+            <Row justify={"end"} style={{marginRight:"50px"}}>
+               <FormItemCol
+                 type={"othercharges"}
+                 form ={form}
+                 tooltip={"Charges with no tax"}
+                 updateInForm ={()=>handleItemsUpdate()}
                 />
             </Row>
+    
             <Row align={"middle"} justify={"end"}>
                 <FormItemCol
                     label="Grand Total"
                     name={"grandTotal"}
-                    labelCol={{ span: 8 }}
+                    labelCol={{ span: 12 }}
                     labelAlign="left"
-                    tooltip={"Total Amount including Tax + total"}
+                    tooltip={"Total Amount including Amount"}
                     type={"number"}
-                    readOnly
+                    disabled ={true}
                 />
             </Row>
             <Row justify={"start"} style={{ marginBottom: 10 }}>
