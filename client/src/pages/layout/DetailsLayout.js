@@ -55,7 +55,7 @@ const DetailsLayout = () => {
     };
 
     return (
-        <Row>
+        <Row  >
             <Col
                 xs={details ? 12 : 24}
                 sm={details ? 12 : 24}

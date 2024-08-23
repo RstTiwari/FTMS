@@ -572,7 +572,7 @@ const QuotationForm = ({ form }) => {
                             disabled={true}
                         />
                     </Row>
-                    <Row span={24} justify={"end"}>
+                    <Row span={24} justify={"end"} style={{marginRight:"150px"}}>
                         <FormItemCol
                             type={"othercharges"}
                             form={form}

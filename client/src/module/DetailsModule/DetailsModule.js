@@ -1,7 +1,7 @@
 import NotFound from "pages/Notfound";
 import Customer from "../../pages/Details/Customer/Customer";
 import PDFGenerator from "pages/Details/PdfGenrator";
-import PaymentDetails from "../../pages/Details/PayementDetails";
+import PaymentDetails from "../../pages/Details/PayementReceivedDetails";
 import ExpenseDetails from "pages/Details/ExpenseDetails";
 import ProductDetails from "pages/Details/ProductDetails";
 import VendorDetails from "pages/Details/Vendor/Vendor";
@@ -9,6 +9,7 @@ import InvoiceDetails from "pages/Details/InvoiceDetails";
 import QuotationDetailsPage from "pages/Details/QuotationDetails";
 import PurchaseOrderDetails from "pages/Details/PurchaseOrderDetails";
 import DeliveryChallanDetails from "pages/Details/DeliveryChallanDetails";
+import PaymentMade from "pages/Details/PaymentMadeDetails";
 const DetailsModule = ({ entity, values, id, loading }) => {
     let component = <NotFound />;
     switch (entity) {
@@ -26,6 +27,11 @@ const DetailsModule = ({ entity, values, id, loading }) => {
         case "paymentsreceived":
             component = (
                 <PaymentDetails entity={entity} id={id} values={values} />
+            );
+            break;
+        case "paymentsmade":
+            component = (
+                <PaymentMade entity={entity} id={id} values={values} />
             );
             break;
         case "products":

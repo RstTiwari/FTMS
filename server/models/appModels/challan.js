@@ -56,18 +56,27 @@ const challanSchema = new mongoose.Schema(
             type: Number,
             default: 0,
         },
-        transportAmount: {
-            type: Number,
-            default: 0,
-        },
         taxAmount:{
             type: Number,
             default: 0,
         },
+        totalWithTax:{
+            type: Number,
+
+        },
+        otherCharges:[
+
+        ],
         grandTotal:{
             type:Number,
             default: 0,
         },
+        notes:[
+
+        ],
+        terms:[
+
+        ],
         tenantId: {
             type: String,
             required: true,

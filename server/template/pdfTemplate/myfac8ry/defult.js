@@ -517,11 +517,11 @@ const addItemsTable = (doc, entityData, entity) => {
         });
 
         // Draw the bottom border for each row
-        doc.moveTo(4, y + headerHeight - 5)
-           .lineTo(591, y + headerHeight - 5) // Line covering the width of the table
-           .stroke(borderColor);
+        doc.moveTo(4, y + headerHeight- 5)
+        .lineTo(591, y + headerHeight -5) // Line covering the width of the table
+        .stroke(borderColor);
 
-        y += headerHeight;
+     y += headerHeight;
     });
 
 };
@@ -530,22 +530,22 @@ const addFooter = (doc, entityData, entity, organizationData) => {
     let footerDetails = () => {};
     switch (entity) {
         case "invoices":
-            footerDetails = footerForInvoice;
+            footerDetails = footerForQuotation;
             break;
         case "quotations":
             footerDetails = footerForQuotation;
             break;
         case "purchases":
-            footerDetails = footerForPurchaseOrder;
+            footerDetails = footerForQuotation;
             break;
         case "challans":
-            footerDetails = footerForChallan;
+            footerDetails = footerForQuotation;
             break;
         default:
             break;
     }
 
-    footerDetails(doc, entityData, organizationData);
+    footerDetails(doc, entityData, organizationData,entity);
 };
 const addPageBorder = (doc) => {
     const borderColor = "#000000"; // Dark black color
@@ -887,33 +887,48 @@ const detailsForChallan = (doc, challanDataa, organizationData, curY) => {
     doc.y = endY;
 };
 
-const footerForInvoice = (doc, invoiceData, organizationData) => {
+// const footerForInvoice = (doc, invoiceData, organizationData) => {
+//     const initialY = doc.y + 20;
+//     doc.fontSize(10);
+//     doc.fill("#000");
+//     // Gross Total and Tax Amount on the right
+//     doc.font("Helvetica-Bold");
+//     const startX = 390;
+//     const valueX = 475;
+//     const startY = initialY + 30;
+
+//     doc.text("Gross Total:", startX, startY);
+//     doc.text("Tax Amount:", startX, startY + 30);
+//     doc.rect(startX - 20, startY + 60, 200, 30).fill("#0047AB");
+//     doc.fill("#fff");
+//     doc.text("Grand Total:", startX, startY + 70).fillColor("#000");
+
+//     doc.fill("#000");
+//     doc.text(`${invoiceData?.grossTotal || ""}`, valueX, startY);
+//     doc.text(`${invoiceData?.taxAmount || ""}`, valueX, startY + 30);
+//     doc.fill("#fff");
+//     doc.text(`${invoiceData?.grandTotal}`, valueX, startY + 70);
+
+
+
+//     // Thank you message
+//     const thankYouY =  doc.y+ 100; // Adjust this value to position the thank you message properly
+//     doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);
+// };
+
+const footerForQuotation = (doc, data, organizationData ,entity) => {
     const initialY = doc.y + 20;
-    const { bankDetails } = organizationData;
-    let primaryBank = getPrimaryOrFirstBank(bankDetails);
     doc.fontSize(10);
     doc.fill("#000");
-    // Gross Total and Tax Amount on the right
-    doc.font("Helvetica-Bold");
-    const startX = 390;
-    const valueX = 475;
-    const startY = initialY + 30;
 
-    doc.text("Gross Total:", startX, startY);
-    doc.text("Tax Amount:", startX, startY + 30);
-    doc.rect(startX - 20, startY + 60, 200, 30).fill("#0047AB");
-    doc.fill("#fff");
-    doc.text("Grand Total:", startX, startY + 70).fillColor("#000");
-
-    doc.fill("#000");
-    doc.text(`${invoiceData?.grossTotal || ""}`, valueX, startY);
-    doc.text(`${invoiceData?.taxAmount || ""}`, valueX, startY + 30);
-    doc.fill("#fff");
-    doc.text(`${invoiceData?.grandTotal}`, valueX, startY + 70);
-
+    if(entity ==='invoices'){
     // Organization Banking Details on the left
-    const bankDetailsStartX = 30;
-    const bankDetailsStartY = initialY + 30;
+    const { bankDetails } = organizationData;
+    let primaryBank = getPrimaryOrFirstBank(bankDetails);
+
+
+    const bankDetailsStartX = 10;
+    const bankDetailsStartY = initialY;
 
     doc.fill("#000");
     doc.font("Helvetica-Bold");
@@ -936,318 +951,305 @@ const footerForInvoice = (doc, invoiceData, organizationData) => {
     })
         .font("Helvetica")
         .text(`${primaryBank?.ifscCode || ""}`);
-
-    // Thank you message
-    const thankYouY =  doc.y+ 100; // Adjust this value to position the thank you message properly
-    doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);
-};
-
-const footerForQuotation = (doc, quotationData) => {
-    const initialY = doc.y + 20;
-    doc.fontSize(10);
-    doc.fill("#000");
+    }
 
     // Gross Total and Grand Total on the right
     doc.font("Helvetica-Bold");
     const startX = 390;
     const valueX = 475;
     let startY = initialY;
-    let amountSideLineStart = startY - 3
+    let amountSideLineStart = startY - 3;
     doc.text("Gross Total:", startX, startY);
-    doc.text(`${quotationData?.grossTotal}`, valueX, startY);
+    doc.text(`${data?.grossTotal}`, valueX, startY);
 
-    doc.moveTo(startX-20, doc.y+1)
-    .lineTo(doc.page.width - 4, doc.y+1)
-    .stroke(borderColor);
+    doc.moveTo(startX - 20, doc.y + 1)
+        .lineTo(doc.page.width - 4, doc.y + 1)
+        .stroke(borderColor);
 
-    if (quotationData?.taxAmount) {
+    if (data?.taxAmount) {
         startY += 20;
         doc.text("Tax Amount:", startX, startY);
-        doc.text(`${quotationData?.taxAmount}`, valueX, startY);
-        doc.moveTo(startX-20, doc.y+1)
-        .lineTo(doc.page.width - 4, doc.y+1)
-        .stroke(borderColor);
+        doc.text(`${data?.taxAmount}`, valueX, startY);
+        doc.moveTo(startX - 20, doc.y + 1)
+            .lineTo(doc.page.width - 4, doc.y + 1)
+            .stroke(borderColor);
     }
-      // Draw a table for the other charges
-    if (quotationData?.otherCharges?.length > 0) {
+    // Draw a table for the other charges
+    if (data?.otherCharges?.length > 0) {
         // Draw other charges
-        startY += 20
-        quotationData.otherCharges.forEach((charge, index) => {
-            doc.text(capitalizeFirstLetter(`${charge.chargeName}:`), startX, startY);
-            doc.text(`${charge.amount}`, valueX, startY);
-        startY += 20
-        let othersy = doc.y + 1
-        doc.moveTo(startX-20, othersy)
-        .lineTo(doc.page.width - 4, othersy)
-        .stroke(borderColor);
-
+        startY += 20;
+        data.otherCharges.forEach((charge, index) => {
+            doc.text(
+                capitalizeFirstLetter(`${charge.chargeName}:`),
+                startX,
+                startY
+            );
+            let pre = charge?.rsOrPercent ==="rupee" ? "Rs" :"%"
+            doc.text(`${charge.amount}  ${pre}`, valueX, startY);
+            startY += 20;
+            let othersy = doc.y + 1;
+            doc.moveTo(startX - 20, othersy)
+                .lineTo(doc.page.width - 4, othersy)
+                .stroke(borderColor);
         });
     }
 
     // Draw rectangles and Grand Total text
     startY += 20;
-    doc.moveTo(startX-20, doc.y+2)
-    .lineTo(startX-20 , amountSideLineStart)
-    .stroke(borderColor);
-    doc.rect(startX - 20,doc.y+2,220, 30).fill("#0047AB");
+    doc.moveTo(startX - 20, doc.y + 2)
+        .lineTo(startX - 20, amountSideLineStart)
+        .stroke(borderColor);
+    doc.rect(startX - 20, doc.y + 2, 222, 30).fill("#0047AB");
     doc.fill("#fff");
-    let grandY = doc.y+12.5
+    let grandY = doc.y + 12.5;
     doc.text("Grand Total:", startX, grandY).fillColor("#000");
     doc.fill("#fff");
-    doc.text(`${quotationData?.grandTotal}`, valueX, grandY ).fillColor(
-        "#000"
-    );
-   
+    doc.text(`${data?.grandTotal}`, valueX, grandY).fillColor("#000");
 
     // Terms and Conditions on the left
-    const termsStartX = 20;
-    let termsStartY = doc.y + 20; // Adjust this value to position the Terms and Conditions properly
-
-    // Define line height and max width for wrapping
-    const lineHeight = 5; // Adjust this value as needed for line spacing
-    const maxWidth = 450; // Adjust this value as needed for text wrapping
-
-    let currentY = termsStartY + lineHeight * 2; // Start position for the first line after the "Terms and Conditions" heading
-
-
-    if (
-        quotationData?.deliveryCondition?.trim() ||
-        quotationData?.cancellationCondition?.trim() ||
-        quotationData?.paymentsCondition?.trim() ||
-        quotationData?.validityCondition?.trim()
-    ) {
-        const termsStartX = 20;
-        let termsStartY = doc.y + 20; // Adjust this value to position the Terms and Conditions properly
-    
+    if (data?.notes?.length > 0) {
+        let termsStartY = doc.y + 15;
+        let termsStartX = 4;
 
         doc.fill("#000");
         doc.font("Helvetica-Bold");
-        doc.text("Terms and Conditions:", termsStartX, termsStartY);
+        doc.fontSize(12);
+        doc.text("Note:", 4, termsStartY);
         doc.font("Helvetica");
+        // Draw other charges
+        doc.moveTo(termsStartX, termsStartY + 15)
+            .lineTo(doc.page.width - 4, termsStartY + 15)
+            .stroke(borderColor);
+        let startX = 8;
+        let startY = doc.y + 5;
+        data.notes.forEach((note, index) => {
+            doc.font("Helvetica");
+            doc.fontSize(10);
+            doc.text(capitalizeFirstLetter(`${index + 1}.`), startX, startY);
+            doc.font("Helvetica");
+            doc.text(`${note}`, startX + 10, startY);
+            startY = doc.y + 10;
+        });
+        doc.moveTo(termsStartX, doc.y +10)
+        .lineTo(doc.page.width - 4, doc.y + 10)
+        .stroke(borderColor);
+    }
 
-        // Define line height and max width for wrapping
-        const lineHeight = 5; // Adjust this value as needed for line spacing
-        let currentY = termsStartY + 20; // Start position for the first line after the "Terms and Conditions" heading
-        const addCondition = (conditionName, conditionValue) => {
-            if (conditionValue) {
-                // Get the uppercase condition name
-                let conditionText = `${conditionName.toUpperCase()} :`;
-            
-                // Calculate the width of the condition name text
-                const conditionTextWidth = doc.font("Helvetica-Bold").widthOfString(conditionText);
-            
-                // Define the x position for the condition value based on the width of the condition name
-                const conditionValueX = termsStartX + conditionTextWidth + 5; // Adding a small gap (5 units)
-            
-                // Draw the condition name
-                doc.font("Helvetica-Bold").text(
-                    `${conditionText}`,
-                    termsStartX,
-                    currentY,
-                    { width: 100, align: "left" }
-                );
-            
-                // Draw the condition value
-                doc.font("Helvetica").text(
-                    `${conditionValue}.`,
-                    conditionValueX,
-                    currentY,
-                    { width: 400, align: "left" } // Adjusting width based on condition name width
-                );
-            
-                // Update currentY for the next condition
-                currentY = doc.y + lineHeight; // Adjust Y position for the next condition           
-            }
-        };
+    // Terms and Conditions on the left
+    if (data?.terms?.length > 0) {
+        let termsStartY = doc.y + 30;
+        let termsStartX = 4;
 
-        addCondition("Payment", quotationData?.paymentsCondition);
-        addCondition("Delivery", quotationData?.deliveryCondition);
-        addCondition("Cancellation", quotationData?.cancellationCondition);
-        addCondition("Validity", quotationData?.validityCondition);
+        doc.fill("#000");
+        doc.font("Helvetica-Bold");
+        doc.fontSize(12);
+        doc.text("Terms and Conditions:", 4, termsStartY);
+        doc.font("Helvetica");
+        // Draw other charges
+        doc.moveTo(termsStartX, termsStartY + 15)
+            .lineTo(doc.page.width - 4, termsStartY + 15)
+            .stroke(borderColor);
+        let startX = 8;
+        let startY = doc.y + 5;
+        data.terms.forEach((term, index) => {
+            doc.font("Helvetica-Bold");
+            doc.fontSize(10);
+            doc.text(capitalizeFirstLetter(`${term.name}:`), startX, startY);
+            doc.font("Helvetica");
+            doc.text(
+                capitalizeFirstLetter(`${term.value}`),
+                startX + 100,
+                startY
+            );
+            startY = doc.y + 10;
+            doc.moveTo(termsStartX, doc.y + 5)
+                .lineTo(doc.page.width - 4, doc.y + 5)
+                .stroke(borderColor);
+        });
     }
     // Thank you message
     const thankYouY = doc.y + 50; // Adjust this value to position the thank you message properly
     doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);
 };
 
-const footerForPurchaseOrder = (doc, purchaseOrderData) => {
-    const initialY = doc.y + 20;
+// const footerForPurchaseOrder = (doc, purchaseOrderData) => {
+//     const initialY = doc.y + 20;
 
-    doc.fontSize(10);
-    doc.fill("#000");
+//     doc.fontSize(10);
+//     doc.fill("#000");
 
-    // Gross Total and Grand Total on the right
-    doc.font("Helvetica-Bold");
-    const startX = 390;
-    const valueX = 475;
-    let startY = initialY + 30;
+//     // Gross Total and Grand Total on the right
+//     doc.font("Helvetica-Bold");
+//     const startX = 390;
+//     const valueX = 475;
+//     let startY = initialY + 30;
 
-    doc.text("Gross Total:", startX, startY);
-    doc.text(`${purchaseOrderData?.grossTotal}`, valueX, startY);
+//     doc.text("Gross Total:", startX, startY);
+//     doc.text(`${purchaseOrderData?.grossTotal}`, valueX, startY);
 
-    // Move to the next line for Tax Amount if it exists
-    startY += 30;
-    doc.text("Tax Amount:", startX, startY);
-    doc.text(`${purchaseOrderData?.taxAmount || 0}`, valueX, startY);
+//     // Move to the next line for Tax Amount if it exists
+//     startY += 30;
+//     doc.text("Tax Amount:", startX, startY);
+//     doc.text(`${purchaseOrderData?.taxAmount || 0}`, valueX, startY);
 
-    // Draw rectangles and Grand Total text
-    startY += 30;
-    doc.rect(startX - 20, startY, 200, 30).fill("#0047AB");
-    doc.fill("#fff");
-    doc.text("Grand Total:", startX, startY + 10).fillColor("#000");
-    doc.fill("#fff");
-    doc.text(`${purchaseOrderData?.grandTotal}`, valueX, startY + 10).fillColor(
-        "#000"
-    );
+//     // Draw rectangles and Grand Total text
+//     startY += 30;
+//     doc.rect(startX - 20, startY, 200, 30).fill("#0047AB");
+//     doc.fill("#fff");
+//     doc.text("Grand Total:", startX, startY + 10).fillColor("#000");
+//     doc.fill("#fff");
+//     doc.text(`${purchaseOrderData?.grandTotal}`, valueX, startY + 10).fillColor(
+//         "#000"
+//     );
 
-    // Terms and Conditions on the left, only if payment or cancellation conditions exist
-    if (
-        purchaseOrderData?.paymentCondition ||
-        purchaseOrderData?.cancellationCondition
-    ) {
-        const termsStartX = 20;
-        let termsStartY = doc.y + 20; // Adjust this value to position the Terms and Conditions properly
+//     // Terms and Conditions on the left, only if payment or cancellation conditions exist
+//     if (
+//         purchaseOrderData?.paymentCondition ||
+//         purchaseOrderData?.cancellationCondition
+//     ) {
+//         const termsStartX = 20;
+//         let termsStartY = doc.y + 20; // Adjust this value to position the Terms and Conditions properly
 
-        doc.fill("#000");
-        doc.font("Helvetica-Bold");
-        doc.text("Terms and Conditions:", termsStartX, termsStartY);
-        doc.font("Helvetica");
+//         doc.fill("#000");
+//         doc.font("Helvetica-Bold");
+//         doc.text("Terms and Conditions:", termsStartX, termsStartY);
+//         doc.font("Helvetica");
 
-        // Define line height and max width for wrapping
-        const lineHeight = 5; // Adjust this value as needed for line spacing
-        const maxWidth = 450; // Adjust this value as needed for text wrapping
+//         // Define line height and max width for wrapping
+//         const lineHeight = 5; // Adjust this value as needed for line spacing
+//         const maxWidth = 450; // Adjust this value as needed for text wrapping
 
-        let currentY = termsStartY + 20; // Start position for the first line after the "Terms and Conditions" heading
+//         let currentY = termsStartY + 20; // Start position for the first line after the "Terms and Conditions" heading
 
-        const addCondition = (conditionName, conditionValue) => {
-            if (conditionValue) {
-                // Get the uppercase condition name
-                let conditionText = `${conditionName.toUpperCase()} :`;
+//         const addCondition = (conditionName, conditionValue) => {
+//             if (conditionValue) {
+//                 // Get the uppercase condition name
+//                 let conditionText = `${conditionName.toUpperCase()} :`;
             
-                // Calculate the width of the condition name text
-                const conditionTextWidth = doc.font("Helvetica-Bold").widthOfString(conditionText);
+//                 // Calculate the width of the condition name text
+//                 const conditionTextWidth = doc.font("Helvetica-Bold").widthOfString(conditionText);
             
-                // Define the x position for the condition value based on the width of the condition name
-                const conditionValueX = termsStartX + conditionTextWidth + 5; // Adding a small gap (5 units)
+//                 // Define the x position for the condition value based on the width of the condition name
+//                 const conditionValueX = termsStartX + conditionTextWidth + 5; // Adding a small gap (5 units)
             
-                // Draw the condition name
-                doc.font("Helvetica-Bold").text(
-                    `${conditionText}`,
-                    termsStartX,
-                    currentY,
-                    { width: 100, align: "left" }
-                );
+//                 // Draw the condition name
+//                 doc.font("Helvetica-Bold").text(
+//                     `${conditionText}`,
+//                     termsStartX,
+//                     currentY,
+//                     { width: 100, align: "left" }
+//                 );
             
-                // Draw the condition value
-                doc.font("Helvetica").text(
-                    `${conditionValue}.`,
-                    conditionValueX,
-                    currentY,
-                    { width: 400, align: "left" } // Adjusting width based on condition name width
-                );
+//                 // Draw the condition value
+//                 doc.font("Helvetica").text(
+//                     `${conditionValue}.`,
+//                     conditionValueX,
+//                     currentY,
+//                     { width: 400, align: "left" } // Adjusting width based on condition name width
+//                 );
             
-                // Update currentY for the next condition
-                currentY = doc.y + lineHeight; // Adjust Y position for the next condition           
-            }
-        };
+//                 // Update currentY for the next condition
+//                 currentY = doc.y + lineHeight; // Adjust Y position for the next condition           
+//             }
+//         };
 
     
-        addCondition("Payment", purchaseOrderData?.paymentCondition);
-        addCondition(
-            "Cancellation",
-            purchaseOrderData?.cancellationCondition
-        );
+//         addCondition("Payment", purchaseOrderData?.paymentCondition);
+//         addCondition(
+//             "Cancellation",
+//             purchaseOrderData?.cancellationCondition
+//         );
 
       
-    } 
-      // Thank you message
-      const thankYouY = currentY + 20; // Adjust this value to position the thank you message properly
-      doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);
-};
-const footerForChallan = (doc, quotationData) => {
-    const initialY = doc.y + 20;
+//     } 
+//       // Thank you message
+//       const thankYouY = currentY + 20; // Adjust this value to position the thank you message properly
+//       doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);
+// };
+// const footerForChallan = (doc, quotationData) => {
+//     const initialY = doc.y + 20;
 
-    doc.fontSize(10);
-    doc.fill("#000");
+//     doc.fontSize(10);
+//     doc.fill("#000");
 
-    // Gross Total and Grand Total on the right
-    doc.font("Helvetica-Bold");
-    const startX = 390;
-    const valueX = 475;
-    let startY = initialY + 30;
+//     // Gross Total and Grand Total on the right
+//     doc.font("Helvetica-Bold");
+//     const startX = 390;
+//     const valueX = 475;
+//     let startY = initialY + 30;
 
-    doc.text("Gross Total:", startX, startY);
-    doc.text(`${quotationData?.grossTotal}`, valueX, startY);
+//     doc.text("Gross Total:", startX, startY);
+//     doc.text(`${quotationData?.grossTotal}`, valueX, startY);
 
-    // Adjust startY if there is a transport amount
-    if (quotationData?.transportAmount) {
-        startY += 30;
-        doc.text("Transport:", startX, startY);
-        doc.text(`${quotationData?.transportAmount}`, valueX, startY);
-    }
+//     // Adjust startY if there is a transport amount
+//     if (quotationData?.transportAmount) {
+//         startY += 30;
+//         doc.text("Transport:", startX, startY);
+//         doc.text(`${quotationData?.transportAmount}`, valueX, startY);
+//     }
 
-    // Move to the next line for Tax Percent if it exists
-    if (quotationData?.taxAmount) {
-        startY += 30;
-        doc.text("Tax Amount:", startX, startY);
-        doc.text(`${quotationData?.taxAmount}`, valueX, startY);
-    }
+//     // Move to the next line for Tax Percent if it exists
+//     if (quotationData?.taxAmount) {
+//         startY += 30;
+//         doc.text("Tax Amount:", startX, startY);
+//         doc.text(`${quotationData?.taxAmount}`, valueX, startY);
+//     }
 
-    // Draw rectangles and Grand Total text
-    startY += 30;
-    doc.rect(startX - 20, startY, 200, 30).fill("#0047AB");
-    doc.fill("#fff");
-    doc.text("Grand Total:", startX, startY + 10).fillColor("#000");
-    doc.fill("#fff");
-    doc.text(`${quotationData?.grandTotal}`, valueX, startY + 10).fillColor(
-        "#000"
-    );
+//     // Draw rectangles and Grand Total text
+//     startY += 30;
+//     doc.rect(startX - 20, startY, 200, 30).fill("#0047AB");
+//     doc.fill("#fff");
+//     doc.text("Grand Total:", startX, startY + 10).fillColor("#000");
+//     doc.fill("#fff");
+//     doc.text(`${quotationData?.grandTotal}`, valueX, startY + 10).fillColor(
+//         "#000"
+//     );
 
-    // // Terms and Conditions on the left
-    // const termsStartX = 20;
-    // let termsStartY = doc.y + 20; // Adjust this value to position the Terms and Conditions properly
-    // if (
-    //     quotationData?.paymentCondition ||
-    //     quotationData?.deliveryCondition ||
-    //     quotationData?.validityCondition ||
-    //     quotationData?.cancellationCondition
-    // ) {
-    //     doc.fill("#000");
-    //     doc.font("Helvetica-Bold");
-    //     doc.text("Terms and Conditions:", termsStartX, termsStartY);
-    //     doc.font("Helvetica");
+//     // // Terms and Conditions on the left
+//     // const termsStartX = 20;
+//     // let termsStartY = doc.y + 20; // Adjust this value to position the Terms and Conditions properly
+//     // if (
+//     //     quotationData?.paymentCondition ||
+//     //     quotationData?.deliveryCondition ||
+//     //     quotationData?.validityCondition ||
+//     //     quotationData?.cancellationCondition
+//     // ) {
+//     //     doc.fill("#000");
+//     //     doc.font("Helvetica-Bold");
+//     //     doc.text("Terms and Conditions:", termsStartX, termsStartY);
+//     //     doc.font("Helvetica");
 
-    //     // Define line height and max width for wrapping
-    //     const lineHeight = 5; // Adjust this value as needed for line spacing
-    //     const maxWidth = 450; // Adjust this value as needed for text wrapping
+//     //     // Define line height and max width for wrapping
+//     //     const lineHeight = 5; // Adjust this value as needed for line spacing
+//     //     const maxWidth = 450; // Adjust this value as needed for text wrapping
 
-    //     let currentY = termsStartY + lineHeight * 2; // Start position for the first line after the "Terms and Conditions" heading
+//     //     let currentY = termsStartY + lineHeight * 2; // Start position for the first line after the "Terms and Conditions" heading
 
-    //     const addCondition = (conditionName, conditionValue) => {
-    //         let conditionText = `${conditionName.toUpperCase()} : ${conditionValue}`;
-    //         if (conditionName) {
-    //             doc.font("Helvetica-Bold").text(
-    //                 `${conditionText} : `,
-    //                 termsStartX,
-    //                 currentY,
-    //                 { width: maxWidth }
-    //             );
-    //             currentY = doc.y + lineHeight; // Adjust Y position for the next condition
-    //         }
-    //     };
+//     //     const addCondition = (conditionName, conditionValue) => {
+//     //         let conditionText = `${conditionName.toUpperCase()} : ${conditionValue}`;
+//     //         if (conditionName) {
+//     //             doc.font("Helvetica-Bold").text(
+//     //                 `${conditionText} : `,
+//     //                 termsStartX,
+//     //                 currentY,
+//     //                 { width: maxWidth }
+//     //             );
+//     //             currentY = doc.y + lineHeight; // Adjust Y position for the next condition
+//     //         }
+//     //     };
 
-    //     addCondition("Delivery Condition", quotationData?.deliveryCondition);
-    //     addCondition("Payment Condition", quotationData?.paymentsCondition);
-    //     addCondition("Validity Condition", quotationData?.validityCondition);
-    //     addCondition(
-    //         "Cancellation Condition",
-    //         quotationData?.cancellationCondition
-    //     );
+//     //     addCondition("Delivery Condition", quotationData?.deliveryCondition);
+//     //     addCondition("Payment Condition", quotationData?.paymentsCondition);
+//     //     addCondition("Validity Condition", quotationData?.validityCondition);
+//     //     addCondition(
+//     //         "Cancellation Condition",
+//     //         quotationData?.cancellationCondition
+//     //     );
 
-    // Thank you message
-    const thankYouY = doc.y + 20; // Adjust this value to position the thank you message properly
-    doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);
-    // }
-};
+//     // Thank you message
+//     const thankYouY = doc.y + 20; // Adjust this value to position the thank you message properly
+//     doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);
+//     // }
+// };
 
 export default defaultPdfTemplate;

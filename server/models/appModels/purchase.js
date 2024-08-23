@@ -81,9 +81,18 @@ const purchaseOrderSchema = new mongoose.Schema({
     taxAmount: {
         type: Number,
     },
-    transPortAmount: {
+    totalWithTax: {
         type: Number,
     },
+    notes:[
+
+    ],
+    terms:[
+
+    ],
+    otherCharges:[
+
+    ],
     grandTotal: {
         type: Number,
     },
@@ -91,12 +100,7 @@ const purchaseOrderSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    paymentCondition: {
-        type: String,
-    },
-    cancellationCondition: {
-        type: String,
-    },
+
 });
 
 purchaseOrderSchema.plugin(mongooseAutoPopulate);

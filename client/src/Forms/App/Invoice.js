@@ -42,7 +42,6 @@ const QuotationForm = ({ form }) => {
         } else if (fieldName === "dueDate") {
             form.setFieldsValue({ dueDate: value });
         } else {
-            return NotificationHandler.error("Invalid");
         }
 
         items[rowName] = temObj;
@@ -52,19 +51,39 @@ const QuotationForm = ({ form }) => {
         );
         const temItems = items.map((item) => ({
             ...item,
-            taxAmount: item.finalAmount * (item.taxPercent / 100),
+            taxAmount: item.finalAmount * (item.gstPercent / 100),
         }));
 
         let taxAmount = temItems.reduce(
             (acc, item) => acc + (item.taxAmount || 0),
             0
         );
-        let grandTotal = taxAmount + grossTotal;
+        let totalWithTax = grossTotal + taxAmount;
+        let grandTotal = totalWithTax;
+        // Calculate grandTotal based on otherCharges
+        let otherCharges = form.getFieldValue("otherCharges") || [];
+        otherCharges.forEach((charge) => {
+            if (charge.rsOrPercent === "percent") {
+                const amountToAdjust =
+                    (totalWithTax * (charge.amount || 0)) / 100;
+                if (charge.action === "add") {
+                    grandTotal += amountToAdjust;
+                } else {
+                    grandTotal -= amountToAdjust;
+                }
+            } else {
+                if (charge.action === "add") {
+                    grandTotal += charge.amount || 0;
+                } else {
+                    grandTotal -= charge.amount || 0;
+                }
+            }
+        });
         form.setFieldsValue({
-            items: items,
-            grandTotal: Math.ceil(grandTotal),
-            grossTotal: Math.ceil(grossTotal),
-            taxAmount: Math.ceil(taxAmount),
+            grossTotal: grossTotal,
+            taxAmount: taxAmount,
+            totalWithTax: totalWithTax,
+            grandTotal: grandTotal,
         });
     };
 
@@ -504,20 +523,23 @@ const QuotationForm = ({ form }) => {
                     <Row align={"middle"} justify={"end"}>
                         <FormItemCol
                             label="Total(After Tax)"
-                            name={"taxAmount"}
+                            name={"totalWithTax"}
                             labelAlign="left"
                             disabled={true}
                             type={"number"}
                             labelCol={{ span: 12 }}
                         />
                     </Row>
-                    <Row>
+                    <Row span={24} justify={"end"} style={{marginRight:"150px"}}>
                         <FormItemCol
-                            form={form}
                             type={"othercharges"}
+                            form={form}
+                            tooltip={"Charges with no tax"}
                             width={"400px"}
+                            updateInForm={() => handleItemsUpdate()}
                         />
                     </Row>
+
                     <Row align={"middle"} justify={"end"}>
                         <FormItemCol
                             label="GrandTotal"

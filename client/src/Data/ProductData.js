@@ -86,3 +86,22 @@ const productData = {
 };
 
 export default productData;
+
+export const productCategory = [
+    {
+        label: "Multi_Assembly",
+        value: "multi_assembly",
+    },
+    {
+        label: "Single Assembly",
+        value: "single_assembly",
+    },
+    {
+        label: "Part",
+        value: "part",
+    },
+    {
+        label: "Hardware",
+        value: "hardware",
+    },
+];

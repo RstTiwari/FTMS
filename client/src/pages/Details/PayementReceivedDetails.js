@@ -21,7 +21,7 @@ const PaymentDetails = ({ values }) => {
                 <Descriptions.Item label="Payment Date">
                     {jsDateIntoDayjsDate(values?.paymentDate || "")}
                 </Descriptions.Item>
-                <Descriptions.Item label="Amount">
+                <Descriptions.Item label="Amount Received">
                     ₹{values?.amount.toFixed(2) || ""}
                 </Descriptions.Item>
                 <Descriptions.Item label="Payment Mode">

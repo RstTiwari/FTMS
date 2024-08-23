@@ -20,6 +20,7 @@ import FormItemCol from "components/Comman/FormItemCol";
 import Taglabel from "components/Comman/Taglabel";
 import CustomSelect from "components/Comman/CustomSelect";
 import CustomModel from "components/CustomModal";
+import TaxPercent from "components/Comman/TaxPercent";
 
 const DeliveryChallan = ({ form }) => {
     const isLaptop = useMediaQuery("(min-width:1000px)");
@@ -57,7 +58,6 @@ const DeliveryChallan = ({ form }) => {
 
         // Tax Calculator
         let grossTotal = items.reduce((sum, item) => sum + item.finalAmount, 0);
-        let transportAmount = form.getFieldValue("transportAmount") || 0;
         const temItems = items.map((item) => ({
             ...item,
             taxAmount: item.finalAmount * (item.gstPercent / 100),
@@ -67,14 +67,32 @@ const DeliveryChallan = ({ form }) => {
             (acc, item) => acc + (item.taxAmount || 0),
             0
         );
-
-        let grandTotal =
-            Number(grossTotal) + Number(transportAmount) + Number(taxAmount);
+        let totalWithTax = grossTotal + taxAmount;
+        let grandTotal = totalWithTax;
+        // Calculate grandTotal based on otherCharges
+        let otherCharges = form.getFieldValue("otherCharges") || [];
+        otherCharges.forEach((charge) => {
+            if (charge.rsOrPercent === "percent") {
+                const amountToAdjust =
+                    (totalWithTax * (charge.amount || 0)) / 100;
+                if (charge.action === "add") {
+                    grandTotal += amountToAdjust;
+                } else {
+                    grandTotal -= amountToAdjust;
+                }
+            } else {
+                if (charge.action === "add") {
+                    grandTotal += charge.amount || 0;
+                } else {
+                    grandTotal -= charge.amount || 0;
+                }
+            }
+        });
         form.setFieldsValue({
-            grossTotal: Math.ceil(grossTotal),
-            grandTotal: Math.ceil(grandTotal),
-            taxAmount: Math.ceil(taxAmount),
-            transportAmount: Math.ceil(transportAmount),
+            grossTotal: grossTotal,
+            taxAmount: taxAmount,
+            totalWithTax: totalWithTax,
+            grandTotal: grandTotal,
         });
     };
 
@@ -94,7 +112,7 @@ const DeliveryChallan = ({ form }) => {
                     },
                 ]}
                 type="model"
-                width={"25vw"}
+                width={"30vw"}
                 entity={"customers"}
                 fieldName={"name"}
                 onlyShippingAddress={true}
@@ -116,7 +134,10 @@ const DeliveryChallan = ({ form }) => {
                 ]}
                 updateInForm={(value) => handleItemUpdate(value, "no")}
                 preFillValue={form.getFieldValue("no")}
+                width={"30vw"}
+
             />
+            <Row>
             <FormItemCol
                 label={"Challan Date"}
                 name={"challanDate"}
@@ -151,13 +172,16 @@ const DeliveryChallan = ({ form }) => {
                 updateInForm={(value) => handleItemUpdate(value, "challanType")}
                 preFillValue={form.getFieldValue("challanType")}
             />
+
+            </Row>
+         
             <FormItemCol
                 label={"Vehicle No"}
                 name={"vehicleNo"}
                 labelCol={{ span: 8 }}
                 labelAlign="left"
                 type={"input"}
-                width={"100px"}
+                width={"30vw"}
             />
             <FormItemCol
                 label={"Contact No"}
@@ -165,7 +189,8 @@ const DeliveryChallan = ({ form }) => {
                 labelCol={{ span: 8 }}
                 labelAlign="left"
                 type={"input"}
-                width={"100px"}
+                width={"30vw"}
+
             />
 
             <Divider dashed />
@@ -351,7 +376,7 @@ const DeliveryChallan = ({ form }) => {
                                                 <Form.Item
                                                     name={[name, "gstPercent"]}
                                                 >
-                                                    <CustomSelect
+                                                    <TaxPercent
                                                         updateInForm={(value) =>
                                                             handleItemUpdate(
                                                                 value,
@@ -443,123 +468,68 @@ const DeliveryChallan = ({ form }) => {
                     )}
                 </Form.List>
             </div>
-            <Row align={"middle"} justify={"end"}>
-                <FormItemCol
-                    label="Gross Total"
-                    name={"grossTotal"}
-                    width={150}
-                    labelCol={{ span: 8 }}
-                    tooltip={"Amount Before Tax"}
-                    labelAlign="left"
-                    type={"number"}
-                    readOnly={true}
-                />
-            </Row>
-            {/* <Row align={"middle"} justify={"end"}>
-                <FormItemCol
-                    label="Tax Amount"
-                    name={"taxPercent"}
-                    type={"number"}
-                    width={150}
-                    labelCol={{ span: 8 }}
-                    entity={"Tax Percent"}
-                />
-            </Row> */}
-            <Row align={"middle"} justify={"end"}>
-                <FormItemCol
-                    label="Transport(Rs)"
-                    name={"transportAmount"}
-                    labelAlign="left"
-                    width={150}
-                    labelCol={{ span: 8 }}
-                    type={"number"}
-                    onChange={(value) =>
-                        handleItemUpdate(value, "transportAmount")
-                    }
-                />
-            </Row>
-            <Row align={"middle"} justify={"end"}>
-                <FormItemCol
-                    label="Tax Amount(Rs)"
-                    name={"taxAmount"}
-                    labelAlign="left"
-                    width={150}
-                    labelCol={{ span: 8 }}
-                    type={"number"}
-                    readOnly={true}
-                />
-            </Row>
-            <Row align={"middle"} justify={"end"}>
-                <FormItemCol
-                    label="Grand Total"
-                    tooltip={"Amount After Tax"}
-                    name={"grandTotal"}
-                    labelAlign="left"
-                    type={"number"}
-                    labelCol={{ span: 8 }}
-                    width={150}
-                    readOnly={true}
-                />
-            </Row>
-            {/* <Row justify={"start"} style={{ marginBottom: 10 }}>
-                <Taglabel text={" Term & Conditions"} weight={1000} />
-            </Row>
-            <FormItemCol
-                label={"Delivery"}
-                name={"deliveryCondition"}
-                labelCol={{ span: 8 }}
-                type={"select"}
-                width={500}
-                entity={"Delivery Condition"}
-                entityName={"deliveryCondition"}
-                updateInForm={(value) =>
-                    handleItemUpdate(value, "deliveryCondition")
-                }
-            />
-            <Row justify={"start"}>
-                <Col sm={24} xs={24}>
-                    <FormItemCol
-                        label={"Validity"}
-                        name={"validityCondition"}
-                        labelCol={{ span: 8 }}
-                        type={"select"}
-                        width={500}
-                        entity={"Validity Condition"}
-                        entityName={"validityCondition"}
-                        updateInForm={(value) =>
-                            handleItemUpdate(value, "deliveryCondition")
-                        }
-                    />
+            <Row>
+                <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                    <FormItemCol form={form} type={"notes"} width={"50vw"} />
+                </Col>
+                <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                    <Row align={"middle"} justify={"end"}>
+                        <FormItemCol
+                            label="Total(Before Tax)"
+                            name={"grossTotal"}
+                            labelAlign="left"
+                            type={"number"}
+                            disabled={true}
+                            labelCol={{ span: 12 }}
+                        />
+                    </Row>
+                    <Row align={"middle"} justify={"end"}>
+                        <FormItemCol
+                            label="Tax Amount"
+                            name={"taxAmount"}
+                            labelAlign="left"
+                            disabled={true}
+                            type={"number"}
+                            labelCol={{ span: 12 }}
+                        />
+                    </Row>
+                    <Row align={"middle"} justify={"end"}>
+                        <FormItemCol
+                            label="Total(After Tax)"
+                            name={"totalWithTax"}
+                            labelAlign="left"
+                            disabled={true}
+                            type={"number"}
+                            labelCol={{ span: 12 }}
+                        />
+                    </Row>
+                    <Row
+                        span={24}
+                        justify={"end"}
+                        style={{ marginRight: "150px" }}
+                    >
+                        <FormItemCol
+                            type={"othercharges"}
+                            form={form}
+                            tooltip={"Charges with no tax"}
+                            width={"400px"}
+                            updateInForm={() => handleItemUpdate()}
+                        />
+                    </Row>
+
+                    <Row align={"middle"} justify={"end"}>
+                        <FormItemCol
+                            label="GrandTotal"
+                            name={"grandTotal"}
+                            labelAlign="left"
+                            type={"number"}
+                            disabled={true}
+                            labelCol={{ span: 12 }}
+                        />
+                    </Row>
                 </Col>
             </Row>
-            <Row justify={"start"}>
-                <FormItemCol
-                    label={"Payments"}
-                    name={"paymentsCondition"}
-                    labelCol={{ span: 8 }}
-                    type={"select"}
-                    width={500}
-                    entity={"Payments Condition"}
-                    entityName={"paymentsCondition"}
-                    updateInForm={(value) =>
-                        handleItemUpdate(value, "paymentsCondition")
-                    }
-                />
-            </Row>
-            <Row justify={"start"}>
-                <FormItemCol
-                    label={"Cancellation"}
-                    name={"cancellationCondition"}
-                    type={"select"}
-                    width={500}
-                    labelCol={{ span: 8 }}
-                    entity={"Cancellation Condition"}
-                    entityName={"cancellationCondition"}
-                    updateInForm={(value) =>
-                        handleItemUpdate(value, "cancellationCondition")
-                    }
-                />
-            </Row> */}
+            <FormItemCol form={form} type={"terms"} />
         </div>
     );
 };

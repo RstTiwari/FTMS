@@ -38,6 +38,7 @@ const DetailsHeader = ({ values }) => {
                         flex: 1,
                         display: "flex",
                         justifyContent: "flex-end",
+                        zIndex:100000
                     }}
                 >
                     <CloseOutlined

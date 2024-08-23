@@ -10,6 +10,7 @@ import TaxPercent from "./TaxPercent";
 import OtherChargesForm from "../../Forms/App/OtherCharges";
 import TermsAndConditionsForm from "../../Forms/App/TermsAndCondition";
 import NotesForm from "Forms/App/NoteForm";
+import ProductCategory from "../Comman/ProductCategory";
 
 const CustomInput = ({
     type,
@@ -53,6 +54,17 @@ const CustomInput = ({
                     readOnly={readOnly}
                     {...restProps}
                     style={{ width: width }}
+                />
+            );
+        case "category":
+            return (
+                <ProductCategory
+                    entity={entity}
+                    fieldName={fieldName}
+                    width={width}
+                    preFillValue={preFillValue}
+                    updateInForm={updateInForm}
+                    {...restProps}
                 />
             );
         case "date":
