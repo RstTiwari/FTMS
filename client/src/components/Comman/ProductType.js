@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Select, Button, Divider, Modal, Input, Row, Space } from "antd";
 import { productCategory } from "../../Data/ProductData";
-const ProductCategory = ({
-    width = "15vw",
-    updateInForm,
-    preFillValue,
-}) => {
+const ProductType = ({ width = "15vw", updateInForm, preFillValue }) => {
     const [value, setValue] = useState(preFillValue);
 
     useEffect(() => {
@@ -18,7 +14,7 @@ const ProductCategory = ({
         setValue(value);
         updateInForm(value);
     };
-
+    console.log(preFillValue, "in the prodsuctCateorury");
     return (
         <>
             <Select
@@ -57,4 +53,4 @@ const ProductCategory = ({
     );
 };
 
-export default ProductCategory;
+export default ProductType;

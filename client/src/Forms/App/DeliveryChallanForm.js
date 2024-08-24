@@ -135,46 +135,48 @@ const DeliveryChallan = ({ form }) => {
                 updateInForm={(value) => handleItemUpdate(value, "no")}
                 preFillValue={form.getFieldValue("no")}
                 width={"30vw"}
-
             />
             <Row>
-            <FormItemCol
-                label={"Challan Date"}
-                name={"challanDate"}
-                required={true}
-                rules={[
-                    {
-                        required: true,
-                        message: "Please Select Challan Date",
-                    },
-                ]}
-                labelCol={{ span: 8 }}
-                labelAlign="left"
-                type={"date"}
-                preFillValue={form.getFieldValue("challanDate")}
-                updateInForm={(value) => handleItemUpdate(value, "challanDate")}
-            />
-            <FormItemCol
-                label={"Challan Type"}
-                name={"challanType"}
-                required={true}
-                rules={[
-                    {
-                        required: true,
-                        message: "Please Select Challan Type",
-                    },
-                ]}
-                labelCol={{ span: 8 }}
-                labelAlign="left"
-                type={"select"}
-                entity={"Challan Type"}
-                entityName={"challanType"}
-                updateInForm={(value) => handleItemUpdate(value, "challanType")}
-                preFillValue={form.getFieldValue("challanType")}
-            />
-
+                <FormItemCol
+                    label={"Challan Date"}
+                    name={"challanDate"}
+                    required={true}
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please Select Challan Date",
+                        },
+                    ]}
+                    labelCol={{ span: 8 }}
+                    labelAlign="left"
+                    type={"date"}
+                    preFillValue={form.getFieldValue("challanDate")}
+                    updateInForm={(value) =>
+                        handleItemUpdate(value, "challanDate")
+                    }
+                />
+                <FormItemCol
+                    label={"Challan Type"}
+                    name={"challanType"}
+                    required={true}
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please Select Challan Type",
+                        },
+                    ]}
+                    labelCol={{ span: 8 }}
+                    labelAlign="left"
+                    type={"select"}
+                    entity={"Challan Type"}
+                    entityName={"challanType"}
+                    updateInForm={(value) =>
+                        handleItemUpdate(value, "challanType")
+                    }
+                    preFillValue={form.getFieldValue("challanType")}
+                />
             </Row>
-         
+
             <FormItemCol
                 label={"Vehicle No"}
                 name={"vehicleNo"}
@@ -190,7 +192,6 @@ const DeliveryChallan = ({ form }) => {
                 labelAlign="left"
                 type={"input"}
                 width={"30vw"}
-
             />
 
             <Divider dashed />
@@ -309,9 +310,7 @@ const DeliveryChallan = ({ form }) => {
                                                 >
                                                     <CustomModel
                                                         entity={"products"}
-                                                        fieldName={
-                                                            "productName"
-                                                        }
+                                                        fieldName={"name"}
                                                         updateInForm={(value) =>
                                                             handleItemUpdate(
                                                                 value,

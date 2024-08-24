@@ -113,7 +113,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
             ...item,
             taxAmount: item.finalAmount * (item.gstPercent / 100) || 0,
         }));
-        
+
         let taxAmount = temArray.reduce(
             (acc, item) => acc + (item.taxAmount || 0),
             0
@@ -225,7 +225,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                     }
                     preFillValue={form.getFieldValue("purchaseDate")}
                 />
-                  <FormItemCol
+                <FormItemCol
                     label={"Delivery Date"}
                     name={"deliveryDate"}
                     required={true}
@@ -450,9 +450,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                                                 >
                                                     <CustomModel
                                                         entity={"products"}
-                                                        fieldName={
-                                                            "productName"
-                                                        }
+                                                        fieldName={"name"}
                                                         updateInForm={(
                                                             value
                                                         ) => {
@@ -541,7 +539,6 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                                                                 ?.gstPercent
                                                         }
                                                     />
-                                                  
                                                 </Form.Item>
                                             </Col>
                                             <Col

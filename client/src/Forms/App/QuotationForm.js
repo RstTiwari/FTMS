@@ -352,9 +352,7 @@ const QuotationForm = ({ form }) => {
                                                 >
                                                     <CustomModal
                                                         entity={"products"}
-                                                        fieldName={
-                                                            "productName"
-                                                        }
+                                                        fieldName={"name"}
                                                         updateInForm={(value) =>
                                                             handleItemsUpdate(
                                                                 value,
@@ -572,7 +570,11 @@ const QuotationForm = ({ form }) => {
                             disabled={true}
                         />
                     </Row>
-                    <Row span={24} justify={"end"} style={{marginRight:"150px"}}>
+                    <Row
+                        span={24}
+                        justify={"end"}
+                        style={{ marginRight: "150px" }}
+                    >
                         <FormItemCol
                             type={"othercharges"}
                             form={form}

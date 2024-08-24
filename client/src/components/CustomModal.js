@@ -102,6 +102,7 @@ const CustomModel = ({
                 description: label?.label,
                 rate: label?.item?.rate,
                 hsnCode: label?.item?.hsnCode,
+                id: label?.item?._id,
             });
         } else if (entity === "vendors") {
             return updateInForm(value);
@@ -145,12 +146,13 @@ const CustomModel = ({
             return updateInForm(result._id);
         } else if (entity === "products") {
             return updateInForm({
-                description: result.productName,
+                description: result.name,
                 rate: result.rate,
                 hsnCode: result.hsnCode,
+                id: result._id,
             });
         } else if (entity === "vendors") {
-            return updateInForm();
+            return updateInForm(result._id);
         } else {
         }
     };

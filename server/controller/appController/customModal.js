@@ -3,6 +3,7 @@ import checkDbForEntity from "../../Helper/databaseSelector.js";
 const fetchCustomModalData = async (req, res, next) => {
     const { entity, fieldName, char } = req.query;
     let tenantId = req.tenantId;
+    console.log(fieldName, entity, tenantId);
 
     if (!entity || !fieldName || !tenantId) {
         throw new Error("invalid Payload");
@@ -15,13 +16,13 @@ const fetchCustomModalData = async (req, res, next) => {
             query[fieldName] = { $regex: regexPattern };
         }
         let data = await dataBase.find(query).sort({ _id: -1 }).limit(20);
-       const modifiedData =  data.map((item) => {
-            const temObj=  {
+        const modifiedData = data.map((item) => {
+            const temObj = {
                 label: item[fieldName],
                 value: item._id,
-                item
+                item,
             };
-            return temObj
+            return temObj;
         });
         return res.status(200).json({
             success: 1,

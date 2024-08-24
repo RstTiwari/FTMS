@@ -17,9 +17,11 @@ const FormItemCol = ({
     fieldName,
     width,
     preFillValue,
+    xl = 12,
+    lg = 12,
     ...restProps
 }) => (
-    <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+    <Col xs={24} sm={24} md={12} lg={lg} xl={lg}>
         <Form.Item
             label={
                 label ? <CustomLabel required={required} label={label} /> : null
@@ -31,6 +33,7 @@ const FormItemCol = ({
             tooltip={tooltip}
             valuePropName={type === "image" ? "file" : "value"}
             getValueFromEvent={type === "image" ? (e) => e : undefined}
+            className="floating-label-input"
         >
             <CustomInput
                 type={type}

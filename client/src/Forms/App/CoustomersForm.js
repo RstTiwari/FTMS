@@ -32,6 +32,7 @@ const CoustomersForm = ({ form, disabled, isModal, style }) => {
                 label={"Customer Name"}
                 labelAlign="left"
                 name="name"
+                width={"30vw"}
                 required={true}
                 labelCol={{ span: isModal ? 18 : 8 }}
                 rules={[
@@ -46,6 +47,7 @@ const CoustomersForm = ({ form, disabled, isModal, style }) => {
                 label={"Customer Phone"}
                 required={true}
                 labelAlign="left"
+                width={"30vw"}
                 name="phone"
                 labelCol={{ span: isModal ? 18 : 8 }}
                 rules={[
@@ -66,6 +68,7 @@ const CoustomersForm = ({ form, disabled, isModal, style }) => {
                 name="email"
                 labelCol={{ span: isModal ? 18 : 8 }}
                 required={true}
+                width={"30vw"}
                 rules={[
                     {
                         required: true,
@@ -81,7 +84,7 @@ const CoustomersForm = ({ form, disabled, isModal, style }) => {
                         <Col
                             sm={24}
                             xs={24}
-                            md={12}
+                            md={24}
                             lg={8}
                             style={{ padding: 10 }}
                         >
@@ -283,6 +286,7 @@ const CoustomersForm = ({ form, disabled, isModal, style }) => {
                         labelAlign="left"
                         labelCol={{ span: isModal ? 18 : 8 }}
                         type={"text"}
+                        width={"30vw"}
                     />
 
                     <FormItemCol
@@ -292,6 +296,7 @@ const CoustomersForm = ({ form, disabled, isModal, style }) => {
                         name="panNo"
                         labelCol={{ span: isModal ? 18 : 8 }}
                         type={"text"}
+                        width={"30vw"}
                     />
 
                     <FormItemCol
@@ -300,6 +305,7 @@ const CoustomersForm = ({ form, disabled, isModal, style }) => {
                         tooltip="this data  will be Encripted then stored not visible to other pepole  accept acces given  "
                         name="gstNo"
                         labelCol={{ span: isModal ? 18 : 8 }}
+                        width={"30vw"}
                     />
                 </TabPane>
             </Tabs>

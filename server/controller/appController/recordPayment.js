@@ -20,7 +20,7 @@ const recordPayment = async (req, res, next) => {
             let InvoiceDatabase = checkDbForEntity("invoices"); // Fixed typo "invocies" to "invoices"
             const invoices = await InvoiceDatabase.find({
                 customer: id, // Use the correct customerId
-                tenantId:tenantId,
+                tenantId: tenantId,
                 status: { $in: ["DRAFT", "PARTIALLY_RECEIVED"] },
             })
                 .sort({ createdAt: 1 })
@@ -39,7 +39,7 @@ const recordPayment = async (req, res, next) => {
             if (customerData?.advanceAmount > 0) {
                 remainingAmount = customerData?.advanceAmount + remainingAmount;
                 await CustomerDatabase.updateOne(
-                    { _id: values.customer,tenantId:tenantId },
+                    { _id: values.customer, tenantId: tenantId },
                     { $set: { advanceAmount: 0 } }
                 );
             }
@@ -76,7 +76,7 @@ const recordPayment = async (req, res, next) => {
             if (remainingAmount > 0) {
                 let CustomerDatabase = checkDbForEntity("customers");
                 await CustomerDatabase.updateOne(
-                    { _id: id,tenantId:tenantId },
+                    { _id: id, tenantId: tenantId },
                     {
                         $inc: { advanceAmount: remainingAmount },
                     }
@@ -111,7 +111,7 @@ const recordPayment = async (req, res, next) => {
                     { $set: { advanceAmount: 0 } }
                 );
             }
-             console.log(purchases,vendorData,"-")
+            console.log(purchases, vendorData, "-");
             // Distribute the payment across purchases and update them with the payment ID
             for (const purchase of purchases) {
                 if (remainingAmount <= 0) break;

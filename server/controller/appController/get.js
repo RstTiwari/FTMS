@@ -31,8 +31,23 @@ const get = async (req, res, next) => {
                     options: { strictPopulate: false },
                 },
                 {
-                    path: "paymentsreceived", // Populate payment details
+                    path: "payments", // Populate payment details
                     select: "amount paymentDate no", // Select relevant payment fields
+                    options: { strictPopulate: false },
+                },
+                {
+                    path: "components.product",
+                    // Selecting all fields, so no need for 'select'
+                    options: { strictPopulate: false },
+                },
+                {
+                    path: "parts.product",
+                    // Selecting all fields, so no need for 'select'
+                    options: { strictPopulate: false },
+                },
+                {
+                    path: "hardwares.product",
+                    // Selecting all fields, so no need for 'select'
                     options: { strictPopulate: false },
                 },
             ])

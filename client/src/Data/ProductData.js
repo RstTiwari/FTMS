@@ -12,12 +12,12 @@ const getColumns = (details) => [
                 details={details}
             />
         ),
-        dataIndex: "productName",
+        dataIndex: "name",
         key: "srno",
         render: (_, record) => (
             <>
                 <Taglabel
-                    text={record.productName}
+                    text={record.name}
                     type={"customer"}
                     details={details}
                 />
@@ -93,7 +93,7 @@ export const productCategory = [
         value: "multi_assembly",
     },
     {
-        label: "Single Assembly",
+        label: "Assembly",
         value: "single_assembly",
     },
     {
