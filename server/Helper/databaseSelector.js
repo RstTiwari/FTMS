@@ -13,7 +13,7 @@ import tenantDb from "../models/coreModels/Tenant.js";
 import tenantData from "../models/coreModels/tenantData.js";
 import counters from "../models/appModels/counters.js";
 import customSelect from "../models/appModels/customSelect.js";
-import workorders from "../models/appModels/workorder.js";
+import workorders from "../models/appModels/workOrder";
 
 const dbMapping = {
     customers: customerDb,
