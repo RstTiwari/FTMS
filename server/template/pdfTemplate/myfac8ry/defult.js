@@ -5,7 +5,6 @@ import {
     getPrimaryOrFirstBank,
     capitalizeFirstLetter,
 } from "../../../Helper/pdfHelper.js";
-import { syncIndexes } from "mongoose";
 
 const borderColor = "#000000"; // Color for the border
 const defaultPdfTemplate = async (
