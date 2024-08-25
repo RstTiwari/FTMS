@@ -10,10 +10,52 @@ const generatePdf = async (req, res, next) => {
         const { entity, id } = req.query;
         let tenantId = req.tenantId;
         let dataBase = checkDbForEntity(entity);
-        let entityData = await dataBase.findOne({
-            _id: id,
-            tenantId: tenantId,
-        });
+        let entityData = await dataBase
+            .findOne({
+                _id: id,
+                tenantId: tenantId,
+            })
+            .populate([
+                {
+                    path: "customer",
+                    select: "name billingAddress shippingAddress",
+                    options: { strictPopulate: false },
+                },
+                {
+                    path: "vendor",
+                    select: "name",
+                    options: { strictPopulate: false },
+                },
+                {
+                    path: "payments", // Populate payment details
+                    select: "amount paymentDate no", // Select relevant payment fields
+                    options: { strictPopulate: false },
+                },
+                {
+                    path: "components.product",
+                    // Selecting all fields, so no need for 'select'
+                    options: { strictPopulate: false },
+                },
+                {
+                    path: "parts.product",
+                    // Selecting all fields, so no need for 'select'
+                    options: { strictPopulate: false },
+                },
+                {
+                    path: "hardwares.product",
+                    // Selecting all fields, so no need for 'select'
+                    options: { strictPopulate: false },
+                },
+                {
+                    path: "product",
+                    // Selecting all fields, so no need for 'select'
+                    options: { strictPopulate: false },
+                },
+                {
+                    path: "items.product",
+                    options: { strictPopulate: false },
+                },
+            ]);
         let organization = await tenantDb.findOne({ _id: tenantId });
         let prefix = await countersDb.findOne({
             entityName: entity,

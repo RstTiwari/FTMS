@@ -1,4 +1,4 @@
-const tenSpecificData = {
+const tenantSpecificData = {
     sidebar: [
         {
             key: "dashboard",
@@ -59,6 +59,17 @@ const tenSpecificData = {
             ],
         },
         {
+            key: "production",
+            label: "Production",
+            icon: "SnippetsOutlined",
+            children: [
+                {
+                    key: "workorders",
+                    label: "Work Order",
+                },
+            ],
+        },
+        {
             key: "design",
             label: "Design",
             icon: "DatabaseOutlined",
@@ -83,4 +94,4 @@ const tenSpecificData = {
     ],
 };
 
-export default tenSpecificData;
+export default tenantSpecificData;

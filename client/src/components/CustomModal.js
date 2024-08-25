@@ -7,6 +7,7 @@ import NotificationHandler from "EventHandler/NotificationHandler";
 import AddressDetails from "./Comman/AddressDetails";
 import PageLoader from "pages/PageLoader";
 import FormList from "antd/es/form/FormList";
+import { items } from "Data/LeadData";
 
 const CustomModel = ({
     entity,
@@ -102,7 +103,7 @@ const CustomModel = ({
                 description: label?.label,
                 rate: label?.item?.rate,
                 hsnCode: label?.item?.hsnCode,
-                id: label?.item?._id,
+                details: label?.item,
             });
         } else if (entity === "vendors") {
             return updateInForm(value);
@@ -146,10 +147,10 @@ const CustomModel = ({
             return updateInForm(result._id);
         } else if (entity === "products") {
             return updateInForm({
-                description: result.name,
-                rate: result.rate,
-                hsnCode: result.hsnCode,
-                id: result._id,
+                description: result?.name,
+                rate: result?.rate,
+                hsnCode: result?.hsnCode,
+                details: result,
             });
         } else if (entity === "vendors") {
             return updateInForm(result._id);

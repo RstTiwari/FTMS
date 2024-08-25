@@ -37,7 +37,7 @@ const ProductForm = ({ form, onFormFinish, initalValue, isModal }) => {
             setItemType(value);
             return form.setFieldsValue({ itemType: value });
         } else if (fieldName === "product") {
-            temChange["product"] = value?.id;
+            temChange["product"] = value?.item?.id;
         } else if (fieldName === "qty") {
             temChange["qty"] = value;
         } else if (fieldName === "vendor") {

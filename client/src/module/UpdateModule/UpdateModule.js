@@ -13,6 +13,7 @@ import LeadFormItem from "../../Forms/App/LeadForm";
 import ProductForm from "../../Forms/App/ProductFrom";
 import EntityNo from "../../Forms/App/Counters";
 import OrganizationForm from "../../Forms/App/OrgnizationForm";
+import WorkOrderForm from "Forms/App/WorkOder";
 
 const UpdateModule = ({ entity, form }) => {
     // const { entity: entityFromRouter } = useParams();
@@ -54,6 +55,9 @@ const UpdateModule = ({ entity, form }) => {
             componentToRender = <EntityNo form={form} />;
         case "orgnizations":
             componentToRender = <OrganizationForm form={form} />;
+            break;
+        case "workorders":
+            componentToRender = <WorkOrderForm form={form} />;
             break;
         default:
             break;

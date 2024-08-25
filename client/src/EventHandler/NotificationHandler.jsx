@@ -1,30 +1,50 @@
-import React from "react";
 import { message } from "antd";
 
+// Configure the message component to allow only one message at a time
 message.config({
-    duration: 5, // Duration in seconds
-    maxCount: 1, // Maximum count of messages at one time
+    maxCount: 1,
+    duration: 4,
 });
 
-const NotificationHandler = {
+const MessageHandler = {
     success: (content) => {
         return message.success({
-            content: content,
-            className: 'custom-class',
+            content: content || "Success", // Default message content if not provided
+            className: "custom-class",
             style: {
-                zIndex: 1000000000, // Set the desired z-index value
+                zIndex: 10000000000000, // Set the desired z-index value
             },
         });
     },
     error: (content) => {
         return message.error({
-            content: content,
-            className: 'custom-class',
+            content: content || "Error", // Default message content if not provided
+            className: "custom-class",
             style: {
-                zIndex: 1000000000, // Set the desired z-index value
+                zIndex: 10000000000000, // Set the desired z-index value
+            },
+        });
+    },
+    info: ({ content, duration = 3 }) => {
+        return message.info({
+            content: content || "Info", // Default message content if not provided
+            className: "custom-class",
+            duration: duration, // Duration the message is displayed
+            style: {
+                zIndex: 10000000000000, // Set the desired z-index value
+            },
+        });
+    },
+    warning: ({ content, duration = 3 }) => {
+        return message.warning({
+            content: content || "Warning", // Default message content if not provided
+            className: "custom-class",
+            duration: duration, // Duration the message is displayed
+            style: {
+                zIndex: 10000000000000, // Set the desired z-index value
             },
         });
     },
 };
 
-export default NotificationHandler;
+export default MessageHandler;

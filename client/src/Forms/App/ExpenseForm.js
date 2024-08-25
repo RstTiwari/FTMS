@@ -83,8 +83,8 @@ const ExpenseForm = ({ form }) => {
                 url={form.getFieldValue("image")}
             />
             <FormItemCol
-                label="#WorkOrder"
-                name="workOrder"
+                label="#Workorders"
+                name="workorders"
                 labelAlign="left"
                 labelCol={{ span: 8 }}
             />

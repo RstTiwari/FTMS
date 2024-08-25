@@ -50,6 +50,15 @@ const get = async (req, res, next) => {
                     // Selecting all fields, so no need for 'select'
                     options: { strictPopulate: false },
                 },
+                {
+                    path: "product",
+                    // Selecting all fields, so no need for 'select'
+                    options: { strictPopulate: false },
+                },
+                {
+                    path: "items.product",
+                    options: { strictPopulate: false },
+                },
             ])
             .lean();
         if (!data) {

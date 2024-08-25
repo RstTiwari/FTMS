@@ -4,6 +4,7 @@ import { useAuth } from "../../state/AuthProvider";
 import CustomButton from "./CoustomButton";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import PageLoader from "pages/PageLoader";
+import { Spa } from "@mui/icons-material";
 
 const CustomSelect = ({
     entity,
@@ -15,11 +16,12 @@ const CustomSelect = ({
     const [options, setOptions] = useState([]);
     const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false); // for Loader
-    const [addValue, setAddValue] = useState("");
+    const [addValue, setAddValue] = useState(null);
     const [value, setValue] = useState(preFillValue);
     const { appApiCall } = useAuth();
 
     const handelClick = async () => {
+        setIsLoading(true);
         const response = await appApiCall(
             "get",
             "fetchSelectData",
@@ -45,6 +47,11 @@ const CustomSelect = ({
     };
 
     const addNewOption = async () => {
+        if (!addValue) {
+            return NotificationHandler.info({
+                message: "Please Type Somthing to Add",
+            });
+        }
         setIsLoading(true);
         const payload = {
             entityName: entityName,

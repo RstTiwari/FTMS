@@ -3,7 +3,7 @@ import { jsDateIntoDDMMYY } from "../../../Helper/timehelper.js";
 import {
     downloadImage,
     getPrimaryOrFirstBank,
-    capitalizeFirstLetter
+    capitalizeFirstLetter,
 } from "../../../Helper/pdfHelper.js";
 import { syncIndexes } from "mongoose";
 
@@ -73,12 +73,21 @@ const defaultPdfTemplate = async (
                 );
 
                 // Add Items Table for the current page
-                addItemsTable(
-                    doc,
-                    { ...entityData, items: itemsForPage },
-                    entity,
-                    organizationData
-                );
+                if (entity.toLowerCase() === "workorders") {
+                    itemTableForWorkOrder(
+                        doc,
+                        entityData,
+                        entity,
+                        organizationData
+                    );
+                } else {
+                    addItemsTable(
+                        doc,
+                        { ...entityData, items: itemsForPage },
+                        entity,
+                        organizationData
+                    );
+                }
 
                 itemIndex += itemsPerPage;
 
@@ -163,6 +172,8 @@ const addHeader = (
             ? "Purchase Order"
             : entity == "challans"
             ? "Delivery Challan"
+            : entity == "workorders"
+            ? "Work Order"
             : "";
 
     doc.fontSize(12)
@@ -420,6 +431,77 @@ const addHeader = (
                 width: detailWidth,
                 align: "left",
             });
+    } else if (entity.toLowerCase() === "workorders") {
+        const { type, no, startDate, dueDate, incharge, status } =
+            entityDetails;
+
+        // Draw Work Order Type
+        doc.fontSize(10)
+            .fillColor("#000000")
+            .font("Helvetica-Bold")
+            .text(`Workorder Type:`, 360, detailsY, {
+                width: detailWidth,
+                align: "left",
+            });
+        doc.font("Helvetica").text(`${type}`, 460, detailsY, {
+            width: detailWidth,
+            align: "left",
+        });
+        detailsY += 20;
+
+        // Draw Work Order No
+        doc.font("Helvetica-Bold").text(`Work Order No:`, 360, detailsY, {
+            width: detailWidth,
+            align: "left",
+        });
+        doc.font("Helvetica").text(`${no}`, 460, detailsY, {
+            width: detailWidth,
+            align: "left",
+        });
+        detailsY += 20;
+
+        // Draw Start Date
+        doc.font("Helvetica-Bold").text(`Start Date:`, 360, detailsY, {
+            width: detailWidth,
+            align: "left",
+        });
+        doc.font("Helvetica").text(
+            `${jsDateIntoDDMMYY(startDate)}`,
+            460,
+            detailsY,
+            {
+                width: detailWidth,
+                align: "left",
+            }
+        );
+        detailsY += 20;
+
+        // Draw Due Date
+        doc.font("Helvetica-Bold").text(`Due Date:`, 360, detailsY, {
+            width: detailWidth,
+            align: "left",
+        });
+        doc.font("Helvetica").text(
+            `${jsDateIntoDDMMYY(dueDate)}`,
+            460,
+            detailsY,
+            {
+                width: detailWidth,
+                align: "left",
+            }
+        );
+        detailsY += 20;
+
+        // Draw In Charge
+        doc.font("Helvetica-Bold").text(`In Charge:`, 360, detailsY, {
+            width: detailWidth,
+            align: "left",
+        });
+        doc.font("Helvetica").text(`${incharge}`, 460, detailsY, {
+            width: detailWidth,
+            align: "left",
+        });
+        detailsY += 20;
     }
 
     // Adjust doc.y to the greater Y value between left and right sections
@@ -517,13 +599,12 @@ const addItemsTable = (doc, entityData, entity) => {
         });
 
         // Draw the bottom border for each row
-        doc.moveTo(4, y + headerHeight- 5)
-        .lineTo(591, y + headerHeight -5) // Line covering the width of the table
-        .stroke(borderColor);
+        doc.moveTo(4, y + headerHeight - 5)
+            .lineTo(591, y + headerHeight - 5) // Line covering the width of the table
+            .stroke(borderColor);
 
-     y += headerHeight;
+        y += headerHeight;
     });
-
 };
 
 const addFooter = (doc, entityData, entity, organizationData) => {
@@ -545,7 +626,7 @@ const addFooter = (doc, entityData, entity, organizationData) => {
             break;
     }
 
-    footerDetails(doc, entityData, organizationData,entity);
+    footerDetails(doc, entityData, organizationData, entity);
 };
 const addPageBorder = (doc) => {
     const borderColor = "#000000"; // Dark black color
@@ -604,6 +685,12 @@ const getTableHeaders = (entity) => {
                 { title: "GST%", width: 50 },
                 { title: "TOTAL AMOUNT", width: 100 },
             ];
+        case "workorders":
+            return [
+                { title: "CODE", width: 50 },
+                { title: "NAME", width: 400 },
+                { title: "QTY", width: 50 },
+            ];
         default:
             return [];
     }
@@ -626,7 +713,7 @@ const detailsForInvoice = (doc, invoiceData, entity, curY) => {
     doc.fontSize(10)
         .fillColor("#1E1F20")
         .font("Helvetica-Bold")
-        .text(customer?.name, leftX, doc.y +5);
+        .text(customer?.name, leftX, doc.y + 5);
     doc.fontSize(9)
         .fillColor("#4B4E4F")
         .text(
@@ -644,7 +731,9 @@ const detailsForInvoice = (doc, invoiceData, entity, curY) => {
 
     // Add GST No and PAN No with bold labels
     const currentY = doc.y + 5;
-    let pagGst = `GST No :${customer?.gstNo || ""}\nPAN No :${customer?.panNo ||""}`;
+    let pagGst = `GST No :${customer?.gstNo || ""}\nPAN No :${
+        customer?.panNo || ""
+    }`;
 
     doc.font("Helvetica-Bold").text(pagGst, leftX, currentY, {
         width: 200,
@@ -707,7 +796,11 @@ const detailsForQuotation = (doc, quotationData, organizationData, curY) => {
     doc.fillColor("#1E1F20").text(toText, leftX, initialY + 10);
     doc.fontSize(12)
         .fillColor("#1E1F20")
-        .text(customer?.name?.toUpperCase()|| "", leftX + toTextWidth + 5, initialY + 10);
+        .text(
+            customer?.name?.toUpperCase() || "",
+            leftX + toTextWidth + 5,
+            initialY + 10
+        );
 
     // Optional subject line
     if (sub) {
@@ -768,7 +861,7 @@ const detailsForPurchaseOrder = (
     doc.fontSize(10)
         .fillColor("#1E1F20")
         .font("Helvetica-Bold")
-        .text(vendor?.name?.toUpperCase() || "", leftX, doc.y +5);
+        .text(vendor?.name?.toUpperCase() || "", leftX, doc.y + 5);
     doc.fontSize(9)
         .fillColor("#4B4E4F")
         .text(vendorAddress, leftX, doc.y + 5, { width: 300, align: "left" });
@@ -909,48 +1002,45 @@ const detailsForChallan = (doc, challanDataa, organizationData, curY) => {
 //     doc.fill("#fff");
 //     doc.text(`${invoiceData?.grandTotal}`, valueX, startY + 70);
 
-
-
 //     // Thank you message
 //     const thankYouY =  doc.y+ 100; // Adjust this value to position the thank you message properly
 //     doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);
 // };
 
-const footerForQuotation = (doc, data, organizationData ,entity) => {
+const footerForQuotation = (doc, data, organizationData, entity) => {
     const initialY = doc.y + 20;
     doc.fontSize(10);
     doc.fill("#000");
 
-    if(entity ==='invoices'){
-    // Organization Banking Details on the left
-    const { bankDetails } = organizationData;
-    let primaryBank = getPrimaryOrFirstBank(bankDetails);
+    if (entity === "invoices") {
+        // Organization Banking Details on the left
+        const { bankDetails } = organizationData;
+        let primaryBank = getPrimaryOrFirstBank(bankDetails);
 
+        const bankDetailsStartX = 10;
+        const bankDetailsStartY = initialY;
 
-    const bankDetailsStartX = 10;
-    const bankDetailsStartY = initialY;
-
-    doc.fill("#000");
-    doc.font("Helvetica-Bold");
-    doc.text("Banking Details:", bankDetailsStartX, bankDetailsStartY);
-    doc.font("Helvetica-Bold");
-    doc.text(`Bank Name: `, bankDetailsStartX, bankDetailsStartY + 15, {
-        continued: true,
-    })
-        .font("Helvetica")
-        .text(`${primaryBank?.bankName || ""}`);
-    doc.font("Helvetica-Bold");
-    doc.text(`Account No: `, bankDetailsStartX, bankDetailsStartY + 30, {
-        continued: true,
-    })
-        .font("Helvetica")
-        .text(`${primaryBank?.accountNo || ""}`);
-    doc.font("Helvetica-Bold");
-    doc.text(`IFSC Code: `, bankDetailsStartX, bankDetailsStartY + 45, {
-        continued: true,
-    })
-        .font("Helvetica")
-        .text(`${primaryBank?.ifscCode || ""}`);
+        doc.fill("#000");
+        doc.font("Helvetica-Bold");
+        doc.text("Banking Details:", bankDetailsStartX, bankDetailsStartY);
+        doc.font("Helvetica-Bold");
+        doc.text(`Bank Name: `, bankDetailsStartX, bankDetailsStartY + 15, {
+            continued: true,
+        })
+            .font("Helvetica")
+            .text(`${primaryBank?.bankName || ""}`);
+        doc.font("Helvetica-Bold");
+        doc.text(`Account No: `, bankDetailsStartX, bankDetailsStartY + 30, {
+            continued: true,
+        })
+            .font("Helvetica")
+            .text(`${primaryBank?.accountNo || ""}`);
+        doc.font("Helvetica-Bold");
+        doc.text(`IFSC Code: `, bankDetailsStartX, bankDetailsStartY + 45, {
+            continued: true,
+        })
+            .font("Helvetica")
+            .text(`${primaryBank?.ifscCode || ""}`);
     }
 
     // Gross Total and Grand Total on the right
@@ -959,12 +1049,13 @@ const footerForQuotation = (doc, data, organizationData ,entity) => {
     const valueX = 475;
     let startY = initialY;
     let amountSideLineStart = startY - 3;
-    doc.text("Gross Total:", startX, startY);
-    doc.text(`${data?.grossTotal}`, valueX, startY);
-
-    doc.moveTo(startX - 20, doc.y + 1)
-        .lineTo(doc.page.width - 4, doc.y + 1)
-        .stroke(borderColor);
+    if (data?.grossTotal) {
+        doc.text("Gross Total:", startX, startY);
+        doc.text(`${data?.grossTotal}`, valueX, startY);
+        doc.moveTo(startX - 20, doc.y + 1)
+            .lineTo(doc.page.width - 4, doc.y + 1)
+            .stroke(borderColor);
+    }
 
     if (data?.taxAmount) {
         startY += 20;
@@ -984,7 +1075,7 @@ const footerForQuotation = (doc, data, organizationData ,entity) => {
                 startX,
                 startY
             );
-            let pre = charge?.rsOrPercent ==="rupee" ? "Rs" :"%"
+            let pre = charge?.rsOrPercent === "rupee" ? "Rs" : "%";
             doc.text(`${charge.amount}  ${pre}`, valueX, startY);
             startY += 20;
             let othersy = doc.y + 1;
@@ -995,16 +1086,18 @@ const footerForQuotation = (doc, data, organizationData ,entity) => {
     }
 
     // Draw rectangles and Grand Total text
-    startY += 20;
-    doc.moveTo(startX - 20, doc.y + 2)
-        .lineTo(startX - 20, amountSideLineStart)
-        .stroke(borderColor);
-    doc.rect(startX - 20, doc.y + 2, 222, 30).fill("#0047AB");
-    doc.fill("#fff");
-    let grandY = doc.y + 12.5;
-    doc.text("Grand Total:", startX, grandY).fillColor("#000");
-    doc.fill("#fff");
-    doc.text(`${data?.grandTotal}`, valueX, grandY).fillColor("#000");
+    if (data?.grandTotal) {
+        startY += 20;
+        doc.moveTo(startX - 20, doc.y + 2)
+            .lineTo(startX - 20, amountSideLineStart)
+            .stroke(borderColor);
+        doc.rect(startX - 20, doc.y + 2, 222, 30).fill("#0047AB");
+        doc.fill("#fff");
+        let grandY = doc.y + 12.5;
+        doc.text("Grand Total:", startX, grandY).fillColor("#000");
+        doc.fill("#fff");
+        doc.text(`${data?.grandTotal}`, valueX, grandY).fillColor("#000");
+    }
 
     // Terms and Conditions on the left
     if (data?.notes?.length > 0) {
@@ -1030,9 +1123,9 @@ const footerForQuotation = (doc, data, organizationData ,entity) => {
             doc.text(`${note}`, startX + 10, startY);
             startY = doc.y + 10;
         });
-        doc.moveTo(termsStartX, doc.y +10)
-        .lineTo(doc.page.width - 4, doc.y + 10)
-        .stroke(borderColor);
+        doc.moveTo(termsStartX, doc.y + 10)
+            .lineTo(doc.page.width - 4, doc.y + 10)
+            .stroke(borderColor);
     }
 
     // Terms and Conditions on the left
@@ -1070,6 +1163,85 @@ const footerForQuotation = (doc, data, organizationData ,entity) => {
     // Thank you message
     const thankYouY = doc.y + 50; // Adjust this value to position the thank you message properly
     doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);
+};
+const itemTableForWorkOrder = (doc, entityData, entity) => {
+    // Define headers for the work orders table
+    const headers = getTableHeaders(entity);
+
+    const headerHeight = 30;
+    const cellPadding = 5;
+    const items = entityData?.items;
+    const borderColor = "#000000"; // Border color
+
+    // Draw header background
+    let tableHeaderY = doc.y + 12.5;
+
+    // Draw header text
+    let x = 20;
+    doc.fontSize(8).font("Helvetica-Bold").fill("#fff");
+    headers.forEach((header) => {
+        doc.text(header.title, x, tableHeaderY);
+        x += header.width;
+    });
+
+    // Draw item rows
+    let y = tableHeaderY + headerHeight + cellPadding;
+    doc.fill("#000000").font("Helvetica");
+
+    items?.forEach((item) => {
+        let x = 20;
+
+        headers.forEach((header) => {
+            // Extract product details
+            const productCode = item.product?.code || "";
+            const productName = item.product?.name || "";
+            const qty = item.qty || "";
+            switch (header.title.toUpperCase()) {
+                case "CODE":
+                    doc.text(
+                        capitalizeFirstLetter(`${item.product?.code}`) || "",
+                        x,
+                        y,
+                        {
+                            width: header.width,
+                            align: "left",
+                        }
+                    );
+                    break;
+                case "NAME":
+                    if (productName) {
+                        doc.text(item.product?.name || "", x, y, {
+                            width: header.width,
+                            align: "left",
+                        });
+                    } else {
+                        // Print a placeholder or empty string if the name is missing
+                        doc.text("N/A", x, y, {
+                            width: header.width,
+                            align: "left",
+                        });
+                    }
+
+                    break;
+                case "QTY":
+                    doc.text(item.qty || "", x, y, {
+                        width: header.width,
+                        align: "left",
+                    });
+                    break;
+                default:
+                    break;
+            }
+            x += header.width;
+        });
+
+        // Draw the bottom border for each row
+        doc.moveTo(4, y + headerHeight - 5)
+            .lineTo(591, y + headerHeight - 5) // Line covering the width of the table
+            .stroke(borderColor);
+
+        y += headerHeight;
+    });
 };
 
 // const footerForPurchaseOrder = (doc, purchaseOrderData) => {
@@ -1125,13 +1297,13 @@ const footerForQuotation = (doc, data, organizationData ,entity) => {
 //             if (conditionValue) {
 //                 // Get the uppercase condition name
 //                 let conditionText = `${conditionName.toUpperCase()} :`;
-            
+
 //                 // Calculate the width of the condition name text
 //                 const conditionTextWidth = doc.font("Helvetica-Bold").widthOfString(conditionText);
-            
+
 //                 // Define the x position for the condition value based on the width of the condition name
 //                 const conditionValueX = termsStartX + conditionTextWidth + 5; // Adding a small gap (5 units)
-            
+
 //                 // Draw the condition name
 //                 doc.font("Helvetica-Bold").text(
 //                     `${conditionText}`,
@@ -1139,7 +1311,7 @@ const footerForQuotation = (doc, data, organizationData ,entity) => {
 //                     currentY,
 //                     { width: 100, align: "left" }
 //                 );
-            
+
 //                 // Draw the condition value
 //                 doc.font("Helvetica").text(
 //                     `${conditionValue}.`,
@@ -1147,21 +1319,19 @@ const footerForQuotation = (doc, data, organizationData ,entity) => {
 //                     currentY,
 //                     { width: 400, align: "left" } // Adjusting width based on condition name width
 //                 );
-            
+
 //                 // Update currentY for the next condition
-//                 currentY = doc.y + lineHeight; // Adjust Y position for the next condition           
+//                 currentY = doc.y + lineHeight; // Adjust Y position for the next condition
 //             }
 //         };
 
-    
 //         addCondition("Payment", purchaseOrderData?.paymentCondition);
 //         addCondition(
 //             "Cancellation",
 //             purchaseOrderData?.cancellationCondition
 //         );
 
-      
-//     } 
+//     }
 //       // Thank you message
 //       const thankYouY = currentY + 20; // Adjust this value to position the thank you message properly
 //       doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);

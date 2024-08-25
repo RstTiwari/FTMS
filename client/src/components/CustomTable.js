@@ -32,7 +32,6 @@ const CustomTable = ({
                 style={tableStyle}
                 pagination={{
                     pageSize: pageSize,
-                    showSizeChanger: true,
                     hideOnSinglePage: true,
                 }}
                 onChange={onTableChange}

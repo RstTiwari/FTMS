@@ -10,6 +10,7 @@ import QuotationDetailsPage from "pages/Details/QuotationDetails";
 import PurchaseOrderDetails from "pages/Details/PurchaseOrderDetails";
 import DeliveryChallanDetails from "pages/Details/DeliveryChallanDetails";
 import PaymentMade from "pages/Details/PaymentMadeDetails";
+import WorkOrderDetails from "pages/Details/WorkOderDetails";
 const DetailsModule = ({ entity, values, id, loading }) => {
     let component = <NotFound />;
     switch (entity) {
@@ -30,9 +31,7 @@ const DetailsModule = ({ entity, values, id, loading }) => {
             );
             break;
         case "paymentsmade":
-            component = (
-                <PaymentMade entity={entity} id={id} values={values} />
-            );
+            component = <PaymentMade entity={entity} id={id} values={values} />;
             break;
         case "products":
             component = (
@@ -66,6 +65,9 @@ const DetailsModule = ({ entity, values, id, loading }) => {
                     deliveryChallan={values}
                 />
             );
+            break;
+        case "workorders":
+            component = <WorkOrderDetails entity={entity} workOrder={values} />;
             break;
         default:
             break;

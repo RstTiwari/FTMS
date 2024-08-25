@@ -11,14 +11,9 @@ import http from "http";
 import fs from "fs";
 import { v2 as cloudinary } from "cloudinary";
 
-import clientRoutes from "./routes/client.js";
-import salesRoutes from "./routes/sales.js";
-import generalRoutes from "./routes/general.js";
-import managmentRoutes from "./routes/managment.js";
 import auth from "./routes/authRoutes.js";
 import appRoutes from "./routes/appRoutes.js";
 
-import cron from "./controller/CronController/Cron.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import errorHandler from "./middleware/errorHandler.js";
 
@@ -45,10 +40,6 @@ app.use(cookieParser());
 app.use("/auth", auth);
 app.use("/app", appRoutes);
 app.use("/admin", adminRoutes);
-app.use("/client", clientRoutes);
-app.use("/sales", salesRoutes);
-app.use("/mangament", managmentRoutes);
-app.use("/general", generalRoutes);
 
 // Error handler middleware
 app.use(errorHandler);

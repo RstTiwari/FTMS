@@ -1,6 +1,7 @@
 import tenantDataDb from "../../models/coreModels/tenantData.js";
 import Joi from "joi";
 import Jwt from "jsonwebtoken";
+import tenSpecificData from "../../data/tenantData.js";
 
 const verify = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
     try {
@@ -18,39 +19,37 @@ const verify = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
         });
 
         if (error) {
-          return res.status(409).json({
-            success: 0,
-            result: null,
-            message: "Invalid/Missing credentials ",
-          });
+            return res.status(409).json({
+                success: 0,
+                result: null,
+                message: "Invalid/Missing credentials ",
+            });
         }
 
         const userPasswordResult = await userPasswordDb.findOne({
-          userId: userId,
-          removed: false,
+            userId: userId,
+            removed: false,
         });
 
         if (!userPasswordResult)
-          return res.status(404).json({
-            success: 0,
-            result: null,
-            message: "No account with this email has been registered.",
-          });
+            return res.status(404).json({
+                success: 0,
+                result: null,
+                message: "No account with this email has been registered.",
+            });
 
         if (userPasswordResult.emailVerified) {
-          return res.status(404).json({
-            success: 0,
-            result: null,
-            message: "Email is Verified Pls Login to Access",
-          });
+            return res.status(404).json({
+                success: 0,
+                result: null,
+                message: "Email is Verified Pls Login to Access",
+            });
         }
-       
-        const isMatch = Number(emailOtp) == userPasswordResult?.emailOtp ? true : false;
 
+        const isMatch =
+            Number(emailOtp) == userPasswordResult?.emailOtp ? true : false;
 
-        if (
-            !isMatch
-        )
+        if (!isMatch)
             return res.status(403).json({
                 success: 0,
                 result: null,
@@ -85,10 +84,10 @@ const verify = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
 
         const user = await userDb.findOne({ _id: userId, removed: false });
 
-        const tenantData = await tenantDataDb.findOne({ tenantId: tenantId });
+        const tenantData = await tenantDb.findOne({ _id: tenantId });
 
         // Destructure another tenant Specify data in future if needed
-        const sidebar = tenantData?.sidebar;
+        const sidebar = tenSpecificData.sidebar;
 
         res.status(200).json({
             success: 1,
@@ -100,7 +99,9 @@ const verify = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
                     role: user.role,
                     email: user.email,
                     photo: user.photo,
-                    companyName: tenantData?.tenantId?.companyName,
+                    photo: user?.photo,
+                    companyName: tenantData?.companyName,
+                    logo: tenantData?.logo,
                 },
                 tenant: {
                     tenantId: tenantId,

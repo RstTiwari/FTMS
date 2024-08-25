@@ -72,13 +72,7 @@ const NotesForm = ({ form, width = "50vw" }) => {
                                                 />
                                             </Form.Item>
                                         </Col>
-                                        <Col span={1}>
-                                            <Form.Item>
-                                                <Taglabel
-                                                    text={`${key + 1}:`}
-                                                />
-                                            </Form.Item>
-                                        </Col>
+
                                         <Col span={20}>
                                             <Form.Item
                                                 {...restField}

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import autopopulate from "mongoose-autopopulate";
 
 // Subschema for references with quantity
 const referenceWithQuantitySchema = new mongoose.Schema(
@@ -19,8 +20,16 @@ const referenceWithQuantitySchema = new mongoose.Schema(
 // Main Product schema
 const productSchema = new mongoose.Schema(
     {
-        code: String,
-        name: String,
+        code: {
+            type: String,
+            unique: true,
+            required: true,
+        },
+        name: {
+            type: String,
+            unique: true,
+            required: true,
+        },
         rate: Number,
         purchaseRate: Number,
         description: String,
@@ -43,5 +52,29 @@ const productSchema = new mongoose.Schema(
         timestamps: true, // Adds createdAt and updatedAt fields automatically
     }
 );
+
+// Compound index to ensure uniqueness of code and name combination
+productSchema.index({ code: 1, name: 1 }, { unique: true });
+
+// Ensure unique code and name across existing documents
+productSchema.pre("save", async function (next) {
+    if (this.isNew) {
+        // Check if a product with the same code or name already exists
+        const existingProduct = await mongoose.model("product").findOne({
+            $or: [{ code: this.code }, { name: this.name }],
+        });
+
+        if (existingProduct) {
+            const errorMsg =
+                existingProduct.code === this.code
+                    ? `Product with code ${this.code} already exists.`
+                    : `Product with name ${this.name} already exists.`;
+            return next(new Error(errorMsg));
+        }
+    }
+    next();
+});
+
+productSchema.plugin(autopopulate);
 
 export default mongoose.model("product", productSchema);
