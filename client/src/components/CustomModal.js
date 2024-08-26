@@ -6,8 +6,6 @@ import CustomForm from "./CreateCustomForm";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import AddressDetails from "./Comman/AddressDetails";
 import PageLoader from "pages/PageLoader";
-import FormList from "antd/es/form/FormList";
-import { items } from "Data/LeadData";
 
 const CustomModel = ({
     entity,

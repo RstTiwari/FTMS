@@ -5,7 +5,7 @@ import PageLoader from "pages/PageLoader";
 import { useParams } from "react-router-dom";
 import useInitialFormValues from "Hook/useIntialFormValues";
 
-const PaymentDetails = () => {
+const PaymentCard = ({title}) => {
     const { entity, id } = useParams();
     let { initialValues, isFetching, fetchInitialValues } =
         useInitialFormValues(entity, "totalReciveables", id);
@@ -20,7 +20,7 @@ const PaymentDetails = () => {
     return (
         <>
             <Row justify={"center"}>
-                <Taglabel text={`Receivables`} type={"heading"} weight={1000} />
+                <Taglabel text={title} type={"heading"} weight={1000} />
             </Row>
             <Row gutter={16} style={{ marginBottom: "50px" }}>
                 {initialValues &&
@@ -55,4 +55,4 @@ const PaymentDetails = () => {
     );
 };
 
-export default PaymentDetails;
+export default PaymentCard;

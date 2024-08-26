@@ -6,7 +6,9 @@ const totalReciveables = async (req, res, next) => {
         let tenantId = req.tenantId;
         let InvoiceDatabase = checkDbForEntity("invoices");
         let PaymentDataBase = checkDbForEntity("paymentsreceived");
+        let PaymentMadeDatabase = checkDbForEntity("paymentsmade")
         let CustomerDatabase = checkDbForEntity("customers");
+        let VednorDatabase = checkDbForEntity("vendors");
         let PurchaseOrderDatabase = checkDbForEntity("purchases");
         let ExpenseDataBase = checkDbForEntity("expenses");
         let result = [];
@@ -25,7 +27,10 @@ const totalReciveables = async (req, res, next) => {
                 0
             );
 
-            let totalPending = totalReciveables - totalRecived;
+            let totalPending =
+                totalReciveables > totalRecived
+                    ? totalReciveables - totalRecived
+                    : 0;
 
             let customers = await CustomerDatabase.findOne({ _id: id });
             let totalAdvanceAmount = customers?.advanceAmount
@@ -38,28 +43,62 @@ const totalReciveables = async (req, res, next) => {
                     { title: "Total Received", value: totalRecived, id: "2" },
                     { title: "Total Pending", value: totalPending, id: "3" },
                     {
-                        title: "Total Advance",
+                        title: "Advance Given",
                         value: totalAdvanceAmount,
                         id: "4",
                     }
                 );
             }
-            // if (entity === "vendors") {
-            //     let PurchaseDatabase = checkDbForEntity("purchases");
-            //     let purchases = await PurchaseDatabase.find({
-            //         _id: id,
-            //         tenantId: tenantId,
-            //     });
-            //     let totalPaybles = purchases.reduce(
-            //         (sum, purchase) => sum + purchase.grandTotal,
-            //         0
-            //     );
-            //     result.push({
-            //         title: "Total Payables",
-            //         value: totalPaybles``,
-            //         id: "1",
-            //     });
-            // }
+        } else if (entity === "vendors") {
+            let purchases = await PurchaseOrderDatabase.find({
+                vendor: id,
+                tenantId: tenantId,
+            });
+            console.log(purchases, "=");
+            let totalPaybles = (purchases || []).reduce(
+                (sum, purchase) => sum + purchase.grandTotal,
+                0
+            );
+
+            let paymentsMade = await PaymentMadeDatabase.find({
+                vendor: id,
+                tenantId: tenantId,
+            });
+            let totalPaid = (paymentsMade || []).reduce(
+                (sum, payment) => sum + payment?.amount,
+                0
+            );
+
+            let totalToPay =
+                totalPaybles > totalPaid ? totalPaybles - totalPaid : 0;
+
+            let vendor = await VednorDatabase.findOne({
+                _id: id,
+                tenantId: tenantId,
+            });
+            let advancePaid = vendor?.advanceAmount || 0;
+            result.push(
+                {
+                    title: "Total Payables",
+                    value: totalPaybles,
+                    id: "1",
+                },
+                {
+                    title: "Total Paid",
+                    value: totalPaid,
+                    id: "2",
+                },
+                {
+                    title: "Total Pending",
+                    value: totalToPay,
+                    id: "3",
+                },
+                {
+                    title: "Advance Paid",
+                    value: advancePaid,
+                    id: "4",
+                }
+            );
         } else if (entity === "tenant") {
             let filter = {
                 tenantId: tenantId,
@@ -83,7 +122,9 @@ const totalReciveables = async (req, res, next) => {
                 totalReceivables: 0,
             };
 
-            let invoices = await InvoiceDatabase.find(filter).populate("payments");
+            let invoices = await InvoiceDatabase.find(filter).populate(
+                "payments"
+            );
             invoices.forEach((invoice) => {
                 const dueDate = new Date(invoice.dueDate);
                 let pendingAmount = 0;

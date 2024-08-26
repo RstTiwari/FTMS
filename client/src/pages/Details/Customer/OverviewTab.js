@@ -18,15 +18,15 @@ import { useEffect } from "react";
 const { TabPane } = Tabs;
 const { Content } = Layout;
 
-const OverviewTab = ({ customerData }) => {
+const OverviewTab = ({ data }) => {
     const { entity } = useParams();
     return (
         <Layout style={{ display: "flex", flexDirection: "row" }}>
             <Content style={{ width: "30%", backgroundColor: "#fff" }}>
                 <CustomerAddressCard
-                    data={customerData}
-                    billingAddress={customerData?.billingAddress}
-                    shippingAddress={customerData?.shippingAddress}
+                    data={data}
+                    billingAddress={data?.billingAddress}
+                    shippingAddress={data?.shippingAddress}
                 />
             </Content>
             <Content
@@ -36,7 +36,7 @@ const OverviewTab = ({ customerData }) => {
                     background: "#ffffff",
                 }}
             >
-                <PaymentDetails />
+                <PaymentDetails title={"Receivables"} />
                 <CommentDetails />
             </Content>
         </Layout>

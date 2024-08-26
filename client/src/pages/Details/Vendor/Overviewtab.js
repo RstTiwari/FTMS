@@ -15,6 +15,7 @@ import CommentDetails from "components/Comman/CommnetsDetails";
 import AddressDetails from "components/Comman/AddressDetails";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
+import PaymentCard from "components/Comman/CustomerPaymentDetails";
 const { TabPane } = Tabs;
 const { Content } = Layout;
 
@@ -36,6 +37,7 @@ const OverviewTab = ({ vendorData }) => {
                     background: "#ffffff",
                 }}
             >
+                <PaymentCard title={"Payable"} />
                 <CommentDetails />
             </Content>
         </Layout>

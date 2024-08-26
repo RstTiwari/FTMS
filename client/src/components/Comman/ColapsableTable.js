@@ -6,12 +6,13 @@ import Taglabel from "./Taglabel";
 
 const { Panel } = Collapse;
 
-const CollapsibleTable = ({ columns, panelHeader, fetchUrl }) => {
+const CollapsibleTable = ({ columns, panelHeader}) => {
     const [data, setData] = useState([]);
     const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
     const [loading, setLoading] = useState(false);
     const [isPanelOpen, setIsPanelOpen] = useState(false);
-
+    
+    
     // const fetchData = async (params = {}) => {
     //   setLoading(true);
     //   const response = await axios.get(fetchUrl, {

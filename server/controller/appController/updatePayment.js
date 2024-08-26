@@ -5,8 +5,17 @@ const updatePayment = async (req, res, next) => {
         const { values } = req.body;
         const { entity, id } = req.query;
         const PaymentDatabase = checkDbForEntity(entity);
+        let Database =
+            entity === "paymentsreceived"
+                ? checkDbForEntity("invoices")
+                : checkDbForEntity("purchases");
+    
+        let filter = {payments:{$in:[id]},status:{$in:["DRAFT","PARTIAL_RECEIVED"]}};
+        if(entity ==="paymentsmade"){
+            filter = {payments:{$in:[id]},status:{$in:["DRAFT","PARTIAL_PAID"]}};
+        }
 
-        // check the existing payement Obj
+        // check the existing payements Obj
         let existingPayment = await PaymentDatabase.findOne({
             _id: id,
             tenantId: tenantId,
@@ -16,11 +25,31 @@ const updatePayment = async (req, res, next) => {
             throw new Error("No such payment record");
         }
         //now update the old payment\
-        let newPaymentObj = Object.assign(existingPayment, values);
-        let response = await PaymentDatabase.updateOne(
-            { _id: id, tenantId: tenantId },
-            { $set: newPaymentObj }
-        );
+        let oldAmount = existingPayment?.amount
+        let newAmount = values?.amount;
+
+        if (old === newAmount) {
+            let newPaymentObj = Object.assign(existingPayment, values);
+            let response = await PaymentDatabase.updateOne(
+                { _id: id, tenantId: tenantId },
+                { $set: newPaymentObj }
+            );
+            return res.status(200).json({ success: 1, result: response });
+        }
+
+        // when payment amount increased 
+        if (newAmount < oldAmount) {
+            // First check with only DRAFT,PARTIAL PAID
+            let items = await Database.find(filter).populate("payments");
+            for(let item of items){
+            }
+        }
+        
+        // when payment amount decreed 
+        if(old > newAmount ){
+
+        }
+      
 
         // const oldAmount = existingPayment?.amount;
         // let newAmount = values?.amount;

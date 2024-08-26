@@ -29,7 +29,7 @@ const CustomerDetails = ({ values, loading }) => {
                 tab={<Taglabel text={"Overview"} weight={200} type={"text"} />}
                 key="1"
             >
-                <OverviewTab customerData={values} />
+                <OverviewTab data={values} />
             </TabPane>
             <TabPane
                 tab={
