@@ -1,7 +1,6 @@
 import checkDbForEntity from "../../Helper/databaseSelector.js";
 import { resendEmailController } from "../EmailController/emailController.js";
 import fs from "fs";
-import path from "path";
 
 export const emailData = async (req, res, next) => {
     try {
@@ -84,6 +83,12 @@ export const sendEmail = async (req, res, next) => {
         if (!response) {
             throw new Error("Failed to send email");
         }
+        let EntityDataBase = checkDbForEntity(entity);
+        await EntityDataBase.updateOne(
+            { _id: id, tenantId: tenantId },
+            { $set: { status: "SEND" } }
+        );
+
         return res.status(200).json({
             success: 1,
             message: "successfully sended mail",
@@ -92,5 +97,14 @@ export const sendEmail = async (req, res, next) => {
         // need to update the status of entity to send
     } catch (error) {
         next(error);
+    } finally {
+        // Ensure that files are removed after processing
+        req.files.forEach((file) => {
+            try {
+                fs.unlinkSync(file.path);
+            } catch (err) {
+                console.error(`Failed to delete file at ${file.path}:`, err);
+            }
+        });
     }
 };

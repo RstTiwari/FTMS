@@ -14,7 +14,7 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "state/AuthProvider";
 
 const DetailsHeader = ({ values }) => {
-    const { entity, tenantId, p, id } = useParams();
+    const { entity, tenantId, pageNo, pageSize, id } = useParams();
     const navigate = useNavigate();
     const { pdfGenerate } = useAuth();
 
