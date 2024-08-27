@@ -10,9 +10,7 @@ const { Text } = Typography;
 
 const getColumns = (details) => [
     {
-        title: (
-            <Taglabel text={"#No"} type={"heading"} details={details} />
-        ),
+        title: <Taglabel text={"#No"} type={"heading"} details={details} />,
         dataIndex: "no",
         render: (_, record) => (
             <>
@@ -63,7 +61,6 @@ const getColumns = (details) => [
         dataIndex: "status",
         key: "expiryDate",
         responsive: details ? [] : ["lg"],
-        width: 100,
         render: (_, record) => (
             <>
                 <Taglabel

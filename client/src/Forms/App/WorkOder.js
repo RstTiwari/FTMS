@@ -311,10 +311,7 @@ const WorkOrderForm = ({ form }) => {
                                                     />
                                                 </Form.Item>
                                             </Col>
-                                            <Col
-                                                span={3}
-                                                style={{ minWidth: "200px" }}
-                                            >
+                                            <Col span={3}>
                                                 <Form.Item
                                                     {...restField}
                                                     name={[name, "qty"]}

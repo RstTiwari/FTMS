@@ -53,13 +53,10 @@ const purchaseOrderSchema = new mongoose.Schema({
             },
         },
     ],
-    payments: [
-        {
-            type: mongoose.Schema.ObjectId,
-            ref: "paymentsmade",
-            autopopulate: true,
-        },
-    ],
+    paymentMaded: {
+        type: Number,
+        default: 0,
+    },
 
     delivery: {
         type: { type: String },
@@ -84,15 +81,9 @@ const purchaseOrderSchema = new mongoose.Schema({
     totalWithTax: {
         type: Number,
     },
-    notes:[
-
-    ],
-    terms:[
-
-    ],
-    otherCharges:[
-
-    ],
+    notes: [],
+    terms: [],
+    otherCharges: [],
     grandTotal: {
         type: Number,
     },
@@ -100,7 +91,6 @@ const purchaseOrderSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-
 });
 
 purchaseOrderSchema.plugin(mongooseAutoPopulate);

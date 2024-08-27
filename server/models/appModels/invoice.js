@@ -26,13 +26,10 @@ const invoiceSchema = new mongoose.Schema(
             ],
             default: "DRAFT",
         },
-        payments: [
-            {
-                type: mongoose.Schema.ObjectId,
-                ref: "paymentsreceived",
-                autopopulate: true,
-            },
-        ],
+        paymentReceived: {
+            type: Number,
+            default: 0,
+        },
         invoiceDate: {
             type: Date,
             required: true,

@@ -6,7 +6,7 @@ const totalReciveables = async (req, res, next) => {
         let tenantId = req.tenantId;
         let InvoiceDatabase = checkDbForEntity("invoices");
         let PaymentDataBase = checkDbForEntity("paymentsreceived");
-        let PaymentMadeDatabase = checkDbForEntity("paymentsmade")
+        let PaymentMadeDatabase = checkDbForEntity("paymentsmade");
         let CustomerDatabase = checkDbForEntity("customers");
         let VednorDatabase = checkDbForEntity("vendors");
         let PurchaseOrderDatabase = checkDbForEntity("purchases");
@@ -122,9 +122,7 @@ const totalReciveables = async (req, res, next) => {
                 totalReceivables: 0,
             };
 
-            let invoices = await InvoiceDatabase.find(filter).populate(
-                "payments"
-            );
+            let invoices = await InvoiceDatabase.find(filter);
             invoices.forEach((invoice) => {
                 const dueDate = new Date(invoice.dueDate);
                 let pendingAmount = 0;
@@ -134,12 +132,9 @@ const totalReciveables = async (req, res, next) => {
                     pendingAmount = invoice.grandTotal;
                 } else if (invoice.status === "PARTIALLY_RECEIVED") {
                     // Calculate total received from paymentsreceived array
-                    const totalReceived = invoice.payments?.reduce(
-                        (acc, payment) => acc + payment.amount,
-                        0
-                    );
                     // Calculate pending amount for PARTIALLY_PAID invoices
-                    pendingAmount = invoice.grandTotal - totalReceived;
+                    let receivedAmount = invoice?.paymentsReceived || 0;
+                    pendingAmount = invoice?.grandTotal - receivedAmount;
                 }
 
                 // Categorize the pending amount based on due date
@@ -270,30 +265,6 @@ const totalReciveables = async (req, res, next) => {
                 },
             ]);
             result = expenses;
-            // const expenses = await ExpenseDataBase.find({
-            //     expenseDate: {
-            //         $gte: startOfYear,
-            //         $lte: endOfYear,
-            //     },
-            //     tenantId: id,
-            // });
-            // console.log(expenses, "==");
-
-            // // Map and group expenses by category
-            // const expensesData = expenses.reduce((acc, expense) => {
-            //     const categoryName = expense.categoryName || "Unknown Category";
-            //     const existingCategory = acc.find(
-            //         (item) => item.name === categoryName
-            //     );
-
-            //     if (existingCategory) {
-            //         existingCategory.value += expense.amount;
-            //     } else {
-            //         acc.push({ name: categoryName, value: expense.amount });
-            //     }
-            // }, []);
-            // console.log(expensesData, "==");
-            // result = expensesData;
         }
 
         return res.status(200).json({

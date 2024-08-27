@@ -20,6 +20,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 const type = upload.single("file");
+const attachmentsUpload = upload.array("attachments");
 
 router.post("/create", authMethod.isValidAuthtoken, appRoutes.create);
 router.post("/read", authMethod.isValidAuthtoken, appRoutes.read);
@@ -67,6 +68,13 @@ router.get(
     "/totalReciveables",
     authMethod.isValidAuthtoken,
     appRoutes.totalReciveables
+);
+router.get("/emailData", authMethod.isValidAuthtoken, appRoutes.emailData);
+router.post(
+    "/sendEmail",
+    attachmentsUpload,
+    authMethod.isValidAuthtoken,
+    appRoutes.sendEmail
 );
 
 // //just for app Data

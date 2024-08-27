@@ -14,6 +14,7 @@ import get from "./get.js";
 import recordPayment from "./recordPayment.js";
 import updatePayment from "./updatePayment.js";
 import totalReciveables from "./totalReciveables.js";
+import { emailData, sendEmail } from "./sendEmail.js";
 const appRoutes = {
     create: async (req, res, next) => {
         create(req, res, next);
@@ -59,6 +60,12 @@ const appRoutes = {
     },
     totalReciveables: async (req, res, next) => {
         totalReciveables(req, res, next);
+    },
+    emailData: async (req, res, next) => {
+        emailData(req, res, next);
+    },
+    sendEmail: async (req, res, next) => {
+        sendEmail(req, res, next);
     },
     // challan: async (req, res, next) => {
     //     try {

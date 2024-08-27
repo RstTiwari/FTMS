@@ -11,6 +11,7 @@ import Details from "components/Details";
 import CustomForm from "components/CreateCustomForm";
 import UpdateCustomForm from "components/UpdateCustomForm";
 import RecordPayment from "pages/Payment/RecordPayment";
+import EmailSendPage from "pages/Email/Email";
 
 const Approuter = ({ profile }) => {
     const tenantId = profile?.tenant?.tenantId;
@@ -59,6 +60,11 @@ const Approuter = ({ profile }) => {
                     element={<RecordPayment />}
                 />
 
+                {/**Send Email  */}
+                <Route
+                    path="/app/:tenantId/:entity/:id/sendmail"
+                    element={<EmailSendPage />}
+                />
                 {/*Mangaining setting Sidebar Profile */}
                 <Route
                     path={`/app/:tenantId/settings/organization`}

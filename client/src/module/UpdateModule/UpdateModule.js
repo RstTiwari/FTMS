@@ -14,6 +14,7 @@ import ProductForm from "../../Forms/App/ProductFrom";
 import EntityNo from "../../Forms/App/Counters";
 import OrganizationForm from "../../Forms/App/OrgnizationForm";
 import WorkOrderForm from "Forms/App/WorkOder";
+import PaymentMadeForm from "Forms/App/PaymentMadeForm";
 
 const UpdateModule = ({ entity, form }) => {
     // const { entity: entityFromRouter } = useParams();
@@ -50,6 +51,9 @@ const UpdateModule = ({ entity, form }) => {
             break;
         case "paymentsreceived":
             componentToRender = <PaymentFormItem form={form} isUpdate={true} />;
+            break;
+        case "paymentsmade":
+            componentToRender = <PaymentMadeForm form={form} isUpdate={true} />;
             break;
         case "counters":
             componentToRender = <EntityNo form={form} />;

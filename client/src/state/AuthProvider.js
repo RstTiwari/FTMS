@@ -120,6 +120,7 @@ export const AuthProvider = ({ children }) => {
 
     const pdfGenerate = async (entity, id, no, action = "display") => {
         const token = cookies["token"];
+        console.log(no, "=====");
         try {
             const headers = {
                 "Content-Type": "application/json",
@@ -139,6 +140,7 @@ export const AuthProvider = ({ children }) => {
             }
 
             const blob = await response.blob();
+
             const pdfUrl = URL.createObjectURL(blob);
 
             if (action === "download") {
@@ -149,7 +151,14 @@ export const AuthProvider = ({ children }) => {
                 a.click();
                 document.body.removeChild(a);
             } else if (action === "display") {
-                return pdfUrl;
+                // Create a new File with the desired name
+                const fileName = `${entity.toUpperCase()}${no}.pdf`;
+                console.log(fileName);
+
+                const file = new File([blob], fileName, {
+                    type: "application/pdf",
+                });
+                return file;
             }
         } catch (error) {
             NotificationHandler.error(

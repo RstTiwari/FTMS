@@ -24,7 +24,11 @@ const TotalReceivables = () => {
         },
         {
             key: "2",
-            label: <Link to={`/app/${tenantId}/paymentsreceived/create`}>Payment</Link>,
+            label: (
+                <Link to={`/app/${tenantId}/paymentsreceived/create`}>
+                    Payment
+                </Link>
+            ),
         },
     ];
     const { initialValues, isFetching, fetchInitialValues } =
@@ -55,7 +59,7 @@ const TotalReceivables = () => {
                         text={`₹
                         ${
                             initialValues
-                                ? initialValues.totalReceivables.toFixed(2)
+                                ? initialValues?.totalReceivables?.toFixed(2)
                                 : "Loading..."
                         }`}
                         weight={1000}
@@ -76,7 +80,7 @@ const TotalReceivables = () => {
             <Progress
                 percent={
                     initialValues
-                        ? (initialValues.totalReceivables / 10000) * 100
+                        ? (initialValues?.totalReceivables / 10000) * 100
                         : 0
                 } // Example percentage calculation
                 strokeColor="#faad14"
@@ -93,7 +97,7 @@ const TotalReceivables = () => {
                         <Title level={5}>
                             ₹
                             {initialValues
-                                ? initialValues.last15Days.toFixed(2)
+                                ? initialValues?.last15Days.toFixed(2)
                                 : "Loading..."}
                         </Title>
                         <Text type="secondary"> 1-15 Days</Text>
@@ -108,7 +112,7 @@ const TotalReceivables = () => {
                         <Title level={5}>
                             ₹
                             {initialValues
-                                ? initialValues.last16To30Days.toFixed(2)
+                                ? initialValues?.last16To30Days.toFixed(2)
                                 : "Loading..."}
                         </Title>
                         <Text type="secondary">16-30 Days</Text>
@@ -123,7 +127,7 @@ const TotalReceivables = () => {
                         <Title level={5}>
                             ₹
                             {initialValues
-                                ? initialValues.last31To45Days.toFixed(2)
+                                ? initialValues?.last31To45Days.toFixed(2)
                                 : "Loading..."}
                         </Title>
                         <Text type="secondary">31-45 Days</Text>
@@ -138,7 +142,7 @@ const TotalReceivables = () => {
                         <Title level={5}>
                             ₹
                             {initialValues
-                                ? initialValues.above45Days.toFixed(2)
+                                ? initialValues?.above45Days.toFixed(2)
                                 : "Loading..."}
                         </Title>
                         <Text type="secondary">Above 45 Days</Text>

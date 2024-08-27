@@ -22,9 +22,7 @@ const recordPayment = async (req, res, next) => {
                 customer: id, // Use the correct customerId
                 tenantId: tenantId,
                 status: { $in: ["DRAFT", "PARTIALLY_RECEIVED"] },
-            })
-                .sort({ createdAt: 1 })
-                .populate("payments");
+            }).sort({ createdAt: 1 });
 
             let remainingAmount = values.amount; // Use payment amount from request
 
@@ -48,10 +46,7 @@ const recordPayment = async (req, res, next) => {
             for (const invoice of invoices) {
                 if (remainingAmount <= 0) break;
                 // Calculate the total amount already paid on this invoice
-                let totalPaid = (invoice.payments || []).reduce(
-                    (sum, payment) => sum + payment.amount,
-                    0
-                );
+                let totalPaid = invoice?.paymentReceived || 0;
 
                 // Calculate the amount remaining to be paid on this invoice
                 const amountDue = invoice.grandTotal - totalPaid;
@@ -65,8 +60,7 @@ const recordPayment = async (req, res, next) => {
                 }
 
                 // Add the payment reference to the invoice
-                invoice.payments = invoice.payments || [];
-                invoice.payments.push(payment._id);
+                invoice.paymentReceived = amountToApply;
 
                 await invoice.save();
                 remainingAmount -= amountToApply;
@@ -89,10 +83,7 @@ const recordPayment = async (req, res, next) => {
                 vendor: id,
                 tenantId: tenantId,
                 status: { $in: ["DRAFT", "PARTIALLY_PAID"] },
-            })
-                .sort({ createdAt: 1 })
-                .populate("payments");
-
+            }).sort({ createdAt: 1 });
             let remainingAmount = values.amount; // Use payment amount from request
 
             // Check if the Vendor is having any Advance Amount
@@ -111,16 +102,11 @@ const recordPayment = async (req, res, next) => {
                     { $set: { advanceAmount: 0 } }
                 );
             }
-            console.log(purchases, vendorData, "-");
             // Distribute the payment across purchases and update them with the payment ID
             for (const purchase of purchases) {
                 if (remainingAmount <= 0) break;
-
                 // Calculate the total amount already paid on this purchase
-                let totalPaid = (purchase.payments || []).reduce(
-                    (sum, payment) => sum + payment.amount,
-                    0
-                );
+                let totalPaid = purchase?.paymentMaded || 0;
 
                 // Calculate the amount remaining to be paid on this purchase
                 const amountDue = purchase.grandTotal - totalPaid;
@@ -134,9 +120,7 @@ const recordPayment = async (req, res, next) => {
                 }
 
                 // Add the payment reference to the purchase
-                purchase.payments = purchase.payments || [];
-                purchase.payments.push(payment._id);
-
+                purchase.paymentMaded = amountToApply;
                 await purchase.save();
                 remainingAmount -= amountToApply;
             }

@@ -18,14 +18,18 @@ const AddressDetails = ({
     updateInForm,
     updateInCustomModal,
     onlyShippingAddress,
-    to
+    to,
 }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [form] = Form.useForm();
     const { appApiCall } = useAuth();
 
-    const addressString = `${address?.street1 || ""}, ${address?.street2 || ""}, ${address?.city || ""}, ${address?.state || ""}, ${address?.pincode || ""}`;
+    const addressString = `${address?.street1 || ""}, ${
+        address?.street2 || ""
+    }, ${address?.city || ""}, ${address?.state || ""}, ${
+        address?.pincode || ""
+    }`;
     const handleEditClick = () => {
         setIsEditing(true);
         setIsModalVisible(true);
@@ -48,19 +52,18 @@ const AddressDetails = ({
                 { action: "set", keyName: keyName, values: values, id: id },
                 { entity }
             );
-            
+
             if (!response.success) {
                 return NotificationHandler.error(response.message);
             }
             setIsModalVisible(false);
-            if(updateInCustomModal){
-                updateInCustomModal(values, keyName)
-
+            if (updateInCustomModal) {
+                updateInCustomModal(values, keyName);
             }
             updateInForm({
-                to:to,
-                type:"organization",
-                address:values
+                to: to,
+                type: "organization",
+                address: values,
             });
         } catch (errorInfo) {
             return NotificationHandler.error(errorInfo.message);
@@ -78,9 +81,7 @@ const AddressDetails = ({
         }
     }, [isModalVisible, isEditing, form]);
 
-    useEffect(()=>{
-
-    },[handleEditClick])
+    useEffect(() => {}, [handleEditClick]);
 
     return (
         <div>
@@ -88,22 +89,23 @@ const AddressDetails = ({
                 <>
                     {address ? (
                         <>
-                            <Row align="middle" style={{ marginBottom: "2Ppx" }}>
-                               {
-                                onlyShippingAddress ? (
+                            <Row
+                                align="middle"
+                                style={{ marginBottom: "2Ppx" }}
+                            >
+                                {onlyShippingAddress ? (
                                     <Col span={16}>
-                                    <Taglabel
-                                        text={to?.toUpperCase() ||""}
-                                        details={true}
-                                    />
-                                </Col>
-                                ):(
+                                        <Taglabel
+                                            text={to?.toUpperCase() || ""}
+                                            details={true}
+                                        />
+                                    </Col>
+                                ) : (
                                     ""
-                                )
-                               }
+                                )}
                                 <Col span={16}>
                                     <Taglabel
-                                        text={entityName?.toUpperCase() ||""}
+                                        text={entityName?.toUpperCase() || ""}
                                         details={true}
                                         type={"heading"}
                                     />
@@ -119,7 +121,7 @@ const AddressDetails = ({
                     ) : (
                         <>
                             <Row align="middle" style={{ marginBottom: "4px" }}>
-                                <Col span={20}>
+                                <Col span={16}>
                                     <Taglabel
                                         text={`No ${entityName}`}
                                         details={true}
@@ -134,19 +136,22 @@ const AddressDetails = ({
                 </>
             )}
             <Modal
-                title={isEditing ? `EDIT ${entityName?.toUpperCase()} ADDRESS` : `ADD ${entityName.toUpperCase()} ADDRESS`}
+                title={
+                    isEditing
+                        ? `EDIT ${entityName?.toUpperCase()} ADDRESS`
+                        : `ADD ${entityName.toUpperCase()} ADDRESS`
+                }
                 open={isModalVisible}
                 onCancel={handleCancel}
                 maskClosable={false}
                 footer={null}
             >
-                <Form
-                    form={form}
-                    layout="vertical"
-                    onFinish={handleFormFinish}
-                >
+                <Form form={form} layout="vertical" onFinish={handleFormFinish}>
                     <AddressForm />
-                    <FormActionButtons isUpdating={isEditing} showCancel={false} />
+                    <FormActionButtons
+                        isUpdating={isEditing}
+                        showCancel={false}
+                    />
                 </Form>
             </Modal>
         </div>

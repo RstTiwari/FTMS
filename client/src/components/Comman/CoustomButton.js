@@ -16,8 +16,8 @@ const CoustomButton = ({
             icon={withIcon ? <PlusOutlined /> : null}
             onClick={onClick ? onClick : undefined}
             htmlType={onClick ? "button" : htmlType}
+            type="primary"
             style={{
-                textAlign: "center", // Center text horizontally
                 fontSize: details ? "0.7rem" : "1rem",
                 backgroundColor: isCancel ? "#f5f5f5" : "#22b378",
                 color: isCancel ? "#000" : "#fff",

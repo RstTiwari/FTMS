@@ -26,8 +26,7 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
             form.setFieldsValue({ paymentDate: value });
         } else if (fieldName === "no") {
             form.setFieldsValue({ no: value });
-        } 
-         else {
+        } else {
         }
     };
 
@@ -74,9 +73,7 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
                         labelAlign="left"
                         labelCol={{ span: 12 }}
                         type={"counters"}
-                        updateInForm={(value) =>
-                            handleItemUpdate(value, "no")
-                        }
+                        updateInForm={(value) => handleItemUpdate(value, "no")}
                         preFillValue={form.getFieldValue("no")}
                     />
                 </Col>
@@ -143,7 +140,6 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
                                 message: "Amount need to specified",
                             },
                         ]}
-                        disabled={isUpdate}
                     />
                 </Col>
 

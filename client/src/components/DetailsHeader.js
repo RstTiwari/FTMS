@@ -14,7 +14,7 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "state/AuthProvider";
 
 const DetailsHeader = ({ values }) => {
-    const { entity, tenantId, pageNo, pageSize, id } = useParams();
+    const { entity, tenantId, p, id } = useParams();
     const navigate = useNavigate();
     const { pdfGenerate } = useAuth();
 
@@ -22,8 +22,13 @@ const DetailsHeader = ({ values }) => {
         navigate(`/app/${tenantId}/update/${entity}/${id}`);
     };
     const handleRecordPaymentClick = () => {
-        let paymentEntity =  entity ==="customers" ? "paymentsreceived":"paymentsmade"
+        let paymentEntity =
+            entity === "customers" ? "paymentsreceived" : "paymentsmade";
         navigate(`/app/${tenantId}/${paymentEntity}/${id}/recordPayment`);
+    };
+
+    const handleEmailSend = () => {
+        navigate(`/app/${tenantId}/${entity}/${id}/sendmail`);
     };
     useEffect(() => {}, [id]);
     const handlePdfDownload = async () => {
@@ -38,7 +43,7 @@ const DetailsHeader = ({ values }) => {
                         flex: 1,
                         display: "flex",
                         justifyContent: "flex-end",
-                        zIndex:100000
+                        zIndex: 100000,
                     }}
                 >
                     <CloseOutlined
@@ -74,20 +79,13 @@ const DetailsHeader = ({ values }) => {
                     }}
                     onClick={handleEditClick}
                 >
-                    <EditOutlined style={{ marginRight: 5 }} />
+                    <EditOutlined style={{ marginRight: 3 }} />
                     Edit
                 </Col>
                 {entity !== "customers" && entity !== "vendors" ? (
                     <>
-                        <Col
-                            span={2}
-                            style={{
-                                flex: 1,
-                                display: "flex",
-                                alignItems: "center",
-                            }}
-                        >
-                            <MailOutlined style={{ marginRight: 5 }} />
+                        <Col span={2} onClick={() => handleEmailSend()}>
+                            <MailOutlined style={{ marginRight: 3 }} />
                             Mail
                         </Col>
                         <Col
@@ -97,24 +95,13 @@ const DetailsHeader = ({ values }) => {
                                 display: "flex",
                                 alignItems: "center",
                             }}
-                        >
-                            <ShareAltOutlined style={{ marginRight: 5 }} />
-                            Share
-                        </Col>
-                        <Col
-                            span={3}
-                            style={{
-                                flex: 1,
-                                display: "flex",
-                                alignItems: "center",
-                            }}
                             onClick={() => handlePdfDownload()}
                         >
-                            <DownloadOutlined style={{ marginRight: 5 }} />
+                            <DownloadOutlined style={{ marginRight: 3 }} />
                             Download
                         </Col>
                     </>
-                ) : entity === "customers" ||  entity ==="vendors" ?   (
+                ) : entity === "customers" || entity === "vendors" ? (
                     <Col
                         span={4}
                         style={{
@@ -124,7 +111,7 @@ const DetailsHeader = ({ values }) => {
                         }}
                         onClick={handleRecordPaymentClick}
                     >
-                        <DownCircleOutlined style={{ marginRight: 5 }} />
+                        <DownCircleOutlined style={{ marginRight: 3 }} />
                         Record Payment
                     </Col>
                 ) : (

@@ -5,7 +5,7 @@ import checkDbForEntity from "../../Helper/databaseSelector.js";
 import countersDb from "../../models/appModels/counters.js";
 import { organizationData } from "../../data/orgnization.js";
 
-const generatePdf = async (req, res, next) => {
+const generatePdf = async (req, res, next, forEmail) => {
     try {
         const { entity, id } = req.query;
         let tenantId = req.tenantId;
@@ -74,7 +74,8 @@ const generatePdf = async (req, res, next) => {
                 entityData,
                 organization,
                 entity,
-                entityPrefix
+                entityPrefix,
+                forEmail
             );
         } else if (templateId === "whitesimple") {
             return whiteSimple(req, res, next, data, entity);

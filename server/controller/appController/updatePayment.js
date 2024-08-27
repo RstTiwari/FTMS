@@ -9,11 +9,17 @@ const updatePayment = async (req, res, next) => {
             entity === "paymentsreceived"
                 ? checkDbForEntity("invoices")
                 : checkDbForEntity("purchases");
-    
-        let filter = {payments:{$in:[id]},status:{$in:["DRAFT","PARTIAL_RECEIVED"]}};
-        if(entity ==="paymentsmade"){
-            filter = {payments:{$in:[id]},status:{$in:["DRAFT","PARTIAL_PAID"]}};
-        }
+
+        let isReceivedPayment = entity === "paymentsreceived";
+        let amountKey = isReceivedPayment ? "receivedAmount" : "amountPaid";
+
+        let filter = isReceivedPayment
+            ? {
+                  status: "PARTIAL_RECEIVED",
+              }
+            : {
+                  status: "PARTIAL_PAID",
+              };
 
         // check the existing payements Obj
         let existingPayment = await PaymentDatabase.findOne({
@@ -25,10 +31,11 @@ const updatePayment = async (req, res, next) => {
             throw new Error("No such payment record");
         }
         //now update the old payment\
-        let oldAmount = existingPayment?.amount
+        let oldAmount = existingPayment?.amount;
         let newAmount = values?.amount;
+        let amountToSettle = newAmount - oldAmount;
 
-        if (old === newAmount) {
+        if (amountToSettle === 0) {
             let newPaymentObj = Object.assign(existingPayment, values);
             let response = await PaymentDatabase.updateOne(
                 { _id: id, tenantId: tenantId },
@@ -37,140 +44,101 @@ const updatePayment = async (req, res, next) => {
             return res.status(200).json({ success: 1, result: response });
         }
 
-        // when payment amount increased 
-        if (newAmount < oldAmount) {
+        //when new amount decresed
+        if (amountToSettle < 0) {
             // First check with only DRAFT,PARTIAL PAID
-            let items = await Database.find(filter).populate("payments");
-            for(let item of items){
+            let PARTIALDATAS = await Database.find(filter).sort({
+                createdAt: -1,
+            });
+            amountToSettle = Math.abs(amountToSettle);
+            for (let item of PARTIALDATAS) {
+                let amountToDecrese = Math.min(amountToSettle, item[amountKey]);
+                item[amountKey] -= amountToDecrese;
+                amountToSettle -= amountToDecrese;
+
+                if (item[amountKey] <= 0) {
+                    item.status = "DRAFT"; // or another default status
+                } else if (item[amountKey] < item.grandTotal) {
+                    item.status = isReceivedPayment
+                        ? "PARTIAL_RECEIVED"
+                        : "PARTIAL_PAID";
+                }
+
+                await item.save();
+
+                if (amountToSettle <= 0) {
+                    break;
+                }
+            }
+
+            // Still there are some amount to settle then need to Deduct from FULLY_PAID
+            filter = isReceivedPayment
+                ? { status: "FULL_RECEIVED" }
+                : { status: "FULL_PAID" };
+
+            let FULLPAIDDATA = await Database.find(filter).sort({
+                createdAt: -1,
+            });
+            amountToSettle = Math.abs(amountToSettle);
+            for (let item of FULLPAIDDATA) {
+                let amountToDecrese = Math.min(amountToSettle, item[amountKey]);
+                item[amountKey] -= amountToDecrese;
+                amountToSettle -= amountToDecrese;
+
+                if (item[amountKey] <= 0) {
+                    item.status = "DRAFT"; // or another default status
+                } else if (item[amountKey] < item.grandTotal) {
+                    item.status = isReceivedPayment
+                        ? "PARTIAL_RECEIVED"
+                        : "PARTIAL_PAID";
+                }
+
+                await item.save();
+
+                if (amountToSettle <= 0) {
+                    break;
+                }
             }
         }
-        
-        // when payment amount decreed 
-        if(old > newAmount ){
 
+        // when New is Incresed
+        if (amountToSettle > 0) {
+            let items = await Database.find(filter).sort({ createdAt: 1 });
+            for (let item of items) {
+                let incrementAmount = Math.min(
+                    amountToSettle,
+                    item.grandTotal - item[amountKey]
+                );
+                item[amountKey] += incrementAmount;
+                amountToSettle -= incrementAmount;
+
+                if (item[amountKey] >= item.grandTotal) {
+                    item.status = isReceivedPayment
+                        ? "FULL_RECEIVED"
+                        : "FULL_PAID";
+                } else {
+                    item.status = isReceivedPayment
+                        ? "PARTIAL_RECEIVED"
+                        : "PARTIAL_PAID";
+                }
+
+                await item.save();
+                if (amountToSettle <= 0) {
+                    break;
+                }
+            }
         }
-      
 
-        // const oldAmount = existingPayment?.amount;
-        // let newAmount = values?.amount;
+        let newPaymentObj = Object.assign(existingPayment, values);
+        let response = await PaymentDatabase.updateOne(
+            { _id: id, tenantId: tenantId },
+            { $set: newPaymentObj }
+        );
 
-        // // Calculate the percentage change
-        // const percentageChange = Math.abs((newAmount - oldAmount) / oldAmount);
-
-        // // Check if the change is within the allowed range (10%)
-        // if (percentageChange > 0.1) {
-        //     throw new Error(
-        //         "Payment amount change exceeds the allowed limit of 10%"
-        //     );
-        // }
-
-        // if (oldAmount !== newAmount) {
-        //     const amountDifference = newAmount - oldAmount;
-        //     existingPayment.amount = amountDifference;
-
-        //     // Here i m going to redistribute the payment
-        //     redistributePayment(existingPayment, amountDifference);
-
-        //     //now update the old payment\
-        //     let newPaymentObj = Object.assign(existingPayment, values);
-        //     await PaymentDatabase.updateOne(
-        //         { _id: id },
-        //         { $set: { newPaymentObj } }
-        //     );
-        // }
-
-        res.status(200).json({ success: 1, result: response });
+        return res.status(200).json({ success: 1, result: response });
     } catch (error) {
         next(error);
     }
-};
-
-const redistributePayment = async (payment, amountDifference) => {
-    const InvoiceDatabase = checkDbForEntity("invoices");
-
-    // Fetch the invoice associated with this payment
-    const invoice = await InvoiceDatabase.findOne({
-        "paymentsreceived.paymentId": payment._id,
-    });
-
-    if (!invoice) {
-        throw new Error("Invoice not found");
-    }
-
-    const totalPaid = (invoice.paymentsreceived || []).reduce(
-        (sum, paymentEntry) => {
-            if (paymentEntry.paymentId.equals(payment._id)) {
-                return sum + paymentEntry.amount;
-            }
-            return sum;
-        },
-        0
-    );
-
-    const amountDue = invoice.grandTotal - totalPaid;
-
-    if (amountDifference > 0) {
-        // Payment amount increased
-        const amountToApply = Math.min(amountDifference, amountDue);
-
-        // Update invoice status
-        if (amountToApply >= amountDue) {
-            invoice.status = "FULL_PAID";
-        } else {
-            invoice.status = "PARTIALLY_PAID";
-        }
-
-        // Update or add the payment reference to the invoice
-        const paymentEntry = invoice.paymentsreceived.find((p) =>
-            p.paymentId.equals(payment._id)
-        );
-        if (paymentEntry) {
-            paymentEntry.amount += amountToApply; // Update the existing payment entry
-        } else {
-            invoice.paymentsreceived.push({
-                paymentId: payment._id,
-                amount: amountToApply,
-            }); // Add a new payment entry
-        }
-
-        await invoice.save();
-    } else if (amountDifference < 0) {
-        // Payment amount decreased
-        const decreaseAmount = -amountDifference;
-        const paymentEntry = invoice.paymentsreceived.find((p) =>
-            p.paymentId.equals(payment._id)
-        );
-
-        if (paymentEntry) {
-            const amountToReduce = Math.min(
-                decreaseAmount,
-                paymentEntry.amount
-            );
-            paymentEntry.amount -= amountToReduce;
-
-            if (
-                paymentEntry.amount <= 0 ||
-                invoice.grandTotal - totalPaid + amountToReduce > 0
-            ) {
-                invoice.status = "PARTIALLY_PAID";
-            }
-            await invoice.save();
-
-            if (decreaseAmount > amountToReduce) {
-                const CustomerDatabase = checkDbForEntity("customers");
-                const customer = await CustomerDatabase.findById(
-                    payment.customer
-                );
-                customer.advanceAmount =
-                    (customer.advanceAmount || 0) +
-                    (decreaseAmount - amountToReduce);
-                await customer.save();
-            }
-        } else {
-            throw new Error("Payment entry not found in the invoice");
-        }
-    }
-    return;
 };
 
 export default updatePayment;

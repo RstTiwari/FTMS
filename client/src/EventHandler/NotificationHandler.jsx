@@ -6,7 +6,7 @@ message.config({
     duration: 4,
 });
 
-const MessageHandler = {
+const NotificationHandler = {
     success: (content) => {
         return message.success({
             content: content || "Success", // Default message content if not provided
@@ -47,4 +47,4 @@ const MessageHandler = {
     },
 };
 
-export default MessageHandler;
+export default NotificationHandler;
