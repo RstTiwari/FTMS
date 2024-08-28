@@ -26,17 +26,16 @@ const autherization = async (req, res, next) => {
         }
 
         const role = userData.role;
+        console.log(role, "==");
 
         if (role !== "superadmin") {
             throw new Error("Cant access  Autherization Failed");
         }
 
-            req["tenantId"] = userData.tenantId;
-            req["role"] = userData.role,
-            req["userId"] = userData._id
-            req["email"] = userData.email,
-            req["name"] = userData.name;
-            next();
+        req["tenantId"] = userData.tenantId;
+        (req["role"] = userData.role), (req["userId"] = userData._id);
+        (req["email"] = userData.email), (req["name"] = userData.name);
+        next();
     } catch (error) {
         return res.status(401).json({
             success: 0,

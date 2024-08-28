@@ -1,17 +1,15 @@
-import  express from "express";
+import express from "express";
 import adminRoutes from "../controller/adminController/index.js";
-import autherization from "../middleware/autherization.js"
+import autherization from "../middleware/autherization.js";
 
-const router = express.Router()
+const router = express.Router();
 
 /**
  * @ Neet to  have autherization check before accesing anyof this apis
  */
 
-router.get("/read",autherization,adminRoutes.read)
-router.post("/update",autherization,adminRoutes.update)
+router.get("/read", autherization, adminRoutes.read);
+router.post("/update", autherization, adminRoutes.update);
+router.get("/permissionData", autherization, adminRoutes.permissionsData);
 
-
-
-
-export default router
+export default router;

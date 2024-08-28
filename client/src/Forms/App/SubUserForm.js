@@ -7,23 +7,17 @@ const { Option } = Select;
 
 const SubUserForm = ({ form }) => {
     const [loading, setLoading] = useState(false);
-    const [sidebar, setSidebar] = useState(null);
-    const [cookies, setCookie] = useCookies(["token"]);
-    let profile = cookies["profile"];
-
-
-
- 
+    const [cookies, setCookie] = useCookies("");
+    const [custom, setCustom] = useState(null);
 
     const onFinish = (values) => {};
 
-    const handleItemsUpdate = (value, fieldName) => {};
-    useEffect(() => {
-        if(profile){
-            setSidebar(profile.tenant.sidebar);
-
+    const handleItemsUpdate = (value, fieldName) => {
+        if (fieldName === "role") {
+            setCustom(true);
+            form.setFieldsValue({ role: value });
         }
-    }, [sidebar]);
+    };
 
     return (
         <>
@@ -54,38 +48,22 @@ const SubUserForm = ({ form }) => {
                 labelCol={{ span: 8 }}
                 type={"role"}
                 updateInForm={(value) => handleItemsUpdate(value, "role")}
-                preFillValue={form.getFieldValue("role")}
             />
-
-            <Form.Item label="Permissions">
-                {sidebar && sidebar.map((module) => (
-                    <Form.Item key={module} label={module}>
-                        <Form.Item
-                            name={[module, "read"]}
-                            valuePropName="checked"
-                            noStyle
-                        >
-                            <Checkbox>Read</Checkbox>
-                        </Form.Item>
-                        <Form.Item
-                            name={[module, "write"]}
-                            valuePropName="checked"
-                            noStyle
-                        >
-                            <Checkbox style={{ marginLeft: 8 }}>Write</Checkbox>
-                        </Form.Item>
-                        <Form.Item
-                            name={[module, "delete"]}
-                            valuePropName="checked"
-                            noStyle
-                        >
-                            <Checkbox style={{ marginLeft: 8 }}>
-                                Delete
-                            </Checkbox>
-                        </Form.Item>
-                    </Form.Item>
-                ))}
-            </Form.Item> 
+            {custom && (
+                <FormItemCol
+                    label="Permission"
+                    name="permissions"
+                    required={true}
+                    rules={[
+                        { required: true, message: "Please Select the role!" },
+                    ]}
+                    width={"30vw"}
+                    labelCol={{ span: 8 }}
+                    type={"permissions"}
+                    updateInForm={(value) => handleItemsUpdate(value, "role")}
+                    form={form}
+                />
+            )}
         </>
     );
 };

@@ -12,6 +12,7 @@ import TermsAndConditionsForm from "../../Forms/App/TermsAndCondition";
 import NotesForm from "Forms/App/NoteForm";
 import ProductCategory from "./ProductType";
 import UserRole from "./UserRole";
+import UserPermission from "Forms/App/UserPermissionForm";
 
 const CustomInput = ({
     type,
@@ -180,15 +181,23 @@ const CustomInput = ({
                     width={width}
                 />
             );
-         case "role":
-                return (
-                    <UserRole
-                        form={form}
-                        updateInForm={updateInForm}
-                        width={width}
-                    />
-                );
+        case "role":
+            return (
+                <UserRole
+                    form={form}
+                    updateInForm={updateInForm}
+                    width={width}
+                />
+            );
 
+        case "permissions":
+            return (
+                <UserPermission
+                    form={form}
+                    updateInForm={updateInForm}
+                    width={width}
+                />
+            );
         default:
             return (
                 <Input
