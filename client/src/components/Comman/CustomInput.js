@@ -11,6 +11,7 @@ import OtherChargesForm from "../../Forms/App/OtherCharges";
 import TermsAndConditionsForm from "../../Forms/App/TermsAndCondition";
 import NotesForm from "Forms/App/NoteForm";
 import ProductCategory from "./ProductType";
+import UserRole from "./UserRole";
 
 const CustomInput = ({
     type,
@@ -179,6 +180,14 @@ const CustomInput = ({
                     width={width}
                 />
             );
+         case "role":
+                return (
+                    <UserRole
+                        form={form}
+                        updateInForm={updateInForm}
+                        width={width}
+                    />
+                );
 
         default:
             return (

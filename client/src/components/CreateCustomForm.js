@@ -10,6 +10,7 @@ import CustomFormItem from "../module/Create/CreateModule";
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import PageLoader from "pages/PageLoader";
+import { fetchTitleName } from "Helper/PageTitle";
 
 const CustomForm = ({
     entityOfModal,
@@ -87,9 +88,7 @@ const CustomForm = ({
                 {header && (
                     <Header
                         onlyTitle={true}
-                        title={`NEW ${entity
-                            .slice(0, entity.length - 1)
-                            ?.toUpperCase()}`}
+                        title={`New ${fetchTitleName(entity)}`}
                     />
                 )}
             </Divider>

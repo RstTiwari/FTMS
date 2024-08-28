@@ -11,6 +11,7 @@ import paymentMadeData from "Data/PaymnetMadeData";
 import productData from "Data/ProductData";
 import expenseData from "Data/ExpensesData";
 import workOrderData from "Data/WorkOrder";
+import SubUserData from "Data/SubUserData";
 
 const ListModule = (entity) => {
     let data = null;
@@ -48,8 +49,13 @@ const ListModule = (entity) => {
             break;
         case "expenses":
             data = expenseData;
+            break;
         case "workorders":
             data = workOrderData;
+            break;
+        case "subuser":
+                data = SubUserData;
+            break;
         default:
             break;
     }

@@ -15,6 +15,7 @@ import EntityNo from "../../Forms/App/Counters";
 import OrganizationForm from "Forms/App/OrgnizationForm";
 import PaymentMadeForm from "Forms/App/PaymentMadeForm";
 import WorkOrderForm from "Forms/App/WorkOder";
+import SubUserForm from "Forms/App/SubUserForm";
 
 const CoustomFormItem = ({ entity, form, isModal, isUpdate }) => {
     // const { entity: entityFromRouter } = useParams();
@@ -68,6 +69,9 @@ const CoustomFormItem = ({ entity, form, isModal, isUpdate }) => {
             break;
         case "workorders":
             componentToRender = <WorkOrderForm form={form} />;
+            break;
+        case "subuser":
+            componentToRender = <SubUserForm form={form} />;
             break;
         default:
             break;

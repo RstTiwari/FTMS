@@ -2,6 +2,7 @@ import React from "react";
 import { Col, Row, Button, Divider } from "antd";
 import { useParams, useNavigate } from "react-router-dom";
 import CoustomButton from "./Comman/CoustomButton";
+import { fetchTitleName } from "Helper/PageTitle";
 
 const HeaderComponent = ({ onlyTitle = false, title, details }) => {
     const { tenantId, entity } = useParams();
@@ -27,11 +28,11 @@ const HeaderComponent = ({ onlyTitle = false, title, details }) => {
                         lg={12}
                         style={{
                             color: "black",
-                            fontSize: details ? "10px" : "1rem",
+                            fontSize: details ? "12px" : "1.2rem",
                             color: "#22b378",
                         }}
                     >
-                        LIST OF ALL {entity?.toUpperCase()}
+                       LIST OF  {fetchTitleName(entity)?.toUpperCase()}
                     </Col>
                     <Col
                         xs={12}

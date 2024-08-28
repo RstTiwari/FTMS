@@ -14,7 +14,7 @@ import {
 const { Text, Title } = Typography;
 
 const SettingList = ({ closeSideBar, setCloseSideBar }) => {
-    const { entity, id } = useParams();
+    const { entity, id,} = useParams();
     const navigate = useNavigate();
     function getItem(label, key, icon, children, type) {
         return {
@@ -29,12 +29,17 @@ const SettingList = ({ closeSideBar, setCloseSideBar }) => {
     const tenantId = cookie["profile"]["tenant"]["tenantId"];
 
     const handleClick = (e) => {
-        navigate(`/app/${tenantId}/settings/${e.key}`);
+        if(e.key === "dashbordusers"){
+            navigate(`/app/${tenantId}/subuser/${1}/${10}`)
+        }else{
+            navigate(`/app/${tenantId}/settings/${e.key}`);
+
+        }
         setCloseSideBar(!closeSideBar);
     };
     const items = [
         getItem("Organization Profile", `organization`, <ContainerOutlined />),
-        getItem("PDF Templates", "templates", <PrinterOutlined />),
+        // getItem("PDF Templates", "templates", <PrinterOutlined />),
         getItem("Dashbord Users", "dashbordusers", <TeamOutlined />),
         // getItem("Employess", "emloyess", < />),
     ];
