@@ -24,15 +24,6 @@ const DetailsLayout = () => {
         pageSize
     );
 
-    const [tableParams, setTableParams] = useState({
-        pagination: {
-            current: pageNo || 1,
-            pageSize: pageSize || 10,
-            total: total,
-            hideOnSinglePage: true,
-        },
-    });
-
     const onTableChange = (pagination, filters, sorter) => {
         const { current: pageNo, pageSize } = pagination;
         navigate(`/app/${tenantId}/${entity}/${pageNo}/${pageSize}`);
@@ -73,7 +64,6 @@ const DetailsLayout = () => {
                 xl={details ? 6 : 24}
             >
                 <Headers details={details} />
-                // DetailsLayout.js
                 <CustomTable
                     columns={dataForTable.getColumns(details)}
                     dataSource={data}
@@ -81,7 +71,7 @@ const DetailsLayout = () => {
                     onRowClick={handleRowClick}
                     onTableChange={onTableChange} // Handle changes in the parent if needed
                     rowClassName={rowClassName}
-                    total={total}
+                    totalCount={total}
                     currentPage={pageNo} // Pass the current page number
                 />
             </Col>

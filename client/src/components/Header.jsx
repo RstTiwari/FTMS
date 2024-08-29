@@ -32,7 +32,7 @@ const HeaderComponent = ({ onlyTitle = false, title, details }) => {
                             color: "#22b378",
                         }}
                     >
-                       LIST OF  {fetchTitleName(entity)?.toUpperCase()}
+                        LIST OF {fetchTitleName(entity)?.toUpperCase()}
                     </Col>
                     <Col
                         xs={12}
@@ -42,6 +42,7 @@ const HeaderComponent = ({ onlyTitle = false, title, details }) => {
                         style={{
                             textAlign: "right",
                             fontSize: details ? "0.55rem" : "1rem",
+                            right: 20,
                         }}
                     >
                         <CoustomButton
@@ -66,7 +67,7 @@ const HeaderComponent = ({ onlyTitle = false, title, details }) => {
                         md={12}
                         lg={12}
                         style={{
-                            fontSize: details ? "0.9rem":"1.5rem",
+                            fontSize: details ? "0.9rem" : "1.5rem",
                             color: "#22b378",
                             marginRight: 5,
                         }}

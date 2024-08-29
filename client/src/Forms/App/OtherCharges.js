@@ -213,9 +213,10 @@ const OtherChargesForm = ({ form, updateInForm, width = "30vw" }) => {
                             <Row justify="start">
                                 <Row justify="start">
                                     <CoustomButton
-                                        text={"Add Charge"}
+                                        text={"Add New"}
                                         onClick={() => add()}
                                         withIcon={true}
+                                        details={true}
                                     />
                                 </Row>
                             </Row>

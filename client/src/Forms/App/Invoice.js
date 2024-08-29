@@ -176,13 +176,13 @@ const QuotationForm = ({ form }) => {
                     border: "2px solid #bfbfbb",
                     marginBottom: "20px",
                     margin: "20px",
-                    overflow: "auto",
+                    overflow: "scroll",
                 }}
             >
                 <div
                     style={{
-                        minWidth: 1200,
-                        overflow: "auto",
+                        minWidth: 1100,
+                        overflow: "scroll",
                     }}
                 >
                     <Row
@@ -233,7 +233,7 @@ const QuotationForm = ({ form }) => {
                         </Col>
                         <Col
                             className="gutter-row"
-                            span={4}
+                            span={2}
                             style={{
                                 borderRight: "1px solid #bfbfbb",
                                 textAlign: "center",
@@ -245,7 +245,6 @@ const QuotationForm = ({ form }) => {
                             className="gutter-row"
                             span={4}
                             style={{
-                                borderRight: "1px solid #bfbfbb",
                                 textAlign: "center",
                             }}
                         >
@@ -274,7 +273,7 @@ const QuotationForm = ({ form }) => {
                                     overflow: "auto",
                                     minHeight: "10vh",
                                     maxHeight: "40vh",
-                                    minWidth: 1200,
+                                    minWidth: 1100,
                                 }}
                             >
                                 {subFields.map(
@@ -282,7 +281,9 @@ const QuotationForm = ({ form }) => {
                                         <Row
                                             key={key}
                                             align="middle"
-                                            style={{ marginTop: "5px" }}
+                                            style={{
+                                                marginTop: "5px",
+                                            }}
                                         >
                                             <Col
                                                 className="gutter-row"
@@ -396,7 +397,7 @@ const QuotationForm = ({ form }) => {
                                             </Col>
                                             <Col
                                                 className="gutter-row"
-                                                span={4}
+                                                span={2}
                                             >
                                                 <Form.Item
                                                     {...restField}

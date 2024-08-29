@@ -570,16 +570,14 @@ const QuotationForm = ({ form }) => {
                             disabled={true}
                         />
                     </Row>
-                    <Row
-                        span={24}
-                        justify={"end"}
-                        style={{ marginRight: "150px" }}
-                    >
+                    <Row span={24} justify={"end"}>
                         <FormItemCol
                             type={"othercharges"}
                             form={form}
                             tooltip={"Charges with no tax"}
                             width={"400px"}
+                            labelAlign="left"
+                            labelCol={{ span: 12 }}
                             updateInForm={() => handleItemsUpdate()}
                         />
                     </Row>
