@@ -41,8 +41,6 @@ const UserPermission = ({ form, updateInForm, width = "30vw" }) => {
 
     // Handle value changes in the form
     const handleItemsUpdate = (value, fieldName, row) => {
-        console.log(value, "==", fieldName, row);
-
         let permissions = form.getFieldValue("permissions") || [];
         let changedRow = permissions[row];
         if (fieldName === "entity") {
@@ -54,7 +52,6 @@ const UserPermission = ({ form, updateInForm, width = "30vw" }) => {
         permissions[row] = changedRow;
         form.setFieldsValue({ permissions: permissions });
     };
-    console.log(form.getFieldValue("permissions"));
     //Handle changes in the form fields
     // Add a default term when the component mounts
     useEffect(() => {
@@ -66,7 +63,7 @@ const UserPermission = ({ form, updateInForm, width = "30vw" }) => {
 
     const addDefaultTerm = () => {
         const permissions = form.getFieldValue("permissions") || [];
-        permissions.push({ name: "", value: "" });
+        permissions.push({ entity: "", value: "" });
         form.setFieldsValue({ permissions: permissions });
     };
     useEffect(() => {
@@ -88,6 +85,7 @@ const UserPermission = ({ form, updateInForm, width = "30vw" }) => {
                 header="Permissions"
                 key="1"
                 style={{ alignItems: "center" }}
+                
             >
                 <Form.List name="permissions">
                     {(fields, { add, remove }) => (
@@ -99,7 +97,7 @@ const UserPermission = ({ form, updateInForm, width = "30vw" }) => {
                                         align="middle"
                                         justify="start"
                                     >
-                                        <Col span={8}>
+                                        <Col span={12}>
                                             <Form.Item
                                                 {...restField}
                                                 name={[name, "entity"]}

@@ -4,6 +4,7 @@ import Register from "../pages/Auth/Register";
 import ForgotPassword from "../pages/Auth/ForgotPassword";
 import { App } from "antd";
 import UpdatePassword from "pages/Auth/UpdatePassword";
+import OnboardUser from "pages/Auth/OnboardUser"
 import VerifyEmail from "pages/Auth/VerifyEmail";
 
 export default function AuthRouter() {
@@ -16,6 +17,8 @@ export default function AuthRouter() {
                 <Route path="/forgotPassword" element={<ForgotPassword />} />
                 <Route path="/verifyEmail/:userId/:tenantId" element={<VerifyEmail />} />
                 <Route path="/updatePassword/:userId/:tenantId" element={<UpdatePassword />} />
+                <Route path="/onboardUser/:token" element={<OnboardUser/>} />
+
 
             </Routes>
         </App>

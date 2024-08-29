@@ -8,6 +8,7 @@ import tenantDb from "../../models/coreModels/Tenant.js"
 import forgetpassword from "./forgetPassword.js";
 import updatePassword from "./updatePassword.js"
 import tenantData from "../../models/coreModels/tenantData.js";
+import onboardUser from "./onboardUser.js"
 
 const authRoutes = {
     verify: (req, res, next) => {
@@ -27,6 +28,9 @@ const authRoutes = {
     },
     updatePassword:(req,res,next)=>{
         updatePassword(req,res,next,userDb,userPasswordDb,tenantDb)
+    },
+    onboardUser:(req,res,next)=>{
+        onboardUser(req,res,next,userDb,userPasswordDb,tenantDb)
     }
 };
 

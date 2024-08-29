@@ -12,7 +12,9 @@ const UserSchema = new mongoose.Schema(
         },
         name: {
             type: "String",
-            required: true,
+            required: true,  
+            index: true,
+            sparse: true, 
         },
 
         tenantId: { type: String, ref: "tenant", required: true },
@@ -34,8 +36,11 @@ const UserSchema = new mongoose.Schema(
         role: {
             type: String,
             default: "superadmin",
-            enum: ["superadmin", "admin", "staffAdmin", "staff"],
+            enum: ["superadmin", "admin", "user", "custom"],
         },
+        permissions:[
+
+        ]
     },
     { timestamps: true }
 );

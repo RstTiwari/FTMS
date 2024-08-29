@@ -9,15 +9,17 @@ export const resendEmailController = async (
 ) => {
     try {
         const resend = new Resend(process.env.RESEND_API_KEY); // Ensure you use the correct environment variable name
-        from.split("@")[0] + "@ftms.myfac8ry.com";
-
+        // Split the email at the "@" character and take the first part (username)
+        const partMail = from.split("@")[0];
+        const newForm = partMail + "@ftms.myfac8ry.com";
         const { data, error } = await resend.emails.send({
-            from: from,
+            from: newForm,
             to: to,
             subject: sub,
             html: content,
             attachments: attachment, // Include attachments if provided
         });
+
         console.log(data, error);
 
         if (error) {

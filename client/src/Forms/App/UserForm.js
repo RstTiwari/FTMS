@@ -1,35 +1,60 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, Checkbox, Select, notification } from "antd";
+import {
+    Form,
+    Input,
+    Button,
+    Checkbox,
+    Select,
+    notification,
+    Col,
+    Row,
+    Space,
+} from "antd";
 import { useCookies } from "react-cookie";
 import FormItemCol from "components/Comman/FormItemCol";
+import Taglabel from "components/Comman/Taglabel";
 
 const { Option } = Select;
 
-const SubUserForm = ({ form }) => {
+const UserForm = ({ form }) => {
     const [loading, setLoading] = useState(false);
     const [cookies, setCookie] = useCookies("");
     const [custom, setCustom] = useState(null);
-
-    const onFinish = (values) => {};
 
     const handleItemsUpdate = (value, fieldName) => {
         if (fieldName === "role") {
             setCustom(true);
             form.setFieldsValue({ role: value });
         }
+
+        if (fieldName === "role" && value !== "custom") {
+            setCustom(false);
+            form.setFieldsValue({ permissions: [] });
+        }
     };
+
+    useEffect(() => {
+        let checkCustom = form.getFieldValue("role");
+        if (checkCustom === "custom") {
+            setCustom(true);
+        }
+    }, [custom]);
 
     return (
         <>
+            <Row justify={"center"} style={{ margin: "10px" }}>
+                <Taglabel
+                    text={"Email Will be send to User For Onboarding process"}
+                    weight={1000}
+                />
+            </Row>
             <FormItemCol
-                label="User Name"
+                label="Name"
                 name="name"
                 required={true}
-                labelCol={{ span: 8 }}
-                rules={[
-                    { required: true, message: "Please input the username!" },
-                ]}
+                rules={[{ required: true, message: "Please input the name!" }]}
                 width={"30vw"}
+                labelCol={{ span: 8 }}
             />
             <FormItemCol
                 label="Email Id"
@@ -48,7 +73,26 @@ const SubUserForm = ({ form }) => {
                 labelCol={{ span: 8 }}
                 type={"role"}
                 updateInForm={(value) => handleItemsUpdate(value, "role")}
+                preFillValue={form.getFieldValue("role") || ""}
             />
+            <Col span={12}>
+                <Form.Item
+                    label={"Status"}
+                    labelCol={{ span: 8 }}
+                    labelAlign="left"
+                    name={"removed"}
+                    initialValue={form.getFieldValue("removed") || false}
+                >
+                    <Select
+                        options={[
+                            { label: "ACTIVE", value: false },
+                            { label: "DEACTIVE", value: true },
+                        ]}
+                        style={{ width: "30vw" }}
+                    />
+                </Form.Item>
+            </Col>
+
             {custom && (
                 <FormItemCol
                     label="Permission"
@@ -59,6 +103,7 @@ const SubUserForm = ({ form }) => {
                     ]}
                     width={"30vw"}
                     labelCol={{ span: 8 }}
+                    labelAlign="left"
                     type={"permissions"}
                     updateInForm={(value) => handleItemsUpdate(value, "role")}
                     form={form}
@@ -68,4 +113,4 @@ const SubUserForm = ({ form }) => {
     );
 };
 
-export default SubUserForm;
+export default UserForm;

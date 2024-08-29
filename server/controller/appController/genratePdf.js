@@ -3,7 +3,6 @@ import whiteSimple from "../../template/pdfTemplate/whitesample/index.js";
 import tenantDb from "../../models/coreModels/Tenant.js";
 import checkDbForEntity from "../../Helper/databaseSelector.js";
 import countersDb from "../../models/appModels/counters.js";
-import { organizationData } from "../../data/orgnization.js";
 
 const generatePdf = async (req, res, next, forEmail) => {
     try {

@@ -26,10 +26,9 @@ const autherization = async (req, res, next) => {
         }
 
         const role = userData.role;
-        console.log(role, "==");
 
-        if (role !== "superadmin") {
-            throw new Error("Cant access  Autherization Failed");
+        if (role !== "superadmin" && role !== "admin") {
+            throw new Error("You are not Authorized");
         }
 
         req["tenantId"] = userData.tenantId;

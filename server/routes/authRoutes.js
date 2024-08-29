@@ -9,5 +9,7 @@ router.post("/login", authRoutes.login);
 router.post("/forgetPassword", authRoutes.forgetPassword);
 router.post("/updatePassword", authRoutes.updatePassword);
 router.post("/isValidAuthtoken", authRoutes.isValidAuthtoken);
+router.post("/onboardUser", authRoutes.onboardUser);
+
 
 export default router;

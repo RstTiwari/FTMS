@@ -32,9 +32,11 @@ const read = async (req, res, next) => {
             ])
             .lean();
 
+        let total = await dataBase.countDocuments({ tenantId: tenantId })
         res.status(200).json({
             success: 1,
             result: data,
+            total:total,
             message: ` ${entity} fetched SuccessFully`,
         });
     } catch (error) {

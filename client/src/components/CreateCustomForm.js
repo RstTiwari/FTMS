@@ -33,10 +33,11 @@ const CustomForm = ({
         isUpdate,
         id
     );
-
+    /**
+     * isAdmin to cehck weather the api that i m going to call will is Admin api
+     *  */
+    let isAdmin = entity =="user" ? true:false
     const handleFormFinish = async (values) => {
-        console.log(values);
-
         if (values.hasOwnProperty("image")) {
             let image = values?.image;
             if (typeof image === "object") {
@@ -56,7 +57,7 @@ const CustomForm = ({
             }
         }
 
-        handleFormSubmit(values, isModal, passToModal);
+        handleFormSubmit(values, isModal, passToModal,isAdmin);
     };
 
     const validateFields = async () => {

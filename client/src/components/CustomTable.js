@@ -1,8 +1,7 @@
 // CustomTable.js
 
-import React from "react";
+import React, { useState } from "react";
 import { Table } from "antd";
-import PageLoader from "pages/PageLoader";
 
 const CustomTable = ({
     columns,
@@ -12,10 +11,28 @@ const CustomTable = ({
     onTableChange,
     pageSize,
     rowClassName,
+    total,
+    currentPage, // Passed down as props for current page number
 }) => {
-    const tableStyle = {
-        color: "green", // Text color
-        backgroundColor: "#f0f0f0", // Light off-white background color
+    const [tableParams, setTableParams] = useState({
+        pagination: {
+            current: currentPage || 1,
+            pageSize: pageSize || 10,
+            total: total,
+            hideOnSinglePage: true,
+        },
+    });
+
+    const handleTableChange = (pagination) => {
+        setTableParams({
+            ...tableParams,
+            pagination: {
+                ...tableParams.pagination,
+                current: pagination.current,
+                pageSize: pagination.pageSize,
+            },
+        });
+        onTableChange(pagination); // Pass the pagination data back to the parent
     };
 
     return (
@@ -25,30 +42,13 @@ const CustomTable = ({
                 dataSource={dataSource}
                 size="small"
                 loading={isLoading}
+                rowClassName={rowClassName}
+                pagination={tableParams.pagination}
+                onChange={handleTableChange}
                 onRow={(record) => ({
                     onClick: () => onRowClick(record),
                 })}
-                rowClassName={rowClassName}
-                style={tableStyle}
-                pagination={{
-                    pageSize: pageSize,
-                    hideOnSinglePage: true,
-                }}
-                onChange={onTableChange}
             />
-
-            <style>
-                {`
-              .custom-row:hover {
-                         background-color: #8A8D8F !important; /* Light grey hover color */
-                         cursor: pointer; /* Change cursor to pointer */
-                         background: #0b0b0b
-                    }
-              .selected-row {
-                        background-color: #f3f3f3 !important; /* Black selected row color */
-                    }
-            `}
-            </style>
         </>
     );
 };

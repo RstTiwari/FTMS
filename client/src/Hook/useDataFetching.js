@@ -4,6 +4,7 @@ import { useAuth } from "state/AuthProvider";
 import { setLocalData, getLocalData } from "Helper/FetchingLocalData";
 const useDataFetching = (entity, select, pageNo, pageSize) => {
     const [data, setData] = useState([]);
+    const [total,setTotal] = useState(null)
     const [isLoading, setIsLoading] = useState(true);
     const { appApiCall } = useAuth();
     const fetchData = useCallback(async () => {
@@ -18,6 +19,7 @@ const useDataFetching = (entity, select, pageNo, pageSize) => {
 
             if (response.success) {
                 setData(response.result);
+                setTotal(response.total)
                 NotificationHandler.success(response.message);
             } else {
                 NotificationHandler.error(response.message);
@@ -46,7 +48,7 @@ const useDataFetching = (entity, select, pageNo, pageSize) => {
     useEffect(() => {
         fetchData();
     }, [fetchData]); // Ensure useEffect runs whenever fetchData changes
-    return { data, isLoading, fetchData };
+    return { data,total, isLoading, fetchData };
 };
 
 export default useDataFetching;

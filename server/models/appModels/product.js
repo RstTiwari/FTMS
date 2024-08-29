@@ -23,7 +23,7 @@ const productSchema = new mongoose.Schema(
         code: {
             type: String,
             unique: true,
-            required: true,
+            sparse:true
         },
         name: {
             type: String,
@@ -41,7 +41,6 @@ const productSchema = new mongoose.Schema(
             type: mongoose.Schema.ObjectId,
             ref: "vendors",
             autopopulate: true,
-            required: true,
         },
         components: [referenceWithQuantitySchema], // Array of product references with quantity
         parts: [referenceWithQuantitySchema], // Array of product references with quantity
@@ -54,14 +53,14 @@ const productSchema = new mongoose.Schema(
 );
 
 // Compound index to ensure uniqueness of code and name combination
-productSchema.index({ code: 1, name: 1 }, { unique: true });
+productSchema.index({ code: 1, name: 1 }, { unique: true,sparse:true });
 
 // Ensure unique code and name across existing documents
 productSchema.pre("save", async function (next) {
     if (this.isNew) {
         // Check if a product with the same code or name already exists
         const existingProduct = await mongoose.model("product").findOne({
-            $or: [{ code: this.code }, { name: this.name }],
+            $and: [{ code: this.code }, { name: this.name }],
         });
 
         if (existingProduct) {

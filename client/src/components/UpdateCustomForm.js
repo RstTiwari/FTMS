@@ -27,6 +27,9 @@ const UpdateCustomForm = ({
     const [changedField, setChangedField] = useState({});
     const { isFetching, initialValues, fetchInitialValues } =
         useInitialFormValues(entity, "get", id);
+    
+   let isAdmin = entity =="user" ? true:false
+
     const { isLoading, error, handleFormSubmit } = useFormActions(
         entity,
         true,
@@ -75,7 +78,7 @@ const UpdateCustomForm = ({
                 values.image = response.result;
             }
         }
-        await handleFormSubmit(values);
+        await handleFormSubmit(values,isAdmin);
     };
 
     const handleValueChange = (changeValues, allValues) => {

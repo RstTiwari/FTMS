@@ -30,7 +30,7 @@ const SettingList = ({ closeSideBar, setCloseSideBar }) => {
 
     const handleClick = (e) => {
         if(e.key === "dashbordusers"){
-            navigate(`/app/${tenantId}/subuser/${1}/${10}`)
+            navigate(`/app/${tenantId}/user/${1}/${10}`)
         }else{
             navigate(`/app/${tenantId}/settings/${e.key}`);
 

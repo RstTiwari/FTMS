@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Select, Button, Divider, Modal, Input, Row, Space } from "antd";
-import { role } from "../../Data/SubUserData";
+import { role } from "../../Data/UserData";
 const UserRole = ({
     width = "15vw",
     updateInForm,

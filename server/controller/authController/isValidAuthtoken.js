@@ -31,7 +31,7 @@ const isValidAuthtoken = async (req, res, next) => {
             return res.status(401).json({
                 success: 0,
                 result: null,
-                message: "User does not Exist , autherization denied ",
+                message: "User does not Exist , authorization denied ",
                 jwtExpired: true,
             });
         }

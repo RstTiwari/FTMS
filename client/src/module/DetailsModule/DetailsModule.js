@@ -11,6 +11,7 @@ import PurchaseOrderDetails from "pages/Details/PurchaseOrderDetails";
 import DeliveryChallanDetails from "pages/Details/DeliveryChallanDetails";
 import PaymentMade from "pages/Details/PaymentMadeDetails";
 import WorkOrderDetails from "pages/Details/WorkOderDetails";
+import UserDetails from "pages/Details/UserDetails";
 const DetailsModule = ({ entity, values, id, loading }) => {
     let component = <NotFound />;
     switch (entity) {
@@ -69,6 +70,9 @@ const DetailsModule = ({ entity, values, id, loading }) => {
         case "workorders":
             component = <WorkOrderDetails entity={entity} workOrder={values} />;
             break;
+        case "user":
+                component = <UserDetails entity={entity} user={values} />;
+                break;
         default:
             break;
     }

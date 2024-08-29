@@ -17,14 +17,23 @@ const DetailsLayout = () => {
     const dataForTable = ListModule(entity);
 
     const navigate = useNavigate();
-    const { data, isLoading, fetchData } = useDataFetching(
+    const { data, total, isLoading, fetchData } = useDataFetching(
         entity,
         dataForTable.select,
         pageNo,
         pageSize
     );
 
-    const onTableChange = (pagination, filter, sorter) => {
+    const [tableParams, setTableParams] = useState({
+        pagination: {
+            current: pageNo || 1,
+            pageSize: pageSize || 10,
+            total: total,
+            hideOnSinglePage: true,
+        },
+    });
+
+    const onTableChange = (pagination, filters, sorter) => {
         const { current: pageNo, pageSize } = pagination;
         navigate(`/app/${tenantId}/${entity}/${pageNo}/${pageSize}`);
     };
@@ -55,7 +64,7 @@ const DetailsLayout = () => {
     };
 
     return (
-        <Row  >
+        <Row>
             <Col
                 xs={details ? 12 : 24}
                 sm={details ? 12 : 24}
@@ -64,13 +73,16 @@ const DetailsLayout = () => {
                 xl={details ? 6 : 24}
             >
                 <Headers details={details} />
+                // DetailsLayout.js
                 <CustomTable
                     columns={dataForTable.getColumns(details)}
                     dataSource={data}
                     isLoading={isLoading}
                     onRowClick={handleRowClick}
-                    onTableChange={onTableChange}
+                    onTableChange={onTableChange} // Handle changes in the parent if needed
                     rowClassName={rowClassName}
+                    total={total}
+                    currentPage={pageNo} // Pass the current page number
                 />
             </Col>
             {details && (

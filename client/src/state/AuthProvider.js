@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
         return cookies[key];
     };
 
-    const authApiCall = async (path, data) => {
+    const authApiCall = async (path, data,params) => {
         let token = cookies["token"];
 
         let axiosConfig = {
@@ -35,6 +35,8 @@ export const AuthProvider = ({ children }) => {
                 token: token ? token : null,
             },
             data: data,
+            params: params ? params : "",
+
         };
         try {
             let response = await axios(axiosConfig);
@@ -51,6 +53,7 @@ export const AuthProvider = ({ children }) => {
             return response;
         }
     };
+
     const adminApiCall = async (method, path, data, params) => {
         const token = cookies["token"];
         let axiosConfig = {
@@ -120,7 +123,6 @@ export const AuthProvider = ({ children }) => {
 
     const pdfGenerate = async (entity, id, no, action = "display") => {
         const token = cookies["token"];
-        console.log(no, "=====");
         try {
             const headers = {
                 "Content-Type": "application/json",

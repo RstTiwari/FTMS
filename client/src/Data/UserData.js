@@ -45,14 +45,28 @@ const getColumns = (details) => [
             />
         ),
     },
+    {
+        title: <Taglabel text={"STATUS"} type={"heading"} details={details} />,
+        dataIndex: "role",
+        key: "role",
+        responsive: details ? [] : ["lg"],
+        width: 100,
+        render: (_, record) => (
+            <Taglabel
+                type={"text"}
+                text={(record?.removed ? "DEACTIVE":"ACTIVE" )}
+                details={details}
+            />
+        ),
+    },
   
 
 ];
-const SubUserData = {
+const UserData = {
     getColumns,
 };
 
-export default SubUserData;
+export default UserData;
 
 export const role = [
     {

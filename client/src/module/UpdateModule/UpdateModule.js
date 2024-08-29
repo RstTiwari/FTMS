@@ -15,6 +15,7 @@ import EntityNo from "../../Forms/App/Counters";
 import OrganizationForm from "../../Forms/App/OrgnizationForm";
 import WorkOrderForm from "Forms/App/WorkOder";
 import PaymentMadeForm from "Forms/App/PaymentMadeForm";
+import UserForm from "Forms/App/UserForm";
 
 const UpdateModule = ({ entity, form }) => {
     // const { entity: entityFromRouter } = useParams();
@@ -62,6 +63,9 @@ const UpdateModule = ({ entity, form }) => {
             break;
         case "workorders":
             componentToRender = <WorkOrderForm form={form} />;
+            break;
+        case "user":
+            componentToRender = <UserForm form={form} />;
             break;
         default:
             break;

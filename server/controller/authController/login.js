@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import sendEmail from "./sendEmail.js";
 import tenSpecificData from "../../data/tenantData.js";
+import { customizeSidebar } from "../../Helper/customizeSidebar.js";
 /**
  *
  * @param {*} req
@@ -123,8 +124,11 @@ const login = async (
 
         let tenantId = user?.tenantId;
         const tenantData = await tenantDb.findOne({ _id: tenantId });
-
-        const sidebar = tenSpecificData.sidebar;
+        let sidebar = tenSpecificData.sidebar;
+        if (user.role == "custom") {
+            sidebar = customizeSidebar(tenSpecificData.sidebar, user.permissions);
+            console.log(sidebar,"===");
+        }
 
         return res.status(200).json({
             success: 1,

@@ -22,7 +22,6 @@ const LoginForm = () => {
     }
 
     return (
-        <div style={{ width: "50%" }}>
             <Form onFinish={handleLoginChange} form={form}>
                 <Form.Item
                     label={<CustomLabel label={"Email"} required={true} />}
@@ -50,12 +49,13 @@ const LoginForm = () => {
                     label={<CustomLabel label={"Password"} required={true} />}
                     labelAlign="left"
                     name={"password"}
-                    labelCol={{ span: 6 }}
+                    labelCol={{ span:6 }}
                     rules={[
                         {
                             required: true,
                         },
                     ]}
+
                 >
                     <Input.Password
                         prefix={<LockOutlined />}
@@ -90,7 +90,6 @@ const LoginForm = () => {
                     </Row>
                 </Form.Item>
             </Form>
-        </div>
     );
 };
 

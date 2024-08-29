@@ -10,7 +10,7 @@ const hederTitleMap = {
     workorders: "Work Order",
     products: "Product",
     challans: "Delivery Challan",
-    subuser: "Dashboard User",
+    user: "Dashboard User",
 
 };
 

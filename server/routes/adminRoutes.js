@@ -11,5 +11,7 @@ const router = express.Router();
 router.get("/read", autherization, adminRoutes.read);
 router.post("/update", autherization, adminRoutes.update);
 router.get("/permissionData", autherization, adminRoutes.permissionsData);
+router.post("/create", autherization, adminRoutes.create);
+
 
 export default router;

@@ -7,7 +7,9 @@ const Login = () => {
         <div className="parent_clearfix">
             <SideContent />
             <div className="login">
-                <LoginForm  />
+                <div className="container">
+                    <LoginForm />
+                </div>
             </div>
         </div>
     );

@@ -8,10 +8,10 @@ const useAuthApiCall = (backendApi) => {  // backendApi is backend backendApi
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleApiCall = async (values) => {
+  const handleApiCall = async (values,params) => {
     setIsLoading(true);
     try {
-      const response = await authApiCall(backendApi, values);
+      const response = await authApiCall(backendApi, values,params);
       if (response.success) {
         const {result} = response
         const {user,tenant} = result
@@ -24,39 +24,41 @@ const useAuthApiCall = (backendApi) => {  // backendApi is backend backendApi
         };
 
         if (backendApi === "login") {
-          // Storing Data for login
-          storeLocalData(
-            "token",
-            response?.result?.token,
-            response?.result?.expiresIn
-          );
-          storeLocalData(
-            "profile",
-            JSON.stringify(response?.result),
-            response?.result?.expiresIn
-          );
-          navigate("/");
+            // Storing Data for login
+            storeLocalData(
+                "token",
+                response?.result?.token,
+                response?.result?.expiresIn
+            );
+            storeLocalData(
+                "profile",
+                JSON.stringify(response?.result),
+                response?.result?.expiresIn
+            );
+            navigate("/");
         } else if (backendApi === "register") {
-          storeLocalData(user?.userId, response.result)
-          navigate(`/verifyEmail/${user?.userId}/${tenant?.tenantId}`);
+            storeLocalData(user?.userId, response.result);
+            navigate(`/verifyEmail/${user?.userId}/${tenant?.tenantId}`);
         } else if (backendApi === "verify") {
-          //Storing Data for login
-          storeLocalData(
-            "token",
-            response?.result?.token,
-            response?.result?.expiresIn
-          );
-          storeLocalData(
-            "profile",
-            JSON.stringify(response?.result),
-            response?.result?.expiresIn
-          );
-          navigate("/");
+            //Storing Data for login
+            storeLocalData(
+                "token",
+                response?.result?.token,
+                response?.result?.expiresIn
+            );
+            storeLocalData(
+                "profile",
+                JSON.stringify(response?.result),
+                response?.result?.expiresIn
+            );
+            navigate("/");
         } else if (backendApi === "forgetPassword") {
-          storeLocalData(user?.userId, response.result);
-          navigate(`/updatePassword/${user?.userId}/${tenant?.tenantId}`);
+            storeLocalData(user?.userId, response.result);
+            navigate(`/updatePassword/${user?.userId}/${tenant?.tenantId}`);
         } else if (backendApi === "updatePassword") {
-          navigate("/login");
+            navigate("/login");
+        } else if (backendApi === "onboardUser") {
+            navigate("/login");
         }
           return NotificationHandler.success(response?.message);
       } else {
@@ -69,8 +71,8 @@ const useAuthApiCall = (backendApi) => {  // backendApi is backend backendApi
     }
   };
 
-  const handleAuthApi = async (values) => {
-    handleApiCall(values);
+  const handleAuthApi = async (values,params) => {
+    handleApiCall(values,params);
   };
 
   return {

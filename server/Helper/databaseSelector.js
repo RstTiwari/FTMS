@@ -14,6 +14,7 @@ import tenantData from "../models/coreModels/tenantData.js";
 import counters from "../models/appModels/counters.js";
 import customSelect from "../models/appModels/customSelect.js";
 import workorders from "../models/appModels/workOrder.js";
+import User from "../models/coreModels/User.js";
 
 const dbMapping = {
     customers: customerDb,
@@ -32,6 +33,7 @@ const dbMapping = {
     counters: counters,
     customSelect: customSelect,
     workorders: workorders,
+    user:User
 };
 
 const checkDbForEntity = (entity) => dbMapping[entity] || false;

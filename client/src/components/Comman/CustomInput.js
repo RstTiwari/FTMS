@@ -187,6 +187,7 @@ const CustomInput = ({
                     form={form}
                     updateInForm={updateInForm}
                     width={width}
+                    preFillValue={preFillValue}
                 />
             );
 
