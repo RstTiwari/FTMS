@@ -609,7 +609,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                     )}
                 </Form.List>
             </div>
-            <Row>
+            <Row justify={"end"}>
                 <Col xs={24} sm={24} md={12} lg={12} xl={12}>
                     <FormItemCol form={form} type={"notes"} width={"50vw"} />
                 </Col>
@@ -645,17 +645,19 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
                         />
                     </Row>
                     <Row
-                        span={24}
-                        justify={"end"}
-                        style={{ marginRight: "150px" }}
+                        justify={"center"}
+                        
                     >
+                        <Col xs={24} sm={24} md={12} lg={6} xl= {6}>
                         <FormItemCol
                             type={"othercharges"}
                             form={form}
                             tooltip={"Charges with no tax"}
-                            width={"400px"}
                             updateInForm={() => handleItemsUpdate()}
                         />
+                        </Col>
+                   
+                    
                     </Row>
 
                     <Row align={"middle"} justify={"end"}>

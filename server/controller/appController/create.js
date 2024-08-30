@@ -15,7 +15,7 @@ const create = async (req, res, next) => {
 
         values["tenantId"] = tenantId;
         let newData = new dataBase(values);
-        let savedata = await newData.save();
+        let savedata = await newData.save({req});
 
         if (!savedata) {
             throw new Error(`Failed to Create new ${req.entity} data`);

@@ -13,17 +13,22 @@ const fetchCustomModalData = async (req, res, next) => {
         let query = { tenantId: tenantId };
         if (char) {
             const regexPattern = new RegExp(char, "i"); // for case insensitive
-            query[fieldName] = { $regex: regexPattern };
+            query[fieldName] = {
+                $exists: true,
+                $regex: regexPattern,
+            };
         }
         let data = await dataBase.find(query).sort({ _id: -1 }).limit(20);
-        const modifiedData = data.map((item) => {
-            const temObj = {
+        const modifiedData = data
+        .filter((item) => item[fieldName] !== undefined && item[fieldName] !== null) // Filter objects with the specific field
+        .map((item) => {
+            return {
                 label: item[fieldName],
                 value: item._id,
                 item,
             };
-            return temObj;
         });
+
         return res.status(200).json({
             success: 1,
             result: modifiedData,

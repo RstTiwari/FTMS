@@ -72,7 +72,7 @@ const tenantSpecificData = {
         {
             key: "design",
             label: "Design",
-            icon: "DatabaseOutlined",
+            icon: "CodeSandboxOutlined",
             children: [
                 {
                     key: "products",
@@ -91,6 +91,21 @@ const tenantSpecificData = {
                 },
             ],
         },
+        // {
+        //     key: "myfac8ry",
+        //     label: "Myfac8ry Market",
+        //     icon: "ShopOutlined",
+        //     children: [
+        //         {
+        //             key: "enquiryreceived",
+        //             label: "Enquiry Received",
+        //         },
+        //         {
+        //             key: "enquiryrraised",
+        //             label: "Enquiry Raised",
+        //         }
+        //     ],
+        // },
     ],
 };
 

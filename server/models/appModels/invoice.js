@@ -86,4 +86,11 @@ const invoiceSchema = new mongoose.Schema(
 
 invoiceSchema.plugin(mongooseAutoPopulate);
 
+// Apply the common post-save middleware
+invoiceSchema.post('save', commonPostSaveHandler({
+    updateComments: true,
+    entityType: 'Invoice',
+    commentData: { text: 'Invoice saved or updated', author: 'SYSTEM' }
+}));
+
 export default mongoose.model("invoice", invoiceSchema);

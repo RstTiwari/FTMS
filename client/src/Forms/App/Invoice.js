@@ -176,13 +176,13 @@ const QuotationForm = ({ form }) => {
                     border: "2px solid #bfbfbb",
                     marginBottom: "20px",
                     margin: "20px",
-                    overflow: "scroll",
+                    overflow: "auto",
                 }}
             >
                 <div
                     style={{
                         minWidth: 1100,
-                        overflow: "scroll",
+                        overflow: "auto",
                     }}
                 >
                     <Row
@@ -193,7 +193,7 @@ const QuotationForm = ({ form }) => {
                     >
                         <Col
                             className="gutter-row"
-                            span={6}
+                            span={8}
                             style={{
                                 borderRight: "1px solid #bfbfbb",
                                 textAlign: "center",
@@ -223,7 +223,7 @@ const QuotationForm = ({ form }) => {
                         </Col>
                         <Col
                             className="gutter-row"
-                            span={4}
+                            span={3}
                             style={{
                                 borderRight: "1px solid #bfbfbb",
                                 textAlign: "center",
@@ -287,7 +287,7 @@ const QuotationForm = ({ form }) => {
                                         >
                                             <Col
                                                 className="gutter-row"
-                                                span={6}
+                                                span={8}
                                                 style={{
                                                     textAlign: "center",
                                                 }}
@@ -371,7 +371,7 @@ const QuotationForm = ({ form }) => {
                                             </Col>
                                             <Col
                                                 className="gutter-row"
-                                                span={4}
+                                                span={3}
                                                 style={{
                                                     textAlign: "center",
                                                 }}
@@ -494,7 +494,7 @@ const QuotationForm = ({ form }) => {
                     )}
                 </Form.List>
             </div>
-            <Row>
+            <Row >
                 <Col xs={24} sm={24} md={12} lg={12} xl={12}>
                     <FormItemCol form={form} type={"notes"} width={"50vw"} />
                 </Col>
@@ -506,7 +506,7 @@ const QuotationForm = ({ form }) => {
                             labelAlign="left"
                             type={"number"}
                             disabled={true}
-                            labelCol={{ span: 12 }}
+                            labelCol={{ span: 12}}
                         />
                     </Row>
                     <Row align={"middle"} justify={"end"}>
@@ -529,19 +529,19 @@ const QuotationForm = ({ form }) => {
                             labelCol={{ span: 12 }}
                         />
                     </Row>
-                    <Row
-                        span={24}
-                        justify={"end"}
-                        style={{ marginRight: "150px" }}
-                    >
-                        <FormItemCol
+                    <Row justify={"center"} >
+                    <Col sm={24} xs={24} md={24} lg={6} xl={6}>
+                    <FormItemCol
                             type={"othercharges"}
                             form={form}
                             tooltip={"Charges with no tax"}
-                            width={"400px"}
+                            width={"500px"}
                             updateInForm={() => handleItemsUpdate()}
                         />
+                    </Col>
+            
                     </Row>
+                     
 
                     <Row align={"middle"} justify={"end"}>
                         <FormItemCol

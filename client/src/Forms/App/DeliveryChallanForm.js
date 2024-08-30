@@ -503,10 +503,10 @@ const DeliveryChallan = ({ form }) => {
                         />
                     </Row>
                     <Row
-                        span={24}
-                        justify={"end"}
-                        style={{ marginRight: "150px" }}
+                        justify={"center"}
                     >
+                        <Col xs={24} sm={24} md={24} lg={6} xl={6}>
+                        
                         <FormItemCol
                             type={"othercharges"}
                             form={form}
@@ -514,6 +514,8 @@ const DeliveryChallan = ({ form }) => {
                             width={"400px"}
                             updateInForm={() => handleItemUpdate()}
                         />
+                        </Col>
+
                     </Row>
 
                     <Row align={"middle"} justify={"end"}>

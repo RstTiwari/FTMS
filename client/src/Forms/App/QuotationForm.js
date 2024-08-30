@@ -570,7 +570,8 @@ const QuotationForm = ({ form }) => {
                             disabled={true}
                         />
                     </Row>
-                    <Row span={24} justify={"end"}>
+                    <Row span={24} justify={"center"}>
+                        <Col xl={6} lg={6} sm={24} xs={24} md={24}>
                         <FormItemCol
                             type={"othercharges"}
                             form={form}
@@ -580,6 +581,8 @@ const QuotationForm = ({ form }) => {
                             labelCol={{ span: 12 }}
                             updateInForm={() => handleItemsUpdate()}
                         />
+                        </Col>
+                      
                     </Row>
                     <Row span={24} justify={"end"}>
                         <FormItemCol

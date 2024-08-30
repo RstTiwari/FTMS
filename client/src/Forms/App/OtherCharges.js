@@ -15,6 +15,7 @@ import {
     CaretRightOutlined,
 } from "@ant-design/icons";
 import CoustomButton from "../../components/Comman/CoustomButton";
+import { DeleteOutline } from "@mui/icons-material";
 
 const { Option } = Select;
 const { Panel } = Collapse;
@@ -46,14 +47,15 @@ const OtherChargesForm = ({ form, updateInForm, width = "30vw" }) => {
     };
 
     return (
-        <Collapse
+        <Col span={12}>
+            <Collapse
             bordered={false}
             expandIcon={({ isActive }) => (
                 <CaretRightOutlined rotate={isActive ? 90 : 0} />
             )}
             style={{
-                background: "transparent",
-                width: width,
+              fontSize:"1rem",
+              minWidth:400,
             }}
         >
             <Panel
@@ -70,15 +72,17 @@ const OtherChargesForm = ({ form, updateInForm, width = "30vw" }) => {
                                         key={key}
                                         align="middle"
                                         justify="start"
+                                        style={{fontSize:'0.7rem',minWidth:400,overflow:"auto"}}
                                     >
                                         <Col span={1}>
                                             <Form.Item>
-                                                <MinusCircleOutlined
+                                                <DeleteOutline
                                                     onClick={() => remove(name)}
                                                     style={{
                                                         color: "red",
                                                         justifyContent:
-                                                            "center",
+                                                            "left",
+                                                        fontSize:"1rem",
                                                     }}
                                                 />
                                             </Form.Item>
@@ -100,6 +104,7 @@ const OtherChargesForm = ({ form, updateInForm, width = "30vw" }) => {
                                                         "otherCharges"
                                                     )?.[name]?.action || "add"
                                                 }
+                                               
                                             >
                                                 <Select
                                                     onChange={handleFieldChange}
@@ -113,6 +118,11 @@ const OtherChargesForm = ({ form, updateInForm, width = "30vw" }) => {
                                                             value: "less",
                                                         },
                                                     ]}
+                                                    
+                                                    style={{
+                                                        fontSize:"1rem",
+                                                        width:"72px"
+                                                    }}
                                                 ></Select>
                                             </Form.Item>
                                         </Col>
@@ -128,12 +138,12 @@ const OtherChargesForm = ({ form, updateInForm, width = "30vw" }) => {
                                                     {
                                                         required: true,
                                                         message:
-                                                            "Enter Charge Name",
+                                                            "Fill Name",
                                                     },
                                                 ]}
                                             >
                                                 <Input
-                                                    placeholder="Description"
+                                                    placeholder="Name"
                                                     style={{ width: "100%" }}
                                                     onBlur={(e) => {
                                                         const value =
@@ -158,7 +168,7 @@ const OtherChargesForm = ({ form, updateInForm, width = "30vw" }) => {
                                                     {
                                                         required: true,
                                                         message:
-                                                            "Enter Charge Amount",
+                                                            "Fill Amount",
                                                     },
                                                 ]}
                                             >
@@ -167,10 +177,11 @@ const OtherChargesForm = ({ form, updateInForm, width = "30vw" }) => {
                                                     style={{ width: "100%" }}
                                                     controls={false}
                                                     onChange={handleFieldChange}
+
                                                 />
                                             </Form.Item>
                                         </Col>
-                                        <Col span={4}>
+                                        <Col span={3}>
                                             <Form.Item
                                                 {...restField}
                                                 name={[name, "rsOrPercent"]}
@@ -225,6 +236,8 @@ const OtherChargesForm = ({ form, updateInForm, width = "30vw" }) => {
                 </Form.List>
             </Panel>
         </Collapse>
+        </Col>
+    
     );
 };
 
