@@ -57,7 +57,7 @@ paymentsSchema.pre("save", function (next, options) {
 //Attching the req body to save this
 paymentsSchema.pre("updateOne", function (next) {
     if (this.options && this.options.req) {
-        this._req = options.req; // Attach req to the document
+        this._req = this.options.req; // Attach req to the document
     }
     next();
 });
