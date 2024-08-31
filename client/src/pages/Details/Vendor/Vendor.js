@@ -14,6 +14,7 @@ import Taglabel from "components/Comman/Taglabel";
 
 import PageLoader from "pages/PageLoader";
 import OverviewTab from "./Overviewtab";
+import TransectionTab from "./TransectionTab";
 const { TabPane } = Tabs;
 
 const VendorDetails = ({ values, loading }) => {
@@ -29,6 +30,18 @@ const VendorDetails = ({ values, loading }) => {
                 key="1"
             >
                 <OverviewTab vendorData={values} />
+            </TabPane>
+            <TabPane
+                tab={
+                    <Taglabel
+                        text={"Transections"}
+                        weight={200}
+                        type={"text"}
+                    />
+                }
+                key="2"
+            >
+                <TransectionTab />
             </TabPane>
         </Tabs>
     );

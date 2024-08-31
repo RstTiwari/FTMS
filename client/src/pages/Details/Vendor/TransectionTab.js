@@ -7,12 +7,13 @@ const TransectionTab = () => (
         <CollapsibleTable
             columns={purchaseData.getColumns()}
             panelHeader={"Purchase Order"}
+            entity={"purchases"}
         />
         <CollapsibleTable
             panelHeader={"Payments Made"}
             columns={paymentReceivedData.getColumns()}
+            entity={"paymentsmade"}
         />
-       
     </>
 );
 

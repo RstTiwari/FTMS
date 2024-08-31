@@ -3,38 +3,34 @@ import { Card, Collapse, Table, Button, Col, Row } from "antd";
 import { FilterOutlined } from "@ant-design/icons";
 import axios from "axios";
 import Taglabel from "./Taglabel";
+import CustomTable from "components/CustomTable";
+import useDataFetching from "Hook/useDataFetching";
+import { useParams, useNavigate } from "react-router-dom";
+import ListModule from "module/ListModule/ListModule";
+import PageLoader from "pages/PageLoader";
 
 const { Panel } = Collapse;
 
-const CollapsibleTable = ({ columns, panelHeader }) => {
-    const [data, setData] = useState([]);
-    const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
-    const [loading, setLoading] = useState(false);
+const CollapsibleTable = ({ columns, panelHeader, entity }) => {
+    const { id, tenantId, pageNo, pageSize } = useParams();
+    let navigate = useNavigate();
+    let dataForTable = ListModule(entity);
     const [isPanelOpen, setIsPanelOpen] = useState(false);
+    const { data, total, isLoading, fetchData } = useDataFetching(
+        entity,
+        dataForTable.select,
+        pageNo,
+        pageSize,
+        id
+    );
 
-    // const fetchData = async (params = {}) => {
-    //   setLoading(true);
-    //   const response = await axios.get(fetchUrl, {
-    //     params: {
-    //       ...params,
-    //       page: pagination.current,
-    //       pageSize: pagination.pageSize,
-    //     },
-    //   });
-    //   setData(response.data.items);
-    //   setPagination({
-    //     ...pagination,
-    //     total: response.data.total,
-    //   });
-    //   setLoading(false);
-    // };
-
-    useEffect(() => {
-        // fetchData();
-    }, [pagination.current]);
-
-    const handleTableChange = (pagination) => {
-        setPagination(pagination);
+    if (isLoading) {
+        return <PageLoader isLoading={true} text={"holdOn__-"} />;
+    }
+    const handleTableChange = () => {
+        return navigate(
+            `/app/${tenantId}/${entity}/${pageNo}/${pageSize}/details/${id}`
+        );
     };
 
     const handleFilterClick = () => {
@@ -48,7 +44,6 @@ const CollapsibleTable = ({ columns, panelHeader }) => {
 
     const handlePanelChange = (key) => {
         if (key) {
-            // fetchData();
         }
     };
 
@@ -79,9 +74,8 @@ const CollapsibleTable = ({ columns, panelHeader }) => {
             >
                 <Table
                     columns={columns}
-                    dataSource={[]}
-                    pagination={pagination}
-                    loading={loading}
+                    dataSource={data}
+                    pagination={{ total: total, pageSize: 50 }}
                     onChange={handleTableChange}
                 />
             </Panel>

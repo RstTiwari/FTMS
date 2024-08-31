@@ -7,14 +7,17 @@ const TransactionTab = () => (
         <CollapsibleTable
             columns={invoiceData.getColumns()}
             panelHeader={"Invoice"}
+            entity={"invoices"}
         />
         <CollapsibleTable
-            panelHeader={"Payments"}
+            panelHeader={"Payments Received"}
             columns={paymentData.getColumns()}
+            entity={"paymentsreceived"}
         />
         <CollapsibleTable
             panelHeader={"Quotations"}
             columns={quotationData.getColumns()}
+            entity={"quotations"}
         />
     </>
 );

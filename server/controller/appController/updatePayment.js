@@ -132,7 +132,8 @@ const updatePayment = async (req, res, next) => {
         let newPaymentObj = Object.assign(existingPayment, values);
         let response = await PaymentDatabase.updateOne(
             { _id: id, tenantId: tenantId },
-            { $set: newPaymentObj }
+            { $set: newPaymentObj },
+            { req }
         );
 
         return res.status(200).json({ success: 1, result: response });

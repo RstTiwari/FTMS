@@ -1,25 +1,30 @@
-import { useState, useCallback,useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import { useAuth } from "state/AuthProvider";
 import { setLocalData, getLocalData } from "Helper/FetchingLocalData";
-const useDataFetching = (entity, select, pageNo, pageSize) => {
+const useDataFetching = (entity, select, pageNo, pageSize, id) => {
     const [data, setData] = useState([]);
-    const [total,setTotal] = useState(null)
+    const [total, setTotal] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const { appApiCall } = useAuth();
     const fetchData = useCallback(async () => {
         setIsLoading(true);
         try {
-            const response = await appApiCall("post", "read", {
-                entity,
-                pageNo,
-                pageSize,
-                select,
-            });
+            const response = await appApiCall(
+                "post",
+                "read",
+                {
+                    entity,
+                    pageNo,
+                    pageSize,
+                    select,
+                },
+                { id: id }
+            );
 
             if (response.success) {
                 setData(response.result);
-                setTotal(response.total)
+                setTotal(response.total);
                 NotificationHandler.success(response.message);
             } else {
                 NotificationHandler.error(response.message);
@@ -48,7 +53,7 @@ const useDataFetching = (entity, select, pageNo, pageSize) => {
     useEffect(() => {
         fetchData();
     }, [fetchData]); // Ensure useEffect runs whenever fetchData changes
-    return { data,total, isLoading, fetchData };
+    return { data, total, isLoading, fetchData };
 };
 
 export default useDataFetching;
