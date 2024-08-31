@@ -82,7 +82,11 @@ const DetailsHeader = ({ values }) => {
                     <EditOutlined style={{ marginRight: 3 }} />
                     Edit
                 </Col>
-                {entity !== "customers" && entity !== "vendors"  && entity != "paymentsmade"  && entity != "paymnetsreceived"?(
+                {entity !== "customers" &&
+                entity !== "vendors" &&
+                entity !== "products" &&
+                entity != "paymentsmade" &&
+                entity != "paymnetsreceived" ? (
                     <>
                         <Col span={2} onClick={() => handleEmailSend()}>
                             <MailOutlined style={{ marginRight: 3 }} />

@@ -20,7 +20,6 @@ const TaxPercent = ({
         setValue(value);
         updateInForm(value);
     };
-
     return (
         <>
             <Select

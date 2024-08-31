@@ -14,7 +14,6 @@ const ProductType = ({ width = "15vw", updateInForm, preFillValue }) => {
         setValue(value);
         updateInForm(value);
     };
-    console.log(preFillValue, "in the prodsuctCateorury");
     return (
         <>
             <Select

@@ -76,7 +76,11 @@ router.post(
     authMethod.isValidAuthtoken,
     appRoutes.sendEmail
 );
-
+router.get(
+    "/fetchComments",
+    authMethod.isValidAuthtoken,
+    appRoutes.fetchComments
+);
 // //just for app Data
 // router.post("/challan", appRoutes.challan);
 

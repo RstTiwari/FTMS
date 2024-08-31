@@ -1,5 +1,3 @@
-// DetailsLayout.js
-
 import { Row, Col } from "antd";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Outlet } from "react-router-dom";
@@ -9,6 +7,7 @@ import Headers from "components/Header";
 import useDataFetching from "Hook/useDataFetching";
 import ListModule from "module/ListModule/ListModule";
 import NotificationHandler from "EventHandler/NotificationHandler";
+import "App.css";
 
 const DetailsLayout = () => {
     const { tenantId, entity, id, pageNo, pageSize } = useParams();
@@ -24,7 +23,7 @@ const DetailsLayout = () => {
         pageSize
     );
 
-    const onTableChange = (pagination, filters, sorter) => {
+    const onTableChange = (pagination) => {
         const { current: pageNo, pageSize } = pagination;
         navigate(`/app/${tenantId}/${entity}/${pageNo}/${pageSize}`);
     };
@@ -69,14 +68,25 @@ const DetailsLayout = () => {
                     dataSource={data}
                     isLoading={isLoading}
                     onRowClick={handleRowClick}
-                    onTableChange={onTableChange} // Handle changes in the parent if needed
+                    onTableChange={onTableChange}
                     rowClassName={rowClassName}
                     totalCount={total}
-                    currentPage={pageNo} // Pass the current page number
+                    currentPage={pageNo}
                 />
             </Col>
             {details && (
-                <Col xs={12} sm={12} md={18} lg={18} xl={18}>
+                <Col
+                    xs={12}
+                    sm={12}
+                    md={18}
+                    lg={18}
+                    xl={18}
+                    style={{
+                        height: "100vh", // Fill the entire viewport height
+                        overflowY: "auto", // Make it scrollable
+                        padding: "16px", // Optional: Add some padding
+                    }}
+                >
                     <Outlet />
                 </Col>
             )}

@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import mongooseAutoPopulate from "mongoose-autopopulate";
+import { commentSaveHandler } from "../../Helper/CommentHelper.js";
+
 const purchaseOrderSchema = new mongoose.Schema({
     vendor: {
         type: mongoose.Schema.ObjectId,
@@ -94,4 +96,53 @@ const purchaseOrderSchema = new mongoose.Schema({
 });
 
 purchaseOrderSchema.plugin(mongooseAutoPopulate);
+
+//Attching the req body to save this
+purchaseOrderSchema.pre("save", function (next, options) {
+    if (options && options.req) {
+        this._req = options.req; // Attach req to the document
+    }
+    next();
+});
+
+purchaseOrderSchema.pre("updateOne", function (next, options) {
+    if (this.options && this.options.req) {
+        this._req = this.options.req; // Attach req to the document
+    }
+    next();
+});
+
+// Apply the common post-save middleware
+purchaseOrderSchema.post("save", async function (doc, next) {
+    try {
+        if (this._req) {
+            await commentSaveHandler(doc, {
+                req: this._req,
+                text: "purchase order created",
+                entity: "purchase",
+            });
+        }
+        next(); // procceding to the next middleware
+    } catch (error) {
+        next(error); // Calling the Error middleware
+    }
+});
+
+purchaseOrderSchema.post("updateOne", async function (doc, next) {
+    try {
+        if (this._req) {
+            let doc = await this.model.findOne(this.getQuery());
+            if (doc) {
+                await commentSaveHandler(doc, {
+                    req: this._req,
+                    text: "purchase order updated",
+                    entity: "purchase",
+                });
+            }
+        }
+        next(); // procceding to the next middleware
+    } catch (error) {
+        next(error); // Calling the Error middleware
+    }
+});
 export default mongoose.model("purchaseOrder", purchaseOrderSchema);

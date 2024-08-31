@@ -13,7 +13,7 @@ const recordPayment = async (req, res, next) => {
         // Create the payment record first
         const PaymentDatabase = checkDbForEntity(entity);
         const payment = new PaymentDatabase(values);
-        await payment.save();
+        await payment.save({ req });
 
         if (entity === "paymentsreceived") {
             // Fetch the customer's invoices ordered by oldest first and by status

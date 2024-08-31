@@ -9,18 +9,20 @@ import {
     InputNumber,
     Col,
     Select,
+    Card,
 } from "antd";
 import FormItemCol from "components/Comman/FormItemCol";
 import Taglabel from "components/Comman/Taglabel";
 import CustomModel from "components/CustomModal";
 import CoustomButton from "components/Comman/CoustomButton";
+import { DeleteOutlined } from "@ant-design/icons";
 
 const { Panel } = Collapse;
 const { Option } = Select;
 
 const ProductForm = ({ form, onFormFinish, initalValue, isModal }) => {
     const [itemType, setItemType] = useState(
-        form.getFieldValue("itemType") || undefined
+        form.getFieldValue("itemType") || "product"
     );
 
     const handleImageUpdate = (file) => {
@@ -28,7 +30,6 @@ const ProductForm = ({ form, onFormFinish, initalValue, isModal }) => {
     };
 
     const handelItemUpdate = (value, fieldName, row, subField) => {
-        console.log(value, fieldName, row, subField, "==");
         let subFieldValue = form.getFieldValue(subField) || [];
         let temChange = subFieldValue[row] || {};
         if (fieldName === "code") {
@@ -37,7 +38,7 @@ const ProductForm = ({ form, onFormFinish, initalValue, isModal }) => {
             setItemType(value);
             return form.setFieldsValue({ itemType: value });
         } else if (fieldName === "product") {
-            temChange["product"] = value?.item?.id;
+            temChange["product"] = value?.details?._id;
         } else if (fieldName === "qty") {
             temChange["qty"] = value;
         } else if (fieldName === "vendor") {
@@ -46,23 +47,30 @@ const ProductForm = ({ form, onFormFinish, initalValue, isModal }) => {
         subFieldValue[row] = temChange;
         form.setFieldsValue({ [subField]: subFieldValue });
     };
-    useEffect(() => {}, [form]);
-    console.log(form.getFieldValue());
-
-    const renderFormList = (label, fieldName) => (
+    useEffect(() => {
+        const fieldsToCheck = [
+            "components",
+            "parts",
+            "hardwares",
+            "accessories",
+        ];
+        fieldsToCheck.forEach((field) => {
+            const values = form.getFieldValue(field);
+            if (!values || values.length === 0) {
+                form.setFieldsValue({ [field]: [{ product: "", qty: 0 }] });
+            }
+        });
+    }, []);
+    console.log(form.getFieldsValue(), "filedValue", "===");
+    const renderFormList = (label, fieldName, buttonName) => (
         <Form.List name={fieldName}>
             {(fields, { add, remove }) => (
                 <>
-                    {/* Always show the Add button first */}
-                    <Button type="link" onClick={() => add()}>
-                        Add {label}
-                    </Button>
-
                     {/* Map through existing fields */}
                     {fields.map(({ key, name, fieldKey, ...restField }) => (
                         <Space
                             key={key}
-                            style={{ display: "flex", marginBottom: 8 }}
+                            style={{ display: "flex" }}
                             align="baseline"
                         >
                             <Form.Item
@@ -123,10 +131,16 @@ const ProductForm = ({ form, onFormFinish, initalValue, isModal }) => {
                                 />
                             </Form.Item>
                             <Button type="link" onClick={() => remove(name)}>
-                                Remove
+                                <DeleteOutlined />
                             </Button>
                         </Space>
                     ))}
+                    {/* Always show the Add button first */}
+                    <CoustomButton
+                        onClick={() => add()}
+                        text={`New ${buttonName}`}
+                        details={true}
+                    />
                 </>
             )}
         </Form.List>
@@ -143,8 +157,9 @@ const ProductForm = ({ form, onFormFinish, initalValue, isModal }) => {
                 type={"itemType"}
                 width={"30vw"}
                 updateInForm={(value) => handelItemUpdate(value, "itemType")}
-                preFillValue={form.getFieldValue("itemType")}
+                preFillValue={form.getFieldValue("itemType") || "product"}
             />
+
             <FormItemCol
                 label=" Item Code"
                 labelAlign="left"
@@ -175,6 +190,28 @@ const ProductForm = ({ form, onFormFinish, initalValue, isModal }) => {
             <FormItemCol
                 labelAlign="left"
                 labelCol={{ span: isModal ? 18 : 8 }}
+                label="Selling Price"
+                name="rate"
+                width={"30vw"}
+                required={itemType === "product" ? true : false}
+                rules={[
+                    {
+                        required: itemType === "product" ? true : false,
+                        message: "Please input the product price!",
+                    },
+                ]}
+            />
+
+            <FormItemCol
+                labelAlign="left"
+                labelCol={{ span: isModal ? 18 : 8 }}
+                label="Buying Price"
+                name="purchaseRate"
+                width={"30vw"}
+            />
+            <FormItemCol
+                labelAlign="left"
+                labelCol={{ span: isModal ? 18 : 8 }}
                 label="HSN CODE"
                 name="hsnCode"
                 type={"input"}
@@ -189,71 +226,30 @@ const ProductForm = ({ form, onFormFinish, initalValue, isModal }) => {
             />
 
             {/* Conditionally render Selling Price based on itemType */}
-            {itemType !== "part" &&
-                itemType !== "hardware" &&
-                itemType !== "single_assembly" && (
-                    <FormItemCol
-                        labelAlign="left"
-                        labelCol={{ span: isModal ? 18 : 8 }}
-                        label="Selling Price"
-                        name="rate"
-                        width={"30vw"}
-                        required={true}
-                        rules={[
-                            {
-                                required: true,
-                                message: "Please input the product price!",
-                            },
-                        ]}
-                    />
-                )}
-            {itemType !== "single_assembly" && (
-                <FormItemCol
-                    labelAlign="left"
-                    labelCol={{ span: isModal ? 18 : 8 }}
-                    label="Buying Price"
-                    name="purchaseRate"
-                    width={"30vw"}
-                />
-            )}
 
             {/**Conditonal rendering of the part Filed */}
-            {itemType === "part" && (
-                <>
-                    <FormItemCol
-                        label={"Supplying Vendor"}
-                        name={"vendor"}
-                        labelCol={{ span: isModal ? 18 : 8 }}
-                        tooltip={"Vendor You Get Part Manufacture"}
-                        entity={"vendors"}
-                        entityName={"Vendor"}
-                        fieldName={"name"}
-                        type={"model"}
-                        width={"30vw"}
-                        updateInForm={(value) => {
-                            handelItemUpdate(value, "vendor");
-                        }}
-                    />
-                </>
-            )}
-            {itemType === "hardware" && (
-                <>
-                    <FormItemCol
-                        label={"Supplying Vendor"}
-                        name={"vendor"}
-                        labelCol={{ span: isModal ? 18 : 8 }}
-                        tooltip={"Vendor You Purchase Hardwares"}
-                        entity={"vendors"}
-                        entityName={"Vendor"}
-                        fieldName={"name"}
-                        type={"model"}
-                        width={"30vw"}
-                        updateInForm={(value) => {
-                            handelItemUpdate(value, "vendor");
-                        }}
-                    />
-                </>
-            )}
+
+            <>
+                <FormItemCol
+                    label={"Supplying Vendor"}
+                    name={"vendor"}
+                    labelCol={{ span: isModal ? 18 : 8 }}
+                    tooltip={"Vendor You Get Part Manufacture"}
+                    entity={"vendors"}
+                    entityName={"Vendor"}
+                    fieldName={"name"}
+                    type={"model"}
+                    width={"30vw"}
+                    updateInForm={(value) => {
+                        handelItemUpdate(value, "vendor");
+                    }}
+                    hidden={
+                        itemType === "product" || itemType === "assembly"
+                            ? true
+                            : false
+                    }
+                />
+            </>
 
             <FormItemCol
                 labelAlign="left"
@@ -266,18 +262,66 @@ const ProductForm = ({ form, onFormFinish, initalValue, isModal }) => {
                 updateImageInForm={handleImageUpdate}
             />
 
-            {/* Conditional rendering for multi_assembly and single_assembly categories */}
-            {(itemType === "multi_assembly" ||
-                itemType === "single_assembly") && (
-                <Collapse>
-                    {itemType === "multi_assembly" && (
+            {/* Conditional rendering for multi_assembly and assembly categories */}
+            {itemType === "product" && (
+                <Col xs={24} sm={24} md={24} xl={12} lg={12}>
+                    <Collapse>
                         <Panel
-                            header={<Taglabel text={"Assembly Components"} />}
-                            key="components"
+                            header={
+                                <Taglabel
+                                    text={"Add Multilevel Field"}
+                                    key={1}
+                                />
+                            }
                         >
-                            {renderFormList("Component", "components")}
+                            <Collapse>
+                                <Panel
+                                    key="components"
+                                    header={
+                                        <Taglabel text={"Assembly Componets"} />
+                                    }
+                                >
+                                    {renderFormList(
+                                        "Components",
+                                        "components",
+                                        "Component"
+                                    )}
+                                </Panel>
+
+                                <Panel
+                                    key="parts"
+                                    header={<Taglabel text={"Parts"} />}
+                                >
+                                    {renderFormList("Parts", "parts", "Part")}
+                                </Panel>
+                                <Panel
+                                    header={<Taglabel text={"Hardwares"} />}
+                                    key="hardwares"
+                                >
+                                    {renderFormList(
+                                        "Hardwares",
+                                        "hardwares",
+                                        "hardware"
+                                    )}
+                                </Panel>
+                                <Panel
+                                    header={<Taglabel text={"Accessoreis"} />}
+                                    key="Accessoreis"
+                                >
+                                    {renderFormList(
+                                        "accessories",
+                                        "accessories",
+                                        "accessory"
+                                    )}
+                                </Panel>
+                            </Collapse>
                         </Panel>
-                    )}
+                    </Collapse>
+                </Col>
+            )}
+
+            {itemType === "assembly" && (
+                <Collapse>
                     <Panel header={<Taglabel text={"Parts"} />} key="parts">
                         {renderFormList("Part", "parts")}
                     </Panel>

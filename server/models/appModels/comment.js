@@ -1,54 +1,41 @@
 // models/commentModel.js
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-const commentSchema = new Schema({
-    text: {
-        type: String,
-        required: true,
-    },
-    date: {
-        type: Date,
-        required: true,
-        default: Date.now,
-    },
-    author: {
-        type: String,
-        required: true,
-    },
-    entityType: {
-        type: String, // e.g., 'Customer', 'Invoice', 'Payment'
-        required: true,
-    },
-    userName:{
-      type:String,
+const commentSchema = new Schema(
+    {
+        text: {
+            type: String,
+            required: true,
+        },
 
+        entity: {
+            type: String, // e.g., 'Customer', 'Invoice', 'Payment'
+            required: true,
+        },
+        userName: {
+            type: String,
+        },
+        userId: {
+            type: Schema.Types.ObjectId,
+            required: true,
+        },
+        entityId: {
+            type: Schema.Types.ObjectId,
+            required: true,
+        },
+        additionalInfo: {
+            type: Object,
+            of: Schema.Types.Mixed, // To store additional details
+        },
+        tenantId: {
+            type: mongoose.Schema.ObjectId,
+            required: true,
+        },
     },
-    entityId: {
-        type: Schema.Types.ObjectId,
-        required: true,
-    },
-    additionalInfo: {
-        type: Map,
-        of: Schema.Types.Mixed, // To store additional details
-    },
-});
+    { timestamps: true }
+);
 
-const Comment = mongoose.model('Comment', commentSchema);
-
-// Static method to add a comment
-commentSchema.statics.addComment = async function (entityType, entityId, commentData) {
-    try {
-        const newComment = new this({
-            ...commentData,
-            entityType,
-            entityId,
-        });
-        return await newComment.save();
-    } catch (error) {
-        console.error('Error adding comment:', error);
-        throw new Error('Failed to add comment');
-    }
-};
+const Comment = mongoose.model("comments", commentSchema);
 
 export default Comment;

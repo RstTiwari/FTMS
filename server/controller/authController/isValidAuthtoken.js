@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import userDb from "../../models/coreModels/User.js"
+import userDb from "../../models/coreModels/User.js";
 /**
  *
  * @param {*} param
@@ -25,7 +25,7 @@ const isValidAuthtoken = async (req, res, next) => {
                 jwtExpired: true,
             });
         }
-        const user = await userDb.findOne({ _id: verfied.userId});
+        const user = await userDb.findOne({ _id: verfied.userId });
 
         if (!user) {
             return res.status(401).json({
@@ -46,12 +46,12 @@ const isValidAuthtoken = async (req, res, next) => {
         //         jwtExpired: true,
         //     });
         // } else {
-      
-            req["userId"] = user?._id
-            req['role']    = user?.role
-            req["tenantId"] = user?.tenantId;
-            next();
 
+        req["userId"] = user?._id;
+        req["role"] = user?.role;
+        req["tenantId"] = user?.tenantId;
+        req["name"] = user?.name;
+        next();
     } catch (error) {
         return res.status(503).json({
             status: 0,

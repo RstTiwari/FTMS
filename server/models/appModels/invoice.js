@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import mongooseAutoPopulate from "mongoose-autopopulate";
+import { commentSaveHandler } from "../../Helper/CommentHelper.js";
 
 const invoiceSchema = new mongoose.Schema(
     {
@@ -86,11 +87,58 @@ const invoiceSchema = new mongoose.Schema(
 
 invoiceSchema.plugin(mongooseAutoPopulate);
 
-// Apply the common post-save middleware
-invoiceSchema.post('save', commonPostSaveHandler({
-    updateComments: true,
-    entityType: 'Invoice',
-    commentData: { text: 'Invoice saved or updated', author: 'SYSTEM' }
-}));
+//Attching the req body to save this
+invoiceSchema.pre("save", function (next, options) {
+    if (options && options.req) {
+        this._req = options.req; // Attach req to the document
+    }
+    next();
+});
+
+invoiceSchema.pre("updateOne", function (next) {
+    if (this.options && this.options.req) {
+        this._req = this.options.req; // Attach req to the query context
+    }
+    next();
+});
+
+// Apply the common post-save create middleware
+invoiceSchema.post("save", async function (doc, next) {
+    try {
+        if (this._req) {
+            const text = this.op === "updateOne" ? "updated" : "created";
+            console.log("called ", this.op, text);
+
+            await commentSaveHandler(doc, {
+                req: this._req,
+                text: `Invoice  ${text}`,
+                entity: "invoice",
+            });
+        }
+        next(); // procceding to the next middleware
+    } catch (error) {
+        next(error); // Calling the Error middleware
+    }
+});
+
+invoiceSchema.post("updateOne", async function (result, next) {
+    try {
+        if (this._req) {
+            // Manually retrieve the updated document
+            const doc = await this.model.findOne(this.getQuery());
+
+            if (doc) {
+                await commentSaveHandler(doc, {
+                    req: this._req,
+                    text: `Invoice updated`,
+                    entity: "invoice",
+                });
+            }
+        }
+        next(); // Proceed to the next middleware
+    } catch (error) {
+        next(error); // Call the Error middleware
+    }
+});
 
 export default mongoose.model("invoice", invoiceSchema);

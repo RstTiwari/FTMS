@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import autopopulate from "mongoose-autopopulate";
+import { commentSaveHandler } from "../../Helper/CommentHelper.js";
 
 // Subschema for references with quantity
 const referenceWithQuantitySchema = new mongoose.Schema(
@@ -23,7 +24,7 @@ const productSchema = new mongoose.Schema(
         code: {
             type: String,
             unique: true,
-            sparse:true
+            sparse: true,
         },
         name: {
             type: String,
@@ -45,6 +46,8 @@ const productSchema = new mongoose.Schema(
         components: [referenceWithQuantitySchema], // Array of product references with quantity
         parts: [referenceWithQuantitySchema], // Array of product references with quantity
         hardwares: [referenceWithQuantitySchema], // Array of product references with quantity
+        accessories: [referenceWithQuantitySchema], // Array of product references with quantity
+
         tenantId: String, // Optional field for multi-tenancy
     },
     {
@@ -53,7 +56,7 @@ const productSchema = new mongoose.Schema(
 );
 
 // Compound index to ensure uniqueness of code and name combination
-productSchema.index({ code: 1, name: 1 }, { unique: true,sparse:true });
+productSchema.index({ code: 1, name: 1 }, { unique: true, sparse: true });
 
 // Ensure unique code and name across existing documents
 productSchema.pre("save", async function (next) {
@@ -75,5 +78,50 @@ productSchema.pre("save", async function (next) {
 });
 
 productSchema.plugin(autopopulate);
+//Attching the req body to save this
+productSchema.pre("save", function (next, options) {
+    if (options && options.req) {
+        this._req = options.req; // Attach req to the document
+    }
+    next();
+});
+productSchema.pre("updateOne", function (next) {
+    if (this.options && this.options.req) {
+        this._req = this.options.req; // Attach req to the document
+    }
+    next();
+});
+
+// Apply the common post-save middleware
+productSchema.post("save", async function (doc, next) {
+    try {
+        if (this._req) {
+            await commentSaveHandler(doc, {
+                req: this._req,
+                text: "prodcut created",
+                entity: "products",
+            });
+        }
+        next(); // procceding to the next middleware
+    } catch (error) {
+        next(error); // Calling the Error middleware
+    }
+});
+
+productSchema.post("updateOne", async function (doc, next) {
+    try {
+        if (this._req) {
+            let doc = await this.model.findOne(this.getQuery());
+            await commentSaveHandler(doc, {
+                req: this._req,
+                text: "prodcut updated",
+                entity: "products",
+            });
+        }
+        next(); // procceding to the next middleware
+    } catch (error) {
+        next(error); // Calling the Error middleware
+    }
+});
 
 export default mongoose.model("product", productSchema);

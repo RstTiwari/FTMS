@@ -89,12 +89,12 @@ export default productData;
 
 export const productCategory = [
     {
-        label: "Multi_Assembly",
-        value: "multi_assembly",
+        label: "Product",
+        value: "product",
     },
     {
-        label: "Assembly",
-        value: "single_assembly",
+        label: "Assembly Componet",
+        value: "assembly",
     },
     {
         label: "Part",
@@ -103,5 +103,9 @@ export const productCategory = [
     {
         label: "Hardware",
         value: "hardware",
+    },
+    {
+        label: "Accessories",
+        value: "accessoreis",
     },
 ];

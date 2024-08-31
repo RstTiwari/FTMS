@@ -46,3 +46,6 @@
     transform: rotate(360deg);
   }
 }
+.selected-row {
+  background-color: #e6f7ff !important; /* Light blue background */
+}

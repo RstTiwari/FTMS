@@ -5,6 +5,7 @@ import update from "./update.js";
 import patch from "./patch.js";
 import genratePdf from "./genratePdf.js";
 import upload from "./upload.js";
+import fetchComments from "./fetchComments.js";
 import {
     fetchCountersNumber,
     updateCountersNumber,
@@ -66,6 +67,9 @@ const appRoutes = {
     },
     sendEmail: async (req, res, next) => {
         sendEmail(req, res, next);
+    },
+    fetchComments: async (req, res, next) => {
+        fetchComments(req, res, next);
     },
     // challan: async (req, res, next) => {
     //     try {

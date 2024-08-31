@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import mongooseAutoPopulate from "mongoose-autopopulate";
+import { commentSaveHandler } from "../../Helper/CommentHelper.js";
 
 const quotationSchema = new mongoose.Schema(
     {
@@ -87,5 +88,50 @@ const quotationSchema = new mongoose.Schema(
 
 // Apply the autopopulate plugin to the schema
 quotationSchema.plugin(mongooseAutoPopulate);
+//Attching the req body to save this
+quotationSchema.pre("save", function (next, options) {
+    if (options && options.req) {
+        this._req = options.req; // Attach req to the document
+    }
+    next();
+});
+quotationSchema.pre("updateOne", function (next, options) {
+    if (this.options && this.options.req) {
+        this._req = this.options.req; // Attach req to the document
+    }
+    next();
+});
 
+// Apply the common post-save middleware
+quotationSchema.post("save", async function (doc, next) {
+    try {
+        if (this._req) {
+            await commentSaveHandler(doc, {
+                req: this._req,
+                text: "quotation created",
+                entity: "quotation",
+            });
+        }
+        next(); // procceding to the next middleware
+    } catch (error) {
+        next(error); // Calling the Error middleware
+    }
+});
+quotationSchema.post("updateOne", async function (result, next) {
+    try {
+        if (this._req) {
+            let doc = await this.model.findOne(this.getQuery());
+            if (doc) {
+                await commentSaveHandler(doc, {
+                    req: this._req,
+                    text: "quotation updated",
+                    entity: "quotation",
+                });
+            }
+        }
+        next(); // procceding to the next middleware
+    } catch (error) {
+        next(error); // Calling the Error middleware
+    }
+});
 export default mongoose.model("quotation", quotationSchema);

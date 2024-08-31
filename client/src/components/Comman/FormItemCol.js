@@ -19,6 +19,7 @@ const FormItemCol = ({
     preFillValue,
     xl = 12,
     lg = 12,
+    hidden,
     ...restProps
 }) => (
     <Col xs={24} sm={24} md={12} lg={lg} xl={lg}>
@@ -34,6 +35,7 @@ const FormItemCol = ({
             valuePropName={type === "image" ? "file" : "value"}
             getValueFromEvent={type === "image" ? (e) => e : undefined}
             className="floating-label-input"
+            hidden={hidden}
         >
             <CustomInput
                 type={type}

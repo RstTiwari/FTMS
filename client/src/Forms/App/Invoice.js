@@ -80,10 +80,10 @@ const QuotationForm = ({ form }) => {
             }
         });
         form.setFieldsValue({
-            grossTotal: grossTotal,
-            taxAmount: taxAmount,
-            totalWithTax: totalWithTax,
-            grandTotal: grandTotal,
+            grossTotal: Math.ceil(grossTotal),
+            taxAmount: Math.ceil(taxAmount),
+            totalWithTax: Math.ceil(totalWithTax),
+            grandTotal: Math.ceil(grandTotal),
         });
     };
 
@@ -418,9 +418,12 @@ const QuotationForm = ({ form }) => {
                                                             width: "100%",
                                                             textAlign: "center",
                                                         }}
-                                                        preFillValue={form.getFieldValue(
-                                                            "gstPercent"
-                                                        )}
+                                                        preFillValue={
+                                                            form.getFieldValue(
+                                                                "items"
+                                                            )?.[name]
+                                                                ?.gstPercent
+                                                        }
                                                     />
                                                 </Form.Item>
                                             </Col>
@@ -494,7 +497,7 @@ const QuotationForm = ({ form }) => {
                     )}
                 </Form.List>
             </div>
-            <Row >
+            <Row>
                 <Col xs={24} sm={24} md={12} lg={12} xl={12}>
                     <FormItemCol form={form} type={"notes"} width={"50vw"} />
                 </Col>
@@ -506,7 +509,7 @@ const QuotationForm = ({ form }) => {
                             labelAlign="left"
                             type={"number"}
                             disabled={true}
-                            labelCol={{ span: 12}}
+                            labelCol={{ span: 12 }}
                         />
                     </Row>
                     <Row align={"middle"} justify={"end"}>
@@ -529,19 +532,17 @@ const QuotationForm = ({ form }) => {
                             labelCol={{ span: 12 }}
                         />
                     </Row>
-                    <Row justify={"center"} >
-                    <Col sm={24} xs={24} md={24} lg={6} xl={6}>
-                    <FormItemCol
-                            type={"othercharges"}
-                            form={form}
-                            tooltip={"Charges with no tax"}
-                            width={"500px"}
-                            updateInForm={() => handleItemsUpdate()}
-                        />
-                    </Col>
-            
+                    <Row justify={"center"}>
+                        <Col sm={24} xs={24} md={24} lg={6} xl={6}>
+                            <FormItemCol
+                                type={"othercharges"}
+                                form={form}
+                                tooltip={"Charges with no tax"}
+                                width={"500px"}
+                                updateInForm={() => handleItemsUpdate()}
+                            />
+                        </Col>
                     </Row>
-                     
 
                     <Row align={"middle"} justify={"end"}>
                         <FormItemCol

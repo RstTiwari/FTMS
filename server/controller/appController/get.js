@@ -51,6 +51,11 @@ const get = async (req, res, next) => {
                     options: { strictPopulate: false },
                 },
                 {
+                    path: "accessories.product",
+                    // Selecting all fields, so no need for 'select'
+                    options: { strictPopulate: false },
+                },
+                {
                     path: "product",
                     // Selecting all fields, so no need for 'select'
                     options: { strictPopulate: false },
