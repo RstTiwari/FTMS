@@ -3,9 +3,7 @@ export const customizeSidebar = (sidebar, permissions) => {
 
     //Got the Object Updated
     permissions.map((item) => {
-        if (item.value !== "read") {
-            permissionObj[item.entity] = true;
-        }
+        permissionObj[item.entity] = true;
     });
 
     let customizedSidebar = [];
@@ -35,5 +33,5 @@ export const customizeSidebar = (sidebar, permissions) => {
             });
         }
     });
-    return customizedSidebar
+    return customizedSidebar;
 };

@@ -44,11 +44,20 @@ const create = async (req, res, next) => {
             }
 
             let domain = `${frontEndUrl}/onboardUser/${token}`;
-            let contents = `Hi,You have been invited to join ${organizationData?.companyName}.
-             Please click the link below to accept the invitation and set up your account\n
-
-             ${domain}
-             `;
+            let contents = `
+            Hi,
+            
+            You have been invited to join ${organizationData?.companyName}. 
+            
+            Please click the link below to accept the invitation and set up your account:
+            
+            [Accept Invitation](${domain})
+            
+            We look forward to having you with us!
+            
+            Best regards,
+            The ${organizationData?.companyName} Team
+            `;
 
             let response = await resendEmailController(
                 organizationData?.email,
