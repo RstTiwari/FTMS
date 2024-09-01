@@ -20,7 +20,6 @@ const read = async (req, res, next) => {
 
         // selecting the Database
         const dataBase = checkDbForEntity(entity);
-        console.log(filter, entity, dataBase, "==");
         let skip = (pageNo - 1) * pageSize;
         let data = await dataBase
             .find(filter)
