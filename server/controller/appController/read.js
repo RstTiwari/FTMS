@@ -10,16 +10,17 @@ const read = async (req, res, next) => {
         }
         let filter = { tenantId: tenantId };
         let keyToFilter =
-            entity === "purchases" && entity === "paymentsmade"
+            entity === "purchases" || entity === "paymentsmade"
                 ? "vendor"
                 : "customer";
+
         if (id) {
             filter[keyToFilter] = id;
         }
 
         // selecting the Database
         const dataBase = checkDbForEntity(entity);
-
+        console.log(filter, entity, dataBase, "==");
         let skip = (pageNo - 1) * pageSize;
         let data = await dataBase
             .find(filter)

@@ -12,7 +12,12 @@ const ProductDetails = ({ values }) => {
     const renderProductDetails = (index, product, qty) => (
         <>
             <Row>
-                <Col span={1}>#{index + 1}</Col>
+                <Col span={1}>#</Col>
+                <Col span={15}>Name</Col>
+                <Col span={4}>Qty</Col>
+            </Row>
+            <Row>
+                <Col span={1}>{index + 1}</Col>
                 <Col span={15}>
                     <Link
                         to={`/app/${tenantId}/products/${pageNo}/${pageSize}/details/${product?._id}`}

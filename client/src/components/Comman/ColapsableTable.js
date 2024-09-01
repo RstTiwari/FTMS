@@ -59,15 +59,6 @@ const CollapsibleTable = ({ columns, panelHeader, entity }) => {
                                 weight={800}
                             />
                         </Col>
-                        <Col>
-                            {isPanelOpen && (
-                                <Button
-                                    icon={<FilterOutlined />}
-                                    onClick={handleFilterClick}
-                                    style={{ marginLeft: "10px" }}
-                                />
-                            )}
-                        </Col>
                     </Row>
                 }
                 key="1"
