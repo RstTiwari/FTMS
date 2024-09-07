@@ -13,6 +13,8 @@ import NotesForm from "Forms/App/NoteForm";
 import ProductCategory from "./ProductType";
 import UserRole from "./UserRole";
 import UserPermission from "Forms/App/UserPermissionForm";
+import CoustomButton from "./CoustomButton";
+import { DeleteOutlined } from "@mui/icons-material";
 
 const CustomInput = ({
     type,
@@ -108,7 +110,7 @@ const CustomInput = ({
                     {...restProps}
                 />
             );
-        case "model":
+        case "modal":
             return (
                 <CustomModal
                     entity={entity}
@@ -128,7 +130,7 @@ const CustomInput = ({
                     {...restProps}
                 />
             );
-        case "taxpercent":
+        case "gstPercent":
             return (
                 <TaxPercent
                     entity={entity}
@@ -197,6 +199,14 @@ const CustomInput = ({
                     form={form}
                     updateInForm={updateInForm}
                     width={width}
+                />
+            );
+
+        case "delete":
+            return (
+                <DeleteOutlined
+                    style={{ color: "red" }}
+                    onClick={updateInForm}
                 />
             );
         default:

@@ -45,17 +45,32 @@ const quotationSchema = new mongoose.Schema(
 
         items: [
             {
+                code: {
+                    type: String,
+                },
                 description: {
                     type: String,
-                    required: true,
+                },
+                hsnCode: {
+                    type: String,
                 },
                 rate: {
                     type: Number,
                 },
+                discountPercent: {
+                    type: Number,
+                },
+                discountAmount: {
+                    type: Number,
+                },
+
                 gstPercent: {
                     type: Number,
                 },
                 qty: {
+                    type: Number,
+                },
+                taxAmount: {
                     type: Number,
                 },
                 finalAmount: {

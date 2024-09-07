@@ -37,17 +37,34 @@ const purchaseOrderSchema = new mongoose.Schema({
     },
     items: [
         {
+            code: {
+                type: String,
+                required: true,
+            },
             description: {
+                type: String,
+                required: true,
+            },
+            hsnCode: {
                 type: String,
             },
             rate: {
                 type: Number,
-                required: true,
+            },
+            discountPercent: {
+                type: Number,
+            },
+            discountAmount: {
+                type: Number,
+            },
+
+            gstPercent: {
+                type: Number,
             },
             qty: {
                 type: Number,
             },
-            gstPercent: {
+            taxAmount: {
                 type: Number,
             },
             finalAmount: {

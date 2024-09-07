@@ -13,6 +13,7 @@ import expenseData from "Data/ExpensesData";
 import workOrderData from "Data/WorkOrder";
 import SubUserData from "Data/UserData";
 import UserData from "Data/UserData";
+import enquiryData from "Data/EnquiryData";
 
 const ListModule = (entity) => {
     let data = null;
@@ -55,7 +56,10 @@ const ListModule = (entity) => {
             data = workOrderData;
             break;
         case "user":
-                data = UserData;
+            data = UserData;
+            break;
+        case "enquiryrraised":
+            data = enquiryData;
             break;
         default:
             break;

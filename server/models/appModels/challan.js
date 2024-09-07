@@ -35,21 +35,38 @@ const challanSchema = new mongoose.Schema(
         },
         items: [
             {
+                code: {
+                    type: String,
+                    required: true,
+                },
                 description: {
                     type: String,
-                    require: true,
+                    required: true,
+                },
+                hsnCode: {
+                    type: String,
                 },
                 rate: {
+                    type: Number,
+                },
+                discountPercent: {
+                    type: Number,
+                },
+                discountAmount: {
+                    type: Number,
+                },
+
+                gstPercent: {
                     type: Number,
                 },
                 qty: {
                     type: Number,
                 },
-                gstPercent: {
-                    type: String,
+                taxAmount: {
+                    type: Number,
                 },
                 finalAmount: {
-                    type: String,
+                    type: Number,
                 },
             },
         ],

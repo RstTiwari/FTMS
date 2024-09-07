@@ -60,4 +60,4 @@ const getColumns = (details) => [
 export const enquiryReceivedData = {
     getColumns,
 };
-export default enquiryData;
+export default enquiryReceivedData;

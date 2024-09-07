@@ -12,7 +12,7 @@ import CoustomFormItem from "module/Create/CreateModule";
 const RecordPayment = () => {
     const [form] = Form.useForm();
     const { tenantId, entity, id } = useParams();
-    let preFillEntity = entity ==="paymentsmade" ? "vendors":"customers"
+    let preFillEntity = entity === "paymentsmade" ? "vendors" : "customers";
     const { initialValues, isFetching, fetchInitialValues } =
         useInitialFormValues(preFillEntity, "get", id);
     const { isLoading, error, handleFormSubmit } = useFormActions(
@@ -26,13 +26,14 @@ const RecordPayment = () => {
     }, []);
 
     useEffect(() => {
-        let preFilledkey = entity ==="paymentsreceived" ? "customer":"vendor"
+        let preFilledkey =
+            entity === "paymentsreceived" ? "customer" : "vendor";
         if (initialValues) {
             const { name, _id } = initialValues;
-            form.setFieldsValue({ [preFilledkey]: { _id, name } });
+            form.setFieldsValue({ [preFilledkey]: { _id: _id, name: name } });
         }
     }, [form, initialValues]);
-     console.log(form.getFieldsValue(),"---")
+    console.log(form.getFieldsValue(), "---");
     if (isFetching) {
         return (
             <PageLoader isLoading={true} text={"Fetching payment Records"} />
@@ -79,7 +80,11 @@ const RecordPayment = () => {
                         padding: "10px ",
                     }}
                 >
-                 <CoustomFormItem  entity={entity} isUpdate={false} form={form}/>
+                    <CoustomFormItem
+                        entity={entity}
+                        isUpdate={false}
+                        form={form}
+                    />
                 </div>
                 <div
                     style={{

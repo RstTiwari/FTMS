@@ -1,4 +1,4 @@
-import CollapsibleTable from "components/Comman/ColapsableTable";
+import CollapsibleTable from "components/Comman/ColapsableListTable";
 import PurchaseData from "Data/PurchaseData";
 import paymentReceivedData from "../../../Data/PaymnetMadeData";
 import purchaseData from "Data/PurchaseData";

@@ -30,6 +30,8 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
         }
     };
 
+    console.log(form.getFieldValue("vendor")?.name, "===");
+
     return (
         <div>
             <Row>
@@ -53,8 +55,8 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
                             handleItemUpdate(value, "vendor");
                         }}
                         onlyShippingAddress={true}
-                        preFillValue={form.getFieldValue("vendor")?.name}
-                        type={"model"}
+                        preFillValue={form.getFieldValue("vendor")?.name || ""}
+                        type={"modal"}
                         disabled={form.getFieldValue("vendor")?.name} // if value availbel mark as disabled
                     />
                 </Col>

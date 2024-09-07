@@ -12,7 +12,6 @@ import {
 } from "antd";
 import FormItemCol from "components/Comman/FormItemCol";
 
-
 const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
     const handleItemUpdate = (value, fieldName) => {
         if (fieldName === "customer") {
@@ -51,8 +50,8 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
                         }}
                         onlyShippingAddress={true}
                         preFillValue={form.getFieldValue("customer")?.name}
-                        type={"model"}
-                        disabled={form.getFieldValue("customer")?.name} // if value availbel mark as disabled
+                        type={"modal"}
+                        disabled={form.getFieldValue("customer")?.name || ""} // if value availbel mark as disabled
                     />
                 </Col>
                 <Col span={24}>
@@ -125,7 +124,6 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
                         labelCol={{ span: 12 }}
                         type={"input"}
                         width={"25vw"}
-
                     />
                 </Col>
                 <Col span={24}>
