@@ -45,6 +45,9 @@ const purchaseOrderSchema = new mongoose.Schema({
                 type: String,
                 required: true,
             },
+            image: {
+                type: String,
+            },
             hsnCode: {
                 type: String,
             },

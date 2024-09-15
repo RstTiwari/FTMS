@@ -10,11 +10,11 @@ const { Text } = Typography;
 
 const Template = () => {
     const { adminApiCall } = useAuth();
-    const [isLoading,setIsLoading] = useState(false)
-    const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
     const updateTemplate = async (templateKey) => {
         setIsLoading(true);
-        const value ={templateId:templateKey}
+        const value = { templateId: templateKey };
         const payload = { entity: "orgnizationprofile", value };
         const { success, result, message } = await adminApiCall(
             "post",

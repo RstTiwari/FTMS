@@ -107,6 +107,28 @@ const tenantSpecificData = {
             ],
         },
     ],
+    columnPrefrence: [
+        {
+            label: "Item Code",
+            value: "code",
+        },
+        {
+            label: "Image",
+            value: "image",
+        },
+        {
+            label: "Hsn Code",
+            value: "hsnCode",
+        },
+        {
+            label: "Discount%",
+            value: "discountPercent",
+        },
+        {
+            label: "Tax Amount",
+            value: "taxAmount",
+        },
+    ],
 };
 
 export default tenantSpecificData;

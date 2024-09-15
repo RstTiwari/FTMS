@@ -9,24 +9,27 @@ import {
     Divider,
     Input,
     InputNumber,
+    Image,
 } from "antd";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import FormItemCol from "components/Comman/FormItemCol";
 import Taglabel from "components/Comman/Taglabel";
 import CustomModel from "components/CustomModal";
 import TaxPercent from "components/Comman/TaxPercent";
-
-const { Option } = Select;
+import { useParams } from "react-router-dom";
 
 const CustomFormTableList = ({ form }) => {
+    const { entity, tenantId } = useParams();
     const calculateDiscount = (discountPercent, rate) => {
         let discoumntAmount = Math.floor((rate * discountPercent) / 100);
         return Math.floor(rate - discoumntAmount);
     };
+
     const calculateTaxAmount = (taxPercent, rate, qty) => {
         let taxAmount = Math.floor((rate * taxPercent) / 100);
         return Math.floor(taxAmount * qty);
     };
+
     const handleItemsUpdate = (value, filedName, rowName) => {
         console.log(value, filedName, "--");
         const items = form.getFieldValue("items");
@@ -35,6 +38,7 @@ const CustomFormTableList = ({ form }) => {
             let { details } = value;
             temObj.code = details?.code ? details?.code : "";
             temObj.description = details?.name;
+            temObj.image = details?.image;
             temObj.hsnCode = details?.hsnCode;
             temObj.rate = details?.rate || 0;
             let finalAmount = calculateDiscount(
@@ -107,6 +111,7 @@ const CustomFormTableList = ({ form }) => {
             grandTotal: Math.ceil(grandTotal),
         });
     };
+
     // State to store selected columns
     const [selectedColumns, setSelectedColumns] = useState([]);
 
@@ -115,10 +120,15 @@ const CustomFormTableList = ({ form }) => {
     const handleColumnChange = (selected) => {
         setSelectedColumns(selected);
     };
+
     const columnOptions = [
         {
             label: "Item Code",
             value: "code",
+        },
+        {
+            label: "Image",
+            value: "image",
         },
         {
             label: "Hsn Code",
@@ -133,6 +143,7 @@ const CustomFormTableList = ({ form }) => {
             value: "taxAmount",
         },
     ];
+
     const renderColumnHeader = (columnKey, label, spanValue) => {
         return selectedColumns.includes(columnKey) ? (
             <Col
@@ -231,6 +242,9 @@ const CustomFormTableList = ({ form }) => {
                 case "code":
                     dynamicSpans.itemDetails -= 2;
                     break;
+                case "image":
+                    dynamicSpans.itemDetails -= 2;
+                    break;
                 case "hsnCode":
                     dynamicSpans.itemDetails -= 2;
                     break;
@@ -260,7 +274,6 @@ const CustomFormTableList = ({ form }) => {
     };
 
     let dynamicSpan = calculateDynamicSpans();
-    console.log(selectedColumns, "==");
     return (
         <>
             <Divider dashed />
@@ -331,6 +344,7 @@ const CustomFormTableList = ({ form }) => {
                         >
                             <Taglabel text="ITEM DETAILS" />
                         </Col>
+                        {renderColumnHeader("image", "IMAGE", 2)}
                         {renderColumnHeader("hsnCode", "HSN CODE", 2)}
                         <Col
                             className="gutter-row"
@@ -474,6 +488,30 @@ const CustomFormTableList = ({ form }) => {
                                                     />
                                                 </Form.Item>
                                             </Col>
+                                            {renderColumnValue(
+                                                "image",
+
+                                                form.getFieldValue("items")?.[
+                                                    name
+                                                ]?.image ? (
+                                                    <Image
+                                                        width={"100%"}
+                                                        height={10}
+                                                        src={
+                                                            form.getFieldValue(
+                                                                "items"
+                                                            )?.[name]?.image
+                                                        }
+                                                        visible={false}
+                                                    />
+                                                ) : (
+                                                    <Input placeholder="No Image" />
+                                                ),
+
+                                                2,
+                                                name,
+                                                restField
+                                            )}
                                             {renderColumnValue(
                                                 "hsnCode",
                                                 <Input

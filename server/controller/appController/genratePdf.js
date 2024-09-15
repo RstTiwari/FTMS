@@ -1,5 +1,5 @@
-import pdfTemplateSelector from "../../template/pdfTemplate/myfac8ry/index.js";
-import whiteSimple from "../../template/pdfTemplate/whitesample/index.js";
+import myfac8ryDefault from "../../template/pdfTemplate/myfac8rydefualt.js";
+import vipDefault from "../../template/pdfTemplate/vipDefault.js";
 import tenantDb from "../../models/coreModels/Tenant.js";
 import checkDbForEntity from "../../Helper/databaseSelector.js";
 import countersDb from "../../models/appModels/counters.js";
@@ -65,21 +65,31 @@ const generatePdf = async (req, res, next, forEmail) => {
             : entity.slice(0, 2).toUpperCase();
 
         const templateId = "myfac8ry";
-        if (templateId === "myfac8ry") {
-            return pdfTemplateSelector(
-                req,
-                res,
-                next,
-                entityData,
-                organization,
-                entity,
-                entityPrefix,
-                forEmail
-            );
-        } else if (templateId === "whitesimple") {
-            return whiteSimple(req, res, next, data, entity);
-        } else {
+        let pdfFucntionToCall = null;
+
+        switch (templateId) {
+            case "myfac8ry":
+                pdfFucntionToCall = myfac8ryDefault;
+                break;
+            case "vip":
+                pdfFucntionToCall = vipDefault;
+                break;
+
+            default:
+                pdfFucntionToCall = myfac8ryDefault;
+
+                break;
         }
+        return pdfFucntionToCall(
+            req,
+            res,
+            next,
+            entityData,
+            organization,
+            entity,
+            entityPrefix,
+            forEmail
+        );
     } catch (error) {
         next(error);
     }

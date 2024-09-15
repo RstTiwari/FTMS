@@ -1,12 +1,14 @@
 import PDFDocument from "pdfkit";
-import { jsDateIntoDDMMYY } from "../../../Helper/timehelper.js";
+import { jsDateIntoDDMMYY } from "../../Helper/timehelper.js";
 import {
     downloadImage,
     getPrimaryOrFirstBank,
     capitalizeFirstLetter,
-} from "../../../Helper/pdfHelper.js";
+} from "../../Helper/pdfHelper.js";
 
 const borderColor = "#000000"; // Color for the border
+const leftMargin = 10;
+const topMargin = 10;
 const defaultPdfTemplate = async (
     req,
     res,
@@ -20,7 +22,7 @@ const defaultPdfTemplate = async (
         const imageBuffer = await downloadImage(organizationData?.logo);
         const doc = new PDFDocument({
             size: [595, 842],
-            margin: 5,
+            margin: 50,
             bufferPages: true,
         });
         doc.pipe(res);
@@ -63,7 +65,9 @@ const defaultPdfTemplate = async (
         const addItemsWithPagination = (doc, entityData, itemsPerPage) => {
             let currentPage = 1;
             let itemIndex = 0;
-            doc.rect(4, doc.y + 2, 587, 30).fill("#0047AB");
+            doc.rect(leftMargin, doc.y, doc.page.width - 20, 30).fill(
+                "#000000"
+            );
 
             while (currentPage <= totalPages) {
                 const itemsForPage = entityData.items.slice(
@@ -107,7 +111,7 @@ const defaultPdfTemplate = async (
         addItemsWithPagination(doc, entityData, itemsPerPage);
 
         // Footer Section
-        addFooter(doc, entityData, entity, organizationData);
+        // addFooter(doc, entityData, entity, organizationData);
 
         doc.end();
 
@@ -178,22 +182,21 @@ const addHeader = (
     doc.fontSize(12)
         .fillColor("#000000")
         .font("Helvetica-Bold")
-        .text(title, 10, 10, {
+        .text(title, leftMargin + 5, leftMargin + 5, {
             align: "center",
         });
-    let titleBorder = doc.y + 3;
-    doc.moveTo(4, titleBorder) // Adjust the Y position if necessary
-        .lineTo(pageWidth - 4, titleBorder)
+    let titleBorder = doc.y;
+    doc.moveTo(leftMargin, doc.y) // Adjust the Y position if necessary
+        .lineTo(pageWidth - leftMargin, doc.y)
         .stroke(borderColor);
 
     // Image Section
-    const imageWidth = 70;
-    const imageHeight = 65;
-    const imageX = 10; // X position for the image
-    const imageY = doc.y + 10; // Y position for the image
+    const imageWidth = 50;
+    const imageHeight = 50;
+    const imageY = doc.y + 5; // Y position for the image
     if (imageBuffer) {
         try {
-            doc.image(imageBuffer, imageX, imageY, {
+            doc.image(imageBuffer, leftMargin + 5, doc.y + 5, {
                 width: imageWidth,
                 height: imageHeight,
             });
@@ -207,19 +210,22 @@ const addHeader = (
     // Address Section
     let address = "";
     if (organization.billingAddress) {
-        address = `${organization?.billingAddress?.street1 || ""}, ${
-            organization?.billingAddress?.street2 || ""
-        }\n${organization?.billingAddress?.city || ""}, ${
-            organization?.billingAddress?.state || ""
-        }, ${organization?.billingAddress?.pincode || ""}`;
+        address = `${organization.billingAddress.street1 || ""} ${
+            organization.billingAddress.street2 || ""
+        } ${organization.billingAddress.city || ""}, ${
+            organization.billingAddress.state || ""
+        } - ${organization.billingAddress.pincode || ""}`
+            .trim()
+            .replace(/\s+/g, " ");
     } else {
-        address = "No address Found:";
+        address = "No address found.";
     }
 
     const phoneNumber = organization?.phone || "";
     const email = organization?.email || "";
     const gstNo = organization?.gstNo || "";
     const panNo = organization?.panNo || "";
+    let website = organization?.website;
 
     const addressFontSize = 8.5;
     const addressColor = "#000000";
@@ -228,8 +234,14 @@ const addHeader = (
     let fullAddress =
         `${address}\n` + // Ensure a new line for address
         `Phone: ${phoneNumber}\n` + // Phone number in one line
-        `Email: ${email}\n` + // Email in one line with spacing above
-        `GST No: ${gstNo}\nPAN No: ${panNo}`; // GST and PAN in the last line
+        `Email: ${email}\n`; // Email in one line with spacing above
+
+    // Add website only if it's present
+    if (website) {
+        fullAddress += `Website: ${website}\n`;
+    }
+
+    fullAddress += `GST No: ${gstNo}\nPAN No: ${panNo}`; // GST and PAN in the last line
 
     const headerTextY = imageY;
 
@@ -237,24 +249,30 @@ const addHeader = (
     doc.fontSize(12)
         .fillColor(headerTextColor)
         .font("Helvetica-Bold")
-        .text(organization?.companyName?.toUpperCase(), 100, headerTextY, {
-            width: 275,
-            align: "left",
-        });
+        .text(
+            organization?.companyName?.toUpperCase(),
+            leftMargin + imageWidth + 10,
+            doc.y + 5,
+            {
+                width: 230,
+                align: "left",
+            }
+        );
 
     doc.fontSize(addressFontSize)
         .fillColor(addressColor)
         .font("Helvetica")
-        .text(fullAddress, 100, headerTextY + 15, {
-            width: 275,
+        .text(fullAddress, leftMargin + imageWidth + 10, doc.y, {
+            width: 230,
             align: "left",
         });
 
     let leftY = doc.y;
     // Add dynamic header details based on entity
     let detailsY = imageY;
-    const detailFontSize = 13;
+    const detailFontSize = 10;
     const detailWidth = 150;
+    const xForRightSide = 310;
 
     if (entity.toLowerCase() === "invoices") {
         doc.fontSize(detailFontSize)
@@ -297,13 +315,13 @@ const addHeader = (
         doc.fontSize(detailFontSize)
             .fillColor("#000000")
             .font("Helvetica-Bold")
-            .text(`Quote No:`, 360, detailsY, {
+            .text(`Quote No:`, xForRightSide, detailsY, {
                 width: detailWidth,
                 align: "left",
             });
         doc.font("Helvetica").text(
             `${entityPrefix}/${entityDetails.no}`,
-            460,
+            xForRightSide + 75,
             detailsY,
             {
                 width: detailWidth,
@@ -311,25 +329,30 @@ const addHeader = (
             }
         );
         detailsY += 20;
-        doc.font("Helvetica-Bold").text(`Quote Date:`, 360, detailsY, {
-            width: detailWidth,
-            align: "left",
-        });
+        doc.font("Helvetica-Bold").text(
+            `Quote Date:`,
+            xForRightSide,
+            detailsY,
+            {
+                width: detailWidth,
+                align: "left",
+            }
+        );
         doc.font("Helvetica").text(
             `${jsDateIntoDDMMYY(entityDetails.quoteDate)}`,
-            460,
+            xForRightSide + 75,
             detailsY,
             { width: detailWidth, align: "left" }
         );
         detailsY += 20;
-        doc.font("Helvetica-Bold").text(`Due Date:`, 360, detailsY, {
+        doc.font("Helvetica-Bold").text(`Due Date:`, xForRightSide, detailsY, {
             width: detailWidth,
             align: "left",
         });
 
         doc.font("Helvetica").text(
             `${jsDateIntoDDMMYY(entityDetails.expiryDate)}`,
-            460,
+            xForRightSide + 75,
             detailsY,
             {
                 width: detailWidth,
@@ -508,12 +531,12 @@ const addHeader = (
     let headerY = Math.max(leftY, detailsY);
     // Draw a horizontal line after the header details
     const horizontalLineY = headerY + 10;
-    doc.moveTo(4, horizontalLineY) // Starting at x=4, y=horizontalLineY
-        .lineTo(pageWidth - 4, horizontalLineY - 2) // Ending at x=pageWidth - 4, y=horizontalLineY
+    doc.moveTo(leftMargin, horizontalLineY) // Starting at x=4, y=horizontalLineY
+        .lineTo(pageWidth - leftMargin, horizontalLineY - 2) // Ending at x=pageWidth - 4, y=horizontalLineY
         .stroke(borderColor);
     // Draw a horizontal line after the header details
-    doc.moveTo(350, horizontalLineY)
-        .lineTo(350, titleBorder)
+    doc.moveTo(300, horizontalLineY)
+        .lineTo(300, titleBorder)
         .stroke(borderColor);
     doc.y = horizontalLineY;
 
@@ -543,12 +566,13 @@ const addDetails = (doc, entityData, entity, organizationData) => {
     detailsFunction(doc, entityData, organizationData);
 };
 
-// Add Items Table Function
 const addItemsTable = (doc, entityData, entity) => {
-    const headers = getTableHeaders(entity);
+    const items = entityData?.items;
+    console.log(items[0]);
+    const headers = getTableHeaders(entity, items[0]); // Dynamically get headers based on the first item
+    console.log(headers, "==");
     const headerHeight = 30;
     const cellPadding = 5;
-    const items = entityData?.items;
     const borderColor = "#000000"; // Border color
 
     // Draw header background
@@ -556,50 +580,83 @@ const addItemsTable = (doc, entityData, entity) => {
 
     // Draw header text
     let x = 20;
-    doc.fontSize(8).font("Helvetica-Bold").fill("#fff");
+    doc.fontSize(8.5).font("Helvetica-Bold").fill("#fff");
     headers.forEach((header) => {
-        doc.text(header.title, x, tableHeaderY);
+        doc.text(header.title, x, tableHeaderY, {
+            width: header.width,
+            align: "center",
+        });
         x += header.width;
     });
 
     // Draw item rows
     let y = tableHeaderY + headerHeight + cellPadding;
-    doc.fill("#000000").font("Helvetica-Bold");
+    doc.fill("#000000").font("Helvetica").fontSize(8.5);
 
-    items?.forEach((item) => {
+    items?.forEach((item, index) => {
         let x = 20;
         headers.forEach((header) => {
-            switch (header.title.toUpperCase()) {
-                case "ITEM & DESCRIPTION":
+            switch (header.value) {
+                case "srNo":
+                    doc.text(index + 1, x, y); // Serial number
+                    break;
+                case "description":
                     doc.text(item.description, x, y, {
                         width: header.width,
-                        align: "left",
+                        align: "center",
                     });
                     break;
-                case "HSN CODE":
-                    doc.text(item.hsnCode, x + cellPadding, y);
+                case "hsnCode":
+                    doc.text(item.hsnCode, x + cellPadding, y, {
+                        width: header.width,
+                        align: "center",
+                    });
                     break;
-                case "RATE":
-                    doc.text(Math.ceil(item.rate), x + cellPadding, y);
+                case "rate":
+                    doc.text(Math.ceil(item.rate), x + cellPadding, y, {
+                        width: header.width,
+                        align: "center",
+                    });
                     break;
-                case "QTY":
-                    doc.text(item.qty, x + cellPadding, y);
+                case "qty":
+                    doc.text(item.qty, x + cellPadding, y, {
+                        width: header.width,
+                        align: "center",
+                    });
                     break;
-                case "GST%":
-                    doc.text(`${item?.gstPercent || 0}%`, x + cellPadding, y);
+                case "gstPercent":
+                    doc.text(`${item?.gstPercent || 0}%`, x + cellPadding, y, {
+                        width: header.width,
+                        align: "center",
+                    });
                     break;
-                case "TOTAL AMOUNT":
-                    doc.text(Math.ceil(item.finalAmount), x + cellPadding, y);
+                case "gstAmount":
+                    doc.text(`${item?.gstAmount || 0}`, x + cellPadding, y, {
+                        width: header.width,
+                        align: "center",
+                    });
+                    break;
+                case "finalAmount":
+                    doc.text(Math.ceil(item.finalAmount), x + cellPadding, y, {
+                        width: header.width,
+                        align: "center",
+                    });
+                    break;
+                case "image":
+                    // Handle image rendering if needed
                     break;
                 default:
+                    if (item[header.value] !== undefined) {
+                        doc.text(item[header.value], x + cellPadding, y);
+                    }
                     break;
             }
             x += header.width;
         });
 
         // Draw the bottom border for each row
-        doc.moveTo(4, y + headerHeight - 5)
-            .lineTo(591, y + headerHeight - 5) // Line covering the width of the table
+        doc.moveTo(10, y + headerHeight - 5)
+            .lineTo(doc.page.width - 10, y + headerHeight - 5) // Line covering the width of the table
             .stroke(borderColor);
 
         y += headerHeight;
@@ -630,18 +687,17 @@ const addFooter = (doc, entityData, entity, organizationData) => {
 const addPageBorder = (doc) => {
     const borderColor = "#000000"; // Dark black color
     const borderWidth = 1; // Border width in points
-    const margin = 4; // Margin from the edges in points
     const pageWidth = doc.page.width;
     const pageHeight = doc.page.height;
 
     // Calculate the dimensions for the border with the specified margin
-    const innerWidth = pageWidth - 2 * margin; // Width considering margins on both sides
-    const innerHeight = pageHeight - 2 * margin; // Height considering margins on top and bottom
+    const innerWidth = pageWidth - 2 * leftMargin; // Width considering margins on both sides
+    const innerHeight = pageHeight - 2 * topMargin; // Height considering margins on top and bottom
 
     // Draw the border around the page
     doc.rect(
-        margin, // X position (4px from the left)
-        margin, // Y position (4px from the top)
+        leftMargin, // X position (4px from the center)
+        topMargin, // Y position (4px from the top)
         innerWidth, // Width of the rectangle (pageWidth - 2 * margin)
         innerHeight // Height of the rectangle (pageHeight - 2 * margin)
     )
@@ -649,41 +705,10 @@ const addPageBorder = (doc) => {
         .stroke(borderColor);
 };
 // Get Table Headers Function
-const getTableHeaders = (entity) => {
+const getTableHeaders = (entity, item) => {
+    // Access the _doc property if available (Mongoose document case)
+    const actualData = item._doc || item;
     switch (entity.toLowerCase()) {
-        case "invoices":
-            return [
-                { title: "ITEM & DESCRIPTION", width: 225 },
-                { title: "HSN CODE", width: 70 },
-                { title: "RATE", width: 70 },
-                { title: "QTY", width: 50 },
-                { title: "GST%", width: 50 },
-                { title: "TOTAL AMOUNT", width: 100 },
-            ];
-        case "quotations":
-            return [
-                { title: "ITEM & DESCRIPTION", width: 270 },
-                { title: "RATE", width: 75 },
-                { title: "QTY", width: 50 },
-                { title: "GST%", width: 50 },
-                { title: "TOTAL AMOUNT", width: 100 },
-            ];
-        case "purchases":
-            return [
-                { title: "ITEM & DESCRIPTION", width: 275 },
-                { title: "RATE", width: 70 },
-                { title: "QTY", width: 50 },
-                { title: "GST%", width: 50 },
-                { title: "TOTAL AMOUNT", width: 100 },
-            ];
-        case "challans":
-            return [
-                { title: "ITEM & DESCRIPTION", width: 275 },
-                { title: "RATE", width: 70 },
-                { title: "QTY", width: 50 },
-                { title: "GST%", width: 50 },
-                { title: "TOTAL AMOUNT", width: 100 },
-            ];
         case "workorders":
             return [
                 { title: "CODE", width: 50 },
@@ -691,7 +716,44 @@ const getTableHeaders = (entity) => {
                 { title: "QTY", width: 50 },
             ];
         default:
-            return [];
+            const allHeaders = [
+                { title: "#", value: "srNo", width: 10 },
+                { title: "CODE", value: "code", width: 30 },
+                {
+                    title: "DESCRIPTION",
+                    value: "description",
+                    width: 130,
+                },
+                { title: "IMAGE", value: "image", width: 50 },
+                { title: "HSN CODE", value: "hsnCode", width: 30 },
+                { title: "RATE", value: "rate", width: 30 },
+                {
+                    title: "DISCOUNT %",
+                    value: "discountPercent",
+                    width: 50,
+                },
+                {
+                    title: "DISCOUNT AMOUNT",
+                    value: "discountAmount",
+                    width: 50,
+                },
+                { title: "QTY", value: "qty", width: 30 },
+                { title: "GST%", value: "gstPercent", width: 25 },
+                { title: "GST AMOUNT", value: "taxAmount", width: 40 },
+                { title: "TOTAL AMOUNT", value: "finalAmount", width: 50 },
+            ];
+            // Filter headers based on keys present in the obj (or always include "serialNumber")
+            // Log object keys for debugging
+
+            // Filter headers based on matching keys in the obj (case-insensitive)
+            return allHeaders.filter(
+                (header) =>
+                    header.value === "srNo" ||
+                    Object.keys(actualData).some(
+                        (key) =>
+                            key.toLowerCase() === header.value.toLowerCase()
+                    )
+            );
     }
 };
 
@@ -784,16 +846,16 @@ const detailsForQuotation = (doc, quotationData, organizationData, curY) => {
     const sub = quotationData?.sub;
     const salesPerson = quotationData?.salesPerson;
     let initialY = doc.y;
-    let leftX = 8;
+    let leftX = 15;
 
     // Calculate width of "TO:" text
-    doc.fontSize(12).font("Helvetica-Bold");
+    doc.fontSize(10).font("Helvetica-Bold");
     const toText = "Buyer:";
     const toTextWidth = doc.widthOfString(toText);
 
     // Customer Details
     doc.fillColor("#1E1F20").text(toText, leftX, initialY + 10);
-    doc.fontSize(12)
+    doc.fontSize(10)
         .fillColor("#1E1F20")
         .text(
             customer?.name?.toUpperCase() || "",
@@ -804,7 +866,7 @@ const detailsForQuotation = (doc, quotationData, organizationData, curY) => {
     // Optional subject line
     if (sub) {
         let subText = `Sub : ${quotationData?.sub || ""}`;
-        doc.fontSize(12)
+        doc.fontSize(10)
             .fillColor("#1E1F20")
             .font("Helvetica-Bold")
             .text(subText, leftX, doc.y + 10);
@@ -812,7 +874,7 @@ const detailsForQuotation = (doc, quotationData, organizationData, curY) => {
     // Optional subject line
     if (salesPerson) {
         let subText = `Sales Executive : ${quotationData?.salesPerson || ""}`;
-        doc.fontSize(12)
+        doc.fontSize(10)
             .fillColor("#1E1F20")
             .font("Helvetica-Bold")
             .text(subText, leftX, doc.y + 10);
@@ -821,8 +883,8 @@ const detailsForQuotation = (doc, quotationData, organizationData, curY) => {
     const customerEndY = doc.y;
 
     // Draw horizontal line after customer details
-    doc.moveTo(4, customerEndY + 5)
-        .lineTo(doc.page.width - 4, customerEndY + 5)
+    doc.moveTo(leftMargin, customerEndY + 5)
+        .lineTo(doc.page.width - leftMargin, customerEndY + 5)
         .stroke(borderColor);
     doc.y = customerEndY + 5;
 };
@@ -978,33 +1040,6 @@ const detailsForChallan = (doc, challanDataa, organizationData, curY) => {
     // Update doc.y to ensure it starts after the details section
     doc.y = endY;
 };
-
-// const footerForInvoice = (doc, invoiceData, organizationData) => {
-//     const initialY = doc.y + 20;
-//     doc.fontSize(10);
-//     doc.fill("#000");
-//     // Gross Total and Tax Amount on the right
-//     doc.font("Helvetica-Bold");
-//     const startX = 390;
-//     const valueX = 475;
-//     const startY = initialY + 30;
-
-//     doc.text("Gross Total:", startX, startY);
-//     doc.text("Tax Amount:", startX, startY + 30);
-//     doc.rect(startX - 20, startY + 60, 200, 30).fill("#0047AB");
-//     doc.fill("#fff");
-//     doc.text("Grand Total:", startX, startY + 70).fillColor("#000");
-
-//     doc.fill("#000");
-//     doc.text(`${invoiceData?.grossTotal || ""}`, valueX, startY);
-//     doc.text(`${invoiceData?.taxAmount || ""}`, valueX, startY + 30);
-//     doc.fill("#fff");
-//     doc.text(`${invoiceData?.grandTotal}`, valueX, startY + 70);
-
-//     // Thank you message
-//     const thankYouY =  doc.y+ 100; // Adjust this value to position the thank you message properly
-//     doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);
-// };
 
 const footerForQuotation = (doc, data, organizationData, entity) => {
     const initialY = doc.y + 20;
@@ -1242,183 +1277,5 @@ const itemTableForWorkOrder = (doc, entityData, entity) => {
         y += headerHeight;
     });
 };
-
-// const footerForPurchaseOrder = (doc, purchaseOrderData) => {
-//     const initialY = doc.y + 20;
-
-//     doc.fontSize(10);
-//     doc.fill("#000");
-
-//     // Gross Total and Grand Total on the right
-//     doc.font("Helvetica-Bold");
-//     const startX = 390;
-//     const valueX = 475;
-//     let startY = initialY + 30;
-
-//     doc.text("Gross Total:", startX, startY);
-//     doc.text(`${purchaseOrderData?.grossTotal}`, valueX, startY);
-
-//     // Move to the next line for Tax Amount if it exists
-//     startY += 30;
-//     doc.text("Tax Amount:", startX, startY);
-//     doc.text(`${purchaseOrderData?.taxAmount || 0}`, valueX, startY);
-
-//     // Draw rectangles and Grand Total text
-//     startY += 30;
-//     doc.rect(startX - 20, startY, 200, 30).fill("#0047AB");
-//     doc.fill("#fff");
-//     doc.text("Grand Total:", startX, startY + 10).fillColor("#000");
-//     doc.fill("#fff");
-//     doc.text(`${purchaseOrderData?.grandTotal}`, valueX, startY + 10).fillColor(
-//         "#000"
-//     );
-
-//     // Terms and Conditions on the left, only if payment or cancellation conditions exist
-//     if (
-//         purchaseOrderData?.paymentCondition ||
-//         purchaseOrderData?.cancellationCondition
-//     ) {
-//         const termsStartX = 20;
-//         let termsStartY = doc.y + 20; // Adjust this value to position the Terms and Conditions properly
-
-//         doc.fill("#000");
-//         doc.font("Helvetica-Bold");
-//         doc.text("Terms and Conditions:", termsStartX, termsStartY);
-//         doc.font("Helvetica");
-
-//         // Define line height and max width for wrapping
-//         const lineHeight = 5; // Adjust this value as needed for line spacing
-//         const maxWidth = 450; // Adjust this value as needed for text wrapping
-
-//         let currentY = termsStartY + 20; // Start position for the first line after the "Terms and Conditions" heading
-
-//         const addCondition = (conditionName, conditionValue) => {
-//             if (conditionValue) {
-//                 // Get the uppercase condition name
-//                 let conditionText = `${conditionName.toUpperCase()} :`;
-
-//                 // Calculate the width of the condition name text
-//                 const conditionTextWidth = doc.font("Helvetica-Bold").widthOfString(conditionText);
-
-//                 // Define the x position for the condition value based on the width of the condition name
-//                 const conditionValueX = termsStartX + conditionTextWidth + 5; // Adding a small gap (5 units)
-
-//                 // Draw the condition name
-//                 doc.font("Helvetica-Bold").text(
-//                     `${conditionText}`,
-//                     termsStartX,
-//                     currentY,
-//                     { width: 100, align: "left" }
-//                 );
-
-//                 // Draw the condition value
-//                 doc.font("Helvetica").text(
-//                     `${conditionValue}.`,
-//                     conditionValueX,
-//                     currentY,
-//                     { width: 400, align: "left" } // Adjusting width based on condition name width
-//                 );
-
-//                 // Update currentY for the next condition
-//                 currentY = doc.y + lineHeight; // Adjust Y position for the next condition
-//             }
-//         };
-
-//         addCondition("Payment", purchaseOrderData?.paymentCondition);
-//         addCondition(
-//             "Cancellation",
-//             purchaseOrderData?.cancellationCondition
-//         );
-
-//     }
-//       // Thank you message
-//       const thankYouY = currentY + 20; // Adjust this value to position the thank you message properly
-//       doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);
-// };
-// const footerForChallan = (doc, quotationData) => {
-//     const initialY = doc.y + 20;
-
-//     doc.fontSize(10);
-//     doc.fill("#000");
-
-//     // Gross Total and Grand Total on the right
-//     doc.font("Helvetica-Bold");
-//     const startX = 390;
-//     const valueX = 475;
-//     let startY = initialY + 30;
-
-//     doc.text("Gross Total:", startX, startY);
-//     doc.text(`${quotationData?.grossTotal}`, valueX, startY);
-
-//     // Adjust startY if there is a transport amount
-//     if (quotationData?.transportAmount) {
-//         startY += 30;
-//         doc.text("Transport:", startX, startY);
-//         doc.text(`${quotationData?.transportAmount}`, valueX, startY);
-//     }
-
-//     // Move to the next line for Tax Percent if it exists
-//     if (quotationData?.taxAmount) {
-//         startY += 30;
-//         doc.text("Tax Amount:", startX, startY);
-//         doc.text(`${quotationData?.taxAmount}`, valueX, startY);
-//     }
-
-//     // Draw rectangles and Grand Total text
-//     startY += 30;
-//     doc.rect(startX - 20, startY, 200, 30).fill("#0047AB");
-//     doc.fill("#fff");
-//     doc.text("Grand Total:", startX, startY + 10).fillColor("#000");
-//     doc.fill("#fff");
-//     doc.text(`${quotationData?.grandTotal}`, valueX, startY + 10).fillColor(
-//         "#000"
-//     );
-
-//     // // Terms and Conditions on the left
-//     // const termsStartX = 20;
-//     // let termsStartY = doc.y + 20; // Adjust this value to position the Terms and Conditions properly
-//     // if (
-//     //     quotationData?.paymentCondition ||
-//     //     quotationData?.deliveryCondition ||
-//     //     quotationData?.validityCondition ||
-//     //     quotationData?.cancellationCondition
-//     // ) {
-//     //     doc.fill("#000");
-//     //     doc.font("Helvetica-Bold");
-//     //     doc.text("Terms and Conditions:", termsStartX, termsStartY);
-//     //     doc.font("Helvetica");
-
-//     //     // Define line height and max width for wrapping
-//     //     const lineHeight = 5; // Adjust this value as needed for line spacing
-//     //     const maxWidth = 450; // Adjust this value as needed for text wrapping
-
-//     //     let currentY = termsStartY + lineHeight * 2; // Start position for the first line after the "Terms and Conditions" heading
-
-//     //     const addCondition = (conditionName, conditionValue) => {
-//     //         let conditionText = `${conditionName.toUpperCase()} : ${conditionValue}`;
-//     //         if (conditionName) {
-//     //             doc.font("Helvetica-Bold").text(
-//     //                 `${conditionText} : `,
-//     //                 termsStartX,
-//     //                 currentY,
-//     //                 { width: maxWidth }
-//     //             );
-//     //             currentY = doc.y + lineHeight; // Adjust Y position for the next condition
-//     //         }
-//     //     };
-
-//     //     addCondition("Delivery Condition", quotationData?.deliveryCondition);
-//     //     addCondition("Payment Condition", quotationData?.paymentsCondition);
-//     //     addCondition("Validity Condition", quotationData?.validityCondition);
-//     //     addCondition(
-//     //         "Cancellation Condition",
-//     //         quotationData?.cancellationCondition
-//     //     );
-
-//     // Thank you message
-//     const thankYouY = doc.y + 20; // Adjust this value to position the thank you message properly
-//     doc.fill("#0047AB").text("THANK YOU FOR YOUR BUSINESS", 225, thankYouY);
-//     // }
-// };
 
 export default defaultPdfTemplate;
