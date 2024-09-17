@@ -1,6 +1,7 @@
 import myfac8ryDefault from "../../template/pdfTemplate/myfac8rydefualt.js";
 import vipDefault from "../../template/pdfTemplate/vipDefault.js";
 import tenantDb from "../../models/coreModels/Tenant.js";
+import colPreDb from "../../models/appModels/columnPrefrence.js";
 import checkDbForEntity from "../../Helper/databaseSelector.js";
 import countersDb from "../../models/appModels/counters.js";
 
@@ -56,6 +57,12 @@ const generatePdf = async (req, res, next, forEmail) => {
                 },
             ]);
         let organization = await tenantDb.findOne({ _id: tenantId });
+        let columns = await colPreDb.findOne({
+            tenantId: tenantId,
+            entity: entity,
+        });
+        let preCol = columns.preferences;
+
         let prefix = await countersDb.findOne({
             entityName: entity,
             tenantId: tenantId,
@@ -88,6 +95,7 @@ const generatePdf = async (req, res, next, forEmail) => {
             organization,
             entity,
             entityPrefix,
+            preCol,
             forEmail
         );
     } catch (error) {

@@ -18,11 +18,11 @@ import CustomModel from "components/CustomModal";
 import TaxPercent from "components/Comman/TaxPercent";
 import { useParams } from "react-router-dom";
 import { useAuth } from "state/AuthProvider";
-
+import NotificationHandler from "EventHandler/NotificationHandler";
 
 const CustomFormTableList = ({ form }) => {
     const { entity, tenantId } = useParams();
-    const {appApiCall} = useAuth();
+    const { appApiCall } = useAuth();
     const calculateDiscount = (discountPercent, rate) => {
         let discoumntAmount = Math.floor((rate * discountPercent) / 100);
         return Math.floor(rate - discoumntAmount);
@@ -38,10 +38,10 @@ const CustomFormTableList = ({ form }) => {
         let temObj = items[rowName];
         if (filedName === "code" || filedName === "description") {
             let { details } = value;
-            temObj.code = details?.code ? details?.code : "";
+            temObj.code = details?.code || "";
             temObj.description = details?.name;
             temObj.image = details?.image;
-            temObj.hsnCode = details?.hsnCode;
+            temObj.hsnCode = details?.hsnCode || "";
             temObj.rate = details?.rate || 0;
             let finalAmount = calculateDiscount(
                 temObj?.discountPercent || 0,
@@ -116,37 +116,7 @@ const CustomFormTableList = ({ form }) => {
 
     // State to store selected columns
     const [selectedColumns, setSelectedColumns] = useState([]);
-    const [columnOptions,setColumnOptions] = useState([])
-
-    // Options for optional columns
-    // Function to handle column selection
-    const handleColumnChange = (selected) => {
-        setSelectedColumns(selected);
-    };
-
-    // const columnOptions = [
-    //     {
-    //         label: "Item Code",
-    //         value: "code",
-    //     },
-    //     {
-    //         label: "Image",
-    //         value: "image",
-    //     },
-    //     {
-    //         label: "Hsn Code",
-    //         value: "hsnCode",
-    //     },
-    //     {
-    //         label: "Discount%",
-    //         value: "discountPercent",
-    //     },
-    //     {
-    //         label: "Tax Amount",
-    //         value: "taxAmount",
-    //     },
-    // ];
-    
+    const [columnOptions, setColumnOptions] = useState([]);
 
     const renderColumnHeader = (columnKey, label, spanValue) => {
         return selectedColumns.includes(columnKey) ? (
@@ -288,9 +258,60 @@ const CustomFormTableList = ({ form }) => {
         );
         if (response.success) {
             setColumnOptions(response.result);
+            let selected = response.result.filter((ele) => ele.status === true);
+            const values = selected.map((ele) => ele.value);
+            // Update the state with the extracted values
+            setSelectedColumns(values);
         }
     };
-    
+    // Options for optional columns
+    // Function to handle column selection
+    const handleSelect = async (value, option) => {
+        // lets update the clicked column
+        await updateColumnStatus(value, true);
+        setSelectedColumns([...selectedColumns, value]);
+    };
+    const handleDeSelect = async (value, options) => {
+        // before de slectiong check if the value is in item talble
+        let items = form.getFieldValue("items");
+        console.log(items.length, "items");
+        if (items.length > 0) {
+            return NotificationHandler.info({
+                content: "Item tabel sholud be empty to De Select columns",
+            });
+        }
+        await updateColumnStatus(value, false);
+        let filter = selectedColumns.filter((v) => v !== value);
+        setSelectedColumns(filter);
+    };
+
+    const updateColumnStatus = async (value, status) => {
+        try {
+            let response = await appApiCall(
+                "post",
+                "updateColumnPreferences",
+                {
+                    value,
+                    status,
+                },
+                { entity, tenantId }
+            );
+            if (response.success) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (error) {
+            error.log(error);
+            return false;
+        }
+    };
+
+    useEffect(() => {
+        getColumnPre();
+    }, []);
+    useEffect(() => {}, [form]);
+
     return (
         <>
             <Divider dashed />
@@ -321,11 +342,12 @@ const CustomFormTableList = ({ form }) => {
                             mode="multiple"
                             maxTagCount={0}
                             options={columnOptions}
+                            value={selectedColumns}
                             style={{ width: "10vw" }}
-                            onChange={handleColumnChange}
+                            onSelect={handleSelect}
+                            onDeselect={handleDeSelect}
                             onClick={getColumnPre}
-                            loading ={columnOptions.length > 0 ? false:true}
-
+                            loading={columnOptions.length > 0 ? false : true}
                         />
                     </Row>
                 </Col>
@@ -535,16 +557,20 @@ const CustomFormTableList = ({ form }) => {
                                             {renderColumnValue(
                                                 "hsnCode",
                                                 <Input
-                                                    type="text"
                                                     style={{
                                                         width: "100%",
                                                     }}
-                                                    onChange={(value) =>
+                                                    onChange={(event) =>
                                                         handleItemsUpdate(
-                                                            value,
+                                                            event.target.value,
                                                             "hsnCode",
                                                             name
                                                         )
+                                                    }
+                                                    preFillValue={
+                                                        form.getFieldValue(
+                                                            "items"
+                                                        )?.[name]?.hsnCode
                                                     }
                                                 />,
                                                 2,
@@ -779,6 +805,7 @@ const CustomFormTableList = ({ form }) => {
                                         qty: 1,
                                         hsnCode: "",
                                         rate: 0,
+                                        discountPercent: 0,
                                         gstPercent: 0,
                                     });
                                 }}

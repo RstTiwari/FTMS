@@ -65,17 +65,17 @@ export const updateColumnPreferences = async (req, res, next) => {
 
         const preferences = await columnPrefDb.updateOne(
             {
-                tenantId: mongoose.Types.ObjectId(tenantId), // Convert tenantId to ObjectId
+                tenantId: tenantId, // Convert tenantId to ObjectId
                 entity: entity,
                 "preferences.value": value, // Find the specific preference by its value
             },
-            { $set: { status: status } },
-            { new: true }
+            { $set: { "preferences.$.status": status } }
         );
+        console.log(preferences, "==");
 
         res.status(200).json({
             success: 1,
-            result: preferences.preferences,
+            result: [],
         });
     } catch (error) {
         next(error);

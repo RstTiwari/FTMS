@@ -6,7 +6,7 @@ const columnPreferenceSchema = new mongoose.Schema({
     preferences: [
         {
             label: { type: String },
-            value: { type: String}, // e.g., 'code', 'image', etc.
+            value: { type: String }, // e.g., 'code', 'image', etc.
             status: { type: Boolean, default: false }, // true if selected, false otherwise
         },
     ],

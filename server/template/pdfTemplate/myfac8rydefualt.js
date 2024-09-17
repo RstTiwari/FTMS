@@ -16,7 +16,8 @@ const defaultPdfTemplate = async (
     entityData,
     organizationData,
     entity,
-    entityPrefix
+    entityPrefix,
+    preCol
 ) => {
     try {
         const imageBuffer = await downloadImage(organizationData?.logo);
@@ -62,7 +63,12 @@ const defaultPdfTemplate = async (
         }
 
         // Function to add items to pages
-        const addItemsWithPagination = (doc, entityData, itemsPerPage) => {
+        const addItemsWithPagination = (
+            doc,
+            entityData,
+            itemsPerPage,
+            preCol
+        ) => {
             let currentPage = 1;
             let itemIndex = 0;
             doc.rect(leftMargin, doc.y, doc.page.width - 20, 30).fill(
@@ -88,7 +94,8 @@ const defaultPdfTemplate = async (
                         doc,
                         { ...entityData, items: itemsForPage },
                         entity,
-                        organizationData
+                        organizationData,
+                        preCol
                     );
                 }
 
@@ -108,7 +115,7 @@ const defaultPdfTemplate = async (
         };
 
         // Add items with pagination logic
-        addItemsWithPagination(doc, entityData, itemsPerPage);
+        addItemsWithPagination(doc, entityData, itemsPerPage, preCol);
 
         // Footer Section
         // addFooter(doc, entityData, entity, organizationData);
@@ -566,11 +573,10 @@ const addDetails = (doc, entityData, entity, organizationData) => {
     detailsFunction(doc, entityData, organizationData);
 };
 
-const addItemsTable = (doc, entityData, entity) => {
+const addItemsTable = (doc, entityData, entity, organizationData, preCol) => {
     const items = entityData?.items;
     console.log(items[0]);
-    const headers = getTableHeaders(entity, items[0]); // Dynamically get headers based on the first item
-    console.log(headers, "==");
+    const headers = getTableHeaders(entity, preCol); // Dynamically get headers based on the first item
     const headerHeight = 30;
     const cellPadding = 5;
     const borderColor = "#000000"; // Border color
@@ -627,7 +633,7 @@ const addItemsTable = (doc, entityData, entity) => {
                 case "gstPercent":
                     doc.text(`${item?.gstPercent || 0}%`, x + cellPadding, y, {
                         width: header.width,
-                        align: "center",
+                        align: "left",
                     });
                     break;
                 case "gstAmount":
@@ -705,8 +711,16 @@ const addPageBorder = (doc) => {
         .stroke(borderColor);
 };
 // Get Table Headers Function
-const getTableHeaders = (entity, item) => {
+const getTableHeaders = (entity, preCol) => {
     // Access the _doc property if available (Mongoose document case)
+    let toAddColumn = [
+        { title: "CODE", value: "code", width: 30 },
+        { title: "IMAGE", value: "image", width: 50 },
+        { title: "HSN CODE", value: "hsnCode", width: 30 },
+        { title: "DISCOUNT %", value: "discountPercent", width: 50 },
+        { title: "DISCOUNT AMOUNT", value: "discountAmount", width: 50 },
+        { title: "TAX AMOUNT", value: "taxAmount", width: 40 },
+    ];
     const actualData = item._doc || item;
     switch (entity.toLowerCase()) {
         case "workorders":
@@ -718,29 +732,16 @@ const getTableHeaders = (entity, item) => {
         default:
             const allHeaders = [
                 { title: "#", value: "srNo", width: 10 },
-                { title: "CODE", value: "code", width: 30 },
                 {
                     title: "DESCRIPTION",
                     value: "description",
-                    width: 130,
+                    width: 350,
                 },
-                { title: "IMAGE", value: "image", width: 50 },
-                { title: "HSN CODE", value: "hsnCode", width: 30 },
-                { title: "RATE", value: "rate", width: 30 },
-                {
-                    title: "DISCOUNT %",
-                    value: "discountPercent",
-                    width: 50,
-                },
-                {
-                    title: "DISCOUNT AMOUNT",
-                    value: "discountAmount",
-                    width: 50,
-                },
-                { title: "QTY", value: "qty", width: 30 },
-                { title: "GST%", value: "gstPercent", width: 25 },
-                { title: "GST AMOUNT", value: "taxAmount", width: 40 },
-                { title: "TOTAL AMOUNT", value: "finalAmount", width: 50 },
+                { title: "RATE", value: "rate", width: 50 },
+
+                { title: "QTY", value: "qty", width: 50 },
+                { title: "TAX%", value: "gstPercent", width: 30 },
+                { title: "TOTAL AMOUNT", value: "finalAmount", width: 80 },
             ];
             // Filter headers based on keys present in the obj (or always include "serialNumber")
             // Log object keys for debugging
