@@ -3,19 +3,21 @@ import tenantSpecificData from "../../data/tenantData.js";
 
 export const getOrCreateColumnPreferences = async (req, res, next) => {
     try {
-        const { tenantId, entity } = req.body; // Assuming you're passing tenantId and entity in the request body
+        const { tenantId, entity } = req.query; // Assuming you're passing tenantId and entity in the request body
         let columnPrefDb = checkDbForEntity("columnPreference");
         let preferences = await columnPrefDb.findOne({ tenantId, entity });
 
         // If no preferences found, create default ones
         if (!preferences) {
-            const defaultPreferences = tenantSpecificData.columnPrefrence.map(
+            const defaultPreferences = tenantSpecificData.columns.map(
                 (col) => ({
-                    column: col.value,
+                    label: col.label,
+                    value: col.value,
                     status: false, // default to false
+                    id: col._id,
                 })
             );
-            preferences = new ColumnPreference({
+            preferences = new columnPrefDb({
                 tenantId,
                 entity,
                 preferences: defaultPreferences,
@@ -24,11 +26,11 @@ export const getOrCreateColumnPreferences = async (req, res, next) => {
         } else {
             // If preferences are found, check for any new columns
             const existingColumns = preferences.preferences.map(
-                (pref) => pref.column
+                (pref) => pref.value
             );
 
             // Find any new columns from the current column options (tenantSpecificData)
-            const newColumns = tenantSpecificData.columnPrefrence.filter(
+            const newColumns = tenantSpecificData.columns.filter(
                 (col) => !existingColumns.includes(col.value)
             );
 
@@ -48,7 +50,7 @@ export const getOrCreateColumnPreferences = async (req, res, next) => {
 
         res.status(200).json({
             success: 1,
-            result: updatedColumns,
+            result: preferences.preferences,
         });
     } catch (error) {
         next(error); // Pass any error to the error handler middleware
@@ -56,26 +58,26 @@ export const getOrCreateColumnPreferences = async (req, res, next) => {
 };
 
 export const updateColumnPreferences = async (req, res, next) => {
-    let { entity } = req.query;
-    let updatedColumns = req.body;
-    let columnPrefDb = checkDbForEntity("columnPreference");
+    try {
+        let { entity, tenantId } = req.query;
+        let { value, status } = req.body;
+        let columnPrefDb = checkDbForEntity("columnPreference");
 
-    const preferences = await columnPrefDb.findOne({ tenantId, entity });
-
-    if (!preferences) throw new Error("Preferences not found");
-
-    updatedColumns.forEach((col) => {
-        const preference = preferences.preferences.find(
-            (pref) => pref.column === col.column
+        const preferences = await columnPrefDb.updateOne(
+            {
+                tenantId: mongoose.Types.ObjectId(tenantId), // Convert tenantId to ObjectId
+                entity: entity,
+                "preferences.value": value, // Find the specific preference by its value
+            },
+            { $set: { status: status } },
+            { new: true }
         );
-        if (preference) {
-            preference.status = col.status; // Update status (true/false)
-        }
-    });
 
-    await preferences.save();
-    res.status(200).json({
-        success: 1,
-        result: updatedColumns,
-    });
+        res.status(200).json({
+            success: 1,
+            result: preferences.preferences,
+        });
+    } catch (error) {
+        next(error);
+    }
 };

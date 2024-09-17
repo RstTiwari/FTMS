@@ -107,7 +107,7 @@ const tenantSpecificData = {
             ],
         },
     ],
-    columnPrefrence: [
+    columns: [
         {
             label: "Item Code",
             value: "code",

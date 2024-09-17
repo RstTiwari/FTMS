@@ -81,6 +81,18 @@ router.get(
     authMethod.isValidAuthtoken,
     appRoutes.fetchComments
 );
+
+router.post(
+    "/getOrCreateColumnPreferences",
+    authMethod.isValidAuthtoken,
+    appRoutes.getOrCreateColumnPreferences
+);
+router.post(
+    "/updateColumnPreferences",
+    authMethod.isValidAuthtoken,
+    appRoutes.updateColumnPreferences
+);
+
 // //just for app Data
 // router.post("/challan", appRoutes.challan);
 

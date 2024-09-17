@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Form,
     Table,
@@ -17,9 +17,12 @@ import Taglabel from "components/Comman/Taglabel";
 import CustomModel from "components/CustomModal";
 import TaxPercent from "components/Comman/TaxPercent";
 import { useParams } from "react-router-dom";
+import { useAuth } from "state/AuthProvider";
+
 
 const CustomFormTableList = ({ form }) => {
     const { entity, tenantId } = useParams();
+    const {appApiCall} = useAuth();
     const calculateDiscount = (discountPercent, rate) => {
         let discoumntAmount = Math.floor((rate * discountPercent) / 100);
         return Math.floor(rate - discoumntAmount);
@@ -31,7 +34,6 @@ const CustomFormTableList = ({ form }) => {
     };
 
     const handleItemsUpdate = (value, filedName, rowName) => {
-        console.log(value, filedName, "--");
         const items = form.getFieldValue("items");
         let temObj = items[rowName];
         if (filedName === "code" || filedName === "description") {
@@ -114,6 +116,7 @@ const CustomFormTableList = ({ form }) => {
 
     // State to store selected columns
     const [selectedColumns, setSelectedColumns] = useState([]);
+    const [columnOptions,setColumnOptions] = useState([])
 
     // Options for optional columns
     // Function to handle column selection
@@ -121,28 +124,29 @@ const CustomFormTableList = ({ form }) => {
         setSelectedColumns(selected);
     };
 
-    const columnOptions = [
-        {
-            label: "Item Code",
-            value: "code",
-        },
-        {
-            label: "Image",
-            value: "image",
-        },
-        {
-            label: "Hsn Code",
-            value: "hsnCode",
-        },
-        {
-            label: "Discount%",
-            value: "discountPercent",
-        },
-        {
-            label: "Tax Amount",
-            value: "taxAmount",
-        },
-    ];
+    // const columnOptions = [
+    //     {
+    //         label: "Item Code",
+    //         value: "code",
+    //     },
+    //     {
+    //         label: "Image",
+    //         value: "image",
+    //     },
+    //     {
+    //         label: "Hsn Code",
+    //         value: "hsnCode",
+    //     },
+    //     {
+    //         label: "Discount%",
+    //         value: "discountPercent",
+    //     },
+    //     {
+    //         label: "Tax Amount",
+    //         value: "taxAmount",
+    //     },
+    // ];
+    
 
     const renderColumnHeader = (columnKey, label, spanValue) => {
         return selectedColumns.includes(columnKey) ? (
@@ -274,6 +278,19 @@ const CustomFormTableList = ({ form }) => {
     };
 
     let dynamicSpan = calculateDynamicSpans();
+
+    const getColumnPre = async () => {
+        let response = await appApiCall(
+            "post",
+            "getOrCreateColumnPreferences",
+            {},
+            { entity, tenantId }
+        );
+        if (response.success) {
+            setColumnOptions(response.result);
+        }
+    };
+    
     return (
         <>
             <Divider dashed />
@@ -306,6 +323,9 @@ const CustomFormTableList = ({ form }) => {
                             options={columnOptions}
                             style={{ width: "10vw" }}
                             onChange={handleColumnChange}
+                            onClick={getColumnPre}
+                            loading ={columnOptions.length > 0 ? false:true}
+
                         />
                     </Row>
                 </Col>

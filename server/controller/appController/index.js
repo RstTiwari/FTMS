@@ -16,6 +16,7 @@ import recordPayment from "./recordPayment.js";
 import updatePayment from "./updatePayment.js";
 import totalReciveables from "./totalReciveables.js";
 import { emailData, sendEmail } from "./sendEmail.js";
+import { getOrCreateColumnPreferences, updateColumnPreferences } from "./columnPrefrence.js";
 const appRoutes = {
     create: async (req, res, next) => {
         create(req, res, next);
@@ -71,6 +72,13 @@ const appRoutes = {
     fetchComments: async (req, res, next) => {
         fetchComments(req, res, next);
     },
+    getOrCreateColumnPreferences: async (req, res, next) => {
+        getOrCreateColumnPreferences(req, res, next);
+    },
+    updateColumnPreferences: async (req, res, next) => {
+        updateColumnPreferences(req, res, next);
+    },
+
     // challan: async (req, res, next) => {
     //     try {
     //         const { action, value } = req.body;

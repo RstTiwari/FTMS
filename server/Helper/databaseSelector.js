@@ -16,6 +16,7 @@ import customSelect from "../models/appModels/customSelect.js";
 import workorders from "../models/appModels/workOrder.js";
 import User from "../models/coreModels/User.js";
 import Comment from "../models/appModels/comment.js";
+import columnPrefrence from "../models/appModels/columnPrefrence.js";
 
 const dbMapping = {
     customers: customerDb,
@@ -36,6 +37,8 @@ const dbMapping = {
     workorders: workorders,
     user: User,
     comments: Comment,
+    columnPreference:columnPrefrence
+
 };
 
 const checkDbForEntity = (entity) => dbMapping[entity] || false;
