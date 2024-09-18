@@ -721,7 +721,44 @@ const getTableHeaders = (entity, preCol) => {
         { title: "DISCOUNT AMOUNT", value: "discountAmount", width: 50 },
         { title: "TAX AMOUNT", value: "taxAmount", width: 40 },
     ];
-    const actualData = item._doc || item;
+    const allHeaders = [
+        { title: "#", value: "srNo", width: 10 },
+        {
+            title: "DESCRIPTION",
+            value: "description",
+            width: 350,
+        },
+        { title: "RATE", value: "rate", width: 50 },
+
+        { title: "QTY", value: "qty", width: 50 },
+        { title: "TAX%", value: "gstPercent", width: 30 },
+        { title: "TOTAL AMOUNT", value: "finalAmount", width: 80 },
+    ];
+
+    // Create a map for easy lookup of preCol values
+    const preColMap = {};
+    preCol.forEach((col) => {
+        if (col.status) {
+            preColMap[col.value] = col.label; // Map value to label for easier access
+        }
+    });
+
+    const order = [
+        "srNo",
+        "code",
+        "description",
+        "image",
+        "hsnCode",
+        "rate",
+        "discountPercent",
+        "discountAmount",
+        "qty",
+        "gstPercent",
+        "taxAmount",
+        "finalAmount",
+    ];
+
+
     switch (entity.toLowerCase()) {
         case "workorders":
             return [
@@ -730,31 +767,12 @@ const getTableHeaders = (entity, preCol) => {
                 { title: "QTY", width: 50 },
             ];
         default:
-            const allHeaders = [
-                { title: "#", value: "srNo", width: 10 },
-                {
-                    title: "DESCRIPTION",
-                    value: "description",
-                    width: 350,
-                },
-                { title: "RATE", value: "rate", width: 50 },
+        let finalHeader = []
+        order.forEach((value)=>{
 
-                { title: "QTY", value: "qty", width: 50 },
-                { title: "TAX%", value: "gstPercent", width: 30 },
-                { title: "TOTAL AMOUNT", value: "finalAmount", width: 80 },
-            ];
-            // Filter headers based on keys present in the obj (or always include "serialNumber")
-            // Log object keys for debugging
-
-            // Filter headers based on matching keys in the obj (case-insensitive)
-            return allHeaders.filter(
-                (header) =>
-                    header.value === "srNo" ||
-                    Object.keys(actualData).some(
-                        (key) =>
-                            key.toLowerCase() === header.value.toLowerCase()
-                    )
-            );
+        })
+    
+            return allHeaders;
     }
 };
 

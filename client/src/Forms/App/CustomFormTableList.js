@@ -764,7 +764,6 @@ const CustomFormTableList = ({ form }) => {
                                                     name={[name, "finalAmount"]}
                                                 >
                                                     <InputNumber
-                                                        readOnly
                                                         style={{
                                                             width: "100%",
                                                         }}
