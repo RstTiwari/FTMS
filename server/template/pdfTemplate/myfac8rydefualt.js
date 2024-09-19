@@ -52,16 +52,17 @@ const defaultPdfTemplate = async (
         let totalPages = Math.ceil(totalItems / itemsPerPage);
 
         // Ensure the number of pages based on total items and rules
-        if (totalItems <= 15) {
+        if (totalItems <= 10) {
             totalPages = 1;
-        } else if (totalItems > 15 && totalItems <= 30) {
+        } else if (totalItems > 10 && totalItems <= 20) {
             totalPages = 2;
-        } else if (totalItems > 30 && totalItems <= 45) {
+        } else if (totalItems > 20 && totalItems <= 30) {
             totalPages = 3;
         } else {
             totalPages = Math.ceil(totalItems / itemsPerPage);
         }
 
+        // Function to add items to pages
         // Function to add items to pages
         const addItemsWithPagination = (
             doc,
@@ -71,11 +72,23 @@ const defaultPdfTemplate = async (
         ) => {
             let currentPage = 1;
             let itemIndex = 0;
-            doc.rect(leftMargin, doc.y, doc.page.width - 20, 30).fill(
-                "#000000"
-            );
 
-            while (currentPage <= totalPages) {
+            // Function to add page footer
+            const addFooter = () => {
+                const footerY = doc.page.height - 20; // Adjust as needed
+                doc.text(`Page ${currentPage}`, 20, footerY, { align: "left" });
+            };
+
+            while (itemIndex < entityData.items.length) {
+                // Check if we need a new page
+                if (doc.y + 100 > doc.page.height) {
+                    // Check if there's enough space for a new page
+                    doc.addPage();
+                    currentPage++;
+                    addPageBorder(doc); // Add border for the new page
+                }
+
+                // Get items for the current page
                 const itemsForPage = entityData.items.slice(
                     itemIndex,
                     itemIndex + itemsPerPage
@@ -101,24 +114,16 @@ const defaultPdfTemplate = async (
 
                 itemIndex += itemsPerPage;
 
-                if (currentPage < totalPages) {
-                    doc.addPage();
-                    addPageBorder(doc); // Add border for the new page
-                }
-
-                currentPage++;
+                // Add footer after adding items
+                addFooter();
             }
-            // After the last page's table, calculate and add the bottom border
-            const bottomBorderY = doc.page.height - 20; // Adjust y position as needed
-
-            // Draw footer background
         };
 
         // Add items with pagination logic
         addItemsWithPagination(doc, entityData, itemsPerPage, preCol);
 
         // Footer Section
-        // addFooter(doc, entityData, entity, organizationData);
+        addFooter(doc, entityData, entity, organizationData);
 
         doc.end();
 
@@ -575,7 +580,6 @@ const addDetails = (doc, entityData, entity, organizationData) => {
 
 const addItemsTable = (doc, entityData, entity, organizationData, preCol) => {
     const items = entityData?.items;
-    console.log(items[0]);
     const headers = getTableHeaders(entity, preCol); // Dynamically get headers based on the first item
     const headerHeight = 30;
     const cellPadding = 5;
@@ -585,7 +589,7 @@ const addItemsTable = (doc, entityData, entity, organizationData, preCol) => {
     let tableHeaderY = doc.y + 12.5;
 
     // Draw header text
-    let x = 20;
+    let x = 10;
     doc.fontSize(8.5).font("Helvetica-Bold").fill("#fff");
     headers.forEach((header) => {
         doc.text(header.title, x, tableHeaderY, {
@@ -596,24 +600,68 @@ const addItemsTable = (doc, entityData, entity, organizationData, preCol) => {
     });
 
     // Draw item rows
-    let y = tableHeaderY + headerHeight + cellPadding;
+    let y = tableHeaderY + headerHeight;
     doc.fill("#000000").font("Helvetica").fontSize(8.5);
 
     items?.forEach((item, index) => {
-        let x = 20;
-        headers.forEach((header) => {
+        let x = 10;
+        let rowHeight = headerHeight; // Initialize row height
+        headers.forEach(async (header) => {
             switch (header.value) {
                 case "srNo":
-                    doc.text(index + 1, x, y); // Serial number
+                    doc.text(index + 1, x + cellPadding, y, {
+                        width: header.width,
+                    }); // Serial number
+                    break;
+                case "code":
+                    doc.text(item.code, x + cellPadding, y, {
+                        width: header.width,
+                        align: "center",
+                    }); // Serial number
                     break;
                 case "description":
-                    doc.text(item.description, x, y, {
+                    const descriptionHeight = doc.heightOfString(
+                        item.description,
+                        { width: header.width }
+                    );
+                    rowHeight = Math.max(rowHeight, descriptionHeight) + 5;
+                    doc.text(item.description, x + cellPadding, y, {
                         width: header.width,
                         align: "center",
                     });
+                    // Calculate height of description text
+
                     break;
+                case "image":
+                    if (item?.image) {
+                        // Image dimensions
+                        const imageWidth = 200;
+                        const imageHeight = 200;
+                        doc.text("", x + cellPadding, y, {
+                            width: header.width,
+                            align: "center",
+                        });
+
+                        // console.log(item.image);
+                        // let imageBuffer = await downloadImage(item?.image);
+                        // try {
+                        //     doc.image(imageBuffer, x + cellPadding, y, {
+                        //         width: imageWidth,
+                        //         height: imageHeight,
+                        //     });
+                        // } catch (error) {
+                        //     console.error("Error adding image to PDF:", error);
+                        // }
+                    } else {
+                        doc.text("", x + cellPadding, y, {
+                            width: header.width,
+                            align: "center",
+                        });
+                    }
+                    break;
+
                 case "hsnCode":
-                    doc.text(item.hsnCode, x + cellPadding, y, {
+                    doc.text(item.hsnCode || "", x + cellPadding, y, {
                         width: header.width,
                         align: "center",
                     });
@@ -624,6 +672,23 @@ const addItemsTable = (doc, entityData, entity, organizationData, preCol) => {
                         align: "center",
                     });
                     break;
+                case "discountPercent":
+                    doc.text(`${item.discountPercent}%`, x + cellPadding, y, {
+                        width: header.width,
+                        align: "center",
+                    });
+                    break;
+                case "discountAmount":
+                    doc.text(
+                        Math.ceil(item.discountAmount),
+                        x + cellPadding,
+                        y,
+                        {
+                            width: header.width,
+                            align: "center",
+                        }
+                    );
+                    break;
                 case "qty":
                     doc.text(item.qty, x + cellPadding, y, {
                         width: header.width,
@@ -633,11 +698,11 @@ const addItemsTable = (doc, entityData, entity, organizationData, preCol) => {
                 case "gstPercent":
                     doc.text(`${item?.gstPercent || 0}%`, x + cellPadding, y, {
                         width: header.width,
-                        align: "left",
+                        align: "center",
                     });
                     break;
-                case "gstAmount":
-                    doc.text(`${item?.gstAmount || 0}`, x + cellPadding, y, {
+                case "taxAmount":
+                    doc.text(`${item?.taxAmount || 0}`, x + cellPadding, y, {
                         width: header.width,
                         align: "center",
                     });
@@ -648,9 +713,6 @@ const addItemsTable = (doc, entityData, entity, organizationData, preCol) => {
                         align: "center",
                     });
                     break;
-                case "image":
-                    // Handle image rendering if needed
-                    break;
                 default:
                     if (item[header.value] !== undefined) {
                         doc.text(item[header.value], x + cellPadding, y);
@@ -660,12 +722,11 @@ const addItemsTable = (doc, entityData, entity, organizationData, preCol) => {
             x += header.width;
         });
 
+        y += rowHeight;
         // Draw the bottom border for each row
-        doc.moveTo(10, y + headerHeight - 5)
-            .lineTo(doc.page.width - 10, y + headerHeight - 5) // Line covering the width of the table
+        doc.moveTo(10, y - 5)
+            .lineTo(doc.page.width - 10, y - 5) // Line covering the width of the table
             .stroke(borderColor);
-
-        y += headerHeight;
     });
 };
 
@@ -711,31 +772,29 @@ const addPageBorder = (doc) => {
         .stroke(borderColor);
 };
 // Get Table Headers Function
-const getTableHeaders = (entity, preCol) => {
-    // Access the _doc property if available (Mongoose document case)
+
+const getTableHeaders = (entity, preCol = []) => {
+    // Define the additional columns that may be added based on preCol
     let toAddColumn = [
-        { title: "CODE", value: "code", width: 30 },
+        { title: "CODE", value: "code", width: 40 },
         { title: "IMAGE", value: "image", width: 50 },
         { title: "HSN CODE", value: "hsnCode", width: 30 },
         { title: "DISCOUNT %", value: "discountPercent", width: 50 },
         { title: "DISCOUNT AMOUNT", value: "discountAmount", width: 50 },
         { title: "TAX AMOUNT", value: "taxAmount", width: 40 },
     ];
+
+    // Default headers
     const allHeaders = [
         { title: "#", value: "srNo", width: 10 },
-        {
-            title: "DESCRIPTION",
-            value: "description",
-            width: 350,
-        },
+        { title: "DESCRIPTION", value: "description", width: 350 }, // Initial width of description column
         { title: "RATE", value: "rate", width: 50 },
-
-        { title: "QTY", value: "qty", width: 50 },
+        { title: "QTY", value: "qty", width: 40 },
         { title: "TAX%", value: "gstPercent", width: 30 },
         { title: "TOTAL AMOUNT", value: "finalAmount", width: 80 },
     ];
 
-    // Create a map for easy lookup of preCol values
+    // Create a map from preCol to handle status true columns
     const preColMap = {};
     preCol.forEach((col) => {
         if (col.status) {
@@ -743,6 +802,7 @@ const getTableHeaders = (entity, preCol) => {
         }
     });
 
+    // Order in which columns should appear
     const order = [
         "srNo",
         "code",
@@ -758,7 +818,43 @@ const getTableHeaders = (entity, preCol) => {
         "finalAmount",
     ];
 
+    let finalHeaders = [];
 
+    // Start by adding the default headers
+    order.forEach((value) => {
+        let header = allHeaders.find((header) => header.value === value);
+        // Check if the header is from preCol and has status true
+        if (preColMap[value]) {
+            let additionalHeader = toAddColumn.find(
+                (col) => col.value === value
+            );
+            if (additionalHeader) {
+                finalHeaders.push({
+                    title: preColMap[value], // Use label from preCol
+                    value: additionalHeader.value,
+                    width: additionalHeader.width,
+                });
+            }
+        } else if (header) {
+            // Add default headers that aren't from preCol
+            finalHeaders.push(header);
+        }
+    });
+
+    // Calculate the total width of added columns based on actual column widths
+    const totalWidthAdded = finalHeaders
+        .filter((header) => preColMap[header.value]) // Only the added columns from preCol
+        .reduce((total, header) => total + header.width, 0);
+
+    // Adjust the width of the description column based on the total width of added columns
+    const descriptionHeader = finalHeaders.find(
+        (header) => header.value === "description"
+    );
+    if (descriptionHeader) {
+        descriptionHeader.width = descriptionHeader.width - totalWidthAdded;
+    }
+
+    // Return headers based on entity type or dynamic processing
     switch (entity.toLowerCase()) {
         case "workorders":
             return [
@@ -767,12 +863,7 @@ const getTableHeaders = (entity, preCol) => {
                 { title: "QTY", width: 50 },
             ];
         default:
-        let finalHeader = []
-        order.forEach((value)=>{
-
-        })
-    
-            return allHeaders;
+            return finalHeaders;
     }
 };
 
@@ -1099,14 +1190,14 @@ const footerForQuotation = (doc, data, organizationData, entity) => {
     // Gross Total and Grand Total on the right
     doc.font("Helvetica-Bold");
     const startX = 390;
-    const valueX = 475;
-    let startY = initialY;
+    const valueX = 460;
+    let startY = initialY + 5;
     let amountSideLineStart = startY - 3;
     if (data?.grossTotal) {
         doc.text("Gross Total:", startX, startY);
         doc.text(`${data?.grossTotal}`, valueX, startY);
         doc.moveTo(startX - 20, doc.y + 1)
-            .lineTo(doc.page.width - 4, doc.y + 1)
+            .lineTo(doc.page.width - 10, doc.y + 1)
             .stroke(borderColor);
     }
 
@@ -1115,7 +1206,7 @@ const footerForQuotation = (doc, data, organizationData, entity) => {
         doc.text("Tax Amount:", startX, startY);
         doc.text(`${data?.taxAmount}`, valueX, startY);
         doc.moveTo(startX - 20, doc.y + 1)
-            .lineTo(doc.page.width - 4, doc.y + 1)
+            .lineTo(doc.page.width - 10, doc.y + 1)
             .stroke(borderColor);
     }
     // Draw a table for the other charges
@@ -1133,7 +1224,7 @@ const footerForQuotation = (doc, data, organizationData, entity) => {
             startY += 20;
             let othersy = doc.y + 1;
             doc.moveTo(startX - 20, othersy)
-                .lineTo(doc.page.width - 4, othersy)
+                .lineTo(doc.page.width - 10, othersy)
                 .stroke(borderColor);
         });
     }
@@ -1144,7 +1235,7 @@ const footerForQuotation = (doc, data, organizationData, entity) => {
         doc.moveTo(startX - 20, doc.y + 2)
             .lineTo(startX - 20, amountSideLineStart)
             .stroke(borderColor);
-        doc.rect(startX - 20, doc.y + 2, 222, 30).fill("#0047AB");
+        doc.rect(startX - 20, doc.y + 2, 215, 30).fill(borderColor);
         doc.fill("#fff");
         let grandY = doc.y + 12.5;
         doc.text("Grand Total:", startX, grandY).fillColor("#000");
@@ -1155,18 +1246,18 @@ const footerForQuotation = (doc, data, organizationData, entity) => {
     // Terms and Conditions on the left
     if (data?.notes?.length > 0) {
         let termsStartY = doc.y + 15;
-        let termsStartX = 4;
+        let termsStartX = 10;
 
         doc.fill("#000");
         doc.font("Helvetica-Bold");
         doc.fontSize(12);
-        doc.text("Note:", 4, termsStartY);
+        doc.text("Note:", 10, termsStartY);
         doc.font("Helvetica");
         // Draw other charges
         doc.moveTo(termsStartX, termsStartY + 15)
-            .lineTo(doc.page.width - 4, termsStartY + 15)
+            .lineTo(doc.page.width - 10, termsStartY + 15)
             .stroke(borderColor);
-        let startX = 8;
+        let startX = 12;
         let startY = doc.y + 5;
         data.notes.forEach((note, index) => {
             doc.font("Helvetica");
@@ -1177,39 +1268,39 @@ const footerForQuotation = (doc, data, organizationData, entity) => {
             startY = doc.y + 10;
         });
         doc.moveTo(termsStartX, doc.y + 10)
-            .lineTo(doc.page.width - 4, doc.y + 10)
+            .lineTo(doc.page.width - 10, doc.y + 10)
             .stroke(borderColor);
     }
 
     // Terms and Conditions on the left
     if (data?.terms?.length > 0) {
-        let termsStartY = doc.y + 30;
-        let termsStartX = 4;
+        let termsStartY = doc.y + 20;
+        let termsStartX = 10;
 
         doc.fill("#000");
         doc.font("Helvetica-Bold");
         doc.fontSize(12);
-        doc.text("Terms and Conditions:", 4, termsStartY);
+        doc.text("Terms and Conditions:", 10, termsStartY);
         doc.font("Helvetica");
         // Draw other charges
         doc.moveTo(termsStartX, termsStartY + 15)
-            .lineTo(doc.page.width - 4, termsStartY + 15)
+            .lineTo(doc.page.width - 10, termsStartY + 15)
             .stroke(borderColor);
-        let startX = 8;
+        let startX = 12;
         let startY = doc.y + 5;
         data.terms.forEach((term, index) => {
             doc.font("Helvetica-Bold");
             doc.fontSize(10);
-            doc.text(capitalizeFirstLetter(`${term.name}:`), startX, startY);
+            doc.text(capitalizeFirstLetter(`${term.name}:`), startX, termsStartY+10);
             doc.font("Helvetica");
             doc.text(
                 capitalizeFirstLetter(`${term.value}`),
-                startX + 100,
-                startY
+                startX + 50,
+                termsStartY
             );
             startY = doc.y + 10;
             doc.moveTo(termsStartX, doc.y + 5)
-                .lineTo(doc.page.width - 4, doc.y + 5)
+                .lineTo(doc.page.width - 10, doc.y + 5)
                 .stroke(borderColor);
         });
     }

@@ -10,6 +10,7 @@ import {
     Input,
     InputNumber,
     Image,
+    Tooltip,
 } from "antd";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import FormItemCol from "components/Comman/FormItemCol";
@@ -134,21 +135,7 @@ const CustomFormTableList = ({ form }) => {
         ) : null;
     };
     // Render Discount Amount only if Discount% is selected
-    const renderDiscountAmountHeader = () => {
-        return selectedColumns.includes("discountPercent") ? (
-            <Col
-                className="gutter-row"
-                span={2}
-                style={{
-                    borderRight: "1px solid #bfbfbb",
-                    textAlign: "center",
-                }}
-                key="discountAmount"
-            >
-                <Taglabel text="DISCOUNT RATE" />
-            </Col>
-        ) : null;
-    };
+ 
     // A function to dynamically render columns with input components
     const renderColumnValue = (
         columnKey,
@@ -172,28 +159,7 @@ const CustomFormTableList = ({ form }) => {
             </Col>
         ) : null;
     };
-    const renderDiscountAmountColumnValue = (
-        columnKey,
-        component,
-        spanValue,
-        name,
-        restField
-    ) => {
-        return selectedColumns.includes("discountPercent") ? (
-            <Col
-                className="gutter-row"
-                span={spanValue}
-                style={{
-                    textAlign: "center",
-                }}
-                key={columnKey}
-            >
-                <Form.Item {...restField} name={[name, columnKey]}>
-                    {component}
-                </Form.Item>
-            </Col>
-        ) : null;
-    };
+
     // Calculate the dynamic span for all columns to ensure total equals 24
     // Base spans for fixed columns
     const initialBaseSpans = {
@@ -225,8 +191,11 @@ const CustomFormTableList = ({ form }) => {
                 case "discountPercent":
                     dynamicSpans.itemDetails -= 1;
                     dynamicSpans.qty -= 1;
+                    break;
+                case "discountAmount":
                     dynamicSpans.rate -= 1;
                     dynamicSpans.gst -= 1;
+                  
                     break;
                 case "taxAmount":
                     dynamicSpans.itemDetails -= 1;
@@ -387,7 +356,7 @@ const CustomFormTableList = ({ form }) => {
                             <Taglabel text="ITEM DETAILS" />
                         </Col>
                         {renderColumnHeader("image", "IMAGE", 2)}
-                        {renderColumnHeader("hsnCode", "HSN CODE", 2)}
+                        {renderColumnHeader("hsnCode", "HSN/SAC", 2)}
                         <Col
                             className="gutter-row"
                             span={dynamicSpan.qty}
@@ -408,8 +377,8 @@ const CustomFormTableList = ({ form }) => {
                         >
                             <Taglabel text="RATE" />
                         </Col>
-                        {renderColumnHeader("discountPercent", "DISCOUNT%", 2)}
-                        {renderDiscountAmountHeader()}
+                        {renderColumnHeader("discountPercent", "DIS%", 2)}
+                        {renderColumnHeader("discountAmount", "DIS AMT", 2)}
 
                         <Col
                             className="gutter-row"
@@ -421,7 +390,7 @@ const CustomFormTableList = ({ form }) => {
                         >
                             <Taglabel text="GST%" />
                         </Col>
-                        {renderColumnHeader("taxAmount", "TAX AMOUNT", 2)}
+                        {renderColumnHeader("taxAmount", "TAX AMT", 2)}
 
                         <Col
                             className="gutter-row"
@@ -430,7 +399,20 @@ const CustomFormTableList = ({ form }) => {
                                 textAlign: "center",
                             }}
                         >
-                            <Taglabel text="TOTAL BEFORE TAX" />
+                            <Taglabel text="TOTAL AMT" />
+
+                            {/* Tooltip with * sign */}
+                            <Tooltip title="TOTAL AMOUNT BEFORE TAX ">
+                                <span
+                                    style={{
+                                        cursor: "pointer",
+                                        color: "#000000",
+                                    }}
+                                >
+                                    {" "}
+                                    *
+                                </span>
+                            </Tooltip>
                         </Col>
                     </Row>
                 </div>
@@ -659,7 +641,7 @@ const CustomFormTableList = ({ form }) => {
                                                 restField
                                             )}
 
-                                            {renderDiscountAmountColumnValue(
+                                            {renderColumnValue(
                                                 "discountAmount",
                                                 <InputNumber
                                                     updateInForm={(value) =>

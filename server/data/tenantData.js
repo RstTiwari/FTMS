@@ -109,23 +109,27 @@ const tenantSpecificData = {
     ],
     columns: [
         {
-            label: "Item Code",
+            label: "CODE",
             value: "code",
         },
         {
-            label: "Image",
+            label: "IMAGE",
             value: "image",
         },
         {
-            label: "Hsn Code",
+            label: "HSN/SAC",
             value: "hsnCode",
         },
         {
-            label: "Discount%",
+            label: "DIS%",
             value: "discountPercent",
         },
+  {
+            label: "DIS AMT",
+            value: "discountAmount",
+        },
         {
-            label: "Tax Amount",
+            label: "TAX AMT",
             value: "taxAmount",
         },
     ],

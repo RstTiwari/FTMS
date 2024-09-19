@@ -61,7 +61,7 @@ const generatePdf = async (req, res, next, forEmail) => {
             tenantId: tenantId,
             entity: entity,
         });
-        let preCol = columns.preferences;
+        let preCol = columns?.preferences;
 
         let prefix = await countersDb.findOne({
             entityName: entity,
