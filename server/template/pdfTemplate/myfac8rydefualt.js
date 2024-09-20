@@ -500,7 +500,7 @@ const addItemsTable = (doc, entityData, entity, organizationData, preCol) => {
         // Draw header text
         let x = pageMargin;
         doc.fontSize(8.5).font("Helvetica-Bold").fill("#fff");
-        headers.forEach((header, index) => {
+        headers.forEach((header) => {
             doc.text(header.title, x, tableHeaderY, {
                 width: header.width,
                 align: "center",
@@ -515,7 +515,7 @@ const addItemsTable = (doc, entityData, entity, organizationData, preCol) => {
         if (doc.y + rowHeight > doc.page.height - minRowHeightForNewPage) {
             doc.addPage(); // Add a new page if the space left is less than the minimum required
             doc.y = pageMargin; // Reset Y position for the new page
-            return drawTableHeader(); // Redraw the table header at the new page
+            return drawTableHeader(); // Redraw the table header on the new page
         }
         return doc.y;
     };
@@ -531,163 +531,129 @@ const addItemsTable = (doc, entityData, entity, organizationData, preCol) => {
         initialXPositions.push(x + header.width);
         x += header.width + 3; // Add extra spacing after each header
     });
-    console.log(initialXPositions, "==");
+
     // Draw item rows
-    items?.forEach((item, index) => {
-        let x = pageMargin;
-        let rowHeight = headerHeight; // Initialize row height
-        let maxRowHeight = rowHeight + rowGap; // Add gap between rows
+   // Draw item rows
+items?.forEach((item, index) => {
+    let x = pageMargin;
 
-        // Add new page if needed before drawing each row
-        y = addNewPageIfNeeded(maxRowHeight);
-
-        headers.forEach((header) => {
-            switch (header.value) {
-                case "srNo":
-                    doc.text(index + 1, x + cellPadding, y + rowGap, {
-                        width: header.width,
-                        align: "left", // Align serial number to the left
-                    }); // Serial number
-                    break;
-                case "code":
-                    doc.text(item.code, x + cellPadding, y + rowGap, {
-                        width: header.width,
-                        align: "center",
-                    });
-                    break;
-                case "description":
-                    const descriptionHeight = doc.heightOfString(
-                        item.description,
-                        { width: header.width }
-                    );
-                    rowHeight = Math.max(rowHeight, descriptionHeight) + 5;
-                    doc.text(item.description, x + cellPadding, y + rowGap, {
-                        width: header.width,
-                        align: "center",
-                    });
-                    break;
-                case "image":
-                    if (item?.image) {
-                        const imageWidth = 200;
-                        const imageHeight = 200;
-                        doc.text("", x + cellPadding, y + rowGap, {
-                            width: header.width,
-                            align: "center",
-                        });
-                        // Uncomment this once you handle image fetching
-                        // doc.image(imageBuffer, x + cellPadding, y, {
-                        //     width: imageWidth,
-                        //     height: imageHeight,
-                        // });
-                    }
-                    break;
-                case "hsnCode":
-                    doc.text(item.hsnCode || "", x + cellPadding, y + rowGap, {
-                        width: header.width,
-                        align: "center",
-                    });
-                    break;
-                case "rate":
-                    doc.text(
-                        Math.ceil(item.rate),
-                        x + cellPadding,
-                        y + rowGap,
-                        {
-                            width: header.width,
-                            align: "center",
-                        }
-                    );
-                    break;
-                case "discountPercent":
-                    doc.text(
-                        `${item.discountPercent}%`,
-                        x + cellPadding,
-                        y + rowGap,
-                        {
-                            width: header.width,
-                            align: "center",
-                        }
-                    );
-                    break;
-                case "discountAmount":
-                    doc.text(
-                        Math.ceil(item.discountAmount),
-                        x + cellPadding,
-                        y + rowGap,
-                        {
-                            width: header.width,
-                            align: "center",
-                        }
-                    );
-                    break;
-                case "qty":
-                    doc.text(item.qty, x + cellPadding, y + rowGap, {
-                        width: header.width,
-                        align: "center",
-                    });
-                    break;
-                case "gstPercent":
-                    doc.text(
-                        `${item?.gstPercent || 0}%`,
-                        x + cellPadding,
-                        y + rowGap,
-                        {
-                            width: header.width,
-                            align: "center",
-                        }
-                    );
-                    break;
-                case "taxAmount":
-                    doc.text(
-                        `${item?.taxAmount || 0}`,
-                        x + cellPadding,
-                        y + rowGap,
-                        {
-                            width: header.width,
-                            align: "center",
-                        }
-                    );
-                    break;
-                case "finalAmount":
-                    doc.text(
-                        Math.ceil(item.finalAmount),
-                        x + cellPadding,
-                        y + rowGap,
-                        {
-                            width: header.width,
-                            align: "center",
-                        }
-                    );
-                    break;
-                default:
-                    if (item[header.value] !== undefined) {
-                        doc.text(
-                            item[header.value],
-                            x + cellPadding,
-                            y + rowGap
-                        );
-                    }
-                    break;
-            }
-
-            x += header.width;
-        });
-
-        // Draw vertical side borders for this row
-        initialXPositions.forEach((xPos) => {
-            doc.moveTo(xPos + 5, y) // Offset vertical line by 2mm (~5.67 points)
-                .lineTo(xPos + 5, y + maxRowHeight)
-                .stroke(borderColor);
-        });
-
-        y += maxRowHeight; // Move Y position down for the next row
+    // Calculate the description height dynamically
+    const descriptionHeight = doc.heightOfString(item.description, {
+        width: headers.find(h => h.value === 'description').width,
     });
 
+    // Calculate row height based on description height + padding
+    let textY = doc.y+ 10;
+    
+    let rowHeight = Math.max(descriptionHeight + cellPadding + 10, headerHeight);
+    console.log(doc.y,rowHeight);
+
+
+    // Add new page if needed before drawing each row
+    y = addNewPageIfNeeded(rowHeight);
+
+    // Calculate vertical position for centered text within the row (dynamic adjustment)
+
+    // Draw vertical lines after each row
+    headers.forEach((header) => {
+        switch (header.value) {
+            case "srNo":
+                doc.text(index + 1, x, textY, {
+                    width: header.width,
+                    align: "center",
+                });
+                break;
+            case "code":
+                doc.text(item.code, x + cellPadding, textY, {
+                    width: header.width,
+                    align: "center",
+                });
+                break;
+            case "description":
+                doc.text(item.description, x + cellPadding, textY, {
+                    width: header.width,
+                    align: "center",
+                });
+                break;
+            case "image":
+                if (item?.image) {
+                    doc.text("", x + cellPadding, textY, {
+                        width: header.width,
+                        align: "center",
+                    });
+                    // Add image logic here if applicable
+                }
+                break;
+            case "hsnCode":
+                doc.text(item.hsnCode || "", x + cellPadding, textY, {
+                    width: header.width,
+                    align: "center",
+                });
+                break;
+            case "rate":
+                doc.text(Math.ceil(item.rate), x + cellPadding, textY, {
+                    width: header.width,
+                    align: "center",
+                });
+                break;
+            case "discountPercent":
+                doc.text(`${item.discountPercent}%`, x + cellPadding, textY, {
+                    width: header.width,
+                    align: "center",
+                });
+                break;
+            case "discountAmount":
+                doc.text(Math.ceil(item.discountAmount), x + cellPadding, textY, {
+                    width: header.width,
+                    align: "center",
+                });
+                break;
+            case "qty":
+                doc.text(item.qty, x + cellPadding, textY, {
+                    width: header.width,
+                    align: "center",
+                });
+                break;
+            case "gstPercent":
+                doc.text(`${item?.gstPercent || 0}%`, x + cellPadding, textY, {
+                    width: header.width,
+                    align: "center",
+                });
+                break;
+            case "taxAmount":
+                doc.text(`${item?.taxAmount || 0}`, x + cellPadding, textY, {
+                    width: header.width,
+                    align: "center",
+                });
+                break;
+            case "finalAmount":
+                doc.text(Math.ceil(item.finalAmount), x + cellPadding, textY, {
+                    width: header.width,
+                    align: "center",
+                });
+                break;
+            default:
+                if (item[header.value] !== undefined) {
+                    doc.text(item[header.value], x + cellPadding, textY);
+                }
+                break;
+        }
+
+        x += header.width;
+    });
+
+    // Draw horizontal line after each row
+    doc.moveTo(pageMargin, y + rowHeight).lineTo(doc.page.width - pageMargin, y + rowHeight).stroke(borderColor);
+
+    // Move Y position down for the next row
+    y += rowHeight;
+});
+
+
     // Draw the bottom closing rectangle after the last row
-    doc.rect(pageMargin, y, doc.page.width - 2 * pageMargin, 5).fill(
-        borderColor
-    );
+    doc.rect(pageMargin, y, doc.page.width - 2 * pageMargin, 5).fill(borderColor);
 };
+
 
 const addFooter = (doc, entityData, entity, organizationData) => {
     let footerDetails = () => {};
