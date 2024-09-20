@@ -1,5 +1,6 @@
 import myfac8ryDefault from "../../template/pdfTemplate/myfac8rydefualt.js";
 import vipDefault from "../../template/pdfTemplate/vipDefault.js";
+import pdfTemplate1 from "../../template/pdfTemplate/pdftemplate1.js"
 import tenantDb from "../../models/coreModels/Tenant.js";
 import colPreDb from "../../models/appModels/columnPrefrence.js";
 import checkDbForEntity from "../../Helper/databaseSelector.js";
@@ -71,7 +72,7 @@ const generatePdf = async (req, res, next, forEmail) => {
             ? prefix.prefix
             : entity.slice(0, 2).toUpperCase();
 
-        const templateId = "myfac8ry";
+        const templateId = "template1";
         let pdfFucntionToCall = null;
 
         switch (templateId) {
@@ -80,6 +81,9 @@ const generatePdf = async (req, res, next, forEmail) => {
                 break;
             case "vip":
                 pdfFucntionToCall = vipDefault;
+                break;
+            case "template1":
+                pdfFucntionToCall = pdfTemplate1;
                 break;
 
             default:
