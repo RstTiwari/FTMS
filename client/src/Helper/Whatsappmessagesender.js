@@ -27,7 +27,7 @@ const WhatsAppMessageSender = ({ onClose }) => {
         const { no, grandTotal } = details;
         const FrntendUrl =
             process.env.NODE_ENV === "production"
-                ? process.env.REACT_APP_URL_PROD
+                ? "https://ftms.myfac8ry.com/"
                 : "https://localhost:3000/";
 
         const pdfUrl = `${FrntendUrl}pdfDetails/${entity}/${no}/${tenantId}/${id}`;
@@ -37,7 +37,7 @@ const WhatsAppMessageSender = ({ onClose }) => {
             case "quotations":
                 const { quoteDate } = details;
                 message = `
-                    Dear => ${recipient.toUpperCase()} Details of *Quotation*
+                   ${recipient.toUpperCase()} Details of *Quotation*
     
                     \`\`\`Quotation Number:\`\`\` ${no}
                     \`\`\`Quotation Date:\`\`\` ${quoteDate}
@@ -50,7 +50,7 @@ const WhatsAppMessageSender = ({ onClose }) => {
             case "invoices":
                 const { invoiceDate, dueDate } = details;
                 message = `
-                    Dear => ${recipient.toUpperCase()} Details of *Invoice*
+                   ${recipient.toUpperCase()} Details of *Invoice*
     
                     \`\`\`Invoice Number:\`\`\` ${no}
                     \`\`\`Invoice Date:\`\`\` ${invoiceDate}
@@ -64,7 +64,7 @@ const WhatsAppMessageSender = ({ onClose }) => {
             case "purchases":
                 const { purchaseDate } = details;
                 message = `
-                    Dear => ${recipient.toUpperCase()} Details of *Purchase Order*
+                   ${recipient.toUpperCase()} Details of *Purchase Order*
     
                     \`\`\`Purchase Order Number:\`\`\` ${no}
                     \`\`\`Purchase Date:\`\`\` ${purchaseDate}
@@ -77,7 +77,7 @@ const WhatsAppMessageSender = ({ onClose }) => {
             case "challans":
                 const { challanType, challanDate, vehicleNo } = details;
                 message = `
-                    Dear => ${recipient.toUpperCase()} Details of *Challan*
+                   ${recipient.toUpperCase()} Details of *Challan*
     
                     \`\`\`Challan Number:\`\`\` ${no}
                     \`\`\`Challan Type:\`\`\` ${challanType}
