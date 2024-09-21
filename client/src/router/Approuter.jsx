@@ -12,6 +12,7 @@ import CustomForm from "components/CreateCustomForm";
 import UpdateCustomForm from "components/UpdateCustomForm";
 import RecordPayment from "pages/Payment/RecordPayment";
 import EmailSendPage from "pages/Email/Email";
+import PdfDetails from "pages/Details/PdfDetails";
 
 const Approuter = ({ profile }) => {
     const tenantId = profile?.tenant?.tenantId;
@@ -85,6 +86,10 @@ const Approuter = ({ profile }) => {
                     }
                 />
             </Route>
+            <Route
+                path="/pdfDetails/:entity/:no/:tenantId/:id"
+                element={<PdfDetails />}
+            />
         </Routes>
     );
 };

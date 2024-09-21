@@ -1,4 +1,5 @@
-import PDFDocument from "pdfkit";
+//import PDFDocument from "pdfkit";
+import PDFDocumentWithTables from "pdfkit-table";
 import { jsDateIntoDDMMYY } from "../../Helper/timehelper.js";
 import {
     downloadImage,
@@ -21,7 +22,7 @@ const defaultPdfTemplate = async (
 ) => {
     try {
         const imageBuffer = await downloadImage(organizationData?.logo);
-        const doc = new PDFDocument({
+        const doc = new PDFDocumentWithTables({
             size: [595, 842],
             margin: 50,
             bufferPages: true,
@@ -46,11 +47,20 @@ const defaultPdfTemplate = async (
 
         // Function to add items to pages
 
-        addItemsTable(doc, entityData, entity, organizationData, preCol);
+        // addItemsTable(doc, entityData, entity, organizationData, preCol);
+        addItemsTable2(doc, entityData, entity, organizationData, preCol);
 
         // Footer Section
-        addFooter(doc, entityData, entity, organizationData);
+        const gapThreshold = 300;
+        // Footer Section
+        checkAndAddPage(doc, gapThreshold); // Check before adding Amount Details
+        addAmountDetails(doc, entityData, organizationData, entity);
 
+        checkAndAddPage(doc, gapThreshold); // Check before adding Notes Table
+        addNotesTable(doc, entityData);
+
+        checkAndAddPage(doc, gapThreshold); // Check before adding Terms and Thank You
+        addTermsAndThankYou(doc, entityData);
         doc.end();
 
         res.setHeader("Content-Type", "application/pdf");
@@ -61,6 +71,14 @@ const defaultPdfTemplate = async (
     } catch (error) {
         console.error(error);
         return error.message;
+    }
+};
+const checkAndAddPage = (doc, requiredHeight) => {
+    const availableSpace = doc.page.height - doc.y;
+    console.log(availableSpace, doc.y, doc.page.height, "===");
+    if (availableSpace < requiredHeight) {
+        doc.addPage(); // Add new page if there's not enough space
+        addPageBorder(doc);
     }
 };
 
@@ -121,8 +139,8 @@ const addHeader = (
 
     // Address Section
     let address = "";
-    if (organization.billingAddress) {
-        address = `${organization.billingAddress.street1 || ""} ${
+    if (organization?.billingAddress) {
+        address = `${organization?.billingAddress?.street1 || ""} ${
             organization.billingAddress.street2 || ""
         } ${organization.billingAddress.city || ""}, ${
             organization.billingAddress.state || ""
@@ -232,7 +250,7 @@ const addHeader = (
                 align: "left",
             });
         doc.font("Helvetica").text(
-            `${entityPrefix}/${entityDetails.no}`,
+            `${entityPrefix}/${entityDetails?.no}`,
             xForRightSide + 75,
             detailsY,
             {
@@ -478,342 +496,607 @@ const addDetails = (doc, entityData, entity, organizationData) => {
     detailsFunction(doc, entityData, organizationData);
 };
 
-const addItemsTable = (doc, entityData, entity, organizationData, preCol) => {
-    const items = entityData?.items;
-    const headers = getTableHeaders(entity, preCol); // Dynamically get headers based on the first item
-    const headerHeight = 30;
-    const cellPadding = 5;
-    const borderColor = "#000000"; // Border color
-    const pageMargin = 10; // Margin for the page
-    const rowGap = 15; // Adjusted gap between rows
-    const minRowHeightForNewPage = 100; // Minimum space required to add new row before adding a new page
+// const addItemsTable = (doc, entityData, entity, organizationData, preCol) => {
+//     // const items = entityData?.items;
+//     // const headers = getTableHeaders2(entity, preCol); // Dynamically get headers based on the first item
+//     // const headerHeight = 30;
+//     // const cellPadding = 5;
+//     // const borderColor = "#000000"; // Border color
+//     // const pageMargin = 10; // Margin for the page
+//     // const rowGap = 15; // Adjusted gap between rows
+//     // const minRowHeightForNewPage = 100; // Minimum space required to add new row before adding a new page
 
-    const drawTableHeader = () => {
-        let tableHeaderY = doc.y + 12.5;
-        doc.rect(
-            pageMargin,
-            doc.y,
-            doc.page.width - pageMargin * 2,
-            headerHeight
-        ).fill(borderColor); // Fill the background of header
+//     // const drawTableHeader = () => {
+//     //     let tableHeaderY = doc.y + 12.5;
+//     //     doc.rect(
+//     //         pageMargin,
+//     //         doc.y,
+//     //         doc.page.width - pageMargin * 2,
+//     //         headerHeight
+//     //     ).fill(borderColor); // Fill the background of header
 
-        // Draw header text
-        let x = pageMargin;
-        doc.fontSize(8.5).font("Helvetica-Bold").fill("#fff");
-        headers.forEach((header) => {
-            doc.text(header.title, x, tableHeaderY, {
-                width: header.width,
-                align: "center",
+//     //     // Draw header text
+//     //     let x = pageMargin;
+//     //     doc.fontSize(8.5).font("Helvetica-Bold").fill("#fff");
+//     //     headers.forEach((header) => {
+//     //         doc.text(header.title, x, tableHeaderY, {
+//     //             width: header.width,
+//     //             align: "center",
+//     //         });
+//     //         x += header.width;
+//     //     });
+
+//     //     return tableHeaderY + headerHeight; // Return Y position after header
+//     // };
+
+//     // const addNewPageIfNeeded = (rowHeight) => {
+//     //     if (doc.y + rowHeight > doc.page.height - minRowHeightForNewPage) {
+//     //         doc.addPage(); // Add a new page if the space left is less than the minimum required
+//     //         doc.y = pageMargin; // Reset Y position for the new page
+//     //         return drawTableHeader(); // Redraw the table header on the new page
+//     //     }
+//     //     return doc.y;
+//     // };
+
+//     // // Draw the initial table header
+//     // let y = drawTableHeader();
+//     // doc.fill("#000000").font("Helvetica").fontSize(8.5);
+
+//     // // Store initial x positions for the vertical lines
+//     // const initialXPositions = [];
+//     // let x = pageMargin;
+//     // headers.forEach((header) => {
+//     //     initialXPositions.push(x + header.width);
+//     //     x += header.width + 3; // Add extra spacing after each header
+//     // });
+
+//     // // Draw item rows
+//     // // Draw item rows
+//     // items?.forEach((item, index) => {
+//     //     let x = pageMargin;
+
+//     //     // Calculate the description height dynamically
+//     //     const descriptionHeight = doc.heightOfString(item.description, {
+//     //         width: headers.find((h) => h.value === "description").width,
+//     //     });
+
+//     //     // Calculate row height based on description height + padding
+//     //     let textY = doc.y + 10;
+
+//     //     let rowHeight = Math.max(
+//     //         descriptionHeight + cellPadding + 10,
+//     //         headerHeight
+//     //     );
+//     //     console.log(doc.y, rowHeight);
+
+//     //     // Add new page if needed before drawing each row
+//     //     y = addNewPageIfNeeded(rowHeight);
+
+//     //     // Calculate vertical position for centered text within the row (dynamic adjustment)
+
+//     //     // Draw vertical lines after each row
+//     //     headers.forEach((header) => {
+//     //         switch (header.value) {
+//     //             case "srNo":
+//     //                 doc.text(index + 1, x, textY, {
+//     //                     width: header.width,
+//     //                     align: "center",
+//     //                 });
+//     //                 break;
+//     //             case "code":
+//     //                 doc.text(item.code, x + cellPadding, textY, {
+//     //                     width: header.width,
+//     //                     align: "center",
+//     //                 });
+//     //                 break;
+//     //             case "description":
+//     //                 doc.text(item.description, x + cellPadding, textY, {
+//     //                     width: header.width,
+//     //                     align: "center",
+//     //                 });
+//     //                 break;
+//     //             case "image":
+//     //                 if (item?.image) {
+//     //                     doc.text("", x + cellPadding, textY, {
+//     //                         width: header.width,
+//     //                         align: "center",
+//     //                     });
+//     //                     // Add image logic here if applicable
+//     //                 }
+//     //                 break;
+//     //             case "hsnCode":
+//     //                 doc.text(item.hsnCode || "", x + cellPadding, textY, {
+//     //                     width: header.width,
+//     //                     align: "center",
+//     //                 });
+//     //                 break;
+//     //             case "rate":
+//     //                 doc.text(Math.ceil(item.rate), x + cellPadding, textY, {
+//     //                     width: header.width,
+//     //                     align: "center",
+//     //                 });
+//     //                 break;
+//     //             case "discountPercent":
+//     //                 doc.text(
+//     //                     `${item.discountPercent}%`,
+//     //                     x + cellPadding,
+//     //                     textY,
+//     //                     {
+//     //                         width: header.width,
+//     //                         align: "center",
+//     //                     }
+//     //                 );
+//     //                 break;
+//     //             case "discountAmount":
+//     //                 doc.text(
+//     //                     Math.ceil(item.discountAmount),
+//     //                     x + cellPadding,
+//     //                     textY,
+//     //                     {
+//     //                         width: header.width,
+//     //                         align: "center",
+//     //                     }
+//     //                 );
+//     //                 break;
+//     //             case "qty":
+//     //                 doc.text(item.qty, x + cellPadding, textY, {
+//     //                     width: header.width,
+//     //                     align: "center",
+//     //                 });
+//     //                 break;
+//     //             case "gstPercent":
+//     //                 doc.text(
+//     //                     `${item?.gstPercent || 0}%`,
+//     //                     x + cellPadding,
+//     //                     textY,
+//     //                     {
+//     //                         width: header.width,
+//     //                         align: "center",
+//     //                     }
+//     //                 );
+//     //                 break;
+//     //             case "taxAmount":
+//     //                 doc.text(
+//     //                     `${item?.taxAmount || 0}`,
+//     //                     x + cellPadding,
+//     //                     textY,
+//     //                     {
+//     //                         width: header.width,
+//     //                         align: "center",
+//     //                     }
+//     //                 );
+//     //                 break;
+//     //             case "finalAmount":
+//     //                 doc.text(
+//     //                     Math.ceil(item.finalAmount),
+//     //                     x + cellPadding,
+//     //                     textY,
+//     //                     {
+//     //                         width: header.width,
+//     //                         align: "center",
+//     //                     }
+//     //                 );
+//     //                 break;
+//     //             default:
+//     //                 if (item[header.value] !== undefined) {
+//     //                     doc.text(item[header.value], x + cellPadding, textY);
+//     //                 }
+//     //                 break;
+//     //         }
+
+//     //         x += header.width;
+//     //     });
+
+//     //     // Draw horizontal line after each row
+//     //     doc.moveTo(pageMargin, y + rowHeight)
+//     //         .lineTo(doc.page.width - pageMargin, y + rowHeight)
+//     //         .stroke(borderColor);
+
+//     //     // Move Y position down for the next row
+//     //     y += rowHeight;
+//     // });
+
+//     // // Draw the bottom closing rectangle after the last row
+//     // doc.rect(pageMargin, y, doc.page.width - 2 * pageMargin, 5).fill(
+//     //     borderColor
+//     // );
+//     const items = entityData?.items.map((item, index) => ({
+//         srNo: index + 1,
+//     }));
+//     const headers = getTableHeaders2(entity, preCol);
+
+//     // Ensure headers are well-defined
+//     const tableHeaders = headers.map((header) => ({
+//         label: header.title,
+//         property: header.property,
+//         width: header.width,
+//         padding: 1, // default padding
+//     }));
+
+//     const table = {
+//         headers: tableHeaders, // Correctly pass headers
+//         datas: items,
+//         rows: [], // You can define rows manually if needed
+//     };
+
+//     // Add the table to the PDF
+//     doc.moveDown().table(table, {
+//         prepareHeader: () => doc.font("Helvetica-Bold").fontSize(8),
+//         prepareRow: (row, i) => doc.font("Helvetica").fontSize(7),
+//         padding: 5, // Add default padding in case it's missing
+//     });
+// };
+
+const addItemsTable2 = (doc, entityData, entity, organizationData, preCol) => {
+    // Add serial number (srNo) to each item
+    const items = entityData?.items.map((item, index) => ({
+        srNo: index + 1,
+        code: item.code,
+        description: item.description,
+        image: item.image,
+        hsnCode: item.hsnCode,
+        rate: item.rate,
+        discountPercent: item.discountPercent,
+        discountAmount: item.discountAmount,
+        gstPercent: item.gstPercent,
+        qty: item.qty,
+        taxAmount: item.taxAmount,
+        finalAmount: item.finalAmount,
+    }));
+
+    const headers = getTableHeaders2(entity, preCol);
+    console.log(headers);
+
+    // Ensure headers are well-defined and add default padding
+    const tableHeaders = headers.map((header) => ({
+        label: header.title,
+        property: header.property,
+        width: header.width,
+        padding: 1, // default padding for headers
+    }));
+
+    const table = {
+        headers: tableHeaders, // Pass headers correctly
+        datas: items, // Data (with added srNo)
+        rows: [], // Define rows manually if needed
+    };
+    // Add border when a new page is added
+    // Add border when a new page is added, only if gap from bottom is less than 200
+    doc.on("pageAdded", () => {
+        addPageBorder(doc); // Call your border function
+    });
+
+    // Add the table to the PDF
+    doc.moveDown().table(table, {
+        x: leftMargin,
+        y: doc.y,
+        prepareHeader: () => {
+            doc.font("Helvetica-Bold").fontSize(9);
+            // No height setting here; adjust lineGap instead
+        },
+        prepareRow: (row, i) => {
+            doc.fillColor("#000000").font("Helvetica-Bold").fontSize(8);
+        },
+        padding: 1, // Add default padding for rows
+        lineGap: 10, // Adjust line gap for row height
+
+        columnStyles: {
+            0: { align: "left" }, // Align the first column (srNo) to center
+        },
+        drawHeaderCell: (cell, rect) => {
+            // Set font size and color for header
+            doc.fontSize(10).fillColor("#000000").font("Helvetica-Bold");
+
+            // Draw header with center alignment and vertical lines
+            doc.fillColor("#000000").text(
+                cell.label,
+                rect.x + 10,
+                rect.y + rect.height / 2,
+                {
+                    width: doc.page.width - 20, // Full width minus margins
+                    height: rect.height,
+                    align: "center", // Center-align headers
+                    valign: "center", // Vertically center-align headers
+                }
+            );
+
+            // Draw vertical lines
+            doc.rect(rect.x, rect.y, rect.width, rect.height).stroke();
+        },
+
+        drawRowCell: (cell, rect) => {
+            // Set font size and color for rows
+            doc.fontSize(9).fillColor("#000000").font("Helvetica");
+
+            // Center-align row cells and draw vertical lines
+            doc.text(cell, rect.x + 10, rect.y + rect.height / 2, {
+                width: doc.page.width - 20, // Full width minus margins
+                height: rect.height,
+                align: "center", // Center-align rows
+                valign: "center", // Vertically center-align rows
             });
-            x += header.width;
-        });
 
-        return tableHeaderY + headerHeight; // Return Y position after header
-    };
-
-    const addNewPageIfNeeded = (rowHeight) => {
-        if (doc.y + rowHeight > doc.page.height - minRowHeightForNewPage) {
-            doc.addPage(); // Add a new page if the space left is less than the minimum required
-            doc.y = pageMargin; // Reset Y position for the new page
-            return drawTableHeader(); // Redraw the table header on the new page
-        }
-        return doc.y;
-    };
-
-    // Draw the initial table header
-    let y = drawTableHeader();
-    doc.fill("#000000").font("Helvetica").fontSize(8.5);
-
-    // Store initial x positions for the vertical lines
-    const initialXPositions = [];
-    let x = pageMargin;
-    headers.forEach((header) => {
-        initialXPositions.push(x + header.width);
-        x += header.width + 3; // Add extra spacing after each header
+            // Draw vertical lines
+            doc.rect(rect.x, rect.y, rect.width, rect.height).stroke();
+        },
+        afterPage: () => {
+            // Draw border around the entire page after each page is generated
+            addPageBorder(doc); // Call your border function here
+        },
     });
-
-    // Draw item rows
-   // Draw item rows
-items?.forEach((item, index) => {
-    let x = pageMargin;
-
-    // Calculate the description height dynamically
-    const descriptionHeight = doc.heightOfString(item.description, {
-        width: headers.find(h => h.value === 'description').width,
-    });
-
-    // Calculate row height based on description height + padding
-    let textY = doc.y+ 10;
-    
-    let rowHeight = Math.max(descriptionHeight + cellPadding + 10, headerHeight);
-    console.log(doc.y,rowHeight);
-
-
-    // Add new page if needed before drawing each row
-    y = addNewPageIfNeeded(rowHeight);
-
-    // Calculate vertical position for centered text within the row (dynamic adjustment)
-
-    // Draw vertical lines after each row
-    headers.forEach((header) => {
-        switch (header.value) {
-            case "srNo":
-                doc.text(index + 1, x, textY, {
-                    width: header.width,
-                    align: "center",
-                });
-                break;
-            case "code":
-                doc.text(item.code, x + cellPadding, textY, {
-                    width: header.width,
-                    align: "center",
-                });
-                break;
-            case "description":
-                doc.text(item.description, x + cellPadding, textY, {
-                    width: header.width,
-                    align: "center",
-                });
-                break;
-            case "image":
-                if (item?.image) {
-                    doc.text("", x + cellPadding, textY, {
-                        width: header.width,
-                        align: "center",
-                    });
-                    // Add image logic here if applicable
-                }
-                break;
-            case "hsnCode":
-                doc.text(item.hsnCode || "", x + cellPadding, textY, {
-                    width: header.width,
-                    align: "center",
-                });
-                break;
-            case "rate":
-                doc.text(Math.ceil(item.rate), x + cellPadding, textY, {
-                    width: header.width,
-                    align: "center",
-                });
-                break;
-            case "discountPercent":
-                doc.text(`${item.discountPercent}%`, x + cellPadding, textY, {
-                    width: header.width,
-                    align: "center",
-                });
-                break;
-            case "discountAmount":
-                doc.text(Math.ceil(item.discountAmount), x + cellPadding, textY, {
-                    width: header.width,
-                    align: "center",
-                });
-                break;
-            case "qty":
-                doc.text(item.qty, x + cellPadding, textY, {
-                    width: header.width,
-                    align: "center",
-                });
-                break;
-            case "gstPercent":
-                doc.text(`${item?.gstPercent || 0}%`, x + cellPadding, textY, {
-                    width: header.width,
-                    align: "center",
-                });
-                break;
-            case "taxAmount":
-                doc.text(`${item?.taxAmount || 0}`, x + cellPadding, textY, {
-                    width: header.width,
-                    align: "center",
-                });
-                break;
-            case "finalAmount":
-                doc.text(Math.ceil(item.finalAmount), x + cellPadding, textY, {
-                    width: header.width,
-                    align: "center",
-                });
-                break;
-            default:
-                if (item[header.value] !== undefined) {
-                    doc.text(item[header.value], x + cellPadding, textY);
-                }
-                break;
-        }
-
-        x += header.width;
-    });
-
-    // Draw horizontal line after each row
-    doc.moveTo(pageMargin, y + rowHeight).lineTo(doc.page.width - pageMargin, y + rowHeight).stroke(borderColor);
-
-    // Move Y position down for the next row
-    y += rowHeight;
-});
-
-
-    // Draw the bottom closing rectangle after the last row
-    doc.rect(pageMargin, y, doc.page.width - 2 * pageMargin, 5).fill(borderColor);
 };
 
-
-const addFooter = (doc, entityData, entity, organizationData) => {
-    let footerDetails = () => {};
-    switch (entity) {
-        case "invoices":
-            footerDetails = footerForQuotation;
-            break;
-        case "quotations":
-            footerDetails = footerForQuotation;
-            break;
-        case "purchases":
-            footerDetails = footerForQuotation;
-            break;
-        case "challans":
-            footerDetails = footerForQuotation;
-            break;
-        default:
-            break;
-    }
-
-    footerDetails(doc, entityData, organizationData, entity);
-};
 const addAmountDetails = (doc, data, organizationData, entity) => {
-    const initialY = doc.y + 20;
-    const startX = 390;
-    const valueX = 460;
-    let startY = initialY + 5;
-    let amountSideLineStart = startY - 3;
+    const bankDetailsTableData = [];
 
-    // Banking Details for Invoices
+    // If entity is "invoices", add banking details as a table
     if (entity === "invoices") {
         const { bankDetails } = organizationData;
         let primaryBank = getPrimaryOrFirstBank(bankDetails);
 
-        const bankDetailsStartX = 10;
-        const bankDetailsStartY = initialY;
-
-        doc.fill("#000").font("Helvetica-Bold");
-        doc.text("Banking Details:", bankDetailsStartX, bankDetailsStartY);
-        doc.text(`Bank Name: `, bankDetailsStartX, bankDetailsStartY + 15, {
-            continued: true,
-        })
-            .font("Helvetica")
-            .text(`${primaryBank?.bankName || ""}`);
-        doc.font("Helvetica-Bold");
-        doc.text(`Account No: `, bankDetailsStartX, bankDetailsStartY + 30, {
-            continued: true,
-        })
-            .font("Helvetica")
-            .text(`${primaryBank?.accountNo || ""}`);
-        doc.font("Helvetica-Bold");
-        doc.text(`IFSC Code: `, bankDetailsStartX, bankDetailsStartY + 45, {
-            continued: true,
-        })
-            .font("Helvetica")
-            .text(`${primaryBank?.ifscCode || ""}`);
+        // Add banking details to the table data
+        bankDetailsTableData.push({
+            field: "Bank Name",
+            value: `${primaryBank?.bankName || ""}`,
+        });
+        bankDetailsTableData.push({
+            field: "Account No",
+            value: `${primaryBank?.accountNo || ""}`,
+        });
+        bankDetailsTableData.push({
+            field: "IFSC Code",
+            value: `${primaryBank?.ifscCode || ""}`,
+        });
+        bankDetailsTableData.push({
+            field: "Branch",
+            value: `${primaryBank?.branch || ""}`,
+        });
     }
 
-    // Gross Total and Grand Total on the right
+    // Prepare data for the amount details table
+    const amountDetailsTableData = [];
+
+    // Gross Total
     if (data?.grossTotal) {
-        doc.text("Gross Total:", startX, startY);
-        doc.text(`${data?.grossTotal}`, valueX, startY);
-        doc.moveTo(startX - 20, doc.y + 1)
-            .lineTo(doc.page.width - 10, doc.y + 1)
-            .stroke(borderColor);
+        amountDetailsTableData.push({
+            description: "Gross Total",
+            amount: `${data.grossTotal}`,
+        });
     }
 
-    if (data?.taxAmount) {
-        startY += 20;
-        doc.text("Tax Amount:", startX, startY);
-        doc.text(`${data?.taxAmount}`, valueX, startY);
-        doc.moveTo(startX - 20, doc.y + 1)
-            .lineTo(doc.page.width - 10, doc.y + 1)
-            .stroke(borderColor);
+    // Tax Amount
+    if (data?.taxAmount >= 0) {
+        amountDetailsTableData.push({
+            description: "Tax Amount",
+            amount: `${data.taxAmount}`,
+        });
     }
 
+    // Other Charges
     if (data?.otherCharges?.length > 0) {
-        // Other Charges
-        startY += 20;
         data.otherCharges.forEach((charge) => {
-            doc.text(
-                capitalizeFirstLetter(`${charge.chargeName}:`),
-                startX,
-                startY
-            );
             let pre = charge?.rsOrPercent === "rupee" ? "Rs" : "%";
-            doc.text(`${charge.amount} ${pre}`, valueX, startY);
-            startY += 20;
-            doc.moveTo(startX - 20, doc.y + 1)
-                .lineTo(doc.page.width - 10, doc.y + 1)
-                .stroke(borderColor);
+            amountDetailsTableData.push({
+                description: capitalizeFirstLetter(`${charge.chargeName}`),
+                amount: `${charge.amount} ${pre}`,
+            });
         });
     }
 
     // Grand Total
     if (data?.grandTotal) {
-        startY += 20;
-        doc.moveTo(startX - 20, doc.y + 2)
-            .lineTo(startX - 20, amountSideLineStart)
-            .stroke(borderColor);
-        doc.rect(startX - 20, doc.y + 2, 215, 30).fill(borderColor);
-        doc.fill("#fff");
-        let grandY = doc.y + 12.5;
-        doc.text("Grand Total:", startX, grandY).fillColor("#000");
-        doc.fillColor("#ffffff");
-        doc.text(`${data?.grandTotal}`, valueX, grandY);
-    }
-};
-const addNotes = (doc, data) => {
-    if (data?.notes?.length > 0) {
-        let termsStartY = doc.y + 15;
-        let termsStartX = 10;
-
-        doc.fill("#000").font("Helvetica-Bold").fontSize(12);
-        doc.text("Note:", 10, termsStartY);
-        doc.font("Helvetica");
-        doc.moveTo(termsStartX, termsStartY + 15)
-            .lineTo(doc.page.width - 10, termsStartY + 15)
-            .stroke(borderColor);
-
-        let startX = 12;
-        let startY = doc.y + 5;
-        data.notes.forEach((note, index) => {
-            doc.font("Helvetica").fontSize(10);
-            doc.text(capitalizeFirstLetter(`${index + 1}.`), startX, startY);
-            doc.text(`${note}`, startX + 10, startY);
-            startY = doc.y + 10;
+        amountDetailsTableData.push({
+            description: "Grand Total",
+            amount: `${data.grandTotal}`,
         });
-        doc.moveTo(termsStartX, doc.y + 10)
-            .lineTo(doc.page.width - 10, doc.y + 10)
-            .stroke(borderColor);
+    }
+
+    // Define banking details table structure
+    const bankDetailsTable = {
+        headers: [
+            { label: "", property: "field", width: 100 },
+            { label: "", property: "value", width: 150 },
+        ],
+        datas: bankDetailsTableData,
+    };
+
+    // Define amount details table structure
+    const amountDetailsTable = {
+        headers: [
+            { label: "", property: "description", width: 200 },
+            { label: "", property: "amount", width: 100 },
+        ],
+        datas: amountDetailsTableData,
+    };
+
+    // Calculate table positions
+    const tableSpacing = 10; // Spacing between the two tables
+    const bankTableX = 10; // Start X position for the bank table
+    let bankTableY = doc.y;
+    const amountTableX = doc.page.width - 300 - 10; // Start X position for the amount table
+    doc.fillColor(borderColor).fontSize(10).font("Helvetica-Bold");
+
+    // Render bank details table on the left
+    if (bankDetailsTableData.length > 0) {
+        doc.table(bankDetailsTable, {
+            x: bankTableX,
+            y: bankTableY,
+            prepareHeader: () => {
+                doc.font("Helvetica-Bold").fontSize(10);
+            },
+            prepareRow: (row, i) => {
+                doc.fillColor("#000000").font("Helvetica").fontSize(9);
+            },
+            padding: 5,
+            lineGap: 5,
+            columnStyles: {
+                0: { align: "left" },
+                1: { align: "left" },
+            },
+            drawHeaderCell: (cell, rect) => {
+                doc.fontSize(10).fillColor("#000000").font("Helvetica-Bold");
+                doc.text(cell.label, rect.x + 10, rect.y + 2, {
+                    width: rect.width - 20,
+                    align: "left",
+                    valign: "center",
+                });
+                doc.rect(rect.x, rect.y, rect.width, rect.height).stroke();
+            },
+            drawRowCell: (cell, rect) => {
+                doc.fontSize(9).fillColor("#000000").font("Helvetica");
+                doc.text(cell, rect.x + 10, rect.y + 5, {
+                    width: rect.width - 20,
+                    align: "left",
+                    valign: "center",
+                });
+                doc.rect(rect.x, rect.y, rect.width, rect.height).stroke();
+            },
+        });
+    }
+
+    // Render amount details table on the right
+    doc.fillColor(borderColor).fontSize(10).font("Helvetica-Bold");
+
+    if (amountDetailsTableData.length > 0) {
+        doc.table(amountDetailsTable, {
+            x: amountTableX,
+            y: bankTableY, // Align with the current Y position
+            prepareHeader: () => {
+                doc.font("Helvetica-Bold").fontSize(10);
+            },
+            prepareRow: (row, i) => {
+                doc.fillColor("#000000").font("Helvetica").fontSize(9);
+            },
+            padding: 5,
+            lineGap: 5,
+            columnStyles: {
+                0: { align: "left" },
+                1: { align: "right" },
+            },
+            drawHeaderCell: (cell, rect) => {
+                doc.fontSize(10).fillColor("#000000").font("Helvetica-Bold");
+                doc.text(cell.label, rect.x + 10, rect.y + 2, {
+                    width: rect.width - 20,
+                    align: "left",
+                    valign: "center",
+                });
+                doc.rect(rect.x, rect.y, rect.width, rect.height).stroke();
+            },
+            drawRowCell: (cell, rect) => {
+                doc.fontSize(9).fillColor("#000000").font("Helvetica");
+                doc.text(cell, rect.x + 10, rect.y + 5, {
+                    width: rect.width - 20,
+                    align: "right",
+                    valign: "center",
+                });
+                doc.rect(rect.x, rect.y, rect.width, rect.height).stroke();
+            },
+        });
     }
 };
+
+const addNotesTable = (doc, data) => {
+    if (data?.notes?.length > 0) {
+        const notesStartY = doc.y; // Starting Y position
+        const notesTableX = 10; // Align to the left with margin
+
+        // Prepare the notes data for the table
+        const notesData = data.notes.map((note) => ({
+            note: note,
+        }));
+
+        // Define the table structure
+        const table = {
+            title: "Notes",
+            headers: [
+                { label: "", property: "note", width: 575 }, // Adjust width as needed
+            ],
+            datas: notesData,
+        };
+
+        // Draw the title in bold
+        doc.font("Helvetica-Bold").fontSize(12);
+
+        // Add the table to the PDF
+        doc.table(table, {
+            prepareHeader: () => {
+                doc.font("Helvetica-Bold").fontSize(10);
+            },
+            prepareRow: (row, i) => {
+                doc.fillColor("#000").font("Helvetica").fontSize(10);
+            },
+            padding: 5, // Padding for cells
+            columnStyles: {
+                0: { align: "left" }, // Align notes to the left
+            },
+            drawHeaderCell: (cell, rect) => {
+                // No header, so we skip this
+            },
+            drawRowCell: (cell, rect) => {
+                doc.text(cell, rect.x + 5, rect.y + 5, {
+                    width: rect.width - 10, // Adjust padding
+                    height: rect.height,
+                });
+                // Draw cell border with bold lines
+                doc.lineWidth(1.5); // Set line width for borders
+                doc.rect(rect.x, rect.y, rect.width, rect.height).stroke(); // Draw cell border
+            },
+            drawHeader: (cell, rect) => {
+                // Optional: Add header borders if needed
+                doc.lineWidth(1.5); // Set line width for header borders
+                doc.rect(rect.x, rect.y, rect.width, rect.height).stroke();
+            },
+            // Positioning the table on the left
+            x: notesTableX,
+            y: notesStartY, // Adjust Y position for the table
+        });
+    }
+};
+
 const addTermsAndThankYou = (doc, data) => {
     if (data?.terms?.length > 0) {
-        let termsStartY = doc.y + 20;
-        let termsStartX = 10;
+        const termsStartY = doc.y;
+        const termsTableX = 10; // Align to the left
 
-        doc.fill("#000").font("Helvetica-Bold").fontSize(12);
-        doc.text("Terms and Conditions:", 10, termsStartY);
-        doc.font("Helvetica");
-        doc.moveTo(termsStartX, termsStartY + 15)
-            .lineTo(doc.page.width - 10, termsStartY + 15)
-            .stroke(borderColor);
+        // Define the table structure
+        const table = {
+            title: "Terms and Conditions",
+            headers: [
+                { label: "Condition", property: "name", width: 100 }, // Adjust width as needed
+                { label: "Description", property: "value", width: 475 }, // Adjust width as needed
+            ],
+            datas: data.terms,
+        };
+        // Draw the title in bold
+        doc.font("Helvetica-Bold").fontSize(12);
 
-        let startX = 12;
-        let startY = doc.y + 5;
-        data.terms.forEach((term, index) => {
-            doc.font("Helvetica-Bold").fontSize(10);
-            doc.text(capitalizeFirstLetter(`${term.name}:`), startX, startY);
-            doc.font("Helvetica");
-            doc.text(
-                capitalizeFirstLetter(`${term.value}`),
-                startX + 50,
-                startY
-            );
-            startY = doc.y + 10;
-            doc.moveTo(termsStartX, doc.y + 5)
-                .lineTo(doc.page.width - 10, doc.y + 5)
-                .stroke(borderColor);
+        // Add the table to the PDF
+        doc.table(table, {
+            prepareHeader: () => {
+                doc.font("Helvetica-Bold").fontSize(10);
+            },
+            prepareRow: (row, i) => {
+                doc.fillColor("#000").font("Helvetica").fontSize(10);
+            },
+            padding: 5, // Padding for cells
+            columnStyles: {
+                0: { align: "left" }, // Align condition to the left
+                1: { align: "left" }, // Align description to the left
+            },
+            drawHeaderCell: (cell, rect) => {
+                doc.text(cell, rect.x + 5, rect.y + 5);
+                doc.rect(rect.x, rect.y, rect.width, rect.height).stroke(); // Draw header cell border
+            },
+            drawRowCell: (cell, rect) => {
+                doc.text(cell, rect.x + 5, rect.y + 5, {
+                    width: rect.width - 10, // Adjust padding
+                    height: rect.height,
+                });
+                doc.rect(rect.x, rect.y, rect.width, rect.height).stroke(); // Draw cell border
+            },
+            // Positioning the table on the left
+            x: termsTableX,
+            y: termsStartY, // Adjust Y position for the table
         });
     }
 
@@ -937,6 +1220,99 @@ const getTableHeaders = (entity, preCol = []) => {
             return finalHeaders;
     }
 };
+const getTableHeaders2 = (entity, preCol = []) => {
+    // Define the additional columns that may be added based on preCol
+    let toAddColumn = [
+        { title: "CODE", property: "code", width: 40 },
+        { title: "IMAGE", property: "image", width: 50 },
+        { title: "HSN CODE", property: "hsnCode", width: 50 },
+        { title: "DIS%", property: "discountPercent", width: 30 },
+        { title: "DIS AMT", property: "discountAmount", width: 50 },
+        { title: "TAX AMT", property: "taxAmount", width: 40 },
+    ];
+
+    // Default headers
+    const allHeaders = [
+        { title: "#", property: "srNo", width: 20 },
+        { title: "DESCRIPTION", property: "description", width: 330 }, // Initial width of description column
+        { title: "RATE", property: "rate", width: 50 },
+        { title: "QTY", property: "qty", width: 40 },
+        { title: "TAX%", property: "gstPercent", width: 50 },
+        { title: "TOTAL AMOUNT", property: "finalAmount", width: 80 },
+    ];
+
+    // Create a map from preCol to handle status true columns
+    const preColMap = {};
+    preCol.forEach((col) => {
+        if (col.status) {
+            preColMap[col.value] = col.label; // Map property to label for easier access
+        }
+    });
+
+    // Order in which columns should appear
+    const order = [
+        "srNo",
+        "code",
+        "description",
+        "image",
+        "hsnCode",
+        "rate",
+        "discountPercent",
+        "discountAmount",
+        "qty",
+        "gstPercent",
+        "taxAmount",
+        "finalAmount",
+    ];
+
+    let finalHeaders = [];
+
+    // Start by adding the default headers
+    order.forEach((property) => {
+        let header = allHeaders.find((header) => header.property === property);
+        // Check if the header is from preCol and has status true
+        if (preColMap[property]) {
+            let additionalHeader = toAddColumn.find(
+                (col) => col.property === property
+            );
+            if (additionalHeader) {
+                finalHeaders.push({
+                    title: preColMap[property], // Use label from preCol
+                    property: additionalHeader.property,
+                    width: additionalHeader.width,
+                });
+            }
+        } else if (header) {
+            // Add default headers that aren't from preCol
+            finalHeaders.push(header);
+        }
+    });
+
+    // Calculate the total width of added columns based on actual column widths
+    const totalWidthAdded = finalHeaders
+        .filter((header) => preColMap[header.property]) // Only the added columns from preCol
+        .reduce((total, header) => total + header.width, 0);
+
+    // Adjust the width of the description column based on the total width of added columns
+    const descriptionHeader = finalHeaders.find(
+        (header) => header.property === "description"
+    );
+    if (descriptionHeader) {
+        descriptionHeader.width = descriptionHeader.width - totalWidthAdded;
+    }
+
+    // Return headers based on entity type or dynamic processing
+    switch (entity.toLowerCase()) {
+        case "workorders":
+            return [
+                { title: "CODE", width: 50 },
+                { title: "NAME", width: 400 },
+                { title: "QTY", width: 50 },
+            ];
+        default:
+            return finalHeaders;
+    }
+};
 
 // adding other helper Function as per need
 const detailsForInvoice = (doc, invoiceData, entity, curY) => {
@@ -1011,8 +1387,8 @@ const detailsForInvoice = (doc, invoiceData, entity, curY) => {
 
     // Draw horizontal line after billing details
     const endY = Math.max(billingEndY, shippingEndY) + 5;
-    doc.moveTo(5, endY)
-        .lineTo(doc.page.width - 4, endY)
+    doc.moveTo(leftMargin, endY)
+        .lineTo(doc.page.width - leftMargin, endY)
         .stroke(borderColor);
 
     // Draw vertical line separating billing and shipping sections
@@ -1137,8 +1513,8 @@ const detailsForPurchaseOrder = (
 
     // Draw horizontal line after supplier and delivery details
     const endY = Math.max(supplierEndY, deliveryEndY) + 5;
-    doc.moveTo(5, endY)
-        .lineTo(doc.page.width - 4, endY)
+    doc.moveTo(leftMargin, endY)
+        .lineTo(doc.page.width - leftMargin, endY)
         .stroke(borderColor);
 
     // Draw vertical line separating supplier and delivery sections
@@ -1211,31 +1587,21 @@ const detailsForChallan = (doc, challanDataa, organizationData, curY) => {
 
     // Draw horizontal line after dispatch details
     const endY = Math.max(dispatchToEndY, dispatchFromEndY) + 5;
-    doc.moveTo(5, endY)
-        .lineTo(doc.page.width - 4, endY)
+    doc.moveTo(leftMargin, endY)
+        .lineTo(doc.page.width - leftMargin, endY)
         .stroke(borderColor);
 
     // Draw vertical line separating Dispatch To and Dispatch From sections
+    doc.moveTo(300, initialY).lineTo(300, endY).stroke(borderColor);
     doc.moveTo(300, initialY).lineTo(300, endY).stroke(borderColor);
 
     // Update doc.y to ensure it starts after the details section
     doc.y = endY;
 };
 
-const footerForQuotation = (doc, data, organizationData, entity) => {
-    // 1. Add Amount Details (Banking Details, Grand Total, etc.)
-    addAmountDetails(doc, data, organizationData, entity);
-
-    // 2. Add Notes (if any)
-    addNotes(doc, data);
-
-    // 3. Add Terms and Conditions and Thank You message
-    addTermsAndThankYou(doc, data);
-};
-
 const itemTableForWorkOrder = (doc, entityData, entity) => {
     // Define headers for the work orders table
-    const headers = getTableHeaders(entity);
+    const headers = getTableHeaders2(entity);
 
     const headerHeight = 30;
     const cellPadding = 5;

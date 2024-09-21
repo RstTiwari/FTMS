@@ -1,15 +1,16 @@
 import myfac8ryDefault from "../../template/pdfTemplate/myfac8rydefualt.js";
 import vipDefault from "../../template/pdfTemplate/vipDefault.js";
-import pdfTemplate1 from "../../template/pdfTemplate/pdftemplate1.js"
+import pdfTemplate1 from "../../template/pdfTemplate/pdftemplate1.js";
 import tenantDb from "../../models/coreModels/Tenant.js";
 import colPreDb from "../../models/appModels/columnPrefrence.js";
 import checkDbForEntity from "../../Helper/databaseSelector.js";
 import countersDb from "../../models/appModels/counters.js";
+import pdftem2 from "../../template/pdfTemplate/pdftempalte2.js";
 
 const generatePdf = async (req, res, next, forEmail) => {
     try {
-        const { entity, id } = req.query;
-        let tenantId = req.tenantId;
+        const { entity, id, tenantId } = req.query;
+        // let tenantId = req.tenantId;
         let dataBase = checkDbForEntity(entity);
         let entityData = await dataBase
             .findOne({
@@ -72,7 +73,7 @@ const generatePdf = async (req, res, next, forEmail) => {
             ? prefix.prefix
             : entity.slice(0, 2).toUpperCase();
 
-        const templateId = "template1";
+        const templateId = "myfac8ry";
         let pdfFucntionToCall = null;
 
         switch (templateId) {
@@ -84,6 +85,9 @@ const generatePdf = async (req, res, next, forEmail) => {
                 break;
             case "template1":
                 pdfFucntionToCall = pdfTemplate1;
+                break;
+            case "template2":
+                pdfFucntionToCall = pdftem2;
                 break;
 
             default:

@@ -27,7 +27,7 @@ router.post("/read", authMethod.isValidAuthtoken, appRoutes.read);
 router.get("/get", authMethod.isValidAuthtoken, appRoutes.get);
 router.post("/update", authMethod.isValidAuthtoken, appRoutes.update);
 router.patch("/patch", authMethod.isValidAuthtoken, appRoutes.patch);
-router.get("/pdf", authMethod.isValidAuthtoken, appRoutes.genratePdf);
+router.get("/pdf", appRoutes.genratePdf);
 router.post("/upload", type, authMethod.isValidAuthtoken, appRoutes.upload);
 router.get(
     "/fetchCountersNumber",

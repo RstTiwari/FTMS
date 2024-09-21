@@ -15,7 +15,7 @@ const EmailForm = () => {
     const [name, setName] = useState(null);
     const history = useNavigate();
     const { pdfGenerate, appApiCall } = useAuth();
-    const { entity, id } = useParams();
+    const { entity, id, tenantId } = useParams();
 
     // Custom hook to fetch initial form values
     let { initialValues, isFetching, fetchInitialValues } =
@@ -26,7 +26,7 @@ const EmailForm = () => {
     }, [fetchInitialValues]);
 
     const getpdfFile = async (entity, id, no) => {
-        let blob = await pdfGenerate(entity, id, no);
+        let blob = await pdfGenerate(entity, id, no, "display", tenantId);
         const file = new File([blob], `PURCHASES${id}.pdf`, {
             type: "application/pdf",
         });

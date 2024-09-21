@@ -1,6 +1,5 @@
 import NotFound from "pages/Notfound";
 import Customer from "../../pages/Details/Customer/Customer";
-import PDFGenerator from "pages/Details/PdfGenrator";
 import PaymentDetails from "../../pages/Details/PayementReceivedDetails";
 import ExpenseDetails from "pages/Details/ExpenseDetails";
 import ProductDetails from "pages/Details/ProductDetails";
@@ -71,8 +70,8 @@ const DetailsModule = ({ entity, values, id, loading }) => {
             component = <WorkOrderDetails entity={entity} workOrder={values} />;
             break;
         case "user":
-                component = <UserDetails entity={entity} user={values} />;
-                break;
+            component = <UserDetails entity={entity} user={values} />;
+            break;
         default:
             break;
     }

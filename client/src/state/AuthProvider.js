@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
         return cookies[key];
     };
 
-    const authApiCall = async (path, data,params) => {
+    const authApiCall = async (path, data, params) => {
         let token = cookies["token"];
 
         let axiosConfig = {
@@ -36,7 +36,6 @@ export const AuthProvider = ({ children }) => {
             },
             data: data,
             params: params ? params : "",
-
         };
         try {
             let response = await axios(axiosConfig);
@@ -121,8 +120,15 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const pdfGenerate = async (entity, id, no, action = "display") => {
+    const pdfGenerate = async (
+        entity,
+        id,
+        no,
+        action = "display",
+        tenantId
+    ) => {
         const token = cookies["token"];
+        console.log(tenantId, "in pdsfgentate");
         try {
             const headers = {
                 "Content-Type": "application/json",
@@ -130,7 +136,7 @@ export const AuthProvider = ({ children }) => {
                 token: token ? token : "",
             };
 
-            let url = `${myfac8ryBaseUrl}app/pdf?entity=${entity}&id=${id}`;
+            let url = `${myfac8ryBaseUrl}app/pdf?entity=${entity}&id=${id}&tenantId=${tenantId}`;
 
             const response = await fetch(url, {
                 method: "GET",
