@@ -92,6 +92,7 @@ router.post(
     authMethod.isValidAuthtoken,
     appRoutes.updateColumnPreferences
 );
+router.get("/getleadger", authMethod.isValidAuthtoken, appRoutes.getLeadger);
 
 // //just for app Data
 // router.post("/challan", appRoutes.challan);
