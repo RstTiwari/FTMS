@@ -69,22 +69,29 @@ const DetailsHeader = ({ values }) => {
 
     const menu = (
         <Menu>
-            <Menu.Item key="share" onClick={handleEmailSend}>
-                <MailOutlined style={{ marginRight: 3 }} />
-                Mail
-            </Menu.Item>
-            <Menu.Item key="delete" onClick={() => handleMenuClick("delete")}>
-                <DeleteOutlined /> Delete
-            </Menu.Item>
-
-            {entity === "customers" || entity === "vendors" ? (
-                <Menu.Item
-                    key="ledger"
-                    onClick={() => handleMenuClick("ledger")}
-                >
-                    <span>Ledger</span>
-                </Menu.Item>
-            ) : null}
+            {entity !== "customers" && entity !== "vendors" ? (
+                <>
+                    <Menu.Item key="share" onClick={handlePdfDownload}>
+                        <DownloadOutlined style={{ marginRight: 3 }} />
+                        Download PDF
+                    </Menu.Item>
+                    <Menu.Item
+                        key="delete"
+                        onClick={() => handleMenuClick("delete")}
+                    >
+                        <DeleteOutlined /> Delete
+                    </Menu.Item>
+                </>
+            ) : (
+                <>
+                    <Menu.Item
+                        key="delete"
+                        onClick={() => handleMenuClick("delete")}
+                    >
+                        <DeleteOutlined /> Delete
+                    </Menu.Item>
+                </>
+            )}
         </Menu>
     );
 
@@ -119,13 +126,12 @@ const DetailsHeader = ({ values }) => {
                 style={{
                     display: "flex",
                     alignItems: "center",
-                    cursor: "pointer",
                 }}
             >
                 <Col
                     span={2}
-                    onClick={handleEditClick}
                     style={{ display: "flex", alignItems: "center" }}
+                    onClick={handleEditClick}
                 >
                     <EditOutlined style={{ marginRight: 3 }} />
                     Edit
@@ -137,16 +143,16 @@ const DetailsHeader = ({ values }) => {
                 entity !== "paymentsreceived" ? (
                     <>
                         <Col span={2} onClick={() => handleWhatsUpSend()}>
-                            <ShareAltOutlined style={{ marginRight: 3 }} />
+                            <ShareAltOutlined style={{ marginRight: 1 }} />
                             Share
                         </Col>
                         <Col
-                            span={3}
-                            onClick={handlePdfDownload}
+                            span={2}
+                            onClick={handleEmailSend}
                             style={{ display: "flex", alignItems: "center" }}
                         >
-                            <DownloadOutlined style={{ marginRight: 3 }} />
-                            Download
+                            <MailOutlined style={{ marginRight: 1 }} />
+                            Mail
                         </Col>
                     </>
                 ) : entity === "customers" || entity === "vendors" ? (
@@ -155,13 +161,13 @@ const DetailsHeader = ({ values }) => {
                         onClick={handleRecordPaymentClick}
                         style={{ display: "flex", alignItems: "center" }}
                     >
-                        <DownCircleOutlined style={{ marginRight: 3 }} />
+                        <DownCircleOutlined style={{ marginRight: 1 }} />
                         Record Payment
                     </Col>
                 ) : null}
 
                 <Col span={2} style={{ display: "flex", alignItems: "center" }}>
-                    <Dropdown overlay={menu} trigger={["hover"]}>
+                    <Dropdown overlay={menu} trigger={["click"]}>
                         <FolderOpenOutlined
                             style={{ marginRight: 5, cursor: "pointer" }}
                         />

@@ -8,6 +8,7 @@ import { Row } from "antd";
 const PdfDetails = () => {
     const { pdfGenerate } = useAuth();
     const { entity, no, tenantId, id } = useParams();
+    const { appApiCall } = useAuth();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -20,13 +21,6 @@ const PdfDetails = () => {
                     "download",
                     tenantId
                 );
-                // Create a link element to trigger the download
-                const link = document.createElement("a");
-                link.href = url;
-                link.setAttribute("download", `${entity}_${id}.pdf`); // Set the filename
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link); // Clean up
             } catch (error) {
                 NotificationHandler.info({
                     content: "Error in downloading PDF",
@@ -35,8 +29,21 @@ const PdfDetails = () => {
                 setLoading(false);
             }
         };
-
         downloadPdf();
+        const markDownloaded = async () => {
+            await appApiCall(
+                "patch",
+                "patch",
+                {
+                    action: "set",
+                    keyName: "status",
+                    values: "DOWNLOADED",
+                    id: id,
+                },
+                { entity: entity }
+            );
+        };
+        markDownloaded();
     }, [entity, id, no, tenantId, pdfGenerate]);
 
     if (loading) {

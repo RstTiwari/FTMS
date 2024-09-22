@@ -20,7 +20,7 @@ const generatePdf = async (req, res, next, forEmail) => {
             .populate([
                 {
                     path: "customer",
-                    select: "name billingAddress shippingAddress",
+                    select: "name billingAddress shippingAddress phone",
                     options: { strictPopulate: false },
                 },
                 {
@@ -103,8 +103,7 @@ const generatePdf = async (req, res, next, forEmail) => {
             organization,
             entity,
             entityPrefix,
-            preCol,
-            forEmail
+            preCol
         );
     } catch (error) {
         next(error);

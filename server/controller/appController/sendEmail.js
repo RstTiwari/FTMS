@@ -15,7 +15,7 @@ export const emailData = async (req, res, next) => {
         let entityData = await EntityDataBase.findOne({
             _id: id,
             tenantId: tenantId,
-        }).select({ partyKey: 1, no: 1 });
+        });
         let partyId = entityData[partyKey];
 
         // let get the partyData
@@ -43,7 +43,7 @@ export const emailData = async (req, res, next) => {
                 name: partyData?.name, // or any other field that contains the email
                 sub: sub,
                 no: entityData?.no,
-                content: "Please Find Attached File",
+                entityData: entityData,
             },
             message: "Fetched SucceFully",
         });
