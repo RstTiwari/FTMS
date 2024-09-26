@@ -12,6 +12,7 @@ import CustomForm from "components/CreateCustomForm";
 import UpdateCustomForm from "components/UpdateCustomForm";
 import RecordPayment from "pages/Payment/RecordPayment";
 import EmailSendPage from "pages/Email/Email";
+import Notification from "../Notification/index"
 
 const Approuter = ({ profile }) => {
     const tenantId = profile?.tenant?.tenantId;
@@ -76,6 +77,8 @@ const Approuter = ({ profile }) => {
                 />
 
                 <Route path="*" element={<NotFound />} />
+                <Route path="/app/websocket" element={<Notification />} />
+
 
                 {/**In case some one acess login page after being logged in */}
                 <Route
