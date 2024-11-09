@@ -1,5 +1,3 @@
-import { jsPDF } from "jspdf";
-import "jspdf-autotable";
 import fs from "fs";
 import axios from "axios"; // To fetch the image from a URL
 import { downloadImage } from "../../Helper/pdfHelper.js";
