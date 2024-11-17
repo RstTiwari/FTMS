@@ -37,7 +37,6 @@ const challanSchema = new mongoose.Schema(
             {
                 code: {
                     type: String,
-                    required: true,
                 },
                 description: {
                     type: String,

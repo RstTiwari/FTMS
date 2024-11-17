@@ -13,6 +13,7 @@ import UpdateCustomForm from "components/UpdateCustomForm";
 import RecordPayment from "pages/Payment/RecordPayment";
 import EmailSendPage from "pages/Email/Email";
 import PdfDetails from "pages/Details/PdfDetails";
+import TestingPdf from "PdfTemplates/TestingPdf";
 
 const Approuter = ({ profile }) => {
     const tenantId = profile?.tenant?.tenantId;
@@ -74,6 +75,10 @@ const Approuter = ({ profile }) => {
                 <Route
                     path="/app/:tenantId/setting/templates"
                     element={<Templates />}
+                />
+                <Route
+                    path="/app/:tenantId/testingpdf"
+                    element={<TestingPdf />}
                 />
 
                 <Route path="*" element={<NotFound />} />

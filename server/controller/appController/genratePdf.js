@@ -10,7 +10,6 @@ import pdftem2 from "../../template/pdfTemplate/pdftempalte2.js";
 const generatePdf = async (req, res, next, forEmail) => {
     try {
         const { entity, id, tenantId } = req.query;
-        // let tenantId = req.tenantId;
         let dataBase = checkDbForEntity(entity);
         let entityData = await dataBase
             .findOne({
@@ -63,7 +62,7 @@ const generatePdf = async (req, res, next, forEmail) => {
             tenantId: tenantId,
             entity: entity,
         });
-        let preCol = columns?.preferences;
+        let selectColumns = columns?.preferences;
 
         let prefix = await countersDb.findOne({
             entityName: entity,
@@ -74,37 +73,19 @@ const generatePdf = async (req, res, next, forEmail) => {
             : entity.slice(0, 2).toUpperCase();
 
         const templateId = "myfac8ry";
-        let pdfFucntionToCall = null;
+        let data = {}
+        data['entityData'] = entityData
+        data["organization"] = organization;
+        data["selectColumns"] = selectColumns
+        data["templateId"] = templateId;
+        data["entityPrefix"] = entityPrefix
+        console.log(data, typeof data);
+        res.status(200).json({
+          success: 1,
+          data: data,
+        });
 
-        switch (templateId) {
-            case "myfac8ry":
-                pdfFucntionToCall = myfac8ryDefault;
-                break;
-            case "vip":
-                pdfFucntionToCall = vipDefault;
-                break;
-            case "template1":
-                pdfFucntionToCall = pdfTemplate1;
-                break;
-            case "template2":
-                pdfFucntionToCall = pdftem2;
-                break;
-
-            default:
-                pdfFucntionToCall = myfac8ryDefault;
-
-                break;
-        }
-        return pdfFucntionToCall(
-            req,
-            res,
-            next,
-            entityData,
-            organization,
-            entity,
-            entityPrefix,
-            preCol
-        );
+      
     } catch (error) {
         next(error);
     }

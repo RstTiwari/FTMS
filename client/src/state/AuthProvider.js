@@ -1,6 +1,8 @@
 import { createContext, useContext } from "react";
+import { pdf } from "@react-pdf/renderer";
 import { useCookies } from "react-cookie";
 import NotificationHandler from "EventHandler/NotificationHandler";
+import PdfSelector from "PdfTemplates/PdfSelector";
 import axios from "axios";
 
 let myfac8ryBaseUrl = process.env.REACT_APP_URL_PROD;
@@ -128,46 +130,41 @@ export const AuthProvider = ({ children }) => {
         tenantId
     ) => {
         const token = cookies["token"];
-        console.log(tenantId, "in pdsfgentate");
         try {
-            const headers = {
-                "Content-Type": "application/json",
-                Authorization: "Bearer YOUR_TOKEN",
-                token: token ? token : "",
-            };
+          const headers = {
+            "Content-Type": "application/json",
+            Authorization: "Bearer YOUR_TOKEN",
+            token: token ? token : "",
+          };
 
-            let url = `${myfac8ryBaseUrl}app/pdf?entity=${entity}&id=${id}&tenantId=${tenantId}`;
+          const response = await appApiCall("get","pdf",{},{entity,id,tenantId});
 
-            const response = await fetch(url, {
-                method: "GET",
-                headers: headers,
+          if (!response.success) {
+            throw new Error("Network response was not ok");
+          }
+
+          // Generate the blob from the document
+          const blob = await pdf(<PdfSelector entity={entity} data={response.data} />).toBlob();
+
+          const pdfUrl = URL.createObjectURL(blob);
+
+          if (action === "download") {
+            const a = document.createElement("a");
+            a.href = pdfUrl;
+            a.download = `${entity.toUpperCase()}${no}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          } else if (action === "display") {
+            // Create a new File with the desired name
+            const fileName = `${entity.toUpperCase()}${no}.pdf`;
+            console.log(fileName);
+
+            const file = new File([blob], fileName, {
+              type: "application/pdf",
             });
-
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
-            }
-
-            const blob = await response.blob();
-
-            const pdfUrl = URL.createObjectURL(blob);
-
-            if (action === "download") {
-                const a = document.createElement("a");
-                a.href = pdfUrl;
-                a.download = `${entity.toUpperCase()}${no}.pdf`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            } else if (action === "display") {
-                // Create a new File with the desired name
-                const fileName = `${entity.toUpperCase()}${no}.pdf`;
-                console.log(fileName);
-
-                const file = new File([blob], fileName, {
-                    type: "application/pdf",
-                });
-                return file;
-            }
+            return file;
+          }
         } catch (error) {
             NotificationHandler.error(
                 `Failed to handle ${entity} PDF: ${error.message}`
