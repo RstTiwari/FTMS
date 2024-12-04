@@ -35,7 +35,7 @@ const productSchema = new mongoose.Schema(
         purchaseRate: Number,
         description: String,
         image: String,
-        itemType: String,
+        itemType:{type:String,default:"product"},
         hsnCode: String,
         dimension: String, // Directly on the product
         vendor: {

@@ -1,20 +1,10 @@
 import React from "react";
-import { Form, Row, Col, Input, InputNumber, Button, Divider } from "antd";
-import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
-import { useMediaQuery } from "@mui/material";
+import {  Divider } from "antd";
 import FormItemCol from "components/Comman/FormItemCol";
-import Taglabel from "components/Comman/Taglabel";
-import CustomSelect from "components/Comman/CustomSelect";
-import CustomModel from "components/CustomModal";
-import NotificationHandler from "EventHandler/NotificationHandler";
-import TaxPercent from "components/Comman/TaxPercent";
 import CustomFormTableList from "./CustomFormTableList";
 import PaymentLayoutComponent from "./PaymentLayoutComponent";
 
 const QuotationForm = ({ form }) => {
-    const isLaptop = useMediaQuery("(min-width:1000px)");
-    const inputWidth = isLaptop ? 700 : 350;
-    const inputFontSize = isLaptop ? "1rem" : "0.4rem";
 
     const handleItemsUpdate = (value, fieldName, rowName) => {
         const items = form.getFieldValue("items");

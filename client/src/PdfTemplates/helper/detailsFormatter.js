@@ -71,6 +71,29 @@ export const customPageHeader = (entity, data, entityPrefix) => {
         },
       ];
       break;
+    case "workorders":
+      array = [
+        {
+          label: "Workorder No",
+          value: `${entityPrefix}/${data["no"]}`,
+        },
+        {
+          label: "Workorder Date",
+          value: jsDateIntoDayjsDate(data["startDate"]),
+        },
+        {
+          label: "Delivery Date",
+          value: jsDateIntoDayjsDate(data["dueDate"]),
+        },
+        {
+          label: "Workorder Type",
+          value: data["type"],
+        },
+        {
+          label: "Incharge",
+          value: data["incharge"],
+        },
+      ];
     default:
       break;
   }
@@ -381,18 +404,16 @@ export const getTableHeaders2 = (entity, preCol = []) => {
   switch (entity.toLowerCase()) {
     case "workorders":
       return [
-        { title: "CODE", width: 50 },
-        { title: "NAME", width: 400 },
-        { title: "QTY", width: 50 },
+        { title: "PRODUCT DETAILS", property: "description", width: 350 },
+        { title: "IMAGE", property: "image", width: 100 },
+        { title: "TOTAL QTY", property: "qty", width: 100 },
       ];
     default:
       return finalHeaders;
   }
 };
 export const grandAndOtherChargesFormatter = (entity, data) => {
-  if (entity === "workorder") {
-    return [];
-  }
+  if (entity === "workorders") return []; // Don't display amount table when entity is workorders
   let array = [
     {
       label: "GROSS TOTAL",
@@ -454,4 +475,84 @@ export const entityNameFormatter = (entity) => {
       break;
   }
   return entityName;
+};
+
+export const workOrderTable = (entity, data) => {
+  // Function to calculate total quantities of components, parts, and hardwares recursively
+  function calculateTotalQty(product, parentQty = 1) {
+    let result = {
+      name: product.name,
+      image: product.image || "",
+      qty: parentQty,
+      components: [],
+      parts: [],
+      hardwares: [],
+    };
+
+    // Calculate components if any
+    if (product.components && product.components.length > 0) {
+      product.components.forEach((component) => {
+        // If component is of type "product", recursively calculate its quantities
+        if (component.product.itemType === "product") {
+          const componentResult = calculateTotalQty(
+            component.product,
+            parentQty * component.qty
+          );
+          result.components.push(componentResult);
+        } else {
+          // For non-product components, simply multiply the quantity
+          result.components.push({
+            name: component.product.name,
+            image: component.product.image || "",
+            totalQty: parentQty * component.qty,
+          });
+        }
+      });
+    }
+
+    // Calculate parts if any
+    if (product.parts && product.parts.length > 0) {
+      product.parts.forEach((part) => {
+        result.parts.push({
+          name: part.product.name,
+          image: part.product.image || "",
+          totalQty: parentQty * part.qty,
+        });
+      });
+    }
+
+    // Calculate hardwares if any
+    if (product.hardwares && product.hardwares.length > 0) {
+      product.hardwares.forEach((hardware) => {
+        result.hardwares.push({
+          name: hardware.product.name,
+          image: hardware.product.image || "",
+          totalQty: parentQty * hardware.qty,
+        });
+      });
+    }
+
+    return result;
+  }
+
+  // Final response array to store all the results
+  let response = [];
+
+  // Iterate over the workOrder array to calculate the quantities for each product
+  data.forEach((item) => {
+    if (item.product.itemType === "product") {
+      // For products, calculate their quantities and any nested components
+      const productResult = calculateTotalQty(item.product, item.qty);
+      response.push(productResult);
+    } else {
+      // For other items (parts, hardwares), just return the basic details
+      let temObj = {
+        name: item?.product["name"],
+        image: item?.product["image"] || "",
+        qty: item["qty"],
+      };
+      response.push(temObj);
+    }
+  });
+  return response;
 };

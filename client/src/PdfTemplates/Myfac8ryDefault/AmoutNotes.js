@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "@react-pdf/renderer";
 
 // Define styles for the component
-let borderColor= "#ddd"
+let borderColor = "#ddd";
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
@@ -89,21 +89,23 @@ const AmountsAndNotes = ({ amounts, notes = [] }) => {
         </View>
 
         {/* Right Section: Amounts */}
-        <View style={styles.rightSection}>
-          <View style={styles.subRightSection}>
-            {amounts.map((amount, index) => (
-              <View key={index}>
-                {/* Amount Row (Label and Value) */}
-                <View style={styles.amountRow}>
-                  <Text style={styles.amountLabel}>
-                    {amount.label.toUpperCase()}
-                  </Text>
-                  <Text style={styles.amountValue}>{amount.value}</Text>
+        {amounts.length > 0 ? (
+          <View style={styles.rightSection}>
+            <View style={styles.subRightSection}>
+              {amounts.map((amount, index) => (
+                <View key={index}>
+                  {/* Amount Row (Label and Value) */}
+                  <View style={styles.amountRow}>
+                    <Text style={styles.amountLabel}>
+                      {amount.label.toUpperCase()}
+                    </Text>
+                    <Text style={styles.amountValue}>{amount.value}</Text>
+                  </View>
                 </View>
-              </View>
-            ))}
+              ))}
+            </View>
           </View>
-        </View>
+        ) : null}
       </View>
     </View>
   );

@@ -15,13 +15,15 @@ import {
   entityDetailsFormatter,
   getTableHeaders2,
   grandAndOtherChargesFormatter,
-  entityNameFormatter
+  entityNameFormatter,
+  workOrderTable,
 } from "PdfTemplates/helper/detailsFormatter";
 import EntityDetails from "./EntityDetails";
 import ItemsTable from "./ItemTable";
 import AmountsAndNotes from "./AmoutNotes";
 import TermsAndConditions from "./TermsandCondition";
 import BankDetails from "./BankDetails";
+import MultilevelWorkOrder from "./MultileveWorkOrder";
 
 // Common styles
 let borderColor = "#000000";
@@ -95,13 +97,14 @@ const MyDocument = ({ entity, data }) => {
   const entityDetails = entityDetailsFormatter(
     entity,
     entityData,
-    organization 
+    organization
   );
-  
+
   let amounts = grandAndOtherChargesFormatter(entity, entityData);
+
   let headers = getTableHeaders2(entity, selectColumns);
-  let bankDetails = bankDetailsFormatter(entity,organization?.bankDetails)
-  let entityName = entityNameFormatter(entity)
+  let bankDetails = bankDetailsFormatter(entity, organization?.bankDetails);
+  let entityName = entityNameFormatter(entity);
   return (
     <Document>
       <Page size="A4" break={true} style={commonStyles.page}>
@@ -111,8 +114,10 @@ const MyDocument = ({ entity, data }) => {
           detailsData={pageHeaderDetail}
         />
 
-        <EntityDetails data={entityDetails}  entityName ={entityName} />
+        <EntityDetails data={entityDetails} entityName={entityName} />
+
         <ItemsTable columns={headers} items={entityData?.items} />
+
         <AmountsAndNotes amounts={amounts} notes={entityData?.notes} />
         <TermsAndConditions terms={entityData?.terms} />
         <BankDetails entity={entity} bankDetails={bankDetails} />
