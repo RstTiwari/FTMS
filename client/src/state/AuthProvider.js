@@ -132,7 +132,7 @@ export const AuthProvider = ({ children }) => {
         const token = cookies["token"];
         try {
           const headers = {
-            "Content-Type": "application/json",
+            "Content-Type": "Content-Type: application/pdf",
             Authorization: "Bearer YOUR_TOKEN",
             token: token ? token : "",
           };
