@@ -100,106 +100,102 @@ const DeliveryChallan = ({ form }) => {
 
     useEffect(() => {}, []);
     return (
-        <div>
-            <FormItemCol
-                label={"Select Customer"}
-                name={"customer"}
-                labelAlign="left"
-                required={true}
-                labelCol={{ span: 8 }}
-                rules={[
-                    {
-                        required: "true",
-                        message: "Please Select Customer",
-                    },
-                ]}
-                type="modal"
-                width={"30vw"}
-                entity={"customers"}
-                fieldName={"name"}
-                onlyShippingAddress={true}
-                updateInForm={(value) => handleItemUpdate(value, "customer")}
-                preFillValue={form.getFieldValue("customer")?.name}
-            />
-            <FormItemCol
-                label={"#Delivery Challan"}
-                name={"no"}
-                labelAlign="left"
-                required={true}
-                labelCol={{ span: 8 }}
-                type={"counters"}
-                rules={[
-                    {
-                        required: "true",
-                        message: "Please Provide Challan No",
-                    },
-                ]}
-                updateInForm={(value) => handleItemUpdate(value, "no")}
-                preFillValue={form.getFieldValue("no")}
-                width={"30vw"}
-            />
-            <Row>
-                <FormItemCol
-                    label={"Challan Date"}
-                    name={"challanDate"}
-                    required={true}
-                    rules={[
-                        {
-                            required: true,
-                            message: "Please Select Challan Date",
-                        },
-                    ]}
-                    labelCol={{ span: 8 }}
-                    labelAlign="left"
-                    type={"date"}
-                    preFillValue={form.getFieldValue("challanDate")}
-                    updateInForm={(value) =>
-                        handleItemUpdate(value, "challanDate")
-                    }
-                />
-                <FormItemCol
-                    label={"Challan Type"}
-                    name={"challanType"}
-                    required={true}
-                    rules={[
-                        {
-                            required: true,
-                            message: "Please Select Challan Type",
-                        },
-                    ]}
-                    labelCol={{ span: 8 }}
-                    labelAlign="left"
-                    type={"select"}
-                    entity={"Challan Type"}
-                    entityName={"challanType"}
-                    updateInForm={(value) =>
-                        handleItemUpdate(value, "challanType")
-                    }
-                    preFillValue={form.getFieldValue("challanType")}
-                />
-            </Row>
+      <div>
+        <FormItemCol
+          label={"Select Customer"}
+          name={"customer"}
+          labelAlign="left"
+          required={true}
+          labelCol={{ span: 8 }}
+          rules={[
+            {
+              required: "true",
+              message: "Please Select Customer",
+            },
+          ]}
+          type="modal"
+          width={"30vw"}
+          entity={"customers"}
+          fieldName={"name"}
+          onlyShippingAddress={true}
+          updateInForm={(value) => handleItemUpdate(value, "customer")}
+          preFillValue={form.getFieldValue("customer")?.name}
+        />
+        <FormItemCol
+          label={"#Delivery Challan"}
+          name={"no"}
+          labelAlign="left"
+          required={true}
+          labelCol={{ span: 8 }}
+          type={"counters"}
+          rules={[
+            {
+              required: "true",
+              message: "Please Provide Challan No",
+            },
+          ]}
+          updateInForm={(value) => handleItemUpdate(value, "no")}
+          preFillValue={form.getFieldValue("no")}
+          width={"30vw"}
+        />
+          <FormItemCol
+            label={"Challan Date"}
+            name={"challanDate"}
+            required={true}
+            rules={[
+              {
+                required: true,
+                message: "Please Select Challan Date",
+              },
+            ]}
+            labelCol={{ span: 8 }}
+            labelAlign="left"
+            type={"date"}
+            width={"30vw"}
+            preFillValue={form.getFieldValue("challanDate")}
+            updateInForm={(value) => handleItemUpdate(value, "challanDate")}
+          />
+          <FormItemCol
+            label={"Challan Type"}
+            name={"challanType"}
+            required={true}
+            rules={[
+              {
+                required: true,
+                message: "Please Select Challan Type",
+              },
+            ]}
+            labelCol={{ span: 8 }}
+            width={"30vw"}
+            labelAlign="left"
+            type={"select"}
+            entity={"Challan Type"}
+            entityName={"challanType"}
+            updateInForm={(value) => handleItemUpdate(value, "challanType")}
+            preFillValue={form.getFieldValue("challanType")}
+          />
 
-            <FormItemCol
-                label={"Vehicle No"}
-                name={"vehicleNo"}
-                labelCol={{ span: 8 }}
-                labelAlign="left"
-                type={"input"}
-                width={"30vw"}
-            />
-            <FormItemCol
-                label={"Contact No"}
-                name={"contactNo"}
-                labelCol={{ span: 8 }}
-                labelAlign="left"
-                type={"input"}
-                width={"30vw"}
-            />
+        <FormItemCol
+          label={"Vehicle No"}
+          name={"vehicleNo"}
+          labelCol={{ span: 8 }}
+          labelAlign="left"
+          type={"input"}
+          width={"30vw"}
+        />
+        <FormItemCol
+          label={"Contact No"}
+          name={"contactNo"}
+          labelCol={{ span: 8 }}
+          labelAlign="left"
+          type={"input"}
+          width={"30vw"}
+        />
 
-            <CustomFormTableList form={form} />
-            <PaymentLayoutComponent form={form} />
-            <FormItemCol form={form} type={"terms"} />
-        </div>
+        <CustomFormTableList form={form} />
+        <PaymentLayoutComponent form={form} />
+        <FormItemCol form={form} type={"terms"} />
+      </div>
     );
 };
 

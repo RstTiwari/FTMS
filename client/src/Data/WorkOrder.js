@@ -4,6 +4,8 @@ import {
     jsDateIntoDayjsDate,
 } from "Helper/EpochConveter";
 import Taglabel from "components/Comman/Taglabel";
+import MoreActionDropDown from "components/Comman/MoreActionDropDown";
+import MoreActionDropDownData from "./MoreActionDropDownData";
 
 const { Text } = Typography;
 
@@ -54,6 +56,17 @@ const getColumns = (details) => [
             <Taglabel type={"text"} text={record.status} details={details} />
         ),
     },
+      {
+        dataIndex: "operation",
+        fixed: "right",
+        render: (_, record) => (
+          <MoreActionDropDown
+            entity="workorders"
+            items={MoreActionDropDownData("workorders")}
+            rowData={record}
+          />
+        ),
+      },
 ];
 
 const workOrderData = {

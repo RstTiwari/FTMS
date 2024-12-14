@@ -13,7 +13,7 @@ const PaymentMade = ({ values }) => {
             </Title>
             <Descriptions column={1} bordered>
                 <Descriptions.Item label="Transaction No">
-                    {values?.transactionNo || ""}
+                    {values?.no || ""}
                 </Descriptions.Item>
                 <Descriptions.Item label="Payee Name">
                     {values?.vendor?.name || ""}

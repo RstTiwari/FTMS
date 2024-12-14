@@ -17,7 +17,6 @@ const challanSchema = new mongoose.Schema(
         no: {
             type: Number,
             required: true,
-            unique: true,
         },
         challanDate: {
             type: Date,
@@ -102,6 +101,8 @@ const challanSchema = new mongoose.Schema(
     },
     { timestamps: true }
 );
+
+challanSchema.index({ tenantId: 1, no: 1 }, { unique: true });
 challanSchema.plugin(mongooseAutoPopulate);
 
 //Attching the req body to save this

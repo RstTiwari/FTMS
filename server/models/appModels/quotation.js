@@ -21,7 +21,6 @@ const quotationSchema = new mongoose.Schema(
         no: {
             type: Number,
             required: true,
-            unique: true,
         },
         quoteDate: {
             type: Date,
@@ -104,6 +103,8 @@ const quotationSchema = new mongoose.Schema(
     { timestamps: true, strictQuery: false }
 );
 
+
+quotationSchema.index({ tenantId: 1, no: 1 }, { unique: true });
 // Apply the autopopulate plugin to the schema
 quotationSchema.plugin(mongooseAutoPopulate);
 //Attching the req body to save this

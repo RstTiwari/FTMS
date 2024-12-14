@@ -12,7 +12,6 @@ const purchaseOrderSchema = new mongoose.Schema({
     no: {
         type: Number,
         required: true,
-        unique: true,
         sparse: true,
     },
     purchaseDate: {
@@ -114,7 +113,10 @@ const purchaseOrderSchema = new mongoose.Schema({
     },
 });
 
+
+purchaseOrderSchema.index({ tenantId: 1, no: 1 }, { unique: true });
 purchaseOrderSchema.plugin(mongooseAutoPopulate);
+
 
 //Attching the req body to save this
 purchaseOrderSchema.pre("save", function (next, options) {

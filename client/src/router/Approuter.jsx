@@ -1,7 +1,7 @@
 import React, { lazy } from "react";
 import { Navigate, Route, Routes, useParams } from "react-router-dom";
 import Dashbord from "../pages/dashbord";
-import Layout from "../pages/layout";
+import Layout from "../pages/layout/DashboardLayout";
 import NotFound from "pages/Notfound";
 import UpdateModule from "module/UpdateModule/UpdateModule";
 import Organization from "pages/Orgnization/Orgnization";
@@ -38,12 +38,8 @@ const Approuter = ({ profile }) => {
                     exact
                     element={<Dashbord />}
                 />
-                <Route
-                    path="/app/:tenantId/:entity/:pageNo/:pageSize"
-                    element={<DetailsLayout />}
-                >
-                    <Route path="details/:id" element={<Details />} />
-                </Route>
+               <Route path="/app/:tenantId/:entity/:pageNo/:pageSize" element={<DetailsLayout />} /> 
+               <Route path="/app/:tenantId/:entity/:pageNo/:pageSize/details/:id" element={<Details />} />
 
                 <Route
                     path="/app/:tenantId/:entity/create"

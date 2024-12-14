@@ -1,6 +1,8 @@
 import create from "../adminController/create.js";
 import update from "../adminController/update.js";
 import read from "../adminController/read.js";
+import deleteRoute  from "../adminController/delete.js";
+
 import { permissionsData } from "./permissions.js";
 
 const adminRoutes = {
@@ -16,6 +18,9 @@ const adminRoutes = {
     permissionsData: async (req, res, next) => {
         permissionsData(req, res, next);
     },
+    delete :async (req,res,next)=>{
+        deleteRoute(req, res, next);
+    }
 };
 
 export default adminRoutes;

@@ -83,6 +83,7 @@ const WorkOrderForm = ({ form }) => {
         name={"startDate"}
         required={true}
         labelCol={{ span: 8 }}
+        width={"30vw"}
         rules={[
           {
             required: true,
@@ -98,6 +99,7 @@ const WorkOrderForm = ({ form }) => {
       />
       <FormItemCol
         label={"Exp Due Date"}
+        width={"30vw"}
         name={"dueDate"}
         required={true}
         rules={[

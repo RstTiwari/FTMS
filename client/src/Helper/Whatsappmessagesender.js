@@ -5,8 +5,8 @@ import { useAuth } from "state/AuthProvider";
 import useInitialFormValues from "Hook/useIntialFormValues";
 import PageLoader from "pages/PageLoader";
 import getCustomMessage from "./getCustomMessage";
-const WhatsAppMessageSender = ({ onClose }) => {
-    const { entity, tenantId, id } = useParams();
+import CoustomButton from "components/Comman/CoustomButton";
+const WhatsAppMessageSender = ({ onClose,entity,tenantId,id }) => {
     const [mobileNumber, setMobileNumber] = useState("");
     const { appApiCall } = useAuth();
     const [recipient, setRecipient] = useState("");
@@ -57,54 +57,41 @@ const WhatsAppMessageSender = ({ onClose }) => {
     };
 
     return (
-        <>
-            <Modal
-                title="Send WhatsApp Message"
-                open={true}
-                onCancel={onClose}
-                footer={null}
-            >
-                {isFetching ? (
-                    <>
-                        <PageLoader
-                            isLoading={true}
-                            text={"Hold on..."}
-                            height="20px"
-                        />
-                    </>
-                ) : (
-                    <>
-                        <Row>
-                            <Input
-                                placeholder="Select Recipent"
-                                value={recipient}
-                                onChange={(e) =>
-                                    setMobileNumber(e.target.value)
-                                }
-                            />
-                        </Row>
-                        <Space></Space>
-                        <Row>
-                            <Input
-                                placeholder="Enter mobile number"
-                                value={mobileNumber}
-                                onChange={(e) =>
-                                    setMobileNumber(e.target.value)
-                                }
-                            />
-                        </Row>
-
-                        <Button
-                            type="primary"
-                            onClick={sendWhatsAppMessage}
-                            style={{ marginTop: 16 }}
-                        >
-                            Send Message
-                        </Button>
-                    </>
-                )}
-            </Modal>
-        </>
+      <>
+        <Modal
+          title="Send WhatsApp Message"
+          open={true}
+          onCancel={onClose}
+          footer={null}
+        >
+          {isFetching ? (
+            <>
+              <PageLoader isLoading={true} text={"Hold on..."} height="20px" />
+            </>
+          ) : (
+            <>
+              <Row>
+                <Input
+                  placeholder=" Recipient Name"
+                  value={recipient}
+                  onChange={(e) => setMobileNumber(e.target.value)}
+                />
+              </Row>
+              <Space></Space>
+              <Row>
+                <Input
+                  placeholder="Enter mobile number"
+                  value={mobileNumber}
+                  onChange={(e) => setMobileNumber(e.target.value)}
+                />
+              </Row>
+              <Row style={{margin:"10px"}} justify={"end"}>
+                <CoustomButton text={"Send"} onClick={sendWhatsAppMessage} />
+              </Row>
+            </>
+          )}
+        </Modal>
+      </>
     );
 };
 

@@ -31,11 +31,13 @@ const FormItemCol = ({
             labelAlign="left"
             rules={rules}
             labelCol={labelCol}
+        
             tooltip={tooltip}
             valuePropName={type === "image" ? "file" : "value"}
             getValueFromEvent={type === "image" ? (e) => e : undefined}
             className="floating-label-input"
             hidden={hidden}
+            style={{textAlign:"center"}}
         >
             <CustomInput
                 type={type}

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Layout } from "antd";
 import { useMediaQuery } from "@mui/material";
-import { useCookies } from "react-cookie";
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
 import { Outlet } from "react-router-dom";
@@ -13,6 +12,9 @@ const CustomLayout = ({ profile }) => {
     const [isSideBarClosed, setIsSidebarClosed] = useState(false); // State to manage sidebar open/close
     const contentWidth = window.innerWidth - (isSideBarClosed ? 80 : 200);
     const contentMarginLeft = isSideBarClosed ? 80 : 200;
+
+    useEffect(() => {
+    }, [profile]);
 
     return (
         <Layout style={{ minHeight: "100vh", backgroundColor: "#ffffff" }}>
@@ -27,7 +29,6 @@ const CustomLayout = ({ profile }) => {
             />
 
             {/* Main content area */}
-
             <div
                 style={{
                     marginLeft: `${contentMarginLeft}px`,
@@ -35,7 +36,7 @@ const CustomLayout = ({ profile }) => {
                 }}
             >
                 <Navbar
-                    user={profile.user}
+                    user={profile?.user} // Ensure user data is passed correctly
                     width={contentWidth}
                     margin={contentMarginLeft}
                 />

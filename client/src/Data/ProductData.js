@@ -1,6 +1,8 @@
 import { Space, Flex, Dropdown, Typography, Form, Input, Image } from "antd";
 import Details from "components/Details";
 import Taglabel from "components/Comman/Taglabel";
+import MoreActionDropDown from "components/Comman/MoreActionDropDown";
+import MoreActionDropDownData from "./MoreActionDropDownData";
 const { Text } = Typography;
 
 const getColumns = (details) => [
@@ -50,7 +52,7 @@ const getColumns = (details) => [
         render: (_, record) => (
             <>
                 {record.image ? (
-                    <img
+                    <Image
                         width={100}
                         height={25}
                         src={record.image}
@@ -79,6 +81,17 @@ const getColumns = (details) => [
             </>
         ),
     },
+      {
+        dataIndex: "operation",
+        fixed: "right",
+        render: (_, record) => (
+          <MoreActionDropDown
+            entity="products"
+            items={MoreActionDropDownData("products")}
+            rowData={record}
+          />
+        ),
+      },
 ];
 
 const productData = {

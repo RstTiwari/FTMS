@@ -16,7 +16,7 @@ export const fetchCountersNumber = async (req, res, next) => {
 
         // Before checking in counter data base let first find the last save no for entity;
         let entityDataBase = checkDbForEntity(entityName);
-        let entityData = await entityDataBase.findOne().sort({ no: -1 });
+        let entityData = await entityDataBase.findOne(query).sort({ no: -1 });
         let no = entityData?.no;
 
         const existingCounters = await dataBase.findOne(query);

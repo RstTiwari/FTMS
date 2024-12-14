@@ -8,6 +8,7 @@ import useDataFetching from "Hook/useDataFetching";
 import ListModule from "module/ListModule/ListModule";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import "App.css";
+import Search from "antd/es/input/Search";
 
 const DetailsLayout = () => {
     const { tenantId, entity, id, pageNo, pageSize } = useParams();
@@ -28,19 +29,19 @@ const DetailsLayout = () => {
         navigate(`/app/${tenantId}/${entity}/${pageNo}/${pageSize}`);
     };
 
-    const handleRowClick = (record) => {
-        let innerWidth = window.innerWidth;
-        if (innerWidth < 1200) {
-            return NotificationHandler.error(
-                "To See Details Open in Laptop/Desktop"
-            );
-        }
-        setSelectedRowKey(record._id);
-        setDetails(true);
-        navigate(
-            `/app/${tenantId}/${entity}/${pageNo}/${pageSize}/details/${record._id}`
-        );
-    };
+    // const handleRowClick = (record) => {
+    //     let innerWidth = window.innerWidth;
+    //     if (innerWidth < 1200) {
+    //         return NotificationHandler.error(
+    //             "To See Details Open in Laptop/Desktop"
+    //         );
+    //     }
+    //     setSelectedRowKey(record._id);
+    //     setDetails(true);
+    //     navigate(
+    //         `/app/${tenantId}/${entity}/${pageNo}/${pageSize}/details/${record._id}`
+    //     );
+    // };
 
     useEffect(() => {
         setDetails(window.location.pathname.includes("details"));
@@ -54,7 +55,7 @@ const DetailsLayout = () => {
     };
 
     return (
-        <Row>
+        <Row style={{margin:"30px"}}>
             <Col
                 xs={details ? 12 : 24}
                 sm={details ? 12 : 24}
@@ -67,7 +68,7 @@ const DetailsLayout = () => {
                     columns={dataForTable.getColumns(details)}
                     dataSource={data}
                     isLoading={isLoading}
-                    onRowClick={handleRowClick}
+                    // onRowClick={handleRowClick}
                     onTableChange={onTableChange}
                     rowClassName={rowClassName}
                     totalCount={total}

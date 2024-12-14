@@ -4,6 +4,8 @@ import {
     jsDateIntoDayjsDate,
 } from "Helper/EpochConveter";
 import Taglabel from "components/Comman/Taglabel";
+import MoreActionDropDown from "components/Comman/MoreActionDropDown";
+import MoreActionDropDownData from "./MoreActionDropDownData";
 const getColumns = (details) => [
     {
         title: (
@@ -72,6 +74,17 @@ const getColumns = (details) => [
             </>
         ),
     },
+    {
+        dataIndex: "operation",
+        fixed: "right",
+        render: (_, record) => (
+          <MoreActionDropDown
+            entity="challans"
+            items={MoreActionDropDownData("challans")}
+            rowData={record}
+          />
+        ),
+      },
 ];
 
 let challanData = {

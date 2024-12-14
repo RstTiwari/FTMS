@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     SettingOutlined,
     UserOutlined,
@@ -16,18 +16,24 @@ import {
 import { useAuth } from "state/AuthProvider";
 import SettingSidebar from "pages/Setting/SettingSidebar";
 import SettingList from "../pages/Setting/SettingList";
+import { useCookies } from "react-cookie";
 
 const { Header } = Layout;
 
 const NavBar = ({ user, width }) => {
     const { removeLocalData } = useAuth();
     const [openSettingSideBar, setOpenSettingSidebar] = useState(false);
+    const [cookies, setCookie, removeCookie] = useCookies(["profile", "token"]);
     const isLaptop = window.innerWidth >= 900;
 
+    // Handle logout by removing profile and token from cookies
     const handleLogout = () => {
         removeLocalData("token");
         removeLocalData("profile");
+        removeCookie("profile");
     };
+
+    // Menu for user dropdown (profile and logout)
     const menu = (
         <Menu style={{ width: 150 }}>
             <Menu.Item key="user" icon={<UserOutlined />}>
@@ -47,6 +53,13 @@ const NavBar = ({ user, width }) => {
             </Menu.Item>
         </Menu>
     );
+
+    // Effect hook to detect changes in cookies.profile
+    useEffect(() => {
+        if (cookies.profile) {
+            console.log("Updated Profile from Cookies: ", cookies.profile);
+        }
+    }, [cookies.profile]); // Re-run when profile in cookies changes
 
     return (
         <Header
@@ -75,9 +88,10 @@ const NavBar = ({ user, width }) => {
             >
                 {isLaptop && (
                     <>
-                        {user && user.logo && (
+                        {
+                            // Use cookies.profile logo if it's available
                             <Image
-                                src={user?.logo}
+                                src={cookies.profile?.logo || "https://res.cloudinary.com/dyw4lrlzh/image/upload/v1733480169/myfac8ry67518e9ed322e8571b33d878.jpg"} // Default fallback image if no logo in cookies
                                 alt="Company Logo"
                                 size="small"
                                 preview={false}
@@ -88,7 +102,7 @@ const NavBar = ({ user, width }) => {
                                     borderRadius: "10px",
                                 }}
                             />
-                        )}
+                        }
                         <Typography.Text
                             style={{
                                 textTransform: "uppercase",
@@ -97,7 +111,7 @@ const NavBar = ({ user, width }) => {
                                 marginLeft: "0.5rem",
                             }}
                         >
-                            {user?.companyName}
+                            {cookies.profile?.companyName || "Company Name"} {/* Fallback to default name if cookies are empty */}
                         </Typography.Text>
                     </>
                 )}

@@ -4,6 +4,8 @@ import {
     jsDateIntoDayjsDate,
 } from "Helper/EpochConveter";
 import Taglabel from "components/Comman/Taglabel";
+import MoreActionDropDown from "components/Comman/MoreActionDropDown";
+import MoreActionDropDownData from "./MoreActionDropDownData";
 
 const { Text } = Typography;
 const getColumns = (details) => [
@@ -22,7 +24,6 @@ const getColumns = (details) => [
         ),
         dataIndex: "customer",
         key: "customer",
-        width: details ? 300 : 200,
         render: (_, record) => (
             <Taglabel
                 type="customer"
@@ -36,7 +37,7 @@ const getColumns = (details) => [
         dataIndex: "paymentDate",
         key: "paymentDate",
         responsive: details ? [] : ["lg"],
-        width: 100,
+        width: 200,
         render: (_, record) => (
             <Taglabel
                 type={"text"}
@@ -89,6 +90,17 @@ const getColumns = (details) => [
             <Taglabel type="text" text={record?.note || ""} details={details} />
         ),
     },
+     {
+        dataIndex: "operation",
+        fixed: "right",
+        render: (_, record) => (
+          <MoreActionDropDown
+            entity="paymentsreceived"
+            items={MoreActionDropDownData("paymentsreceived")}
+            rowData={record}
+          />
+        ),
+      },
 ];
 const paymentData = {
     getColumns,

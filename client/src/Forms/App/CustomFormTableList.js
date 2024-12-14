@@ -30,8 +30,8 @@ const CustomFormTableList = ({ form }) => {
     };
 
     const calculateTaxAmount = (taxPercent, rate, qty) => {
-        let taxAmount = Math.floor((rate * taxPercent) / 100);
-        return Math.floor(taxAmount * qty);
+        let taxAmount = Math.ceil((rate * taxPercent) / 100);
+        return Math.ceil(taxAmount * qty);
     };
 
     const handleItemsUpdate = (value, filedName, rowName) => {

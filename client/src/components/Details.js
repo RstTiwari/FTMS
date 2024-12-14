@@ -18,7 +18,6 @@ const Details = () => {
     return (
         <>
             <DetailsHeader values={initialValues} />
-
             <DetailsModule
                 entity={entity}
                 id={id}

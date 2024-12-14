@@ -90,7 +90,7 @@ const AddressDetails = ({
                     {address ? (
                         <>
                             <Row
-                                align="middle"
+                                align="stretch"
                                 style={{ marginBottom: "2Ppx" }}
                             >
                                 {onlyShippingAddress ? (

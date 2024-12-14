@@ -82,7 +82,7 @@ const QuotationForm = ({ form }) => {
             0
         );
         let totalWithTax = grossTotal + taxAmount;
-        let grandTotal = totalWithTax;
+        let grandTotal = Math.ceil(totalWithTax);
         // Calculate grandTotal based on otherCharges
         let otherCharges = form.getFieldValue("otherCharges") || [];
         otherCharges.forEach((charge) => {
@@ -105,124 +105,126 @@ const QuotationForm = ({ form }) => {
         form.setFieldsValue({
             grossTotal: grossTotal,
             taxAmount: taxAmount,
-            totalWithTax: totalWithTax,
-            grandTotal: grandTotal,
+            totalWithTax:Math.ceil( totalWithTax),
+            grandTotal: Math.ceil(grandTotal),
         });
     };
 
     useEffect(() => {}, []);
     return (
-        <div>
-            <FormItemCol
-                label={"Select Customer"}
-                name={"customer"}
-                labelAlign="left"
-                required={true}
-                labelCol={{ span: 8 }}
-                rules={[
-                    {
-                        required: "true",
-                        message: "Please Select Customer",
-                    },
-                ]}
-                type="modal"
-                width={"30vw"}
-                entity={"customers"}
-                fieldName="name" // filed name form customer modal
-                onlyShippingAddress={true}
-                updateInForm={(value) => {
-                    handleItemsUpdate(value, "customer");
-                }}
-                preFillValue={form.getFieldValue("customer")?.name}
-            />
-            <FormItemCol
-                label={"#Quote"}
-                name={"no"}
-                labelAlign="left"
-                required={true}
-                labelCol={{ span: 8 }}
-                width={"30vw"}
-                type={"counters"}
-                rules={[
-                    {
-                        required: "true",
-                        message: "Please Provide Quote No",
-                    },
-                ]}
-                updateInForm={(value) => {
-                    handleItemsUpdate(value, "no");
-                }}
-                preFillValue={form.getFieldValue("no")}
-            />
-            <FormItemCol
-                label={"Quote Date"}
-                name={"quoteDate"}
-                required={true}
-                labelCol={{ span: 8 }}
-                rules={[
-                    {
-                        required: true,
-                        message: "Please Select Quote Date",
-                    },
-                ]}
-                labelAlign="left"
-                type={"date"}
-                preFillValue={form.getFieldValue("quoteDate")}
-                updateInForm={(value) => {
-                    handleItemsUpdate(value, "quoteDate");
-                }}
-            />
-            <FormItemCol
-                label={"Expiry Date"}
-                name={"expiryDate"}
-                required={true}
-                rules={[
-                    {
-                        required: true,
-                        message: "Please Select Quote Expiry Date",
-                    },
-                ]}
-                labelAlign="left"
-                labelCol={{ span: 8 }}
-                type={"date"}
-                preFillValue={form.getFieldValue("expiryDate")}
-                updateInForm={(value) => {
-                    handleItemsUpdate(value, "expiryDate");
-                }}
-            />
-            <FormItemCol
-                label={"Sub"}
-                name={"sub"}
-                type={"select"}
-                tooltip={"Let your customer know what this quote is for"}
-                width={"30vw"}
-                entity={"Quotation Sub"}
-                labelCol={{ span: 8 }}
-                entityName="sub"
-                updateInForm={(value) => {
-                    handleItemsUpdate(value, "sub");
-                }}
-                preFillValue={form.getFieldValue("sub")}
-            />
-            <FormItemCol
-                label={"Sales Person"}
-                name={"salesPerson"}
-                type={"select"}
-                entity={"Sales Person"}
-                entityName="salesPerson"
-                width={"30vw"}
-                labelCol={{ span: 8 }}
-                updateInForm={(value) => {
-                    handleItemsUpdate(value, "salesPerson");
-                }}
-                preFillValue={form.getFieldValue("salesPerson")}
-            />
+      <div>
+        <FormItemCol
+          label={"Select Customer"}
+          name={"customer"}
+          labelAlign="left"
+          required={true}
+          labelCol={{ span: 8 }}
+          rules={[
+            {
+              required: "true",
+              message: "Please Select Customer",
+            },
+          ]}
+          type="modal"
+          width={"30vw"}
+          entity={"customers"}
+          fieldName="name" // filed name form customer modal
+          onlyShippingAddress={true}
+          updateInForm={(value) => {
+            handleItemsUpdate(value, "customer");
+          }}
+          preFillValue={form.getFieldValue("customer")?.name}
+        />
+        <FormItemCol
+          label={"#Quote"}
+          name={"no"}
+          labelAlign="left"
+          required={true}
+          labelCol={{ span: 8 }}
+          width={"30vw"}
+          type={"counters"}
+          rules={[
+            {
+              required: "true",
+              message: "Please Provide Quote No",
+            },
+          ]}
+          updateInForm={(value) => {
+            handleItemsUpdate(value, "no");
+          }}
+          preFillValue={form.getFieldValue("no")}
+        />
+        <FormItemCol
+          label={"Quote Date"}
+          name={"quoteDate"}
+          required={true}
+          labelCol={{ span: 8 }}
+          width={"30vw"}
+          rules={[
+            {
+              required: true,
+              message: "Please Select Quote Date",
+            },
+          ]}
+          labelAlign="left"
+          type={"date"}
+          preFillValue={form.getFieldValue("quoteDate")}
+          updateInForm={(value) => {
+            handleItemsUpdate(value, "quoteDate");
+          }}
+        />
+        <FormItemCol
+          label={"Expiry Date"}
+          name={"expiryDate"}
+          width={"30vw"}
+          required={true}
+          rules={[
+            {
+              required: true,
+              message: "Please Select Quote Expiry Date",
+            },
+          ]}
+          labelAlign="left"
+          labelCol={{ span: 8 }}
+          type={"date"}
+          preFillValue={form.getFieldValue("expiryDate")}
+          updateInForm={(value) => {
+            handleItemsUpdate(value, "expiryDate");
+          }}
+        />
+        <FormItemCol
+          label={"Sub"}
+          name={"sub"}
+          type={"select"}
+          tooltip={"Let your customer know what this quote is for"}
+          width={"30vw"}
+          entity={"Quotation Sub"}
+          labelCol={{ span: 8 }}
+          entityName="sub"
+          updateInForm={(value) => {
+            handleItemsUpdate(value, "sub");
+          }}
+          preFillValue={form.getFieldValue("sub")}
+        />
+        <FormItemCol
+          label={"Sales Person"}
+          name={"salesPerson"}
+          type={"select"}
+          entity={"Sales Person"}
+          entityName="salesPerson"
+          width={"30vw"}
+          labelCol={{ span: 8 }}
+          updateInForm={(value) => {
+            handleItemsUpdate(value, "salesPerson");
+          }}
+          preFillValue={form.getFieldValue("salesPerson")}
+        />
 
-            <CustomFormTableList form={form} />
-            <PaymentLayoutComponent form={form} />
+        <CustomFormTableList form={form} />
+        <PaymentLayoutComponent form={form} />
 
-            <FormItemCol type={"terms"} form={form} labelCol={{ span: 12 }} />
-        </div>
+        <FormItemCol type={"terms"} form={form} labelCol={{ span: 12 }} />
+      </div>
     );
 };
 

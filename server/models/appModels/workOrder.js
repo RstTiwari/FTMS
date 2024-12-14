@@ -46,6 +46,8 @@ const workOrderSchema = new mongoose.Schema({
   },
 });
 
+
+workOrderSchema.index({ tenantId: 1, no: 1 }, { unique: true });
 workOrderSchema.plugin(mongooseAutoPopulate);
 workOrderSchema.index({ no: 1, type: 1 }, { unique: true });
 //Attching the req body to save this
