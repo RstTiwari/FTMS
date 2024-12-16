@@ -158,8 +158,6 @@ const QuotationForm = ({ form }) => {
         <Divider dashed />
         <CustomFormTableList form={form} />
         <PaymentLayoutComponent form={form} />
-        <FormItemCol form={form} type={"terms"} />
-        {/* Other form items go here */}
       </div>
     );
 };

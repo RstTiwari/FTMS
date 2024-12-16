@@ -219,11 +219,8 @@ const QuotationForm = ({ form }) => {
           }}
           preFillValue={form.getFieldValue("salesPerson")}
         />
-
         <CustomFormTableList form={form} />
         <PaymentLayoutComponent form={form} />
-
-        <FormItemCol type={"terms"} form={form} labelCol={{ span: 12 }} />
       </div>
     );
 };

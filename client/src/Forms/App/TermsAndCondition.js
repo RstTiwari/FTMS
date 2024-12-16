@@ -37,152 +37,129 @@ const TermsAndConditionsForm = ({ form, width = "50vw" }) => {
     };
 
     return (
-        <Collapse
-            bordered={false}
-            expandIcon={({ isActive }) => (
-                <CaretRightOutlined rotate={isActive ? 90 : 0} />
-            )}
-            style={{
-                background: "transparent",
-                minWidth: width,
-                overflowX: "auto",
-            }}
+      <Collapse
+        bordered={false}
+        expandIcon={({ isActive }) => (
+          <CaretRightOutlined rotate={isActive ? 90 : 0} />
+        )}
+        style={{
+          background: "transparent",
+          minWidth: width,
+          overflowX: "auto",
+        }}
+      >
+        <Panel
+          header={
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <Taglabel text="Terms and Condition" />
+            </div>
+          }
+          key="1"
+          style={{ alignItems: "start" }}
         >
-            <Panel
-                header={<Taglabel text="Terms and Conditions" />}
-                key="1"
-                style={{ alignItems: "center" }}
+          <Row>
+            <Col span={1}></Col>
+            <Col
+              span={8}
+              style={{
+                border: "1px solid #bfbfbb",
+                textAlign: "center",
+              }}
             >
-                <Row>
-                    <Col span={1}></Col>
-                    <Col
-                        span={8}
-                        style={{
-                            border: "1px solid #bfbfbb",
-                            textAlign: "center",
-                        }}
-                    >
-                        <Taglabel text="Term Name" />
+              <Taglabel text="Term Name" />
+            </Col>
+            <Col
+              span={15}
+              style={{
+                border: "1px solid #bfbfbb",
+                textAlign: "center",
+              }}
+            >
+              <Taglabel text="Term Value" />
+            </Col>
+          </Row>
+          <Form.List name="terms">
+            {(fields, { add, remove }) => (
+              <>
+                {fields.map(({ key, name, fieldKey, ...restField }, index) => (
+                  <Row key={key} align="middle" justify="start">
+                    <Col span={1}>
+                      <Form.Item>
+                        <MinusCircleOutlined
+                          onClick={() => remove(name)}
+                          style={{
+                            color: "red",
+                            justifyContent: "center",
+                          }}
+                        />
+                      </Form.Item>
                     </Col>
-                    <Col
-                        span={15}
-                        style={{
-                            border: "1px solid #bfbfbb",
-                            textAlign: "center",
-                        }}
-                    >
-                        <Taglabel text="Term Value" />
+                    <Col span={8}>
+                      <Form.Item
+                        {...restField}
+                        name={[name, "name"]}
+                        fieldKey={[fieldKey, "name"]}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Select Term Name",
+                          },
+                        ]}
+                      >
+                        <CustomSelect
+                          width="100%"
+                          entityName={"termName"}
+                          entity="Term Name"
+                          updateInForm={(value) =>
+                            handleItemUpdate(value, "name", name)
+                          }
+                          preFillValue={
+                            form.getFieldValue(["terms", name, "name"]) || ""
+                          }
+                        />
+                      </Form.Item>
                     </Col>
+                    <Col span={15}>
+                      <Form.Item
+                        {...restField}
+                        name={[name, "value"]}
+                        fieldKey={[fieldKey, "value"]}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Select Term Value",
+                          },
+                        ]}
+                      >
+                        <CustomSelect
+                          width="100%"
+                          entityName={"termValue"}
+                          entity="Term Value"
+                          updateInForm={(value) => {
+                            handleItemUpdate(value, "value", name);
+                          }}
+                          preFillValue={
+                            form.getFieldValue(["terms", name, "value"]) || ""
+                          }
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                ))}
+                <Row justify="start">
+                  <CoustomButton
+                    text={"Add Term"}
+                    onClick={() => add()}
+                    details={true}
+                    withIcon={true}
+                    icon={<PlusOutlined />}
+                  />
                 </Row>
-                <Form.List name="terms">
-                    {(fields, { add, remove }) => (
-                        <>
-                            {fields.map(
-                                (
-                                    { key, name, fieldKey, ...restField },
-                                    index
-                                ) => (
-                                    <Row
-                                        key={key}
-                                        align="middle"
-                                        justify="start"
-                                    >
-                                        <Col span={1}>
-                                            <Form.Item>
-                                                <MinusCircleOutlined
-                                                    onClick={() => remove(name)}
-                                                    style={{
-                                                        color: "red",
-                                                        justifyContent:
-                                                            "center",
-                                                    }}
-                                                />
-                                            </Form.Item>
-                                        </Col>
-                                        <Col span={8}>
-                                            <Form.Item
-                                                {...restField}
-                                                name={[name, "name"]}
-                                                fieldKey={[fieldKey, "name"]}
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        message:
-                                                            "Select Term Name",
-                                                    },
-                                                ]}
-                                            >
-                                                <CustomSelect
-                                                    width="100%"
-                                                    entityName={"termName"}
-                                                    entity="Term Name"
-                                                    updateInForm={(value) =>
-                                                        handleItemUpdate(
-                                                            value,
-                                                            "name",
-                                                            name
-                                                        )
-                                                    }
-                                                    preFillValue={
-                                                        form.getFieldValue([
-                                                            "terms",
-                                                            name,
-                                                            "name",
-                                                        ]) || ""
-                                                    }
-                                                />
-                                            </Form.Item>
-                                        </Col>
-                                        <Col span={15}>
-                                            <Form.Item
-                                                {...restField}
-                                                name={[name, "value"]}
-                                                fieldKey={[fieldKey, "value"]}
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        message:
-                                                            "Select Term Value",
-                                                    },
-                                                ]}
-                                            >
-                                                <CustomSelect
-                                                    width="100%"
-                                                    entityName={"termValue"}
-                                                    entity="Term Value"
-                                                    updateInForm={(value) => {
-                                                        handleItemUpdate(
-                                                            value,
-                                                            "value",
-                                                            name
-                                                        );
-                                                    }}
-                                                    preFillValue={
-                                                        form.getFieldValue([
-                                                            "terms",
-                                                            name,
-                                                            "value",
-                                                        ]) || ""
-                                                    }
-                                                />
-                                            </Form.Item>
-                                        </Col>
-                                    </Row>
-                                )
-                            )}
-                            <Row justify="start">
-                                <CoustomButton
-                                    text={"Add Term"}
-                                    onClick={() => add()}
-                                    withIcon={true}
-                                    icon={<PlusOutlined />}
-                                />
-                            </Row>
-                        </>
-                    )}
-                </Form.List>
-            </Panel>
-        </Collapse>
+              </>
+            )}
+          </Form.List>
+        </Panel>
+      </Collapse>
     );
 };
 

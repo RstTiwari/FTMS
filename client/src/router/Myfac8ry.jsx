@@ -10,7 +10,6 @@ import { App } from "antd";
 const  Myfac8ry = ()=> {
     const [cookies,setCookie] = useCookies(["token"])
     const profile =  cookies["profile"]
-    console.log(profile,"===Profile")
     return(
         <App>
 

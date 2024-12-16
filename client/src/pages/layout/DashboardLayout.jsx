@@ -36,7 +36,6 @@ const CustomLayout = ({ profile }) => {
                 }}
             >
                 <Navbar
-                    user={profile?.user} // Ensure user data is passed correctly
                     width={contentWidth}
                     margin={contentMarginLeft}
                 />

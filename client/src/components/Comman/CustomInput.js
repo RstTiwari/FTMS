@@ -173,6 +173,7 @@ const CustomInput = ({
                 <TermsAndConditionsForm
                     form={form}
                     updateInForm={updateInForm}
+                    width= {width}
                 />
             );
         case "notes":
