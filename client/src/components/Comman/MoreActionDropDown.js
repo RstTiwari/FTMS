@@ -37,6 +37,7 @@ export default function MoreActionDropDown({ entity, items = [], rowData }) {
       setWhatsAppModalVisible(true);
     } else if (rowClicked.key === "delete") {
       alert("Are You sure You want to Delete this")
+
       let { success, result, message } = await adminApiCall(
         "post",
         "delete",
@@ -49,6 +50,10 @@ export default function MoreActionDropDown({ entity, items = [], rowData }) {
       } else {
         return NotificationHandler.error(message);
       }
+    }else if (rowClicked.key === "paymentsmade"){
+      return navigate(
+        `/app/${tenantId}/${rowClicked.key}/${_id}/recordPayment`
+      );
     }
   };
 

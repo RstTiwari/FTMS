@@ -194,7 +194,6 @@ const DeliveryChallan = ({ form }) => {
 
         <CustomFormTableList form={form} />
         <PaymentLayoutComponent form={form} />
-        <FormItemCol form={form} type={"terms"} />
       </div>
     );
 };

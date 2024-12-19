@@ -59,6 +59,11 @@ const CustomFormTableList = ({ form }) => {
             temObj.hsnCode = value;
         } else if (filedName === "qty") {
             temObj.qty = value;
+               temObj.taxAmount = calculateTaxAmount(
+                 temObj?.gstPercent || 0,
+                 temObj?.discoumntAmount || temObj?.rate,
+                 temObj?.qty || 0
+               );
             temObj.finalAmount = Math.ceil(value * temObj.rate);
         } else if (filedName === "rate") {
             temObj.rate = value;

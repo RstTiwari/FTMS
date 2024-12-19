@@ -111,7 +111,7 @@ const NavBar = ({ width }) => {
                 marginLeft: "0.5rem",
               }}
             >
-              {cookies.profile?.user?.companyName}{" "}
+              {cookies.profile?.user?.companyName}
               {/* Fallback to default name if cookies are empty */}
             </Typography.Text>
           </>
