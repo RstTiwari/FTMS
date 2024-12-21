@@ -1,21 +1,24 @@
-import { Space, Dropdown, Menu } from "antd";
+import { Space, Dropdown, Menu,Modal } from "antd";
 import { useAuth } from "state/AuthProvider";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import PreviewModal from "./PDFPreviewModal";
 import { useState } from "react";
 import WhatsAppMessageSender from "Helper/Whatsappmessagesender";
 import NotificationHandler from "EventHandler/NotificationHandler";
+import CustomDialog from "components/CustomDialog";
+import UpdateCustomForm from "components/UpdateCustomForm";
 
 export default function MoreActionDropDown({ entity, items = [], rowData }) {
   const { tenantId, pageNo, pageSize } = useParams();
   const [open, setOpen] = useState(false);
+  const[showEditModal,setShowEditModal] = useState(false);
   const [isWhatsAppModalVisible, setWhatsAppModalVisible] = useState(false);
 
   const navigate = useNavigate();
-  const location = useLocation();
   const { pdfGenerate, adminApiCall } = useAuth();
-  const closePreviewModal = () => setOpen(false);
   const { _id, no } = rowData;
+  const closePreviewModal = () => setOpen(false);
+  const  closeEditModal = ()=> setShowEditModal(false);
 
   const handleMenuClick = async (rowClicked, rowData) => {
     if (rowClicked.key === "preview") {
@@ -26,7 +29,7 @@ export default function MoreActionDropDown({ entity, items = [], rowData }) {
     else if (rowClicked.key === "download") {
       await pdfGenerate(entity, _id, no, "download", tenantId);
     } else if (rowClicked.key === "edit") {
-      return navigate(`/app/${tenantId}/update/${entity}/${_id}`);
+      return setShowEditModal(true);
     } else if (rowClicked.key === "paymentsreceived") {
       return navigate(
         `/app/${tenantId}/${rowClicked.key}/${_id}/recordPayment`
@@ -36,20 +39,29 @@ export default function MoreActionDropDown({ entity, items = [], rowData }) {
     } else if (rowClicked.key === "shareonwhatsapp") {
       setWhatsAppModalVisible(true);
     } else if (rowClicked.key === "delete") {
-      alert("Are You sure You want to Delete this")
-
-      let { success, result, message } = await adminApiCall(
-        "post",
-        "delete",
-        {},
-        { entity, tenantId,_id }
-      );
-      if (success) {
-        NotificationHandler.success(message);
-        return navigate(0);
-      } else {
-        return NotificationHandler.error(message);
-      }
+       Modal.confirm({
+         title: "Are you sure you want to Delete ?",
+         content: "Your Data will be lost if you do Delete them.",
+         okText: "Yes, Delete",
+         cancelText: "No, Don't Delete",
+         onOk: () => deleteTheRow(),
+       });
+       const deleteTheRow = async () => {
+         let { success, result, message } = await adminApiCall(
+           "post",
+           "delete",
+           {},
+           { entity, tenantId, _id }
+         );
+         if (success) {
+           NotificationHandler.success(message);
+           return navigate(0);
+         } else {
+           return NotificationHandler.error(message);
+         }
+       };
+      
+   
     }else if (rowClicked.key === "paymentsmade"){
       return navigate(
         `/app/${tenantId}/${rowClicked.key}/${_id}/recordPayment`
@@ -95,6 +107,18 @@ export default function MoreActionDropDown({ entity, items = [], rowData }) {
           id={_id}
         />
       )}
+      <CustomDialog
+        entity={entity}
+        show={showEditModal}
+        setShow={setShowEditModal}
+        children={
+          <UpdateCustomForm
+            entity={entity}
+            id={_id}
+            closeModal={closeEditModal}
+          />
+        }
+      />
     </Space>
   );
 }

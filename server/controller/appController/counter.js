@@ -14,11 +14,13 @@ export const fetchCountersNumber = async (req, res, next) => {
     query["entityName"] = entityName
 
     // Before checking in counter data base let first find the last save no for entity;
-    let entityDataBase = checkDbForEntity(entity);
-    let entityData = await entityDataBase.findOne(query).sort({ no: -1 });
+    let entityDataBase = checkDbForEntity(entityName);
+    console.log(`entityDataBase`,entityDataBase);
+    let entityData = await entityDataBase.findOne({tenantId}).sort({ no: -1 });
     let no = entityData?.no;
 
     const existingCounters = await dataBase.findOne(query);
+    console.log(existingCounters, "existingCounters",entityData,entity,entityName);
 
     if (entityData) {
       let prefix = existingCounters?.prefix

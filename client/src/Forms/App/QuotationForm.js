@@ -133,6 +133,7 @@ const QuotationForm = ({ form }) => {
           updateInForm={(value) => {
             handleItemsUpdate(value, "customer");
           }}
+          form={form}
           preFillValue={form.getFieldValue("customer")?.name}
         />
         <FormItemCol

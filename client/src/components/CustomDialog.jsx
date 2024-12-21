@@ -1,35 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, Spin } from 'antd';
+import React, { useState, useEffect } from "react";
+import { Modal, Spin } from "antd";
+import CustomForm from "./CreateCustomForm";
 
 const CustomDialog = ({
+  entity,
   show,
+  setShow,
   setLoading,
   loading,
   children,
   showCloseButton = true,
   title,
+  height = "90vh",
+  width = "90%",
 }) => {
-  // Manage open state internally
-  const [open, setOpen] = useState(show); 
-
-  // Function to close the modal
-  const handleClose = () => {
-    setOpen(false);
-  };
-  useEffect(() => {
-    setOpen(show);
-  }, [show]);
-
-
+  useEffect(() => {}, [show]);
 
   return (
     <Modal
-      title={title || 'PDF PREVIEW'}
-      open={open} // Control visibility with the open state
-      onCancel={handleClose} // Close modal on cancel
+      key={Math.random()}
+      open={show}
+      onCancel={() => setShow(!show)} // Close modal on cancel
       footer={null} // Custom footer
-      closable={showCloseButton} // Show close button
-      maskClosable ={false}
+      closeIcon={null}
+      maskClosable={false}
+      width={width}
+      bodyStyle={{
+        paddingRight: "15px",
+        height: height,
+        overflowY: "auto",
+        zIndex: 1000000,
+      }}
+      style={{
+        top: 0,
+        left: 50,
+        maxHeight: "100vh",
+        zIndex: 1000000,
+      }}
     >
       {children}
     </Modal>

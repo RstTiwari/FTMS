@@ -94,7 +94,7 @@ const AddressDetails = ({
                                 style={{ marginBottom: "2Ppx" }}
                             >
                                 {onlyShippingAddress ? (
-                                    <Col span={16}>
+                                    <Col span={12}>
                                         <Taglabel
                                             text={to?.toUpperCase() || ""}
                                             details={true}
@@ -103,7 +103,7 @@ const AddressDetails = ({
                                 ) : (
                                     ""
                                 )}
-                                <Col span={16}>
+                                <Col span={12} style={{ textAlign: "left" }}>
                                     <Taglabel
                                         text={entityName?.toUpperCase() || ""}
                                         details={true}
@@ -114,8 +114,8 @@ const AddressDetails = ({
                                     <EditOutlined onClick={handleEditClick} />
                                 </Col>
                             </Row>
-                            <Row style={{ fontSize: "0.875rem" }}>
-                                <Col span={24}>{addressString}</Col>
+                            <Row style={{ fontSize: "0.875rem" ,textAlign:"left"}} align="middle">
+                                <Col span={20}>{addressString}</Col>
                             </Row>
                         </>
                     ) : (

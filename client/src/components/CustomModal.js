@@ -6,6 +6,7 @@ import CustomForm from "./CreateCustomForm";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import AddressDetails from "./Comman/AddressDetails";
 import PageLoader from "pages/PageLoader";
+import CustomDialog from "./CustomDialog";
 
 const CustomModel = ({
     entity,
@@ -16,6 +17,8 @@ const CustomModel = ({
     preFillValue,
     onlyShippingAddress,
     forDeliveryAddress,
+    subEntity,
+    form
 }) => {
     const [open, setOpen] = useState(false);
     const { appApiCall } = useAuth();
@@ -27,6 +30,14 @@ const CustomModel = ({
     const [initialRender, setInitialRender] = useState(false);
 
     const [char, setChar] = useState("");
+     const [dropdownVisible, setDropdownVisible] = useState(false);
+
+     // Close dropdown when the modal opens
+     useEffect(() => {
+       if (open) {
+         setDropdownVisible(false); // Close the dropdown when the modal opens
+       }
+     }, [open]);
 
     const handelClick = async () => {
         setIsLoading(true);
@@ -158,6 +169,7 @@ const CustomModel = ({
     const updateInCustomModal = (values, keyName) => {
         setAddress({ ...address, [keyName]: values });
     };
+
     useEffect(() => {
         if (preFillValue) {
             setValue(preFillValue);
@@ -165,139 +177,123 @@ const CustomModel = ({
     }, [preFillValue, value]);
 
     return (
-        <>
-            {!open ? (
-                <>
-                    <Select
-                        options={options}
-                        value={value ? value : ""}
-                        disabled={disabled}
-                        loading={isLoading}
-                        showSearch
-                        style={{ width: width }}
-                        getPopupContainer={(trigger) => document.body}
-                        dropdownStyle={{ position: "fixed", zIndex: 20000000 }}
-                        filterOption={(input, option) =>
-                            (option?.label ?? "")
-                                .toLowerCase()
-                                .includes(input.toLowerCase())
-                        }
-                        dropdownRender={(menu) => {
-                            return (
-                                <>
-                                    {!isLoading ? (
-                                        <>
-                                            <div
-                                                style={{
-                                                    maxHeight: "200px",
-                                                    overflow: "auto",
-                                                }}
-                                            >
-                                                {menu}
-                                            </div>
-                                            <Divider
-                                                style={{
-                                                    margin: "8px 0",
-                                                }}
-                                            />
-                                            <Space
-                                                style={{
-                                                    padding: "0 8px 4px",
-                                                }}
-                                            >
-                                                <CoustomButton
-                                                    text={"ADD NEW"}
-                                                    details={true}
-                                                    onClick={openModal}
-                                                />
-                                            </Space>
-                                        </>
-                                    ) : (
-                                        <PageLoader
-                                            isLoading={true}
-                                            height="30px"
-                                            text={"Hold on"}
-                                        />
-                                    )}
-                                </>
-                            );
-                        }}
-                        onClick={handelClick}
-                        onChange={handleChange}
-                        onDropdownVisibleChange={(open) => {
-                            if (open) {
-                                handelClick();
-                            }
-                        }}
+      <>
+        <Select
+          options={options}
+          value={value ? value : ""}
+          disabled={disabled}
+          loading={isLoading}
+          showSearch
+          style={{ width: width }}
+          getPopupContainer={(trigger) => document.body}
+          dropdownStyle={{ position: "fixed", zIndex: 1000 }}
+          filterOption={(input, option) =>
+            (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+          }
+          dropdownRender={(menu) => {
+            return (
+              <>
+                {!isLoading ? (
+                  <>
+                    <div
+                      style={{
+                        maxHeight: "200px",
+                        overflow: "auto",
+                      }}
+                    >
+                      {menu}
+                    </div>
+                    <Divider
+                      style={{
+                        margin: "8px 0",
+                      }}
                     />
-                    {entity === "customers" ? (
-                        <Row
-                            style={{
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "space-between",
-                            }}
-                        >
-                            {!onlyShippingAddress ? (
-                                <AddressDetails
-                                    style={{ flex: 1, marginRight: "10px" }}
-                                    initialRender={initialRender}
-                                    entityName={"Billing Address"}
-                                    keyName={"billingAddress"}
-                                    address={address?.billingAddress || null}
-                                    setAddress={setAddress}
-                                    id={id}
-                                    entity={"customers"}
-                                    updateInCustomModal={updateInCustomModal}
-                                />
-                            ) : (
-                                ""
-                            )}
-                            <AddressDetails
-                                style={{ flex: 1, marginLeft: "10px" }}
-                                initialRender={initialRender}
-                                entityName={"Shipping Address"}
-                                keyName={"shippingAddress"}
-                                address={address?.shippingAddress || null}
-                                setAddress={setAddress}
-                                id={id}
-                                entity={"customers"}
-                                updateInCustomModal={updateInCustomModal}
-                                updateInForm={updateInForm}
-                            />
-                        </Row>
-                    ) : (
-                        ""
-                    )}
-                </>
+                    <Space
+                      style={{
+                        padding: "0 8px 4px",
+                      }}
+                    >
+                      <CoustomButton
+                        text={"ADD NEW"}
+                        details={true}
+                        onClick={openModal}
+                      />
+                    </Space>
+                  </>
+                ) : (
+                  <PageLoader isLoading={true} height="30px" text={"Hold on"} />
+                )}
+              </>
+            );
+          }}
+          onClick={handelClick}
+          onChange={handleChange}
+          onDropdownVisibleChange={(open) => {
+            if (open && !dropdownVisible) {
+              setDropdownVisible(true); // Allow dropdown to open if modal is closed
+            } else {
+              setDropdownVisible(false); // Prevent dropdown from opening if modal is open
+            }
+          }}
+        />
+        {entity === "customers" ? (
+          <Row
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            {!onlyShippingAddress ? (
+              <AddressDetails
+                style={{ flex: 1, marginRight: "10px" }}
+                initialRender={initialRender}
+                entityName={"Billing Address"}
+                keyName={"billingAddress"}
+                address={address?.billingAddress || null}
+                setAddress={setAddress}
+                id={id}
+                entity={"customers"}
+                updateInCustomModal={updateInCustomModal}
+              />
             ) : (
-                <Modal
-                    title={`NEW ${entity.toUpperCase()}`}
-                    zIndex={1200}
-                    centered
-                    open={open}
-                    width={"50%"}
-                    mask={true}
-                    maskClosable={false}
-                    onCancel={onCancel}
-                    footer={null}
-                    bodyStyle={{
-                        height: "50vh",
-                        overflowY: "auto",
-                    }}
-                    keyboard={false}
-                >
-                    <CustomForm
-                        entityOfModal={entity}
-                        height="50vh"
-                        header={false}
-                        isModal={true}
-                        fieldName={fieldName}
-                        passToModal={handleModalClose}
-                    />
-                </Modal>
+              ""
             )}
-        </>
+            <AddressDetails
+              style={{ flex: 1, marginLeft: "10px" }}
+              initialRender={initialRender}
+              entityName={"Shipping Address"}
+              keyName={"shippingAddress"}
+              address={address?.shippingAddress || null}
+              setAddress={setAddress}
+              id={id}
+              entity={"customers"}
+              updateInCustomModal={updateInCustomModal}
+              updateInForm={updateInForm}
+            />
+          </Row>
+        ) : (
+          ""
+        )}
+
+        <CustomDialog
+          entity={entity}
+          show={open}
+          setShow={setOpen}
+          width={"55%"}
+          height="50vh"
+          children={
+            <CustomForm
+              entityOfModal={entity}
+              height={"50%"}
+              closeModal={() => setOpen(false)}
+              isModal={true}
+              passToModal={handleModalClose}
+              form={form}
+            />
+          }
+        />
+      </>
     );
 };
 

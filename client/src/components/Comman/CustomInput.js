@@ -115,6 +115,7 @@ const CustomInput = ({
                 <CustomModal
                     entity={entity}
                     fieldName={fieldName}
+                    
                     width={width}
                     preFillValue={preFillValue}
                     {...restProps}

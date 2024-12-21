@@ -109,23 +109,27 @@ const paymentData = {
 export default paymentData;
 
 export const paymentMode = [
-    {
-        label: "CASH",
-        value: "CASH",
-    },
-    {
-        label: "CHEQUE",
-        value: "CHEQUE",
-    },
-    {
-        label: "BANK TRANSFER",
-        value: "BANK TRANSFER",
-    },
+  {
+    label: "UPI TRANSFER",
+    value: "UPI_TRANSFER",
+  },
+  {
+    label: "CASH TRANSACTION",
+    value: "CASH_TRANSACTION",
+  },
+  {
+    label: "CHEQUE",
+    value: "CHEQUE",
+  },
+  {
+    label: "BANK TRANSFER",
+    value: "BANK_TRANSFER",
+  },
 
-    {
-        label: "CREDIT CARD",
-        value: "CREDIT CARD",
-    },
+  {
+    label: "CREDIT CARD",
+    value: "CREDIT_CARD",
+  },
 ];
 export const taxPercent = [
     {
