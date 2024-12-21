@@ -18,9 +18,7 @@ const CustomDialog = ({
 
   return (
     <Modal
-      key={Math.random()}
       open={show}
-      onCancel={() => setShow(!show)} // Close modal on cancel
       footer={null} // Custom footer
       closeIcon={null}
       maskClosable={false}
