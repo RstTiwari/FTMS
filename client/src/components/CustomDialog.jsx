@@ -14,7 +14,7 @@ const CustomDialog = ({
   height = "90vh",
   width = "90%",
 }) => {
-  useEffect(() => {}, [show]);
+  useEffect(() => {}, []);
 
   return (
     <Modal

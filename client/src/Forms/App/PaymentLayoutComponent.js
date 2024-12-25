@@ -8,6 +8,7 @@ import {
     Input,
     InputNumber,
     Collapse,
+    Divider,
 } from "antd";
 import {
     PlusOutlined,
@@ -18,11 +19,14 @@ import CoustomButton from "../../components/Comman/CoustomButton";
 import { DeleteOutline } from "@mui/icons-material";
 import FormItemCol from "../../components/Comman/FormItemCol";
 import NotificationHandler from "EventHandler/NotificationHandler";
+import NotesForm from "./NoteForm";
+import TermsAndConditions from "PdfTemplates/Myfac8ryDefault/TermsandCondition";
+import TermsAndConditionsForm from "./TermsAndCondition";
 
 const { Option } = Select;
 const { Panel } = Collapse;
 
-const PaymentLayoutComponent = ({ form, updateInForm }) => {
+const PaymentLayoutComponent = ({ form,widthOfTerm="35vw",widthOfNotes ="35vw" }) => {
     // Capitalize the first letter of a string
     const [showOtherCharges, setShowOtherCharges] = useState();
     const capitalizeFirstLetter = (string) => {
@@ -79,19 +83,11 @@ const PaymentLayoutComponent = ({ form, updateInForm }) => {
         {/* Left Column */}
         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Row>
-            <FormItemCol
-              type={"notes"}
-              form={form}
-              width={"35vw"} // Adjust width to fill the column
-            />
+            <NotesForm form={form} width={widthOfNotes} />
           </Row>
-          <Row>
-            <FormItemCol
-              type={"terms"}
-              form={form}
-              width={"35vw"} // Adjust width to fill the column
-              
-            />
+          <Divider />
+          <Row style={{marginTop:"20px"}}>
+            <TermsAndConditionsForm form={form} width={widthOfTerm} />
           </Row>
         </Col>
 

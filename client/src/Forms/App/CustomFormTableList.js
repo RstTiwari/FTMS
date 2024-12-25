@@ -31,7 +31,7 @@ const CustomFormTableList = ({ form }) => {
     };
 
     const calculateTaxAmount = (taxPercent, rate, qty) => {
-        let taxAmount = Math.ceil((rate * taxPercent) / 100);
+        let taxAmount = (rate * taxPercent) / 100;
         return Math.ceil(taxAmount * qty);
     };
 
@@ -74,18 +74,18 @@ const CustomFormTableList = ({ form }) => {
             );
             temObj.discountAmount = finalAmount;
             temObj.taxAmount = calculateTaxAmount(
-                temObj?.gstPercent || 0,
-                temObj?.discoumntAmount || temObj?.rate,
-                temObj?.qty || 0
+              temObj?.gstPercent || 0,
+              temObj?.discountAmount || temObj?.rate,
+              temObj?.qty || 0
             );
             temObj.finalAmount = Math.ceil(temObj.discountAmount * temObj.qty);
         } else if (filedName === "gstPercent") {
             value = Number(value);
             temObj.gstPercent = value;
             temObj.taxAmount = calculateTaxAmount(
-                temObj?.gstPercent || 0,
-                temObj?.discoumntAmount || temObj?.rate,
-                temObj?.qty || 0
+              temObj?.gstPercent || 0,
+              temObj?.discountAmount || temObj?.rate,
+              temObj?.qty || 0
             );
         } else if (filedName === "discountPercent") {
             value = Number(value);

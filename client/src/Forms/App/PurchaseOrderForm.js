@@ -329,8 +329,7 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
         </div>
 
         <CustomFormTableList form={form} />
-        <PaymentLayoutComponent form={form} />
-        <FormItemCol form={form} type={"terms"} />
+        <PaymentLayoutComponent form={form} widthOfNotes="35vw" widthOfTerm="35vw"/>
       </div>
     );
 };

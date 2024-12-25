@@ -75,10 +75,15 @@ const CustomForm = ({
         content: "Your changes will be lost if you do not save them.",
         okText: "Yes, discard",
         cancelText: "No, keep editing",
-        onOk: () => closeModal(false),
+        onOk: () => {
+          closeModal(false);
+          form.resetFields();
+
+        },
       });
     } else {
       closeModal(false);
+      form.resetFields();
     }
   };
 
@@ -86,6 +91,10 @@ const CustomForm = ({
     // Set flag to true if any form field changes
     setIsFormChanged(true);
   };
+
+  useEffect(()=>{
+    form.resetFields()
+  },[])
 
   if (isLoading) {
     return <PageLoader isLoading={true} text={"Wait, creating the data..."} />;

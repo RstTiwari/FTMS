@@ -39,18 +39,16 @@ const styles = StyleSheet.create({
 // TermsAndConditions component
 const TermsAndConditions = ({ terms = [] }) => {
   if (terms.length === 0) return null; // Do not render if terms are empty
-
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Terms and Conditions</Text>
       <View style={styles.table}>
-        {terms.map((term, index) => (
+        {terms.map((item, index) => (
           <View key={index} style={styles.tableRow}>
-            <Text style={[styles.tableCell, styles.cellLabel]}>
-              <Text style={{ fontFamily: "Helvetica-Bold" }}>
-                {term.name.toUpperCase()}
+            <Text style={[styles.tableCell, styles.cellLabel,]}>
+              <Text style={{ fontFamily: "Helvetica-Bold", fontSize: 8,  marginBottom: 5, textAlign: "left", wordWrap: "break-word"}} >
+                {`${index+1}.  ${item?.value}`}
               </Text>
-              : {term.value}
             </Text>
           </View>
         ))}

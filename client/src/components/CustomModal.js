@@ -55,6 +55,11 @@ const CustomModel = ({
         }
         setIsLoading(false);
     };
+
+    useEffect(() => {
+      handelClick();
+    }, []);
+
     const debounce = (fun, delay) => {
         let debounceTimer;
         return function (...args) {
@@ -182,7 +187,6 @@ const CustomModel = ({
           options={options}
           value={value ? value : ""}
           disabled={disabled}
-          loading={isLoading}
           showSearch
           style={{ width: width }}
           getPopupContainer={(trigger) => document.body}
@@ -193,40 +197,33 @@ const CustomModel = ({
           dropdownRender={(menu) => {
             return (
               <>
-                {!isLoading ? (
-                  <>
-                    <div
-                      style={{
-                        maxHeight: "200px",
-                        overflow: "auto",
-                      }}
-                    >
-                      {menu}
-                    </div>
-                    <Divider
-                      style={{
-                        margin: "8px 0",
-                      }}
-                    />
-                    <Space
-                      style={{
-                        padding: "0 8px 4px",
-                      }}
-                    >
-                      <CoustomButton
-                        text={"ADD NEW"}
-                        details={true}
-                        onClick={openModal}
-                      />
-                    </Space>
-                  </>
-                ) : (
-                  <PageLoader isLoading={true} height="30px" text={"Hold on"} />
-                )}
+                <div
+                  style={{
+                    maxHeight: "200px",
+                    overflow: "auto",
+                  }}
+                >
+                  {menu}
+                </div>
+                <Divider
+                  style={{
+                    margin: "8px 0",
+                  }}
+                />
+                <Space
+                  style={{
+                    padding: "0 8px 4px",
+                  }}
+                >
+                  <CoustomButton
+                    text={"ADD NEW"}
+                    details={true}
+                    onClick={openModal}
+                  />
+                </Space>
               </>
             );
           }}
-          onClick={handelClick}
           onChange={handleChange}
           onDropdownVisibleChange={(open) => {
             if (open && !dropdownVisible) {
