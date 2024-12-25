@@ -91,21 +91,21 @@ const tenantSpecificData = {
                 },
             ],
         },
-        // {
-        //     key: "myfac8ry",
-        //     label: "Myfac8ry Market",
-        //     icon: "ShopOutlined",
-        //     children: [
-        //         {
-        //             key: "enquiryreceived",
-        //             label: "Enquiry Received",
-        //         },
-        //         {
-        //             key: "enquiryrraised",
-        //             label: "Enquiry Raised",
-        //         },
-        //     ],
-        // },
+        {
+            key: "myfac8ry",
+            label: "Myfac8ry Market",
+            icon: "ShopOutlined",
+            children: [
+                {
+                    key: "enquiryreceived",
+                    label: "Enquiry Received",
+                },
+                {
+                    key: "enquiryrraised",
+                    label: "Enquiry Raised",
+                },
+            ],
+        },
     ],
     columns: [
         {
