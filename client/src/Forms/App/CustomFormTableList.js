@@ -112,7 +112,6 @@ const CustomFormTableList = ({ form }) => {
             ...item,
             taxAmount: item.taxAmount,
         }));
-        console.log(temItems, "temItems");
 
         let taxAmount = temItems.reduce(
             (acc, item) => acc + (item.taxAmount || 0),
@@ -127,6 +126,31 @@ const CustomFormTableList = ({ form }) => {
             grandTotal: Math.ceil(grandTotal),
         });
     };
+
+     const handleDelete = (rowIndex) => {
+       const items = form.getFieldValue("items");
+       items.splice(rowIndex,1)
+       let grossTotal = items.reduce((a, b) => a + b.finalAmount, 0);
+       const temItems = items.map((item) => ({
+         ...item,
+         taxAmount: item.taxAmount,
+       }));
+
+       let taxAmount = temItems.reduce(
+         (acc, item) => acc + (item.taxAmount || 0),
+         0
+       );
+       let totalWithTax = grossTotal + taxAmount;
+       let grandTotal = totalWithTax;
+       console.log(rowIndex,"+==",items);
+       form.setFieldsValue({
+         grossTotal: Math.ceil(grossTotal),
+         taxAmount: Math.ceil(taxAmount),
+         totalWithTax: Math.ceil(totalWithTax),
+         grandTotal: Math.ceil(grandTotal),
+       });
+       form.setFieldsValue({ items: items });
+     };
 
     // State to store selected columns
     const [selectedColumns, setSelectedColumns] = useState([]);
@@ -303,10 +327,12 @@ const CustomFormTableList = ({ form }) => {
         }
     };
 
+   
+
     useEffect(() => {
         getColumnPre();
     }, []);
-    useEffect(() => {}, [form]);
+
 
     return (
       <>
@@ -720,7 +746,8 @@ const CustomFormTableList = ({ form }) => {
                               cursor: "pointer",
                             }}
                             onClick={() => {
-                              subOpt.remove(name);
+                              handleDelete(name);
+                              // subOpt.remove(name);
                             }}
                           />
                         </Form.Item>

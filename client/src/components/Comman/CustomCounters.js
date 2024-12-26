@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Input, Button, Modal, Form ,Row,Col} from "antd";
+import { Input, Button, Modal, Form ,Row,Col, Skeleton} from "antd";
 import { SettingOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import Counters from "Forms/App/Counters";
 import FormActionButtons from "./FormActionButton";
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
+import PageLoader from "pages/PageLoader";
 
 const CustomInputWithModal = ({ preFillValue,updateInForm,width }) => {
     const [modalVisible, setModalVisible] = useState(false);
@@ -79,55 +80,59 @@ const CustomInputWithModal = ({ preFillValue,updateInForm,width }) => {
         }
     }, [preFillValue]);
 
+
+    useEffect(()=>{
+
+    },[preFillValue])
+
     return (
-        <div>
-               <Row style={{ position: 'relative', width: width }}>
+      <div>
+        <Row style={{ position: "relative", width: width }}>
+          {inputValue ? (
             <Input
-                value={inputValue}
-                onChange={handleInputChange}
-                style={{ paddingRight: "30px", width: "100%" }} // Adjust padding-right to accommodate button width
+              value={inputValue}
+              onChange={handleInputChange}
+              style={{ paddingRight: "30px", width: "100%" }} // Adjust padding-right to accommodate button width
             />
+          ) : (
+            <Skeleton.Input />
+          )}
 
-            <Button
-                icon={<SettingOutlined />}
-                onClick={openModal}
-                style={{
-                    position: "absolute",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    right: "10px", // Adjust this value based on your preference
-                    zIndex: 1,
-                    border: "none",
-                    background: "transparent",
-                    padding: 0,
-                    height: "100%", // Ensure the button height matches the input height
-                }}
-            />
+          <Button
+            icon={<SettingOutlined />}
+            onClick={openModal}
+            style={{
+              position: "absolute",
+              top: "50%",
+              transform: "translateY(-50%)",
+              right: "10px", // Adjust this value based on your preference
+              zIndex: 1,
+              border: "none",
+              background: "transparent",
+              padding: 0,
+              height: "100%", // Ensure the button height matches the input height
+            }}
+          />
         </Row>
-  
 
-            <Modal
-                title={`CONFIGURE YOUR ${entity.toLocaleUpperCase()} NUMBER PREFERENCES`}
-                open={modalVisible}
-                onOk={handleModalOk}
-                onCancel={handleModalCancel}
-                footer={null}
-                width={"40vw"}
-                style={{ padding: 20 }}
-                bodyStyle={{
-                    overflow: "auto",
-                }}
-            >
-                <Form
-                    form={form}
-                    onFinish={handleFormFinish}
-                    initialValues={{}}
-                >
-                    <Counters form={form} />
-                    <FormActionButtons />
-                </Form>
-            </Modal>
-        </div>
+        <Modal
+          title={`CONFIGURE YOUR ${entity.toLocaleUpperCase()} NUMBER PREFERENCES`}
+          open={modalVisible}
+          onOk={handleModalOk}
+          onCancel={handleModalCancel}
+          footer={null}
+          width={"40vw"}
+          style={{ padding: 20 }}
+          bodyStyle={{
+            overflow: "auto",
+          }}
+        >
+          <Form form={form} onFinish={handleFormFinish} initialValues={{}}>
+            <Counters form={form} />
+            <FormActionButtons />
+          </Form>
+        </Modal>
+      </div>
     );
 };
 

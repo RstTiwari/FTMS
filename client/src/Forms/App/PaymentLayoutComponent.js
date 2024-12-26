@@ -20,11 +20,8 @@ import { DeleteOutline } from "@mui/icons-material";
 import FormItemCol from "../../components/Comman/FormItemCol";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import NotesForm from "./NoteForm";
-import TermsAndConditions from "PdfTemplates/Myfac8ryDefault/TermsandCondition";
 import TermsAndConditionsForm from "./TermsAndCondition";
 
-const { Option } = Select;
-const { Panel } = Collapse;
 
 const PaymentLayoutComponent = ({ form,widthOfTerm="35vw",widthOfNotes ="35vw" }) => {
     // Capitalize the first letter of a string
@@ -78,6 +75,9 @@ const PaymentLayoutComponent = ({ form,widthOfTerm="35vw",widthOfNotes ="35vw" }
         otherCharges.push({ chargeName: "", amount: 0 });
         form.setFieldsValue({ otherCharges });
     };
+    useEffect(()=>{
+
+    },[form])
     return (
       <Row justify={"end"}>
         {/* Left Column */}
@@ -86,7 +86,7 @@ const PaymentLayoutComponent = ({ form,widthOfTerm="35vw",widthOfNotes ="35vw" }
             <NotesForm form={form} width={widthOfNotes} />
           </Row>
           <Divider />
-          <Row style={{marginTop:"20px"}}>
+          <Row style={{ marginTop: "20px" }}>
             <TermsAndConditionsForm form={form} width={widthOfTerm} />
           </Row>
         </Col>
@@ -132,18 +132,9 @@ const PaymentLayoutComponent = ({ form,widthOfTerm="35vw",widthOfNotes ="35vw" }
           </Row>
 
           {/* Toggle Button for Other Charges */}
-          <Row justify={"end"}>
-            <Button
-              type="link"
-              onClick={() => setShowOtherCharges(!showOtherCharges)}
-              style={{ marginBottom: "10px", fontWeight: "bold" }}
-            >
-              Non Taxable Other Charges
-            </Button>
-          </Row>
+          <Row justify={"end"}></Row>
 
-          {/* Add the OtherChargesForm Component here */}
-          {showOtherCharges && (
+        
             <Row justify={"end"}>
               <Form.List name="otherCharges">
                 {(fields, { add, remove }) => (
@@ -291,18 +282,18 @@ const PaymentLayoutComponent = ({ form,widthOfTerm="35vw",widthOfNotes ="35vw" }
                     ))}
 
                     <Row justify="start" style={{ marginBottom: 10 }}>
-                      <CoustomButton
-                        text={"New"}
+                      <Button
+                        type="link"
                         onClick={() => add()}
-                        withIcon={true}
-                        details={true}
-                      />
+                        style={{ marginBottom: "10px", fontWeight: "bold" }}
+                      >
+                        ADD NON TAXABLE CHARGES
+                      </Button>
                     </Row>
                   </>
                 )}
               </Form.List>
             </Row>
-          )}
 
           <Row justify={"end"}>
             <FormItemCol

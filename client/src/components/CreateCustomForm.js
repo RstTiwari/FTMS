@@ -92,9 +92,13 @@ const CustomForm = ({
     setIsFormChanged(true);
   };
 
+  useEffect(() => {
+    form.resetFields();
+  }, [entity]);
+
   useEffect(()=>{
-    form.resetFields()
-  },[])
+
+  },[form])
 
   if (isLoading) {
     return <PageLoader isLoading={true} text={"Wait, creating the data..."} />;

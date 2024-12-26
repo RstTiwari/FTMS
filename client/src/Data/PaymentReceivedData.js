@@ -70,7 +70,7 @@ const getColumns = (details) => [
         ),
         dataIndex: "paymentMode",
         key: "paymentMode",
-        width: details ? 200 : 120,
+        width: 200 ,
         responsive: details ? [] : ["lg"],
         render: (_, record) => (
             <Taglabel
