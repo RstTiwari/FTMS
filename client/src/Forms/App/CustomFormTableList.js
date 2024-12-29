@@ -440,7 +440,12 @@ const CustomFormTableList = ({ form }) => {
               >
                 <Taglabel text="GST%" />
               </Col>
-              {renderColumnHeader("taxAmount", "TAX AMT", 2 ,"TAX AMOUNT CALCULATED BASED ON RATE AND GST%")}
+              {renderColumnHeader(
+                "taxAmount",
+                "TAX AMT",
+                2,
+                "TAX AMOUNT CALCULATED BASED ON RATE AND GST%"
+              )}
 
               <Col
                 className="gutter-row"
@@ -755,22 +760,28 @@ const CustomFormTableList = ({ form }) => {
                     </Row>
                   ))}
                 </div>
-                <CoustomButton
-                text={"Add Row"}
-                  details={true}
-                  withIcon={true}
-                  onClick={() => {
-                    subOpt.add({
-                      description: "",
-                      qty: 1,
-                      hsnCode: "",
-                      rate: 0,
-                      discountPercent: 0,
-                      gstPercent: 0,
-                    });
-                    
-                  }}
-                />
+                <Row justify="start">
+                  <Button
+                    type="link"
+                    style={{
+                      color: "#22b378",
+                    }}
+                    onClick={() => {
+                      subOpt.add({
+                        description: "",
+                        qty: 1,
+                        hsnCode: "",
+                        rate: 0,
+                        discountPercent: 0,
+                        gstPercent: 0,
+                      });
+                    }}
+                    details={true}
+                    withIcon={true}
+                  >
+                    ADD  NEW ROW
+                  </Button>
+                </Row>
               </div>
             )}
           </Form.List>

@@ -32,31 +32,33 @@ const pageHeaderStyles = StyleSheet.create({
   },
   titleText: {
     color: "#42cbf5",
-    fontSize: 12, // Slightly increased font size for the title
+    fontSize: 14, // Slightly increased font size for the title
     fontFamily: "Helvetica-Bold",
     fontWeight: "heavy",
     wordWrap: "break-word",
     fontStyle: "italic",
-    letterSpacing: 0.5,
+    letterSpacing: 2,
   },
   contentText: {
-    fontSize: 8, // Increased font size for better readability
+    fontSize: 10, // Increased font size for better readability
     color: "#000000",
     marginBottom: 5,
     wordWrap: "break-word", // Ensure text wraps if it exceeds width
+    letterSpacing: 1,
   },
   addressText: {
-    fontSize: 8, // Increased font size for better readability
+    fontSize: 10, // Increased font size for better readability
     color: "#000000",
     marginBottom: 2,
     wordWrap: "break-word",
+    letterSpacing: 1,
   },
   detailsWrapper: {
     flex: 2,
     width: "30%", // Give more space to the details section
     display: "flex",
     flexDirection: "column",
-    fontWeight:"extrabold",
+    fontWeight: "extrabold",
     paddingLeft: 10,
     paddingRight: 10,
   },

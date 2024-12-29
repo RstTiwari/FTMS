@@ -4,7 +4,7 @@ const CustomLabel = ({ label, required }) => {
     return (
         <span>
             <strong style={{ color: required ? "#EE4B2B" : 'black',fontFamily:"sans-serif" }}>
-                {`${label} ${required ?"*":""}` }
+                {`${label}` }
             </strong>
         </span>
     );

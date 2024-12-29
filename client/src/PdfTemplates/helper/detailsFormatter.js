@@ -264,8 +264,12 @@ export const entityDetailsFormatter = (entity, data, organization) => {
       break;
 
     case "challans":
-      const challanBillingAddress = `${orgBillingAddress?.street1} ${orgBillingAddress?.street2}, ${orgBillingAddress?.city},${orgBillingAddress?.state} - ${orgBillingAddress?.pincode}`;
-      const challanShippingAddress = `${shippingAddress?.street1} ${shippingAddress?.street2}, ${shippingAddress?.city},${shippingAddress?.state} - ${shippingAddress?.pincode}`;
+            const challanBillingAddress = `${orgBillingAddress?.street1} ${orgBillingAddress?.street2}, ${orgBillingAddress?.city},${orgBillingAddress?.state} - ${orgBillingAddress?.pincode}`;
+           let address = data["delivery"]["address"];
+          const challanShippingAddress = `${address?.street1} ${address?.street2}, ${address?.city},${address?.state} - ${address?.pincode}`;
+         let challanTo = data["delivery"]["to"];
+
+
 
       array = [
         [
@@ -302,7 +306,7 @@ export const entityDetailsFormatter = (entity, data, organization) => {
           },
           {
             label: "",
-            value: name?.toUpperCase(),
+            value: challanTo?.toUpperCase(),
             type: "subheading",
           },
           {

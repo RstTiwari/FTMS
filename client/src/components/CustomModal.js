@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Modal, Select, Divider, Button, Row, Space } from "antd";
 import { useAuth } from "state/AuthProvider";
 import CoustomButton from "./Comman/CoustomButton";
@@ -15,6 +15,7 @@ const CustomModel = ({
     disabled,
     updateInForm,
     preFillValue,
+    preFillAddress,
     onlyShippingAddress,
     forDeliveryAddress,
     subEntity,
@@ -39,26 +40,32 @@ const CustomModel = ({
        }
      }, [open]);
 
-    const handelClick = async () => {
-        setIsLoading(true);
-        let response = await appApiCall(
-            "post",
-            "fetchCustomModalData",
-            {},
-            { entity, fieldName }
-        );
-        if (response.success) {
-            setOptions(response?.result);
-        } else {
-            setOptions([]);
-            NotificationHandler.error(response.message);
-        }
-        setIsLoading(false);
-    };
+    const fetchData = useCallback(async () => {
+      let response = await appApiCall(
+        "post",
+        "fetchCustomModalData",
+        {},
+        { entity, fieldName }
+      );
+      if (response.success) {
+        return response?.result;
+      } else {
+        return [];
+      }
+    },[]);
+ 
+    const handelClick = ()=>{
+
+    }
 
     useEffect(() => {
-      handelClick();
-    }, []);
+      const getData = async () => {
+        const result = await fetchData(entity, fieldName);
+        setOptions(result);
+      };
+
+      getData(); // Fetch data when entity or fieldName changes
+    }, [entity, fieldName, fetchData]);
 
     const debounce = (fun, delay) => {
         let debounceTimer;
@@ -119,6 +126,26 @@ const CustomModel = ({
                 details: label?.item,
             });
         } else if (entity === "vendors") {
+             if (!initialRender) {
+               setInitialRender(true);
+             }
+             if (label?.item?.billingAddress || !label?.item?.shippingAddress) {
+               setAddress({ billingAddress: null, shippingAddress: null });
+             }
+             setAddress({
+               billingAddress: label?.item?.billingAddress,
+               shippingAddress: label?.item?.shippingAddress,
+             });
+             setId(label?.item?._id);
+             // Updating in Purchase Order Forms
+             if (forDeliveryAddress) {
+               return updateInForm({
+                 to: label?.item?.name,
+                 address: label?.item?.shippingAddress,
+                 type: "vendor",
+               });
+             }
+
             return updateInForm(value);
         } else {
         }
@@ -140,7 +167,7 @@ const CustomModel = ({
         handleChange(result?._id);
         setValue(result?._id);
         setOpen(!open);
-        if (entity === "customers") {
+        if (entity === "customers" ) {
             setId(result?._id);
             if (result?.billingAddress && result.shippingAddress) {
                 setAddress({
@@ -166,6 +193,21 @@ const CustomModel = ({
                 details: result,
             });
         } else if (entity === "vendors") {
+                setId(result?._id);
+                if (result?.billingAddress && result.shippingAddress) {
+                  setAddress({
+                    billingAddress: result?.billingAddress,
+                    shippingAddress: result?.shippingAddress,
+                  });
+                }
+
+                if (forDeliveryAddress) {
+                  return updateInForm({
+                    to: result?.name,
+                    address: result?.shippingAddress,
+                    type: "customer",
+                  });
+                }
             return updateInForm(result._id);
         } else {
         }
@@ -176,11 +218,13 @@ const CustomModel = ({
     };
 
     useEffect(() => {
-        if (preFillValue) {
-            setValue(preFillValue);
-        }
-    }, [preFillValue, value]);
-
+      if (preFillValue) {
+        setValue(preFillValue);
+        let address = `{}`
+        setAddress({shippingAddress:preFillAddress,billingAddress:""});
+      }
+    }, [preFillValue, value, preFillAddress,address]);
+    console.log(entity,"===entity",onlyShippingAddress,address,)
     return (
       <>
         <Select
@@ -233,12 +277,12 @@ const CustomModel = ({
             }
           }}
         />
-        {entity === "customers" ? (
+
+        {entity === "customers"  || entity === "vendors" ? (
           <Row
             style={{
               display: "flex",
               flexDirection: "row",
-              justifyContent: "space-between",
             }}
           >
             {!onlyShippingAddress ? (
@@ -250,7 +294,7 @@ const CustomModel = ({
                 address={address?.billingAddress || null}
                 setAddress={setAddress}
                 id={id}
-                entity={"customers"}
+                entity={entity}
                 updateInCustomModal={updateInCustomModal}
               />
             ) : (
@@ -264,7 +308,7 @@ const CustomModel = ({
               address={address?.shippingAddress || null}
               setAddress={setAddress}
               id={id}
-              entity={"customers"}
+              entity={entity}
               updateInCustomModal={updateInCustomModal}
               updateInForm={updateInForm}
             />

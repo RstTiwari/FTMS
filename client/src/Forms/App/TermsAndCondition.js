@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Form, Row, Col, Collapse } from "antd";
+import { Form, Row, Col, Collapse, Button } from "antd";
 import {
     PlusOutlined,
     MinusCircleOutlined,
@@ -23,19 +23,7 @@ const TermsAndConditionsForm = ({ form, width = "50vw" }) => {
         form.setFieldsValue({ terms: terms });
     };
 
-    // Add a default term when the component mounts
-    useEffect(() => {
-        const terms = form.getFieldValue("terms") || [];
-        if (terms.length === 0) {
-            addDefaultTerm();
-        }
-    }, [form]);
 
-    const addDefaultTerm = () => {
-        const terms = form.getFieldValue("terms") || [];
-        terms.push({ name: "", value: "" });
-        form.setFieldsValue({ terms });
-    };
 
     return (
       <Col style={{ width: width }}>
@@ -83,13 +71,18 @@ const TermsAndConditionsForm = ({ form, width = "50vw" }) => {
                 </Row>
               ))}
               <Row justify="start">
-                <CoustomButton
-                  text={"Add Term"}
+                <Button
+                  type="link"
+                  style={{
+                    color: "#22b378",
+                  }}
                   onClick={() => add()}
                   details={true}
                   withIcon={true}
                   icon={<PlusOutlined />}
-                />
+                >
+                  Add Term
+                </Button>
               </Row>
             </>
           )}

@@ -61,20 +61,9 @@ const PaymentLayoutComponent = ({ form,widthOfTerm="35vw",widthOfNotes ="35vw" }
         form.setFieldsValue({ grandTotal: Math.ceil(grandTotal) });
     };
 
-    //Handle changes in the form fields
-    // Add a default term when the component mounts
-    useEffect(() => {
-        const otherCharges = form.getFieldValue("otherCharges") || [];
-        if (otherCharges.length <= 0) {
-            addDefaultTerm();
-        }
-    }, [form]);
+  
 
-    const addDefaultTerm = () => {
-        const otherCharges = form.getFieldValue("otherCharges") || [];
-        otherCharges.push({ chargeName: "", amount: 0 });
-        form.setFieldsValue({ otherCharges });
-    };
+
     useEffect(()=>{
 
     },[form])
@@ -285,7 +274,8 @@ const PaymentLayoutComponent = ({ form,widthOfTerm="35vw",widthOfNotes ="35vw" }
                       <Button
                         type="link"
                         onClick={() => add()}
-                        style={{ marginBottom: "10px", fontWeight: "bold" }}
+                        style={{ marginBottom: "10px", fontWeight: "bold",color:"#22b378" }}
+                        icon={<PlusOutlined />}
                       >
                         ADD NON TAXABLE CHARGES
                       </Button>

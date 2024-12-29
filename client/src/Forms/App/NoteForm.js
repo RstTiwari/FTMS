@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Form, Row, Col, Collapse } from "antd";
+import { Form, Row, Col, Collapse, Button } from "antd";
 import {
     PlusOutlined,
     MinusCircleOutlined,
@@ -22,19 +22,7 @@ const NotesForm = ({ form, width = "35vw" }) => {
         form.setFieldsValue({ notes });
     };
 
-    // Add a default note when the component mounts
-    useEffect(() => {
-        const notes = form.getFieldValue("notes") || [];
-        if (notes.length === 0) {
-            addDefaultNote();
-        }
-    }, [form]);
-
-    const addDefaultNote = () => {
-        const notes = form.getFieldValue("notes") || [];
-        notes.push("");
-        form.setFieldsValue({ notes });
-    };
+  
 
     return (
       <Col style={{ width: width }}>
@@ -79,13 +67,18 @@ const NotesForm = ({ form, width = "35vw" }) => {
                 </Row>
               ))}
               <Row justify="start">
-                <CoustomButton
-                  text={"Add Note"}
+                <Button
+                  type="link"
+                  style={{
+                      color:"#22b378"
+                  }}
                   onClick={() => add()}
                   details={true}
                   withIcon={true}
                   icon={<PlusOutlined />}
-                />
+                >
+                  Add Note
+                </Button>
               </Row>
             </>
           )}

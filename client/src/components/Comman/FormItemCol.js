@@ -27,6 +27,7 @@ const FormItemCol = ({
             label={
                 label ? <CustomLabel required={required} label={label} /> : null
             }
+            
             name={name}
             labelAlign="left"
             rules={rules}
