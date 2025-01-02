@@ -64,17 +64,17 @@ export default function MoreActionDropDownData(entity) {
         ),
         icon: <WhatsAppOutlined style={{ color: "green", fontSize: "10px" }} />,
       },
-      {
-        key: "shareonemail",
-        label: (
-          <span
-            style={{ color: "green", fontWeight: "bold", fontSize: "10px" }}
-          >
-            SHARE ON EMAIL
-          </span>
-        ),
-        icon: <MailOutlined style={{ color: "black", fontSize: "10px" }} />,
-      },
+      // {
+      //   key: "shareonemail",
+      //   label: (
+      //     <span
+      //       style={{ color: "green", fontWeight: "bold", fontSize: "10px" }}
+      //     >
+      //       SHARE ON EMAIL
+      //     </span>
+      //   ),
+      //   icon: <MailOutlined style={{ color: "black", fontSize: "10px" }} />,
+      // },
       {
         key: "delete",
         label: (
@@ -216,6 +216,29 @@ export default function MoreActionDropDownData(entity) {
         icon: <EditOutlined style={{ color: "blue", fontSize: "10px" }} />,
       },
       {
+        key: "delete",
+        label: (
+          <span style={{ color: "red", fontWeight: "bold", fontSize: "10px" }}>
+            DELETE
+          </span>
+        ),
+        icon: <DeleteOutlined style={{ color: "green", fontSize: "10px" }} />,
+      },
+    ];
+  }else if (entity === "user"){
+    data = [
+      {
+        key: "edit",
+        label: (
+          <span
+            style={{ color: "green", fontWeight: "bold", fontSize: "10px" }}
+          >
+            EDIT
+          </span>
+        ),
+        icon: <EditOutlined style={{ color: "blue", fontSize: "10px" }} />,
+      },
+       {
         key: "delete",
         label: (
           <span style={{ color: "red", fontWeight: "bold", fontSize: "10px" }}>

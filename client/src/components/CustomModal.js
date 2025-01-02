@@ -7,6 +7,7 @@ import NotificationHandler from "EventHandler/NotificationHandler";
 import AddressDetails from "./Comman/AddressDetails";
 import PageLoader from "pages/PageLoader";
 import CustomDialog from "./CustomDialog";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const CustomModel = ({
     entity,
@@ -40,32 +41,25 @@ const CustomModel = ({
        }
      }, [open]);
 
-    const fetchData = useCallback(async () => {
+    const handelClick = async () => {
+      setIsLoading(true)
       let response = await appApiCall(
         "post",
         "fetchCustomModalData",
         {},
         { entity, fieldName }
       );
+       setIsLoading(false);
       if (response.success) {
-        return response?.result;
+        return setOptions(response?.result);
       } else {
         return [];
       }
-    },[]);
- 
-    const handelClick = ()=>{
 
     }
-
-    useEffect(() => {
-      const getData = async () => {
-        const result = await fetchData(entity, fieldName);
-        setOptions(result);
-      };
-
-      getData(); // Fetch data when entity or fieldName changes
-    }, [entity, fieldName, fetchData]);
+    
+  
+   
 
     const debounce = (fun, delay) => {
         let debounceTimer;
@@ -223,14 +217,15 @@ const CustomModel = ({
         let address = `{}`
         setAddress({shippingAddress:preFillAddress,billingAddress:""});
       }
-    }, [preFillValue, value, preFillAddress,address]);
-    console.log(entity,"===entity",onlyShippingAddress,address,)
+    }, [preFillValue, value,isLoading])
+
     return (
       <>
         <Select
           options={options}
           value={value ? value : ""}
           disabled={disabled}
+          onClick={handelClick}
           showSearch
           style={{ width: width }}
           getPopupContainer={(trigger) => document.body}
@@ -241,7 +236,10 @@ const CustomModel = ({
           dropdownRender={(menu) => {
             return (
               <>
-                <div
+              {
+                !isLoading ? (
+                   <>
+                    <div
                   style={{
                     maxHeight: "200px",
                     overflow: "auto",
@@ -265,6 +263,11 @@ const CustomModel = ({
                     onClick={openModal}
                   />
                 </Space>
+                   </>
+                ):(
+                  <LoadingOutlined  style={{textAlign:"center"}}/>
+                )
+              }
               </>
             );
           }}

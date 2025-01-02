@@ -4,6 +4,8 @@ import {
     jsDateIntoDayjsDate,
 } from "Helper/EpochConveter";
 import Taglabel from "components/Comman/Taglabel";
+import MoreActionDropDown from "components/Comman/MoreActionDropDown";
+import MoreActionDropDownData from "./MoreActionDropDownData";
 
 const { Text } = Typography;
 const getColumns = (details) => [
@@ -13,7 +15,7 @@ const getColumns = (details) => [
         ),
         dataIndex: "name",
         key: "name",
-        width: details ? 300 : 200,
+        width: 300,
         render: (_, record) => (
             <Taglabel
                 type="customer"
@@ -26,7 +28,7 @@ const getColumns = (details) => [
         title: <Taglabel text={"EMAIL"} type={"heading"} details={details} />,
         dataIndex: "email",
         key: "email",
-        width: 100,
+        width: 300,
         render: (_, record) => (
             <Taglabel type={"text"} text={`${record.email}`} details={details} />
         ),
@@ -36,7 +38,7 @@ const getColumns = (details) => [
         dataIndex: "role",
         key: "role",
         responsive: details ? [] : ["lg"],
-        width: 100,
+        width: 200,
         render: (_, record) => (
             <Taglabel
                 type={"text"}
@@ -59,6 +61,17 @@ const getColumns = (details) => [
             />
         ),
     },
+    {
+        dataIndex: "operation",
+        fixed: "right",
+        render: (_, record) => (
+          <MoreActionDropDown
+            entity="user"
+            items={MoreActionDropDownData("user")}
+            rowData={record}
+          />
+        ),
+      },
   
 
 ];

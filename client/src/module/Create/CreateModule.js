@@ -39,7 +39,7 @@ const CoustomFormItem = ({ entity, form, isModal, isUpdate }) => {
             componentToRender = <ChallanFormItem form={form} />;
             break;
         case "purchases":
-            componentToRender = <PurchaseFormItem form={form} />;
+            componentToRender = <PurchaseFormItem form={form}  isCreate= {true}/>;
             break;
         case "vendors":
             componentToRender = (

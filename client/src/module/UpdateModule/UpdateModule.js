@@ -36,10 +36,10 @@ const UpdateModule = ({ entity, form }) => {
             componentToRender = <LeadFormItem form={form} />;
             break;
         case "challans":
-            componentToRender = <ChallanFormItem form={form} />;
+            componentToRender = <ChallanFormItem form={form} isUpdate ={true} />;
             break;
         case "purchases":
-            componentToRender = <PurchaseFormItem form={form} />;
+            componentToRender = <PurchaseFormItem form={form} isUpdate={true} />;
             break;
         case "vendors":
             componentToRender = <VendorFormItem form={form} />;

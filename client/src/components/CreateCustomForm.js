@@ -133,7 +133,7 @@ const CustomForm = ({
           </Col>
         </Row>
 
-      <CustomFormItem entity={entity} form={form} isModal={isModal} />
+      <CustomFormItem entity={entity} form={form} />
     </Form>
   );
 };

@@ -28,7 +28,7 @@ import TaxPercent from "components/Comman/TaxPercent";
 import CustomFormTableList from "./CustomFormTableList";
 import PaymentLayoutComponent from "./PaymentLayoutComponent";
 
-const PurchaseOrder = ({ form, value, disabled, isModel }) => {
+const PurchaseOrder = ({ form, value, disabled, isUpdate }) => {
   const [isOrganizationChecked, setIsOrganizationChecked] = useState(false);
   const [isCustomerChecked, setIsCustomerChecked] = useState(false);
   const [isVendorChecked, setIsVendorChecked] = useState(false);
@@ -160,15 +160,20 @@ const PurchaseOrder = ({ form, value, disabled, isModel }) => {
 
   useEffect(() => {
     //Checking delivery Address Type
-    let delivery = form.getFieldValue("delivery");
-      delivery?.type === "customer"
-        ? setIsCustomerChecked(true)
-        : delivery?.type ==="vendor" ?setIsVendorChecked(true): setIsOrganizationChecked(true);
-      setDelivery({
-        ...delivery,
-        to: delivery?.to,
-        address: delivery?.address,
-      });
+        let delivery = form.getFieldValue("delivery");
+        if(delivery){
+     delivery?.type === "customer"
+          ? setIsCustomerChecked(true)
+          : delivery?.type === "vendor"
+          ? setIsVendorChecked(true)
+          : setIsOrganizationChecked(true);
+        setDelivery({
+          ...delivery,
+          to: delivery?.to,
+          address: delivery?.address,
+        });
+        }
+
   }, []);
 
   useEffect(() => {}, [form]);

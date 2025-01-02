@@ -9,7 +9,7 @@ import { Row,Col,Checkbox ,Form} from "antd";
 import Taglabel from "components/Comman/Taglabel";
 import AddressDetails from "components/Comman/AddressDetails";
 
-const DeliveryChallan = ({ form }) => {
+const DeliveryChallan = ({ form,isUpdate }) => {
   const isLaptop = useMediaQuery("(min-width:1000px)");
    const [isCustomerChecked, setIsCustomerChecked] = useState(false);
    const [isVendorChecked, setIsVendorChecked] = useState(false);
@@ -112,17 +112,17 @@ const DeliveryChallan = ({ form }) => {
   };
 
     useEffect(() => {
-      //Checking delivery Address Type
       let delivery = form.getFieldValue("delivery");
-      console.log(delivery,'==delivery')
-        delivery?.type === "customer"
-          ? setIsCustomerChecked(true)
-          : setIsVendorChecked(true);
-        setDelivery({
-          ...delivery,
-          to: delivery?.to,
-          address: delivery?.address,
-        });
+      if(delivery){
+          delivery?.type === "customer"
+            ? setIsCustomerChecked(true)
+            : setIsVendorChecked(true);
+          setDelivery({
+            ...delivery,
+            to: delivery?.to,
+            address: delivery?.address,
+          });
+      }      
     }, [,]);
 
   useEffect(() => {}, []);
