@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
 
-const useFormActions = (entity, isUpdate, id,closeModal) => {
+const useFormActions = (entity, isUpdate, id,closeModal,form) => {
     const { appApiCall, adminApiCall } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -39,6 +39,7 @@ const useFormActions = (entity, isUpdate, id,closeModal) => {
                 if (isModal) {
                     return passToModal(response.result);
                 }
+                form.resetFields();
                 closeModal(true);
             } else {
                 throw new Error(response.message);

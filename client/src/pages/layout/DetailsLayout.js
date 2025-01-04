@@ -76,6 +76,7 @@ const DetailsLayout = () => {
           lg={details ? 6 : 24}
           xl={details ? 6 : 24}
         >
+          
           <Row>
             <Col
               xs={12}
@@ -107,6 +108,7 @@ const DetailsLayout = () => {
                 onClick={openModal}
                 withIcon
                 details={true}
+                isLoading ={isLoading}
               />
             </Col>
           </Row>
@@ -114,7 +116,6 @@ const DetailsLayout = () => {
             columns={dataForTable.getColumns(details)}
             dataSource={data}
             isLoading={isLoading}
-            // onRowClick={handleRowClick}
             onTableChange={onTableChange}
             rowClassName={rowClassName}
             totalCount={total}

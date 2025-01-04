@@ -31,7 +31,8 @@ const CustomForm = ({
     entity,
     isUpdate,
     id,
-    closeModal
+    closeModal,
+    form
   );
 
   // isAdmin to check whether the API to call is an Admin API
@@ -51,7 +52,6 @@ const CustomForm = ({
         values.image = response.result;
       }
     }
-
     handleFormSubmit(values, isModal, passToModal, isAdmin);
     setIsFormChanged(false); // Reset change flag after form submission
   };
@@ -100,10 +100,6 @@ const CustomForm = ({
 
   },[form])
 
-  if (isLoading) {
-    return <PageLoader isLoading={true} text={"Wait, creating the data..."}  height="auto"/>;
-  }
-
   return (
     <Form
       name={`${entity}Form`}
@@ -128,7 +124,7 @@ const CustomForm = ({
             >
               SAVE
             </Button>
-            <Button onClick={handleCloseModal}>CLOSE</Button>{" "}
+            <Button onClick={handleCloseModal} loading ={isLoading}>CLOSE</Button>
             {/* Trigger custom close logic */}
           </Col>
         </Row>

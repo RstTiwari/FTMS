@@ -24,48 +24,59 @@ const UpdateModule = ({ entity, form }) => {
 
     switch (entity) {
         case "customers":
-            componentToRender = <CoustomerItem form={form} />;
+            componentToRender = <CoustomerItem form={form}  entity={entity}/>;
             break;
         case "quotations":
-            componentToRender = <QuotesFormItems form={form} />;
+            componentToRender = <QuotesFormItems form={form}  entity={entity}/>;
             break;
         case "invoices":
-            componentToRender = <InvoicesFormItems form={form} />;
+            componentToRender = <InvoicesFormItems form={form} entity={entity} />;
             break;
         case "leads":
-            componentToRender = <LeadFormItem form={form} />;
+            componentToRender = <LeadFormItem form={form} entity={entity} />;
             break;
         case "challans":
-            componentToRender = <ChallanFormItem form={form} isUpdate ={true} />;
+            componentToRender = (
+              <ChallanFormItem form={form} isUpdate={true} entity={entity} />
+            );
             break;
         case "purchases":
-            componentToRender = <PurchaseFormItem form={form} isUpdate={true} />;
+            componentToRender = (
+              <PurchaseFormItem form={form} isUpdate={true} entity={entity} />
+            );
             break;
         case "vendors":
-            componentToRender = <VendorFormItem form={form} />;
+            componentToRender = <VendorFormItem form={form} entity={entity} />;
             break;
         case "expenses":
-            componentToRender = <ExpensesItem form={form} />;
+            componentToRender = <ExpensesItem form={form} entity={entity} />;
             break;
         case "products":
-            componentToRender = <ProductForm form={form} />;
+            componentToRender = <ProductForm form={form} entity={entity} />;
             break;
         case "paymentsreceived":
-            componentToRender = <PaymentFormItem form={form} isUpdate={true} />;
+            componentToRender = (
+              <PaymentFormItem form={form} isUpdate={true} entity={entity} />
+            );
             break;
         case "paymentsmade":
-            componentToRender = <PaymentMadeForm form={form} isUpdate={true} />;
+            componentToRender = (
+              <PaymentMadeForm form={form} isUpdate={true} entity={entity} />
+            );
             break;
         case "counters":
-            componentToRender = <EntityNo form={form} />;
+            componentToRender = <EntityNo form={form} entity={entity} />;
+            break;
         case "orgnizations":
-            componentToRender = <OrganizationForm form={form} />;
+            componentToRender = (
+              <OrganizationForm form={form} entity={entity} />
+            );
             break;
         case "workorders":
-            componentToRender = <WorkOrderForm form={form} />;
+            componentToRender = <WorkOrderForm form={form} entity={entity} />;
             break;
         case "user":
-            componentToRender = <UserForm form={form} />;
+            componentToRender = <UserForm form={form} entity={entity} />;
             break;
         default:
             break;
