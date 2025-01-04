@@ -11,19 +11,11 @@ import DeliveryChallanDetails from "pages/Details/DeliveryChallanDetails";
 import PaymentMade from "pages/Details/PaymentMadeDetails";
 import WorkOrderDetails from "pages/Details/WorkOderDetails";
 import UserDetails from "pages/Details/UserDetails";
-const DetailsModule = ({ entity, values, id, loading }) => {
+const DetailsModule = ({ entity, values, id, loading,closeModal }) => {
     let component = <NotFound />;
     switch (entity) {
         case "customers":
-            component = <Customer values={values} loading={loading} />;
-            break;
-        case "invoices":
-            component = <InvoiceDetails invoice={values} loading={loading} />;
-            break;
-        case "quotations":
-            component = (
-                <QuotationDetailsPage quotation={values} loading={loading} />
-            );
+            component = <Customer values={values} loading={loading} entity={entity}closeModal={closeModal} id={id} />;
             break;
         case "paymentsreceived":
             component = (
@@ -45,7 +37,7 @@ const DetailsModule = ({ entity, values, id, loading }) => {
             break;
         case "vendors":
             component = (
-                <VendorDetails entity={entity} id={id} values={values} />
+                <VendorDetails entity={entity} id={id} values={values} closeModal={closeModal} loading={loading} />
             );
             break;
         case "purchases":
@@ -56,21 +48,6 @@ const DetailsModule = ({ entity, values, id, loading }) => {
                     purchaseOrder={values}
                 />
             );
-            break;
-        case "challans":
-            component = (
-                <DeliveryChallanDetails
-                    entity={entity}
-                    id={id}
-                    deliveryChallan={values}
-                />
-            );
-            break;
-        case "workorders":
-            component = <WorkOrderDetails entity={entity} workOrder={values} />;
-            break;
-        case "user":
-            component = <UserDetails entity={entity} user={values} />;
             break;
         default:
             break;

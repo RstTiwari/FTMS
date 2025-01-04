@@ -87,6 +87,7 @@ const HeaderComponent = ({ onlyTitle = false, title, details }) => {
           <CustomForm
             entityOfModal={entity}
             closeModal={() => setShow(!show)}
+            isUpdate={false}
           />
         }
       />

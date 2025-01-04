@@ -9,6 +9,7 @@ const FormItemCol = ({
     required = false,
     labelCol,
     rules = [],
+    labelAlign="left",
     tooltip,
     readOnly,
     type,
@@ -29,7 +30,7 @@ const FormItemCol = ({
             }
             
             name={name}
-            labelAlign="left"
+            labelAlign= {labelAlign}
             rules={rules}
             labelCol={labelCol}
         

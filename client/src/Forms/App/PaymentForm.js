@@ -12,7 +12,7 @@ import {
 } from "antd";
 import FormItemCol from "components/Comman/FormItemCol";
 
-const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
+const PaymentForm = ({ form, initialValue = {}, isUpdate,entity }) => {
     const handleItemUpdate = (value, fieldName) => {
         if (fieldName === "customer") {
             form.setFieldsValue({ customer: value });
@@ -72,10 +72,11 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate }) => {
                         updateInForm={(value) => {
                             handleItemUpdate(value, "no");
                         }}
+                        entity={entity}
                         onlyShippingAddress={true}
                         preFillValue={form.getFieldValue("no")?.name}
                         type={"counters"}
-                        disabled={form.getFieldValue("no")?.name} // if value availbel mark as disabled
+                        disabled={form.getFieldValue("no")?.name}
                     />
                 </Col>
                 <Col span={24}>

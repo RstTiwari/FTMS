@@ -17,6 +17,8 @@ const UploadImage = ({
   listType = "picture-card",
   width = "100px",
   height = "100px",
+  draggerHeight ="100px",
+  draggerWidth ='100px'
 }) => {
   const [loading, setLoading] = useState(false);
   const [edit, setEdit] = useState(true);
@@ -106,12 +108,12 @@ const UploadImage = ({
   return (
     <>
       {edit ? (
-        <Row justify={"end"}>
+        <Row justify={"end"} align={"middle"}>
           <Dragger
             onChange={handleChange}
             showUploadList={false}
             listType={listType}
-            style={{ width: width, height: height }}
+            style={{ width:draggerWidth , maxHeight: draggerHeight }}
           >
             {imageUrl ? (
               <img
@@ -131,7 +133,7 @@ const UploadImage = ({
           </Dragger>
         </Row>
       ) : (
-        <Row justify="end" align={"middle"}>
+        <Row justify="start" align={""}>
           <Image
             alt="organization"
             src={preFillValue}

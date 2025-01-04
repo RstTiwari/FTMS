@@ -1,21 +1,16 @@
 import React, { useEffect, useState } from "react";
 import {
-  Form,
-  Input,
-  Button,
-  Row,
   Collapse,
-  Space,
-  InputNumber,
-  Col,
   Select,
-  Card,
+  Tabs,Form,Space,InputNumber,Button,Row,
 } from "antd";
 import FormItemCol from "components/Comman/FormItemCol";
-import Taglabel from "components/Comman/Taglabel";
+import TabPane from "antd/es/tabs/TabPane";
+import { productCategory } from "../../Data/ProductData";
 import CustomModel from "components/CustomModal";
 import CoustomButton from "components/Comman/CoustomButton";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined,PlusOutlined } from "@ant-design/icons";
+
 
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -30,6 +25,7 @@ const ProductForm = ({ form, onFormFinish, initalValue, isModal }) => {
   };
 
   const handelItemUpdate = (value, fieldName, row, subField) => {
+    console.log(value,fieldName,"=value")
     let subFieldValue = form.getFieldValue(subField) || [];
     let temChange = subFieldValue[row] || {};
     if (fieldName === "code") {
@@ -41,21 +37,19 @@ const ProductForm = ({ form, onFormFinish, initalValue, isModal }) => {
       temChange["product"] = value?.details?._id;
     } else if (fieldName === "qty") {
       temChange["qty"] = value;
+    } else if (fieldName === "transactionType") {
+      form.setFieldsValue({ transactionType: value });
     } else if (fieldName === "vendor") {
       return form.setFieldsValue({ vendor: value });
     }
     subFieldValue[row] = temChange;
     form.setFieldsValue({ [subField]: subFieldValue });
   };
+  
   useEffect(() => {
-    const fieldsToCheck = ["components", "parts", "hardwares", "accessories"];
-    fieldsToCheck.forEach((field) => {
-      const values = form.getFieldValue(field);
-      if (!values || values.length === 0) {
-        form.setFieldsValue({ [field]: [{ product: "", qty: 0 }] });
-      }
-    });
+  
   }, []);
+
   const renderFormList = (label, fieldName, buttonName) => (
     <Form.List name={fieldName}>
       {(fields, { add, remove }) => (
@@ -115,11 +109,20 @@ const ProductForm = ({ form, onFormFinish, initalValue, isModal }) => {
             </Space>
           ))}
           {/* Always show the Add button first */}
-          <CoustomButton
-            onClick={() => add()}
-            text={`New ${buttonName}`}
-            details={true}
-          />
+          <Row justify="start">
+            <Button
+              type="link"
+              style={{
+                color: "#22b378",
+              }}
+              onClick={() => add()}
+              details={true}
+              withIcon={true}
+              icon={<PlusOutlined />}
+            >
+              Add Component Product
+            </Button>
+          </Row>
         </>
       )}
     </Form.List>
@@ -127,59 +130,148 @@ const ProductForm = ({ form, onFormFinish, initalValue, isModal }) => {
 
   return (
     <div>
-      {/* Common fields for all categories */}
-      <FormItemCol
-        labelAlign="left"
-        labelCol={{ span: isModal ? 18 : 8 }}
-        label=" Item Type"
-        name="itemType"
-        type={"itemType"}
-        width={"30vw"}
-        updateInForm={(value) => handelItemUpdate(value, "itemType")}
-        preFillValue={form.getFieldValue("itemType") || "product"}
-      />
+      <Tabs>
+        <TabPane tab="General Info" key={1}>
+          <FormItemCol
+            labelAlign="left"
+            labelCol={{ span: isModal ? 18 : 8 }}
+            label=" Item Type"
+            name="itemType"
+            type={"option"}
+            required={true}
+            width={"30vw"}
+            updateInForm={(value) => handelItemUpdate(value, "itemType")}
+            preFillValue={form.getFieldValue("itemType") || "product"}
+            options={productCategory}
+          />
 
-      <FormItemCol
-        label=" Item Code"
-        labelAlign="left"
-        labelCol={{ span: isModal ? 18 : 8 }}
-        name="code"
-        type={"select"}
-        entity={" Item Code"}
-        width={"30vw"}
-        entityName={"product"}
-        updateInForm={(value) => handelItemUpdate(value, "code")}
-        preFillValue={form.getFieldValue("code")}
-      />
-      <FormItemCol
-        label=" Item Name"
-        labelAlign="left"
-        required={true}
-        width={"30vw"}
-        labelCol={{ span: isModal ? 18 : 8 }}
-        name="name"
-        type={"input"}
-        rules={[
-          {
-            required: true,
-            message: "Please input the product name!",
-          },
-        ]}
-      />
-      <FormItemCol
-        labelAlign="left"
-        labelCol={{ span: isModal ? 18 : 8 }}
-        label="Selling Price"
-        name="rate"
-        width={"30vw"}
-        required={itemType === "product" ? true : false}
-        rules={[
-          {
-            required: itemType === "product" ? true : false,
-            message: "Please input the product price!",
-          },
-        ]}
-      />
+          <FormItemCol
+            label=" Item Code"
+            labelAlign="left"
+            labelCol={{ span: 8 }}
+            name="code"
+            type={"counters"}
+            entity={" Item Code"}
+            required={true}
+            width={"30vw"}
+            entityName={"product"}
+            updateInForm={(value) => handelItemUpdate(value, "code")}
+            preFillValue={form.getFieldValue("code")}
+          />
+          <FormItemCol
+            label=" Item Name"
+            labelAlign="left"
+            required={true}
+            width={"30vw"}
+            labelCol={{ span: isModal ? 18 : 8 }}
+            name="name"
+            type={"input"}
+            rules={[
+              {
+                required: true,
+                message: "Please input the product name!",
+              },
+            ]}
+          />
+          <FormItemCol
+            labelAlign="left"
+            labelCol={{ span: isModal ? 18 : 8 }}
+            label=" Transaction Type"
+            name="transactionType"
+            type={"option"}
+            required={true}
+            width={"30vw"}
+            updateInForm={(value) => handelItemUpdate(value, "transactionType")}
+            preFillValue={form.getFieldValue("transactionType") || "sale"}
+            options={[
+              {
+                label: "SALE",
+                value: "sale",
+              },
+              {
+                label: "PURCHASE",
+                value: "purchase",
+              },
+              {
+                label: "BOTH",
+                value: "both",
+              },
+            ]}
+          />
+          <FormItemCol
+            labelAlign="left"
+            labelCol={{ span: isModal ? 18 : 8 }}
+            label="Selling Price"
+            name="rate"
+            width={"30vw"}
+            required={itemType === "product" ? true : false}
+            rules={[
+              {
+                required: itemType === "product" ? true : false,
+                message: "Please input the product price!",
+              },
+            ]}
+          />
+          <FormItemCol
+            labelAlign="left"
+            labelCol={{ span: isModal ? 18 : 8 }}
+            label="Buying Price"
+            name="purchaseRate"
+            width={"30vw"}
+          />
+          <FormItemCol
+            labelAlign="left"
+            labelCol={{ span: isModal ? 18 : 8 }}
+            label="HSN CODE"
+            name="hsnCode"
+            type={"input"}
+            width={"30vw"}
+          />
+
+          <FormItemCol
+            labelAlign="left"
+            labelCol={{ span: isModal ? 18 : 8 }}
+            label=" Item Image"
+            name="image"
+            type={"image"}
+            width={"30vw"}
+            preFillValue={form.getFieldValue("image")}
+            updateImageInForm={handleImageUpdate}
+            draggerWidth={"400px"}
+          />
+        </TabPane>
+
+        {itemType === "bill_of_material" && (
+          <TabPane tab="Bill Of Material" key={2}>
+            {renderFormList("Components", "components", "Component")}
+          </TabPane>
+        )}
+        <TabPane tab="Other Details" key={3}>
+          <FormItemCol
+            label={"Supplying Vendor"}
+            name={"vendor"}
+            labelCol={{ span: isModal ? 18 : 8 }}
+            tooltip={"Vendor You Get Part Manufacture"}
+            entity={"vendors"}
+            entityName={"Vendor"}
+            fieldName={"name"}
+            type={"modal"}
+            width={"30vw"}
+            preFillValue={form.getFieldValue("vendor")?.name||""}
+            updateInForm={(value) => {
+              handelItemUpdate(value, "vendor");
+            }}
+          />
+          <FormItemCol
+            label={"Item Dimension"}
+            name={"dimension"}
+            labelCol={{ span: isModal ? 18 : 8 }}
+            tooltip={"length width and thickness of Item"}
+            width={"30vw"}
+          />
+        </TabPane>
+
+        {/* 
 
       <FormItemCol
         labelAlign="left"
@@ -196,36 +288,14 @@ const ProductForm = ({ form, onFormFinish, initalValue, isModal }) => {
         type={"input"}
         width={"30vw"}
       />
-      <FormItemCol
-        label={"Item Dimension"}
-        name={"dimension"}
-        labelCol={{ span: isModal ? 18 : 8 }}
-        tooltip={"length width and thickness of Item"}
-        width={"30vw"}
-      />
+    */}
 
-      {/* Conditionally render Selling Price based on itemType */}
+        {/* Conditionally render Selling Price based on itemType */}
 
-      {/**Conditonal rendering of the part Filed */}
+        {/**Conditonal rendering of the part Filed */}
 
-      <>
-        <FormItemCol
-          label={"Supplying Vendor"}
-          name={"vendor"}
-          labelCol={{ span: isModal ? 18 : 8 }}
-          tooltip={"Vendor You Get Part Manufacture"}
-          entity={"vendors"}
-          entityName={"Vendor"}
-          fieldName={"name"}
-          type={"model"}
-          width={"30vw"}
-          updateInForm={(value) => {
-            handelItemUpdate(value, "vendor");
-          }}
-          hidden={
-            itemType === "product" || itemType === "assembly" ? true : false
-          }
-        />
+        {/* <>
+   
       </>
 
       <FormItemCol
@@ -237,10 +307,10 @@ const ProductForm = ({ form, onFormFinish, initalValue, isModal }) => {
         width={"30vw"}
         preFillValue={form.getFieldValue("image")}
         updateImageInForm={handleImageUpdate}
-      />
+      /> */}
 
-      {/* Conditional rendering for multi_assembly and assembly categories */}
-      {itemType === "product" && (
+        {/* Conditional rendering for multi_assembly and assembly categories */}
+        {/* {itemType === "product" && (
         <Col xs={24} sm={24} md={24} xl={12} lg={12}>
           <Collapse>
             <Panel header={<Taglabel text={"Add Multilevel Field"} key={1} />}>
@@ -249,7 +319,6 @@ const ProductForm = ({ form, onFormFinish, initalValue, isModal }) => {
                   key="components"
                   header={<Taglabel text={"Assembly Componets"} />}
                 >
-                  {renderFormList("Components", "components", "Component")}
                 </Panel>
 
                 <Panel key="parts" header={<Taglabel text={"Parts"} />}>
@@ -279,7 +348,8 @@ const ProductForm = ({ form, onFormFinish, initalValue, isModal }) => {
             {renderFormList("Hardware", "hardwares")}
           </Panel>
         </Collapse>
-      )}
+      )} */}
+      </Tabs>
     </div>
   );
 };

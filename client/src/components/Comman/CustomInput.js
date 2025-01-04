@@ -26,7 +26,7 @@ const CustomInput = ({
     preFillValue,
     ...restProps
 }) => {
-    const { onChange, updateInForm, disabled, form, ...otherProps } = restProps;
+    const { onChange, updateInForm, disabled, form, options,...otherProps } = restProps;
     const [date, setDate] = useState("");
     //Convert preFillValue to dayjs object if it's a date
     useEffect(() => {
@@ -60,15 +60,16 @@ const CustomInput = ({
                     style={{ width: width }}
                 />
             );
-        case "itemType":
+        case "option":
             return (
-                <ProductCategory
-                    entity={entity}
-                    fieldName={fieldName}
-                    width={width}
-                    preFillValue={preFillValue}
-                    updateInForm={updateInForm}
-                />
+              <ProductCategory
+                entity={entity}
+                fieldName={fieldName}
+                width={width}
+                preFillValue={preFillValue}
+                updateInForm={updateInForm}
+                options={options}
+              />
             );
         case "date":
             return (
@@ -156,6 +157,7 @@ const CustomInput = ({
                     {...restProps}
                     preFillValue={preFillValue}
                     style={{ width: width }}
+
                 />
             );
         case "checkbox":

@@ -137,7 +137,7 @@ const UpdateCustomForm = ({
               type="primary"
               style={{ backgroundColor: "#22b378", cursor: "pointer" }}
             >
-              SAVE
+              UPDATE
             </Button>
             <Button onClick={handleCloseModal}>CLOSE</Button>{" "}
             {/* Trigger custom close logic */}

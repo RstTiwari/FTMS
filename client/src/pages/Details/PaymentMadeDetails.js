@@ -8,9 +8,6 @@ const { Title } = Typography;
 const PaymentMade = ({ values }) => {
     return (
         <Card bordered={false}>
-            <Title level={3} style={{ textAlign: "center" }}>
-                PAYMENT MADE
-            </Title>
             <Descriptions column={1} bordered>
                 <Descriptions.Item label="Transaction No">
                     {values?.no || ""}

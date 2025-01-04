@@ -1,108 +1,83 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Form, message, Spin, Divider } from "antd";
-import PaymentForm from "../../Forms/App/PaymentForm";
+import { Form, message, Spin, Divider, Row, Col, Button } from "antd";
 import useInitialFormValues from "Hook/useIntialFormValues";
 import useFormActions from "Hook/useFormAction";
 import PageLoader from "pages/PageLoader";
-import Header from "components/Header";
-import FormActionButtons from "components/Comman/FormActionButton";
 import CoustomFormItem from "module/Create/CreateModule";
+import { fetchTitleName } from "Helper/PageTitle";
+const RecordPayment = ({ entity, id, tenantId, closeModal }) => {
+  const [form] = Form.useForm();
+  let preFillEntity = entity === "paymentsmade" ? "vendors" : "customers";
+  const { initialValues, isFetching, fetchInitialValues } =
+    useInitialFormValues(preFillEntity, "get", id);
+  const { isLoading, error, handleFormSubmit } = useFormActions(
+    entity,
+    false,
+    id,
+    closeModal
+  );
 
-const RecordPayment = () => {
-    const [form] = Form.useForm();
-    const { tenantId, entity, id } = useParams();
-    let preFillEntity = entity === "paymentsmade" ? "vendors" : "customers";
-    const { initialValues, isFetching, fetchInitialValues } =
-        useInitialFormValues(preFillEntity, "get", id);
-    const { isLoading, error, handleFormSubmit } = useFormActions(
-        entity,
-        false,
-        id
-    );
+  useEffect(() => {
+    fetchInitialValues();
+  }, []);
 
-    useEffect(() => {
-        fetchInitialValues();
-    }, []);
-
-    useEffect(() => {
-        let preFilledkey =
-            entity === "paymentsreceived" ? "customer" : "vendor";
-        if (initialValues) {
-            const { name, _id } = initialValues;
-            form.setFieldsValue({ [preFilledkey]: { _id: _id, name: name } });
-        }
-    }, [form, initialValues]);
-    console.log(form.getFieldsValue(), "---");
-    if (isFetching) {
-        return (
-            <PageLoader isLoading={true} text={"Fetching payment Records"} />
-        );
+  useEffect(() => {
+    let preFilledkey = entity === "paymentsreceived" ? "customer" : "vendor";
+    if (initialValues) {
+      const { name, _id } = initialValues;
+      form.setFieldsValue({ [preFilledkey]: { _id: _id, name: name } });
     }
+  }, [form, initialValues]);
 
-    if (isLoading) {
-        return <PageLoader isLoading={true} text="Updating Payment Hold on" />;
-    }
+  if (isFetching) {
+    return <PageLoader isLoading={true} text={"Fetching payment Records"} />;
+  }
 
-    const handleFormFinish = async (values) => {
-        handleFormSubmit(values);
-    };
+  if (isLoading) {
+    return <PageLoader isLoading={true} text="Updating Payment Hold on" />;
+  }
 
-    return (
-        <div
-            style={{
-                display: "flex",
-                flexDirection: "column",
-                height: "100vh",
-                backgroundColor: "#ffffff",
-                borderRadius: "1rem",
-            }}
-        >
-            <Divider orientation="center">
-                <Header onlyTitle={true} title={"RECORD NEW PAYMENT"} />
-            </Divider>
-            <Form
-                name={`${entity}Form`}
-                form={form}
-                initialValues={initialValues}
-                onFinish={handleFormFinish}
-                requiredMark={false}
-                style={{
-                    flexGrow: 1,
-                    display: "flex",
-                    flexDirection: "column",
-                }}
-            >
-                <div
-                    style={{
-                        flexGrow: 1,
-                        overflowY: "auto",
-                        padding: "10px ",
-                    }}
-                >
-                    <CoustomFormItem
-                        entity={entity}
-                        isUpdate={false}
-                        form={form}
-                    />
-                </div>
-                <div
-                    style={{
-                        position: "sticky",
-                        bottom: 0,
-                        left: 0,
-                        backgroundColor: "#ffffff",
-                        padding: "5px",
-                        boxShadow: "0 -2px 5px rgba(0, 0, 0, 0.1)",
-                        width: "100%",
-                        zIndex: 1000000,
-                    }}
-                >
-                    <FormActionButtons isUpdating={false} />
-                </div>
-            </Form>
-        </div>
-    );
+  const handleFormFinish = async (values) => {
+    handleFormSubmit(values);
+  };
+  const handleClose = () => {
+    form.resetFields(); // Reset form fields when closing the modal
+    closeModal(); // Trigger custom close logic
+  };
+
+  return (
+    <Form
+      name={`${entity}Form`}
+      form={form}
+      initialValues={initialValues}
+      onFinish={handleFormFinish}
+      requiredMark={false}
+      style={{
+        flexGrow: 1,
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <Row align={"middle"}>
+        <Col span={12}>
+          <h3>{`ADD NEW ${fetchTitleName(entity).toUpperCase()}`}</h3>
+        </Col>
+        <Col span={12} style={{ textAlign: "right" }}>
+          <Button
+            htmlType="submit"
+            type="primary"
+            style={{ backgroundColor: "#22b378", cursor: "pointer" }}
+          >
+            SAVE
+          </Button>
+          <Button onClick={handleClose}>CLOSE</Button>{" "}
+          {/* Trigger custom close logic */}
+        </Col>
+      </Row>
+
+      <CoustomFormItem entity={entity} isUpdate={false} form={form} />
+    </Form>
+  );
 };
 
 export default RecordPayment;

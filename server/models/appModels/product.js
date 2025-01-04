@@ -43,10 +43,7 @@ const productSchema = new mongoose.Schema(
             ref: "vendors",
             autopopulate: true,
         },
-        components: [referenceWithQuantitySchema], // Array of product references with quantity
-        parts: [referenceWithQuantitySchema], // Array of product references with quantity
-        hardwares: [referenceWithQuantitySchema], // Array of product references with quantity
-        accessories: [referenceWithQuantitySchema], // Array of product references with quantity
+        components: [referenceWithQuantitySchema],
 
         tenantId: String, // Optional field for multi-tenancy
     },

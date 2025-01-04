@@ -7,13 +7,12 @@ import FormActionButtons from "./FormActionButton";
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import PageLoader from "pages/PageLoader";
-
-const CustomInputWithModal = ({ preFillValue,updateInForm,width }) => {
+import { fetchTitleName } from "Helper/PageTitle";
+const CustomInputWithModal = ({ preFillValue,updateInForm,width ,entity}) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [inputValue, setInputValue] = useState("");
     const [prefix, setPrefix] = useState("");
     const [nextNumber, setNextNumber] = useState("");
-    const { tenantId, entity } = useParams();
     const { appApiCall } = useAuth();
     const [form] = Form.useForm();
 
@@ -92,7 +91,7 @@ const CustomInputWithModal = ({ preFillValue,updateInForm,width }) => {
             <Input
               value={inputValue}
               onChange={handleInputChange}
-              style={{ paddingRight: "30px", width: "100%" }} // Adjust padding-right to accommodate button width
+              style={{ paddingRight: "30px", width: "100%" }} 
             />
           ) : (
             <Skeleton.Input />
@@ -116,11 +115,10 @@ const CustomInputWithModal = ({ preFillValue,updateInForm,width }) => {
         </Row>
 
         <Modal
-          title={`CONFIGURE YOUR ${entity.toLocaleUpperCase()} NUMBER PREFERENCES`}
           open={modalVisible}
           onOk={handleModalOk}
-          onCancel={handleModalCancel}
           footer={null}
+          closeIcon={false}
           width={"40vw"}
           style={{ padding: 20 }}
           bodyStyle={{
@@ -128,8 +126,24 @@ const CustomInputWithModal = ({ preFillValue,updateInForm,width }) => {
           }}
         >
           <Form form={form} onFinish={handleFormFinish} initialValues={{}}>
+            <Row align={"middle"}>
+              <Col span={12}>
+                <h3>{`CONFIGURE ${fetchTitleName(
+                  entity
+                ).toUpperCase()} NO`}</h3>
+              </Col>
+              <Col span={12} style={{ textAlign: "right" }}>
+                <Button
+                  htmlType="submit"
+                  type="primary"
+                  style={{ backgroundColor: "#22b378", cursor: "pointer" }}
+                >
+                  SAVE
+                </Button>
+                <Button onClick={handleModalCancel}>CLOSE</Button> 
+              </Col>
+            </Row>
             <Counters form={form} />
-            <FormActionButtons />
           </Form>
         </Modal>
       </div>

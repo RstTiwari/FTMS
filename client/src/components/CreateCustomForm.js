@@ -101,7 +101,7 @@ const CustomForm = ({
   },[form])
 
   if (isLoading) {
-    return <PageLoader isLoading={true} text={"Wait, creating the data..."} />;
+    return <PageLoader isLoading={true} text={"Wait, creating the data..."}  height="auto"/>;
   }
 
   return (
@@ -114,7 +114,7 @@ const CustomForm = ({
       onValuesChange={handleValuesChange} // Track form changes
       validateTrigger={unfilledField}
       requiredMark={false}
-      layout={isModal ? "vertical" : "horizontal"}
+      layout={"horizontal"}
     >
         <Row align={"middle"}>
           <Col span={12}>
