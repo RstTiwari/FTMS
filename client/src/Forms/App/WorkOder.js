@@ -17,7 +17,7 @@ import Taglabel from "components/Comman/Taglabel";
 import CoustomButton from "components/Comman/CoustomButton";
 import CustomFormTableList from "./CustomFormTableList";
 
-const WorkOrderForm = ({ form }) => {
+const WorkOrderForm = ({ form, entity }) => {
   const handleItemsUpdate = (value, fieldName, rowName) => {
     const items = form.getFieldValue("items");
     let tempObj = items[rowName];
@@ -56,6 +56,7 @@ const WorkOrderForm = ({ form }) => {
           form.setFieldsValue({ no: value });
         }}
         preFillValue={form.getFieldValue("no")}
+        entity={entity}
       />
       <FormItemCol
         label={"Work Order Type"}
@@ -314,19 +315,26 @@ const WorkOrderForm = ({ form }) => {
 
               {/* Button to add new item */}
               <Row justify="start">
-                <CoustomButton
-                  text={"Add Item"}
+                <Button
+                  type="link"
+                  style={{
+                    color: "#22b378",
+                  }}
                   onClick={() => {
                     subOpt.add({
-                      product: {
-                        code: "",
-                        name: "",
-                      },
+                      description: "",
                       qty: 1,
+                      hsnCode: "",
+                      rate: 0,
+                      discountPercent: 0,
+                      gstPercent: 0,
                     });
                   }}
+                  details={true}
                   withIcon={true}
-                />
+                >
+                  ADD NEW ROW
+                </Button>
               </Row>
             </div>
           )}

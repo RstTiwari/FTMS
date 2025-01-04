@@ -27,32 +27,42 @@ const CoustomFormItem = ({ entity, form, isModal, isUpdate }) => {
       componentToRender = <CoustomerItem form={form} isModal={isModal} />;
       break;
     case "quotations":
-      componentToRender = <QuotesFormItems form={form} />;
+      componentToRender = <QuotesFormItems form={form}  entity={entity}/>;
       break;
     case "invoices":
-      componentToRender = <InvoicesFormItems form={form} />;
+      componentToRender = <InvoicesFormItems form={form} entity={entity} />;
       break;
     case "leads":
-      componentToRender = <LeadFormItem form={form} />;
+      componentToRender = <LeadFormItem form={form}  entity={entity}/>;
       break;
     case "challans":
-      componentToRender = <ChallanFormItem form={form} />;
+      componentToRender = <ChallanFormItem form={form} entity={entity} />;
       break;
     case "purchases":
-      componentToRender = <PurchaseFormItem form={form} isCreate={true} />;
+      componentToRender = (
+        <PurchaseFormItem form={form} isCreate={true} entity={entity} />
+      );
       break;
     case "vendors":
-      componentToRender = <VendorFormItem form={form} isModal={isModal} />;
+      componentToRender = (
+        <VendorFormItem form={form} isModal={isModal} entity={entity} />
+      );
       break;
     case "expenses":
-      componentToRender = <ExpensesItem form={form} />;
+      componentToRender = <ExpensesItem form={form} entity={entity} />;
       break;
     case "products":
-      componentToRender = <ProductForm form={form} isModal={isModal} />;
+      componentToRender = (
+        <ProductForm form={form} isModal={isModal} entity={entity} />
+      );
       break;
     case "paymentsreceived":
       componentToRender = (
-        <PaymentFormItem form={form} isUpdate={isUpdate} entity={entity} />
+        <PaymentFormItem
+          form={form}
+          isUpdate={isUpdate}
+          entity={entity}
+        />
       );
       break;
     case "paymentsmade":
@@ -61,15 +71,17 @@ const CoustomFormItem = ({ entity, form, isModal, isUpdate }) => {
       );
       break;
     case "counters":
-      componentToRender = <EntityNo form={form} />;
+      componentToRender = <EntityNo form={form} entity={entity} />;
+
+      break;
     case "organization":
-      componentToRender = <OrganizationForm form={form} />;
+      componentToRender = <OrganizationForm form={form} entity={entity} />;
       break;
     case "workorders":
-      componentToRender = <WorkOrderForm form={form} />;
+      componentToRender = <WorkOrderForm form={form} entity={entity} />;
       break;
     case "user":
-      componentToRender = <SubUserForm form={form} />;
+      componentToRender = <SubUserForm form={form} entity={entity} />;
       break;
     default:
       break;

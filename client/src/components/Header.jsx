@@ -12,7 +12,6 @@ const HeaderComponent = ({ onlyTitle = false, title, details }) => {
   const [show, setShow] = useState(false);
   const handelAddNewClick = () => {
     setShow(true);
-    // navigate(`/app/${tenantId}/${entity}/create`);
   };
   return (
     <>

@@ -15,7 +15,7 @@ import { DeleteOutlined,PlusOutlined } from "@ant-design/icons";
 const { Panel } = Collapse;
 const { Option } = Select;
 
-const ProductForm = ({ form, onFormFinish, initalValue, isModal }) => {
+const ProductForm = ({ form, onFormFinish, initalValue, isModal,entity }) => {
   const [itemType, setItemType] = useState(
     form.getFieldValue("itemType") || "product"
   );
@@ -151,7 +151,7 @@ const ProductForm = ({ form, onFormFinish, initalValue, isModal }) => {
             labelCol={{ span: 8 }}
             name="code"
             type={"counters"}
-            entity={" Item Code"}
+            entity={entity}
             required={true}
             width={"30vw"}
             entityName={"product"}

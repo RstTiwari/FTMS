@@ -4,7 +4,7 @@ import FormItemCol from "components/Comman/FormItemCol";
 import CustomFormTableList from "./CustomFormTableList";
 import PaymentLayoutComponent from "./PaymentLayoutComponent";
 
-const QuotationForm = ({ form }) => {
+const QuotationForm = ({ form,entity }) => {
 
     const handleItemsUpdate = (value, fieldName, rowName) => {
         const items = form.getFieldValue("items");
@@ -116,6 +116,7 @@ const QuotationForm = ({ form }) => {
               message: "Please Provide Quote No",
             },
           ]}
+          entity={entity}
           updateInForm={(value) => handleItemsUpdate(value, "no")}
           preFillValue={form.getFieldValue("no")}
         />

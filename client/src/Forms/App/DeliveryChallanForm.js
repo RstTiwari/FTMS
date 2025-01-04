@@ -9,7 +9,7 @@ import { Row,Col,Checkbox ,Form} from "antd";
 import Taglabel from "components/Comman/Taglabel";
 import AddressDetails from "components/Comman/AddressDetails";
 
-const DeliveryChallan = ({ form,isUpdate }) => {
+const DeliveryChallan = ({ form,isUpdate,entity }) => {
   const isLaptop = useMediaQuery("(min-width:1000px)");
    const [isCustomerChecked, setIsCustomerChecked] = useState(false);
    const [isVendorChecked, setIsVendorChecked] = useState(false);
@@ -141,6 +141,7 @@ const DeliveryChallan = ({ form,isUpdate }) => {
             message: "Please Provide Challan No",
           },
         ]}
+        entity={entity}
         updateInForm={(value) => handleItemUpdate(value, "no")}
         preFillValue={form.getFieldValue("no")}
         width={"30vw"}

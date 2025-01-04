@@ -24,7 +24,7 @@ import TaxPercent from "components/Comman/TaxPercent";
 import CustomFormTableList from "./CustomFormTableList";
 import PaymentLayoutComponent from "./PaymentLayoutComponent";
 
-const QuotationForm = ({ form }) => {
+const QuotationForm = ({ form,entity }) => {
     const handleItemsUpdate = (value, filedName, rowName) => {
         const items = form.getFieldValue("items");
         let temObj = items[rowName];
@@ -153,6 +153,7 @@ const QuotationForm = ({ form }) => {
           updateInForm={(value) => {
             handleItemsUpdate(value, "no");
           }}
+          entity={entity}
           preFillValue={form.getFieldValue("no")}
         />
         <FormItemCol

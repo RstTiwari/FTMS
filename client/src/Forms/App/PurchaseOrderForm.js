@@ -28,7 +28,7 @@ import TaxPercent from "components/Comman/TaxPercent";
 import CustomFormTableList from "./CustomFormTableList";
 import PaymentLayoutComponent from "./PaymentLayoutComponent";
 
-const PurchaseOrder = ({ form, value, disabled, isUpdate }) => {
+const PurchaseOrder = ({ form, value, disabled, isUpdate,entity }) => {
   const [isOrganizationChecked, setIsOrganizationChecked] = useState(false);
   const [isCustomerChecked, setIsCustomerChecked] = useState(false);
   const [isVendorChecked, setIsVendorChecked] = useState(false);
@@ -217,6 +217,7 @@ const PurchaseOrder = ({ form, value, disabled, isUpdate }) => {
         updateInForm={(value) => {
           handleItemsUpdate(value, "no");
         }}
+        entity={entity}
         preFillValue={form.getFieldValue("no")}
       />
       <FormItemCol
