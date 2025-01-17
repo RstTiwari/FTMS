@@ -21,6 +21,7 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import CoustomButton from "components/Comman/CoustomButton";
+import SearchProduct from "components/SearchProduct";
 
 const CustomFormTableList = ({ form }) => {
     const { entity, tenantId } = useParams();
@@ -211,8 +212,6 @@ const CustomFormTableList = ({ form }) => {
         ) : null;
     };
 
-    // Calculate the dynamic span for all columns to ensure total equals 24
-    // Base spans for fixed columns
     const initialBaseSpans = {
         itemDetails: 11, // Initial span for ITEM DETAILS
         qty: 3,
@@ -284,10 +283,7 @@ const CustomFormTableList = ({ form }) => {
             setSelectedColumns(values);
         }
     };
-    // Options for optional columns
-    // Function to handle column selection
     const handleSelect = async (value, option) => {
-        // lets update the clicked column
         await updateColumnStatus(value, true);
         setSelectedColumns([...selectedColumns, value]);
     };
@@ -539,7 +535,7 @@ const CustomFormTableList = ({ form }) => {
                             },
                           ]}
                         >
-                          <CustomModel
+                          <SearchProduct
                             entity={"products"}
                             fieldName={"name"}
                             updateInForm={(value) => {
@@ -548,6 +544,8 @@ const CustomFormTableList = ({ form }) => {
                             preFillValue={
                               form.getFieldValue("items")?.[name]?.description
                             }
+                            form={form}
+                            rowName={name}
                           />
                         </Form.Item>
                       </Col>
@@ -779,7 +777,7 @@ const CustomFormTableList = ({ form }) => {
                     details={true}
                     withIcon={true}
                   >
-                    ADD  NEW ROW
+                    ADD NEW ROW
                   </Button>
                 </Row>
               </div>
