@@ -65,7 +65,11 @@ const CustomInputWithModal = ({ preFillValue,updateInForm,width ,entity}) => {
             setNextNumber(nextNumber);
             form.setFieldsValue({ prefix, nextNumber });
             setInputValue(nextNumber);
+            if(entity === "products"){
+              updateInForm(`${prefix}-${nextNumber}`)
+            }else{
             updateInForm(nextNumber);
+            }
         } else {
             return NotificationHandler.error(response.message);
         }

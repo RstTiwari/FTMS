@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Modal, Select, Divider, Button, Row, Space } from "antd";
+import { Modal, Select, Divider, Button, Row, Space, AutoComplete } from "antd";
 import { useAuth } from "state/AuthProvider";
 import CoustomButton from "./Comman/CoustomButton";
 import CustomForm from "./CreateCustomForm";
@@ -106,9 +106,16 @@ const CustomModel = ({
     }
   };
 
-
-  const handleChange = (value, label) => {
-         setValue(value);
+  const handleChange = (value)=>{
+    setValue(value);
+    return updateInForm({
+      details: {
+        name: value,
+      },
+    });
+  }
+  const handleSelect = (value, label) => {
+         setValue(label.label);
          if (entity === "customers") {
            if (!initialRender) {
              setInitialRender(true);
@@ -176,8 +183,8 @@ const CustomModel = ({
 
   const handleModalClose = (result) => {
     fetchUpdatedOptions(); // Fetch updated options after adding new
-    handleChange(result?._id);
-    setValue(result?._id);
+    handleSelect(result?._id);
+    setValue(result?.name);
     setOpen(false);
   };
 
@@ -188,50 +195,95 @@ const CustomModel = ({
     }
   }, [preFillValue]);
 
+
   return (
     <>
-      <Select
-        options={options}
-        value={value || ""}
-        disabled={disabled}
-        onClick={handelClick}
-        showSearch
-        style={{ width: width }}
-        getPopupContainer={(trigger) => document.body}
-        dropdownStyle={{ position: "fixed", zIndex: 1000 }}
-        filterOption={(input, option) =>
-          (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-        }
-        dropdownRender={(menu) => (
-          <>
-            {!isLoading ? (
-              <>
-                <div style={{ maxHeight: "200px", overflow: "auto" }}>
-                  {menu}
+      {entity === "products" ? (
+        <AutoComplete
+          options={options}
+          value={value || ""}
+          disabled={disabled}
+          onClick={handelClick}
+          showSearch
+          style={{ width: width }}
+          getPopupContainer={(trigger) => document.body}
+          dropdownStyle={{ position: "fixed", zIndex: 1000 }}
+          filterOption={(input, option) =>
+            (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+          }
+          dropdownRender={(menu) => (
+            <>
+              {!isLoading ? (
+                <>
+                  <div style={{ maxHeight: "200px", overflow: "auto" }}>
+                    {menu}
+                  </div>
+                  <Divider style={{ margin: "8px 0" }} />
+                  <Space style={{ padding: "0 8px 4px" }}>
+                    <CoustomButton
+                      text={"ADD NEW"}
+                      details={true}
+                      onClick={openModal}
+                    />
+                  </Space>
+                </>
+              ) : (
+                <div style={{ textAlign: "center", padding: "20px" }}>
+                  <LoadingOutlined />
                 </div>
-                <Divider style={{ margin: "8px 0" }} />
-                <Space style={{ padding: "0 8px 4px" }}>
-                  <CoustomButton
-                    text={"ADD NEW"}
-                    details={true}
-                    onClick={openModal}
-                  />
-                </Space>
-              </>
-            ) : (
-              <div style={{ textAlign: "center", padding: "20px" }}>
-                <LoadingOutlined />
-              </div>
-            )}
-          </>
-        )}
-        onChange={handleChange}
-        onDropdownVisibleChange={(open) => {
-          setDropdownVisible(open);
-        }}
-      />
+              )}
+            </>
+          )}
+          onSelect={handleSelect}
+          onChange={handleChange}
+          onDropdownVisibleChange={(open) => {
+            setDropdownVisible(open);
+          }}
+        />
+      ) : (
+        <Select
+          options={options}
+          value={value || ""}
+          disabled={disabled}
+          onClick={handelClick}
+          showSearch
+          style={{ width: width }}
+          getPopupContainer={(trigger) => document.body}
+          dropdownStyle={{ position: "fixed", zIndex: 1000 }}
+          filterOption={(input, option) =>
+            (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+          }
+          dropdownRender={(menu) => (
+            <>
+              {!isLoading ? (
+                <>
+                  <div style={{ maxHeight: "200px", overflow: "auto" }}>
+                    {menu}
+                  </div>
+                  <Divider style={{ margin: "8px 0" }} />
+                  <Space style={{ padding: "0 8px 4px" }}>
+                    <CoustomButton
+                      text={"ADD NEW"}
+                      details={true}
+                      onClick={openModal}
+                    />
+                  </Space>
+                </>
+              ) : (
+                <div style={{ textAlign: "center", padding: "20px" }}>
+                  <LoadingOutlined />
+                </div>
+              )}
+            </>
+          )}
+          onSelect={handleSelect}
+          onChange={handleChange}
+          onDropdownVisibleChange={(open) => {
+            setDropdownVisible(open);
+          }}
+        />
+      )}
 
-      {/* Customer/Vendor Address Details */}
       {/* Add other components as needed */}
       <CustomDialog
         entity={entity}

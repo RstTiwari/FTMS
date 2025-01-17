@@ -62,10 +62,34 @@ const vendorSchema = new mongoose.Schema({
 });
 
 
-vendorSchema.index({ tenantId: 1, phone: 1 }, { unique: true });
-vendorSchema.index({ tenantId: 1, email: 1 }, { unique: true });
-vendorSchema.index({ tenantId: 1, panNo: 1 }, { unique: true });
-vendorSchema.index({ tenantId: 1, gstNo: 1 }, { unique: true });
+vendorSchema.index(
+  { tenantId: 1, phone: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { phone: { $exists: true, $ne: null } },
+  }
+);
+vendorSchema.index(
+  { tenantId: 1, email: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { email: { $exists: true, $ne: null } },
+  }
+);
+vendorSchema.index(
+  { tenantId: 1, panNo: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { panNo: { $exists: true, $ne: null } },
+  }
+);
+vendorSchema.index(
+  { tenantId: 1, gstNo: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { gstNo: { $exists: true, $ne: null } },
+  }
+);
 
 //Attaching the req body to save this
 vendorSchema.pre("save", function (next, options) {

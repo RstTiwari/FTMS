@@ -23,12 +23,6 @@ const CustomDialog = ({
       closeIcon={null}
       maskClosable={false}
       width={width}
-      bodyStyle={{
-        paddingRight: "15px",
-        height: height,
-        overflowY: "auto",
-        zIndex: 1000000,
-      }}
       style={{
         top: 0,
         left: 50,

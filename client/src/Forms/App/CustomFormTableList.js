@@ -57,6 +57,7 @@ const CustomFormTableList = ({ form }) => {
                 temObj?.qty || 0
             );
             temObj.finalAmount = temObj.discountAmount * temObj.qty;
+            console.log(temObj,"--",details,value)
         } else if (filedName === "hsnCode") {
             temObj.hsnCode = value;
         } else if (filedName === "qty") {

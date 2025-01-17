@@ -90,18 +90,20 @@ const NavBar = ({ width }) => {
           <>
             {
               // Use cookies.profile logo if it's available
-              <Image
-                src={cookies.profile?.user?.logo} // Default fallback image if no logo in cookies
-                alt="Company Logo"
-                size="small"
-                preview={false}
-                style={{
-                  marginRight: 8,
-                  width: 35,
-                  height: 35,
-                  borderRadius: "10px",
-                }}
-              />
+              cookies.profile?.user?.logo && (
+                <Image
+                  src={cookies.profile?.user?.logo} // Default fallback image if no logo in cookies
+                  alt="Company Logo"
+                  size="small"
+                  preview={false}
+                  style={{
+                    marginRight: 8,
+                    width: 35,
+                    height: 35,
+                    borderRadius: "10px",
+                  }}
+                />
+              )
             }
             <Typography.Text
               style={{

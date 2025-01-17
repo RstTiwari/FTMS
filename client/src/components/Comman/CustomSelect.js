@@ -104,9 +104,6 @@ const CustomSelect = ({
           onChange={handleChange}
           style={{ width: width }}
           onClick={()=>{}}
-          bodyStyle={{
-            textAlign: "left",
-          }}
           onDropdownVisibleChange={(open) => {
             if (open) {
             }
