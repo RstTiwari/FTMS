@@ -74,7 +74,7 @@ const WhatsAppMessageSender = ({ onClose,entity,tenantId,id }) => {
                 <Input
                   placeholder=" Recipient Name"
                   value={recipient}
-                  onChange={(e) => setMobileNumber(e.target.value)}
+                  onChange={(e) => setRecipient(e.target.value)}
                 />
               </Row>
               <Space></Space>
@@ -85,7 +85,7 @@ const WhatsAppMessageSender = ({ onClose,entity,tenantId,id }) => {
                   onChange={(e) => setMobileNumber(e.target.value)}
                 />
               </Row>
-              <Row style={{margin:"10px"}} justify={"end"}>
+              <Row style={{ margin: "10px" }} justify={"end"}>
                 <CoustomButton text={"Send"} onClick={sendWhatsAppMessage} />
               </Row>
             </>

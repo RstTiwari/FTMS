@@ -29,6 +29,7 @@ const totalReciveables = async (req, res, next) => {
         (sum, payment) => sum + payment?.amount,
         0
       );
+      console.log(totalReciveables,paymentsreceived)
 
       let totalPending =
         totalReciveables > totalRecived ? totalReciveables - totalRecived : 0;
@@ -44,7 +45,7 @@ const totalReciveables = async (req, res, next) => {
           { title: "Total Received", value: totalRecived, id: "2" },
           { title: "Total Pending", value: totalPending, id: "3" },
           {
-            title: "Advance Given",
+            title: "Advance Received",
             value: totalAdvanceAmount,
             id: "4",
           }

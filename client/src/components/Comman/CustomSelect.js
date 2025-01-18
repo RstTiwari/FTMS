@@ -116,7 +116,9 @@ const CustomSelect = ({
           dropdownRender={(menu) => {
             return (
               <>
-                  <>
+                {
+                  !isLoading ? (
+                     <>
                     <div
                       style={{
                         maxHeight: "200px",
@@ -144,6 +146,11 @@ const CustomSelect = ({
                       />
                     </Space>
                   </>
+                  ):(
+                    <PageLoader height="auto" />
+                  ) 
+                }
+                 
               
               </>
             );

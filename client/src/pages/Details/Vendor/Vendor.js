@@ -41,7 +41,7 @@ const VendorDetails = ({ values, loading,entity,id ,closeModal }) => {
                 }
                 key="2"
             >
-                <TransectionTab   />
+                <TransectionTab id ={id}   />
             </TabPane>
         </Tabs>
     );

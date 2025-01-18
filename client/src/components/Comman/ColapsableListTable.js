@@ -11,8 +11,8 @@ import PageLoader from "pages/PageLoader";
 
 const { Panel } = Collapse;
 
-const CollapsibleTable = ({ columns, panelHeader, entity }) => {
-    const { id, tenantId, pageNo, pageSize } = useParams();
+const CollapsibleTable = ({ columns, panelHeader, entity,id }) => {
+    const { tenantId, pageNo, pageSize } = useParams();
     let navigate = useNavigate();
     let dataForTable = ListModule(entity);
     const [isPanelOpen, setIsPanelOpen] = useState(false);

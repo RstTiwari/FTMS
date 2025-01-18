@@ -5,7 +5,6 @@ const coustomerSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-      sparse: true,
     },
     contactPerson: {
       type: String,
@@ -13,13 +12,10 @@ const coustomerSchema = new mongoose.Schema(
     phone: {
       type: Number,
       required: true,
-      sparse: true,
     },
     email: {
       type: String,
       required: true,
-      sparse: true,
-      unique: true,
     },
     alternateEmail: {
       type: String,
@@ -27,11 +23,9 @@ const coustomerSchema = new mongoose.Schema(
 
     panNo: {
       type: String,
-      sparse: true,
     },
     gstNo: {
       type: String,
-      sparse: true,
     },
     mfgNo: {
       type: String,
@@ -66,10 +60,8 @@ const coustomerSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-coustomerSchema.index({ tenantId: 1, phone: 1 }, { unique: true });
+coustomerSchema.index({ tenantId: 1, phone: 1 }, { unique: true, });
 coustomerSchema.index({ tenantId: 1, email: 1 }, { unique: true });
-coustomerSchema.index({ tenantId: 1, panNo: 1 }, { unique: true });
-coustomerSchema.index({ tenantId: 1, gstNo: 1 }, { unique: true });
 
 //Attching the req body to save this
 coustomerSchema.pre("save", function (next, options) {

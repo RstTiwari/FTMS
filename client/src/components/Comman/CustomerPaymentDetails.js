@@ -5,8 +5,8 @@ import PageLoader from "pages/PageLoader";
 import { useParams } from "react-router-dom";
 import useInitialFormValues from "Hook/useIntialFormValues";
 
-const PaymentCard = ({title}) => {
-    const { entity, id } = useParams();
+const PaymentCard = ({title,id}) => {
+    const { entity } = useParams();
     let { initialValues, isFetching, fetchInitialValues } =
         useInitialFormValues(entity, "totalReciveables", id);
 

@@ -150,7 +150,7 @@ const ProductForm = ({ form, onFormFinish, initalValue, isModal,entity }) => {
             labelAlign="left"
             labelCol={{ span: 8 }}
             name="code"
-            type={"counters"}
+            type={"input"}
             entity={entity}
             required={true}
             width={"30vw"}

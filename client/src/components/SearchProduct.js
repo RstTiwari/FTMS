@@ -77,7 +77,7 @@ const SearchProduct = ({
       NotificationHandler.error(response.message);
     }
   };
-
+   console.log(form,rowName)
   const debounce = (fun, delay) => {
     let debounceTimer;
     return function (...args) {
@@ -109,9 +109,9 @@ const SearchProduct = ({
     const items = form.getFieldValue("items");
     let rowChange = items[rowName]
     console.log(rowChange,items,"---")
-    // rowChange["description"] = char
-    // items[rowName] = rowChange
-    // form.setFieldValue({"items":items})
+    rowChange["description"] = char
+    items[rowName] = rowChange
+    form.setFieldValue({"items":items})
     setValue(char)
   }
 
@@ -123,7 +123,6 @@ const SearchProduct = ({
         details: label?.item,
       });
     }
-
        const openModal = () => {
          setOpen(true);
        };
@@ -151,8 +150,7 @@ const SearchProduct = ({
       setValue(preFillValue);    }
   }, [preFillValue]);
 
-   console.log(form.getFieldsValue(), "--", rowName);
-  return (
+    return (
     <>
       <AutoComplete
         options={options}

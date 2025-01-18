@@ -36,7 +36,7 @@ const CustomerDetails = ({ values, loading,entity,closeModal,id }) => {
                 }
                 key="2"
             >
-                <TransactionTab />
+                <TransactionTab id ={id} />
             </TabPane>
             <TabPane
                 tab={<Taglabel text={"Statement"} weight={200} type={"text"} />}

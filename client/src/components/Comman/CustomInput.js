@@ -38,9 +38,11 @@ const CustomInput = ({
     const handleDateChange = (date) => {
         setDate(date);
         if (onChange) {
-            let dateString = date.toDate();
+            let dateString = date ? date.toDate() : null;
             onChange(dateString); // Convert dayjs to JS Date object
             updateInForm(dateString);
+        }else{
+
         }
     };
 

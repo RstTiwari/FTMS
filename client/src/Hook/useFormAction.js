@@ -39,7 +39,6 @@ const useFormActions = (entity, isUpdate, id,closeModal,form) => {
                 if (isModal) {
                     return passToModal(response.result);
                 }
-                form.resetFields();
                 closeModal(true);
             } else {
                 throw new Error(response.message);
