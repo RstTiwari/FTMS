@@ -12,51 +12,56 @@ const generatePdf = async (req, res, next, forEmail) => {
         const { entity, id, tenantId } = req.query;
         let dataBase = checkDbForEntity(entity);
         let entityData = await dataBase
-            .findOne({
-                _id: id,
-                tenantId: tenantId,
-            })
-            .populate([
-                {
-                    path: "customer",
-                    select: "name billingAddress shippingAddress phone",
-                    options: { strictPopulate: false },
-                },
-                {
-                    path: "vendor",
-                    select: "name",
-                    options: { strictPopulate: false },
-                },
-                {
-                    path: "payments", // Populate payment details
-                    select: "amount paymentDate no", // Select relevant payment fields
-                    options: { strictPopulate: false },
-                },
-                {
-                    path: "components.product",
-                    // Selecting all fields, so no need for 'select'
-                    options: { strictPopulate: false },
-                },
-                {
-                    path: "parts.product",
-                    // Selecting all fields, so no need for 'select'
-                    options: { strictPopulate: false },
-                },
-                {
-                    path: "hardwares.product",
-                    // Selecting all fields, so no need for 'select'
-                    options: { strictPopulate: false },
-                },
-                {
-                    path: "product",
-                    // Selecting all fields, so no need for 'select'
-                    options: { strictPopulate: false },
-                },
-                {
-                    path: "items.product",
-                    options: { strictPopulate: false },
-                },
-            ]);
+          .findOne({
+            _id: id,
+            tenantId: tenantId,
+          })
+          .populate([
+            {
+              path: "customer",
+              select: "name billingAddress shippingAddress phone",
+              options: { strictPopulate: false },
+            },
+            {
+              path: "customer",
+              select: "billingAddress shippingAddress phone",
+              options: { strictPopulate: false },
+            },
+            {
+              path: "vendor",
+              select: "name  billingAddress shippingAddress phone",
+              options: { strictPopulate: false },
+            },
+            {
+              path: "payments", // Populate payment details
+              select: "amount paymentDate no", // Select relevant payment fields
+              options: { strictPopulate: false },
+            },
+            {
+              path: "components.product",
+              // Selecting all fields, so no need for 'select'
+              options: { strictPopulate: false },
+            },
+            {
+              path: "parts.product",
+              // Selecting all fields, so no need for 'select'
+              options: { strictPopulate: false },
+            },
+            {
+              path: "hardwares.product",
+              // Selecting all fields, so no need for 'select'
+              options: { strictPopulate: false },
+            },
+            {
+              path: "product",
+              // Selecting all fields, so no need for 'select'
+              options: { strictPopulate: false },
+            },
+            {
+              path: "items.product",
+              options: { strictPopulate: false },
+            },
+          ]).lean();
         let organization = await tenantDb.findOne({ _id: tenantId });
         let columns = await colPreDb.findOne({
             tenantId: tenantId,
@@ -79,7 +84,6 @@ const generatePdf = async (req, res, next, forEmail) => {
         data["selectColumns"] = selectColumns
         data["templateId"] = templateId;
         data["entityPrefix"] = entityPrefix
-        console.log(data, typeof data);
         res.status(200).json({
           success: 1,
           data: data,

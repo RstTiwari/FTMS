@@ -3,11 +3,7 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Row, Typography, Form, Col, Input } from "antd";
 
-const Counters = (form) => {
-    const { entity } = useParams();
-    useEffect(()=>{
-
-    },[form])
+const Counters = ({entity,form}) => {  
     return (
         <>
             <Row justify={"start"}>

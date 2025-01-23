@@ -8,13 +8,14 @@ import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import PageLoader from "pages/PageLoader";
 import { fetchTitleName } from "Helper/PageTitle";
-const CustomInputWithModal = ({ preFillValue,updateInForm,width ,entity}) => {
+import CustomDialog from "components/CustomDialog";
+import CustomForm from "components/CreateCustomForm";
+const CustomInputWithModal = ({ preFillValue,updateInForm,width ,entity,form}) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [inputValue, setInputValue] = useState("");
     const [prefix, setPrefix] = useState("");
     const [nextNumber, setNextNumber] = useState("");
     const { appApiCall } = useAuth();
-    const [form] = Form.useForm();
 
     const handleInputChange = (e) => {
         setInputValue(e.target.value);
@@ -91,7 +92,7 @@ const CustomInputWithModal = ({ preFillValue,updateInForm,width ,entity}) => {
             <Input
               value={inputValue}
               onChange={handleInputChange}
-              style={{ paddingRight: "30px", width: "100%" }} 
+              style={{ paddingRight: "30px", width: "100%" }}
             />
           ) : (
             <Skeleton.Input />
@@ -114,38 +115,21 @@ const CustomInputWithModal = ({ preFillValue,updateInForm,width ,entity}) => {
           />
         </Row>
 
-        <Modal
-          open={modalVisible}
-          onOk={handleModalOk}
-          footer={null}
-          closeIcon={false}
-          width={"40vw"}
-          style={{ padding: 20 }}
-          bodyStyle={{
-            overflow: "auto",
-          }}
-        >
-          <Form form={form} onFinish={handleFormFinish} initialValues={{}}>
-            <Row align={"middle"}>
-              <Col span={12}>
-                <h3>{`CONFIGURE ${fetchTitleName(
-                  entity
-                ).toUpperCase()} NO`}</h3>
-              </Col>
-              <Col span={12} style={{ textAlign: "right" }}>
-                <Button
-                  htmlType="submit"
-                  type="primary"
-                  style={{ backgroundColor: "#22b378", cursor: "pointer" }}
-                >
-                  SAVE
-                </Button>
-                <Button onClick={handleModalCancel}>CLOSE</Button> 
-              </Col>
-            </Row>
-            <Counters form={form} />
-          </Form>
-        </Modal>
+        <CustomDialog
+          show={modalVisible}
+          setShow={setModalVisible}
+          height="100px"
+          width="40vw"
+          children={
+            <CustomForm
+              entityOfModal={"counters"}
+              height={"100px"}
+              closeModal={() => setModalVisible(false)}
+              isModal={true}
+              form={form}
+            />
+          }
+        />
       </div>
     );
 };

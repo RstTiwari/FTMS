@@ -49,12 +49,13 @@ const ExpenseForm = ({ form }) => {
           />
         </Row>
         <FormItemCol
-          label={"EXpense#"}
+          label={"Expense#"}
           name={"no"}
           required={true}
           type={"counters"}
           labelAlign="left"
           labelCol={{ span: 8 }}
+          entity={"expenses"}
           width={"30vw"}
           rules={[
             {
@@ -64,6 +65,7 @@ const ExpenseForm = ({ form }) => {
           ]}
           updateInForm={(value) => handleItemUpdate(value, "no")}
           preFillValue={form.getFieldValue("no")}
+          form ={form}
         />
 
         <FormItemCol

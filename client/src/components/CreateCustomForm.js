@@ -114,7 +114,7 @@ const CustomForm = ({
     >
         <Row align={"middle"}>
           <Col span={12}>
-            <h3>{`NEW ${fetchTitleName(entity)?.toUpperCase()}`}</h3>
+            {/* <h3>{`NEW ${fetchTitleName(entity)?.toUpperCase()}`}</h3> */}
           </Col>
           <Col span={12} style={{ textAlign: "right" }}>
             <Button

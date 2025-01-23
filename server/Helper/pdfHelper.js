@@ -92,16 +92,16 @@ export const addBankDetails = (doc, orgnization) => {
         .fill("#000")
         .text("COMPANY AND BANK DETAILS", 20, doc.y + 50);
     doc.fontSize(10);
-    doc.text(`BANK NAME: ${orgnization.bankDetails.bankName}`, 20, doc.y + 10);
-    doc.text(`BANK BRANCH: ${orgnization.bankDetails.branch}`, 20, doc.y + 10);
+    doc.text(`BANK NAME: ${orgnization?.bankDetails?.bankName}`, 20, doc.y + 10);
+    doc.text(`BANK BRANCH: ${orgnization?.bankDetails?.branch}`, 20, doc.y + 10);
     doc.text(
-        `ACCOUNT NO: ${orgnization.bankDetails.accountNo}`,
+        `ACCOUNT NO: ${orgnization?.bankDetails?.accountNo}`,
         20,
         doc.y + 10
     );
-    doc.text(`IFSC CODE: ${orgnization.bankDetails.ifscCode}`, 20, doc.y + 10);
-    doc.text(`PAN NO: ${orgnization.panNo}`, 20, doc.y + 10);
-    doc.text(`GST NO: ${orgnization.gstNo}`, 20, doc.y + 10);
+    doc.text(`IFSC CODE: ${orgnization.bankDetails?.ifscCode}`, 20, doc.y + 10);
+    doc.text(`PAN NO: ${orgnization?.panNo}`, 20, doc.y + 10);
+    doc.text(`GST NO: ${orgnization?.gstNo}`, 20, doc.y + 10);
 };
 export const getPrimaryOrFirstBank = (bankDetails) => {
     // Find the primary bank (if any)

@@ -106,28 +106,29 @@ export const entityDetailsFormatter = (entity, data, organization) => {
   let billingAddress, shippingAddress, name;
   let vendorBillingAddress, vendorShippingAddress, vendorName;
   let orgBillingAddress, orgShippingAddress, orgName;
+  console.log("cames till here")
 
   if (customer) {
-    billingAddress = customer["billingAddress"];
-    shippingAddress = customer["shippingAddress"];
-    name = customer["name"];
+    billingAddress = customer?.billingAddress || "";
+    shippingAddress = customer?.shippingAddress || "";
+    name = customer?.name || '';
   }
 
   if (vendor) {
-    vendorBillingAddress = vendor["billingAddress"];
-    vendorShippingAddress = vendor["shippingAddress"];
-    vendorName = vendor["name"];
+    vendorBillingAddress = vendor?.billingAddress || "";
+    vendorShippingAddress = vendor?.shippingAddress || "";
+    vendorName = vendor["name"] || "";
   }
 
   if (organization) {
-    orgBillingAddress = organization["billingAddress"];
-    orgShippingAddress = organization["deliveryAddress"];
-    orgName = organization["companyName"];
+    orgBillingAddress = organization?.billingAddress || "";
+    orgShippingAddress = organization?.deliveryAddress || "";
+    orgName = organization?.companyName || "";
   }
 
   switch (entity) {
     case "invoices":
-      const mergedBillingAddress = `${billingAddress?.street1} ${billingAddress?.street2}, ${billingAddress?.city},${billingAddress?.state} - ${billingAddress?.pincode}`;
+      const mergedBillingAddress = `${billingAddress? billingAddress?.street1 :""} ${billingAddress? billingAddress?.street2 :""}, ${billingAddress?.city},${billingAddress?.state} - ${billingAddress?.pincode}`;
       const mergedShippingAddress = `${shippingAddress?.street1} ${shippingAddress?.street2}, ${shippingAddress?.city},${shippingAddress?.state} - ${shippingAddress?.pincode}`;
 
       array = [
@@ -337,11 +338,11 @@ export const getTableHeaders2 = (entity, preCol = []) => {
   // Default headers
   const allHeaders = [
     { title: "#", property: "srNo", width: 20 },
-    { title: "DESCRIPTION", property: "description", width: 330 }, // Initial width of description column
+    { title: "DESCRIPTION", property: "description", width: 350 }, // Initial width of description column
     { title: "RATE", property: "rate", width: 50 },
     { title: "QTY", property: "qty", width: 40 },
     { title: "TAX%", property: "gstPercent", width: 50 },
-    { title: "TOTAL AMOUNT", property: "finalAmount", width: 80 },
+    { title: "TOTAL AMOUNT", property: "finalAmount", width: 60 },
   ];
 
   // Create a map from preCol to handle status true columns
@@ -449,10 +450,10 @@ export const bankDetailsFormatter = (entity, bankDetails) => {
   // Find the bank detail object where isPrimary is true
   const primaryBankDetail = bankDetails.find((detail) => detail.isPrimary);
   let obj = {
-    "Bank Name": primaryBankDetail["bankName"],
-    "Account No": primaryBankDetail["accountNo"],
-    "IFSC CODE": primaryBankDetail["ifscCode"],
-    Upi: primaryBankDetail["upi"],
+    "Bank Name": primaryBankDetail?.["bankName"],
+    "Account No": primaryBankDetail?.["accountNo"],
+    "IFSC CODE": primaryBankDetail?.["ifscCode"],
+    Upi: primaryBankDetail?.["upi"],
   };
   return obj;
 };
@@ -482,7 +483,6 @@ export const entityNameFormatter = (entity) => {
 };
 
 export const workOrderTable = (entity, data) => {
-  // Function to calculate total quantities of components, parts, and hardwares recursively
   function calculateTotalQty(product, parentQty = 1) {
     let result = {
       name: product.name,
@@ -493,7 +493,6 @@ export const workOrderTable = (entity, data) => {
       hardwares: [],
     };
 
-    // Calculate components if any
     if (product.components && product.components.length > 0) {
       product.components.forEach((component) => {
         // If component is of type "product", recursively calculate its quantities
@@ -514,7 +513,6 @@ export const workOrderTable = (entity, data) => {
       });
     }
 
-    // Calculate parts if any
     if (product.parts && product.parts.length > 0) {
       product.parts.forEach((part) => {
         result.parts.push({
@@ -525,7 +523,6 @@ export const workOrderTable = (entity, data) => {
       });
     }
 
-    // Calculate hardwares if any
     if (product.hardwares && product.hardwares.length > 0) {
       product.hardwares.forEach((hardware) => {
         result.hardwares.push({
@@ -539,10 +536,8 @@ export const workOrderTable = (entity, data) => {
     return result;
   }
 
-  // Final response array to store all the results
   let response = [];
 
-  // Iterate over the workOrder array to calculate the quantities for each product
   data.forEach((item) => {
     if (item.product.itemType === "product") {
       // For products, calculate their quantities and any nested components
