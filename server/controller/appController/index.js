@@ -15,7 +15,7 @@ import get from "./get.js";
 import recordPayment from "./recordPayment.js";
 import updatePayment from "./updatePayment.js";
 import totalReciveables from "./totalReciveables.js";
-import { emailData, sendEmail } from "./sendEmail.js";
+import { emailData, createEnquiry } from "./enquiry.js";
 import {
     getOrCreateColumnPreferences,
     updateColumnPreferences,
@@ -70,8 +70,8 @@ const appRoutes = {
     emailData: async (req, res, next) => {
         emailData(req, res, next);
     },
-    sendEmail: async (req, res, next) => {
-        sendEmail(req, res, next);
+    enquiry: async (req, res, next) => {
+        createEnquiry(req, res, next);
     },
     fetchComments: async (req, res, next) => {
         fetchComments(req, res, next);

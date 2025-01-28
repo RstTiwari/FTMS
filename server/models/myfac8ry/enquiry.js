@@ -20,16 +20,8 @@ const enquirySchema = new mongoose.Schema(
                 message: "Vendor and customer cannot be the same.",
             },
         },
-        type: {
-            type: String,
-            required: true,
-        },
         process: {
             type: String,
-            required: true,
-        },
-        enquiryDate: {
-            type: Date,
         },
         expectedDate: {
             type: Date,
@@ -47,6 +39,7 @@ const enquirySchema = new mongoose.Schema(
             type: String,
             default: "DRAFT",
         },
+
     },
     { timestamps: true }
 );

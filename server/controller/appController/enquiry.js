@@ -52,30 +52,36 @@ export const emailData = async (req, res, next) => {
     }
 };
 
-export const sendEmail = async (req, res, next) => {
+export const createEnquiry = async (req, res, next) => {
     try {
-        let { from, to, sub, content } = req.body;
-        let { entity, id } = req.query;
-        let tenantId = req.tenantId;
-
-        // Read files as buffers and convert to base64 strings
-        if (from.endsWith("@gmail.com")) {
-            from = from.replace("@gmail.com", "@ftms.myfac8ry.com");
-        }
+        let { from, to, sub, content, customer, material, process } = req.body;
+        const filesName = []
         const attachments = req.files.map((file) => {
-            // Read the file content
             const fileBuffer = fs.readFileSync(file.path);
-            // Convert the buffer to a base64 string
             const fileContent = fileBuffer.toString("base64");
+            filesName.push(file.originalname)
             return {
                 content: fileContent,
                 filename: file.originalname,
+                encoding: "base64"
             };
         });
 
+        let enquiryData = {
+            customer: customer,
+            material: material,
+            process: process,
+            files:filesName
+        };
+
+       // create Enquiry Data for the Tenant
+       let enquiryDatabase = checkDbForEntity("enquiry");
+       let newData = new enquiryDatabase(enquiryData);
+       await newData.save();
         let response = await resendEmailController(
             from,
             to,
+            ["iamrrt2121@gmail.com"],
             sub,
             content,
             attachments
@@ -83,12 +89,7 @@ export const sendEmail = async (req, res, next) => {
         if (!response) {
             throw new Error("Failed to send email");
         }
-        let EntityDataBase = checkDbForEntity(entity);
-        await EntityDataBase.updateOne(
-            { _id: id, tenantId: tenantId },
-            { $set: { status: "SEND" } }
-        );
-
+  
         return res.status(200).json({
             success: 1,
             message: "successfully sended mail",

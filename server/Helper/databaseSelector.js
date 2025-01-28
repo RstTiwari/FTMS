@@ -17,6 +17,7 @@ import workorders from "../models/appModels/workOrder.js";
 import User from "../models/coreModels/User.js";
 import Comment from "../models/appModels/comment.js";
 import columnPrefrence from "../models/appModels/columnPrefrence.js";
+import enquiry from "../models/myfac8ry/enquiry.js";
 
 const dbMapping = {
     customers: customerDb,
@@ -37,7 +38,8 @@ const dbMapping = {
     workorders: workorders,
     user: User,
     comments: Comment,
-    columnPreference:columnPrefrence
+    columnPreference:columnPrefrence,
+    enquiry:enquiry
 
 };
 

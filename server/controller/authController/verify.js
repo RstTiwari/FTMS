@@ -93,7 +93,7 @@ const verify = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
             success: 1,
             result: {
                 user: {
-                    _id: user._id,
+                    userId: user._id,
                     name: user.name,
                     surname: user.surname,
                     role: user.role,
