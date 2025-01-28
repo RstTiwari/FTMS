@@ -151,6 +151,7 @@ const CustomInput = ({
                     preFillValue={preFillValue}
                     {...restProps}
                     width={width}
+                    form={form}
                 />
             );
         case "image":

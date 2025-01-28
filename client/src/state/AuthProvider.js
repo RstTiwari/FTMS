@@ -6,6 +6,7 @@ import PdfSelector from "PdfTemplates/PdfSelector";
 import axios from "axios";
 import CustomDialog from "components/CustomDialog";
 import { Document } from "@react-pdf/renderer";
+import ErrorPdfMessage from "PdfTemplates/ErrorPdf";
 
 let myfac8ryBaseUrl = process.env.REACT_APP_URL_PROD;
 
@@ -137,21 +138,38 @@ export const AuthProvider = ({ children }) => {
       if (!response.success) {
         throw new Error("Network response was not ok");
       }
+      console.log(response.data)
+      if (response.success) {
+        let organization = response?.data?.organization;
+        let customer = response?.data?.entityData?.customer;
+         let errorMessage = "";
+        if (
+          !organization?.billingAddress ||
+          organization.bankDetails.length === 0
+        ) {
+          errorMessage =   "TO Get  PDF Update Organization Details like Bank and Address "
+        } else if (!customer.billingAddress) {
+            errorMessage =  "TO Get  PDF Update Customer Details like  Address "
+        } 
 
-      // Generate the blob from the document
-      const blob = await pdf( <PdfSelector entity={entity} data={response.data} />).toBlob();
-
-      const pdfUrl = URL.createObjectURL(blob);
-
-      if (action === "download") {
-        const a = document.createElement("a");
-        a.href = pdfUrl;
-        a.download = `${entity.toUpperCase()}${no}.pdf`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      } else if (action === "display") {
-        return pdfUrl;
+          // Generate the blob from the document
+          let pdfContent = errorMessage ? (
+            <ErrorPdfMessage message={errorMessage} />
+          ) : (
+            <PdfSelector entity={entity} data={response.data} />
+          )
+          const blob = await pdf(pdfContent).toBlob();
+          const pdfUrl = URL.createObjectURL(blob);
+          if (action === "download") {
+            const a = document.createElement("a");
+            a.href = pdfUrl;
+            a.download = `${entity.toUpperCase()}${no}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          } else if (action === "display") {
+            return pdfUrl;
+          }
       }
     } catch (error) {
       NotificationHandler.error(
@@ -160,6 +178,8 @@ export const AuthProvider = ({ children }) => {
       throw error;
     }
   };
+    
+
 
   const verifyToken = async () => {
     try {

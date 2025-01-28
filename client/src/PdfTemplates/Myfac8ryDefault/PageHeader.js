@@ -73,7 +73,7 @@ const pageHeaderStyles = StyleSheet.create({
 const PageHeader = ({ organization, detailsData }) => {
   // Destructure organization and address details
   const { companyName, phone, email, logo, billingAddress } = organization;
-  const { street1, street2, city, state, pincode } = billingAddress;
+  const { street1, street2, city, state, pincode } = billingAddress || "";
 
   return (
     <View style={pageHeaderStyles.headerWrapper}>

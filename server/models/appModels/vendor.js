@@ -12,25 +12,19 @@ const vendorSchema = new mongoose.Schema({
   phone: {
     type: Number,
     require: true,
-    unique: true,
   },
   email: {
     type: String,
     require: true,
-    unique: true,
   },
   alternateEmail: {
     type: String,
   },
   panNo: {
     type: String,
-    unique: true,
-    sparse: true,
   },
   gstNo: {
     type: String,
-    unique: true,
-    sparse: true,
   },
   mfgNo: {
     type: String,
