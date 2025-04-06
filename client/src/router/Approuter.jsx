@@ -78,7 +78,7 @@ const Approuter = ({ profile }) => {
                 />
 
                 <Route path="*" element={<NotFound />} />
-                <Route path="/app/websocket" element={<Notification />} />
+                {/* <Route path="/app/websocket" element={<Notification />} /> */}
 
 
                 {/**In case some one acess login page after being logged in */}
