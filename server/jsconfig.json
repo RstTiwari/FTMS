@@ -1,0 +1,72 @@
+[
+            {
+                "product": {
+                    "_id": "672efba20ed6e1c3ccf61ecb",
+                    "name": "The Tostanic robbot for defing the new Age Rage",
+                    "rate": 20000,
+                    "image": "https://res.cloudinary.com/dyw4lrlzh/image/upload/v1731132322/myfac8ry66bc4cf42779c0d100aa5a4e.jpg",
+                    "hsnCode": "25235",
+                    "dimension": "200x200x5",
+                    "tenantId": "66bc4cf42779c0d100aa5a4e",
+                    "components": [
+                        {
+                            "product": "672efbbe0ed6e1c3ccf61ed9",
+                            "qty": 10
+                        }
+                    ],
+                    "parts": [
+                        {
+                            "product": "673895f4d08ef56b6bef6017",
+                            "qty": 0
+                        }
+                    ],
+                    "hardwares": [
+                        {
+                            "product": "6738961dd08ef56b6bef6029",
+                            "qty": 0
+                        }
+                    ],
+                    "accessories": [],
+                    "createdAt": "2024-11-09T06:05:22.978Z",
+                    "updatedAt": "2024-11-16T12:54:58.569Z",
+                    "__v": 0
+                },
+                "qty": 10,
+                "_id": "673897f8b9fd7a53eb8e28f1"
+            },
+            {
+                "product": {
+                    "_id": "672efba20ed6e1c3ccf61ecb",
+                    "name": "The Tostanic robbot for defing the new Age Rage",
+                    "rate": 20000,
+                    "image": "https://res.cloudinary.com/dyw4lrlzh/image/upload/v1731132322/myfac8ry66bc4cf42779c0d100aa5a4e.jpg",
+                    "hsnCode": "25235",
+                    "dimension": "200x200x5",
+                    "tenantId": "66bc4cf42779c0d100aa5a4e",
+                    "components": [
+                        {
+                            "product": "672efbbe0ed6e1c3ccf61ed9",
+                            "qty": 10
+                        }
+                    ],
+                    "parts": [
+                        {
+                            "product": "673895f4d08ef56b6bef6017",
+                            "qty": 0
+                        }
+                    ],
+                    "hardwares": [
+                        {
+                            "product": "6738961dd08ef56b6bef6029",
+                            "qty": 0
+                        }
+                    ],
+                    "accessories": [],
+                    "createdAt": "2024-11-09T06:05:22.978Z",
+                    "updatedAt": "2024-11-16T12:54:58.569Z",
+                    "__v": 0
+                },
+                "qty": 10,
+                "_id": "673897f8b9fd7a53eb8e28f2"
+            }
+]

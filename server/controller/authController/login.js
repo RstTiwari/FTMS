@@ -123,11 +123,12 @@ const login = async (
             .exec();
 
         let tenantId = user?.tenantId;
+        console.log(tenantId,"---")
         const tenantData = await tenantDb.findOne({ _id: tenantId });
+        console.log(tenantData)
         let sidebar = tenSpecificData.sidebar;
         if (user.role == "custom") {
             sidebar = customizeSidebar(tenSpecificData.sidebar, user.permissions);
-            console.log(sidebar,"===");
         }
 
         return res.status(200).json({

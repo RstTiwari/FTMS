@@ -9,23 +9,25 @@ const CoustomButton = ({
     isCancel = false,
     withIcon = false,
     details,
+    isLoading
 }) => {
     return (
-        <Button
-            size={details ? "small" : "middle"}
-            icon={withIcon ? <PlusOutlined /> : null}
-            onClick={onClick ? onClick : undefined}
-            htmlType={onClick ? "button" : htmlType}
-            type="primary"
-            style={{
-                fontSize: details ? "0.7rem" : "1rem",
-                backgroundColor: isCancel ? "#f5f5f5" : "#22b378",
-                color: isCancel ? "#000" : "#fff",
-                borderRadius: "5px",
-            }}
-        >
-            {text}
-        </Button>
+      <Button
+        size={details ? "small" : "middle"}
+        icon={withIcon ? <PlusOutlined /> : null}
+        onClick={onClick ? onClick : undefined}
+        htmlType={onClick ? "button" : htmlType}
+        type="primary"
+        loading={isLoading}
+        style={{
+          fontSize: details ? "0.7rem" : "1rem",
+          backgroundColor: isCancel ? "#f5f5f5" : "#22b378",
+          color: isCancel ? "#000" : "#fff",
+          borderRadius: "5px",
+        }}
+      >
+        {text}
+      </Button>
     );
 };
 

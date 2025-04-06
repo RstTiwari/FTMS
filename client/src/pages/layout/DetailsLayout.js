@@ -3,17 +3,31 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Outlet } from "react-router-dom";
 
 import CustomTable from "components/CustomTable";
-import Headers from "components/Header";
 import useDataFetching from "Hook/useDataFetching";
 import ListModule from "module/ListModule/ListModule";
-import NotificationHandler from "EventHandler/NotificationHandler";
 import "App.css";
+import CoustomButton from "components/Comman/CoustomButton";
+import { fetchTitleName } from "Helper/PageTitle";
+import CustomDialog from "components/CustomDialog";
+import CustomForm from "components/CreateCustomForm";
 
 const DetailsLayout = () => {
     const { tenantId, entity, id, pageNo, pageSize } = useParams();
     const [selectedRowKey, setSelectedRowKey] = useState(null);
     const [details, setDetails] = useState(false);
     const dataForTable = ListModule(entity);
+      const [show, setShow] = useState(false);
+      const openModal = () => {
+        setShow(true);
+      };
+      const closeModal = (reload) => {
+        if(reload){
+            setShow(false);
+            fetchData();    
+        }else{
+            setShow(false);
+        }
+      }
 
     const navigate = useNavigate();
     const { data, total, isLoading, fetchData } = useDataFetching(
@@ -28,19 +42,19 @@ const DetailsLayout = () => {
         navigate(`/app/${tenantId}/${entity}/${pageNo}/${pageSize}`);
     };
 
-    const handleRowClick = (record) => {
-        let innerWidth = window.innerWidth;
-        if (innerWidth < 1200) {
-            return NotificationHandler.error(
-                "To See Details Open in Laptop/Desktop"
-            );
-        }
-        setSelectedRowKey(record._id);
-        setDetails(true);
-        navigate(
-            `/app/${tenantId}/${entity}/${pageNo}/${pageSize}/details/${record._id}`
-        );
-    };
+    // const handleRowClick = (record) => {
+    //     let innerWidth = window.innerWidth;
+    //     if (innerWidth < 1200) {
+    //         return NotificationHandler.error(
+    //             "To See Details Open in Laptop/Desktop"
+    //         );
+    //     }
+    //     setSelectedRowKey(record._id);
+    //     setDetails(true);
+    //     navigate(
+    //         `/app/${tenantId}/${entity}/${pageNo}/${pageSize}/details/${record._id}`
+    //     );
+    // };
 
     useEffect(() => {
         setDetails(window.location.pathname.includes("details"));
@@ -54,43 +68,71 @@ const DetailsLayout = () => {
     };
 
     return (
-        <Row>
+      <Row style={{ margin: "30px" }}>
+        <Col
+          xs={details ? 12 : 24}
+          sm={details ? 12 : 24}
+          md={details ? 6 : 24}
+          lg={details ? 6 : 24}
+          xl={details ? 6 : 24}
+        >
+          
+          <Row>
             <Col
-                xs={details ? 12 : 24}
-                sm={details ? 12 : 24}
-                md={details ? 6 : 24}
-                lg={details ? 6 : 24}
-                xl={details ? 6 : 24}
+              xs={12}
+              sm={12}
+              md={12}
+              lg={12}
+              style={{
+                color: "black",
+                fontSize: details ? "12px" : "1rem",
+                color: "#22b378",
+              }}
             >
-                <Headers details={details} />
-                <CustomTable
-                    columns={dataForTable.getColumns(details)}
-                    dataSource={data}
-                    isLoading={isLoading}
-                    onRowClick={handleRowClick}
-                    onTableChange={onTableChange}
-                    rowClassName={rowClassName}
-                    totalCount={total}
-                    currentPage={pageNo}
-                />
+              ALL {fetchTitleName(entity)?.toUpperCase()}
             </Col>
-            {details && (
-                <Col
-                    xs={12}
-                    sm={12}
-                    md={18}
-                    lg={18}
-                    xl={18}
-                    style={{
-                        height: "100vh", // Fill the entire viewport height
-                        overflowY: "auto", // Make it scrollable
-                        padding: "16px", // Optional: Add some padding
-                    }}
-                >
-                    <Outlet />
-                </Col>
-            )}
-        </Row>
+            <Col
+              xs={12}
+              sm={12}
+              md={12}
+              lg={12}
+              style={{
+                textAlign: "right",
+                fontSize: details ? "0.55rem" : "1rem",
+                right: 20,
+              }}
+            >
+              <CoustomButton
+                isCancel={false}
+                text={"NEW"}
+                onClick={openModal}
+                withIcon
+                details={true}
+                isLoading ={isLoading}
+              />
+            </Col>
+          </Row>
+          <CustomTable
+            columns={dataForTable.getColumns(details)}
+            dataSource={data}
+            isLoading={isLoading}
+            onTableChange={onTableChange}
+            rowClassName={rowClassName}
+            totalCount={total}
+            currentPage={pageNo}
+          />
+        </Col>
+        <CustomDialog
+          show={show}
+          setShow={setShow}
+          children={
+            <CustomForm
+              entityOfModal={entity}
+              closeModal={(realod) => closeModal(realod)}
+            />
+          }
+        />
+      </Row>
     );
 };
 

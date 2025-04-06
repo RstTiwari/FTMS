@@ -13,11 +13,10 @@ import {
 import Taglabel from "components/Comman/Taglabel";
 import OverviewTab from "./OverviewTab";
 import TransactionTab from "./TransectionTab";
-import useInitialFormValues from "Hook/useIntialFormValues";
 import PageLoader from "pages/PageLoader";
 const { TabPane } = Tabs;
 
-const CustomerDetails = ({ values, loading }) => {
+const CustomerDetails = ({ values, loading,entity,closeModal,id }) => {
     useEffect(() => {
         if (loading) {
             return <PageLoader isLoading={loading} />;
@@ -29,7 +28,7 @@ const CustomerDetails = ({ values, loading }) => {
                 tab={<Taglabel text={"Overview"} weight={200} type={"text"} />}
                 key="1"
             >
-                <OverviewTab data={values} />
+                <OverviewTab data={values} entity ={entity} id={id} />
             </TabPane>
             <TabPane
                 tab={

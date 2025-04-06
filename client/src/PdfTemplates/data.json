@@ -1,0 +1,317 @@
+{
+  "organization": {
+    "billingAddress": {
+      "street1": "103 globel arena suncity road suntech",
+      "street2": "the new ",
+      "city": "mumbai",
+      "state": "Maharashtra",
+      "pincode": "44158"
+    },
+    "deliveryAddress": {
+      "street1": "103 globel arena suncity road suntech",
+      "city": "mumbai",
+      "state": "Maharashtra",
+      "pincode": "44158"
+    },
+    "removed": false,
+    "enabled": false,
+    "companyName": "meraki innovation for the pvt ltd ",
+    "email": "rohittiwari3@gmail.com",
+    "createdAt": "2024-08-14T06:21:40.212Z",
+    "updatedAt": "2024-08-25T11:21:39.024Z",
+    "__v": 0,
+    "bankDetails": [],
+    "gstNo": "2237623764334",
+    "logo": "https://res.cloudinary.com/dyw4lrlzh/image/upload/v1724504339/myfac8ry66bc4cf42779c0d100aa5a4e.jpg",
+    "panNo": "12231243433",
+    "phone": 8767948130
+  },
+  "customer": {
+    "_id": "66bdd71b0cb5cf9a0c50485b",
+    "name": "medikop life science ",
+    "phone": 9960319612,
+    "billingAddress": {
+      "street1": "2 nd floor, shivam market no 03\nabove sai speciality hospita",
+      "street2": "2 nd floor, shivam market no 03\nabove sai speciality hospital",
+      "city": "pune",
+      "pincode": 411062,
+      "state": "Maharashtra"
+    },
+    "shippingAddress": {
+      "street1": "2 nd floor, shivam market no 03\nabove sai speciality hospital\nakurdi - chikhali ",
+      "street2": "2 nd floor, shivam market no 03\nabove sai speciality ",
+      "city": "pune",
+      "pincode": 411062,
+      "state": "Maharashtra"
+    }
+  },
+  "no": 13,
+  "status": "DRAFT",
+  "paymentReceived": 0,
+  "invoiceDate": "2024-11-24T19:22:40.229Z",
+  "dueDate": "2024-11-24T19:22:42.129Z",
+  "items": [
+    {
+      "code": "",
+      "description": "Fastrack watches for one rupess",
+      "image": null,
+      "hsnCode": "",
+      "rate": 2000,
+      "discountAmount": 2000,
+      "gstPercent": 5,
+      "qty": 1,
+      "taxAmount": 100,
+      "finalAmount": 2000,
+      "_id": "672fb6c06d71faf727e12a6d"
+    },
+
+    {
+      "code": "",
+      "description": "The Haddware Product suplier for the text suplienmt tod the give prosuct base d knoe diel of",
+      "image": "https://res.cloudinary.com/dyw4lrlzh/image/upload/v1731132349/myfac8ry66bc4cf42779c0d100aa5a4e.jpg",
+      "hsnCode": "",
+      "rate": 2000,
+      "discountPercent": 0,
+      "discountAmount": 2000,
+      "gstPercent": 12,
+      "qty": 1,
+      "taxAmount": 240,
+      "finalAmount": 2000,
+      "_id": "672fb6c06d71faf727e12a6e"
+    },
+    {
+      "code": "",
+      "description": "The Haddware Product suplier",
+      "image": "https://res.cloudinary.com/dyw4lrlzh/image/upload/v1731132349/myfac8ry66bc4cf42779c0d100aa5a4e.jpg",
+      "hsnCode": "",
+      "rate": 2000,
+      "discountPercent": 0,
+      "discountAmount": 2000,
+      "gstPercent": 12,
+      "qty": 1,
+      "taxAmount": 240,
+      "finalAmount": 2000,
+      "_id": "672fb6c06d71faf727e12a6e"
+    },
+    {
+      "code": "",
+      "description": "The Haddware Product suplier",
+      "image": "https://res.cloudinary.com/dyw4lrlzh/image/upload/v1731132349/myfac8ry66bc4cf42779c0d100aa5a4e.jpg",
+      "hsnCode": "",
+      "rate": 2000,
+      "discountPercent": 0,
+      "discountAmount": 2000,
+      "gstPercent": 12,
+      "qty": 1,
+      "taxAmount": 240,
+      "finalAmount": 2000,
+      "_id": "672fb6c06d71faf727e12a6e"
+    },
+    {
+      "code": "",
+      "description": "The Haddware Product suplier",
+      "image": "https://res.cloudinary.com/dyw4lrlzh/image/upload/v1731132349/myfac8ry66bc4cf42779c0d100aa5a4e.jpg",
+      "hsnCode": "",
+      "rate": 2000,
+      "discountPercent": 0,
+      "discountAmount": 2000,
+      "gstPercent": 12,
+      "qty": 1,
+      "taxAmount": 240,
+      "finalAmount": 2000,
+      "_id": "672fb6c06d71faf727e12a6e"
+    },
+    {
+      "code": "",
+      "description": "The Haddware Product suplier",
+      "image": "https://res.cloudinary.com/dyw4lrlzh/image/upload/v1731132349/myfac8ry66bc4cf42779c0d100aa5a4e.jpg",
+      "hsnCode": "",
+      "rate": 2000,
+      "discountPercent": 0,
+      "discountAmount": 2000,
+      "gstPercent": 12,
+      "qty": 1,
+      "taxAmount": 240,
+      "finalAmount": 2000,
+      "_id": "672fb6c06d71faf727e12a6e"
+    },
+    {
+      "code": "",
+      "description": "The Haddware Product suplier",
+      "image": "https://res.cloudinary.com/dyw4lrlzh/image/upload/v1731132349/myfac8ry66bc4cf42779c0d100aa5a4e.jpg",
+      "hsnCode": "",
+      "rate": 2000,
+      "discountPercent": 0,
+      "discountAmount": 2000,
+      "gstPercent": 12,
+      "qty": 1,
+      "taxAmount": 240,
+      "finalAmount": 2000,
+      "_id": "672fb6c06d71faf727e12a6e"
+    },
+    {
+      "code": "",
+      "description": "The Haddware Product suplier",
+      "image": "https://res.cloudinary.com/dyw4lrlzh/image/upload/v1731132349/myfac8ry66bc4cf42779c0d100aa5a4e.jpg",
+      "hsnCode": "",
+      "rate": 2000,
+      "discountPercent": 0,
+      "discountAmount": 2000,
+      "gstPercent": 12,
+      "qty": 1,
+      "taxAmount": 240,
+      "finalAmount": 2000,
+      "_id": "672fb6c06d71faf727e12a6e"
+    },
+    {
+      "code": "",
+      "description": "The Haddware Product suplier",
+      "image": "https://res.cloudinary.com/dyw4lrlzh/image/upload/v1731132349/myfac8ry66bc4cf42779c0d100aa5a4e.jpg",
+      "hsnCode": "",
+      "rate": 2000,
+      "discountPercent": 0,
+      "discountAmount": 2000,
+      "gstPercent": 12,
+      "qty": 1,
+      "taxAmount": 240,
+      "finalAmount": 2000,
+      "_id": "672fb6c06d71faf727e12a6e"
+    },
+    {
+      "code": "",
+      "description": "The Haddware Product suplier",
+      "image": "https://res.cloudinary.com/dyw4lrlzh/image/upload/v1731132349/myfac8ry66bc4cf42779c0d100aa5a4e.jpg",
+      "hsnCode": "",
+      "rate": 2000,
+      "discountPercent": 0,
+      "discountAmount": 2000,
+      "gstPercent": 12,
+      "qty": 1,
+      "taxAmount": 240,
+      "finalAmount": 2000,
+      "_id": "672fb6c06d71faf727e12a6e"
+    },
+    {
+      "code": "",
+      "description": "The Haddware Product suplier",
+      "image": "https://res.cloudinary.com/dyw4lrlzh/image/upload/v1731132349/myfac8ry66bc4cf42779c0d100aa5a4e.jpg",
+      "hsnCode": "",
+      "rate": 2000,
+      "discountPercent": 0,
+      "discountAmount": 2000,
+      "gstPercent": 12,
+      "qty": 1,
+      "taxAmount": 240,
+      "finalAmount": 2000,
+      "_id": "672fb6c06d71faf727e12a6e"
+    },
+    {
+      "code": "",
+      "description": "The Haddware Product suplier",
+      "image": "https://res.cloudinary.com/dyw4lrlzh/image/upload/v1731132349/myfac8ry66bc4cf42779c0d100aa5a4e.jpg",
+      "hsnCode": "",
+      "rate": 2000,
+      "discountPercent": 0,
+      "discountAmount": 2000,
+      "gstPercent": 12,
+      "qty": 1,
+      "taxAmount": 240,
+      "finalAmount": 2000,
+      "_id": "672fb6c06d71faf727e12a6e"
+    },
+    {
+      "code": "",
+      "description": "The Haddware Product suplier",
+      "image": "https://res.cloudinary.com/dyw4lrlzh/image/upload/v1731132349/myfac8ry66bc4cf42779c0d100aa5a4e.jpg",
+      "hsnCode": "",
+      "rate": 2000,
+      "discountPercent": 0,
+      "discountAmount": 2000,
+      "gstPercent": 12,
+      "qty": 1,
+      "taxAmount": 240,
+      "finalAmount": 2000,
+      "_id": "672fb6c06d71faf727e12a6e"
+    },
+    {
+      "code": "",
+      "description": "The Haddware Product suplier",
+      "image": "https://res.cloudinary.com/dyw4lrlzh/image/upload/v1731132349/myfac8ry66bc4cf42779c0d100aa5a4e.jpg",
+      "hsnCode": "",
+      "rate": 2000,
+      "discountPercent": 0,
+      "discountAmount": 2000,
+      "gstPercent": 12,
+      "qty": 1,
+      "taxAmount": 240,
+      "finalAmount": 2000,
+      "_id": "672fb6c06d71faf727e12a6e"
+    },
+    {
+      "code": "",
+      "description": "The Haddware Product suplier",
+      "image": "https://res.cloudinary.com/dyw4lrlzh/image/upload/v1731132349/myfac8ry66bc4cf42779c0d100aa5a4e.jpg",
+      "hsnCode": "",
+      "rate": 2000,
+      "discountPercent": 0,
+      "discountAmount": 2000,
+      "gstPercent": 12,
+      "qty": 1,
+      "taxAmount": 240,
+      "finalAmount": 2000,
+      "_id": "672fb6c06d71faf727e12a6e"
+    },
+    {
+      "code": "",
+      "description": "The Haddware Product suplier and the pruddkjsd hjsdhsj sdhjdsj dskjhjkj sdkjhjkk sdhdsk sdkjkkj sdkjjkkjsd kjjkk sdkjjksd skdj lkjjkskjd dskjkjds ol skjlsdiodsjifoi kjldsnkldsndcoasd",
+      "image": "https://res.cloudinary.com/dyw4lrlzh/image/upload/v1731132349/myfac8ry66bc4cf42779c0d100aa5a4e.jpg",
+      "hsnCode": "",
+      "rate": 2000,
+      "discountPercent": 0,
+      "discountAmount": 2000,
+      "gstPercent": 12,
+      "qty": 1,
+      "taxAmount": 240,
+      "finalAmount": 2000,
+      "_id": "672fb6c06d71faf727e12a6e"
+    }
+  ],
+  "grossTotal": 24000,
+  "taxAmount": 3940,
+  "totalWithTax": 27940,
+  "otherCharges": [
+    {
+      "chargeName": "Transport Chargesh ",
+      "amount": 10000,
+      "action": "add",
+      "rsOrPercent": "rupee"
+    }
+  ],
+  "grandTotal": 27940,
+  "notes": [
+    "The All new Notes for the folks tow forward and design",
+    "ther older the follk the order the traition",
+    "The All new Notes for the folks tow forward and desighdh  adhdshds  dshdshdsh hdshjhjdsds ghhsdhgh dsbhdshgshds ghdshdshdsh hgdsghdshds hjgdsghdshds n",
+    "ther older the follk the order the traition",
+    "The All new Notes for the folks tow forward and desighdh  adhdshds  dshdshdsh hdshjhjdsds ghhsdhgh dsbhdshgshds ghdshdshdsh hgdsghdshds hjgdsghdshds n",
+    "ther older the follk the order the traition"
+  ],
+  "terms": [
+    {
+      "name": "Warnetity",
+      "value": "The Production one the kjkjkjfs of thds sdntem fof sajkkfk tha sfjokjkjkjl sf dfnk fkjdfkjkjdf kn fodflli dfoi iodfio dfiooi dfiodf df oidfiodfiodfo idfoi dfjdf oidfiodfio"
+    },
+    {
+      "name": "Warnetity OF the Product",
+      "value": "The Production one the kjkjkjfs of thds sdntem fof sajkkfk tha sfj"
+    },
+    {
+      "name": "Warnetity",
+      "value": "The Production one the kjkjkjfs of thds sdntem fof sajkkfk tha sfjokjkjkjl sf dfnk fkjdfkjkjdf kn fodflli dfoi iodfio dfiooi dfiodf df oidfiodfiodfo idfoi dfjdf oidfiodfio"
+    },
+    {
+      "name": "Warnetity",
+      "value": "The Production one the kjkjkjfs of thds sdntem fof sajkkfk tha sfjokjkjkjl sf dfnk fkjdfkjkjdf kn fodflli dfoi iodfio dfiooi dfiodf df oidfiodfiodfo idfoi dfjdf oidfiodfio the rohit kumar tiwari"
+    }
+  ]
+}

@@ -16,7 +16,11 @@ import recordPayment from "./recordPayment.js";
 import updatePayment from "./updatePayment.js";
 import totalReciveables from "./totalReciveables.js";
 import { emailData, sendEmail } from "./sendEmail.js";
-import { getOrCreateColumnPreferences, updateColumnPreferences } from "./columnPrefrence.js";
+import {
+    getOrCreateColumnPreferences,
+    updateColumnPreferences,
+} from "./columnPrefrence.js";
+import getLeadger from "./getLeadger.js";
 const appRoutes = {
     create: async (req, res, next) => {
         create(req, res, next);
@@ -77,6 +81,9 @@ const appRoutes = {
     },
     updateColumnPreferences: async (req, res, next) => {
         updateColumnPreferences(req, res, next);
+    },
+    getLeadger: async (req, res, next) => {
+        getLeadger(req, res, next);
     },
 
     // challan: async (req, res, next) => {

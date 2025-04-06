@@ -18,8 +18,7 @@ import { useEffect } from "react";
 const { TabPane } = Tabs;
 const { Content } = Layout;
 
-const OverviewTab = ({ data }) => {
-    const { entity } = useParams();
+const OverviewTab = ({ data ,entity,id}) => {
     return (
         <Layout style={{ display: "flex", flexDirection: "row" }}>
             <Content style={{ width: "30%", backgroundColor: "#fff" }}>
@@ -37,7 +36,7 @@ const OverviewTab = ({ data }) => {
                 }}
             >
                 <PaymentDetails title={"Receivables"} />
-                <CommentDetails />
+                <CommentDetails entity={entity} id={id}  />
             </Content>
         </Layout>
     );

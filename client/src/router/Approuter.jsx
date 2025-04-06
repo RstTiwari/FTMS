@@ -1,7 +1,7 @@
 import React, { lazy } from "react";
 import { Navigate, Route, Routes, useParams } from "react-router-dom";
 import Dashbord from "../pages/dashbord";
-import Layout from "../pages/layout";
+import Layout from "../pages/layout/DashboardLayout";
 import NotFound from "pages/Notfound";
 import UpdateModule from "module/UpdateModule/UpdateModule";
 import Organization from "pages/Orgnization/Orgnization";
@@ -12,7 +12,8 @@ import CustomForm from "components/CreateCustomForm";
 import UpdateCustomForm from "components/UpdateCustomForm";
 import RecordPayment from "pages/Payment/RecordPayment";
 import EmailSendPage from "pages/Email/Email";
-import Notification from "../Notification/index"
+import PdfDetails from "pages/Details/PdfDetails";
+import TestingPdf from "PdfTemplates/TestingPdf";
 
 const Approuter = ({ profile }) => {
     const tenantId = profile?.tenant?.tenantId;
@@ -37,12 +38,8 @@ const Approuter = ({ profile }) => {
                     exact
                     element={<Dashbord />}
                 />
-                <Route
-                    path="/app/:tenantId/:entity/:pageNo/:pageSize"
-                    element={<DetailsLayout />}
-                >
-                    <Route path="details/:id" element={<Details />} />
-                </Route>
+               <Route path="/app/:tenantId/:entity/:pageNo/:pageSize" element={<DetailsLayout />} /> 
+               <Route path="/app/:tenantId/:entity/:pageNo/:pageSize/details/:id" element={<Details />} />
 
                 <Route
                     path="/app/:tenantId/:entity/create"
@@ -75,6 +72,10 @@ const Approuter = ({ profile }) => {
                     path="/app/:tenantId/setting/templates"
                     element={<Templates />}
                 />
+                <Route
+                    path="/app/:tenantId/testingpdf"
+                    element={<TestingPdf />}
+                />
 
                 <Route path="*" element={<NotFound />} />
                 <Route path="/app/websocket" element={<Notification />} />
@@ -88,6 +89,10 @@ const Approuter = ({ profile }) => {
                     }
                 />
             </Route>
+            <Route
+                path="/pdfDetails/:entity/:no/:tenantId/:id"
+                element={<PdfDetails />}
+            />
         </Routes>
     );
 };

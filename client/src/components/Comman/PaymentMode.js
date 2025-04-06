@@ -30,7 +30,8 @@ const PaymentMode = ({
                 value={value ? value : ""}
                 options={paymentMode}
                 onChange={handleChange}
-                style={{ width: width }}
+                style={{ width: width,textAlign:"left" }}
+
                 getPopupContainer={(trigger) => document.body}
                 dropdownStyle={{ position: "fixed", zIndex: 20000000 }}
                 dropdownRender={(menu) => {

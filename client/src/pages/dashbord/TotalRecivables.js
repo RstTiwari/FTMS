@@ -66,16 +66,7 @@ const TotalReceivables = () => {
                     />
                     <Text></Text>
                 </Col>
-                <Col>
-                    <Dropdown menu={{ items }} placement="bottomLeft" arrow>
-                        <a
-                            href="#new"
-                            style={{ textDecoration: "none", fontWeight: 500 }}
-                        >
-                            + New
-                        </a>
-                    </Dropdown>
-                </Col>
+                
             </Row>
             <Progress
                 percent={
@@ -91,7 +82,7 @@ const TotalReceivables = () => {
                 <Col xs={24} sm={12} md={6}>
                     <Card bordered={false}>
                         <Text type="success">CURRENT</Text>
-                        <Tooltip title="Due Date of Past 15 Days ">
+                        <Tooltip title="Bill Date Coming 1-15 Days ">
                             <Text type="secondary">ⓘ</Text>
                         </Tooltip>
                         <Title level={5}>
@@ -105,8 +96,8 @@ const TotalReceivables = () => {
                 </Col>
                 <Col xs={24} sm={12} md={6}>
                     <Card bordered={false}>
-                        <Text type="warning">OVERDUE</Text>
-                        <Tooltip title="Due Date of Past 16-30 Days ">
+                        <Text type="warning">COMING</Text>
+                        <Tooltip title="Bill Date Coming 16-30 Days ">
                             <Text type="secondary">ⓘ</Text>
                         </Tooltip>
                         <Title level={5}>
@@ -120,8 +111,8 @@ const TotalReceivables = () => {
                 </Col>
                 <Col xs={24} sm={12} md={6}>
                     <Card bordered={false}>
-                        <Text type="warning">PENDING</Text>
-                        <Tooltip title="Due Date of Past 31-45 Days ">
+                        <Text type="warning">PAST</Text>
+                        <Tooltip title="Bill Date has Past 1-45 Days ">
                             <Text type="secondary">ⓘ</Text>
                         </Tooltip>
                         <Title level={5}>
@@ -136,7 +127,7 @@ const TotalReceivables = () => {
                 <Col xs={24} sm={12} md={6}>
                     <Card bordered={false}>
                         <Text type="danger">OVERDUE</Text>
-                        <Tooltip title="Due Date of Past Above  45 Days ">
+                        <Tooltip title="Bill Date Has Past Above  45 Days ">
                             <Text type="secondary">ⓘ</Text>
                         </Tooltip>
                         <Title level={5}>

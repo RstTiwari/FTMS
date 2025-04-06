@@ -22,7 +22,7 @@ const get = async (req, res, next) => {
             .populate([
                 {
                     path: "customer",
-                    select: "name billingAddress shippingAddress",
+                    select: "name billingAddress shippingAddress phone",
                     options: { strictPopulate: false },
                 },
                 {

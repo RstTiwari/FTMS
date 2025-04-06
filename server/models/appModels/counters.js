@@ -13,14 +13,15 @@ const counterSchema = new mongoose.Schema(
     },
     { timestamps: true }
 );
-//Attching the req body to save this
+
+//Attaching the req body to save this
 counterSchema.pre("save", function (next, options) {
     if (options && options.req) {
         this._req = options.req; // Attach req to the document
     }
     next();
 });
-//Attching the req body to save this
+//Attaching the req body to save this
 counterSchema.pre("updateOne", function (next) {
     if (this.options && this.options.req) {
         this._req = this.options.req; // Attach req to the document

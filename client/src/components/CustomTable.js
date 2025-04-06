@@ -47,7 +47,7 @@ const CustomTable = ({
     }, [totalCount]);
 
     return (
-        <>
+        <div>
             <Table
                 columns={columns}
                 dataSource={dataSource}
@@ -56,11 +56,11 @@ const CustomTable = ({
                 rowClassName={rowClassName}
                 pagination={tableParams.pagination}
                 onChange={handleTableChange}
-                onRow={(record) => ({
-                    onClick: () => onRowClick(record),
-                })}
+                // onRow={(record) => ({
+                //     onClick: () => onRowClick(record),
+                // })}
             />
-        </>
+        </div>
     );
 };
 

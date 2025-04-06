@@ -17,7 +17,7 @@ import OverviewTab from "./Overviewtab";
 import TransectionTab from "./TransectionTab";
 const { TabPane } = Tabs;
 
-const VendorDetails = ({ values, loading }) => {
+const VendorDetails = ({ values, loading,entity,id ,closeModal }) => {
     useEffect(() => {
         if (loading) {
             return <PageLoader isLoading={loading} />;
@@ -29,7 +29,7 @@ const VendorDetails = ({ values, loading }) => {
                 tab={<Taglabel text={"Overview"} weight={200} type={"text"} />}
                 key="1"
             >
-                <OverviewTab vendorData={values} />
+                <OverviewTab vendorData={values}  entity={entity} id={id}/>
             </TabPane>
             <TabPane
                 tab={
@@ -41,7 +41,7 @@ const VendorDetails = ({ values, loading }) => {
                 }
                 key="2"
             >
-                <TransectionTab />
+                <TransectionTab   />
             </TabPane>
         </Tabs>
     );

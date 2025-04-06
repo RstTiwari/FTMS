@@ -18,66 +18,76 @@ import WorkOrderForm from "Forms/App/WorkOder";
 import SubUserForm from "Forms/App/UserForm";
 
 const CoustomFormItem = ({ entity, form, isModal, isUpdate }) => {
-    // const { entity: entityFromRouter } = useParams();
-    let componentToRender = <NotFound />;
-    // const entity = entityOfForm || entityFromRouter;
+  // const { entity: entityFromRouter } = useParams();
+  let componentToRender = <NotFound />;
+  // const entity = entityOfForm || entityFromRouter;
 
-    switch (entity) {
-        case "customers":
-            componentToRender = <CoustomerItem form={form} isModal={isModal} />;
-            break;
-        case "quotations":
-            componentToRender = <QuotesFormItems form={form} />;
-            break;
-        case "invoices":
-            componentToRender = <InvoicesFormItems form={form} />;
-            break;
-        case "leads":
-            componentToRender = <LeadFormItem form={form} />;
-            break;
-        case "challans":
-            componentToRender = <ChallanFormItem form={form} />;
-            break;
-        case "purchases":
-            componentToRender = <PurchaseFormItem form={form} />;
-            break;
-        case "vendors":
-            componentToRender = (
-                <VendorFormItem form={form} isModal={isModal} />
-            );
-            break;
-        case "expenses":
-            componentToRender = <ExpensesItem form={form} />;
-            break;
-        case "products":
-            componentToRender = <ProductForm form={form} isModal={isModal} />;
-            break;
-        case "paymentsreceived":
-            componentToRender = (
-                <PaymentFormItem form={form} isUpdate={isUpdate} />
-            );
-            break;
-        case "paymentsmade":
-            componentToRender = (
-                <PaymentMadeForm form={form} isUpdate={isUpdate} />
-            );
-            break;
-        case "counters":
-            componentToRender = <EntityNo form={form} />;
-        case "organization":
-            componentToRender = <OrganizationForm form={form} />;
-            break;
-        case "workorders":
-            componentToRender = <WorkOrderForm form={form} />;
-            break;
-        case "user":
-            componentToRender = <SubUserForm form={form} />;
-            break;
-        default:
-            break;
-    }
+  switch (entity) {
+    case "customers":
+      componentToRender = <CoustomerItem form={form} isModal={isModal} />;
+      break;
+    case "quotations":
+      componentToRender = <QuotesFormItems form={form}  entity={entity}/>;
+      break;
+    case "invoices":
+      componentToRender = <InvoicesFormItems form={form} entity={entity} />;
+      break;
+    case "leads":
+      componentToRender = <LeadFormItem form={form}  entity={entity}/>;
+      break;
+    case "challans":
+      componentToRender = <ChallanFormItem form={form} entity={entity} />;
+      break;
+    case "purchases":
+      componentToRender = (
+        <PurchaseFormItem form={form} isCreate={true} entity={entity} />
+      );
+      break;
+    case "vendors":
+      componentToRender = (
+        <VendorFormItem form={form} isModal={isModal} entity={entity} />
+      );
+      break;
+    case "expenses":
+      componentToRender = <ExpensesItem form={form} entity={entity} />;
+      break;
+    case "products":
+      componentToRender = (
+        <ProductForm form={form} isModal={isModal} entity={entity} />
+      );
+      break;
+    case "paymentsreceived":
+      componentToRender = (
+        <PaymentFormItem
+          form={form}
+          isUpdate={isUpdate}
+          entity={entity}
+        />
+      );
+      break;
+    case "paymentsmade":
+      componentToRender = (
+        <PaymentMadeForm form={form} isUpdate={isUpdate} entity={entity} />
+      );
+      break;
+    case "counters":
+      componentToRender = <EntityNo form={form} entity={entity} />;
 
-    return componentToRender;
+      break;
+    case "organization":
+      componentToRender = <OrganizationForm form={form} entity={entity} />;
+      break;
+    case "workorders":
+      componentToRender = <WorkOrderForm form={form} entity={entity} />;
+      break;
+    case "user":
+      componentToRender = <SubUserForm form={form} entity={entity} />;
+      break;
+    default:
+      break;
+  }
+
+  return componentToRender;
 };
 
 export default CoustomFormItem;

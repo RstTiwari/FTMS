@@ -7,6 +7,7 @@ import PageLoader from "pages/PageLoader";
 import Taglabel from "components/Comman/Taglabel";
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
+import getCustomMessage from "Helper/getCustomMessage";
 
 const EmailForm = () => {
     const [form] = Form.useForm();
@@ -15,7 +16,7 @@ const EmailForm = () => {
     const [name, setName] = useState(null);
     const history = useNavigate();
     const { pdfGenerate, appApiCall } = useAuth();
-    const { entity, id } = useParams();
+    const { entity, id, tenantId } = useParams();
 
     // Custom hook to fetch initial form values
     let { initialValues, isFetching, fetchInitialValues } =
@@ -25,26 +26,6 @@ const EmailForm = () => {
         fetchInitialValues(); // Fetch initial values on component mount
     }, [fetchInitialValues]);
 
-    const getpdfFile = async (entity, id, no) => {
-        let blob = await pdfGenerate(entity, id, no);
-        const file = new File([blob], `PURCHASES${id}.pdf`, {
-            type: "application/pdf",
-        });
-
-        // Set the PDF preview and update file list
-        setFileList([
-            {
-                uid: "-1",
-                name: `${entity
-                    .slice(0, entity.length - 1)
-                    .toUpperCase()}_No_${no}`,
-                status: "done",
-                url: URL.createObjectURL(file),
-                originFileObj: file,
-            },
-        ]);
-    };
-
     useEffect(() => {
         if (initialValues) {
             setName(initialValues?.name);
@@ -52,9 +33,14 @@ const EmailForm = () => {
                 from: initialValues?.from,
                 to: initialValues?.to,
                 sub: initialValues?.sub,
-                content: initialValues?.content,
+                content: getCustomMessage(
+                    entity,
+                    initialValues?.entityData,
+                    initialValues?.name,
+                    tenantId,
+                    id
+                ),
             });
-            getpdfFile(entity, id, initialValues?.no);
         }
     }, [initialValues, form]);
 
@@ -91,8 +77,6 @@ const EmailForm = () => {
             setLoading(false);
         }
     };
-
-    const handleFileChange = ({ fileList }) => setFileList(fileList);
 
     const handleCancel = () => {
         history(-1);
@@ -174,7 +158,7 @@ const EmailForm = () => {
                     />
                 </Form.Item>
 
-                {/* File Upload */}
+                {/* File Upload
                 <Form.Item labelAlign="left" labelCol={{ span: 3 }}>
                     <Upload
                         beforeUpload={() => false}
@@ -184,7 +168,7 @@ const EmailForm = () => {
                     >
                         <Button icon={<UploadOutlined />}>Attach Files</Button>
                     </Upload>
-                </Form.Item>
+                </Form.Item> */}
 
                 <div
                     style={{

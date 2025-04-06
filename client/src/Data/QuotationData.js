@@ -1,103 +1,104 @@
+import MoreActionDropDown from "components/Comman/MoreActionDropDown";
 import Taglabel from "components/Comman/Taglabel";
 import { jsDateIntoDayjsDate } from "Helper/EpochConveter";
+import MoreActionDropDownData from "./MoreActionDropDownData";
 
 const getColumns = (details) => [
-    {
-        title: <Taglabel text={"#No"} type={"heading"} details={details} />,
-        dataIndex: "no",
-        width:100,
-        key: "srno",
-    },
-    {
-        title: (
-            <Taglabel text={"CUSTOMER"} type={"heading"} details={details} />
-        ),
-        dataIndex: "name",
-        key: "source",
-        render: (_, record) => (
-            <Taglabel
-                type="customer"
-                text={`${record?.customer?.name}`}
-                details={details}
-            />
-        ),
-    },
-    {
-        title: (
-            <Taglabel
-                text={"RECEIVED DATE"}
-                type={"heading"}
-                details={details}
-            />
-        ),
-        dataIndex: "quoteDate",
-        key: "company",
-        responsive: details ? [] : ["lg"],
-        render: (_, record) => (
-            <Taglabel
-                type={"text"}
-                text={jsDateIntoDayjsDate(record.quoteDate)}
-                details={details}
-            />
-        ),
-    },
-    {
-        title: (
-            <Taglabel text={"DUE DATE"} type={"heading"} details={details} />
-        ),
-        dataIndex: "expiryDate",
-        key: "expiryDate",
-        responsive: details ? [] : ["lg"],
-        render: (_, record) => (
-            <Taglabel
-                type={"text"}
-                text={jsDateIntoDayjsDate(record.expiryDate)}
-                details={details}
-            />
-        ),
-    },
-    {
-        title: <Taglabel text={"STATUS"} type={"heading"} details={details} />,
-        dataIndex: "status",
-        key: "expiryDate",
-        responsive: details ? [] : ["lg"],
-        render: (_, record) => (
-            <Taglabel type={"text"} text={record.status} details={details} />
-        ),
-    },
-    {
-        title: (
-            <Taglabel text={"GROSS TOTAL"} type={"heading"} details={details} />
-        ),
-        dataIndex: "grossTotal",
-        key: "subTotal",
-        responsive: details ? [] : ["lg"],
+  {
+    title: <Taglabel text={"#No"} type={"heading"} details={details} />,
+    dataIndex: "no",
+    width: 100,
+    key: "srno",
+  },
+  {
+    title: <Taglabel text={"CUSTOMER"} type={"heading"} details={details} />,
+    dataIndex: "name",
+    key: "source",
+    render: (_, record) => (
+      <Taglabel
+        type="customer"
+        text={`${record?.customer?.name}`}
+        details={details}
+      />
+    ),
+  },
+  {
+    title: (
+      <Taglabel text={"RECEIVED DATE"} type={"heading"} details={details} />
+    ),
+    dataIndex: "quoteDate",
+    key: "company",
+    responsive: details ? [] : ["lg"],
+    render: (_, record) => (
+      <Taglabel
+        type={"text"}
+        text={jsDateIntoDayjsDate(record.quoteDate)}
+        details={details}
+      />
+    ),
+  },
+  {
+    title: <Taglabel text={"DUE DATE"} type={"heading"} details={details} />,
+    dataIndex: "expiryDate",
+    key: "expiryDate",
+    responsive: details ? [] : ["lg"],
+    render: (_, record) => (
+      <Taglabel
+        type={"text"}
+        text={jsDateIntoDayjsDate(record.expiryDate)}
+        details={details}
+      />
+    ),
+  },
+  {
+    title: <Taglabel text={"STATUS"} type={"heading"} details={details} />,
+    dataIndex: "status",
+    key: "expiryDate",
+    responsive: details ? [] : ["lg"],
+    render: (_, record) => (
+      <Taglabel type={"text"} text={record.status} details={details} />
+    ),
+  },
+  {
+    title: <Taglabel text={"GROSS TOTAL"} type={"heading"} details={details} />,
+    dataIndex: "grossTotal",
+    key: "subTotal",
+    responsive: details ? [] : ["lg"],
 
-        render: (_, record) => (
-            <Taglabel
-                type="amount"
-                text={`${record.grossTotal}`}
-                weight={1000}
-                details={details}
-            />
-        ),
-    },
-    {
-        title: (
-            <Taglabel text={"GRAND TOTAL"} type={"heading"} details={details} />
-        ),
-        dataIndex: "grandTotal",
-        key: "subTotal",
-        responsive: details ? [] : ["lg"],
-        render: (_, record) => (
-            <Taglabel
-                type="amount"
-                text={`${record.grandTotal}`}
-                weight={1000}
-                details={details}
-            />
-        ),
-    },
+    render: (_, record) => (
+      <Taglabel
+        type="amount"
+        text={`${record.grossTotal}`}
+        weight={1000}
+        details={details}
+      />
+    ),
+  },
+  {
+    title: <Taglabel text={"GRAND TOTAL"} type={"heading"} details={details} />,
+    dataIndex: "grandTotal",
+    key: "subTotal",
+    responsive: details ? [] : ["lg"],
+    render: (_, record) => (
+      <Taglabel
+        type="amount"
+        text={`${record.grandTotal}`}
+        weight={1000}
+        details={details}
+      />
+    ),
+  },
+  {
+    dataIndex: "operation",
+    fixed: "right",
+    render: (_, record) => (
+      <MoreActionDropDown
+        entity="quotations"
+        items={MoreActionDropDownData("quotations")}
+        rowData={record}
+      />
+    ),
+  },
 ];
 
 const quotationData = {

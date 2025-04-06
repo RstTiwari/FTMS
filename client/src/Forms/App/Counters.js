@@ -1,10 +1,13 @@
 import FormItemCol from "components/Comman/FormItemCol";
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Row, Typography, Form, Col, Input } from "antd";
 
-const Counters = () => {
+const Counters = (form) => {
     const { entity } = useParams();
+    useEffect(()=>{
+
+    },[form])
     return (
         <>
             <Row justify={"start"}>
@@ -13,7 +16,7 @@ const Counters = () => {
                         "Short Name of Your Company   Eg => Miraj Engineering   ME "
                     }
                     label={"Prefix"}
-                    labelCol={{ span: 24 }}
+                    labelCol={{ span:8 }}
                     type={"text"}
                     name={"prefix"}
                     required={true}
@@ -21,11 +24,11 @@ const Counters = () => {
                 />
 
                 <FormItemCol
-                    label={"Next Number"}
+                    label={"Number"}
                     tooltip={"Next Number Of Your Document"}
                     name={"nextNumber"}
                     required={true}
-                    labelCol={{ span: 24 }}
+                    labelCol={{ span: 8 }}
                     type={"text"}
                     readOnly={false}
                     rules={[

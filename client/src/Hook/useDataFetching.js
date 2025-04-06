@@ -25,7 +25,6 @@ const useDataFetching = (entity, select, pageNo, pageSize, id) => {
             if (response.success) {
                 setData(response.result);
                 setTotal(response.total);
-                NotificationHandler.success(response.message);
             } else {
                 NotificationHandler.error(response.message);
             }

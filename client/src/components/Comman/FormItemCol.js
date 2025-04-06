@@ -9,6 +9,7 @@ const FormItemCol = ({
     required = false,
     labelCol,
     rules = [],
+    labelAlign="left",
     tooltip,
     readOnly,
     type,
@@ -27,15 +28,18 @@ const FormItemCol = ({
             label={
                 label ? <CustomLabel required={required} label={label} /> : null
             }
+            
             name={name}
-            labelAlign="left"
+            labelAlign= {labelAlign}
             rules={rules}
             labelCol={labelCol}
+        
             tooltip={tooltip}
             valuePropName={type === "image" ? "file" : "value"}
             getValueFromEvent={type === "image" ? (e) => e : undefined}
             className="floating-label-input"
             hidden={hidden}
+            style={{textAlign:"center"}}
         >
             <CustomInput
                 type={type}

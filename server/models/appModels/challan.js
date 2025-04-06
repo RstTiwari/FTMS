@@ -3,106 +3,107 @@ import mongooseAutoPopulate from "mongoose-autopopulate";
 import { commentSaveHandler } from "../../Helper/CommentHelper.js";
 
 const challanSchema = new mongoose.Schema(
-    {
-        customer: {
-            type: mongoose.Schema.ObjectId,
-            ref: "customer",
-            required: true,
-            autopopulate: true,
+  {
+    delivery: {
+      type: { type: String },
+      to: { type: String },
+      address: {
+        street1: String,
+        street2: String,
+        city: String,
+        state: String,
+        pincode: Number,
+      },
+    },
+    no: {
+      type: Number,
+      required: true,
+    },
+    challanDate: {
+      type: Date,
+      required: true,
+    },
+    challanType: {
+      type: String,
+      required: true,
+    },
+    vehicleNo: {
+      type: String,
+    },
+    contactNo: {
+      type: String,
+    },
+    items: [
+      {
+        code: {
+          type: String,
         },
-        invoice: {
-            type: mongoose.Schema.ObjectId,
-            ref: "invoice",
+        description: {
+          type: String,
+          required: true,
         },
-        no: {
-            type: Number,
-            required: true,
-            unique: true,
+        image: {
+          type: String,
         },
-        challanDate: {
-            type: Date,
-            required: true,
+        hsnCode: {
+          type: String,
         },
-        challanType: {
-            type: String,
-            required: true,
+        rate: {
+          type: Number,
         },
-        vehicleNo: {
-            type: String,
+        discountPercent: {
+          type: Number,
         },
-        contactNo: {
-            type: String,
+        discountAmount: {
+          type: Number,
         },
-        items: [
-            {
-                code: {
-                    type: String,
-                    required: true,
-                },
-                description: {
-                    type: String,
-                    required: true,
-                },
-                image: {
-                    type: String,
-                },
-                hsnCode: {
-                    type: String,
-                },
-                rate: {
-                    type: Number,
-                },
-                discountPercent: {
-                    type: Number,
-                },
-                discountAmount: {
-                    type: Number,
-                },
 
-                gstPercent: {
-                    type: Number,
-                },
-                qty: {
-                    type: Number,
-                },
-                taxAmount: {
-                    type: Number,
-                },
-                finalAmount: {
-                    type: Number,
-                },
-            },
-        ],
-        grossTotal: {
-            type: Number,
-            default: 0,
+        gstPercent: {
+          type: Number,
+        },
+        qty: {
+          type: Number,
         },
         taxAmount: {
-            type: Number,
-            default: 0,
+          type: Number,
         },
-        totalWithTax: {
-            type: Number,
+        finalAmount: {
+          type: Number,
         },
-        otherCharges: [],
-        grandTotal: {
-            type: Number,
-            default: 0,
-        },
-        notes: [],
-        terms: [],
-        tenantId: {
-            type: String,
-            required: true,
-        },
-        status: {
-            type: String,
-            required: true,
-            default: "DRAFT",
-        },
+      },
+    ],
+    grossTotal: {
+      type: Number,
+      default: 0,
     },
-    { timestamps: true }
+    taxAmount: {
+      type: Number,
+      default: 0,
+    },
+    totalWithTax: {
+      type: Number,
+    },
+    otherCharges: [],
+    grandTotal: {
+      type: Number,
+      default: 0,
+    },
+    notes: [],
+    terms: [],
+    tenantId: {
+      type: String,
+      required: true,
+    },
+    status: {
+      type: String,
+      required: true,
+      default: "DRAFT",
+    },
+  },
+  { timestamps: true }
 );
+
+challanSchema.index({ tenantId: 1, no: 1 }, { unique: true });
 challanSchema.plugin(mongooseAutoPopulate);
 
 //Attching the req body to save this

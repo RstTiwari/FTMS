@@ -3,6 +3,8 @@ import { Space, Dropdown } from "antd";
 
 import { DownOutlined } from "@ant-design/icons";
 import Taglabel from "components/Comman/Taglabel";
+import MoreActionDropDown from "components/Comman/MoreActionDropDown";
+import MoreActionDropDownData from "./MoreActionDropDownData";
 
 const getColumns = (details) => [
     {
@@ -75,6 +77,17 @@ const getColumns = (details) => [
             </>
         ),
     },
+      {
+        dataIndex: "operation",
+        fixed: "right",
+        render: (_, record) => (
+          <MoreActionDropDown
+            entity="vendors"
+            items={MoreActionDropDownData("vendors")}
+            rowData={record}
+          />
+        ),
+      },
 ];
 const vendorData = {
     getColumns,

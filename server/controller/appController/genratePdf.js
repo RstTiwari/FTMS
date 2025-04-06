@@ -1,15 +1,15 @@
 import myfac8ryDefault from "../../template/pdfTemplate/myfac8rydefualt.js";
 import vipDefault from "../../template/pdfTemplate/vipDefault.js";
-import pdfTemplate1 from "../../template/pdfTemplate/pdftemplate1.js"
+import pdfTemplate1 from "../../template/pdfTemplate/pdftemplate1.js";
 import tenantDb from "../../models/coreModels/Tenant.js";
 import colPreDb from "../../models/appModels/columnPrefrence.js";
 import checkDbForEntity from "../../Helper/databaseSelector.js";
 import countersDb from "../../models/appModels/counters.js";
+import pdftem2 from "../../template/pdfTemplate/pdftempalte2.js";
 
 const generatePdf = async (req, res, next, forEmail) => {
     try {
-        const { entity, id } = req.query;
-        let tenantId = req.tenantId;
+        const { entity, id, tenantId } = req.query;
         let dataBase = checkDbForEntity(entity);
         let entityData = await dataBase
             .findOne({
@@ -19,7 +19,7 @@ const generatePdf = async (req, res, next, forEmail) => {
             .populate([
                 {
                     path: "customer",
-                    select: "name billingAddress shippingAddress",
+                    select: "name billingAddress shippingAddress phone",
                     options: { strictPopulate: false },
                 },
                 {
@@ -62,7 +62,7 @@ const generatePdf = async (req, res, next, forEmail) => {
             tenantId: tenantId,
             entity: entity,
         });
-        let preCol = columns?.preferences;
+        let selectColumns = columns?.preferences;
 
         let prefix = await countersDb.findOne({
             entityName: entity,
@@ -72,36 +72,20 @@ const generatePdf = async (req, res, next, forEmail) => {
             ? prefix.prefix
             : entity.slice(0, 2).toUpperCase();
 
-        const templateId = "template1";
-        let pdfFucntionToCall = null;
+        const templateId = "myfac8ry";
+        let data = {}
+        data['entityData'] = entityData
+        data["organization"] = organization;
+        data["selectColumns"] = selectColumns
+        data["templateId"] = templateId;
+        data["entityPrefix"] = entityPrefix
+        console.log(data, typeof data);
+        res.status(200).json({
+          success: 1,
+          data: data,
+        });
 
-        switch (templateId) {
-            case "myfac8ry":
-                pdfFucntionToCall = myfac8ryDefault;
-                break;
-            case "vip":
-                pdfFucntionToCall = vipDefault;
-                break;
-            case "template1":
-                pdfFucntionToCall = pdfTemplate1;
-                break;
-
-            default:
-                pdfFucntionToCall = myfac8ryDefault;
-
-                break;
-        }
-        return pdfFucntionToCall(
-            req,
-            res,
-            next,
-            entityData,
-            organization,
-            entity,
-            entityPrefix,
-            preCol,
-            forEmail
-        );
+      
     } catch (error) {
         next(error);
     }

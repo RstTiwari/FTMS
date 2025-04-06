@@ -1,20 +1,10 @@
 import React from "react";
-import { Form, Row, Col, Input, InputNumber, Button, Divider } from "antd";
-import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
-import { useMediaQuery } from "@mui/material";
+import {  Divider } from "antd";
 import FormItemCol from "components/Comman/FormItemCol";
-import Taglabel from "components/Comman/Taglabel";
-import CustomSelect from "components/Comman/CustomSelect";
-import CustomModel from "components/CustomModal";
-import NotificationHandler from "EventHandler/NotificationHandler";
-import TaxPercent from "components/Comman/TaxPercent";
 import CustomFormTableList from "./CustomFormTableList";
 import PaymentLayoutComponent from "./PaymentLayoutComponent";
 
-const QuotationForm = ({ form }) => {
-    const isLaptop = useMediaQuery("(min-width:1000px)");
-    const inputWidth = isLaptop ? 700 : 350;
-    const inputFontSize = isLaptop ? "1rem" : "0.4rem";
+const QuotationForm = ({ form,entity }) => {
 
     const handleItemsUpdate = (value, fieldName, rowName) => {
         const items = form.getFieldValue("items");
@@ -90,86 +80,86 @@ const QuotationForm = ({ form }) => {
     };
 
     return (
-        <div>
-            <FormItemCol
-                label={"Select Customer"}
-                name={"customer"}
-                labelAlign="left"
-                labelCol={{ span: 8 }}
-                required={true}
-                rules={[
-                    {
-                        required: "true",
-                        message: "Please Select Customer",
-                    },
-                ]}
-                type="modal"
-                entity="customers"
-                width={"25vw"}
-                customerSelect=""
-                fieldName={"name"}
-                updateInForm={(value) => handleItemsUpdate(value, "customer")}
-                preFillValue={form.getFieldValue("customer")?.name}
-            />
+      <div>
+        <FormItemCol
+          label={"Select Customer"}
+          name={"customer"}
+          labelAlign="left"
+          labelCol={{ span: 8 }}
+          required={true}
+          rules={[
+            {
+              required: "true",
+              message: "Please Select Customer",
+            },
+          ]}
+          type="modal"
+          entity="customers"
+          width={"30vw"}
+          customerSelect=""
+          fieldName={"name"}
+          updateInForm={(value) => handleItemsUpdate(value, "customer")}
+          preFillValue={form.getFieldValue("customer")?.name}
+        />
 
-            <FormItemCol
-                label={"Invoice#"}
-                name={"no"}
-                required={true}
-                type={"counters"}
-                labelAlign="left"
-                labelCol={{ span: 8 }}
-                rules={[
-                    {
-                        required: "true",
-                        message: "Please Provide Quote No",
-                    },
-                ]}
-                updateInForm={(value) => handleItemsUpdate(value, "no")}
-                preFillValue={form.getFieldValue("no")}
-            />
+        <FormItemCol
+          label={"Invoice#"}
+          name={"no"}
+          required={true}
+          type={"counters"}
+          labelAlign="left"
+          labelCol={{ span: 8 }}
+          width={"30vw"}
+          rules={[
+            {
+              required: "true",
+              message: "Please Provide Quote No",
+            },
+          ]}
+          entity={entity}
+          updateInForm={(value) => handleItemsUpdate(value, "no")}
+          preFillValue={form.getFieldValue("no")}
+        />
 
-            <FormItemCol
-                label={"Invoice Date"}
-                name={"invoiceDate"}
-                required={true}
-                labelCol={{ span: 8 }}
-                rules={[
-                    {
-                        required: true,
-                        message: "Please Select Quote Date",
-                    },
-                ]}
-                labelAlign="left"
-                type={"date"}
-                preFillValue={form.getFieldValue("invoiceDate")}
-                updateInForm={(value) =>
-                    handleItemsUpdate(value, "invoiceDate")
-                }
-            />
-            <FormItemCol
-                label={"Due Date"}
-                name={"dueDate"}
-                required={true}
-                rules={[
-                    {
-                        required: true,
-                        message: "Please Select Quote Expiry Date",
-                    },
-                ]}
-                labelAlign="left"
-                labelCol={{ span: 8 }}
-                type={"date"}
-                preFillValue={form.getFieldValue("dueDate")}
-                updateInForm={(value) => handleItemsUpdate(value, "dueDate")}
-            />
+        <FormItemCol
+          label={"Invoice Date"}
+          name={"invoiceDate"}
+          required={true}
+          labelCol={{ span: 8 }}
+          width={"30vw"}
+          rules={[
+            {
+              required: true,
+              message: "Please Select Quote Date",
+            },
+          ]}
+          labelAlign="left"
+          type={"date"}
+          preFillValue={form.getFieldValue("invoiceDate")}
+          updateInForm={(value) => handleItemsUpdate(value, "invoiceDate")}
+        />
+        <FormItemCol
+          label={"Due Date"}
+          name={"dueDate"}
+          required={true}
+          rules={[
+            {
+              required: true,
+              message: "Please Select Quote Expiry Date",
+            },
+          ]}
+          labelAlign="left"
+          labelCol={{ span: 8 }}
+          width={"30vw"}
+          type={"date"}
+          preFillValue={form.getFieldValue("dueDate")}
+          updateInForm={(value) => handleItemsUpdate(value, "dueDate")}
+        />
 
-            <Divider dashed />
-            <CustomFormTableList form={form} />
-            <PaymentLayoutComponent form={form} />
-            <FormItemCol form={form} type={"terms"} />
-            {/* Other form items go here */}
-        </div>
+        <Divider dashed />
+        <CustomFormTableList form={form} />
+        <PaymentLayoutComponent form={form} />
+      </div>
     );
 };
 

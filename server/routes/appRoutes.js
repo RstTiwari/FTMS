@@ -6,16 +6,23 @@ import authMethod from "../controller/authController/index.js";
 
 const router = express.Router();
 
+const uploadFolder = "upload";
+
+// Ensure the 'upload' folder exists, create it if not
+if (!fs.existsSync(uploadFolder)) {
+  fs.mkdirSync(uploadFolder, { recursive: true });
+}
+
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "upload");
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname);
-    },
-    limits: {
-        fileSize: 5 * 1024 * 1024,
-    },
+  destination: function (req, file, cb) {
+    cb(null, uploadFolder);
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+  limits: {
+    fileSize: 5 * 1024 * 1024,
+  },
 });
 
 const upload = multer({ storage: storage });
@@ -27,71 +34,72 @@ router.post("/read", authMethod.isValidAuthtoken, appRoutes.read);
 router.get("/get", authMethod.isValidAuthtoken, appRoutes.get);
 router.post("/update", authMethod.isValidAuthtoken, appRoutes.update);
 router.patch("/patch", authMethod.isValidAuthtoken, appRoutes.patch);
-router.get("/pdf", authMethod.isValidAuthtoken, appRoutes.genratePdf);
+router.get("/pdf", appRoutes.genratePdf);
 router.post("/upload", type, authMethod.isValidAuthtoken, appRoutes.upload);
 router.get(
-    "/fetchCountersNumber",
-    authMethod.isValidAuthtoken,
-    appRoutes.fetchCountersNumber
+  "/fetchCountersNumber",
+  authMethod.isValidAuthtoken,
+  appRoutes.fetchCountersNumber
 );
 router.post(
-    "/updateCountersNumber",
-    authMethod.isValidAuthtoken,
-    appRoutes.updateCountersNumber
+  "/updateCountersNumber",
+  authMethod.isValidAuthtoken,
+  appRoutes.updateCountersNumber
 );
 router.post(
-    "/fetchCustomModalData",
-    authMethod.isValidAuthtoken,
-    appRoutes.fetchCustomModalData
+  "/fetchCustomModalData",
+  authMethod.isValidAuthtoken,
+  appRoutes.fetchCustomModalData
 );
 router.post(
-    "/addSelectData",
-    authMethod.isValidAuthtoken,
-    appRoutes.addSelectData
+  "/addSelectData",
+  authMethod.isValidAuthtoken,
+  appRoutes.addSelectData
 );
 router.get(
-    "/fetchSelectData",
-    authMethod.isValidAuthtoken,
-    appRoutes.fetchSelectData
+  "/fetchSelectData",
+  authMethod.isValidAuthtoken,
+  appRoutes.fetchSelectData
 );
 router.post(
-    "/recordPayment",
-    authMethod.isValidAuthtoken,
-    appRoutes.recordPayment
+  "/recordPayment",
+  authMethod.isValidAuthtoken,
+  appRoutes.recordPayment
 );
 router.post(
-    "/updatePayment",
-    authMethod.isValidAuthtoken,
-    appRoutes.updatePayment
+  "/updatePayment",
+  authMethod.isValidAuthtoken,
+  appRoutes.updatePayment
 );
 router.get(
-    "/totalReciveables",
-    authMethod.isValidAuthtoken,
-    appRoutes.totalReciveables
+  "/totalReciveables",
+  authMethod.isValidAuthtoken,
+  appRoutes.totalReciveables
 );
 router.get("/emailData", authMethod.isValidAuthtoken, appRoutes.emailData);
 router.post(
-    "/sendEmail",
-    attachmentsUpload,
-    authMethod.isValidAuthtoken,
-    appRoutes.sendEmail
+  "/sendEmail",
+  attachmentsUpload,
+  authMethod.isValidAuthtoken,
+  appRoutes.sendEmail
 );
 router.get(
-    "/fetchComments",
-    authMethod.isValidAuthtoken,
-    appRoutes.fetchComments
+  "/fetchComments",
+  authMethod.isValidAuthtoken,
+  appRoutes.fetchComments
 );
 
 router.post(
-    "/getOrCreateColumnPreferences",
-    authMethod.isValidAuthtoken,
-    appRoutes.getOrCreateColumnPreferences
+  "/getOrCreateColumnPreferences",
+  authMethod.isValidAuthtoken,
+  appRoutes.getOrCreateColumnPreferences
 );
 router.post(
-    "/updateColumnPreferences",
-    authMethod.isValidAuthtoken,
-    appRoutes.updateColumnPreferences
+  "/updateColumnPreferences",
+  authMethod.isValidAuthtoken,
+  appRoutes.updateColumnPreferences
 );
+router.get("/getleadger", authMethod.isValidAuthtoken, appRoutes.getLeadger);
 
 // //just for app Data
 // router.post("/challan", appRoutes.challan);

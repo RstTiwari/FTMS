@@ -19,8 +19,7 @@ import PaymentCard from "components/Comman/CustomerPaymentDetails";
 const { TabPane } = Tabs;
 const { Content } = Layout;
 
-const OverviewTab = ({ vendorData }) => {
-    const { entity } = useParams();
+const OverviewTab = ({ vendorData,entity ,id}) => {
     return (
         <Layout style={{ display: "flex", flexDirection: "row" }}>
             <Content style={{ width: "30%", backgroundColor: "#fff" }}>
@@ -38,7 +37,7 @@ const OverviewTab = ({ vendorData }) => {
                 }}
             >
                 <PaymentCard title={"Payable"} />
-                <CommentDetails />
+                <CommentDetails  entity={entity} id={id}/>
             </Content>
         </Layout>
     );

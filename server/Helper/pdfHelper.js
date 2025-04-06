@@ -61,13 +61,26 @@ export const downloadAndSaveImage = async (url, fileName) => {
 export const downloadImage = async (url) => {
     try {
         const response = await axios.get(url, { responseType: "arraybuffer" });
+
+        // Check if response is valid
+        if (response.status !== 200) {
+            throw new Error(`Failed to download image: ${response.status}`);
+        }
+
         const imageBuffer = Buffer.from(response.data, "binary");
 
         // Convert image to PNG format
         const pngBuffer = await sharp(imageBuffer).png().toBuffer();
         return pngBuffer;
     } catch (error) {
-        console.error("Error downloading or converting the image:", error);
+        console.error(
+            "Error downloading or converting the image:",
+            error.message
+        );
+        if (error.response) {
+            console.error("Response status:", error.response.status);
+            console.error("Response data:", error.response.data);
+        }
         return null;
     }
 };
