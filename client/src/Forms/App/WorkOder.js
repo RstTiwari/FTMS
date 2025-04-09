@@ -11,7 +11,7 @@ import {
   InputNumber,
 } from "antd";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
-import CustomModal from "components/CustomModal";
+import CustomModal from "components/CustomProductSelect";
 import FormItemCol from "components/Comman/FormItemCol";
 import Taglabel from "components/Comman/Taglabel";
 import CoustomButton from "components/Comman/CoustomButton";

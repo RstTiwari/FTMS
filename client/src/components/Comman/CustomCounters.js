@@ -138,7 +138,7 @@ const CustomInputWithModal = ({ preFillValue,updateInForm,width ,entity}) => {
                         <Col span={12}>
                             <h3>{`CONFIGURE ${fetchTitleName(
                                 entity
-                            ).toUpperCase()} NO`}</h3>
+                            )?.toUpperCase()} NO`}</h3>
                         </Col>
                         <Col span={12} style={{ textAlign: "right" }}>
                             <Button

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Input, DatePicker, InputNumber, Select, Checkbox } from "antd";
 import dayjs from "dayjs";
 import CustomSelect from "./CustomSelect"; // Assuming you have created CustomDrop component
-import CustomModal from "components/CustomModal";
+import CustomModal from "components/CustomProductSelect";
 import UploadImage from "components/UploadImage";
 import CustomCounters from "./CustomCounters";
 import PaymentMode from "./PaymentMode";
@@ -15,6 +15,8 @@ import UserRole from "./UserRole";
 import UserPermission from "Forms/App/UserPermissionForm";
 import CoustomButton from "./CoustomButton";
 import { DeleteOutlined } from "@mui/icons-material";
+import CustomCustomerSelect from "components/CustomCustomSelect";
+import CustomProductSelect from "components/CustomProductSelect";
 
 const CustomInput = ({
     type,
@@ -113,7 +115,18 @@ const CustomInput = ({
             );
         case "modal":
             return (
-                <CustomModal
+                <CustomProductSelect
+                    entity={entity}
+                    fieldName={fieldName}
+                    
+                    width={width}
+                    preFillValue={preFillValue}
+                    {...restProps}
+                />
+            );
+         case "options":
+            return (
+                <CustomCustomerSelect
                     entity={entity}
                     fieldName={fieldName}
                     

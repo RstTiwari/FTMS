@@ -7,7 +7,7 @@ import {
 import FormItemCol from "components/Comman/FormItemCol";
 import TabPane from "antd/es/tabs/TabPane";
 import { productCategory } from "../../Data/ProductData";
-import CustomModel from "components/CustomModal";
+import CustomModel from "components/CustomProductSelect";
 import CoustomButton from "components/Comman/CoustomButton";
 import { DeleteOutlined,PlusOutlined } from "@ant-design/icons";
 

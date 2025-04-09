@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
         wordWrap: "break-word", // Ensures text wraps within the div
     },
     heading: {
-        fontSize: 10,
-        color: "#42cbf5",
+        fontSize: 12,
+        color: "#000000",
         fontFamily: "Helvetica-Bold",
         fontWeight: "heavy",
         marginBottom: 2,
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
         fontFamily: "Helvetica-Bold",
         fontWeight: "heavy",
         color: "#000",
-        marginBottom: 2,
+        marginBottom: 2
     },
     label: {
         fontSize: 8,

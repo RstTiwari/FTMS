@@ -16,7 +16,7 @@ import {
 import { PlusOutlined, CloseOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useMediaQuery } from "@mui/material";
 import { useAuth } from "state/AuthProvider";
-import CustomModal from "components/CustomModal";
+import CustomModal from "components/CustomProductSelect";
 import FormItemCol from "components/Comman/FormItemCol";
 import Taglabel from "components/Comman/Taglabel";
 import { jsDateIntoDayjsDate } from "Helper/EpochConveter";
@@ -125,7 +125,7 @@ const QuotationForm = ({ form,entity }) => {
               message: "Please Select Customer",
             },
           ]}
-          type="modal"
+          type="options"
           width={"30vw"}
           entity={"customers"}
           fieldName="name" // filed name form customer modal

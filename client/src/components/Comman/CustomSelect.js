@@ -13,6 +13,7 @@ import { useAuth } from "../../state/AuthProvider";
 import CustomButton from "./CoustomButton";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import PageLoader from "pages/PageLoader";
+import { TagOutlined } from "@ant-design/icons";
 
 const 
 CustomSelect = ({
@@ -93,7 +94,7 @@ CustomSelect = ({
   return (
     <>
       {!open ? (
-        <AutoComplete
+        <Select
           value={value ? value : ""}
           options={options}
           onChange={handleChange}
@@ -110,41 +111,6 @@ CustomSelect = ({
           getPopupContainer={(trigger) => document.body}
           dropdownStyle={{ position: "fixed", zIndex: 20000000 }}
           dropdownRender={(menu) => {
-          if (options.length === 0) {
-              setOptions([{label:" No options available",value:" No options available"}])
-              return (
-                  <>
-                      <div
-                          style={{
-                              maxHeight: "200px",
-                              overflow: "auto",
-                          }}
-                      >
-                          <div style={{ padding: "8px", color: "green" }}>
-                              No options available
-                          </div>
-                      </div>
-                      <Divider
-                          style={{
-                              margin: "8px 0",
-                          }}
-                      />
-                      <Space
-                          style={{
-                              padding: "0 8px 4px",
-                          }}
-                      >
-                          <CustomButton
-                              text={"ADD NEW"}
-                              details={true}
-                              onClick={() => {
-                                  setOpen(!open);
-                              }}
-                          />
-                      </Space>
-                  </>
-              );
-          }
           return (
               <>
                   <>

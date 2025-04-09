@@ -25,289 +25,318 @@ const VendorsForm = ({ form, disabled, isModal }) => {
     };
 
     return (
-      <div>
-        <Tabs>
-          <TabPane tab="General Info" key={1}>
-            <FormItemCol
-              label={"Name"}
-              labelAlign="left"
-              name="name"
-              width={"30vw"}
-              required={true}
-              labelCol={{ span: isModal ? 18 : 8 }}
-              rules={[
-                {
-                  required: true,
-                  message: "Please Provide Customer Name",
-                },
-              ]}
-              type={"text"}
-            />
-            <FormItemCol
-              label={"Phone"}
-              required={true}
-              labelAlign="left"
-              width={"30vw"}
-              name="phone"
-              labelCol={{ span: isModal ? 18 : 8 }}
-              rules={[
-                {
-                  required: true,
-                  message: "Please Provide Customer Phone",
-                },
-                {
-                  pattern: /^\d{10}$/,
-                  message: "Please enter a valid 10-digit phone number",
-                },
-              ]}
-              type={"text"}
-            />
-            <FormItemCol
-              label={"Email"}
-              labelAlign="left"
-              name="email"
-              labelCol={{ span: isModal ? 18 : 8 }}
-              required={true}
-              width={"30vw"}
-              rules={[
-                {
-                  required: true,
-                  message: "Please Provide Customer Email",
-                },
-              ]}
-              type={"text"}
-            />
-            <FormItemCol
-              label={"Alternate Email"}
-              labelAlign="left"
-              name="alternateEmail"
-              labelCol={{ span: isModal ? 18 : 8 }}
-              width={"30vw"}
-              type={"text"}
-            />
-            <FormItemCol
-              label={"Contact Person"}
-              name={"contactPerson"}
-              labelAlign="left"
-              labelCol={{ span: isModal ? 18 : 8 }}
-              type={"text"}
-              width={"30vw"}
-            />
-          </TabPane>
-          <TabPane tab="Address Details" key={2}>
-            <Row justify={"start"}>
-              <Col span={10}>
-                <Text type="secondary" style={{ fontWeight: 900 }}>
-                  BILLING ADDRESS
-                </Text>
-              </Col>
-              <Col span={10} style={{ textAlign: "left" }}>
-                <Text type="secondary" style={{ fontWeight: 900 }}>
-                  SHIPPING ADDRESS
-                </Text>
-                <Text
-                  onClick={handeCopyBillingAddress}
-                  style={{
-                    color: "green",
-                    cursor: "pointer",
-                    fontWeight: 500,
-                    marginLeft: 3,
-                  }}
-                >
-                  COPY
-                  <Tooltip title={"Copy Billing Address"}>
-                    <span
-                      style={{
-                        cursor: "pointer",
-                        color: "red   ",
-                        fontSize: "1rem",
-                      }}
-                    >
-                      {" "}
-                      *
-                    </span>
-                  </Tooltip>
-                </Text>
-              </Col>
-            </Row>
-            <Row style={{ display: "flex" }} gutter={[20]}>
-              <Col sm={24} xs={24} md={24} lg={10} style={{ padding: 10 }}>
-                <Row style={{ paddingBottom: 10 }}></Row>
-                <Row>
-                  <Col xs={24} sm={24} lg={24} xl={24}>
-                    <Form.Item
-                      label={<CustomLabel label={"Street1"} />}
-                      name={["billingAddress", "street1"]}
-                      labelAlign="left"
-                      labelCol={{ span: isModal ? 8 : 5 }}
-                    >
-                      <Input />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={24} sm={24} lg={24} xl={24}>
-                    <Form.Item
-                      label={<CustomLabel label={"Street2"} />}
-                      name={["billingAddress", "street2"]}
-                      labelAlign="left"
-                      labelCol={{ span: isModal ? 8 : 5 }}
-                    >
-                      <Input />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={24} sm={24} lg={24} xl={24}>
-                    <Form.Item
-                      label={<CustomLabel label={"City"} />}
-                      name={["billingAddress", "city"]}
-                      labelAlign="left"
-                      labelCol={{ span: isModal ? 8 : 5 }}
-                    >
-                      <Input />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={24} sm={24} lg={24} xl={24}>
-                    <Form.Item
-                      label={<CustomLabel label={"Pincode"} />}
-                      name={["billingAddress", "pincode"]}
-                      labelAlign="left"
-                      labelCol={{ span: isModal ? 8 : 5 }}
-                    >
-                      <Input />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={24} sm={24} lg={24} xl={24}>
-                    <Form.Item
-                      label={<CustomLabel label={"State"} />}
-                      name={["billingAddress", "state"]}
-                      labelAlign="left"
-                      labelCol={{ span: isModal ? 8 : 5 }}
-                    >
-                      <Select
-                        options={CustomerData.states}
-                        style={{
-                          width: isModal ? "100%" : "100%",
-                        }}
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-              </Col>
-              <Col sm={24} xs={24} md={12} lg={10} style={{ padding: 10 }}>
-                <Row style={{ paddingBottom: 10 }}></Row>
-                <Row>
-                  <Col xs={24} sm={24} lg={24} xl={24}>
-                    <Form.Item
-                      label={<CustomLabel label={"Street1"} />}
-                      name={["shippingAddress", "street1"]}
-                      labelAlign="left"
-                      labelCol={{ span: isModal ? 8 : 5 }}
-                    >
-                      <Input />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={24} sm={24} lg={24} xl={24}>
-                    <Form.Item
-                      label={<CustomLabel label={"Street2"} />}
-                      name={["shippingAddress", "street2"]}
-                      labelAlign="left"
-                      labelCol={{ span: isModal ? 8 : 5 }}
-                    >
-                      <Input />
-                    </Form.Item>
-                  </Col>
-                </Row>
+        <div>
+            <Tabs>
+                <TabPane tab="General Info" key={1}>
+                    <FormItemCol
+                        label={"Name"}
+                        labelAlign="left"
+                        name="name"
+                        width={"30vw"}
+                        required={true}
+                        labelCol={{ span: isModal ? 18 : 8 }}
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please Provide Customer Name",
+                            },
+                        ]}
+                        type={"text"}
+                    />
+                    <FormItemCol
+                        label={"Phone"}
+                        required={true}
+                        labelAlign="left"
+                        width={"30vw"}
+                        name="phone"
+                        labelCol={{ span: isModal ? 18 : 8 }}
+                        maxLength={10}
+                        rules={[
+                            {
+                                required: "true",
+                                message: "Please Write Phone Name",
+                            },
+                            {
+                                pattern: "/^[0-9]{10}$/",
+                                message: "Phone number must be 10 digits",
+                            },
+                        ]}
+                        type={"text"}
+                    />
+                    <FormItemCol
+                        label={"Email"}
+                        labelAlign="left"
+                        name="email"
+                        labelCol={{ span: isModal ? 18 : 8 }}
+                        required={true}
+                        width={"30vw"}
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please Provide Customer Email",
+                            },
+                        ]}
+                        type={"text"}
+                    />
+                    <FormItemCol
+                        label={"Alternate Email"}
+                        labelAlign="left"
+                        name="alternateEmail"
+                        labelCol={{ span: isModal ? 18 : 8 }}
+                        width={"30vw"}
+                        type={"text"}
+                    />
+                    <FormItemCol
+                        label={"Contact Person"}
+                        name={"contactPerson"}
+                        labelAlign="left"
+                        labelCol={{ span: isModal ? 18 : 8 }}
+                        type={"text"}
+                        width={"30vw"}
+                    />
+                </TabPane>
+                <TabPane tab="Address Details" key={2}>
+                    <Row justify={"start"}>
+                        <Col span={10}>
+                            <Text type="secondary" style={{ fontWeight: 900 }}>
+                                BILLING ADDRESS
+                            </Text>
+                        </Col>
+                        <Col span={10} style={{ textAlign: "left" }}>
+                            <Text type="secondary" style={{ fontWeight: 900 }}>
+                                SHIPPING ADDRESS
+                            </Text>
+                            <Text
+                                onClick={handeCopyBillingAddress}
+                                style={{
+                                    color: "green",
+                                    cursor: "pointer",
+                                    fontWeight: 500,
+                                    marginLeft: 3,
+                                }}
+                            >
+                                COPY
+                                <Tooltip title={"Copy Billing Address"}>
+                                    <span
+                                        style={{
+                                            cursor: "pointer",
+                                            color: "red   ",
+                                            fontSize: "1rem",
+                                        }}
+                                    >
+                                        {" "}
+                                        *
+                                    </span>
+                                </Tooltip>
+                            </Text>
+                        </Col>
+                    </Row>
+                    <Row style={{ display: "flex" }} gutter={[20]}>
+                        <Col
+                            sm={24}
+                            xs={24}
+                            md={24}
+                            lg={10}
+                            style={{ padding: 10 }}
+                        >
+                            <Row style={{ paddingBottom: 10 }}></Row>
+                            <Row>
+                                <Col xs={24} sm={24} lg={24} xl={24}>
+                                    <Form.Item
+                                        label={
+                                            <CustomLabel label={"Street1"} />
+                                        }
+                                        name={["billingAddress", "street1"]}
+                                        labelAlign="left"
+                                        labelCol={{ span: isModal ? 8 : 5 }}
+                                    >
+                                        <Input />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs={24} sm={24} lg={24} xl={24}>
+                                    <Form.Item
+                                        label={
+                                            <CustomLabel label={"Street2"} />
+                                        }
+                                        name={["billingAddress", "street2"]}
+                                        labelAlign="left"
+                                        labelCol={{ span: isModal ? 8 : 5 }}
+                                    >
+                                        <Input />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs={24} sm={24} lg={24} xl={24}>
+                                    <Form.Item
+                                        label={<CustomLabel label={"City"} />}
+                                        name={["billingAddress", "city"]}
+                                        labelAlign="left"
+                                        labelCol={{ span: isModal ? 8 : 5 }}
+                                    >
+                                        <Input />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs={24} sm={24} lg={24} xl={24}>
+                                    <Form.Item
+                                        label={
+                                            <CustomLabel label={"Pincode"} />
+                                        }
+                                        name={["billingAddress", "pincode"]}
+                                        labelAlign="left"
+                                        labelCol={{ span: isModal ? 8 : 5 }}
+                                    >
+                                        <Input />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs={24} sm={24} lg={24} xl={24}>
+                                    <Form.Item
+                                        label={<CustomLabel label={"State"} />}
+                                        name={["billingAddress", "state"]}
+                                        labelAlign="left"
+                                        labelCol={{ span: isModal ? 8 : 5 }}
+                                    >
+                                        <Select
+                                            options={CustomerData.states}
+                                            style={{
+                                                width: isModal
+                                                    ? "100%"
+                                                    : "100%",
+                                            }}
+                                        />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                        </Col>
+                        <Col
+                            sm={24}
+                            xs={24}
+                            md={12}
+                            lg={10}
+                            style={{ padding: 10 }}
+                        >
+                            <Row style={{ paddingBottom: 10 }}></Row>
+                            <Row>
+                                <Col xs={24} sm={24} lg={24} xl={24}>
+                                    <Form.Item
+                                        label={
+                                            <CustomLabel label={"Street1"} />
+                                        }
+                                        name={["shippingAddress", "street1"]}
+                                        labelAlign="left"
+                                        labelCol={{ span: isModal ? 8 : 5 }}
+                                    >
+                                        <Input />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs={24} sm={24} lg={24} xl={24}>
+                                    <Form.Item
+                                        label={
+                                            <CustomLabel label={"Street2"} />
+                                        }
+                                        name={["shippingAddress", "street2"]}
+                                        labelAlign="left"
+                                        labelCol={{ span: isModal ? 8 : 5 }}
+                                    >
+                                        <Input />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
 
-                <Row>
-                  <Col xs={24} sm={24} lg={24} xl={24}>
-                    <Form.Item
-                      label={<CustomLabel label={"City"} />}
-                      name={["shippingAddress", "city"]}
-                      labelAlign="left"
-                      labelCol={{ span: isModal ? 8 : 5 }}
-                    >
-                      <Input />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={24} sm={24} lg={24} xl={24}>
-                    <Form.Item
-                      label={<CustomLabel label={"Pincode"} />}
-                      name={["shippingAddress", "pincode"]}
-                      labelAlign="left"
-                      labelCol={{ span: isModal ? 8 : 5 }}
-                    >
-                      <Input />
-                    </Form.Item>
-                  </Col>
-                </Row>
+                            <Row>
+                                <Col xs={24} sm={24} lg={24} xl={24}>
+                                    <Form.Item
+                                        label={<CustomLabel label={"City"} />}
+                                        name={["shippingAddress", "city"]}
+                                        labelAlign="left"
+                                        labelCol={{ span: isModal ? 8 : 5 }}
+                                    >
+                                        <Input />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs={24} sm={24} lg={24} xl={24}>
+                                    <Form.Item
+                                        label={
+                                            <CustomLabel label={"Pincode"} />
+                                        }
+                                        name={["shippingAddress", "pincode"]}
+                                        labelAlign="left"
+                                        labelCol={{ span: isModal ? 8 : 5 }}
+                                    >
+                                        <Input />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
 
-                <Row>
-                  <Col xs={24} sm={24} lg={24} xl={24}>
-                    <Form.Item
-                      label={<CustomLabel label={"State"} />}
-                      name={["shippingAddress", "state"]}
-                      labelAlign="left"
-                      labelCol={{ span: isModal ? 8 : 5 }}
-                    >
-                      <Select
-                        options={CustomerData.states}
-                        style={{
-                          width: isModal ? "100%" : "100%",
-                        }}
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </TabPane>
-          <TabPane tab="Other Details" key={3}>
-            <FormItemCol
-              label={"Pan No"}
-              labelAlign="left"
-              tooltip="this data  will be Encrypted then stored not visible to other people  accept access given  "
-              name="panNo"
-              labelCol={{ span: isModal ? 18 : 8 }}
-              type={"text"}
-              width={"30vw"}
-            />
+                            <Row>
+                                <Col xs={24} sm={24} lg={24} xl={24}>
+                                    <Form.Item
+                                        label={<CustomLabel label={"State"} />}
+                                        name={["shippingAddress", "state"]}
+                                        labelAlign="left"
+                                        labelCol={{ span: isModal ? 8 : 5 }}
+                                    >
+                                        <Select
+                                            options={CustomerData.states}
+                                            style={{
+                                                width: isModal
+                                                    ? "100%"
+                                                    : "100%",
+                                            }}
+                                        />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                        </Col>
+                    </Row>
+                </TabPane>
+                <TabPane tab="Other Details" key={3}>
+                    <FormItemCol
+                        label={"Pan No"}
+                        labelAlign="left"
+                        tooltip="this data  will be Encrypted then stored not visible to other people  accept access given  "
+                        name="panNo"
+                        labelCol={{ span: isModal ? 18 : 8 }}
+                        type={"text"}
+                        width={"30vw"}
+                    />
 
-            <FormItemCol
-              label={"Gst No"}
-              labelAlign="left"
-              tooltip="this data  will be Encripted then stored not visible to other pepole  accept acces given  "
-              name="gstNo"
-              labelCol={{ span: isModal ? 18 : 8 }}
-              width={"30vw"}
-            />
-            <FormItemCol
-              label={"MFG No"}
-              labelAlign="left"
-              tooltip="registered manufacturing no "
-              name="mfgNo"
-              labelCol={{ span: isModal ? 18 : 8 }}
-              width={"30vw"}
-            />
-            <FormItemCol
-              label={"MSMEB REG NO"}
-              labelAlign="left"
-              name="msmebNo"
-              labelCol={{ span: isModal ? 18 : 8 }}
-              width={"30vw"}
-            />
-          </TabPane>
-        </Tabs>
-      </div>
+                    <FormItemCol
+                        label={"Gst No"}
+                        labelAlign="left"
+                        tooltip="this data  will be Encripted then stored not visible to other pepole  accept acces given  "
+                        name="gstNo"
+                        labelCol={{ span: isModal ? 18 : 8 }}
+                        width={"30vw"}
+                    />
+                    <FormItemCol
+                        label={"MFG No"}
+                        labelAlign="left"
+                        tooltip="registered manufacturing no "
+                        name="mfgNo"
+                        labelCol={{ span: isModal ? 18 : 8 }}
+                        width={"30vw"}
+                    />
+                    <FormItemCol
+                        label={"MSMEB REG NO"}
+                        labelAlign="left"
+                        name="msmebNo"
+                        labelCol={{ span: isModal ? 18 : 8 }}
+                        width={"30vw"}
+                    />
+                </TabPane>
+            </Tabs>
+        </div>
     );
 };
 

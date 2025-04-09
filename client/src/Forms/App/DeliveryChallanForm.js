@@ -123,7 +123,7 @@ const DeliveryChallan = ({ form,isUpdate,entity }) => {
             address: delivery?.address,
           });
       }      
-    }, [,]);
+    }, []);
 
   useEffect(() => {}, []);
   return (
@@ -248,7 +248,7 @@ const DeliveryChallan = ({ form,isUpdate,entity }) => {
               <FormItemCol
                 name={"customer"}
                 labelAlign="left"
-                type={"modal"}
+                type={"options"}
                 entity={"customers"}
                 width={"25vw"}
                 fieldName={"name"}

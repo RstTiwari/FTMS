@@ -10,7 +10,7 @@ import {
     Upload,
 } from "antd";
 import { categoryOption } from "../../Data/ExpensesData";
-import CustomerModal from "components/CustomModal";
+import CustomerModal from "components/CustomProductSelect";
 import UploadImage from "components/UploadImage";
 import FormItemCol from "components/Comman/FormItemCol";
 
@@ -49,12 +49,13 @@ const ExpenseForm = ({ form }) => {
           />
         </Row>
         <FormItemCol
-          label={"EXpense#"}
+          label={"Expense#"}
           name={"no"}
           required={true}
           type={"counters"}
           labelAlign="left"
           labelCol={{ span: 8 }}
+          entity={"expenses"}
           width={"30vw"}
           rules={[
             {
@@ -123,7 +124,7 @@ const ExpenseForm = ({ form }) => {
           name="customer"
           labelAlign="left"
           labelCol={{ span: 8 }}
-          type={"model"}
+          type={"options"}
           width={"30vw"}
           entity="customers"
           fieldName={"name"}

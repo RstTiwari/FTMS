@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Modal, Select, Divider, Button, Row, Space } from "antd";
+import { Modal, Select, Divider, Button, Row, Space, AutoComplete } from "antd";
 import { useAuth } from "state/AuthProvider";
 import CoustomButton from "./Comman/CoustomButton";
 import CustomForm from "./CreateCustomForm";
@@ -8,8 +8,9 @@ import AddressDetails from "./Comman/AddressDetails";
 import PageLoader from "pages/PageLoader";
 import CustomDialog from "./CustomDialog";
 import { LoadingOutlined } from "@ant-design/icons";
+import { Autocomplete } from "@mui/material";
 
-const CustomModel = ({
+const CustomProductSelect = ({
   entity,
   fieldName,
   width,
@@ -200,7 +201,7 @@ const CustomModel = ({
 
   return (
     <>
-      <Select
+      <AutoComplete
         options={options}
         value={value || ""}
         disabled={disabled}
@@ -264,4 +265,4 @@ const CustomModel = ({
   );
 };
 
-export default CustomModel;
+export default CustomProductSelect;

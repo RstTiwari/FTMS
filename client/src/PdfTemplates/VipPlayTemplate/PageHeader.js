@@ -69,15 +69,15 @@ const style = StyleSheet.create({
         flex: 1,
         justifyContent: "flex-start",
         height: "auto",
+        fontSize:12,
+        borderRight:1,
+       borderRightColor:borderColor
     },
     rightSide: {
         paddingTop: 3,
         paddingLeft: 3,
         flex: 1,
         justifyContent: "flex-start",
-        height: "auto",
-        borderLeft: 1,
-        borderLeftColor: borderColor,
     },
     bottomleftSide: {
         paddingTop: 3,
@@ -96,7 +96,7 @@ const style = StyleSheet.create({
         height: "auto",
     },
     billto: {
-        fontSize: 12,
+        fontSize: 14,
         fontFamily: "Helvetica-Bold",
         fontWeight: "heavy",
     },
@@ -130,6 +130,7 @@ const PageHeader = ({ organization, entityData }) => {
         billingAddress,
         tagLine,
         gstNo,
+        panNo
     } = organization;
     const { street1, street2, city, state, pincode } = billingAddress;
     return (
@@ -157,18 +158,20 @@ const PageHeader = ({ organization, entityData }) => {
                     <Text>
                         MOB - {phone}{" "}
                         {alternatePhone ? `/ ${alternatePhone}` : ""} , EMAIL-{" "}
-                        <Link>{email}</Link>
+                        <Link>{email?.toUpperCase()}</Link>
                     </Text>
                 </View>
             </View>
             <View style={style.headerContainer}>
                 <View style={style.leftSide}>
-                    <Text style={style.billto}>Company Details</Text>
-                    <Text style={{ fontWeight: "1000" }}>
+                    <Text style={style.billto}>COMPANY  DETAILS</Text>
+                    <Text style={{ fontWeight: "1000" ,fontSize:12}}>
                         {companyName.toUpperCase()}
                     </Text>
                     <Text>GSTIN : {gstNo}</Text>
-                    <Text>STATE : {state}</Text>
+                    <Text>PAN-NO : {panNo}</Text>
+                    <Text>STATE : {state?.toUpperCase()}</Text>
+
                 </View>
                 <View style={style.rightSide}>
                     {entityData.map((item, index) => (

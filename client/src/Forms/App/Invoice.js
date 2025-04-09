@@ -93,7 +93,7 @@ const QuotationForm = ({ form,entity }) => {
               message: "Please Select Customer",
             },
           ]}
-          type="modal"
+          type="options"
           entity="customers"
           width={"30vw"}
           customerSelect=""

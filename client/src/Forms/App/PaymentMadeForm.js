@@ -56,7 +56,7 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate, entity }) => {
             }}
             onlyShippingAddress={true}
             preFillValue={form.getFieldValue("vendor")?.name || ""}
-            type={"modal"}
+            type={"options"}
             disabled={form.getFieldValue("vendor")?.name} // if value availbel mark as disabled
           />
         </Col>

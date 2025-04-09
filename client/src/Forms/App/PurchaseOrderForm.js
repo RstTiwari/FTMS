@@ -19,7 +19,7 @@ import { PlusOutlined, CloseOutlined, DeleteOutlined } from "@ant-design/icons";
 
 import FormItemCol from "components/Comman/FormItemCol";
 import CustomSelect from "components/Comman/CustomSelect";
-import CustomModel from "components/CustomModal";
+import CustomModel from "components/CustomProductSelect";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import AddressDetails from "components/Comman/AddressDetails";
 import { useParams } from "react-router-dom";
@@ -191,7 +191,7 @@ const PurchaseOrder = ({ form, value, disabled, isUpdate,entity }) => {
             message: "Please Select Vendor",
           },
         ]}
-        type={"modal"}
+        type={"options"}
         width={"30vw"}
         entity={"vendors"}
         fieldName={"name"}

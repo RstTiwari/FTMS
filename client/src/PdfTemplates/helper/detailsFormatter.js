@@ -17,10 +17,7 @@ export const customPageHeader = (entity, data, entityPrefix) => {
           label: "Due Date",
           value: jsDateIntoDayjsDate(data["invoiceDate"]),
         },
-        {
-          label: "Sales Executive",
-          value: data["salesPerson"],
-        },
+     
       ];
       break;
     case "quotations":
@@ -131,54 +128,54 @@ export const entityDetailsFormatter = (entity, data, organization) => {
       const mergedShippingAddress = `${shippingAddress?.street1} ${shippingAddress?.street2}, ${shippingAddress?.city},${shippingAddress?.state} - ${shippingAddress?.pincode}`;
 
       array = [
-        [
-          {
-            label: "BILLING TO :",
-            value: "",
-            type: "heading",
-          },
-          {
-            label: "",
-            value: name?.toUpperCase(),
-            type: "subheading",
-          },
-          {
-            label: "",
-            value: mergedBillingAddress,
-          },
-          {
-            label: "",
-            value: `GST NO: ${customer["gstNo"] || ""}      , PAN NO: ${
-              customer["panNo"] || ""
-            }`,
-          },
-        ],
-        [
-          {
-            label: "SHIPPING TO :",
-            value: "",
-            type: "heading",
-          },
-          {
-            label: "",
-            value: name?.toUpperCase(),
-            type: "subheading",
-          },
-          {
-            label: "",
-            value: mergedShippingAddress,
-          },
-          {
-            label: "",
-            value: `GST NO : ${customer["gstNo"] || ""}      , PAN NO : ${
-              customer["panNo"] || ""
-            }`,
-          },
-          {
-            label: "DRIVER MOB NO :",
-            value: "",
-          },
-        ],
+          [
+              {
+                  label: "BILLING TO :",
+                  value: "",
+                  type: "heading",
+              },
+              {
+                  label: "",
+                  value: name?.toUpperCase(),
+                  type: "subheading",
+              },
+              {
+                  label: "",
+                  value: mergedBillingAddress,
+              },
+              {
+                  label: "",
+                  value: `GST NO: ${customer["gstNo"] || ""} `,
+              },
+              {
+                  label: "",
+                  value: `PAN NO: ${customer["panNo"] || ""}`,
+              },
+          ],
+          [
+              {
+                  label: "SHIPPING TO :",
+                  value: "",
+                  type: "heading",
+              },
+              {
+                  label: "",
+                  value: name?.toUpperCase(),
+                  type: "subheading",
+              },
+              {
+                  label: "",
+                  value: mergedShippingAddress,
+              },
+              {
+                  label: "",
+                  value: `GST NO : ${customer["gstNo"] || ""}`,
+              },
+              {
+                  label: "",
+                  value: `PAN NO : ${customer["panNo"] || ""}`,
+              },
+          ],
       ];
       break;
 

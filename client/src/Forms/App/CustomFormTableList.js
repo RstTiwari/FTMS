@@ -15,7 +15,7 @@ import {
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import FormItemCol from "components/Comman/FormItemCol";
 import Taglabel from "components/Comman/Taglabel";
-import CustomModel from "components/CustomModal";
+import CustomModel from "components/CustomProductSelect";
 import TaxPercent from "components/Comman/TaxPercent";
 import { useParams } from "react-router-dom";
 import { useAuth } from "state/AuthProvider";
