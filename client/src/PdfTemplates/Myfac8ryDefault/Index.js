@@ -90,7 +90,7 @@ const commonStyles = StyleSheet.create({
 });
 
 // MyDocument component
-const MyDocument = ({ entity, data }) => {
+const Index = ({ entity, data }) => {
   let { entityData, organization, selectColumns, entityPrefix } = data;
 
   const pageHeaderDetail = customPageHeader(entity, entityData, entityPrefix);
@@ -137,4 +137,4 @@ const MyDocument = ({ entity, data }) => {
   );
 };
 
-export default MyDocument;
+export default Index;

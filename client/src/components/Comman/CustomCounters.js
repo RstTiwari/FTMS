@@ -8,9 +8,11 @@ import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import PageLoader from "pages/PageLoader";
 import { fetchTitleName } from "Helper/PageTitle";
+
 const CustomInputWithModal = ({ preFillValue,updateInForm,width ,entity}) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [inputValue, setInputValue] = useState("");
+    const [loading,setLoading] = useState(false)
     const [prefix, setPrefix] = useState("");
     const [nextNumber, setNextNumber] = useState("");
     const { appApiCall } = useAuth();
@@ -38,6 +40,7 @@ const CustomInputWithModal = ({ preFillValue,updateInForm,width ,entity}) => {
     };
 
     const handleFormFinish = async (values) => {
+        setLoading(true)
         const response = await appApiCall("post", "updateCountersNumber", {
             entity: "counters",
             values,
@@ -50,6 +53,7 @@ const CustomInputWithModal = ({ preFillValue,updateInForm,width ,entity}) => {
             updateInForm(values?.nextNumber);
             NotificationHandler.success("Counters updated successfully");
         }
+        setLoading(false)
     };
 
     const fetchCountersNumber = async () => {
@@ -81,72 +85,87 @@ const CustomInputWithModal = ({ preFillValue,updateInForm,width ,entity}) => {
 
 
     useEffect(()=>{
-
     },[preFillValue])
 
     return (
-      <div>
-        <Row style={{ position: "relative", width: width }}>
-          {inputValue ? (
-            <Input
-              value={inputValue}
-              onChange={handleInputChange}
-              style={{ paddingRight: "30px", width: "100%" }} 
-            />
-          ) : (
-            <Skeleton.Input />
-          )}
+        <div>
+            <Row style={{ position: "relative", width: width }}>
+                {inputValue ? (
+                    <Input
+                        value={inputValue}
+                        disabled
+                        onChange={handleInputChange}
+                        style={{ paddingRight: "30px", width: "100%" }}
+                    />
+                ) : (
+                    <Skeleton.Input />
+                )}
 
-          <Button
-            icon={<SettingOutlined />}
-            onClick={openModal}
-            style={{
-              position: "absolute",
-              top: "50%",
-              transform: "translateY(-50%)",
-              right: "10px", // Adjust this value based on your preference
-              zIndex: 1,
-              border: "none",
-              background: "transparent",
-              padding: 0,
-              height: "100%", // Ensure the button height matches the input height
-            }}
-          />
-        </Row>
-
-        <Modal
-          open={modalVisible}
-          onOk={handleModalOk}
-          footer={null}
-          closeIcon={false}
-          width={"40vw"}
-          style={{ padding: 20 }}
-          bodyStyle={{
-            overflow: "auto",
-          }}
-        >
-          <Form form={form} onFinish={handleFormFinish} initialValues={{}}>
-            <Row align={"middle"}>
-              <Col span={12}>
-                <h3>{`CONFIGURE ${fetchTitleName(
-                  entity
-                ).toUpperCase()} NO`}</h3>
-              </Col>
-              <Col span={12} style={{ textAlign: "right" }}>
                 <Button
-                  htmlType="submit"
-                  type="primary"
-                  style={{ backgroundColor: "#22b378", cursor: "pointer" }}
-                >
-                  SAVE
-                </Button>
-                <Button onClick={handleModalCancel}>CLOSE</Button> 
-              </Col>
+                    icon={<SettingOutlined />}
+                    onClick={openModal}
+                    style={{
+                        position: "absolute",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        right: "10px", // Adjust this value based on your preference
+                        zIndex: 1,
+                        border: "none",
+                        background: "transparent",
+                        padding: 0,
+                        height: "100%", // Ensure the button height matches the input height
+                    }}
+                />
             </Row>
-            <Counters form={form} />
-          </Form>
-        </Modal>
-      </div>
+
+            <Modal
+                open={modalVisible}
+                onOk={handleModalOk}
+                footer={null}
+                closeIcon={false}
+                width={"40vw"}
+                style={{ padding: 20 }}
+                bodyStyle={{
+                    overflow: "auto",
+                }}
+            >
+                <Form
+                    form={form}
+                    onFinish={handleFormFinish}
+                    initialValues={{}}
+                >
+                    <Row align={"middle"}>
+                        <Col span={12}>
+                            <h3>{`CONFIGURE ${fetchTitleName(
+                                entity
+                            ).toUpperCase()} NO`}</h3>
+                        </Col>
+                        <Col span={12} style={{ textAlign: "right" }}>
+                            <Button
+                                htmlType="submit"
+                                type="primary"
+                                style={{
+                                    backgroundColor: "#22b378",
+                                    cursor: "pointer",
+                                }}
+                            >
+                                SAVE
+                            </Button>
+                            <Button onClick={handleModalCancel}>CLOSE</Button>
+                        </Col>
+                    </Row>
+                    {loading ? (
+                        <PageLoader
+                            text={"Updating Counter pls wait"}
+                            isLoading={loading}
+                            height="20px"
+                        />
+                    ) : (
+                        <Counters form={form} />
+                    )}
+                </Form>
+            </Modal>
+        </div>
     );
 };
 

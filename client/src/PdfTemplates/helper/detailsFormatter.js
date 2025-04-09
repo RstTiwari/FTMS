@@ -1,4 +1,4 @@
-import { jsDateIntoDayjsDate } from "Helper/EpochConveter";
+import { jsDateIntoDayjsDate,currentFinancialYear } from "Helper/EpochConveter";
 export const customPageHeader = (entity, data, entityPrefix) => {
   let array = [];
   switch (entity) {
@@ -6,7 +6,7 @@ export const customPageHeader = (entity, data, entityPrefix) => {
       array = [
         {
           label: "Invoice No",
-          value: `${entityPrefix}/${data["no"]}`, // This would be dynamic
+          value: `${entityPrefix}/${currentFinancialYear()}/${data["no"]}`, // This would be dynamic
         },
 
         {
@@ -27,7 +27,7 @@ export const customPageHeader = (entity, data, entityPrefix) => {
       array = [
         {
           label: "Quotation No",
-          value: `${entityPrefix}/${data["no"]}`,
+          value: `${entityPrefix}/${currentFinancialYear()}/${data["no"]}`,
         },
         {
           label: "Quotation Date",
@@ -43,7 +43,7 @@ export const customPageHeader = (entity, data, entityPrefix) => {
       array = [
         {
           label: "Purchase No",
-          value: `${entityPrefix}/${data["no"]}`,
+          value: `${entityPrefix}/${currentFinancialYear()}/${data["no"]}`,
         },
         {
           label: "Purchase Date",
@@ -59,7 +59,7 @@ export const customPageHeader = (entity, data, entityPrefix) => {
       array = [
         {
           label: "Challan No",
-          value: `${entityPrefix}/${data["no"]}`,
+          value: `${entityPrefix}/${currentFinancialYear()}/${data["no"]}`,
         },
         {
           label: "Challan Date",
@@ -75,7 +75,7 @@ export const customPageHeader = (entity, data, entityPrefix) => {
       array = [
         {
           label: "Workorder No",
-          value: `${entityPrefix}/${data["no"]}`,
+          value: `${entityPrefix}/${currentFinancialYear()}/${data["no"]}`,
         },
         {
           label: "Workorder Date",
@@ -212,6 +212,7 @@ export const entityDetailsFormatter = (entity, data, organization) => {
     case "purchases":
       const vendorComBillingAddress = `${vendorBillingAddress?.street1} ${vendorBillingAddress?.street2}, ${vendorBillingAddress?.city},${vendorBillingAddress?.state} - ${vendorBillingAddress?.pincode}`;
       const orgComBillingAddress = `${orgBillingAddress?.street1} ${orgBillingAddress?.street2}, ${orgBillingAddress?.city},${orgBillingAddress?.state} - ${orgBillingAddress?.pincode}`;
+      console.log(entity,data,organization)
       let deliveryAddress = data["delivery"]["address"];
       const delComAddress = `${deliveryAddress?.street1} ${deliveryAddress?.street2}, ${deliveryAddress?.city},${deliveryAddress?.state} - ${deliveryAddress?.pincode}`;
       let deliverTo = data["delivery"]["to"];
@@ -268,8 +269,6 @@ export const entityDetailsFormatter = (entity, data, organization) => {
            let address = data["delivery"]["address"];
           const challanShippingAddress = `${address?.street1} ${address?.street2}, ${address?.city},${address?.state} - ${address?.pincode}`;
          let challanTo = data["delivery"]["to"];
-
-
 
       array = [
         [
@@ -337,11 +336,11 @@ export const getTableHeaders2 = (entity, preCol = []) => {
   // Default headers
   const allHeaders = [
     { title: "#", property: "srNo", width: 20 },
-    { title: "DESCRIPTION", property: "description", width: 330 }, // Initial width of description column
+    { title: "DESCRIPTION", property: "description", width: 350 }, // Initial width of description column
     { title: "RATE", property: "rate", width: 50 },
     { title: "QTY", property: "qty", width: 40 },
     { title: "TAX%", property: "gstPercent", width: 50 },
-    { title: "TOTAL AMOUNT", property: "finalAmount", width: 80 },
+    { title: "TOTAL AMOUNT", property: "finalAmount", width: 60 },
   ];
 
   // Create a map from preCol to handle status true columns
@@ -560,3 +559,6 @@ export const workOrderTable = (entity, data) => {
   });
   return response;
 };
+
+export const vipPlayPageHeader = (entity,data,organization)=>{
+}

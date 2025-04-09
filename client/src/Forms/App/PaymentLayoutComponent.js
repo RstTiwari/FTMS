@@ -209,6 +209,7 @@ const PaymentLayoutComponent = ({ form,widthOfTerm="35vw",widthOfNotes ="35vw" }
                                 });
                               }}
                               onChange={(value) => handleItemsUpdate(value)}
+                              onPressEnter={(e)=>{e.preventDefault()}}
                             />
                           </Form.Item>
                         </Col>
@@ -233,6 +234,7 @@ const PaymentLayoutComponent = ({ form,widthOfTerm="35vw",widthOfNotes ="35vw" }
                               onChange={(value) =>
                                 handleItemsUpdate(value, "amount")
                               }
+                              onPressEnter={(e)=>{e.preventDefault()}}
                             />
                           </Form.Item>
                         </Col>

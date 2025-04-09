@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState ,useRef} from "react";
 import {
     Form,
     Table,
@@ -327,7 +327,6 @@ const CustomFormTableList = ({ form }) => {
         }
     };
 
-   
 
     useEffect(() => {
         getColumnPre();
@@ -335,458 +334,559 @@ const CustomFormTableList = ({ form }) => {
 
 
     return (
-      <>
-        <Divider dashed />
-        <Row
-          justify="space-between"
-          align="middle"
-          style={{
-            marginBottom: "10px",
-            top: 0,
-            background: "#fff",
-            zIndex: 1,
-            position: "relative",
-          }}
-        >
-          <Col flex="auto" style={{ textAlign: "center" }}>
-            <Taglabel text={"ITEM TABLE"} weight={1000} />
-          </Col>
-
-          <Col flex="none" style={{ position: "absolute", right: "20px" }}>
-            <Row>
-              <Taglabel text={"Optional Columns"} />
-            </Row>
-            <Row>
-              <Select
-                mode="multiple"
-                maxTagCount={0}
-                options={columnOptions}
-                value={selectedColumns}
-                style={{ width: "10vw" }}
-                onSelect={handleSelect}
-                onDeselect={handleDeSelect}
-                onClick={getColumnPre}
-                loading={columnOptions.length > 0 ? false : true}
-              />
-            </Row>
-          </Col>
-        </Row>
-
-        <div
-          style={{
-            position: "relative",
-            border: "2px solid #bfbfbb",
-            marginBottom: "30px",
-            marginTop: "20px",
-            overflow: "scroll",
-          }}
-        >
-          <div
-            style={{
-              minWidth: 1100,
-              overflow: "auto",
-            }}
-          >
+        <>
+            <Divider dashed />
             <Row
-              style={{
-                position: "relative",
-                border: "1px solid #bfbfbb",
-              }}
+                justify="space-between"
+                align="middle"
+                style={{
+                    marginBottom: "10px",
+                    top: 0,
+                    background: "#fff",
+                    zIndex: 1,
+                    position: "relative",
+                }}
             >
-              {/* Dynamically render optional columns based on selection */}
-              {renderColumnHeader("code", "ITEM CODE", 2)}
-              <Col
-                className="gutter-row"
-                span={dynamicSpan.itemDetails}
-                style={{
-                  borderRight: "1px solid #bfbfbb",
-                  textAlign: "center",
-                }}
-              >
-                <Taglabel text="ITEM DETAILS" />
-              </Col>
-              {renderColumnHeader("image", "IMAGE", 2)}
-              {renderColumnHeader("hsnCode", "HSN/SAC", 2)}
-              <Col
-                className="gutter-row"
-                span={dynamicSpan.qty}
-                style={{
-                  borderRight: "1px solid #bfbfbb",
-                  textAlign: "center",
-                }}
-              >
-                <Taglabel text="QTY" />
-              </Col>
-              <Col
-                className="gutter-row"
-                span={dynamicSpan.rate}
-                style={{
-                  borderRight: "1px solid #bfbfbb",
-                  textAlign: "center",
-                }}
-              >
-                <Taglabel text="RATE" />
-              </Col>
-              {renderColumnHeader("discountPercent", "DIS%", 2)}
-              {renderColumnHeader("discountAmount", "DIS AMT", 2)}
+                <Col flex="auto" style={{ textAlign: "center" }}>
+                    <Taglabel text={"ITEM TABLE"} weight={1000} />
+                </Col>
 
-              <Col
-                className="gutter-row"
-                span={dynamicSpan.gst}
-                style={{
-                  borderRight: "1px solid #bfbfbb",
-                  textAlign: "center",
-                }}
-              >
-                <Taglabel text="GST%" />
-              </Col>
-              {renderColumnHeader(
-                "taxAmount",
-                "TAX AMT",
-                2,
-                "TAX AMOUNT CALCULATED BASED ON RATE AND GST%"
-              )}
-
-              <Col
-                className="gutter-row"
-                span={dynamicSpan.totalBeforeTax}
-                style={{
-                  textAlign: "center",
-                }}
-              >
-                <Taglabel text="TOTAL AMT" />
-
-                {/* Tooltip with * sign */}
-                <Tooltip title="TOTAL AMOUNT BEFORE TAX ">
-                  <span
-                    style={{
-                      cursor: "pointer",
-                      color: "red   ",
-                      fontSize: "1rem",
-                    }}
-                  >
-                    {" "}
-                    *
-                  </span>
-                </Tooltip>
-              </Col>
-            </Row>
-          </div>
-          <Form.List
-            name={"items"}
-            initialValue={[
-              {
-                finalAmount: 0,
-                qty: 1,
-                rate: 0,
-                gstPercent: 0,
-                finalAmount: 0,
-                description: "",
-              },
-            ]}
-          >
-            {(subFields, subOpt) => (
-              <div>
-                <div
-                  style={{
-                    overflowX: "auto",
-                    overflow: "auto",
-                    minHeight: "10vh",
-                    maxHeight: "40vh",
-                    minWidth: 1100,
-                  }}
+                <Col
+                    flex="none"
+                    style={{ position: "absolute", right: "20px" }}
                 >
-                  {subFields.map(({ key, name, ...restField }) => (
-                    <Row
-                      key={key}
-                      align="middle"
-                      style={{
-                        marginTop: "5px",
-                      }}
-                    >
-                      {renderColumnValue(
-                        "code",
-                        <CustomModel
-                          entity={"products"}
-                          fieldName={"code"}
-                          updateInForm={(value) => {
-                            handleItemsUpdate(value, "code", name);
-                          }}
-                          preFillValue={
-                            form.getFieldValue("items")?.[name]?.code
-                          }
-                          width={"100%"}
-                        />,
-                        2,
-                        name,
-                        restField
-                      )}
-
-                      <Col
-                        className="gutter-row"
-                        span={dynamicSpan.itemDetails}
-                        style={{
-                          textAlign: "center",
-                        }}
-                      >
-                        <Form.Item
-                          {...restField}
-                          name={[name, "description"]}
-                          rules={[
-                            {
-                              required: true,
-                              message: "Please Select the description",
-                            },
-                          ]}
-                        >
-                          <CustomModel
-                            entity={"products"}
-                            fieldName={"name"}
-                            updateInForm={(value) => {
-                              handleItemsUpdate(value, "description", name);
-                            }}
-                            preFillValue={
-                              form.getFieldValue("items")?.[name]?.description
-                            }
-                          />
-                        </Form.Item>
-                      </Col>
-                      {renderColumnValue(
-                        "image",
-
-                        form.getFieldValue("items")?.[name]?.image ? (
-                          <Image
-                            width={"100%"}
-                            height={10}
-                            src={form.getFieldValue("items")?.[name]?.image}
-                            visible={false}
-                          />
-                        ) : (
-                          <Input placeholder="No Image" />
-                        ),
-
-                        2,
-                        name,
-                        restField
-                      )}
-                      {renderColumnValue(
-                        "hsnCode",
-                        <Input
-                          style={{
-                            width: "100%",
-                          }}
-                          onChange={(event) =>
-                            handleItemsUpdate(
-                              event.target.value,
-                              "hsnCode",
-                              name
-                            )
-                          }
-                          preFillValue={
-                            form.getFieldValue("items")?.[name]?.hsnCode
-                          }
-                        />,
-                        2,
-                        name,
-                        restField
-                      )}
-
-                      <Col
-                        className="gutter-row"
-                        span={dynamicSpan.qty}
-                        style={{
-                          textAlign: "center",
-                        }}
-                      >
-                        <Form.Item {...restField} name={[name, "qty"]}>
-                          <InputNumber
-                            style={{
-                              width: "100%",
-                            }}
-                            onChange={(value) =>
-                              handleItemsUpdate(value, "qty", name)
-                            }
-                            min={1}
-                            controls={false}
-                          />
-                        </Form.Item>
-                      </Col>
-                      <Col
-                        className="gutter-row"
-                        span={dynamicSpan.rate}
-                        style={{
-                          textAlign: "center",
-                        }}
-                      >
-                        <Form.Item {...restField} name={[name, "rate"]}>
-                          <InputNumber
-                            style={{
-                              width: "100%",
-                            }}
-                            onChange={(value) =>
-                              handleItemsUpdate(value, "rate", name)
-                            }
-                            controls={false}
-                          />
-                        </Form.Item>
-                      </Col>
-                      {renderColumnValue(
-                        "discountPercent",
-                        <InputNumber
-                          onChange={(value) =>
-                            handleItemsUpdate(value, "discountPercent", name)
-                          }
-                          min={false}
-                          controls={false}
-                          width="100%"
-                          style={{
-                            width: "100%",
-                            textAlign: "center",
-                          }}
-                          preFillValue={
-                            form.getFieldValue("items")?.[name]?.discountPercent
-                          }
-                        />,
-                        2,
-                        name,
-                        restField
-                      )}
-
-                      {renderColumnValue(
-                        "discountAmount",
-                        <InputNumber
-                          updateInForm={(value) =>
-                            handleItemsUpdate(value, "discountAmount", name)
-                          }
-                          min={false}
-                          controls={false}
-                          disabled
-                          readOnly={true}
-                          width="100%"
-                          style={{
-                            width: "100%",
-                            textAlign: "center",
-                          }}
-                          preFillValue={
-                            form.getFieldValue("items")?.[name]?.discountAmount
-                          }
-                        />,
-                        2,
-                        name,
-                        restField
-                      )}
-
-                      <Col className="gutter-row" span={dynamicSpan.gst}>
-                        <Form.Item {...restField} name={[name, "gstPercent"]}>
-                          <TaxPercent
-                            updateInForm={(value) =>
-                              handleItemsUpdate(value, "gstPercent", name)
-                            }
-                            min={false}
-                            controls={false}
-                            width="100%"
-                            style={{
-                              width: "100%",
-                              textAlign: "center",
-                            }}
-                            preFillValue={
-                              form.getFieldValue("items")?.[name]?.gstPercent
-                            }
-                          />
-                        </Form.Item>
-                      </Col>
-                      {renderColumnValue(
-                        "taxAmount",
-                        <InputNumber
-                          updateInForm={(value) =>
-                            handleItemsUpdate(value, "taxAmount", name)
-                          }
-                          min={false}
-                          controls={false}
-                          disabled
-                          readOnly={true}
-                          width="100%"
-                          style={{
-                            width: "100%",
-                            textAlign: "center",
-                          }}
-                          preFillValue={
-                            form.getFieldValue("items")?.[name]?.taxAmount
-                          }
-                        />,
-                        2,
-                        name,
-                        restField
-                      )}
-
-                      <Col
-                        className="gutter-row"
-                        span={dynamicSpan.totalBeforeTax}
-                        style={{
-                          textAlign: "center",
-                        }}
-                      >
-                        <Form.Item {...restField} name={[name, "finalAmount"]}>
-                          <InputNumber
-                            style={{
-                              width: "100%",
-                            }}
-                            disabled
-                            className="moneyInput"
-                            min={0}
-                            controls={false}
-                            readOnly={true}
-                          />
-                        </Form.Item>
-                      </Col>
-                      <Col
-                        className="gutter-row"
-                        span={dynamicSpan.delete}
-                        style={{ textAlign: "center" }}
-                      >
-                        <Form.Item>
-                          <DeleteOutlined
-                            style={{
-                              color: "red",
-                              cursor: "pointer",
-                            }}
-                            onClick={() => {
-                              handleDelete(name);
-                              // subOpt.remove(name);
-                            }}
-                          />
-                        </Form.Item>
-                      </Col>
+                    <Row>
+                        <Taglabel text={"Optional Columns"} />
                     </Row>
-                  ))}
-                </div>
-                <Row justify="start">
-                  <Button
-                    type="link"
+                    <Row>
+                        <Select
+                            mode="multiple"
+                            maxTagCount={0}
+                            options={columnOptions}
+                            value={selectedColumns}
+                            style={{ width: "10vw" }}
+                            onSelect={handleSelect}
+                            onDeselect={handleDeSelect}
+                            onClick={getColumnPre}
+                            loading={columnOptions.length > 0 ? false : true}
+                        />
+                    </Row>
+                </Col>
+            </Row>
+
+            <div
+                style={{
+                    position: "relative",
+                    border: "2px solid #bfbfbb",
+                    marginBottom: "30px",
+                    marginTop: "20px",
+                    overflow: "scroll",
+                }}
+            >
+                <div
                     style={{
-                      color: "#22b378",
+                        minWidth: 1100,
+                        overflow: "auto",
                     }}
-                    onClick={() => {
-                      subOpt.add({
-                        description: "",
-                        qty: 1,
-                        hsnCode: "",
-                        rate: 0,
-                        discountPercent: 0,
-                        gstPercent: 0,
-                      });
-                    }}
-                    details={true}
-                    withIcon={true}
-                  >
-                    ADD  NEW ROW
-                  </Button>
-                </Row>
-              </div>
-            )}
-          </Form.List>
-        </div>
-      </>
+                >
+                    <Row
+                        style={{
+                            position: "relative",
+                            border: "1px solid #bfbfbb",
+                        }}
+                    >
+                        {/* Dynamically render optional columns based on selection */}
+                        {renderColumnHeader("code", "ITEM CODE", 2)}
+                        <Col
+                            className="gutter-row"
+                            span={dynamicSpan.itemDetails}
+                            style={{
+                                borderRight: "1px solid #bfbfbb",
+                                textAlign: "center",
+                            }}
+                        >
+                            <Taglabel text="ITEM DETAILS" />
+                        </Col>
+                        {renderColumnHeader("image", "IMAGE", 2)}
+                        {renderColumnHeader("hsnCode", "HSN/SAC", 2)}
+                        <Col
+                            className="gutter-row"
+                            span={dynamicSpan.qty}
+                            style={{
+                                borderRight: "1px solid #bfbfbb",
+                                textAlign: "center",
+                            }}
+                        >
+                            <Taglabel text="QTY" />
+                        </Col>
+                        <Col
+                            className="gutter-row"
+                            span={dynamicSpan.rate}
+                            style={{
+                                borderRight: "1px solid #bfbfbb",
+                                textAlign: "center",
+                            }}
+                        >
+                            <Taglabel text="RATE" />
+                        </Col>
+                        {renderColumnHeader("discountPercent", "DIS%", 2)}
+                        {renderColumnHeader("discountAmount", "DIS AMT", 2)}
+
+                        <Col
+                            className="gutter-row"
+                            span={dynamicSpan.gst}
+                            style={{
+                                borderRight: "1px solid #bfbfbb",
+                                textAlign: "center",
+                            }}
+                        >
+                            <Taglabel text="GST%" />
+                        </Col>
+                        {renderColumnHeader(
+                            "taxAmount",
+                            "TAX AMT",
+                            2,
+                            "TAX AMOUNT CALCULATED BASED ON RATE AND GST%"
+                        )}
+
+                        <Col
+                            className="gutter-row"
+                            span={dynamicSpan.totalBeforeTax}
+                            style={{
+                                textAlign: "center",
+                            }}
+                        >
+                            <Taglabel text="TOTAL AMT" />
+
+                            {/* Tooltip with * sign */}
+                            <Tooltip title="TOTAL AMOUNT BEFORE TAX ">
+                                <span
+                                    style={{
+                                        cursor: "pointer",
+                                        color: "red   ",
+                                        fontSize: "1rem",
+                                    }}
+                                >
+                                    {" "}
+                                    *
+                                </span>
+                            </Tooltip>
+                        </Col>
+                    </Row>
+                </div>
+                <Form.List
+                    name={"items"}
+                    initialValue={[
+                        {
+                            finalAmount: 0,
+                            qty: 1,
+                            rate: 0,
+                            gstPercent: 0,
+                            finalAmount: 0,
+                            description: "",
+                        },
+                    ]}
+                >
+                    {(subFields, subOpt) => (
+                        <div>
+                            <div
+                                style={{
+                                    overflowX: "auto",
+                                    overflow: "auto",
+                                    minWidth: 1100,
+                                }}
+                            >
+                                {subFields.map(
+                                    ({ key, name, ...restField }) => (
+                                        <Row
+                                            key={key}
+                                            align="middle"
+                                            style={{
+                                                marginTop: "5px",
+                                            }}
+                                        >
+                                            {renderColumnValue(
+                                                "code",
+                                                <CustomModel
+                                                    entity={"products"}
+                                                    fieldName={"code"}
+                                                    updateInForm={(value) => {
+                                                        handleItemsUpdate(
+                                                            value,
+                                                            "code",
+                                                            name
+                                                        );
+                                                    }}
+                                                    preFillValue={
+                                                        form.getFieldValue(
+                                                            "items"
+                                                        )?.[name]?.code
+                                                    }
+                                                    width={"100%"}
+                                                />,
+                                                2,
+                                                name,
+                                                restField
+                                            )}
+                                            <Col
+                                                className="gutter-row"
+                                                span={dynamicSpan.itemDetails}
+                                                style={{
+                                                    textAlign: "center",
+                                                }}
+                                            >
+                                                <Form.Item
+                                                    {...restField}
+                                                    name={[name, "description"]}
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message:
+                                                                "Please Select the description",
+                                                        },
+                                                    ]}
+                                                >
+                                                    <CustomModel
+                                                        entity={"products"}
+                                                        fieldName={"name"}
+                                                        updateInForm={(
+                                                            value
+                                                        ) => {
+                                                            handleItemsUpdate(
+                                                                value,
+                                                                "description",
+                                                                name
+                                                            );
+                                                        }}
+                                                        preFillValue={
+                                                            form.getFieldValue(
+                                                                "items"
+                                                            )?.[name]
+                                                                ?.description
+                                                        }
+                                                    />
+                                                </Form.Item>
+                                            </Col>
+                                            {renderColumnValue(
+                                                "image",
+
+                                                form.getFieldValue("items")?.[
+                                                    name
+                                                ]?.image ? (
+                                                    <Image
+                                                        width={"100%"}
+                                                        height={10}
+                                                        src={
+                                                            form.getFieldValue(
+                                                                "items"
+                                                            )?.[name]?.image
+                                                        }
+                                                        visible={false}
+                                                    />
+                                                ) : (
+                                                    <Input
+                                                        placeholder="No Image"
+                                                        onPressEnter={(e) => {
+                                                            e.preventDefault();
+                                                        }}
+                                                    />
+                                                ),
+
+                                                2,
+                                                name,
+                                                restField
+                                            )}
+                                            {renderColumnValue(
+                                                "hsnCode",
+                                                <Input
+                                                    style={{
+                                                        width: "100%",
+                                                    }}
+                                                    onChange={(event) =>
+                                                        handleItemsUpdate(
+                                                            event.target.value,
+                                                            "hsnCode",
+                                                            name
+                                                        )
+                                                    }
+                                                    preFillValue={
+                                                        form.getFieldValue(
+                                                            "items"
+                                                        )?.[name]?.hsnCode
+                                                    }
+                                                />,
+                                                2,
+                                                name,
+                                                restField
+                                            )}
+
+                                            <Col
+                                                className="gutter-row"
+                                                span={dynamicSpan.qty}
+                                                style={{
+                                                    textAlign: "center",
+                                                }}
+                                            >
+                                                <Form.Item
+                                                    {...restField}
+                                                    name={[name, "qty"]}
+                                                >
+                                                    <InputNumber
+                                                        style={{
+                                                            width: "100%",
+                                                        }}
+                                                        onChange={(value) =>
+                                                            handleItemsUpdate(
+                                                                value,
+                                                                "qty",
+                                                                name
+                                                            )
+                                                        }
+                                                        min={1}
+                                                        controls={false}
+                                                        onPressEnter={(e) => {
+                                                            e.preventDefault();
+                                                        }}
+                                                    />
+                                                </Form.Item>
+                                            </Col>
+                                            <Col
+                                                className="gutter-row"
+                                                span={dynamicSpan.rate}
+                                                style={{
+                                                    textAlign: "center",
+                                                }}
+                                            >
+                                                <Form.Item
+                                                    {...restField}
+                                                    name={[name, "rate"]}
+                                                >
+                                                    <InputNumber
+                                                        style={{
+                                                            width: "100%",
+                                                        }}
+                                                        onChange={(value) =>
+                                                            handleItemsUpdate(
+                                                                value,
+                                                                "rate",
+                                                                name
+                                                            )
+                                                        }
+                                                        onPressEnter={(e) => {
+                                                            e.preventDefault();
+                                                        }}
+                                                        controls={false}
+                                                    />
+                                                </Form.Item>
+                                            </Col>
+                                            {renderColumnValue(
+                                                "discountPercent",
+                                                <InputNumber
+                                                    onChange={(value) =>
+                                                        handleItemsUpdate(
+                                                            value,
+                                                            "discountPercent",
+                                                            name
+                                                        )
+                                                    }
+                                                    min={false}
+                                                    controls={false}
+                                                    width="100%"
+                                                    style={{
+                                                        width: "100%",
+                                                        textAlign: "center",
+                                                    }}
+                                                    preFillValue={
+                                                        form.getFieldValue(
+                                                            "items"
+                                                        )?.[name]
+                                                            ?.discountPercent
+                                                    }
+                                                    onPressEnter={(e) => {
+                                                        e.preventDefault();
+                                                    }}
+                                                />,
+                                                2,
+                                                name,
+                                                restField
+                                            )}
+
+                                            {renderColumnValue(
+                                                "discountAmount",
+                                                <InputNumber
+                                                    updateInForm={(value) =>
+                                                        handleItemsUpdate(
+                                                            value,
+                                                            "discountAmount",
+                                                            name
+                                                        )
+                                                    }
+                                                    min={false}
+                                                    controls={false}
+                                                    disabled
+                                                    readOnly={true}
+                                                    width="100%"
+                                                    style={{
+                                                        width: "100%",
+                                                        textAlign: "center",
+                                                    }}
+                                                    preFillValue={
+                                                        form.getFieldValue(
+                                                            "items"
+                                                        )?.[name]
+                                                            ?.discountAmount
+                                                    }
+                                                    onPressEnter={(e) => {
+                                                        e.preventDefault();
+                                                    }}
+                                                />,
+                                                2,
+                                                name,
+                                                restField
+                                            )}
+
+                                            <Col
+                                                className="gutter-row"
+                                                span={dynamicSpan.gst}
+                                            >
+                                                <Form.Item
+                                                    {...restField}
+                                                    name={[name, "gstPercent"]}
+                                                >
+                                                    <TaxPercent
+                                                        updateInForm={(value) =>
+                                                            handleItemsUpdate(
+                                                                value,
+                                                                "gstPercent",
+                                                                name
+                                                            )
+                                                        }
+                                                        min={false}
+                                                        controls={false}
+                                                        width="100%"
+                                                        style={{
+                                                            width: "100%",
+                                                            textAlign: "center",
+                                                        }}
+                                                        preFillValue={
+                                                            form.getFieldValue(
+                                                                "items"
+                                                            )?.[name]
+                                                                ?.gstPercent
+                                                        }
+                                                        onPressEnter={(e) => {
+                                                            e.preventDefault();
+                                                        }}
+                                                    />
+                                                </Form.Item>
+                                            </Col>
+                                            {renderColumnValue(
+                                                "taxAmount",
+                                                <InputNumber
+                                                    updateInForm={(value) =>
+                                                        handleItemsUpdate(
+                                                            value,
+                                                            "taxAmount",
+                                                            name
+                                                        )
+                                                    }
+                                                    min={false}
+                                                    controls={false}
+                                                    disabled
+                                                    readOnly={true}
+                                                    width="100%"
+                                                    style={{
+                                                        width: "100%",
+                                                        textAlign: "center",
+                                                    }}
+                                                    preFillValue={
+                                                        form.getFieldValue(
+                                                            "items"
+                                                        )?.[name]?.taxAmount
+                                                    }
+                                                />,
+                                                2,
+                                                name,
+                                                restField
+                                            )}
+
+                                            <Col
+                                                className="gutter-row"
+                                                span={
+                                                    dynamicSpan.totalBeforeTax
+                                                }
+                                                style={{
+                                                    textAlign: "center",
+                                                }}
+                                            >
+                                                <Form.Item
+                                                    {...restField}
+                                                    name={[name, "finalAmount"]}
+                                                >
+                                                    <InputNumber
+                                                        style={{
+                                                            width: "100%",
+                                                        }}
+                                                        disabled
+                                                        className="moneyInput"
+                                                        min={0}
+                                                        controls={false}
+                                                        readOnly={true}
+                                                        onPressEnter={(e) => {
+                                                            e.preventDefault();
+                                                        }}
+                                                    />
+                                                </Form.Item>
+                                            </Col>
+                                            <Col
+                                                className="gutter-row"
+                                                span={dynamicSpan.delete}
+                                                style={{ textAlign: "center" }}
+                                            >
+                                                <Form.Item>
+                                                    <DeleteOutlined
+                                                        style={{
+                                                            color: "red",
+                                                            cursor: "pointer",
+                                                        }}
+                                                        onClick={() => {
+                                                            handleDelete(name);
+                                                            // subOpt.remove(name);
+                                                        }}
+                                                    />
+                                                </Form.Item>
+                                            </Col>
+                                        </Row>
+                                    )
+                                )}
+                            </div>
+                            <Row justify="start">
+                                <Button
+                                    type="link"
+                                    style={{
+                                        color: "#22b378",
+                                    }}
+                                    onClick={() => {
+                                        subOpt.add({
+                                            description: "",
+                                            qty: 1,
+                                            hsnCode: "",
+                                            rate: 0,
+                                            discountPercent: 0,
+                                            gstPercent: 0,
+                                        });
+                                    }}
+                                    details={true}
+                                    withIcon={true}
+                                >
+                                    ADD NEW ROW
+                                </Button>
+                            </Row>
+                        </div>
+                    )}
+                </Form.List>
+            </div>
+        </>
     );
 };
 

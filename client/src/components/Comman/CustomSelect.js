@@ -13,9 +13,9 @@ import { useAuth } from "../../state/AuthProvider";
 import CustomButton from "./CoustomButton";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import PageLoader from "pages/PageLoader";
-import { Spa } from "@mui/icons-material";
 
-const CustomSelect = ({
+const 
+CustomSelect = ({
   entity,
   entityName,
   width = "15vw",
@@ -33,11 +33,6 @@ const CustomSelect = ({
 
     // Function to fetch data and cache it
     const fetchData = async () => {
-      if (options.length !== 0) {
-        return;
-      }
-
-      // Otherwise, fetch the data from the API
       const response = await appApiCall(
         "get",
         "fetchSelectData",
@@ -109,45 +104,81 @@ const CustomSelect = ({
           }}
           onDropdownVisibleChange={(open) => {
             if (open) {
+               console.log("opened")
             }
           }}
           getPopupContainer={(trigger) => document.body}
           dropdownStyle={{ position: "fixed", zIndex: 20000000 }}
           dropdownRender={(menu) => {
-            return (
+          if (options.length === 0) {
+              setOptions([{label:" No options available",value:" No options available"}])
+              return (
+                  <>
+                      <div
+                          style={{
+                              maxHeight: "200px",
+                              overflow: "auto",
+                          }}
+                      >
+                          <div style={{ padding: "8px", color: "green" }}>
+                              No options available
+                          </div>
+                      </div>
+                      <Divider
+                          style={{
+                              margin: "8px 0",
+                          }}
+                      />
+                      <Space
+                          style={{
+                              padding: "0 8px 4px",
+                          }}
+                      >
+                          <CustomButton
+                              text={"ADD NEW"}
+                              details={true}
+                              onClick={() => {
+                                  setOpen(!open);
+                              }}
+                          />
+                      </Space>
+                  </>
+              );
+          }
+          return (
               <>
                   <>
-                    <div
-                      style={{
-                        maxHeight: "200px",
-                        overflow: "auto",
-                      }}
-                    >
-                      {menu}
-                    </div>
-                    <Divider
-                      style={{
-                        margin: "8px 0",
-                      }}
-                    />
-                    <Space
-                      style={{
-                        padding: "0 8px 4px",
-                      }}
-                    >
-                      <CustomButton
-                        text={"ADD NEW"}
-                        details={true}
-                        onClick={() => {
-                          setOpen(!open);
-                        }}
+                      <div
+                          style={{
+                              maxHeight: "200px",
+                              overflow: "auto",
+                          }}
+                      >
+                          {menu}
+                      </div>
+                      <Divider
+                          style={{
+                              margin: "8px 0",
+                          }}
                       />
-                    </Space>
+                      <Space
+                          style={{
+                              padding: "0 8px 4px",
+                          }}
+                      >
+                          <CustomButton
+                              text={"ADD NEW"}
+                              details={true}
+                              onClick={() => {
+                                  setOpen(!open);
+                              }}
+                          />
+                      </Space>
                   </>
-              
               </>
-            );
+          );
           }}
+          onPressEnter={(e)=>{e.preventDefault()}}
         />
       ) : (
         <Modal

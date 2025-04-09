@@ -72,7 +72,7 @@ const generatePdf = async (req, res, next, forEmail) => {
             ? prefix.prefix
             : entity.slice(0, 2).toUpperCase();
 
-        const templateId = "myfac8ry";
+        const templateId = "vipplay";
         let data = {}
         data['entityData'] = entityData
         data["organization"] = organization;

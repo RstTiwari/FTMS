@@ -108,64 +108,64 @@ const CustomModel = ({
 
 
   const handleChange = (value, label) => {
-         setValue(value);
-         if (entity === "customers") {
-           if (!initialRender) {
-             setInitialRender(true);
-           }
-           if (label?.item?.billingAddress || !label?.item?.shippingAddress) {
-             setAddress({ billingAddress: null, shippingAddress: null });
-           }
-           setAddress({
-             billingAddress: label?.item?.billingAddress,
-             shippingAddress: label?.item?.shippingAddress,
-           });
-           setId(label?.item?._id);
-           // Updating in Purchase Order Forms
-           if (forDeliveryAddress) {
-             return updateInForm({
-               to: label?.item?.name,
-               address: label?.item?.shippingAddress,
-               type: "customer",
-             });
-           }
-           return updateInForm(label?.value);
-         } else if (entity === "products") {
-           return updateInForm({
-             description: label?.label,
-             rate: label?.item?.rate,
-             hsnCode: label?.item?.hsnCode,
-             details: label?.item,
-           });
-         } else if (entity === "vendors") {
-           if (!initialRender) {
-             setInitialRender(true);
-           }
-           if (label?.item?.billingAddress || !label?.item?.shippingAddress) {
-             setAddress({ billingAddress: null, shippingAddress: null });
-           }
-           setAddress({
-             billingAddress: label?.item?.billingAddress,
-             shippingAddress: label?.item?.shippingAddress,
-           });
-           setId(label?.item?._id);
-           // Updating in Purchase Order Forms
-           if (forDeliveryAddress) {
-             return updateInForm({
-               to: label?.item?.name,
-               address: label?.item?.shippingAddress,
-               type: "vendor",
-             });
-           }
+      setValue(value);
+      if (entity === "customers") {
+          if (!initialRender) {
+              setInitialRender(true);
+          }
+          if (label?.item?.billingAddress || !label?.item?.shippingAddress) {
+              setAddress({ billingAddress: null, shippingAddress: null });
+          }
+          setAddress({
+              billingAddress: label?.item?.billingAddress,
+              shippingAddress: label?.item?.shippingAddress,
+          });
+          setId(label?.item?._id);
+          // Updating in Purchase Order Forms
+          if (forDeliveryAddress) {
+              return updateInForm({
+                  to: label?.item?.name,
+                  address: label?.item?.shippingAddress,
+                  type: "customer",
+              });
+          }
+          return updateInForm(value);
+      } else if (entity === "products") {
+          return updateInForm({
+              description: label?.label,
+              rate: label?.item?.rate,
+              hsnCode: label?.item?.hsnCode,
+              details: label?.item,
+          });
 
-           return updateInForm(value);
-         } else {
-         }
+      } else if (entity === "vendors") {
+          if (!initialRender) {
+              setInitialRender(true);
+          }
+          if (label?.item?.billingAddress || !label?.item?.shippingAddress) {
+              setAddress({ billingAddress: null, shippingAddress: null });
+          }
+          setAddress({
+              billingAddress: label?.item?.billingAddress,
+              shippingAddress: label?.item?.shippingAddress,
+          });
+          setId(label?.item?._id);
+          // Updating in Purchase Order Forms
+          if (forDeliveryAddress) {
+              return updateInForm({
+                  to: label?.item?.name,
+                  address: label?.item?.shippingAddress,
+                  type: "vendor",
+              });
+          }
+
+          return updateInForm(value);
+      }
+
   };
-
-       const openModal = () => {
-         setOpen(true);
-       };
+  const openModal = () => {
+      setOpen(true);
+  };
 
   const onCancel = () => {
     setOpen(false);
@@ -176,6 +176,16 @@ const CustomModel = ({
 
   const handleModalClose = (result) => {
     fetchUpdatedOptions(); // Fetch updated options after adding new
+    if (entity === "products") {
+        let product = {
+            item: result,
+            label: result.productName,
+            value: result._id,
+        };
+        setValue(result?._id);
+        setOpen(false);
+        return handleChange(result?._id, product);
+    }
     handleChange(result?._id);
     setValue(result?._id);
     setOpen(false);
