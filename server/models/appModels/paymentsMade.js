@@ -46,6 +46,7 @@ const paymentsSchema = new mongoose.Schema(
 
 paymentsSchema.plugin(mongooseAutoPopulate);
 
+paymentsSchema.index({ tenantId: 1, no: 1 }, { unique: true });
 // Pre-save middleware to count documents and set incrementField
 //Attching the req body to save this
 paymentsSchema.pre("save", function (next, options) {

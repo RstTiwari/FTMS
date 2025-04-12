@@ -46,7 +46,8 @@ const paymentsSchema = new mongoose.Schema(
 
 paymentsSchema.plugin(mongooseAutoPopulate);
 
-//Attching the req body to save this
+paymentsSchema.index({ tenantId: 1, no: 1 }, { unique: true });
+//Attaching the req body to save this
 paymentsSchema.pre("save", function (next, options) {
     if (options && options.req) {
         this._req = options.req; // Attach req to the document
@@ -69,7 +70,7 @@ paymentsSchema.post("save", async function (doc, next) {
                 entity: "paymentsreceived",
             });
         }
-        next(); // procceding to the next middleware
+        next(); // proceeding to the next middleware
     } catch (error) {
         next(error); // Calling the Error middleware
     }
@@ -86,7 +87,7 @@ paymentsSchema.post("updateOne", async function (doc, next) {
                 });
             }
         }
-        next(); // procceding to the next middleware
+        next(); // proceeding to the next middleware
     } catch (error) {
         next(error); // Calling the Error middleware
     }
