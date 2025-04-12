@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import autopopulate from "mongoose-autopopulate";
 import { commentSaveHandler } from "../../Helper/CommentHelper.js";
 
-// Subschema for references with quantity
+//SubSchema for references with quantity
 const referenceWithQuantitySchema = new mongoose.Schema(
     {
         product: {
@@ -18,7 +18,7 @@ const referenceWithQuantitySchema = new mongoose.Schema(
     { _id: false }
 );
 
-// Main Product schema
+//Main Product schema
 const productSchema = new mongoose.Schema(
     {
         code: {
@@ -52,10 +52,10 @@ const productSchema = new mongoose.Schema(
     }
 );
 
-// Compound index to ensure uniqueness of code and name combination
+//Compound index to ensure uniqueness of code and name combination
 productSchema.index({ code: 1, name: 1 }, { unique: true, sparse: true });
 
-// Ensure unique code and name across existing documents
+//Ensure unique code and name across existing documents
 productSchema.pre("save", async function (next) {
     if (this.isNew) {
         // Check if a product with the same code or name already exists
@@ -75,7 +75,7 @@ productSchema.pre("save", async function (next) {
 });
 
 productSchema.plugin(autopopulate);
-//Attching the req body to save this
+//Attaching the req body to save this
 productSchema.pre("save", function (next, options) {
     if (options && options.req) {
         this._req = options.req; // Attach req to the document
@@ -89,7 +89,7 @@ productSchema.pre("updateOne", function (next) {
     next();
 });
 
-// Apply the common post-save middleware
+//Apply the common post-save middleware
 productSchema.post("save", async function (doc, next) {
     try {
         if (this._req) {
@@ -99,7 +99,7 @@ productSchema.post("save", async function (doc, next) {
                 entity: "products",
             });
         }
-        next(); // procceding to the next middleware
+        next(); // proceeding to the next middleware
     } catch (error) {
         next(error); // Calling the Error middleware
     }

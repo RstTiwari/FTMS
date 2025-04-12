@@ -12,11 +12,10 @@ const UserSchema = new mongoose.Schema(
         },
         name: {
             type: "String",
-            required: true,  
+            required: true,
             index: true,
-            sparse: true, 
+            sparse: true,
         },
-
         tenantId: { type: String, ref: "tenant", required: true },
         email: {
             type: String,
@@ -38,9 +37,7 @@ const UserSchema = new mongoose.Schema(
             default: "superadmin",
             enum: ["superadmin", "admin", "user", "custom"],
         },
-        permissions:[
-
-        ]
+        permissions: [],
     },
     { timestamps: true }
 );

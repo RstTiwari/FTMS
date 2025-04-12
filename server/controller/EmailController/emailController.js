@@ -20,8 +20,6 @@ export const resendEmailController = async (
             attachments: attachment, // Include attachments if provided
         });
 
-        console.log(data, error);
-
         if (error) {
             // Log or handle the response as needed
             console.error("Email sent successfully:", error);

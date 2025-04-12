@@ -36,7 +36,7 @@ const OverviewTab = ({ vendorData,entity ,id}) => {
                     background: "#ffffff",
                 }}
             >
-                <PaymentCard title={"Payable"} />
+                <PaymentCard title={"Payable"} id={id} />
                 <CommentDetails  entity={entity} id={id}/>
             </Content>
         </Layout>

@@ -48,15 +48,16 @@ const CustomInputWithModal = ({ preFillValue,updateInForm,width ,entity}) => {
         if (!response.success) {
             NotificationHandler.error(response.message);
         } else {
-            handleModalCancel();
-            fetchCountersNumber();
+            fetchCountersNumber("update",values?.nextNumber);
             updateInForm(values?.nextNumber);
+            handleModalCancel();
+            
             NotificationHandler.success("Counters updated successfully");
         }
         setLoading(false)
     };
 
-    const fetchCountersNumber = async () => {
+    const fetchCountersNumber = async (type,preFillValue) => {
         const response = await appApiCall(
             "get",
             "fetchCountersNumber",
@@ -66,20 +67,27 @@ const CustomInputWithModal = ({ preFillValue,updateInForm,width ,entity}) => {
         if (response.success) {
             const { prefix, nextNumber } = response.result;
             setPrefix(prefix);
-            setNextNumber(nextNumber);
-            form.setFieldsValue({ prefix, nextNumber });
-            setInputValue(nextNumber);
-            updateInForm(nextNumber);
+            if (type === "update") {
+                setNextNumber(preFillValue);
+                setInputValue(preFillValue);
+                console.log(prefix,preFillValue,"==")
+                form.setFieldsValue({ prefix:prefix, nextNumber:preFillValue });
+            } else if (type === "create") {
+                setNextNumber(nextNumber);
+                form.setFieldsValue({ prefix, nextNumber });
+                setInputValue(nextNumber);
+                updateInForm(nextNumber);
+            }
         } else {
             return NotificationHandler.error(response.message);
         }
     };
 
     useEffect(() => {
-        if(preFillValue){
-            setInputValue(preFillValue)
-        }else{
-            fetchCountersNumber()
+        if (preFillValue) {
+            fetchCountersNumber("update",preFillValue);
+        } else {
+            fetchCountersNumber("create");
         }
     }, [preFillValue]);
 

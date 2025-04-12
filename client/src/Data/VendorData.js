@@ -62,7 +62,7 @@ const getColumns = (details) => [
         responsive: details ? [] : ["lg"],
         render: (_, record) => (
             <>
-                <Taglabel text={record.gstNo} type={"text"} details={details} />
+                <Taglabel text={record?.gstNo ||""} type={"text"} details={details} />
             </>
         ),
     },
@@ -73,7 +73,7 @@ const getColumns = (details) => [
         responsive: details ? [] : ["lg"],
         render: (_, record) => (
             <>
-                <Taglabel text={record.panNo} type={"text"} details={details} />
+                <Taglabel text={record?.panNo || ""} type={"text"} details={details} />
             </>
         ),
     },

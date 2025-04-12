@@ -3,101 +3,106 @@ import mongooseAutoPopulate from "mongoose-autopopulate";
 import { commentSaveHandler } from "../../Helper/CommentHelper.js";
 
 const invoiceSchema = new mongoose.Schema(
-  {
-    customer: {
-      type: mongoose.Schema.ObjectId,
-      ref: "customer",
-      autopopulate: true,
-      required: true,
-    },
-    no: {
-      type: Number,
-      required: true,
-    },
-    status: {
-      type: String,
-      enum: [
-        "DRAFT",
-        "SEND",
-        "CANCELLED",
-        "ON_HOLD",
-        "PARTIALLY_RECEIVED",
-        "FULL_RECEIVED",
-      ],
-      default: "DRAFT",
-    },
-    paymentReceived: {
-      type: Number,
-      default: 0,
-    },
-    invoiceDate: {
-      type: Date,
-      required: true,
-    },
-    dueDate: {
-      type: Date,
-      required: true,
-    },
-    items: [
-      {
-        code: {
-          type: String,
+    {
+        customer: {
+            type: mongoose.Schema.ObjectId,
+            ref: "customer",
+            autopopulate: true,
+            required: true,
         },
-        description: {
-          type: String,
+        no: {
+            type: Number,
+            required: true,
         },
+        prefix: {
+            type: String,
+            required: true,
+            default: "INV",
+        },
+        status: {
+            type: String,
+            enum: [
+                "DRAFT",
+                "SEND",
+                "CANCELLED",
+                "ON_HOLD",
+                "PARTIALLY_RECEIVED",
+                "FULL_RECEIVED",
+            ],
+            default: "DRAFT",
+        },
+        paymentReceived: {
+            type: Number,
+            default: 0,
+        },
+        invoiceDate: {
+            type: Date,
+            required: true,
+        },
+        dueDate: {
+            type: Date,
+            required: true,
+        },
+        items: [
+            {
+                code: {
+                    type: String,
+                },
+                description: {
+                    type: String,
+                },
 
-        image: {
-          type: String,
-        },
-        hsnCode: {
-          type: String,
-        },
-        rate: {
-          type: Number,
-        },
-        discountPercent: {
-          type: Number,
-        },
-        discountAmount: {
-          type: Number,
-        },
+                image: {
+                    type: String,
+                },
+                hsnCode: {
+                    type: String,
+                },
+                rate: {
+                    type: Number,
+                },
+                discountPercent: {
+                    type: Number,
+                },
+                discountAmount: {
+                    type: Number,
+                },
 
-        gstPercent: {
-          type: Number,
-        },
-        qty: {
-          type: Number,
+                gstPercent: {
+                    type: Number,
+                },
+                qty: {
+                    type: Number,
+                },
+                taxAmount: {
+                    type: Number,
+                },
+                finalAmount: {
+                    type: Number,
+                },
+            },
+        ],
+        grossTotal: {
+            type: Number,
         },
         taxAmount: {
-          type: Number,
+            type: Number,
         },
-        finalAmount: {
-          type: Number,
+        totalWithTax: {
+            type: Number,
         },
-      },
-    ],
-    grossTotal: {
-      type: Number,
+        otherCharges: [],
+        grandTotal: {
+            type: Number,
+        },
+        notes: [],
+        terms: [],
+        tenantId: {
+            type: String,
+            required: true,
+        },
     },
-    taxAmount: {
-      type: Number,
-    },
-    totalWithTax: {
-      type: Number,
-    },
-    otherCharges: [],
-    grandTotal: {
-      type: Number,
-    },
-    notes: [],
-    terms: [],
-    tenantId: {
-      type: String,
-      required: true,
-    },
-  },
-  { timestamps: true }
+    { timestamps: true }
 );
 
 invoiceSchema.index({ tenantId: 1, no: 1 }, { unique: true });

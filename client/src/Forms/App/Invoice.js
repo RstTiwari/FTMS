@@ -80,86 +80,85 @@ const QuotationForm = ({ form,entity }) => {
     };
 
     return (
-      <div>
-        <FormItemCol
-          label={"Select Customer"}
-          name={"customer"}
-          labelAlign="left"
-          labelCol={{ span: 8 }}
-          required={true}
-          rules={[
-            {
-              required: "true",
-              message: "Please Select Customer",
-            },
-          ]}
-          type="options"
-          entity="customers"
-          width={"30vw"}
-          customerSelect=""
-          fieldName={"name"}
-          updateInForm={(value) => handleItemsUpdate(value, "customer")}
-          preFillValue={form.getFieldValue("customer")?.name}
-        />
-
-        <FormItemCol
-          label={"Invoice#"}
-          name={"no"}
-          required={true}
-          type={"counters"}
-          labelAlign="left"
-          labelCol={{ span: 8 }}
-          width={"30vw"}
-          rules={[
-            {
-              required: "true",
-              message: "Please Provide Quote No",
-            },
-          ]}
-          entity={entity}
-          updateInForm={(value) => handleItemsUpdate(value, "no")}
-          preFillValue={form.getFieldValue("no")}
-        />
-
-        <FormItemCol
-          label={"Invoice Date"}
-          name={"invoiceDate"}
-          required={true}
-          labelCol={{ span: 8 }}
-          width={"30vw"}
-          rules={[
-            {
-              required: true,
-              message: "Please Select Quote Date",
-            },
-          ]}
-          labelAlign="left"
-          type={"date"}
-          preFillValue={form.getFieldValue("invoiceDate")}
-          updateInForm={(value) => handleItemsUpdate(value, "invoiceDate")}
-        />
-        <FormItemCol
-          label={"Due Date"}
-          name={"dueDate"}
-          required={true}
-          rules={[
-            {
-              required: true,
-              message: "Please Select Quote Expiry Date",
-            },
-          ]}
-          labelAlign="left"
-          labelCol={{ span: 8 }}
-          width={"30vw"}
-          type={"date"}
-          preFillValue={form.getFieldValue("dueDate")}
-          updateInForm={(value) => handleItemsUpdate(value, "dueDate")}
-        />
-
-        <Divider dashed />
-        <CustomFormTableList form={form} />
-        <PaymentLayoutComponent form={form} />
-      </div>
+        <div>
+            <FormItemCol
+                label={"Select Customer"}
+                name={"customer"}
+                labelAlign="left"
+                labelCol={{ span: 8 }}
+                required={true}
+                rules={[
+                    {
+                        required: "true",
+                        message: "Please Select Customer",
+                    },
+                ]}
+                type="options"
+                entity="customers"
+                width={"30vw"}
+                customerSelect=""
+                fieldName={"name"}
+                updateInForm={(value) => handleItemsUpdate(value, "customer")}
+                preFillValue={form.getFieldValue("customer")?.name}
+            />
+            <FormItemCol
+                label={"Invoice#"}
+                name={"no"}
+                required={true}
+                type={"counters"}
+                labelAlign="left"
+                labelCol={{ span: 8 }}
+                width={"30vw"}
+                rules={[
+                    {
+                        required: "true",
+                        message: "Please Provide Quote No",
+                    },
+                ]}
+                entity={entity}
+                updateInForm={(value) => handleItemsUpdate(value, "no")}
+                preFillValue={form.getFieldValue("no")}
+            />
+            <FormItemCol
+                label={"Invoice Date"}
+                name={"invoiceDate"}
+                required={true}
+                labelCol={{ span: 8 }}
+                width={"30vw"}
+                rules={[
+                    {
+                        required: true,
+                        message: "Please Select Quote Date",
+                    },
+                ]}
+                labelAlign="left"
+                type={"date"}
+                preFillValue={form.getFieldValue("invoiceDate")}
+                updateInForm={(value) =>
+                    handleItemsUpdate(value, "invoiceDate")
+                }
+            />
+            <FormItemCol
+                label={"Due Date"}
+                name={"dueDate"}
+                required={true}
+                rules={[
+                    {
+                        required: true,
+                        message: "Please Select Quote Expiry Date",
+                    },
+                ]}
+                labelAlign="left"
+                labelCol={{ span: 8 }}
+                width={"30vw"}
+                type={"date"}
+                preFillValue={form.getFieldValue("dueDate")}
+                updateInForm={(value) => handleItemsUpdate(value, "dueDate")}
+            />
+            <Divider dashed />
+            <CustomFormTableList form={form} />
+            <PaymentLayoutComponent form={form} />
+        </div>
     );
 };
 

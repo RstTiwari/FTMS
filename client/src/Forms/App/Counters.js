@@ -34,6 +34,7 @@ const Counters = (form) => {
                     rules={[
                         { required: true, message: `Please input Next Number` },
                     ]}
+                    
                 />
                 <Form.Item
                     name="entityName"

@@ -27,8 +27,9 @@ const create = async (req, res, next) => {
             // get organization
             let organizationDatabase = checkDbForEntity("tenant");
             let organizationData = await organizationDatabase.findOne({
-                _id: tenantId,
+                _id:tenantId,
             });
+
             const token = jwt.sign(
                 {
                     id: savedData._id,
@@ -51,7 +52,7 @@ const create = async (req, res, next) => {
             
             Please click the link below to accept the invitation and set up your account:
             
-            [Accept Invitation](${domain})
+            Accept Invitation (${domain})
             
             We look forward to having you with us!
             
@@ -62,11 +63,11 @@ const create = async (req, res, next) => {
             let response = await resendEmailController(
                 organizationData?.email,
                 values?.email,
-                `You’ve been invited to join${organizationData?.name} `,
+                `You’ve been invited to join${organizationData?.companyName} `,
                 contents,
                 []
             );
-            console.log(response);
+
             if (!response) {
                 await dataBase.deleteOne({ _id: savedData._id });
                 throw new Error("Failed to OnBoard User");

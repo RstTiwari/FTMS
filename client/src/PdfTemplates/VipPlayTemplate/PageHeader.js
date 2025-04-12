@@ -70,14 +70,16 @@ const style = StyleSheet.create({
         justifyContent: "flex-start",
         height: "auto",
         fontSize:12,
-        borderRight:1,
-       borderRightColor:borderColor
+        borderRight:0.5,
+        borderRightColor:borderColor
     },
     rightSide: {
         paddingTop: 3,
         paddingLeft: 3,
         flex: 1,
         justifyContent: "flex-start",
+        borderLeft:0.5,
+        borderLeftColor:borderColor
     },
     bottomleftSide: {
         paddingTop: 3,

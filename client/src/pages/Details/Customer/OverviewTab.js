@@ -35,7 +35,7 @@ const OverviewTab = ({ data ,entity,id}) => {
                     background: "#ffffff",
                 }}
             >
-                <PaymentDetails title={"Receivables"} />
+                <PaymentDetails title={"Receivables"} id={id} />
                 <CommentDetails entity={entity} id={id}  />
             </Content>
         </Layout>

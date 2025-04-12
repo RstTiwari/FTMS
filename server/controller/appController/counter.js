@@ -25,7 +25,7 @@ export const fetchCountersNumber = async (req, res, next) => {
     if (entityData) {
       let prefix = existingCounters?.prefix
         ? existingCounters?.prefix
-        : entityName.slice(0, 2).toUpperCase();
+        : entityName.slice(0, 3).toUpperCase();
       let nextNumber = existingCounters?.nextNumber
         ? existingCounters?.nextNumber
         : 1;

@@ -24,6 +24,7 @@ const totalReciveables = async (req, res, next) => {
         (sum, invocie) => sum + invocie?.grandTotal,
         0
       );
+
       let paymentsreceived = await PaymentDataBase.find(filter);
       let totalRecived = paymentsreceived.reduce(
         (sum, payment) => sum + payment?.amount,
@@ -37,7 +38,7 @@ const totalReciveables = async (req, res, next) => {
       let totalAdvanceAmount = customers?.advanceAmount
         ? customers?.advanceAmount
         : 0;
-
+      console.log(totalReciveables,totalRecived,totalPending)
       if (entity === "customers") {
         result.push(
           { title: "Total Amount", value: totalReciveables, id: "1" },
