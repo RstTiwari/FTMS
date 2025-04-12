@@ -37,7 +37,6 @@ const paymentsSchema = new mongoose.Schema(
         },
         no: {
             type: Number,
-            unique: true, // Ensure the incremented field is unique
             sparse: true,
         },
     },
