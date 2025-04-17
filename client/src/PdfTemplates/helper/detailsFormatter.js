@@ -6,9 +6,8 @@ export const customPageHeader = (entity, data, entityPrefix) => {
       array = [
         {
           label: "Invoice No",
-          value: `${entityPrefix}/${currentFinancialYear()}/${data["no"]}`, // This would be dynamic
+          value: `${entityPrefix}/${currentFinancialYear(data.invoiceDate)}/${data["no"]}`, // This would be dynamic
         },
-
         {
           label: "Invoice Date",
           value: jsDateIntoDayjsDate(data["invoiceDate"]),
@@ -24,7 +23,7 @@ export const customPageHeader = (entity, data, entityPrefix) => {
       array = [
         {
           label: "Quotation No",
-          value: `${entityPrefix}/${currentFinancialYear()}/${data["no"]}`,
+          value: `${entityPrefix}/${currentFinancialYear(data?.quoteDate)}/${data["no"]}`,
         },
         {
           label: "Quotation Date",
@@ -40,7 +39,7 @@ export const customPageHeader = (entity, data, entityPrefix) => {
       array = [
         {
           label: "Purchase No",
-          value: `${entityPrefix}/${currentFinancialYear()}/${data["no"]}`,
+          value: `${entityPrefix}/${currentFinancialYear(data?.purchaseDate)}/${data["no"]}`,
         },
         {
           label: "Purchase Date",
@@ -56,7 +55,7 @@ export const customPageHeader = (entity, data, entityPrefix) => {
       array = [
         {
           label: "Challan No",
-          value: `${entityPrefix}/${currentFinancialYear()}/${data["no"]}`,
+          value: `${entityPrefix}/${currentFinancialYear(data?.challanDate)}/${data["no"]}`,
         },
         {
           label: "Challan Date",
@@ -91,6 +90,7 @@ export const customPageHeader = (entity, data, entityPrefix) => {
           value: data["incharge"],
         },
       ];
+      break;
     default:
       break;
   }
@@ -142,14 +142,20 @@ export const entityDetailsFormatter = (entity, data, organization) => {
               {
                   label: "",
                   value: mergedBillingAddress,
+                  type: "value",
+
               },
               {
                   label: "",
                   value: `GST NO: ${customer["gstNo"] || ""} `,
+                  type: "value",
+
               },
               {
                   label: "",
                   value: `PAN NO: ${customer["panNo"] || ""}`,
+                  type: "value",
+
               },
           ],
           [
@@ -166,14 +172,19 @@ export const entityDetailsFormatter = (entity, data, organization) => {
               {
                   label: "",
                   value: mergedShippingAddress,
+                  type: "value",
+
               },
               {
                   label: "",
                   value: `GST NO : ${customer["gstNo"] || ""}`,
+                  type: "value",
+
               },
               {
                   label: "",
                   value: `PAN NO : ${customer["panNo"] || ""}`,
+                  type: "value",
               },
           ],
       ];
@@ -217,7 +228,7 @@ export const entityDetailsFormatter = (entity, data, organization) => {
       array = [
         [
           {
-            label: "Seller",
+            label: "Seller Details",
             type: "heading",
           },
           {
@@ -231,7 +242,7 @@ export const entityDetailsFormatter = (entity, data, organization) => {
         ],
         [
           {
-            label: "Buyer",
+            label: "Buyer Details" ,
             type: "heading",
           },
           {
@@ -241,6 +252,8 @@ export const entityDetailsFormatter = (entity, data, organization) => {
           {
             label: "",
             value: orgComBillingAddress,
+            type: "value",
+
           },
         ],
         [
@@ -251,10 +264,13 @@ export const entityDetailsFormatter = (entity, data, organization) => {
           {
             type: "subheading",
             value: deliverTo?.toUpperCase(),
+            
           },
           {
             label: "",
             value: delComAddress,
+            type: "value",
+
           },
         ],
       ];
@@ -323,7 +339,7 @@ export const getTableHeaders2 = (entity, preCol = []) => {
   // Define the additional columns that may be added based on preCol
   let toAddColumn = [
     { title: "CODE", property: "code", width: 40 },
-    { title: "IMAGE", property: "image", width: 50 },
+    { title: "IMAGE", property: "image", width: 100 },
     { title: "HSN CODE", property: "hsnCode", width: 50 },
     { title: "DIS%", property: "discountPercent", width: 30 },
     { title: "DIS AMT", property: "discountAmount", width: 50 },
@@ -412,6 +428,7 @@ export const getTableHeaders2 = (entity, preCol = []) => {
       return finalHeaders;
   }
 };
+
 export const grandAndOtherChargesFormatter = (entity, data) => {
   if (entity === "workorders") return []; // Don't display amount table when entity is workorders
   let array = [

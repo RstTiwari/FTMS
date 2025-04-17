@@ -29,34 +29,34 @@ const styles = StyleSheet.create({
         flexShrink: 0, // Prevents items from shrinking smaller than the base width
         paddingLeft: 10,
         wordWrap: "break-word", // Ensures text wraps within the div
+        marginRight:2
     },
     heading: {
         fontSize: 12,
         color: "#000000",
         fontFamily: "Helvetica-Bold",
         fontWeight: "heavy",
-        marginBottom: 2,
     },
     subheading: {
-        fontSize: 10,
+        fontSize: 12,
         fontFamily: "Helvetica-Bold",
         fontWeight: "heavy",
-        color: "#000",
-        marginBottom: 2
+        color: "#000000",
     },
     label: {
-        fontSize: 8,
-        color: "#000",
-        marginBottom: 2,
+        fontSize: 12,
+        color: "#000000",
         wordWrap: "break-word", // Ensures label text wraps within the div
+        fontFamily: "Helvetica-Bold",
     },
     value: {
-        fontSize: 8,
+        fontSize: 10,
         color: "#000",
-        wordWrap: "break-word", // Ensures value text wraps within the div
+        wordWrap: "break-word", // Ensures label text wraps within the div
     },
     borderLeft: {
         borderLeft: "1px solid #000",
+        marginRight:2
     },
 });
 
@@ -84,7 +84,7 @@ const EntityDetails = ({ data, entityName }) => {
                                             : item.type === "subheading"
                                             ? styles.subheading
                                             : styles.label
-                                    }
+                                }
                                 >
                                     {item.label}
                                 </Text>

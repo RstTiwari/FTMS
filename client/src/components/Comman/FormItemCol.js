@@ -28,12 +28,10 @@ const FormItemCol = ({
             label={
                 label ? <CustomLabel required={required} label={label} /> : null
             }
-            
             name={name}
             labelAlign= {labelAlign}
             rules={rules}
             labelCol={labelCol}
-        
             tooltip={tooltip}
             valuePropName={type === "image" ? "file" : "value"}
             getValueFromEvent={type === "image" ? (e) => e : undefined}

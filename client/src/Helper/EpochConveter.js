@@ -26,8 +26,8 @@ export const epochInDDMMYY = (epochTime) => {
 export const jsDateIntoDayjsDate = (dateString)=>{
   return dayjs(dateString).format("DD-MM-YYYY")
 }
-export const currentFinancialYear = () => {
-  const currentDate = new Date();
+export const currentFinancialYear = (date) => {
+  const currentDate = new Date(date);
   const currentMonth = currentDate.getMonth() + 1; // getMonth() returns month index (0-11)
 
   let startYear = currentDate.getFullYear();

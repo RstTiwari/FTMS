@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRightWidth: 1,
     borderColor: "#ddd",
-    flexGrow: 1, // Allow cells to grow and wrap content
-    wordBreak: "break-word", // Ensure long words are broken
+    flexGrow: 1,
+    wordBreak: "break-word",
   },
   header: {
     fontSize: 6,
@@ -28,61 +28,70 @@ const styles = StyleSheet.create({
   },
   cellText: {
     fontSize: 8,
-    flexWrap: "wrap", // Enable text wrapping
+    flexWrap: "wrap",
+    fontWeight:"bold",
+    fontStyle:"Helvetica-Bold"
   },
 });
 
 // Component to display items in a table format with wrapping
 const ItemsTable = ({ items, columns }) => {
   return (
-    <>
-      {/* Render table headers */}
-      <View style={[styles.tableRow, styles.header] } >
-        {columns.map((col, index) => (
-          <Text
-            key={index}
-            style={[
-              styles.tableCell,
-              {
-                width: col.width,
-                borderRightWidth: index === columns.length - 1 ? 0 : 1,
-              },
-            ]}
-            wrap
-          >
-            {col.title}
-          </Text>
-        ))}
-      </View>
+      <>
+          {/* Render table headers */}
+          <View style={[styles.tableRow, styles.header]}>
+              {columns.map((col, index) => (
+                  <Text
+                      key={index}
+                      style={[
+                          styles.tableCell,
+                          {
+                              width: col.width,
+                              borderRightWidth:
+                                  index === columns.length - 1 ? 0 : 1,
+                          },
+                      ]}
+                      wrap
+                  >
+                      {col.title}
+                  </Text>
+              ))}
+          </View>
 
-      {/* Render table rows */}
-      {items.map((item, itemIndex) => (
-        <View key={item._id || itemIndex} style={styles.tableRow}>
-          {columns.map((col, colIndex) => (
-            <View
-              key={colIndex}
-              style={[
-                styles.tableCell,
-                {
-                  width: col.width,
-                  borderRightWidth: colIndex === columns.length - 1 ? 0 : 1,
-                },
-              ]}
-            >
-              {col.property === "srNo" ? (
-                <Text style={styles.cellText}>{itemIndex + 1}</Text>
-              ) : col.property === "image" && item.image ? (
-                <Image style={{ width: 25, height: 25 }} src={item.image} />
-              ) : (
-                <Text style={styles.cellText} wrap>
-                  {item[col.property]}
-                </Text>
-              )}
-            </View>
+          {/* Render table rows */}
+          {items.map((item, itemIndex) => (
+              <View key={item._id || itemIndex} style={styles.tableRow}>
+                  {columns.map((col, colIndex) => (
+                      <View
+                          key={colIndex}
+                          style={[
+                              styles.tableCell,
+                              {
+                                  width: col.width,
+                                  borderRightWidth:
+                                      colIndex === columns.length - 1 ? 0 : 1,
+                              },
+                          ]}
+                      >
+                          {col.property === "srNo" ? (
+                              <Text style={styles.cellText}>
+                                  {itemIndex + 1}
+                              </Text>
+                          ) : col.property === "image" && item.image ? (
+                              <Image
+                                  style={{ width: 80, height: 100 }}
+                                  src={item.image}
+                              />
+                          ) : (
+                              <Text style={styles.cellText} wrap>
+                                  {item[col.property]}
+                              </Text>
+                          )}
+                      </View>
+                  ))}
+              </View>
           ))}
-        </View>
-      ))}
-    </>
+      </>
   );
 };
 
