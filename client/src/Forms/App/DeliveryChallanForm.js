@@ -127,172 +127,190 @@ const DeliveryChallan = ({ form,isUpdate,entity }) => {
 
   useEffect(() => {}, []);
   return (
-    <div>
-      <FormItemCol
-        label={"#Delivery Challan"}
-        name={"no"}
-        labelAlign="left"
-        required={true}
-        labelCol={{ span: 8 }}
-        type={"counters"}
-        rules={[
-          {
-            required: "true",
-            message: "Please Provide Challan No",
-          },
-        ]}
-        entity={entity}
-        updateInForm={(value) => handleItemUpdate(value, "no")}
-        preFillValue={form.getFieldValue("no")}
-        width={"30vw"}
-      />
-      <FormItemCol
-        label={"Challan Date"}
-        name={"challanDate"}
-        required={true}
-        rules={[
-          {
-            required: true,
-            message: "Please Select Challan Date",
-          },
-        ]}
-        labelCol={{ span: 8 }}
-        labelAlign="left"
-        type={"date"}
-        width={"30vw"}
-        preFillValue={form.getFieldValue("challanDate")}
-        updateInForm={(value) => handleItemUpdate(value, "challanDate")}
-      />
-      <FormItemCol
-        label={"Challan Type"}
-        name={"challanType"}
-        required={true}
-        rules={[
-          {
-            required: true,
-            message: "Please Select Challan Type",
-          },
-        ]}
-        labelCol={{ span: 8 }}
-        width={"30vw"}
-        labelAlign="left"
-        type={"select"}
-        entity={"Challan Type"}
-        entityName={"challanType"}
-        updateInForm={(value) => handleItemUpdate(value, "challanType")}
-        preFillValue={form.getFieldValue("challanType")}
-      />
-
-      <FormItemCol
-        label={"Vehicle No"}
-        name={"vehicleNo"}
-        labelCol={{ span: 8 }}
-        labelAlign="left"
-        type={"input"}
-        width={"30vw"}
-      />
-      <FormItemCol
-        label={"Contact No"}
-        name={"contactNo"}
-        labelCol={{ span: 8 }}
-        labelAlign="left"
-        type={"input"}
-        width={"30vw"}
-      />
       <div>
-        <Row>
-          <Col
-            xs={24}
-            sm={24}
-            md={{ span: 12 }}
-            lg={{ span: 12 }}
-            xl={{ span: 12 }}
-          >
-            <Form.Item
-              label={<Taglabel text={"Delivery To"} type={"forFormField"} />}
+          <FormItemCol
+              name={"prefix"}
+              labelAlign="left"
+              required={true}
+              hidden={true}
+          />
+
+          <FormItemCol
+              label={"#Delivery Challan"}
+              name={"no"}
+              labelAlign="left"
+              required={true}
+              labelCol={{ span: 8 }}
+              type={"counters"}
+              rules={[
+                  {
+                      required: "true",
+                      message: "Please Provide Challan No",
+                  },
+              ]}
+              entity={entity}
+              updateInForm={(value) => handleItemUpdate(value, "no")}
+              preFillValue={form.getFieldValue("no")}
+              parentForm = {form}
+              width={"30vw"}
+          />
+          <FormItemCol name={"suffix"} required={true} hidden={true} />
+          <FormItemCol
+              label={"Challan Date"}
+              name={"challanDate"}
+              required={true}
+              rules={[
+                  {
+                      required: true,
+                      message: "Please Select Challan Date",
+                  },
+              ]}
               labelCol={{ span: 8 }}
               labelAlign="left"
-              name={"delivery"}
-              required ={true}
+              type={"date"}
+              width={"30vw"}
+              preFillValue={form.getFieldValue("challanDate")}
+              updateInForm={(value) => handleItemUpdate(value, "challanDate")}
+          />
+          <FormItemCol
+              label={"Challan Type"}
+              name={"challanType"}
+              required={true}
               rules={[
-                {
-                  required: true,
-                  message: "Delivery To Required",
-                },
+                  {
+                      required: true,
+                      message: "Please Select Challan Type",
+                  },
               ]}
-            >
-              <Checkbox
-                checked={isCustomerChecked}
-                onChange={() => handleCheckboxChange("customer")}
-              >
-                CUSTOMER
-              </Checkbox>
-              <Checkbox
-                checked={isVendorChecked}
-                onChange={() => handleCheckboxChange("vendor")}
-              >
-                VENDOR
-              </Checkbox>
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row>
-          {isCustomerChecked && (
-            <Col
-              xs={24}
-              sm={24}
-              md={{ span: 24 }}
-              lg={{ span: 24 }}
-              xl={{ span: 24 }}
-            >
-              <FormItemCol
-                name={"customer"}
-                labelAlign="left"
-                type={"options"}
-                entity={"customers"}
-                width={"25vw"}
-                fieldName={"name"}
-                onlyShippingAddress={true}
-                updateInForm={updateDeliveryAddress}
-                preFillValue={form.getFieldValue("delivery")?.to}
-                preFillAddress={form.getFieldValue("delivery")?.address}
-                forDeliveryAddress={true}
-                xl={6}
-                lg={6}
-              />
-            </Col>
-          )}
-          {isVendorChecked && (
-            <Col
-              xs={24}
-              sm={24}
-              md={{ span: 24 }}
-              lg={{ span: 24 }}
-              xl={{ span: 24 }}
-            >
-              <FormItemCol
-                name={"vendor"}
-                labelAlign="left"
-                type={"modal"}
-                entity={"vendors"}
-                width={"25vw"}
-                fieldName={"name"}
-                updateInForm={updateDeliveryAddress}
-                onlyShippingAddress={true}
-                preFillValue={form.getFieldValue("delivery")?.to}
-                preFillAddress={form.getFieldValue("delivery")?.address}
-                forDeliveryAddress={true}
-                xl={6}
-                lg={6}
-              />
-            </Col>
-          )}
-        </Row>{" "}
-      </div>
+              labelCol={{ span: 8 }}
+              width={"30vw"}
+              labelAlign="left"
+              type={"select"}
+              entity={"Challan Type"}
+              entityName={"challanType"}
+              updateInForm={(value) => handleItemUpdate(value, "challanType")}
+              preFillValue={form.getFieldValue("challanType")}
+          />
 
-      <CustomFormTableList form={form} />
-      <PaymentLayoutComponent form={form} />
-    </div>
+          <FormItemCol
+              label={"Vehicle No"}
+              name={"vehicleNo"}
+              labelCol={{ span: 8 }}
+              labelAlign="left"
+              type={"input"}
+              width={"30vw"}
+          />
+          <FormItemCol
+              label={"Contact No"}
+              name={"contactNo"}
+              labelCol={{ span: 8 }}
+              labelAlign="left"
+              type={"input"}
+              width={"30vw"}
+          />
+          <div>
+              <Row>
+                  <Col
+                      xs={24}
+                      sm={24}
+                      md={{ span: 12 }}
+                      lg={{ span: 12 }}
+                      xl={{ span: 12 }}
+                  >
+                      <Form.Item
+                          label={
+                              <Taglabel
+                                  text={"Delivery To"}
+                                  type={"forFormField"}
+                              />
+                          }
+                          labelCol={{ span: 8 }}
+                          labelAlign="left"
+                          name={"delivery"}
+                          required={true}
+                          rules={[
+                              {
+                                  required: true,
+                                  message: "Delivery To Required",
+                              },
+                          ]}
+                      >
+                          <Checkbox
+                              checked={isCustomerChecked}
+                              onChange={() => handleCheckboxChange("customer")}
+                          >
+                              CUSTOMER
+                          </Checkbox>
+                          <Checkbox
+                              checked={isVendorChecked}
+                              onChange={() => handleCheckboxChange("vendor")}
+                          >
+                              VENDOR
+                          </Checkbox>
+                      </Form.Item>
+                  </Col>
+              </Row>
+              <Row>
+                  {isCustomerChecked && (
+                      <Col
+                          xs={24}
+                          sm={24}
+                          md={{ span: 24 }}
+                          lg={{ span: 24 }}
+                          xl={{ span: 24 }}
+                      >
+                          <FormItemCol
+                              name={"customer"}
+                              labelAlign="left"
+                              type={"options"}
+                              entity={"customers"}
+                              width={"25vw"}
+                              fieldName={"name"}
+                              onlyShippingAddress={true}
+                              updateInForm={updateDeliveryAddress}
+                              preFillValue={form.getFieldValue("delivery")?.to}
+                              preFillAddress={
+                                  form.getFieldValue("delivery")?.address
+                              }
+                              forDeliveryAddress={true}
+                              xl={6}
+                              lg={6}
+                          />
+                      </Col>
+                  )}
+                  {isVendorChecked && (
+                      <Col
+                          xs={24}
+                          sm={24}
+                          md={{ span: 24 }}
+                          lg={{ span: 24 }}
+                          xl={{ span: 24 }}
+                      >
+                          <FormItemCol
+                              name={"vendor"}
+                              labelAlign="left"
+                              type={"modal"}
+                              entity={"vendors"}
+                              width={"25vw"}
+                              fieldName={"name"}
+                              updateInForm={updateDeliveryAddress}
+                              onlyShippingAddress={true}
+                              preFillValue={form.getFieldValue("delivery")?.to}
+                              preFillAddress={
+                                  form.getFieldValue("delivery")?.address
+                              }
+                              forDeliveryAddress={true}
+                              xl={6}
+                              lg={6}
+                          />
+                      </Col>
+                  )}
+              </Row>{" "}
+          </div>
+
+          <CustomFormTableList form={form} />
+          <PaymentLayoutComponent form={form} />
+      </div>
   );
 };
 

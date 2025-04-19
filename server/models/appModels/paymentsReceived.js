@@ -35,9 +35,18 @@ const paymentsSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        prefix: {
+            type: String,
+            required: true,
+            default: "PRNO",
+        },
         no: {
             type: Number,
-            sparse: true,
+            required: true,
+        },
+        suffix: {
+            type: Number,
+            default: "",
         },
     },
     { timestamps: true }
@@ -46,6 +55,7 @@ const paymentsSchema = new mongoose.Schema(
 paymentsSchema.plugin(mongooseAutoPopulate);
 
 paymentsSchema.index({ tenantId: 1, no: 1 }, { unique: true });
+
 //Attaching the req body to save this
 paymentsSchema.pre("save", function (next, options) {
     if (options && options.req) {
@@ -53,6 +63,7 @@ paymentsSchema.pre("save", function (next, options) {
     }
     next();
 });
+
 paymentsSchema.pre("updateOne", function (next, options) {
     if (this.options && this.options.req) {
         this._req = this.options.req; // Attach req to the document
@@ -74,6 +85,7 @@ paymentsSchema.post("save", async function (doc, next) {
         next(error); // Calling the Error middleware
     }
 });
+
 paymentsSchema.post("updateOne", async function (doc, next) {
     try {
         if (this._req) {

@@ -44,7 +44,6 @@ const productSchema = new mongoose.Schema(
             autopopulate: true,
         },
         components: [referenceWithQuantitySchema],
-
         tenantId: String, // Optional field for multi-tenancy
     },
     {

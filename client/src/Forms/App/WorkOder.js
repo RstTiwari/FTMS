@@ -37,147 +37,150 @@ const WorkOrderForm = ({ form, entity }) => {
   useEffect(() => {}, []);
 
   return (
-    <div>
-      <FormItemCol
-        label={"#Work Order"}
-        name={"no"}
-        labelAlign="left"
-        required={true}
-        labelCol={{ span: 8 }}
-        width={"30vw"}
-        type={"counters"}
-        rules={[
-          {
-            required: true,
-            message: "Please Provide Work Order No",
-          },
-        ]}
-        updateInForm={(value) => {
-          form.setFieldsValue({ no: value });
-        }}
-        preFillValue={form.getFieldValue("no")}
-        entity={entity}
-      />
-      <FormItemCol
-        label={"Work Order Type"}
-        name={"type"}
-        labelAlign="left"
-        required={true}
-        labelCol={{ span: 8 }}
-        rules={[
-          {
-            required: true,
-            message: "Please Select Type",
-          },
-        ]}
-        type="select"
-        width={"30vw"}
-        entity={"type"}
-        entityName={"workorderType"}
-        updateInForm={(value) => {
-          form.setFieldsValue({ type: value });
-        }}
-        preFillValue={form.getFieldValue("type")}
-      />
-      <FormItemCol
-        label={"Exp Start Date"}
-        name={"startDate"}
-        required={true}
-        labelCol={{ span: 8 }}
-        width={"30vw"}
-        rules={[
-          {
-            required: true,
-            message: "Please Select Start Date",
-          },
-        ]}
-        labelAlign="left"
-        type={"date"}
-        preFillValue={form.getFieldValue("startDate")}
-        updateInForm={(value) => {
-          form.setFieldsValue({ startDate: value });
-        }}
-      />
-      <FormItemCol
-        label={"Exp Due Date"}
-        width={"30vw"}
-        name={"dueDate"}
-        required={true}
-        rules={[
-          {
-            required: true,
-            message: "Please Select Due Date",
-          },
-        ]}
-        labelAlign="left"
-        labelCol={{ span: 8 }}
-        type={"date"}
-        preFillValue={form.getFieldValue("dueDate")}
-        updateInForm={(value) => {
-          form.setFieldsValue({ dueDate: value });
-        }}
-      />
-      <FormItemCol
-        label={"Incharge"}
-        name={"incharge"}
-        type={"select"}
-        tooltip={"Select the Project in charge for Work Order"}
-        width={"30vw"}
-        entity={"Work Order Incharge"}
-        labelCol={{ span: 8 }}
-        entityName="incharge"
-        updateInForm={(value) => {
-          form.setFieldsValue({ incharge: value });
-        }}
-        preFillValue={form.getFieldValue("incharge")}
-      />
-      <FormItemCol
-        label={"Quotation No"}
-        name={"quotationNo"}
-        type={"input"}
-        width={"30vw"}
-        labelCol={{ span: 8 }}
-      />
-      <Divider dashed />
-      <Row
-        justify={"center"}
-        style={{
-          marginBottom: "10px",
-          top: 0,
-          background: "#fff",
-          zIndex: 1,
-        }}
-      >
-        <Taglabel text={"ITEM TABLE"} weight={1000} />
-      </Row>
-      <div
-        style={{
-          position: "relative",
-          border: "2px solid #bfbfbb",
-          marginBottom: "20px",
-          zIndex: 10,
-          margin: "20px",
-          overflow: "auto",
-        }}
-      >
-        <div
-          style={{
-            overflowX: "auto",
-            overflowY: "auto",
-            paddingBottom: "10px",
-            minWidth: 1200,
-          }}
-        >
+      <div>
+          <FormItemCol name={"prefix"} labelAlign="left" hidden={true} />
+          <FormItemCol
+              label={"#Work Order"}
+              name={"no"}
+              labelAlign="left"
+              required={true}
+              labelCol={{ span: 8 }}
+              width={"30vw"}
+              type={"counters"}
+              rules={[
+                  {
+                      required: true,
+                      message: "Please Provide Work Order No",
+                  },
+              ]}
+              updateInForm={(value) => {
+                  form.setFieldsValue({ no: value });
+              }}
+              preFillValue={form.getFieldValue("no")}
+              entity={entity}
+              parentForm={form}
+          />
+          <FormItemCol name={"suffix"} labelAlign="left" hidden={true} />
+          <FormItemCol
+              label={"Work Order Type"}
+              name={"type"}
+              labelAlign="left"
+              required={true}
+              labelCol={{ span: 8 }}
+              rules={[
+                  {
+                      required: true,
+                      message: "Please Select Type",
+                  },
+              ]}
+              type="select"
+              width={"30vw"}
+              entity={"type"}
+              entityName={"workorderType"}
+              updateInForm={(value) => {
+                  form.setFieldsValue({ type: value });
+              }}
+              preFillValue={form.getFieldValue("type")}
+          />
+          <FormItemCol
+              label={"Exp Start Date"}
+              name={"startDate"}
+              required={true}
+              labelCol={{ span: 8 }}
+              width={"30vw"}
+              rules={[
+                  {
+                      required: true,
+                      message: "Please Select Start Date",
+                  },
+              ]}
+              labelAlign="left"
+              type={"date"}
+              preFillValue={form.getFieldValue("startDate")}
+              updateInForm={(value) => {
+                  form.setFieldsValue({ startDate: value });
+              }}
+          />
+          <FormItemCol
+              label={"Exp Due Date"}
+              width={"30vw"}
+              name={"dueDate"}
+              required={true}
+              rules={[
+                  {
+                      required: true,
+                      message: "Please Select Due Date",
+                  },
+              ]}
+              labelAlign="left"
+              labelCol={{ span: 8 }}
+              type={"date"}
+              preFillValue={form.getFieldValue("dueDate")}
+              updateInForm={(value) => {
+                  form.setFieldsValue({ dueDate: value });
+              }}
+          />
+          <FormItemCol
+              label={"Incharge"}
+              name={"incharge"}
+              type={"select"}
+              tooltip={"Select the Project in charge for Work Order"}
+              width={"30vw"}
+              entity={"Work Order Incharge"}
+              labelCol={{ span: 8 }}
+              entityName="incharge"
+              updateInForm={(value) => {
+                  form.setFieldsValue({ incharge: value });
+              }}
+              preFillValue={form.getFieldValue("incharge")}
+          />
+          <FormItemCol
+              label={"Quotation No"}
+              name={"quotationNo"}
+              type={"input"}
+              width={"30vw"}
+              labelCol={{ span: 8 }}
+          />
+          <Divider dashed />
           <Row
-            style={{
-              position: "sticky",
-              top: "30px",
-              background: "#fff",
-              border: "1px solid #bfbfbb",
-              zIndex: 1,
-            }}
+              justify={"center"}
+              style={{
+                  marginBottom: "10px",
+                  top: 0,
+                  background: "#fff",
+                  zIndex: 1,
+              }}
           >
-            {/* <Col
+              <Taglabel text={"ITEM TABLE"} weight={1000} />
+          </Row>
+          <div
+              style={{
+                  position: "relative",
+                  border: "2px solid #bfbfbb",
+                  marginBottom: "20px",
+                  zIndex: 10,
+                  margin: "20px",
+                  overflow: "auto",
+              }}
+          >
+              <div
+                  style={{
+                      overflowX: "auto",
+                      overflowY: "auto",
+                      paddingBottom: "10px",
+                      minWidth: 1200,
+                  }}
+              >
+                  <Row
+                      style={{
+                          position: "sticky",
+                          top: "30px",
+                          background: "#fff",
+                          border: "1px solid #bfbfbb",
+                          zIndex: 1,
+                      }}
+                  >
+                      {/* <Col
               className="gutter-row"
               span={4}
               style={{
@@ -188,57 +191,61 @@ const WorkOrderForm = ({ form, entity }) => {
             >
               <Taglabel text={"ITEM CODE"} />
             </Col> */}
-            <Col
-              className="gutter-row"
-              span={16}
-              style={{
-                borderRight: "1px solid #bfbfbb",
-                textAlign: "center",
-                minWidth: "300px",
-              }}
-            >
-              <Taglabel text={"ITEM DESCRIPTION"} weight={700} />
-            </Col>
-            <Col
-              className="gutter-row"
-              span={8}
-              style={{
-                borderRight: "1px solid #bfbfbb",
-                textAlign: "center",
-                minWidth: "200px",
-              }}
-            >
-              <Taglabel text={"QTY"} />
-            </Col>
-          </Row>
-        </div>
+                      <Col
+                          className="gutter-row"
+                          span={16}
+                          style={{
+                              borderRight: "1px solid #bfbfbb",
+                              textAlign: "center",
+                              minWidth: "300px",
+                          }}
+                      >
+                          <Taglabel text={"ITEM DESCRIPTION"} weight={700} />
+                      </Col>
+                      <Col
+                          className="gutter-row"
+                          span={8}
+                          style={{
+                              borderRight: "1px solid #bfbfbb",
+                              textAlign: "center",
+                              minWidth: "200px",
+                          }}
+                      >
+                          <Taglabel text={"QTY"} />
+                      </Col>
+                  </Row>
+              </div>
 
-        <Form.List
-          name={"items"}
-          initialValue={[
-            {
-              product: {
-                code: "",
-                name: "",
-              },
-              qty: 1,
-            },
-          ]}
-        >
-          {(subFields, subOpt) => (
-            <div>
-              <div
-                style={{
-                  overflowX: "auto",
-                  overflowY: "auto",
-                  minHeight: "10vh",
-                  maxHeight: "70vh",
-                  minWidth: 1200,
-                }}
+              <Form.List
+                  name={"items"}
+                  initialValue={[
+                      {
+                          product: {
+                              code: "",
+                              name: "",
+                          },
+                          qty: 1,
+                      },
+                  ]}
               >
-                {subFields.map(({ key, name, ...restField }) => (
-                  <Row key={key} align={"middle"} style={{ marginTop: "5px" }}>
-                    {/* <Col
+                  {(subFields, subOpt) => (
+                      <div>
+                          <div
+                              style={{
+                                  overflowX: "auto",
+                                  overflowY: "auto",
+                                  minHeight: "10vh",
+                                  maxHeight: "70vh",
+                                  minWidth: 1200,
+                              }}
+                          >
+                              {subFields.map(({ key, name, ...restField }) => (
+                                  <Row
+                                      key={key}
+                                      align={"middle"}
+                                      style={{ marginTop: "5px" }}
+                                  >
+                                      {/* <Col
                       className="gutter-row"
                       span={4}
                       style={{
@@ -259,88 +266,107 @@ const WorkOrderForm = ({ form, entity }) => {
                         />
                       </Form.Item>
                     </Col> */}
-                    <Col
-                      className="gutter-row"
-                      span={16}
-                      style={{
-                        textAlign: "center",
-                        minWidth: "300px",
-                      }}
-                    >
-                      <Form.Item {...restField} name={[name, "description"]}>
-                        <CustomModal
-                          entity={"products"}
-                          fieldName={"name"}
-                          updateInForm={(value) =>
-                            handleItemsUpdate(value, "product", name)
-                          }
-                          preFillValue={
-                            form.getFieldValue("items")?.[name]?.description
-                          }
-                          width={"100%"}
-                        />
-                      </Form.Item>
-                    </Col>
-                    <Col span={7}>
-                      <Form.Item {...restField} name={[name, "qty"]}>
-                        <InputNumber
-                          onChange={(value) =>
-                            handleItemsUpdate(value, "qty", name)
-                          }
-                          controls={false}
-                          min={0}
-                          style={{
-                            textAlign: "center",
-                            width: "100%",
-                          }}
-                        />
-                      </Form.Item>
-                    </Col>
-                    <Col span={1} style={{ textAlign: "center" }}>
-                      <Form.Item>
-                        <DeleteOutlined
-                          style={{
-                            color: "red",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => {
-                            subOpt.remove(name);
-                          }}
-                        />
-                      </Form.Item>
-                    </Col>
-                  </Row>
-                ))}
-              </div>
+                                      <Col
+                                          className="gutter-row"
+                                          span={16}
+                                          style={{
+                                              textAlign: "center",
+                                              minWidth: "300px",
+                                          }}
+                                      >
+                                          <Form.Item
+                                              {...restField}
+                                              name={[name, "description"]}
+                                          >
+                                              <CustomModal
+                                                  entity={"products"}
+                                                  fieldName={"name"}
+                                                  updateInForm={(value) =>
+                                                      handleItemsUpdate(
+                                                          value,
+                                                          "product",
+                                                          name
+                                                      )
+                                                  }
+                                                  preFillValue={
+                                                      form.getFieldValue(
+                                                          "items"
+                                                      )?.[name]?.description
+                                                  }
+                                                  width={"100%"}
+                                              />
+                                          </Form.Item>
+                                      </Col>
+                                      <Col span={7}>
+                                          <Form.Item
+                                              {...restField}
+                                              name={[name, "qty"]}
+                                          >
+                                              <InputNumber
+                                                  onChange={(value) =>
+                                                      handleItemsUpdate(
+                                                          value,
+                                                          "qty",
+                                                          name
+                                                      )
+                                                  }
+                                                  controls={false}
+                                                  min={0}
+                                                  style={{
+                                                      textAlign: "center",
+                                                      width: "100%",
+                                                  }}
+                                              />
+                                          </Form.Item>
+                                      </Col>
+                                      <Col
+                                          span={1}
+                                          style={{ textAlign: "center" }}
+                                      >
+                                          <Form.Item>
+                                              <DeleteOutlined
+                                                  style={{
+                                                      color: "red",
+                                                      cursor: "pointer",
+                                                  }}
+                                                  onClick={() => {
+                                                      subOpt.remove(name);
+                                                  }}
+                                              />
+                                          </Form.Item>
+                                      </Col>
+                                  </Row>
+                              ))}
+                          </div>
 
-              {/* Button to add new item */}
-              <Row justify="start">
-                <Button
-                  type="link"
-                  style={{
-                    color: "#22b378",
-                  }}
-                  onClick={() => {
-                    subOpt.add({
-                      description: "",
-                      qty: 1,
-                      hsnCode: "",
-                      rate: 0,
-                      discountPercent: 0,
-                      gstPercent: 0,
-                    });
-                  }}
-                  details={true}
-                  withIcon={true}
-                >
-                  ADD NEW ROW
-                </Button>
-              </Row>
-            </div>
-          )}
-        </Form.List>
+                          {/* Button to add new item */}
+                          <Row justify="start">
+                              <Button
+                                  type="link"
+                                  style={{
+                                      color: "#22b378",
+                                  }}
+                                  onClick={() => {
+                                      subOpt.add({
+                                          description: "",
+                                          qty: 1,
+                                          hsnCode: "",
+                                          rate: 0,
+                                          discountPercent: 0,
+                                          gstPercent: 0,
+                                      });
+                                  }}
+                                  details={true}
+                                  withIcon={true}
+                              >
+                                  ADD NEW ROW
+                              </Button>
+                          </Row>
+                      </div>
+                  )}
+              </Form.List>
+          </div>
       </div>
-    </div>
   );
 };
 

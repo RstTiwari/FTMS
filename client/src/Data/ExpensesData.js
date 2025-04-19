@@ -6,6 +6,7 @@ import {
 import Taglabel from "components/Comman/Taglabel";
 import MoreActionDropDown from "components/Comman/MoreActionDropDown";
 import MoreActionDropDownData from "./MoreActionDropDownData";
+import ShowEntityNo from "components/Comman/ShowEntityNo";
 const { Text } = Typography;
 
 const getColumns = (details) => [
@@ -27,14 +28,13 @@ const getColumns = (details) => [
         dataIndex: "no",
         key: "expenseDate",
         render: (_, record) => (
-            <>
-                <Taglabel
-                    text={record.no}
-                    type={"no"}
-                    details={details}
-                />
-            </>
+            <ShowEntityNo
+                prefix={record.prefix}
+                no={record.no}
+                suffix={record.suffix}
+            />
         ),
+     
     },
     {
         title: (

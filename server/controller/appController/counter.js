@@ -2,49 +2,41 @@ import checkDbForEntity from "../../Helper/databaseSelector.js";
 
 export const fetchCountersNumber = async (req, res, next) => {
   try {
-    const { entity, entityName } = req.query;
+    const {entityName } = req.query;
     const tenantId = req["tenantId"];
 
-    if (!entity || !entityName || !tenantId) {
+    if (!entityName || !tenantId) {
       throw new Error("Invalid Payload");
     }
-    const dataBase = checkDbForEntity(entity);
+    const dataBase = checkDbForEntity(entityName);
     let query = {};
     query["tenantId"] = tenantId;
-    query["entityName"] = entityName
 
     // Before checking in counter data base let first find the last save no for entity;
     let entityDataBase = checkDbForEntity(entityName);
-    console.log(`entityDataBase`,entityDataBase);
     let entityData = await entityDataBase.findOne({tenantId}).sort({ no: -1 });
-    let no = entityData?.no;
-
-    const existingCounters = await dataBase.findOne(query);
-    console.log(existingCounters, "existingCounters",entityData,entity,entityName);
 
     if (entityData) {
-      let prefix = existingCounters?.prefix
-        ? existingCounters?.prefix
-        : entityName.slice(0, 3).toUpperCase();
-      let nextNumber = existingCounters?.nextNumber
-        ? existingCounters?.nextNumber
-        : 1;
-      return res.status(200).json({
-        success: 1,
-        result: {
-          prefix: prefix,
-          nextNumber: no >= nextNumber ? no + 1 : nextNumber,
-        },
-      });
+        let prefix = entityData?.prefix?.toUpperCase();
+        let no = entityData?.no + 1;
+        return res.status(200).json({
+            success: 1,
+            result: {
+                prefix: prefix,
+                nextNumber: no,
+            },
+        });
     }
 
     const response = {
-      success: 1,
-      result: {
-        prefix: entityName.slice(0, 2).toUpperCase(),
-        nextNumber: 1,
-      },
+        success: 1,
+        result: {
+            prefix: entityName.slice(0, 3).toUpperCase(),
+            nextNumber: 1,
+            suffix: "",
+        },
     };
+
     res.status(200).json(response);
   } catch (error) {
     next(error);

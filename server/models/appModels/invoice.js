@@ -19,6 +19,11 @@ const invoiceSchema = new mongoose.Schema(
             required: true,
             default: "INV",
         },
+        suffix: {
+          type: String,
+          required: true,
+          default: "",
+      },
         status: {
             type: String,
             enum: [
@@ -105,7 +110,7 @@ const invoiceSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-invoiceSchema.index({ tenantId: 1, no: 1 }, { unique: true });
+invoiceSchema.index({ tenantId: 1, no: 1,prefix:1,suffix:1}, { unique: true });
 invoiceSchema.plugin(mongooseAutoPopulate);
 
 //Attching the req body to save this

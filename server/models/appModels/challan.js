@@ -15,9 +15,18 @@ const challanSchema = new mongoose.Schema(
         pincode: Number,
       },
     },
+    prefix: {
+      type: String,
+      required: true,
+      default:"CH"
+    },
     no: {
       type: Number,
       required: true,
+    },
+    suffix: {
+      type: String,
+      default:""
     },
     challanDate: {
       type: Date,
@@ -103,7 +112,11 @@ const challanSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-challanSchema.index({ tenantId: 1, no: 1 }, { unique: true });
+challanSchema.index(
+    { tenantId: 1, no: 1, prefix: 1, suffix: 1 },
+    { unique: true }
+);
+
 challanSchema.plugin(mongooseAutoPopulate);
 
 //Attching the req body to save this

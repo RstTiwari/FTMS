@@ -18,9 +18,17 @@ const quotationSchema = new mongoose.Schema(
             enum: ["DRAFT", "SEND", "CANCELLED", "ON HOLD"],
             default: "DRAFT",
         },
+        prefix:{
+            type:String,
+            default:"QOU",
+        },
         no: {
             type: Number,
             required: true,
+        },
+        suffix: {
+            type: String,
+            default:""
         },
         quoteDate: {
             type: Date,
@@ -104,16 +112,22 @@ const quotationSchema = new mongoose.Schema(
 );
 
 
-quotationSchema.index({ tenantId: 1, no: 1 }, { unique: true });
+quotationSchema.index(
+    { tenantId: 1, no: 1, prefix: 1, suffix: 1 },
+    { unique: true }
+);
+
 // Apply the autopopulate plugin to the schema
 quotationSchema.plugin(mongooseAutoPopulate);
-//Attching the req body to save this
+
+//Attaching the req body to save this
 quotationSchema.pre("save", function (next, options) {
     if (options && options.req) {
         this._req = options.req; // Attach req to the document
     }
     next();
 });
+
 quotationSchema.pre("updateOne", function (next, options) {
     if (this.options && this.options.req) {
         this._req = this.options.req; // Attach req to the document
@@ -136,6 +150,7 @@ quotationSchema.post("save", async function (doc, next) {
         next(error); // Calling the Error middleware
     }
 });
+
 quotationSchema.post("updateOne", async function (result, next) {
     try {
         if (this._req) {

@@ -9,10 +9,18 @@ const purchaseOrderSchema = new mongoose.Schema({
         autopopulate: true,
         required: true,
     },
+    prefix: {
+        type: String,
+        required: true,
+        default: "PO",
+    },
     no: {
         type: Number,
         required: true,
-        sparse: true,
+    },
+    suffix: {
+        type: String,
+        default: "",
     },
     purchaseDate: {
         type: Date,
@@ -113,10 +121,11 @@ const purchaseOrderSchema = new mongoose.Schema({
     },
 });
 
-
-purchaseOrderSchema.index({ tenantId: 1, no: 1 }, { unique: true });
+purchaseOrderSchema.index(
+    { tenantId: 1, no: 1, prefix: 1, suffix: 1 },
+    { unique: true }
+);
 purchaseOrderSchema.plugin(mongooseAutoPopulate);
-
 
 //Attching the req body to save this
 purchaseOrderSchema.pre("save", function (next, options) {
@@ -161,7 +170,7 @@ purchaseOrderSchema.post("updateOne", async function (doc, next) {
                 });
             }
         }
-        next(); // procceding to the next middleware
+        next(); // proceeding to the next middleware
     } catch (error) {
         next(error); // Calling the Error middleware
     }

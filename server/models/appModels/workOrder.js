@@ -7,9 +7,19 @@ const workOrderSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  prefix: {
+    type: String,
+    required: true,
+    default:"WO"
+  },
   no: {
     type: Number,
     required: true,
+  },
+  suffix:{
+    type: String,
+    required: true,
+    default:""
   },
   startDate: {
     type: Date,
@@ -39,7 +49,6 @@ const workOrderSchema = new mongoose.Schema({
       },
     },
   ],
-
   tenantId: {
     type: String,
     required: true,
@@ -47,7 +56,10 @@ const workOrderSchema = new mongoose.Schema({
 });
 
 
-workOrderSchema.index({ tenantId: 1, no: 1 }, { unique: true });
+workOrderSchema.index(
+    { tenantId: 1, no: 1, prefix: 1, suffix: 1 },
+    { unique: true }
+);
 workOrderSchema.plugin(mongooseAutoPopulate);
 workOrderSchema.index({ no: 1, type: 1 }, { unique: true });
 //Attching the req body to save this

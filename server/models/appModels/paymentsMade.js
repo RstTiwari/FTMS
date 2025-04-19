@@ -35,10 +35,18 @@ const paymentsSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        prefix: {
+            type: String,
+            unique: true, // Ensure the incremented field is unique
+            default: "PMNO",
+        },
         no: {
             type: Number,
             unique: true, // Ensure the incremented field is unique
-            sparse: true,
+        },
+        suffix: {
+            type: String,
+            default: "",
         },
     },
     { timestamps: true }
@@ -46,16 +54,20 @@ const paymentsSchema = new mongoose.Schema(
 
 paymentsSchema.plugin(mongooseAutoPopulate);
 
-paymentsSchema.index({ tenantId: 1, no: 1 }, { unique: true });
-// Pre-save middleware to count documents and set incrementField
-//Attching the req body to save this
+paymentsSchema.index(
+    { tenantId: 1, no: 1, prefix: 1, suffix: 1 },
+    { unique: true }
+);
+
+//Pre-save middleware to count documents and set incrementField
 paymentsSchema.pre("save", function (next, options) {
     if (options && options.req) {
         this._req = options.req; // Attach req to the document
     }
     next();
 });
-//Attching the req body to save this
+
+//Attaching the req body to save this
 paymentsSchema.pre("updateOne", function (next) {
     if (this.options && this.options.req) {
         this._req = this.options.req; // Attach req to the document

@@ -101,6 +101,16 @@ const QuotationForm = ({ form,entity }) => {
                 updateInForm={(value) => handleItemsUpdate(value, "customer")}
                 preFillValue={form.getFieldValue("customer")?.name}
             />
+              <FormItemCol
+                name={"prefix"}
+                required={true}
+                type={"text"}
+                labelAlign="left"
+                labelCol={{ span: 8 }}
+                hidden={true}
+                width={"30vw"}
+             
+            />
             <FormItemCol
                 label={"Invoice#"}
                 name={"no"}
@@ -117,7 +127,16 @@ const QuotationForm = ({ form,entity }) => {
                 ]}
                 entity={entity}
                 updateInForm={(value) => handleItemsUpdate(value, "no")}
+                parentForm={form}
                 preFillValue={form.getFieldValue("no")}
+            />
+                <FormItemCol
+                name={"suffix"}
+                required={true}
+                type={"text"}
+                labelAlign="left"
+                labelCol={{ span: 8 }}
+                hidden={true}
             />
             <FormItemCol
                 label={"Invoice Date"}
@@ -138,6 +157,8 @@ const QuotationForm = ({ form,entity }) => {
                     handleItemsUpdate(value, "invoiceDate")
                 }
             />
+    
+            
             <FormItemCol
                 label={"Due Date"}
                 name={"dueDate"}

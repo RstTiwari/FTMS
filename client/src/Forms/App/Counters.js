@@ -1,51 +1,69 @@
-import FormItemCol from "components/Comman/FormItemCol";
-import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { Row, Typography, Form, Col, Input } from "antd";
+import {  Col } from "antd";
+import FormItemCol from "../../components/Comman/FormItemCol"; // assuming you have this custom wrapper
 
-const Counters = (form) => {
-    const { entity } = useParams();
-    useEffect(()=>{
 
-    },[form])
+const onlyTextRegex = /^[A-Za-z\s]+$/
+const FormRow = () => {
     return (
         <>
-            <Row justify={"start"}>
+            <Col>
                 <FormItemCol
-                    tooltip={
-                        "Short Name of Your Company   Eg => Miraj Engineering   ME "
-                    }
-                    label={"Prefix"}
-                    labelCol={{ span:8 }}
-                    type={"text"}
-                    name={"prefix"}
-                    required={true}
-                    rules={[{ required: true, message: `Please input Prefix` }]}
-                />
-
-                <FormItemCol
-                    label={"Number"}
-                    tooltip={"Next Number Of Your Document"}
-                    name={"nextNumber"}
-                    required={true}
-                    labelCol={{ span: 8 }}
-                    type={"text"}
-                    readOnly={false}
-                    rules={[
-                        { required: true, message: `Please input Next Number` },
+                    tooltip="Short Name of Your Company. E.g., Miraj Engineering => ME"
+                    label="Prefix"
+                    name="prefix"
+                    type="text"
+                    labelCol={{ span: 18 }}
+                    required
+                    labelAlign="left"
+                    r   rules={[
+                        { required: true, message: "Please input Prefix" },
+                        {
+                            pattern: onlyTextRegex,
+                            message: "Prefix must contain only letters",
+                        },
                     ]}
+                />
+            </Col>
+            <Col>
+                <FormItemCol
+                    tooltip="Next Number Of Your Document"
+                    label="Number"
+                    name="nextNumber"
+                    type="number"
+                    required
+                    labelAlign="left"
+                    labelCol={{ span: 18 }}
+                    rules={[
+                        { required: true, message: "Please input Next Number" },
+                        {
+                            type: "number",
+                            message: "Please enter a valid number",
+                        },
+                       
+                    ]}
+                    stringMode ={false}
                     
                 />
-                <Form.Item
-                    name="entityName"
-                    initialValue={entity}
-                    hidden={true}
-                >
-                    <Input type="hidden" />
-                </Form.Item>
-            </Row>
+            </Col>
+            <Col>
+                <FormItemCol
+                    tooltip="Add Suffix for Number"
+                    label="Suffix"
+                    name="suffix"
+                    type="text"
+                    labelCol={{ span: 18}}
+                    labelAlign="left"
+                    rules={[
+                        {
+                            pattern: /^[A-Za-z]{1}$/,
+                            message: "must be a single alphabet character",
+                        },
+                    ]}
+                />
+            </Col>
+
         </>
     );
 };
 
-export default Counters;
+export default FormRow;

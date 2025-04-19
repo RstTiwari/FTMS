@@ -55,6 +55,7 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate,entity }) => {
                     />
                 </Col>
                 <Col span={24}>
+                    <FormItemCol name="prefix" required={true} hidden={true} />
                     <FormItemCol
                         label="Payment No"
                         name="no"
@@ -78,6 +79,7 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate,entity }) => {
                         type={"counters"}
                         disabled={form.getFieldValue("no")?.name}
                     />
+                    <FormItemCol name="suffix" hidden={true} />
                 </Col>
                 <Col span={24}>
                     <FormItemCol

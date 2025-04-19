@@ -136,6 +136,14 @@ const QuotationForm = ({ form,entity }) => {
           form={form}
           preFillValue={form.getFieldValue("customer")?.name}
         />
+         <FormItemCol
+          name={"prefix"}
+          labelAlign="left"
+          hidden={true}
+          labelCol={{ span: 8 }}
+          width={"30vw"}
+        
+        />
         <FormItemCol
           label={"#Quote"}
           name={"no"}
@@ -153,8 +161,17 @@ const QuotationForm = ({ form,entity }) => {
           updateInForm={(value) => {
             handleItemsUpdate(value, "no");
           }}
+          parentForm={form}
           entity={entity}
           preFillValue={form.getFieldValue("no")}
+        />
+          <FormItemCol
+          name={"suffix"}
+          labelAlign="left"
+          hidden={true}
+          labelCol={{ span: 8 }}
+          width={"30vw"}
+        
         />
         <FormItemCol
           label={"Quote Date"}

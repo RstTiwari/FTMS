@@ -20,10 +20,13 @@ const FormItemCol = ({
     preFillValue,
     xl = 12,
     lg = 12,
+    md =12,
+    sm = 24,
+    xs = 24,
     hidden,
     ...restProps
 }) => (
-    <Col xs={24} sm={24} md={12} lg={lg} xl={lg}>
+    <Col xs={xl} sm={lg} md={md} lg={lg} xl={lg}>
         <Form.Item
             label={
                 label ? <CustomLabel required={required} label={label} /> : null

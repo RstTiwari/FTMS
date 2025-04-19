@@ -8,21 +8,19 @@ import {
 import Taglabel from "components/Comman/Taglabel";
 import MoreActionDropDown from "components/Comman/MoreActionDropDown";
 import MoreActionDropDownData from "./MoreActionDropDownData";
-const { Text } = Typography;
+import ShowEntityNo from "components/Comman/ShowEntityNo";
 
 const getColumns = (details) => [
   {
     title: <Taglabel text={"#No"} type={"heading"} details={details} />,
     dataIndex: "no",
     render: (_, record) => (
-      <>
-        <Taglabel
-          type={"number"}
-          text={record.vendor ? record.no : ""}
-          details={details}
-        />
-      </>
-    ),
+      <ShowEntityNo
+          prefix={record.prefix}
+          no={record.no}
+          suffix={record.suffix}
+      />
+  ),
   },
   {
     title: <Taglabel type={"heading"} text={"VENDOR NAME"} details={details} />,
