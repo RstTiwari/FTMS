@@ -14,7 +14,6 @@ const getColumns = (details) => [
         title: <Taglabel text={"#No"} type={"heading"} details={details} />,
         dataIndex: "no",
         key: "no",
-        width: 150,
         render: (_, record) => (
             <ShowEntityNo
                 prefix={record.prefix}
@@ -41,8 +40,6 @@ const getColumns = (details) => [
         title: <Taglabel text={"DATE"} type={"heading"} details={details} />,
         dataIndex: "paymentDate",
         key: "paymentDate",
-        responsive: details ? [] : ["lg"],
-        width: 200,
         render: (_, record) => (
             <Taglabel
                 type={"text"}
@@ -55,8 +52,6 @@ const getColumns = (details) => [
         title: <Taglabel text={"AMOUNT"} type={"heading"} details={details} />,
         dataIndex: "amount",
         key: "amount",
-        width: details ? 100 : 80,
-        responsive: details ? [] : ["lg"],
         render: (_, record) => (
             <Taglabel
                 type="amount"
@@ -75,8 +70,6 @@ const getColumns = (details) => [
         ),
         dataIndex: "paymentMode",
         key: "paymentMode",
-        width: 200 ,
-        responsive: details ? [] : ["lg"],
         render: (_, record) => (
             <Taglabel
                 type="text"
@@ -89,8 +82,6 @@ const getColumns = (details) => [
         title: <Taglabel text={"NOTE"} type={"heading"} details={details} />,
         dataIndex: "note",
         key: "note",
-        width: details ? 200 : 150,
-        responsive: details ? [] : ["lg"],
         render: (_, record) => (
             <Taglabel type="text" text={record?.note || ""} details={details} />
         ),

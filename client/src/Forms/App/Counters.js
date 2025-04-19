@@ -2,7 +2,7 @@ import {  Col } from "antd";
 import FormItemCol from "../../components/Comman/FormItemCol"; // assuming you have this custom wrapper
 
 
-const onlyTextRegex = /^[A-Za-z\s]+$/
+const onlyTextRegex = /^[A-Za-z-/\s]+$/
 const FormRow = () => {
     return (
         <>

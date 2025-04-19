@@ -24,9 +24,12 @@ const getColumns = (details) => [
         ),
     },
     {
-        title: <Taglabel text={"TYPE"} type={"heading"} details={details} />,
+        title: <Taglabel text={"WORK ORDER TYPE"} type={"heading"} details={details} />,
         dataIndex: "type",
         key: "type",
+        render: (_, record) => (
+            <Taglabel text={record.type} type={"customer"} />
+        ),
     },
 
     {

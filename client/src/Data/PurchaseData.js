@@ -26,7 +26,6 @@ const getColumns = (details) => [
     title: <Taglabel type={"heading"} text={"VENDOR NAME"} details={details} />,
     dataIndex: "vendor",
     key: "source",
-    width: 250,
     render: (_, record) => (
       <>
         <Taglabel
@@ -41,7 +40,6 @@ const getColumns = (details) => [
     title: <Taglabel type={"heading"} text={"DATE"} details={details} />,
     dataIndex: "purchaseDate",
     key: "company",
-    responsive: details ? [] : ["lg"],
     render: (_, record) => (
       <>
         <Taglabel
@@ -58,7 +56,6 @@ const getColumns = (details) => [
     title: <Taglabel text={"STATUS"} type={"heading"} details={details} />,
     dataIndex: "status",
     key: "expiryDate",
-    responsive: details ? [] : ["lg"],
     render: (_, record) => (
       <>
         <Taglabel type={"text"} text={record.status} details={details} />
@@ -69,7 +66,6 @@ const getColumns = (details) => [
   {
     title: <Taglabel text={"GROSS TOTAL"} type={"heading"} details={details} />,
     dataIndex: "grossTotal",
-    responsive: details ? [] : ["lg"],
     key: "subTotal",
     render: (_, record) => (
       <>
@@ -85,7 +81,6 @@ const getColumns = (details) => [
     title: <Taglabel text={"GRAND TOTAL"} type={"heading"} details={details} />,
     dataIndex: "grandTotal",
     key: "subTotal",
-    responsive: details ? [] : ["lg"],
 
     render: (_, record) => (
       <>

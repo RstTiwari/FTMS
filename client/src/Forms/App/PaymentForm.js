@@ -76,6 +76,7 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate,entity }) => {
                         entity={entity}
                         onlyShippingAddress={true}
                         preFillValue={form.getFieldValue("no")?.name}
+                        parentForm = {form}
                         type={"counters"}
                         disabled={form.getFieldValue("no")?.name}
                     />

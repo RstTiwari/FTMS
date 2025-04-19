@@ -73,7 +73,7 @@ const getColumns = (details) => [
         responsive: details ? [] : ["lg"],
         render: (_, record) => (
             <>
-                <Taglabel type="text" text={record.note} details={details} />
+                <Taglabel type="text" text={record.note ? record.note : ""} details={details} />
             </>
         ),
     },
