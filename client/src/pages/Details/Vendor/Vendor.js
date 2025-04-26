@@ -10,6 +10,7 @@ import {
     Card,
     Avatar,
 } from "antd";
+import LeadgerDetails from "components/Comman/LeadgerDetails";
 import Taglabel from "components/Comman/Taglabel";
 
 import PageLoader from "pages/PageLoader";
@@ -43,6 +44,12 @@ const VendorDetails = ({ values, loading,entity,id ,closeModal }) => {
             >
                 <TransectionTab   />
             </TabPane>
+            <TabPane
+                tab={<Taglabel text={"Statement"} weight={200} type={"text"} />}
+                key="3"
+            >
+                <LeadgerDetails id={id} type ="vendors" />
+            </TabPane>``
         </Tabs>
     );
 };

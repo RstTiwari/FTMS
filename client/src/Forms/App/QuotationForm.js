@@ -117,14 +117,7 @@ const QuotationForm = ({ form,entity }) => {
           label={"Select Customer"}
           name={"customer"}
           labelAlign="left"
-          required={true}
           labelCol={{ span: 8 }}
-          rules={[
-            {
-              required: "true",
-              message: "Please Select Customer",
-            },
-          ]}
           type="options"
           width={"30vw"}
           entity={"customers"}

@@ -41,3 +41,149 @@ export const currentFinancialYear = (date) => {
   return `${startYear.toString().slice(-2)}-${endYear.toString().slice(-2)}`;
 };
 
+
+export function getPeriodRange(period) {
+    const now = new Date();
+    let startOfPeriod, endOfPeriod;
+    const toIST = (date) => {
+      const istOffset = 5.5 * 60 * 60 * 1000; // 5.5 hours in ms
+      return new Date(date.getTime() + istOffset);
+  };
+
+    switch (period) {
+        case "this_month":
+            startOfPeriod = new Date(now.getFullYear(), now.getMonth(), 1);
+            endOfPeriod = new Date(
+                now.getFullYear(),
+                now.getMonth() + 1,
+                0,
+                23,
+                59,
+                59,
+                999
+            );
+            break;
+
+        case "last_month":
+            startOfPeriod = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+            endOfPeriod = new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                0,
+                23,
+                59,
+                59,
+                999
+            );
+            break;
+
+        case "this_week":
+            {
+                const day = now.getDay(); // Sunday = 0
+                const diffToMonday = (day + 6) % 7;
+                startOfPeriod = new Date(now);
+                startOfPeriod.setDate(now.getDate() - diffToMonday);
+                startOfPeriod.setHours(0, 0, 0, 0);
+
+                endOfPeriod = new Date(startOfPeriod);
+                endOfPeriod.setDate(startOfPeriod.getDate() + 6);
+                endOfPeriod.setHours(23, 59, 59, 999);
+            }
+            break;
+
+        case "last_week":
+            {
+                const day = now.getDay();
+                const diffToMonday = (day + 6) % 7;
+                const lastWeekStart = new Date(now);
+                lastWeekStart.setDate(now.getDate() - diffToMonday - 7);
+                lastWeekStart.setHours(0, 0, 0, 0);
+
+                const lastWeekEnd = new Date(lastWeekStart);
+                lastWeekEnd.setDate(lastWeekStart.getDate() + 6);
+                lastWeekEnd.setHours(23, 59, 59, 999);
+
+                startOfPeriod = lastWeekStart;
+                endOfPeriod = lastWeekEnd;
+            }
+            break;
+
+        case "today":
+            startOfPeriod = new Date(now);
+            startOfPeriod.setHours(0, 0, 0, 0);
+            endOfPeriod = new Date(now);
+            endOfPeriod.setHours(23, 59, 59, 999);
+            break;
+
+        case "yesterday":
+            startOfPeriod = new Date(now);
+            startOfPeriod.setDate(now.getDate() - 1);
+            startOfPeriod.setHours(0, 0, 0, 0);
+            endOfPeriod = new Date(startOfPeriod);
+            endOfPeriod.setHours(23, 59, 59, 999);
+            break;
+
+        case "last_three_month":
+            startOfPeriod = new Date(now.getFullYear(), now.getMonth() - 3, 1);
+            endOfPeriod = new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                0,
+                23,
+                59,
+                59,
+                999
+            );
+            break;
+
+        case "last_six_month":
+            startOfPeriod = new Date(now.getFullYear(), now.getMonth() - 6, 1);
+            endOfPeriod = new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                0,
+                23,
+                59,
+                59,
+                999
+            );
+            break;
+
+        case "this_year":
+            startOfPeriod = new Date(now.getFullYear(), 0, 1);
+            endOfPeriod = new Date(now.getFullYear(), 11, 31, 23, 59, 59, 999);
+            break;
+
+        case "previous_year":
+            startOfPeriod = new Date(now.getFullYear() - 1, 0, 1);
+            endOfPeriod = new Date(
+                now.getFullYear() - 1,
+                11,
+                31,
+                23,
+                59,
+                59,
+                999
+            );
+            break;
+
+        default:
+            throw new Error("Invalid period specified");
+    }
+
+    return {
+        startOfPeriod: toIST(startOfPeriod),
+        endOfPeriod: toIST(endOfPeriod),
+    };
+}
+
+export function localDateString(dateString) {
+    const date = new Date(dateString);
+  
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const month = date.toLocaleString('en-IN', { month: 'short', timeZone: 'UTC' });
+    const year = date.getUTCFullYear();
+  
+    return `${day}-${month}-${year}`;
+  }
+  

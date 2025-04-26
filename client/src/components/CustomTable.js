@@ -12,6 +12,7 @@ const CustomTable = ({
     onTableChange,
     rowClassName,
     totalCount,
+    pagination = true,
 }) => {
     let { pageSize, pageNo, entity } = useParams();
     const [total, setTotal] = useState(totalCount || 0);
@@ -54,7 +55,7 @@ const CustomTable = ({
                 size="small"
                 loading={isLoading}
                 rowClassName={rowClassName}
-                pagination={tableParams.pagination}
+                pagination={pagination ? tableParams.pagination : ""}
                 onChange={handleTableChange}
                 // onRow={(record) => ({
                 //     onClick: () => onRowClick(record),

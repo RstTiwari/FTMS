@@ -93,6 +93,7 @@ const getColumns = (details) => [
 export const expenseData = {
     getColumns,
 };
+
 export default expenseData;
 
 export const categoryOption = [

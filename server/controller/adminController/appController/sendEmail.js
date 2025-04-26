@@ -1,5 +1,5 @@
-import checkDbForEntity from "../../Helper/databaseSelector.js";
-import { resendEmailController } from "../EmailController/emailController.js";
+import checkDbForEntity from "../../../Helper/databaseSelector.js";
+import { resendEmailController } from "../../EmailController/emailController.js";
 import fs from "fs";
 
 export const emailData = async (req, res, next) => {

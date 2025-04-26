@@ -19,3 +19,14 @@ export const jsDateIntoDDMMYY = (dateString) => {
     return dayjs(dateString).format("DD-MM-YYYY");
 };
 
+
+export function localDateString(dateString) {
+    const date = new Date(dateString);
+  
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const month = date.toLocaleString('en-IN', { month: 'short', timeZone: 'UTC' });
+    const year = date.getUTCFullYear();
+  
+    return `${day}-${month}-${year}`;
+  }
+  

@@ -11,7 +11,6 @@ const quotationSchema = new mongoose.Schema(
                 select: "name", // Specify fields to populate
                 strictPopulate: false,
             },
-            required: true,
         },
         status: {
             type: String,

@@ -9,7 +9,7 @@ import fetchComments from "./fetchComments.js";
 import {
     fetchCountersNumber,
     updateCountersNumber,
-} from "../appController/counter.js";
+} from "./counter.js";
 import { addSelectData, fetchSelectData } from "./customSelect.js";
 import get from "./get.js";
 import recordPayment from "./recordPayment.js";

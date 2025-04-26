@@ -1,4 +1,4 @@
-import checkDbForEntity from "../../Helper/databaseSelector.js";
+import checkDbForEntity from "../../../Helper/databaseSelector.js";
 const get = async (req, res, next) => {
     try {
         let { entity, id } = req.query;

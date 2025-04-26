@@ -1,4 +1,4 @@
-import checkDbForEntity from "../../Helper/databaseSelector.js";
+import checkDbForEntity from "../../../Helper/databaseSelector.js";
 
 const totalReciveables = async (req, res, next) => {
   try {
@@ -15,7 +15,7 @@ const totalReciveables = async (req, res, next) => {
     if (period == null) {
       period = "this_fiscal_year";
     }
-    let today = new Date().getDay();
+    
     if (entity === "customers") {
       let filter = { customer: id, tenantId: tenantId };
 
@@ -38,7 +38,6 @@ const totalReciveables = async (req, res, next) => {
       let totalAdvanceAmount = customers?.advanceAmount
         ? customers?.advanceAmount
         : 0;
-      console.log(totalReciveables,totalRecived,totalPending)
       if (entity === "customers") {
         result.push(
           { title: "Total Amount", value: totalReciveables, id: "1" },

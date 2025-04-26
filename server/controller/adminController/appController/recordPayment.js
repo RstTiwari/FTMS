@@ -1,4 +1,4 @@
-import checkDbForEntity from "../../Helper/databaseSelector.js";
+import checkDbForEntity from "../../../Helper/databaseSelector.js";
 
 const recordPayment = async (req, res, next) => {
     try {

@@ -45,7 +45,7 @@ const getColumns = (details) => [
         render: (_, record) => (
             <Taglabel
                 type={"text"}
-                text={jsDateIntoDayjsDate(record.createdDate)}
+                text={jsDateIntoDayjsDate(record.paymentDate)}
                 details={details}
             />
         ),

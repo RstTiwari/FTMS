@@ -14,6 +14,7 @@ import Taglabel from "components/Comman/Taglabel";
 import OverviewTab from "./OverviewTab";
 import TransactionTab from "./TransectionTab";
 import PageLoader from "pages/PageLoader";
+import LeadgerDetails from "components/Comman/LeadgerDetails";
 const { TabPane } = Tabs;
 
 const CustomerDetails = ({ values, loading,entity,closeModal,id }) => {
@@ -36,13 +37,13 @@ const CustomerDetails = ({ values, loading,entity,closeModal,id }) => {
                 }
                 key="2"
             >
-                <TransactionTab />
+                <TransactionTab  id={id}/>
             </TabPane>
             <TabPane
                 tab={<Taglabel text={"Statement"} weight={200} type={"text"} />}
                 key="3"
             >
-                <p>Statement content</p>
+                <LeadgerDetails id={id} type ="customers" />
             </TabPane>
         </Tabs>
     );

@@ -176,7 +176,7 @@ const PageHeader = ({ organization, entityData }) => {
                     <Text>STATE : {state?.toUpperCase()}</Text>
                 </View>
                 <View style={style.rightSide}>
-                    {entityData.map((item, index) => (
+                    {entityData && entityData.map((item, index) => (
                         <Text key={index} style={style.detailsItem}>
                             <Text style={{ fontWeight: "bold" }}>
                                 {item.label}:{" "}

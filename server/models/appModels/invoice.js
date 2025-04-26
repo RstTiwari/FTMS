@@ -21,7 +21,6 @@ const invoiceSchema = new mongoose.Schema(
         },
         suffix: {
           type: String,
-          required: true,
           default: "",
       },
         status: {
