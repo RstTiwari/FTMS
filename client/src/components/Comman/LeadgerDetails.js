@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { Select, DatePicker, Space, Button ,Col,Row} from "antd";
+import { Select, DatePicker, Space, Button, Col, Row } from "antd";
 import CoustomButton from "./CoustomButton";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import { getPeriodRange } from "../../Helper/EpochConveter";
 import { useAuth } from "state/AuthProvider";
 import CustomerStatement from "./CustomerStatement";
 import PageLoader from "pages/PageLoader";
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import CustomerStatementPDF from '../../PdfTemplates/Customerstamentpdf';
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import CustomerStatementPDF from "../../PdfTemplates/Customerstamentpdf";
 
 const { RangePicker } = DatePicker;
 
@@ -27,7 +27,7 @@ const periodOptions = [
 
 const LeadgerDetails = ({ id, type }) => {
     const [selectedPeriod, setSelectedPeriod] = useState(null);
-    const [data, setData] = useState();
+    const [data, setData] = useState(null);
     const [customRange, setCustomRange] = useState(null);
     const { appApiCall } = useAuth();
 
@@ -108,7 +108,7 @@ const LeadgerDetails = ({ id, type }) => {
                     <CustomerStatement result={data} />
                 </Col>
             ) : (
-            <PageLoader text={".loading"}  />
+                <PageLoader text={".loading"}  height="20px"/>
             )}
         </>
     );
