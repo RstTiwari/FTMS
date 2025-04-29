@@ -11,7 +11,7 @@ const CustomerStatement = ({ result }) => {    let customerData  = result.custom
     let  {billingAddress,gstNo,panNo ,name} = customerData
     let address = `${billingAddress?.stree1 ? billingAddress?.stree1 : ""}${
         billingAddress?.street2 ? billingAddress.street2 : ""
-    }${billingAddress?.city} ${
+    }${billingAddress?.city ? billingAddress.city:""} ${
         billingAddress?.state ? billingAddress.state : ""
 } ${billingAddress?.pincode ? billingAddress.pincode : ""}`;
 
