@@ -66,8 +66,8 @@ const CustomerStatementPDF = ({ result }) => {
     let address = `${billingAddress?.stree1 ? billingAddress?.stree1 : ""}${
         billingAddress?.street2 ? billingAddress.street2 : ""
     } ${billingAddress?.city} ${
-        billingAddress.state ? billingAddress.state : ""
-    } ${billingAddress.pincode ? billingAddress.pincode : ""}`;
+        billingAddress?.state ? billingAddress.state : ""
+    } ${billingAddress?.pincode ? billingAddress.pincode : ""}`;
     return (
         <Document>
             <Page size="A4" style={styles.page}>
