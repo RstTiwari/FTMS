@@ -7,7 +7,14 @@ import {
 } from "Helper/EpochConveter";
 import CustomTable from "components/CustomTable";
 import LeadgerData from "Data/LeadgerData";
-const CustomerStatement = ({ result }) => {
+const CustomerStatement = ({ result }) => {    let customerData  = result.customerData
+    let  {billingAddress,gstNo,panNo ,name} = customerData
+    let address = `${billingAddress?.stree1 ? billingAddress?.stree1 : ""}${
+        billingAddress?.street2 ? billingAddress.street2 : ""
+    }${billingAddress?.city} ${
+        billingAddress.state ? billingAddress.state : ""
+    } ${billingAddress.pincode ? billingAddress.pincode : ""}`;
+
     return (
         <div style={{ padding: "1rem", fontFamily: "Arial" }}>
             <Row justify={"center"}>
@@ -15,9 +22,14 @@ const CustomerStatement = ({ result }) => {
             </Row>
 
             <div style={{ marginBottom: "1rem" }}>
-                <p>
-                    <strong>Customer Name:</strong> {result?.customerName}
-                </p>
+                <Row>
+                    <strong>Customer Name: {name.toUpperCase()}</strong>
+                </Row>
+            <Row>{address}</Row>
+                <Row>
+                    {gstNo ? `GST NO:${gstNo}  ` : ""}{" "}
+                    {panNo ? `PAN NO:${panNo}` : ""}
+                </Row>
 
                 <Row justify={"end"}>
                     <strong>Start of Period: </strong>
@@ -45,8 +57,12 @@ const CustomerStatement = ({ result }) => {
                 </Row>
             </div>
 
-            <CustomTable columns={LeadgerData} dataSource={result.data} pagination ={false}  />
-            <Row justify={"end"}>BALANCE DUE  : {result.totalBalanceDue}</Row>
+            <CustomTable
+                columns={LeadgerData}
+                dataSource={result.data}
+                pagination={false}
+            />
+            <Row justify={"end"}>BALANCE DUE : {result.totalBalanceDue}</Row>
         </div>
     );
 };

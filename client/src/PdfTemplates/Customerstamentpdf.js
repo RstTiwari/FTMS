@@ -60,6 +60,14 @@ const styles = StyleSheet.create({
 
 // Main PDF component
 const CustomerStatementPDF = ({ result }) => {
+    let customerData  = result.customerData
+    console.log(customerData,"--")
+    let  {billingAddress,gstNo,panNo ,name} = customerData
+    let address = `${billingAddress?.stree1 ? billingAddress?.stree1 : ""}${
+        billingAddress?.street2 ? billingAddress.street2 : ""
+    } ${billingAddress?.city} ${
+        billingAddress.state ? billingAddress.state : ""
+    } ${billingAddress.pincode ? billingAddress.pincode : ""}`;
     return (
         <Document>
             <Page size="A4" style={styles.page}>
@@ -72,8 +80,17 @@ const CustomerStatementPDF = ({ result }) => {
                 <>
                     <Text style={[styles.customerName]}>To</Text>
                     <Text style={[styles.customerName, styles.underline]}>
-                        {result?.customerName?.toUpperCase()}
+                        {name ? name.toUpperCase() : ""}
                     </Text>
+                    <>
+                        <Text style={[styles.customerName,{fontSize:10}]}>
+                            {address}
+                        </Text>
+                        <Text style={[styles.customerName,{fontSize:10}]}>
+                            {gstNo ? `GST NO:${gstNo}  ` : ""}{" "}
+                            {panNo ? `PAN NO:${panNo}` : ""}
+                        </Text>
+                    </>
                 </>
 
                 <View style={[styles.section, { alignItems: "flex-end" }]}>

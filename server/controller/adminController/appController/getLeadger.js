@@ -19,7 +19,7 @@ const getLeadger = async (req, res, next) => {
         const entityDateMatchKey = isCustomer ? "invoiceDate" : "purchaseDate";
         const paymentDateMatchKey = "paymentDate";
         const customerDb = checkDbForEntity( isCustomer ? "customers":"vendors")
-        const customerData = await customerDb.findOne({_id:id},{name:1});
+        const customerData = await customerDb.findOne({_id:id});
         let tenantDb = checkDbForEntity("tenant")
 
         const sourceDb = isCustomer
@@ -170,7 +170,7 @@ const getLeadger = async (req, res, next) => {
                 data: updateCombinedData,
                 startOfPeriod: startOfPeriod,
                 endOfPeriod: endOfPeriod,
-                customerName: customerData.name,
+                customerData: customerData,
                 totalBalanceDue: totalBalanceDue,
                 organization: organization,
             },

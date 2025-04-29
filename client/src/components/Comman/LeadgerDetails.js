@@ -98,7 +98,7 @@ const LeadgerDetails = ({ id, type }) => {
                     <Row justify={"end"}>
                         <PDFDownloadLink
                             document={<CustomerStatementPDF result={data} />}
-                            fileName={`${data.customerName}_statement.pdf`}
+                            fileName={`${data.customerData.name}_statement.pdf`}
                         >
                             {({ loading }) =>
                                 loading ? "Loading..." : "Download PDF"
@@ -108,7 +108,7 @@ const LeadgerDetails = ({ id, type }) => {
                     <CustomerStatement result={data} />
                 </Col>
             ) : (
-                <PageLoader text={".loading"} />
+            <PageLoader text={".loading"}  />
             )}
         </>
     );

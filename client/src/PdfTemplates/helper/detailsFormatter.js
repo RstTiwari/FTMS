@@ -191,11 +191,11 @@ export const entityDetailsFormatter = (entity, data, organization) => {
       break;
 
     case "quotations":
-      let sub = data["sub"] ? `Sub : ${data["sub"]}` : "";
+      let sub = data.sub ? `Sub : ${data["sub"]}` : "";
       let executive = data["salesPerson"]
         ? `Sales Executive : ${data["salesPerson"]}`
         : "";
-      let buyer = customer["name"]
+      let buyer = customer  && customer.name
         ? `Buyer : ${customer["name"].toUpperCase()}`
         : "";
 
