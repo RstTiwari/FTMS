@@ -6,18 +6,7 @@ import MoreActionDropDownData from "./MoreActionDropDownData";
 const { Text } = Typography;
 
 const getColumns = (details) => [
- {
-    title: <Taglabel text={"PRODUCT CODE"} type={"heading"} details={details} />,
-    dataIndex: "hsnCode",
-    key: "source",
-    responsive: details ? [] : ["lg"],
 
-    render: (_, record) => (
-      <>
-        <Taglabel text={record.code ? record.code :" "} type={"text"} details={details} />
-      </>
-    ),
-  },
   {
     title: (
       <Taglabel text={"PRODUCT NAME"} type={"heading"} details={details} />
@@ -27,6 +16,18 @@ const getColumns = (details) => [
     render: (_, record) => (
       <>
         <Taglabel text={record.name} type={"customer"} details={details} />
+      </>
+    ),
+  },
+  {
+    title: <Taglabel text={"PRODUCT CODE"} type={"heading"} details={details} />,
+    dataIndex: "hsnCode",
+    key: "source",
+    responsive: details ? [] : ["lg"],
+
+    render: (_, record) => (
+      <>
+        <Taglabel text={record.code ? record.code :" "} type={"text"} details={details} />
       </>
     ),
   },

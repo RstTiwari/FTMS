@@ -15,6 +15,7 @@ import get from "./get.js";
 import recordPayment from "./recordPayment.js";
 import updatePayment from "./updatePayment.js";
 import totalReciveables from "./totalReciveables.js";
+import script from "../../../Script/Script.js"
 import { emailData, sendEmail } from "./sendEmail.js";
 import {
     getOrCreateColumnPreferences,
@@ -85,6 +86,9 @@ const appRoutes = {
     getLeadger: async (req, res, next) => {
         getLeadger(req, res, next);
     },
+    script:async (req,res,next)=>{
+        script(req,res,next)
+    }
 
     // challan: async (req, res, next) => {
     //     try {

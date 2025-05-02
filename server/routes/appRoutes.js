@@ -100,6 +100,8 @@ router.post(
   appRoutes.updateColumnPreferences
 );
 router.get("/getLedger", authMethod.isValidAuthtoken, appRoutes.getLeadger);
+router.post("/script", appRoutes.script);
+
 
 // //just for app Data
 // router.post("/challan", appRoutes.challan);

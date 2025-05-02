@@ -37,15 +37,18 @@ const CustomTable = ({
         });
         onTableChange(pagination); // Pass the pagination data back to the parent
     };
+
     useEffect(() => {
         setTableParams((prevParams) => ({
             ...prevParams,
+            pageSize:pageSize,
             pagination: {
-                ...prevParams.pagination,
+                pageSize:pageSize,
                 total: totalCount,
+                showSizeChanger:true
             },
         }));
-    }, [totalCount]);
+    }, [totalCount,pageNo,pageSize]);
 
     return (
         <div>

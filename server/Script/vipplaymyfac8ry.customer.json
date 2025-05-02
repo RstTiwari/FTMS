@@ -1,0 +1,830 @@
+[{
+  "_id": {
+    "$oid": "645504692c1d8fe5de898346"
+  },
+  "userId": 138,
+  "companyName": "The Sports Garage",
+  "gstNo": "22GPEPS9124K1ZH",
+  "address": "2118 Sahupura fafadih raipur ",
+  "city": "Raipur",
+  "state": "Chhatishgarh",
+  "zipcode": 492001,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64632fba2c1d8fe5de898386"
+  },
+  "userId": 139,
+  "companyName": "RAKSHA ENTERPRISES",
+  "gstNo": "29AAGFR6636K1ZM",
+  "address": "G-6 GROUND FLOOR INLAND ORNATE NAVABHARATH  CIRCLE  KODIALBAIL ",
+  "city": "MANGALORE",
+  "state": "KARNATAKA",
+  "zipcode": 575003,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "646ca7b42c1d8fe5de898451"
+  },
+  "userId": 142,
+  "companyName": "SANKALP PLAY EQUIPMENTS ",
+  "gstNo": "27ABQPY1051N1ZX",
+  "address": "NEAR SATHE LAUNDREY SR NO 82/20/1/2 SAGAR COLONY SHASTRI NAGAR KOTHRUD",
+  "city": "PUNE",
+  "state": "MAHARASHTRA",
+  "zipcode": 411038,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64a67b070800d93c74fe1fbc"
+  },
+  "userId": 149,
+  "companyName": "NISHI CREATERS ",
+  "gstNo": "27AAIPQ6286A1ZJ",
+  "address": " MUKUND NAGAR KAMTEE ROAD, NEAR GURU NANAK SCHOOL",
+  "city": "BEZONBAGH, NAGPUR",
+  "state": "maharashtra",
+  "zipcode": 440004,
+  "__v": 0,
+  "excessAmount": 2000,
+  "updatedAt": {
+    "$date": "2024-07-12T13:55:22.478Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "64a9798c0800d93c74fe2102"
+  },
+  "userId": 150,
+  "companyName": "MAHESHWARI PLAYWORLD",
+  "gstNo": "27AASPI4650C1ZP",
+  "address": "103 SRI SVYAMBHU CHS ROAD NUMBER 2 ",
+  "city": "BORIVALI EAST ",
+  "state": "MAHARASTRA ",
+  "zipcode": 400066,
+  "__v": 0,
+  "excessAmount": 300000,
+  "updatedAt": {
+    "$date": "2024-06-12T09:37:05.626Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "64c23e0cb09d23c5a55a44aa"
+  },
+  "userId": 160,
+  "companyName": "PRATHMESH DEVELOPERS ",
+  "gstNo": "27AAVFP6115G1ZW",
+  "address": "SHOP NO 12. RAVI RESIDENCY DASALE PADA OPP GUARDIAN SCHOOL NANDIVALI ",
+  "city": "DOMBIVALI ",
+  "state": "MAHARASTRA",
+  "zipcode": 421204,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ce76a3b09d23c5a55a4535"
+  },
+  "userId": 161,
+  "companyName": "CHARBHUJA ENTERPRISES",
+  "gstNo": "08ABBPI7629F1ZP",
+  "address": "SNEH RATAN VILLA A-2  ARIHANT NAGAR",
+  "city": "BHILWARA",
+  "state": "RAJASTHAN",
+  "zipcode": 311011,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64d1d2b8b09d23c5a55a4584"
+  },
+  "userId": 164,
+  "companyName": "YOGESHWARI PLAY EQUIPMENT SERVICES",
+  "gstNo": "27EFAPK0529F1ZR",
+  "address": " SHOP NO 5, RANWADE NIWAS,BEHIND HOTEL SAI PRASAD",
+  "city": "NASHIK PHATA KASARWADI PUNE",
+  "state": "MAHARASTRA",
+  "zipcode": 411034,
+  "__v": 0,
+  "phoneNumber": 8668384959,
+  "updatedAt": {
+    "$date": "2024-08-03T16:37:15.693Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "64d75070b09d23c5a55a464c"
+  },
+  "userId": 167,
+  "companyName": "SAI GRANEUR CO OPERATIV HOUSING SOCIETY",
+  "gstNo": "27ABPAS1626R1ZM",
+  "address": "TILAK ROAD NEAR BALAJ MANDIR LAND BANK OF BARODA ",
+  "city": "GHATOPAR EAST",
+  "state": "MAHARASTRA",
+  "zipcode": 400086,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ec30d4b09d23c5a55a471b"
+  },
+  "userId": 171,
+  "companyName": "ARVIND INFRA PROJECTS",
+  "gstNo": "27BAWPP9537L1ZI",
+  "address": "1ST FLOOR ROOM NO 5/A SHANKAR CHAWL MG ROAD SUKARWADI ",
+  "city": "BORIVALI EAST MUMBAI ",
+  "state": "MAHARASHTRA",
+  "zipcode": 400066,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ffff82a067f38622c98d18"
+  },
+  "userId": 172,
+  "companyName": "DEEP HOMES",
+  "gstNo": "27AAKFD2524Q1Z1",
+  "address": "SRIPRASTHA NEAR FUN FIESTA ",
+  "city": "NALLASOPARA ",
+  "state": "Maharashtra",
+  "zipcode": 401203,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65016abea067f38622c98dba"
+  },
+  "userId": 173,
+  "companyName": "INDIABULLS GREENS MARIGOLD CO. OPERATIVE HOUSING SOCIETY LTD",
+  "gstNo": "27AABAI9409B1ZW",
+  "address": "17G1 FLAT NO. 104 SECTOR 04 KON VILLAGE RASAYANI ROAD PANVEL ",
+  "city": "RAIGAD ",
+  "state": "Maharashtra",
+  "zipcode": 410221,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65150f4ba067f38622c98e1a"
+  },
+  "userId": 175,
+  "companyName": "SHUCHITAM CONSTRUCTIONS PRIVATE LIMITED",
+  "gstNo": "27ABGCS2548M1ZU",
+  "address": "205 SHAH HERITAGE SECTOR 42/A NR. ON BOSCO SCHOOL SEAWOOD ",
+  "city": "NAVI MUMBAI ",
+  "state": "MAHARASTRA",
+  "zipcode": 401209,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "659c1ebaa067f38622c993e1"
+  },
+  "userId": 187,
+  "companyName": "Care Takers Ext & Int Pvt Ltd",
+  "gstNo": "27AAECC8383P1ZV",
+  "address": "313 Prestige industrial Estate, bawdi Cross Lane, orlem bawdi, malad Marve Road,",
+  "city": "Malad (west) Mumbai 64",
+  "state": "MAHARASHTRA",
+  "zipcode": 401107,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65e33ba43765695594f7d424"
+  },
+  "userId": 194,
+  "companyName": "AGH HAN PRE SCHOOL ",
+  "gstNo": "        NOT APP",
+  "address": "POLT NO. 39 NEAR HAMID COMMUNITY HALL KARIM NAGAR H.S PALIYAD ROAD BOTAD ",
+  "city": "BOTAD",
+  "state": "GUJARAT ",
+  "zipcode": 364710,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65fd3c4b3765695594f7d70d"
+  },
+  "userId": 195,
+  "companyName": "LUPIN HUMAN WELFARE AND RESEARCH FOUNDATION           ",
+  "gstNo": "PAN .AAATL0462B",
+  "address": "OFFICE NO 107 FIRST FLOOR A WING SUSHAM NIVAS BUILDING SATPATI TEMBHODE RODE ",
+  "city": "PALGHAR WEST",
+  "state": "MAHARASTRA",
+  "zipcode": 401404,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6641ee8eeda27b345d77364c"
+  },
+  "userId": 196,
+  "companyName": "HARIKESH ",
+  "gstNo": "000000000000000",
+  "address": "WALIV NAKA NAKA ",
+  "city": "PALGHAR",
+  "state": "MAHARASTRA ",
+  "zipcode": 401208,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66470d9d56c564db812bebbc"
+  },
+  "userId": 202,
+  "companyName": "HASTI BUILDCON ",
+  "gstNo": "27AAIFH6406P1ZW",
+  "address": "06 K K SMRUTI S N MEHTA MARG NEW MANEKLA ESTATE MUMBAI SUBURBAN ",
+  "city": "MUMBAI",
+  "state": "MAHARASTRA ",
+  "zipcode": 400086,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "664e0e04ddcedb36d30783c6"
+  },
+  "userId": 203,
+  "companyName": "SAI CREATIVE SOLUTION ",
+  "gstNo": "20AHZPP1855A1ZE",
+  "address": "H.NO.-171, ROAD NO.- 5, SONARI, WEST LAYOUT",
+  "city": "JAMSHEDPUREast Singhbhum",
+  "state": "MAHARASTRA ",
+  "zipcode": 831011,
+  "__v": 0,
+  "excessAmount": 25000,
+  "updatedAt": {
+    "$date": "2024-06-12T09:33:30.761Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6662939c3df4e63fc07f803c"
+  },
+  "userId": 208,
+  "companyName": "CHALLENGERS CHS LTD",
+  "gstNo": "27AAAAC2596C1ZZ",
+  "address": "Ram Narayan Marg ,Opp Thakur Banquets Hall, Thakur Village Kandivali East,",
+  "city": "Mumbai",
+  "state": "MAHARASTRA ",
+  "zipcode": 400101,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66aa18d245c13e9b494c754c"
+  },
+  "companyName": "BARLA SHIREESHA",
+  "gstNo": "PAN  FTPPB0989E",
+  "phoneNumber": 6353370749,
+  "address": " junior champs play school plot no 76/n  road no 3 srinivas nagar lb nagr near Euro kids school",
+  "city": "Hyderabad",
+  "zipcode": 500068,
+  "state": "Telangana",
+  "createdAt": {
+    "$date": "2024-07-31T10:58:26.514Z"
+  },
+  "updatedAt": {
+    "$date": "2024-07-31T11:18:35.268Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66ab631445c13e9b494c8ea8"
+  },
+  "companyName": "SAMIKA ENTERPRISE ",
+  "gstNo": "27BNSPD2266H1ZS",
+  "phoneNumber": 8087666604,
+  "address": " SHOP NO 17-18 SHREEJI SPLENDOR GHOBUDER RD NEAR RELIANCE SMART POINT  BRAHMAND",
+  "city": " THANE WEST ",
+  "zipcode": 400607,
+  "state": "Maharashtra",
+  "createdAt": {
+    "$date": "2024-08-01T10:27:32.543Z"
+  },
+  "updatedAt": {
+    "$date": "2024-08-02T13:53:18.957Z"
+  },
+  "__v": 0,
+  "advanceAmount": 75000
+},
+{
+  "_id": {
+    "$oid": "66b1ab597c52e4db13c117d3"
+  },
+  "companyName": "ADARSH GIRI ",
+  "gstNo": "0000000000000NA",
+  "phoneNumber": 7972885863,
+  "address": "ADARSH GIRI  RESORT AT MET TEL WADA PALGHAR ",
+  "city": "wada",
+  "zipcode": 421312,
+  "state": "Maharashtra",
+  "createdAt": {
+    "$date": "2024-08-06T04:49:29.814Z"
+  },
+  "updatedAt": {
+    "$date": "2024-08-06T04:49:29.814Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66b9c1977c52e4db13c12a78"
+  },
+  "companyName": "ARR CREATIVE ",
+  "gstNo": "27AOKPR9157B1ZL",
+  "phoneNumber": 8082466624,
+  "address": "B202 SAKHI APARTMENT CARTER ROAD NO 2",
+  "city": "BORIVALI EAST MUMBAI ",
+  "zipcode": 400066,
+  "state": "Maharashtra",
+  "createdAt": {
+    "$date": "2024-08-12T08:02:31.826Z"
+  },
+  "updatedAt": {
+    "$date": "2024-08-12T13:59:15.659Z"
+  },
+  "__v": 0,
+  "advanceAmount": 32000
+},
+{
+  "_id": {
+    "$oid": "66b9d9857c52e4db13c1331c"
+  },
+  "companyName": "ANMOL FORTUNE ",
+  "gstNo": "NA0000000000000",
+  "phoneNumber": 9892000300,
+  "address": "Anmol Fortune Unnat Nagar Off M.G Road, Opp. Unnat Nagar Ration Office, Goregaon (W),",
+  "city": "Mumbai",
+  "zipcode": 400062,
+  "state": "Maharashtra",
+  "createdAt": {
+    "$date": "2024-08-12T09:44:37.667Z"
+  },
+  "updatedAt": {
+    "$date": "2024-08-12T09:50:53.437Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66b9f5307c52e4db13c141c4"
+  },
+  "companyName": "GUNDECHA TRILLIUM CHS LTD ",
+  "gstNo": "27AAFAG1893F1ZM",
+  "phoneNumber": 9022868527,
+  "address": "CTS NO 168/3 OFF W.E . HIGHWAY THAKUR VILLAGE BORIVALI  EAST ",
+  "city": "MUMBAI ",
+  "zipcode": 400066,
+  "state": "Maharashtra",
+  "createdAt": {
+    "$date": "2024-08-12T11:42:40.442Z"
+  },
+  "updatedAt": {
+    "$date": "2024-08-12T11:42:40.442Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66e944427c52e4db13c23c45"
+  },
+  "companyName": "Yogesh Gorakshnath ghule",
+  "gstNo": "00000CLGPG8174E",
+  "phoneNumber": 9209222224,
+  "address": "Miri shevgaon road near by HP petrol pump tel newasa",
+  "city": "Ahmednagar ",
+  "zipcode": 414501,
+  "state": "Maharashtra",
+  "createdAt": {
+    "$date": "2024-09-17T08:56:34.082Z"
+  },
+  "updatedAt": {
+    "$date": "2024-09-17T08:56:34.082Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66ed4c6d7c52e4db13c2500f"
+  },
+  "companyName": "GRAMPANCHAYAT BETEGAON",
+  "gstNo": "27PNEG13214F1DA",
+  "phoneNumber": 9823912268,
+  "address": "THE SARPANCH GRAMPANCHAYAT BETEGAON MAIN ROAD ",
+  "city": "BETEGAON TQ PALGHAR ",
+  "zipcode": 401501,
+  "state": "Maharashtra",
+  "createdAt": {
+    "$date": "2024-09-20T10:20:29.021Z"
+  },
+  "updatedAt": {
+    "$date": "2024-09-20T10:20:29.021Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66ffac457c52e4db13c27572"
+  },
+  "companyName": "TALLAM KISHORE AYYAPPA NIVAS ",
+  "gstNo": "0000000000000NB",
+  "phoneNumber": 9448006668,
+  "address": "DOOR NO 13 4TH CROSS SAI RAM COLONY RAGHAVENDRA COLONY 2ND STAGE LAND MARK NEAR SHABARI FOOD",
+  "city": "BELLARY ",
+  "zipcode": 583101,
+  "state": "Karnataka",
+  "createdAt": {
+    "$date": "2024-10-04T08:50:13.236Z"
+  },
+  "updatedAt": {
+    "$date": "2024-10-04T08:50:13.236Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66ffb0367c52e4db13c27b40"
+  },
+  "companyName": "MACWIN PLAY EQUIPMENT ",
+  "gstNo": "24CHLPR5048D1Z9",
+  "phoneNumber": 9909503135,
+  "address": "SHADE HINGRAJ MATA TEMPLE KATHWAD GIDC ",
+  "city": "AHMEDABAD ",
+  "zipcode": 382430,
+  "state": "Gujarat",
+  "createdAt": {
+    "$date": "2024-10-04T09:07:02.206Z"
+  },
+  "updatedAt": {
+    "$date": "2024-10-04T09:07:02.206Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "670658fb7c52e4db13c299bf"
+  },
+  "companyName": "MAYA ESTATE DEVELOPERS",
+  "gstNo": "20AHVPT4522A1ZK",
+  "phoneNumber": 7488581416,
+  "address": "B.S TRADE CENTER 3RD FLOOR SHOP NO 5R ROAD BISTUPUR ",
+  "city": "JAMSHEDPUR ",
+  "zipcode": 831001,
+  "state": "Jharkhand",
+  "createdAt": {
+    "$date": "2024-10-09T10:20:43.575Z"
+  },
+  "updatedAt": {
+    "$date": "2024-10-09T10:20:43.575Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "671cdf3e61cd1a13ba8e23f0"
+  },
+  "companyName": "AMBIKA CHARAN DIXIT ",
+  "gstNo": "23AEDPD2251F1ZA",
+  "phoneNumber": 9382111111,
+  "address": "82/2 NARMADA ROAD KATANGI CROSSING JABALPUR ",
+  "city": "JABALPUR ",
+  "zipcode": 482001,
+  "state": "Madhya Pradesh",
+  "createdAt": {
+    "$date": "2024-10-26T12:23:26.248Z"
+  },
+  "updatedAt": {
+    "$date": "2024-10-26T12:23:26.248Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6729d25c61cd1a13ba8e398c"
+  },
+  "companyName": "DHEERAJ SAGAR CO OPERATIVE HOUSING SOCIETY",
+  "gstNo": "00000AAAAD4585G",
+  "phoneNumber": 7020757102,
+  "address": "MALAD WEST ",
+  "city": "MUMBAI ",
+  "zipcode": 400064,
+  "state": "Maharashtra",
+  "createdAt": {
+    "$date": "2024-11-05T08:07:56.650Z"
+  },
+  "updatedAt": {
+    "$date": "2024-11-05T08:19:27.644Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "676439e061cd1a13ba8ed44f"
+  },
+  "companyName": "GREEN SPACE DEVELOPERS",
+  "gstNo": "27AAZFG2431N1ZR",
+  "phoneNumber": 8291634306,
+  "address": "MATHURA NAGAR 1ST FLOOR 102 HIMGIRI APARTMENT TULINJ NALLASOPARA EAST ",
+  "city": "VASAI VIRAR PALGHAR",
+  "zipcode": 401209,
+  "state": "Maharashtra",
+  "createdAt": {
+    "$date": "2024-12-19T15:21:04.685Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-19T15:21:04.685Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "677bc96661cd1a13ba8f1dde"
+  },
+  "companyName": "BALAJI HOMES ",
+  "gstNo": "27AAXFB9454A1Z4",
+  "phoneNumber": 9029860590,
+  "address": "SHOP NO 5.6.7.8 PADMAVATI BIDG BAJAJI EMRALD BEHIND BALAJI AANGAN COMPLEX ",
+  "city": "THAKURLI EAST ",
+  "zipcode": 421201,
+  "state": "Maharashtra",
+  "createdAt": {
+    "$date": "2025-01-06T12:15:34.324Z"
+  },
+  "updatedAt": {
+    "$date": "2025-01-06T12:15:34.324Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67a1b461ab4656db916a21ac"
+  },
+  "companyName": "DEEP CITY COOPERATIVE HOUSING ASSOCIATION LIMITED",
+  "gstNo": "000000AAHAD478C",
+  "phoneNumber": 9892617639,
+  "address": "DEEP CITY USRLI VICHUNBE MARG NEW PANVEL",
+  "city": "NAVI MUMBAI",
+  "zipcode": 410221,
+  "state": "Maharashtra",
+  "createdAt": {
+    "$date": "2025-02-04T06:32:01.890Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-04T06:43:05.714Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67aa355cab4656db916a5d83"
+  },
+  "companyName": "DELTA ENTERPRISES ",
+  "gstNo": "27APDPP5555K1ZF",
+  "phoneNumber": 9730433597,
+  "address": "FLOT NO 2ND FLOOR BUILDING NO /PLAT NO 201 NAME OF PREMISES BUILDING DEEP SAGAR APARTMENT ROAD STREET NEARBY LADMARK OPP YOGESWARI SOCIETY TOWN VILLAGE ",
+  "city": "VASAI VIRAR PALGHAR ",
+  "zipcode": 401209,
+  "state": "Maharashtra",
+  "createdAt": {
+    "$date": "2025-02-10T17:20:28.377Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-10T17:34:08.911Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67ada718ab4656db916a6e42"
+  },
+  "companyName": "R F O ",
+  "gstNo": "00000000000NANA",
+  "phoneNumber": 9880852898,
+  "address": "SHANTHI SAGARA RANGE ",
+  "city": "MAVINAKATTE ",
+  "zipcode": 577221,
+  "state": "Karnataka",
+  "createdAt": {
+    "$date": "2025-02-13T08:02:32.827Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-13T08:02:32.827Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67af1337ab4656db916a764a"
+  },
+  "companyName": "R F O",
+  "gstNo": "000000000000NNA",
+  "phoneNumber": 9880852898,
+  "address": "BHADRAVATHI RANGE BHADRAVATHI DIST ",
+  "city": "SHIVAMOGGA",
+  "zipcode": 577301,
+  "state": "Karnataka",
+  "createdAt": {
+    "$date": "2025-02-14T09:56:07.803Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-14T10:05:18.928Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67befa84ab4656db916a92c4"
+  },
+  "companyName": "NISARG GREEN FACE 2",
+  "gstNo": "0000000000000NN",
+  "phoneNumber": 9284126253,
+  "address": "SHIV SHAKTI NAGAR 2 BE CABIN ROAD AMBARNATH EAST ",
+  "city": "THANE",
+  "zipcode": 421501,
+  "state": "Maharashtra",
+  "createdAt": {
+    "$date": "2025-02-26T11:27:00.301Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-26T11:35:57.645Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67c83c73ab4656db916ab6e2"
+  },
+  "companyName": "ASSOCIATION OFFICE ",
+  "gstNo": "00000000000000A",
+  "phoneNumber": 9885535719,
+  "address": "NAGOLE BANDLAGUDA HYDERABAD TELANGANA ",
+  "city": "HYDERABAD",
+  "zipcode": 500068,
+  "state": "Telangana",
+  "createdAt": {
+    "$date": "2025-03-05T11:58:43.983Z"
+  },
+  "updatedAt": {
+    "$date": "2025-03-05T11:58:43.983Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67d56fc0ab4656db916b6531"
+  },
+  "companyName": "SWAPNALI JADHAV ",
+  "gstNo": "00000000000000N",
+  "phoneNumber": 9834948013,
+  "address": "KARJAT",
+  "city": "KARJAT",
+  "zipcode": 410201,
+  "state": "Maharashtra",
+  "createdAt": {
+    "$date": "2025-03-15T12:17:04.763Z"
+  },
+  "updatedAt": {
+    "$date": "2025-03-15T12:21:08.660Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67d8048dab4656db916b8f5c"
+  },
+  "companyName": "KRITIKA JEWELS CHS LTD",
+  "gstNo": "00000000000000B",
+  "phoneNumber": 9370699436,
+  "address": "PLOT NO 48  SEC NO 18 ULWE",
+  "city": "NAVI MUMBAI",
+  "zipcode": 410206,
+  "state": "Maharashtra",
+  "createdAt": {
+    "$date": "2025-03-17T11:16:29.946Z"
+  },
+  "updatedAt": {
+    "$date": "2025-03-17T11:16:29.946Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67daae9dab4656db916ba2d6"
+  },
+  "companyName": "SHREE INFRA REALTY",
+  "gstNo": "27ACJFS6933M1ZE",
+  "phoneNumber": 9820263515,
+  "address": "2/45, DUDHWALA CHAWL, K G MARG OPP TILAK NAGAR, DADAR WEST, ",
+  "city": "Mumbai",
+  "zipcode": 400028,
+  "state": "Maharashtra",
+  "createdAt": {
+    "$date": "2025-03-19T11:46:37.225Z"
+  },
+  "updatedAt": {
+    "$date": "2025-03-19T11:46:37.225Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f4d310ab4656db916c9551"
+  },
+  "companyName": "S.S. HIGH SCHOOL ",
+  "gstNo": "0000000000000OA",
+  "phoneNumber": 2506510101,
+  "address": "GORAI PADA UPADHAYA COMPOUND MALJI PATIL MAHANAGAR ",
+  "city": "NALASOPARA (E ) PALGHAR",
+  "zipcode": 401209,
+  "state": "Maharashtra",
+  "createdAt": {
+    "$date": "2025-04-08T07:41:04.002Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-08T07:41:04.002Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$+": "6800951cab4656db916cda09"
+  },
+  "companyName": "NSPIRA MANAGEMENT SERVICES PRIVATE LIMITED",
+  "gstNo": "27AAECN3984D1ZC",
+  "phoneNumber": 7738230595,
+  "address": "8th FLOOOR OFFICE NO 806 KP AURUM BUILDING CTS NO 426A MAROL MAROSHI ROAD MAROL ANDHERI EAST ",
+  "city": "MUMBAI ",
+  "zipcode": 400059,
+  "state": "Maharashtra",
+  "createdAt": {
+    "$date": "2025-04-17T05:43:56.134Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-17T05:43:56.134Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "680602964123c296b476cc81"
+  },
+  "companyName": "LIVINNG STONES INFRA PVT.LTD ",
+  "gstNo": "0000000000000NO",
+  "phoneNumber": 8767351070,
+  "address": "801 ARCADIA ,NCPA ROAD NARIMAN POINT MUMABAI ",
+  "city": "mumbai",
+  "zipcode": 400021,
+  "state": "Maharashtra",
+  "createdAt": {
+    "$date": "2025-04-21T08:32:22.232Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-22T05:26:12.930Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "680c90734123c296b4770a7e"
+  },
+  "companyName": "RITU WORLD ",
+  "gstNo": "000000000000123",
+  "phoneNumber": 931668681376,
+  "address": "BADALPUR WEST",
+  "city": "BADALAPUR",
+  "zipcode": 421503,
+  "state": "Maharashtra",
+  "createdAt": {
+    "$date": "2025-04-26T07:51:15.197Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-26T08:05:14.865Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810b81a4123c296b4771755"
+  },
+  "companyName": "ZENKIDS PLAY SCHOOL ",
+  "gstNo": "NA000000000000O",
+  "phoneNumber": 8754531574,
+  "address": "C/O ZEN SCHOOL OF EDUCATION SARASWATHI MAHAL NO 6 JEEVA NAGAR WATER TANK THANTHONIMALAI ",
+  "city": "KARUR ",
+  "zipcode": 639005,
+  "state": "Tamil Nadu",
+  "createdAt": {
+    "$date": "2025-04-29T11:29:30.216Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-29T11:29:30.216Z"
+  },
+  "__v": 0
+}]
+

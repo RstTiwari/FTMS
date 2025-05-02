@@ -156,7 +156,6 @@ const ProductForm = ({ form, onFormFinish, initalValue, isModal,entity }) => {
             name="code"
             type={"select"}
             entity={"Product Code"}
-            required={true}
             width={"30vw"}
             entityName={"product"}
             updateInForm={(value) => handelItemUpdate(value, "code")}

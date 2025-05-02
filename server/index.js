@@ -13,6 +13,7 @@ import { v2 as cloudinary } from "cloudinary";
 
 import auth from "./routes/authRoutes.js";
 import appRoutes from "./routes/appRoutes.js";
+import testRoutes from "./routes/testRoutes.js"
 
 import adminRoutes from "./routes/adminRoutes.js";
 import errorHandler from "./middleware/errorHandler.js";
@@ -40,6 +41,8 @@ app.use(cookieParser());
 app.use("/auth", auth);
 app.use("/app", appRoutes);
 app.use("/admin", adminRoutes);
+app.use("/test",testRoutes );
+
 
 // Error handler middleware
 app.use(errorHandler);

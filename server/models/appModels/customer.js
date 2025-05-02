@@ -9,15 +9,16 @@ const coustomerSchema = new mongoose.Schema(
         },
         contactPerson: {
             type: String,
+            sparse: true,
+
         },
         phone: {
             type: Number,
-            required: true,
             sparse: true,
+
         },
         email: {
             type: String,
-            sparse: true,
         },
         alternateEmail: {
             type: String,
@@ -64,7 +65,6 @@ const coustomerSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-coustomerSchema.index({ tenantId: 1, phone: 1 }, { unique: true });
 
 //Attching the req body to save this
 coustomerSchema.pre("save", function (next, options) {

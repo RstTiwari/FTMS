@@ -45,22 +45,11 @@ const CoustomersForm = ({ form, disabled, isModal, style }) => {
                   />
                   <FormItemCol
                       label={"Phone"}
-                      required={true}
                       labelAlign="left"
                       width={"30vw"}
                       name="phone"
                       labelCol={{ span: isModal ? 18 : 8 }}
                       maxLength={10}
-                      rules={[
-                          {
-                              required: "true",
-                              message: "Please Write Phone Name",
-                          },
-                          {
-                              pattern: /^\d{10}$/,
-                              message: "Phone number must be 10 digits",
-                          },
-                      ]}
                       type={"number"}
                   />
                   <FormItemCol
