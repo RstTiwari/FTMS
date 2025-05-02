@@ -197,7 +197,7 @@ const CustomProductSelect = ({
       setValue(preFillValue);
       setAddress({ shippingAddress: preFillAddress, billingAddress: "" });
     }
-  }, [preFillValue]);
+}, [preFillValue]);
 
   return (
     <>
@@ -209,7 +209,7 @@ const CustomProductSelect = ({
         showSearch
         style={{ width: width }}
         getPopupContainer={(trigger) => document.body}
-        dropdownStyle={{ position: "fixed", zIndex: 1000 }}
+        dropdownStyle={{ position: "fixed", zIndex: 1000000 }}
         filterOption={(input, option) =>
           (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
         }

@@ -121,10 +121,11 @@ const CustomForm = ({
               htmlType="submit"
               type="primary"
               style={{ backgroundColor: "#22b378", cursor: "pointer" }}
+              loading ={isLoading}
             >
               SAVE
             </Button>
-            <Button onClick={handleCloseModal} loading ={isLoading}>CLOSE</Button>
+            <Button onClick={handleCloseModal} >CLOSE</Button>
             {/* Trigger custom close logic */}
           </Col>
         </Row>

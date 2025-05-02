@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
 import {
-  Collapse,
-  Select,
-  Tabs,Form,Space,InputNumber,Button,Row,
+    Collapse,
+    Select,
+    Tabs,
+    Form,
+    Space,
+    InputNumber,
+    Button,
+    Row,
 } from "antd";
 import FormItemCol from "components/Comman/FormItemCol";
 import TabPane from "antd/es/tabs/TabPane";
 import { productCategory } from "../../Data/ProductData";
 import CustomModel from "components/CustomProductSelect";
-import CoustomButton from "components/Comman/CoustomButton";
-import { DeleteOutlined,PlusOutlined } from "@ant-design/icons";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 
 
 const { Panel } = Collapse;
@@ -241,117 +245,42 @@ const ProductForm = ({ form, onFormFinish, initalValue, isModal,entity }) => {
           />
         </TabPane>
 
-        {itemType === "bill_of_material" && (
-          <TabPane tab="Bill Of Material" key={2}>
-            {renderFormList("Components", "components", "Component")}
-          </TabPane>
-        )}
-        <TabPane tab="Other Details" key={3}>
-          <FormItemCol
-            label={"Supplying Vendor"}
-            name={"vendor"}
-            labelCol={{ span: isModal ? 18 : 8 }}
-            tooltip={"Vendor You Get Part Manufacture"}
-            entity={"vendors"}
-            entityName={"Vendor"}
-            fieldName={"name"}
-            type={"modal"}
-            width={"30vw"}
-            preFillValue={form.getFieldValue("vendor")?.name||""}
-            updateInForm={(value) => {
-              handelItemUpdate(value, "vendor");
-            }}
-          />
-          <FormItemCol
-            label={"Item Dimension"}
-            name={"dimension"}
-            labelCol={{ span: isModal ? 18 : 8 }}
-            tooltip={"length width and thickness of Item"}
-            width={"30vw"}
-          />
-        </TabPane>
-
-        {/* 
-
-      <FormItemCol
-        labelAlign="left"
-        labelCol={{ span: isModal ? 18 : 8 }}
-        label="Buying Price"
-        name="purchaseRate"
-        width={"30vw"}
-      />
-      <FormItemCol
-        labelAlign="left"
-        labelCol={{ span: isModal ? 18 : 8 }}
-        label="HSN CODE"
-        name="hsnCode"
-        type={"input"}
-        width={"30vw"}
-      />
-    */}
-
-        {/* Conditionally render Selling Price based on itemType */}
-
-        {/**Conditonal rendering of the part Filed */}
-
-        {/* <>
-   
-      </>
-
-      <FormItemCol
-        labelAlign="left"
-        labelCol={{ span: isModal ? 18 : 8 }}
-        label=" Item Image"
-        name="image"
-        type={"image"}
-        width={"30vw"}
-        preFillValue={form.getFieldValue("image")}
-        updateImageInForm={handleImageUpdate}
-      /> */}
-
-        {/* Conditional rendering for multi_assembly and assembly categories */}
-        {/* {itemType === "product" && (
-        <Col xs={24} sm={24} md={24} xl={12} lg={12}>
-          <Collapse>
-            <Panel header={<Taglabel text={"Add Multilevel Field"} key={1} />}>
-              <Collapse>
-                <Panel
-                  key="components"
-                  header={<Taglabel text={"Assembly Componets"} />}
-                >
-                </Panel>
-
-                <Panel key="parts" header={<Taglabel text={"Parts"} />}>
-                  {renderFormList("Parts", "parts", "Part")}
-                </Panel>
-                <Panel header={<Taglabel text={"Hardwares"} />} key="hardwares">
-                  {renderFormList("Hardwares", "hardwares", "hardware")}
-                </Panel>
-                <Panel
-                  header={<Taglabel text={"Accessoreis"} />}
-                  key="Accessoreis"
-                >
-                  {renderFormList("accessories", "accessories", "accessory")}
-                </Panel>
-              </Collapse>
-            </Panel>
-          </Collapse>
-        </Col>
-      )}
-
-      {itemType === "assembly" && (
-        <Collapse>
-          <Panel header={<Taglabel text={"Parts"} />} key="parts">
-            {renderFormList("Part", "parts")}
-          </Panel>
-          <Panel header={<Taglabel text={"Hardware"} />} key="hardware">
-            {renderFormList("Hardware", "hardwares")}
-          </Panel>
-        </Collapse>
-      )} */}
-      </Tabs>
-    </div>
-  );
+                {/* {itemType === "bill_of_material" && (
+                    <TabPane tab="Bill Of Material" key={2}>
+                        {renderFormList(
+                            "Components",
+                            "components",
+                            "Component"
+                        )}
+                    </TabPane>
+                )} */}
+                <TabPane tab="Other Details" key={3}>
+                    <FormItemCol
+                        label={"Supplying Vendor"}
+                        name={"vendor"}
+                        labelCol={{ span: isModal ? 18 : 8 }}
+                        tooltip={"Vendor You Get Part Manufacture"}
+                        entity={"vendors"}
+                        entityName={"Vendor"}
+                        fieldName={"name"}
+                        type={"modal"}
+                        width={"30vw"}
+                        preFillValue={form.getFieldValue("vendor")?.name || ""}
+                        updateInForm={(value) => {
+                            handelItemUpdate(value, "vendor");
+                        }}
+                    />
+                    <FormItemCol
+                        label={"Item Dimension"}
+                        name={"dimension"}
+                        labelCol={{ span: isModal ? 18 : 8 }}
+                        tooltip={"length width and thickness of Item"}
+                        width={"30vw"}
+                    />
+                </TabPane>
+            </Tabs>
+        </div>
+    );
 };
 
 export default ProductForm;

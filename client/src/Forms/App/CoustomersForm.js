@@ -57,25 +57,18 @@ const CoustomersForm = ({ form, disabled, isModal, style }) => {
                               message: "Please Write Phone Name",
                           },
                           {
-                              pattern: "/^[0-9]{10}$/",
+                              pattern: /^\d{10}$/,
                               message: "Phone number must be 10 digits",
                           },
                       ]}
-                      type={"text"}
+                      type={"number"}
                   />
                   <FormItemCol
                       label={"Email"}
                       labelAlign="left"
                       name="email"
                       labelCol={{ span: isModal ? 18 : 8 }}
-                      required={true}
                       width={"30vw"}
-                      rules={[
-                          {
-                              required: true,
-                              message: "Please Provide Customer Email",
-                          },
-                      ]}
                       type={"text"}
                   />
                   <FormItemCol
@@ -85,6 +78,24 @@ const CoustomersForm = ({ form, disabled, isModal, style }) => {
                       labelCol={{ span: isModal ? 18 : 8 }}
                       width={"30vw"}
                       type={"text"}
+                  />
+                       <FormItemCol
+                      label={"Pan No"}
+                      labelAlign="left"
+                      tooltip="this data  will be Encrypted then stored not visible to other people  accept access given  "
+                      name="panNo"
+                      labelCol={{ span: isModal ? 18 : 8 }}
+                      type={"text"}
+                      width={"30vw"}
+                  />
+
+                  <FormItemCol
+                      label={"Gst No"}
+                      labelAlign="left"
+                      tooltip="this data  will be Encripted then stored not visible to other pepole  accept acces given  "
+                      name="gstNo"
+                      labelCol={{ span: isModal ? 18 : 8 }}
+                      width={"30vw"}
                   />
                   <FormItemCol
                       label={"Contact Person"}
@@ -285,24 +296,7 @@ const CoustomersForm = ({ form, disabled, isModal, style }) => {
                   </Row>
               </TabPane>
               <TabPane tab="Other Details" key={3}>
-                  <FormItemCol
-                      label={"Pan No"}
-                      labelAlign="left"
-                      tooltip="this data  will be Encrypted then stored not visible to other people  accept access given  "
-                      name="panNo"
-                      labelCol={{ span: isModal ? 18 : 8 }}
-                      type={"text"}
-                      width={"30vw"}
-                  />
-
-                  <FormItemCol
-                      label={"Gst No"}
-                      labelAlign="left"
-                      tooltip="this data  will be Encripted then stored not visible to other pepole  accept acces given  "
-                      name="gstNo"
-                      labelCol={{ span: isModal ? 18 : 8 }}
-                      width={"30vw"}
-                  />
+             
                   <FormItemCol
                       label={"MFG No"}
                       labelAlign="left"

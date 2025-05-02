@@ -93,8 +93,8 @@ export const productCategory = [
     label: "Hardware/Accessories",
     value: "hardware_accessoreis",
   },
-  {
-    label: "Bill Of Material",
-    value: "bill_of_material",
-  },
+  // {
+  //   label: "Bill Of Material",
+  //   value: "bill_of_material",
+  // },
 ];
