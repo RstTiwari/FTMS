@@ -15,6 +15,9 @@ const CustomerStatement = ({ result }) => {    let customerData  = result.custom
         billingAddress?.state ? billingAddress.state : ""
 } ${billingAddress?.pincode ? billingAddress.pincode : ""}`;
 
+const manageTableChange = (value)=>{
+}
+
     return (
         <div style={{ padding: "1rem", fontFamily: "Arial" }}>
             <Row justify={"center"}>
@@ -60,7 +63,8 @@ const CustomerStatement = ({ result }) => {    let customerData  = result.custom
             <CustomTable
                 columns={LeadgerData}
                 dataSource={result.data}
-                pagination={false}
+                totalCount={result.data.length}
+                onTableChange = {manageTableChange}
             />
             <Row justify={"end"}>BALANCE DUE : {result.totalBalanceDue}</Row>
         </div>

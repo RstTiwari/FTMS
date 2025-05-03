@@ -6,6 +6,8 @@ const router = express.Router();
 router.post("/customer", script.customer);
 router.post("/product",script.product)
 router.post("/invoice",script.invoice)
+router.post("/quotation",script.quotation)
+
 
 
 export default router;

@@ -181,10 +181,7 @@ const script = {
         for (let i = 0; i < quoteData.length; i++) {
             let item = quoteData[i];
             let terms = [];
-            for (let [key, value] of Object.entries(item.termsCondtion)) {
-                terms.push(value);
-            }
-
+           
             let productItems = item.products.map((products) => {
                 return {
                     description: item.description,
@@ -203,11 +200,12 @@ const script = {
                 sub: item.sub,
                 quoteDate: item.createdAt.$date,
                 expiryDate: item.createdAt.$date,
-                terms: terms,
                 products: productItems,
-                grossTotal:item.grossTotal,
-                taxAmount:item.grossTotal,
-                grandTotal:item.grandTotal - item.grossTotal
+                grossTotal: item.grossTotal,
+                taxAmount: item.grandTotal - item.grossTotal,
+                totalWithTax:item.grandTotal,
+                grandTotal: item.grandTotal,
+                tenantId:tenantId
             };
 
                 try {
