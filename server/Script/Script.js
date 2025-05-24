@@ -182,16 +182,16 @@ const script = {
             let item = quoteData[i];
             let terms = [];
            
-            let productItems = item.products.map((products) => {
+            let productItems = item.products.map((product) => {
                 return {
-                    description: item.description,
-                    rate: item.rate,
-                    image: item.image || "",
-                    hsnCode: item.hsnCode,
-                    discountPercent: item.discount,
-                    discountAmount: item.bestOffer,
-                    taxAmount: item.amount - item.bestOffer,
-                    finalAmount: item.amount,
+                    description: product.description,
+                    rate: product.rate,
+                    image: product.image || "",
+                    hsnCode: product.hsnCode,
+                    discountPercent: product.discount,
+                    discountAmount: product.bestOffer,
+                    taxAmount: product.amount - product.bestOffer,
+                    finalAmount: product.amount,
                 };
             });
 
@@ -216,6 +216,14 @@ const script = {
                 }
         }
     },
+    delete:async ()=>{
+        try {
+            let dataBase = checkDbForEntity("quotations")
+            await dataBase.deleteMany({tenantId:"67f6345437354c900745041d"})
+        } catch (error) {
+            
+        }
+    }
 };
 
 function getMongoDbDate(dateStr) {

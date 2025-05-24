@@ -17,7 +17,7 @@ const upload = async (req, res, next) => {
 
     try {
         // Upload the resized image to Cloudinary
-        const cloudName = `myfac8ry${tenantId}`;
+        const cloudName = `myfac8ry${parseInt(Date.now())}`;
         const uploadImage = await Cloudinary.uploader.upload(file, {
             public_id: cloudName,
         });
