@@ -182,7 +182,7 @@ const script = {
             let item = quoteData[i];
             let terms = [];
            
-            let productItems = item.products.map((product) => {
+            let productItems = item.products?.map((product) => {
                 return {
                     description: product.description,
                     rate: product.rate,
@@ -200,7 +200,7 @@ const script = {
                 sub: item.sub,
                 quoteDate: item.createdAt.$date,
                 expiryDate: item.createdAt.$date,
-                products: productItems,
+                items: productItems,
                 grossTotal: item.grossTotal,
                 taxAmount: item.grandTotal - item.grossTotal,
                 totalWithTax:item.grandTotal,
