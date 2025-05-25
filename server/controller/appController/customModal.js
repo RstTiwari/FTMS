@@ -1,4 +1,4 @@
-import checkDbForEntity from "../../../Helper/databaseSelector.js";
+import checkDbForEntity from "../../Helper/databaseSelector.js";
 
 const fetchCustomModalData = async (req, res, next) => {
     const { entity, fieldName, char } = req.query;

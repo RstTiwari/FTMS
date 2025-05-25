@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import sendEmail from "./sendEmail.js";
 import tenSpecificData from "../../data/tenantData.js";
+import { resendEmailController } from "../EmailController/emailController.js";
 import { customizeSidebar } from "../../Helper/customizeSidebar.js";
 /**
  *
@@ -62,8 +63,8 @@ const login = async (
             // sending an OTP to verify
             const emailOtp = Math.floor(100000 + Math.random() * 900000);
             const emailOtpExpireTime = Math.floor(Date.now() / 1000) + 900;
-            sendEmail(email, user.name, emailOtp, "emailVerification");
-            await userPasswordData.updateOne(
+            resendEmailController(email, user.name, emailOtp, "emailVerification");
+            await userPasswordDb.updateOne(
                 { userId: user?._id },
                 {
                     $set: {

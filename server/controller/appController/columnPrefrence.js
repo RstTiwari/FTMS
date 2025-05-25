@@ -1,5 +1,5 @@
-import checkDbForEntity from "../../../Helper/databaseSelector.js";
-import tenantSpecificData from "../../../data/tenantData.js";
+import checkDbForEntity from "../../Helper/databaseSelector.js";
+import tenantSpecificData from "../../data/tenantData.js";
 
 export const getOrCreateColumnPreferences = async (req, res, next) => {
     try {

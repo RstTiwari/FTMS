@@ -1,4 +1,4 @@
-import checkDbForEntity from "../../../Helper/databaseSelector.js";
+import checkDbForEntity from "../../Helper/databaseSelector.js";
 import mongoose from "mongoose";
 
 const fetchComments = async (req, res, next) => {

@@ -16,7 +16,7 @@ if (process.env.NODE_ENV === "development") {
 
 const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
-  const [cookies, setCookie, removeCookie] = useCookies(["token", "profile"]);
+  const [cookies, setCookie, removeCookie] = useCookies(["token", "profile"]);  
 
   const storeLocalData = (key, value, maxAge = 3600) => {
     setCookie(key, value, { maxAge: maxAge });
@@ -26,7 +26,8 @@ export const AuthProvider = ({ children }) => {
     removeCookie(key);
   };
   const fetchLocalData = (key) => {
-    return cookies[key];
+    let data = cookies[key];
+    return data
   };
 
   const authApiCall = async (path, data, params) => {

@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { resendEmailController } from "../EmailController/emailController.js";
 import checkDbForEntity from "../../Helper/databaseSelector.js";
+import { onboardingUser } from "../../template/emaillTemplate/emailTemplate.js";
 
 const create = async (req, res, next) => {
     try {
@@ -13,6 +14,10 @@ const create = async (req, res, next) => {
 
         // Finding the DataBase for the Entity
         let dataBase = checkDbForEntity(entity);
+        let existingUser = await dataBase.findOne({email:values.email})
+        if(existingUser){
+            throw new Error("email register with other user")
+        }
 
         values["tenantId"] = tenantId;
         let newData = new dataBase(values);
@@ -45,21 +50,7 @@ const create = async (req, res, next) => {
             }
 
             let domain = `${frontEndUrl}/onboardUser/${token}`;
-            let contents = `
-            Hi,
-            
-            You have been invited to join ${organizationData?.companyName}. 
-            
-            Please click the link below to accept the invitation and set up your account:
-            
-            Accept Invitation (${domain})
-            
-            We look forward to having you with us!
-            
-            Best regards,
-            The ${organizationData?.companyName} Team
-            `;
-
+            let contents = onboardingUser(organizationData.companyName,domain)
             let response = await resendEmailController(
                 organizationData?.email,
                 values?.email,

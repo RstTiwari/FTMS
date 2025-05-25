@@ -1,7 +1,7 @@
 import express from "express";
 import multer from "multer";
 import fs from "fs";
-import appRoutes from "../controller/adminController/appController/index.js";
+import appRoutes from "../controller/appController/index.js";
 import authMethod from "../controller/authController/index.js";
 
 const router = express.Router();

@@ -1,5 +1,5 @@
-import checkDbForEntity from "../../../Helper/databaseSelector.js";
-import { localDateString } from "../../../Helper/timehelper.js";
+import checkDbForEntity from "../../Helper/databaseSelector.js";
+import { localDateString } from "../../Helper/timehelper.js";
 
 const getLeadger = async (req, res, next) => {
     try {

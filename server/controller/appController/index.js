@@ -15,7 +15,7 @@ import get from "./get.js";
 import recordPayment from "./recordPayment.js";
 import updatePayment from "./updatePayment.js";
 import totalReciveables from "./totalReciveables.js";
-import script from "../../../Script/Script.js"
+import script from "../../Script/Script.js"
 import { emailData, sendEmail } from "./sendEmail.js";
 import {
     getOrCreateColumnPreferences,

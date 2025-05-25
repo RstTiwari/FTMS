@@ -1,4 +1,4 @@
-import checkDbForEntity from "../../../Helper/databaseSelector.js";
+import checkDbForEntity from "../../Helper/databaseSelector.js";
 
 export const addSelectData = async (req, res, next) => {
     try {

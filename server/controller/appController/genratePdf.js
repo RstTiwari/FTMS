@@ -1,11 +1,11 @@
-import myfac8ryDefault from "../../../template/pdfTemplate/myfac8rydefualt.js";
-import vipDefault from "../../../template/pdfTemplate/vipDefault.js";
-import pdfTemplate1 from "../../../template/pdfTemplate/pdftemplate1.js";
-import tenantDb from "../../../models/coreModels/Tenant.js";
-import colPreDb from "../../../models/appModels/columnPrefrence.js";
-import checkDbForEntity from "../../../Helper/databaseSelector.js";
-import countersDb from "../../../models/appModels/counters.js";
-import pdftem2 from "../../../template/pdfTemplate/pdftempalte2.js";
+import myfac8ryDefault from "../../template/pdfTemplate/myfac8rydefualt.js";
+import vipDefault from "../../template/pdfTemplate/vipDefault.js";
+import pdfTemplate1 from "../../template/pdfTemplate/pdftemplate1.js";
+import tenantDb from "../../models/coreModels/Tenant.js";
+import colPreDb from "../../models/appModels/columnPrefrence.js";
+import checkDbForEntity from "../../Helper/databaseSelector.js";
+import countersDb from "../../models/appModels/counters.js";
+import pdftem2 from "../../template/pdfTemplate/pdftempalte2.js";
 
 const generatePdf = async (req, res, next, forEmail) => {
     try {

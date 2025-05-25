@@ -5,6 +5,8 @@ import User from "../../models/coreModels/User.js";
 import sendEmail from "../authController/sendEmail.js";
 import tenantSpecificData from "../../data/tenantData.js";
 import tenantDataModal from "../../models/coreModels/tenantData.js";
+import { resendEmailController } from "../EmailController/emailController.js";
+import { emailVerification } from "../../template/emaillTemplate/emailTemplate.js";
 
 const register = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
   try {
@@ -94,8 +96,17 @@ const register = async (req, res, next, userDb, userPasswordDb, tenantDb) => {
       ...tenantSpecificData,
     });
 
-    const type = "emailVerification";
-    await sendEmail({ email, name, emailOtp, type });
+    const content = emailVerification(name,emailOtp);
+    let sub ="REGISTRATION ON MYFAC8RY"
+    let sendEmail = await resendEmailController("info.myfac8ry@gmail.com", email,sub,content,[])
+    if (!sendEmail) {
+        await User.deleteOne({ _id: savedUser._id }).exec();
+        return res.status(403).json({
+            success: 0,
+            result: null,
+            message: "Invalid email Id Pls try again",
+        });
+    }
 
     return res.status(200).json({
       success: 1,

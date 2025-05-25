@@ -53,6 +53,7 @@ const useAuthApiCall = (backendApi) => {  // backendApi is backend backendApi
             );
             navigate("/");
         } else if (backendApi === "forgetPassword") {
+            console.log(user.userId,response.result,"==")
             storeLocalData(user?.userId, response.result);
             navigate(`/updatePassword/${user?.userId}/${tenant?.tenantId}`);
         } else if (backendApi === "updatePassword") {

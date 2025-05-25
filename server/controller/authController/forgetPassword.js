@@ -1,4 +1,6 @@
+import { emailVerification, passwordVerification } from "../../template/emaillTemplate/emailTemplate.js";
 import sendEmail from "../authController/sendEmail.js";
+import { resendEmailController } from "../EmailController/emailController.js";
 
 const forgetpassword = async (
   req,
@@ -45,9 +47,24 @@ const forgetpassword = async (
     }
 
     let name = checkUserExist.name;
-    const type = "passwordVerification";
     //verifying email
-    await sendEmail({ email, name, emailOtp, type });
+    const sub  = "Forgot Password"
+     const content = passwordVerification(name, emailOtp);
+     let sendEmail = await resendEmailController(
+         "info.myfac8ry@gmail.com",
+         email,
+         sub,
+         content,
+         []
+     );
+     if (!sendEmail) {
+         return res.status(403).json({
+             success: 0,
+             result: null,
+             message: "Invalid email Id Pls try again",
+         });
+     }
+    
     return res.status(200).json({
       success: 1,
       result: {

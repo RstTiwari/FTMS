@@ -51,7 +51,7 @@ const VerifyEmail = () => {
     <Form form={form} onFinish={handleVerifyOtp}>
       <Row justify={"center"}>
         <Taglabel
-          text={`OTP sent to email please verify it`}
+          text={`OTP sent to  Registered email  please verify it `}
           type={"amount"}
           weight={500}
         />

@@ -10,7 +10,7 @@ const { Text, Title } = Typography;
 
 const ForgetPassword = () => {
     const [form] = Form.useForm()
-        const { isLoading, handleAuthApi } = useAuthApiCall("forgetPassword");
+const { isLoading, handleAuthApi } = useAuthApiCall("forgetPassword");
         
         const handleForgotPassword = async (values) => {
           await handleAuthApi(values);
