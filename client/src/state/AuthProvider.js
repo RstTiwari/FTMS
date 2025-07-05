@@ -120,49 +120,64 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const pdfGenerate = async (entity, id, no, action = "display", tenantId) => {
-    const token = cookies["token"];
-    try {
-      const headers = {
-        "Content-Type": "Content-Type: application/pdf",
-        Authorization: "Bearer YOUR_TOKEN",
-        token: token ? token : "",
-      };
+  const pdfGenerate = async (
+      entity,
+      id,
+      no,
+      action = "display",
+      tenantId,
+      callApi = true,
+      localData
+  ) => {
+      const token = cookies["token"];
+      try {
+          const headers = {
+              "Content-Type": "Content-Type: application/pdf",
+              Authorization: "Bearer YOUR_TOKEN",
+              token: token ? token : "",
+          };
 
-      const response = await appApiCall(
-        "get",
-        "pdf",
-        {},
-        { entity, id, tenantId }
-      );
+          let response = undefined;
+          if (callApi) {
+              response = await appApiCall(
+                  "get",
+                  "pdf",
+                  {},
+                  { entity, id, tenantId }
+              );
 
-      // let response = TestData
+              // let response = TestData
 
-      if (!response.success) {
-        throw new Error("Network response was not ok");
+              if (!response.success) {
+                  throw new Error("Network response was not ok");
+              }
+          } else {
+              response = localData;
+          }
+
+          // Generate the blob from the document
+          const blob = await pdf(
+              <PdfSelector entity={entity} data={response.data} />
+          ).toBlob();
+
+          const pdfUrl = URL.createObjectURL(blob);
+
+          if (action === "download") {
+              const a = document.createElement("a");
+              a.href = pdfUrl;
+              a.download = `${entity.toUpperCase()}${no}.pdf`;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+          } else if (action === "display") {
+              return pdfUrl;
+          }
+      } catch (error) {
+          NotificationHandler.error(
+              `Failed to handle ${entity} PDF: ${error.message}`
+          );
+          throw error;
       }
-
-      // Generate the blob from the document
-      const blob = await pdf( <PdfSelector entity={entity} data={response.data} />).toBlob();
-
-      const pdfUrl = URL.createObjectURL(blob);
-
-      if (action === "download") {
-        const a = document.createElement("a");
-        a.href = pdfUrl;
-        a.download = `${entity.toUpperCase()}${no}.pdf`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      } else if (action === "display") {
-        return pdfUrl;
-      }
-    } catch (error) {
-      NotificationHandler.error(
-        `Failed to handle ${entity} PDF: ${error.message}`
-      );
-      throw error;
-    }
   };
 
   const verifyToken = async () => {

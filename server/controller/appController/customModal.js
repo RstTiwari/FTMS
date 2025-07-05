@@ -8,9 +8,25 @@ const fetchCustomModalData = async (req, res, next) => {
         throw new Error("invalid Payload");
     }
     const dataBase = checkDbForEntity(entity);
+    let select = {}
+    let limit = 50
+    if(entity === "products"){
+        select ={name:1,rate:1,image:1}
+        limit = 20
+    }
     try {
         let query = { tenantId: tenantId };
-        let data = await dataBase.find(query).sort({ _id: -1 })
+        if(char){
+            query = {
+                fieldName: { $regex: char, $options: "i" },
+                tenantId: tenantId,
+            };
+        }
+        let data = await dataBase
+            .find(query)
+            .select(select)
+            .sort({ _id: -1 })
+            .limit(limit);
         const modifiedData = data
         .filter((item) => item[fieldName] !== undefined && item[fieldName] !== null) // Filter objects with the specific field
         .map((item) => {

@@ -99,6 +99,7 @@ export default function MoreActionDropDown({ entity, items = [], rowData }) {
         id={rowData?._id}
         no={rowData?.no}
         tenantId={tenantId}
+        
       />
       {isWhatsAppModalVisible && (
         <WhatsAppMessageSender

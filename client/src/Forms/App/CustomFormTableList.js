@@ -408,7 +408,7 @@ const CustomFormTableList = ({ form }) => {
                             <Taglabel text="ITEM DETAILS" />
                         </Col>
                         {renderColumnHeader("image", "IMAGE", 2)}
-                        {renderColumnHeader("hsnCode", "HSN/SAC", 2)}
+                        {renderColumnHeader("hsnCode", "HSN", 2)}
                         <Col
                             className="gutter-row"
                             span={dynamicSpan.qty}

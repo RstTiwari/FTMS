@@ -79,7 +79,7 @@ const ItemsTable = ({ items, columns }) => {
                               </Text>
                           ) : col.property === "image" && item.image ? (
                               <Image
-                                  style={{ width: 80, height: 100 }}
+                                  style={{ width: 60, height: 60 }}
                                   src={item.image}
                               />
                           ) : (

@@ -111,6 +111,9 @@ const tenantSchema = new mongoose.Schema(
         tagLine: {
             type: String,
         },
+        terms:[
+            
+        ]
     },
     { timestamps: true }
 );

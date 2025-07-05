@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form ,Row,Button,Col,Modal} from "antd";
+import { Form, Row, Button, Col, Modal } from "antd";
 import "../App.css";
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
@@ -9,12 +9,7 @@ import UpdateModule from "module/UpdateModule/UpdateModule";
 import PageLoader from "pages/PageLoader";
 import { fetchTitleName } from "Helper/PageTitle";
 
-const UpdateCustomForm = ({
-    isModal = false,
-    entity,
-    id,
-    closeModal
-}) => {
+const UpdateCustomForm = ({ isModal = false, entity, id, closeModal }) => {
     // const { entity, id } = useParams();
     const { appApiCall } = useAuth();
     const [form] = Form.useForm();
@@ -23,8 +18,8 @@ const UpdateCustomForm = ({
     const [isFormChanged, setIsFormChanged] = useState(false); // Track form changes
     const { isFetching, initialValues, fetchInitialValues } =
         useInitialFormValues(entity, "get", id);
-    
-   let isAdmin = entity =="user" ? true:false
+
+    let isAdmin = entity === "user" ? true : false;
 
     const { isLoading, error, handleFormSubmit } = useFormActions(
         entity,
@@ -75,26 +70,26 @@ const UpdateCustomForm = ({
                 values.image = response.result;
             }
         }
-        await handleFormSubmit(values,isAdmin);
+        await handleFormSubmit(values, isAdmin);
     };
 
     const handleValueChange = (changeValues, allValues) => {
         setChangedField({ ...changedField, ...changeValues });
         setIsFormChanged(true);
     };
-      const handleCloseModal = () => {
+    const handleCloseModal = () => {
         if (isFormChanged) {
-          Modal.confirm({
-            title: "Are you sure you want to discard your changes?",
-            content: "Your changes will be lost if you do not save them.",
-            okText: "Yes, discard",
-            cancelText: "No, Keep Editing",
-            onOk: () => closeModal(),
-          });
+            Modal.confirm({
+                title: "Are you sure you want to discard your changes?",
+                content: "Your changes will be lost if you do not save them.",
+                okText: "Yes, discard",
+                cancelText: "No, Keep Editing",
+                onOk: () => closeModal(),
+            });
         } else {
-          closeModal();
+            closeModal();
         }
-      };
+    };
 
     if (isFetching) {
         return (
@@ -112,40 +107,43 @@ const UpdateCustomForm = ({
 
     return (
       <Form
-        name={`${entity}Form`}
-        form={form}
-        initialValues={initialValues}
-        onFinish={handleFormUpdate}
-        onFinishFailed={validateFields}
-        onValuesChange={handleValueChange}
-        validateTrigger={unfilledField}
-        requiredMark={false}
-        layout={isModal ? "vertical" : "horizontal"}
-        style={{
-          flexGrow: 1,
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <Row align={"middle"}>
-          <Col span={12}>
-            <h3>{`EDIT ${fetchTitleName(entity).toUpperCase()}`}</h3>
-          </Col>
-          <Col span={12} style={{ textAlign: "right" }}>
-            <Button
-              htmlType="submit"
-              type="primary"
-              style={{ backgroundColor: "#22b378", cursor: "pointer" }}
-            >
-              UPDATE
-            </Button>
-            <Button onClick={handleCloseModal}>CLOSE</Button>{" "}
-            {/* Trigger custom close logic */}
-          </Col>
-        </Row>
-  
-          <UpdateModule entity={entity} form={form} />
-      </Form>
+            name={`${entity}Form`}
+            form={form}
+            initialValues={initialValues}
+            onFinish={handleFormUpdate}
+            onFinishFailed={validateFields}
+            onValuesChange={handleValueChange}
+            validateTrigger={unfilledField}
+            requiredMark={false}
+            layout={isModal ? "vertical" : "horizontal"}
+            style={{
+                flexGrow: 1,
+                display: "flex",
+                flexDirection: "column",
+            }}
+        >
+            <Row align={"middle"}>
+                <Col span={12}>
+                    <h3>{`EDIT ${fetchTitleName(entity).toUpperCase()}`}</h3>
+                </Col>
+                <Col span={12} style={{ textAlign: "right" }}>
+                    <Button
+                        htmlType="submit"
+                        type="primary"
+                        style={{
+                            backgroundColor: "#22b378",
+                            cursor: "pointer",
+                        }}
+                    >
+                        UPDATE
+                    </Button>
+                    <Button onClick={handleCloseModal}>CLOSE</Button>{" "}
+                    {/* Trigger custom close logic */}
+                </Col>
+            </Row>
+
+            <UpdateModule entity={entity} form={form} />
+        </Form>
     );
 };
 

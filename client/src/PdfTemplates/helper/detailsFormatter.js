@@ -339,9 +339,9 @@ export const getTableHeaders2 = (entity, preCol = []) => {
   // Define the additional columns that may be added based on preCol
   let toAddColumn = [
     { title: "CODE", property: "code", width: 40 },
-    { title: "IMAGE", property: "image", width: 100 },
-    { title: "HSN CODE", property: "hsnCode", width: 50 },
-    { title: "DIS%", property: "discountPercent", width: 30 },
+    { title: "IMAGE", property: "image", width: 80 },
+    { title: "HSN", property: "hsnCode", width: 30 },
+    { title: "DIS%", property: "discountPercent", width: 25 },
     { title: "DIS AMT", property: "discountAmount", width: 50 },
     { title: "TAX AMT", property: "taxAmount", width: 40 },
   ];
@@ -349,11 +349,11 @@ export const getTableHeaders2 = (entity, preCol = []) => {
   // Default headers
   const allHeaders = [
     { title: "#", property: "srNo", width: 20 },
-    { title: "DESCRIPTION", property: "description", width: 350 }, // Initial width of description column
+    { title: "DESCRIPTION", property: "description", width: 450 }, // Initial width of description column
     { title: "RATE", property: "rate", width: 50 },
-    { title: "QTY", property: "qty", width: 40 },
-    { title: "TAX%", property: "gstPercent", width: 50 },
-    { title: "TOTAL AMOUNT", property: "finalAmount", width: 60 },
+    { title: "QTY", property: "qty", width: 25 },
+    { title: "TAX%", property: "gstPercent", width: 30 },
+    { title: "TOTAL AMOUNT", property: "finalAmount", width: 50 },
   ];
 
   // Create a map from preCol to handle status true columns

@@ -3,7 +3,7 @@ import { Modal, Spin } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { useAuth } from "state/AuthProvider"; // Assuming your hook is here
 
-const PreviewModal = ({ open, onClose, width = 50, entity, id, no, tenantId }) => {
+const PreviewModal = ({ open, onClose, width = 70, entity, id, no, tenantId ,callApi,localData}) => {
     const { pdfGenerate } = useAuth();
     const [loading, setLoading] = useState(true); // Track loading state
     const [pdfUrl, setPdfUrl] = useState(null);
@@ -11,7 +11,7 @@ const PreviewModal = ({ open, onClose, width = 50, entity, id, no, tenantId }) =
     useEffect(() => {
         const fetchPdfUrl = async () => {
             try {
-                const url = await pdfGenerate(entity, id, no, "display", tenantId);
+                const url = await pdfGenerate(entity, id, no, "display", tenantId,callApi,localData);
                 setPdfUrl(url); // Set the generated PDF URL
                 setLoading(false); // Stop loading once URL is available
             } catch (error) {
@@ -36,7 +36,7 @@ const PreviewModal = ({ open, onClose, width = 50, entity, id, no, tenantId }) =
             width={`${width}%`}
             maskClosable={false}
             keyboard={false}
-            zIndex={1000}
+            zIndex={100000}
             footer={null}
             style={{marginTop:"-100px"}}
          

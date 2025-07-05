@@ -18,7 +18,6 @@ const workOrderSchema = new mongoose.Schema({
   },
   suffix:{
     type: String,
-    required: true,
     default:""
   },
   startDate: {

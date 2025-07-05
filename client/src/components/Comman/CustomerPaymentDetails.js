@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect } from "react";
 import { Row, Col } from "antd";
 import Taglabel from "./Taglabel";
 import PageLoader from "pages/PageLoader";

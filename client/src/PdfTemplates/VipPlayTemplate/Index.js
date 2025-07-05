@@ -67,6 +67,7 @@ const Index = ({ entity, data }) => {
 
     let amounts = grandAndOtherChargesFormatter(entity, entityData);
     let headers = getTableHeaders2(entity, selectColumns);
+    console.log(headers,"==")
     let bankDetails = bankDetailsFormatter(entity, organization?.bankDetails);
     let entityName = entityNameFormatter(entity);
     return (
@@ -83,8 +84,8 @@ const Index = ({ entity, data }) => {
                         amounts={amounts}
                         notes={entityData?.notes}
                     />
-                    <TermsAndConditions terms={entityData?.terms} />
                     <BankDetails entity={entity} bankDetails={bankDetails} />
+                    <TermsAndConditions terms={entityData?.terms} />
                     <Text
                         style={{
                             color: "#42cbf5",

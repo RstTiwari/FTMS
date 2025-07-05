@@ -1,14 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { debounce } from "lodash";
 import { Modal, Select, Divider, Button, Row, Space, AutoComplete } from "antd";
 import { useAuth } from "state/AuthProvider";
 import CoustomButton from "./Comman/CoustomButton";
 import CustomForm from "./CreateCustomForm";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import AddressDetails from "./Comman/AddressDetails";
-import PageLoader from "pages/PageLoader";
 import CustomDialog from "./CustomDialog";
 import { LoadingOutlined } from "@ant-design/icons";
-import { Autocomplete } from "@mui/material";
 
 const CustomProductSelect = ({
   entity,
@@ -33,7 +32,7 @@ const CustomProductSelect = ({
   const [initialRender, setInitialRender] = useState(false);
   const [dataFetched, setDataFetched] = useState(false);
 
-  const [char, setChar] = useState("");
+  const [searchText, setSearchText] = useState("");   
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
   // Close dropdown when the modal opens
@@ -63,6 +62,30 @@ const CustomProductSelect = ({
     }
   }, [appApiCall, dataFetched, entity, fieldName]);
 
+  const debouncedFetch = useCallback(
+    debounce(async (char) => {
+      setIsLoading(true);
+      try {
+        setIsLoading(true);
+        let response = await appApiCall(
+          "post",
+          "fetchCustomModalData",
+          {},
+          { entity, fieldName },char
+        );
+        setIsLoading(false);
+        if (response.success) {
+          setOptions(response?.result);
+        }
+      } catch (error) {
+        console.error("Error fetching products", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }, 500),
+    [] // will persist across renders
+  );
+
   const fetchUpdatedOptions = async () => {
     setIsLoading(true);
     let response = await appApiCall(
@@ -76,33 +99,6 @@ const CustomProductSelect = ({
       setOptions(response?.result);
       setValue(response?.result?.[0]?.value || ""); // Update pre-selected value
     } else {
-      NotificationHandler.error(response.message);
-    }
-  };
-
-  const debounce = (fun, delay) => {
-    let debounceTimer;
-    return function (...args) {
-      let context = this;
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => fun.apply(context, args), delay);
-    };
-  };
-
-  const handelSearch = async (char) => {
-    setChar(char);
-    setIsLoading(true);
-    let response = await appApiCall(
-      "post",
-      "fetchSelectData",
-      {},
-      { entity, fieldName, char }
-    );
-    setIsLoading(false);
-    if (response.success) {
-      setOptions(response?.result);
-    } else {
-      setOptions([]);
       NotificationHandler.error(response.message);
     }
   };
@@ -168,12 +164,6 @@ const CustomProductSelect = ({
       setOpen(true);
   };
 
-  const onCancel = () => {
-    setOpen(false);
-    if (preFillValue) {
-      setValue(preFillValue);
-    }
-  };
 
   const handleModalClose = (result) => {
     fetchUpdatedOptions(); // Fetch updated options after adding new
@@ -193,6 +183,12 @@ const CustomProductSelect = ({
   };
 
   useEffect(() => {
+    if (searchText) {
+      debouncedFetch(searchText);
+    } 
+  }, [searchText]);
+
+  useEffect(() => {
     if (preFillValue) {
       setValue(preFillValue);
       setAddress({ shippingAddress: preFillAddress, billingAddress: "" });
@@ -208,6 +204,7 @@ const CustomProductSelect = ({
         onClick={handelClick}
         showSearch
         style={{ width: width }}
+        onSearch={(text) => setSearchText(text)}
         getPopupContainer={(trigger) => document.body}
         dropdownStyle={{ position: "fixed", zIndex: 1000000 }}
         filterOption={(input, option) =>
@@ -243,7 +240,6 @@ const CustomProductSelect = ({
       />
 
       {/* Customer/Vendor Address Details */}
-      {/* Add other components as needed */}
       <CustomDialog
         entity={entity}
         show={open}

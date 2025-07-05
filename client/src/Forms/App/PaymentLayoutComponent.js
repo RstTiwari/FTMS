@@ -23,7 +23,7 @@ import NotesForm from "./NoteForm";
 import TermsAndConditionsForm from "./TermsAndCondition";
 
 
-const PaymentLayoutComponent = ({ form,widthOfTerm="35vw",widthOfNotes ="35vw" }) => {
+const PaymentLayoutComponent = ({ form,widthOfTerm="75vw",widthOfNotes ="75vw" }) => {
     // Capitalize the first letter of a string
     const [showOtherCharges, setShowOtherCharges] = useState();
     const capitalizeFirstLetter = (string) => {

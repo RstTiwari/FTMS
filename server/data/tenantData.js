@@ -117,7 +117,7 @@ const tenantSpecificData = {
             value: "image",
         },
         {
-            label: "HSN/SAC",
+            label: "HSN",
             value: "hsnCode",
         },
         {

@@ -27,6 +27,7 @@ import Taglabel from "components/Comman/Taglabel";
 import TabPane from "antd/es/tabs/TabPane";
 import CoustomButton from "components/Comman/CoustomButton";
 import NotificationHandler from "EventHandler/NotificationHandler";
+import TermsAndConditionsForm from "./TermsAndCondition";
 
 const { Dragger } = Upload;
 const { Text, Title } = Typography;
@@ -188,6 +189,20 @@ const OrganizationForm = ({ form }) => {
                                         message: "Fill Gst No Details ",
                                     },
                                 ]}
+                                width={"30vw"}
+                            />
+                            <FormItemCol
+                                label={"Company Website"}
+                                name={"website"}
+                                type={"text"}
+                                labelCol={{ span: 8 }}
+                                width={"30vw"}
+                            />
+                            <FormItemCol
+                                label={"Company TagLine"}
+                                name={"tagLine"}
+                                type={"text"}
+                                labelCol={{ span: 8 }}
                                 width={"30vw"}
                             />
                         </>
@@ -631,20 +646,7 @@ const OrganizationForm = ({ form }) => {
                         </Row>
                     </TabPane>
                     <TabPane tab="Other Details" key={"3"}>
-                        <FormItemCol
-                            label={"Company Website"}
-                            name={"website"}
-                            type={"text"}
-                            labelCol={{ span: 8 }}
-                            width={"30vw"}
-                        />
-                       <FormItemCol
-                            label={"Company TagLine"}
-                            name={"tagLine"}
-                            type={"text"}
-                            labelCol={{ span: 8 }}
-                            width={"30vw"}
-                        />
+                    <TermsAndConditionsForm form={form} width={"50vw"} />
                     </TabPane>
                 </Tabs>
             </Col>

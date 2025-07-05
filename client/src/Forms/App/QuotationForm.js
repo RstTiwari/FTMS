@@ -189,13 +189,6 @@ const QuotationForm = ({ form,entity }) => {
           label={"Expiry Date"}
           name={"expiryDate"}
           width={"30vw"}
-          required={true}
-          rules={[
-            {
-              required: true,
-              message: "Please Select Quote Expiry Date",
-            },
-          ]}
           labelAlign="left"
           labelCol={{ span: 8 }}
           type={"date"}

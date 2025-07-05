@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
 
 // BankDetails component
 const BankDetails = ({ entity, bankDetails }) => {
-  if (entity !== "invoices") return null; // Only render if entity is 'invoices'
+  let enabled = ["invoices" ,"quotations"]
+  if (entity !== "invoices" && entity !== "quotations") return null; // Only render if entity is 'invoices'
 
   return (
     <View style={styles.container}>
