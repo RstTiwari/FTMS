@@ -9,10 +9,9 @@ const fetchCustomModalData = async (req, res, next) => {
     }
     const dataBase = checkDbForEntity(entity);
     let select = {}
-    let limit = 50
+    let limit = 20
     if(entity === "products"){
-        select ={name:1,rate:1,image:1}
-        limit = 20
+        limit = 10
     }
     try {
         let query = { tenantId: tenantId };
@@ -20,11 +19,10 @@ const fetchCustomModalData = async (req, res, next) => {
             query = {
                 fieldName: { $regex: char, $options: "i" },
                 tenantId: tenantId,
-            };
+            };mon
         }
         let data = await dataBase
             .find(query)
-            .select(select)
             .sort({ _id: -1 })
             .limit(limit);
         const modifiedData = data

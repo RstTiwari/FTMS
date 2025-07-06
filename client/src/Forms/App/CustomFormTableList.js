@@ -523,6 +523,7 @@ const CustomFormTableList = ({ form }) => {
                                                         )?.[name]?.code
                                                     }
                                                     width={"100%"}
+                                                    form={form}
                                                 />,
                                                 2,
                                                 name,
@@ -564,6 +565,9 @@ const CustomFormTableList = ({ form }) => {
                                                             )?.[name]
                                                                 ?.description
                                                         }
+                                                        form={form}
+                                                        row={name}
+
                                                     />
                                                 </Form.Item>
                                             </Col>

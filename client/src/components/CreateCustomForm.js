@@ -19,6 +19,7 @@ const CustomForm = ({
     passToModal,
     isUpdate = false,
     closeModal,
+    parentForm
 }) => {
     const { entity: entityOfForm, id } = useParams();
     const entity = isModal ? entityOfModal : entityOfForm;

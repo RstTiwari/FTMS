@@ -21,6 +21,7 @@ const CustomProductSelect = ({
   forDeliveryAddress,
   subEntity,
   form,
+  row
 }) => {
   const [open, setOpen] = useState(false);
   const { appApiCall } = useAuth();
@@ -44,23 +45,23 @@ const CustomProductSelect = ({
 
   const handelClick = useCallback(async () => {
     if (!dataFetched) {
-      setIsLoading(true);
-      let response = await appApiCall(
-        "post",
-        "fetchCustomModalData",
-        {},
-        { entity, fieldName }
-      );
-      setIsLoading(false);
-      if (response.success) {
-        setOptions(response?.result);
-        setDataFetched(true);
-      } else {
-        setOptions([]);
-        NotificationHandler.error(response.message);
-      }
+        setIsLoading(true);
+        let response = await appApiCall(
+            "post",
+            "fetchCustomModalData",
+            {},
+            { entity, fieldName }
+        );
+        if (response.success) {
+            setOptions(response?.result);
+            setDataFetched(true);
+        } else {
+            setOptions([]);
+            NotificationHandler.error(response.message);
+        }
+        setIsLoading(false);
     }
-  }, [appApiCall, dataFetched, entity, fieldName]);
+}, [appApiCall, dataFetched, entity, fieldName]);
 
   const debouncedFetch = useCallback(
     debounce(async (char) => {
@@ -94,13 +95,14 @@ const CustomProductSelect = ({
       {},
       { entity, fieldName }
     );
-    setIsLoading(false);
     if (response.success) {
       setOptions(response?.result);
       setValue(response?.result?.[0]?.value || ""); // Update pre-selected value
     } else {
       NotificationHandler.error(response.message);
     }
+    setIsLoading(false);
+
   };
 
 
@@ -166,20 +168,51 @@ const CustomProductSelect = ({
 
 
   const handleModalClose = (result) => {
-    fetchUpdatedOptions(); // Fetch updated options after adding new
-    if (entity === "products") {
-        let product = {
-            item: result,
-            label: result.productName,
-            value: result._id,
-        };
-        setValue(result?._id);
-        setOpen(false);
-        return handleChange(result?._id, product);
-    }
-    handleChange(result?._id);
-    setValue(result?._id);
+    const items = form.getFieldValue("items");
+    let temObj = items[row];
+    temObj.code = result?.code || "";
+    temObj.description = result?.name;
+    temObj.image = result?.image;
+    temObj.hsnCode = result?.hsnCode || "";
+    temObj.rate = result?.rate || 0;
+    let finalAmount = calculateDiscount(
+        temObj?.discountPercent || 0,
+        temObj?.rate || 0
+    );
+    temObj.discountAmount = finalAmount;
+    temObj.taxAmount = calculateTaxAmount(
+        temObj?.gstPercent || 0,
+        temObj?.discountAmount || temObj.rate,
+        temObj?.qty || 0
+    );
+    temObj.finalAmount = temObj.discountAmount * temObj.qty;
+    form.setFieldsValue({ items: items });
     setOpen(false);
+
+
+    // fetchUpdatedOptions(); // Fetch updated options after adding new
+    // console.log(entity,"entity" ,"===")
+    // if (entity === "products") {
+    //     let product = {
+    //         item: result,
+    //         label: result.productName,
+    //         value: result._id,
+    //     };
+    //     setValue(result?.name);
+    //     setOpen(false);
+    //     return handleChange(result?._id, product);
+    // }
+    // handleChange(result?._id);
+    // setValue(result?._id);
+    // setOpen(false);
+  };
+  const calculateTaxAmount = (taxPercent, rate, qty) => {
+      let taxAmount = (rate * taxPercent) / 100;
+      return Math.ceil(taxAmount * qty);
+  };
+  const calculateDiscount = (discountPercent, rate) => {
+      let discoumntAmount = Math.floor((rate * discountPercent) / 100);
+      return Math.ceil(rate - discoumntAmount);
   };
 
   useEffect(() => {
@@ -196,68 +229,75 @@ const CustomProductSelect = ({
 }, [preFillValue]);
 
   return (
-    <>
-      <AutoComplete
-        options={options}
-        value={value || ""}
-        disabled={disabled}
-        onClick={handelClick}
-        showSearch
-        style={{ width: width }}
-        onSearch={(text) => setSearchText(text)}
-        getPopupContainer={(trigger) => document.body}
-        dropdownStyle={{ position: "fixed", zIndex: 1000000 }}
-        filterOption={(input, option) =>
-          (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-        }
-        dropdownRender={(menu) => (
-          <>
-            {!isLoading ? (
-              <>
-                <div style={{ maxHeight: "200px", overflow: "auto" }}>
-                  {menu}
-                </div>
-                <Divider style={{ margin: "8px 0" }} />
-                <Space style={{ padding: "0 8px 4px" }}>
-                  <CoustomButton
-                    text={"ADD NEW"}
-                    details={true}
-                    onClick={openModal}
-                  />
-                </Space>
-              </>
-            ) : (
-              <div style={{ textAlign: "center", padding: "20px" }}>
-                <LoadingOutlined />
-              </div>
-            )}
-          </>
-        )}
-        onChange={handleChange}
-        onDropdownVisibleChange={(open) => {
-          setDropdownVisible(open);
-        }}
-      />
-
-      {/* Customer/Vendor Address Details */}
-      <CustomDialog
-        entity={entity}
-        show={open}
-        setShow={setOpen}
-        width={"55%"}
-        height="50vh"
-        children={
-          <CustomForm
-            entityOfModal={entity}
-            height={"50%"}
-            closeModal={() => setOpen(false)}
-            isModal={true}
-            passToModal={handleModalClose}
-            form={form}
+      <>
+          <AutoComplete
+              options={options}
+              value={value}
+              disabled={disabled}
+              onClick={handelClick}
+              showSearch
+              style={{ width: width }}
+              onSearch={(text) => setSearchText(text)}
+              getPopupContainer={(trigger) => document.body}
+              dropdownStyle={{ position: "fixed", zIndex: 1000000 }}
+              filterOption={(input, option) =>
+                  (option?.label ?? "")
+                      .toLowerCase()
+                      .includes(input.toLowerCase())
+              }
+              dropdownRender={(menu) => (
+                  <>
+                      {!isLoading ? (
+                          <>
+                              <div
+                                  style={{
+                                      maxHeight: "200px",
+                                      overflow: "auto",
+                                  }}
+                              >
+                                  {menu}
+                              </div>
+                              <Divider style={{ margin: "8px 0" }} />
+                              <Space style={{ padding: "0 8px 4px" }}>
+                                  <CoustomButton
+                                      text={"ADD NEW"}
+                                      details={true}
+                                      onClick={openModal}
+                                  />
+                              </Space>
+                          </>
+                      ) : (
+                          <div style={{ textAlign: "center", padding: "20px" }}>
+                              <LoadingOutlined />
+                          </div>
+                      )}
+                  </>
+              )}
+              onChange={handleChange}
+              onDropdownVisibleChange={(open) => {
+                  setDropdownVisible(open);
+              }}
           />
-        }
-      />
-    </>
+
+          {/* Customer/Vendor Address Details */}
+          <CustomDialog
+              entity={entity}
+              show={open}
+              setShow={setOpen}
+              width={"55%"}
+              height="50vh"
+              children={
+                  <CustomForm
+                      entityOfModal={entity}
+                      height={"50%"}
+                      closeModal={() => setOpen(false)}
+                      isModal={true}
+                      passToModal={handleModalClose}
+                      parentForm={form}
+                  />
+              }
+          />
+      </>
   );
 };
 
