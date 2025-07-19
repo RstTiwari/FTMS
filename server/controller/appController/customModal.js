@@ -9,7 +9,7 @@ const fetchCustomModalData = async (req, res, next) => {
     }
     const dataBase = checkDbForEntity(entity);
     let select = {}
-    let limit = 20
+    let limit = 0
     if(entity === "products"){
         limit = 10
     }
