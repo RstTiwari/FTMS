@@ -27,6 +27,7 @@ import BankDetails from "PdfTemplates/Myfac8ryDefault/BankDetails";
 import TermsAndNotes from "PdfTemplates/Myfac8ryDefault/TermAndNotes";
 import SignatureBlock from "PdfTemplates/Myfac8ryDefault/SignatureBlock";
 import AmountInWords from "PdfTemplates/Myfac8ryDefault/AmountInWords";
+import QuotationMessage from "PdfTemplates/Myfac8ryDefault/QuotationMessage";
 
 let borderColor = "#000000";
 const styles = StyleSheet.create({
@@ -46,6 +47,14 @@ const styles = StyleSheet.create({
         borderLeftColor: borderColor,
         borderRightColor: borderColor,
         borderTopColor: borderColor,
+    },
+    entityName: {
+        textAlign: "center",
+        fontSize: 12,
+        fontFamily: "Helvetica-Bold",
+        color: "#000",
+        fontWeight: 1000,
+        borderBottom: "1px solid #000",
     },
     logo: {
         width: 74,
@@ -79,10 +88,12 @@ const Index = ({ entity, data }) => {
         <Document>
             <Page size="A4" break={true} style={styles.page} >
                 <View style={styles.invoice}>
-                    <PageHeader organization = {organization} entityData={pageHeaderDetail} />
+                    <PageHeader organization = {organization} entityData={pageHeaderDetail}  entityDetails ={entityDetails} entity={entity}/>
+                    <QuotationMessage  entity={entity} message={entityData["message"]}/>
+                    <Text style={styles.entityName}>{entityName}</Text>
                     <EntityDetails
                         data={entityDetails}
-                        entityName={entityName}
+                        entity={entity}
                     />
                     <ItemsTable columns={headers} items={entityData?.items} />
                     <AmountsAndNotes

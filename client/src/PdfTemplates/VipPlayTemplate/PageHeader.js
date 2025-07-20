@@ -2,6 +2,7 @@ import React from "react";
 import { Text, View, StyleSheet, Link, Image } from "@react-pdf/renderer";
 
 let borderColor = "#000000";
+
 const style = StyleSheet.create({
     container: {
         borderBottom: 1,
@@ -53,16 +54,6 @@ const style = StyleSheet.create({
         width: 100,
         height: 66,
     },
-    add: {
-        fontSize: 9,
-        color: "#000000",
-    },
-    title: {
-        textAlign: "center",
-        fontSize: 10,
-        fontFamily: "Helvetica-Bold",
-        fontWeight: "heavy",
-    },
     headerContainer: {
         fontSize: 10,
         display: "flex",
@@ -72,68 +63,37 @@ const style = StyleSheet.create({
         height: "auto",
         borderTopColor: borderColor,
     },
-    leftSide: {
+    leftSideBase: {
         paddingTop: 3,
         paddingLeft: 3,
-        flex: 1,
         justifyContent: "flex-start",
         height: "auto",
-        fontSize: 12,
         borderRight: 0.5,
         borderRightColor: borderColor,
     },
-    rightSide: {
+    rightSideBase: {
         paddingTop: 3,
         paddingLeft: 3,
-        flex: 1,
         justifyContent: "flex-start",
         borderLeft: 0.5,
         borderLeftColor: borderColor,
-    },
-    bottomleftSide: {
-        paddingTop: 3,
-        paddingLeft: 3,
-        flex: 1,
-        justifyContent: "flex-start",
-        height: "auto",
-    },
-    bottomrightSide: {
-        paddingTop: 3,
-        paddingLeft: 3,
-        flex: 1,
-        borderLeft: 1,
-        borderLeftColor: borderColor,
-        justifyContent: "flex-start",
-        height: "auto",
     },
     billto: {
         fontSize: 14,
         fontFamily: "Helvetica-Bold",
         fontWeight: "heavy",
     },
-    address: {
-        fontSize: 10,
-        width: 250,
-        hyphens: "manual",
-        overflowwrap: "break-word",
-    },
-    contact: {
-        fontSize: 10,
-        width: 250,
-        hyphens: "manual",
-        overflowwrap: "break-word",
-    },
     detailsItem: {
-        fontSize: 14, // Increased font size for better readability
         color: "#000000",
         marginBottom: 5,
         wordWrap: "break-word",
         fontFamily: "Helvetica-Bold",
         fontWeight: "heavy",
+        textTransform: "uppercase",
     },
 });
 
-const PageHeader = ({ organization, entityData }) => {
+const PageHeader = ({ organization, entityData, entityDetails, entity }) => {
     const {
         companyName,
         phone,
@@ -146,6 +106,13 @@ const PageHeader = ({ organization, entityData }) => {
         panNo,
     } = organization;
     const { street1, street2, city, state, pincode } = billingAddress;
+
+    // Dynamic styles
+    const isQuotation = entity === "quotations";
+    const leftFlex = isQuotation ? 0.65 : 0.5;
+    const rightFlex = isQuotation ? 0.35 : 0.5;
+    const fontSize = isQuotation ? 10 : 12;
+
     return (
         <View style={style.container}>
             <View style={style.titleDiv}>
@@ -173,23 +140,60 @@ const PageHeader = ({ organization, entityData }) => {
             </View>
 
             <View style={style.headerContainer}>
-                <View style={style.leftSide}>
-                    <Text style={style.billto}>COMPANY DETAILS</Text>
-                    <Text style={{ fontWeight: "1000", fontSize: 12 }}>
-                        {companyName.toUpperCase()}
-                    </Text>
-                    <Text>GSTIN : {gstNo}</Text>
-                    <Text>PAN-NO : {panNo}</Text>
-                    <Text>STATE : {state?.toUpperCase()}</Text>
+                {/* Left Side */}
+                <View style={{ ...style.leftSideBase, flex: leftFlex }}>
+                    {isQuotation && entityDetails ? (
+                        entityDetails.map((group, idx) => (
+                            <View key={idx} style={{ marginBottom: 5 }}>
+                                {group.map((item, i) => (
+                                    <Text
+                                        key={i}
+                                        style={{
+                                            ...style.detailsItem,
+                                            fontSize,
+                                        }}
+                                    >
+                                        {item.label?.toUpperCase()}
+                                    </Text>
+                                ))}
+                            </View>
+                        ))
+                    ) : (
+                        <>
+                            <Text style={style.billto}>COMPANY DETAILS</Text>
+                            <Text
+                                style={{
+                                    fontWeight: "1000",
+                                    fontSize,
+                                    fontFamily: "Helvetica-Bold",
+                                }}
+                            >
+                                {companyName.toUpperCase()}
+                            </Text>
+                            <Text style={{ fontSize }}>GSTIN : {gstNo}</Text>
+                            <Text style={{ fontSize }}>PAN-NO : {panNo}</Text>
+                            <Text style={{ fontSize }}>
+                                STATE : {state?.toUpperCase()}
+                            </Text>
+                        </>
+                    )}
                 </View>
-                <View style={style.rightSide}>
+
+                {/* Right Side */}
+                <View style={{ ...style.rightSideBase, flex: rightFlex }}>
                     {entityData &&
                         entityData.map((item, index) => (
-                            <Text key={index} style={style.detailsItem}>
+                            <Text
+                                key={index}
+                                style={{
+                                    ...style.detailsItem,
+                                    fontSize,
+                                }}
+                            >
                                 <Text style={{ fontWeight: "bold" }}>
-                                    {item.label}:{" "}
+                                    {item.label?.toUpperCase()}:{" "}
                                 </Text>
-                                {item.value}
+                                {item.value?.toUpperCase()}
                             </Text>
                         ))}
                 </View>

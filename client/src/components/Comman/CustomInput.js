@@ -17,6 +17,7 @@ import CoustomButton from "./CoustomButton";
 import { DeleteOutlined } from "@mui/icons-material";
 import CustomCustomerSelect from "components/CustomCustomSelect";
 import CustomProductSelect from "components/CustomProductSelect";
+import TextArea from "antd/es/input/TextArea";
 
 const CustomInput = ({
     type,
@@ -62,6 +63,19 @@ const CustomInput = ({
                     style={{ width: width }}
                 />
             );
+            case "textArea":
+                return (
+                    <TextArea
+                        readOnly={readOnly}
+                        {...restProps}
+                        style={{ width: width }}
+                        value={
+                            preFillValue
+                                ? preFillValue
+                                : "Respected Sir / Madam Kindly find attached Quote for the Play Equipments / Outdoor Gym Equipments / Rubber Flooring / Benches /Dustbins.Terms & Conditions for Supply, Installation, Services and Warranty are as follows"
+                        }
+                    />
+                );
         case "option":
             return (
               <ProductCategory

@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
         borderColor: borderColor,
         padding: 8,
         fontSize: 9,
-        fontFamily: "Helvetica-Bold",
         textTransform: "uppercase",
     },
     lastCell: {

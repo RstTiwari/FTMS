@@ -33,6 +33,12 @@ const quotationSchema = new mongoose.Schema(
             type: Date,
             required: true,
         },
+        attn:{
+            type: String,  
+        },
+        message:{
+            type: String,  
+        },
         expiryDate: {
             type: Date,
         },

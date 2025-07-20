@@ -198,6 +198,7 @@ export const entityDetailsFormatter = (entity, data, organization) => {
       let buyer = customer  && customer.name
         ? `Buyer : ${customer["name"].toUpperCase()}`
         : "";
+        let attn = data && data.attn ? `Kindly Attn :- ${data['attn']}`:""
 
       array = [
         [
@@ -211,6 +212,10 @@ export const entityDetailsFormatter = (entity, data, organization) => {
           },
           {
             label: executive,
+            type: "subheading",
+          },
+          {
+            label: attn,
             type: "subheading",
           },
         ],
@@ -475,10 +480,10 @@ export const entityNameFormatter = (entity) => {
   let entityName;
   switch (entity) {
     case "invoices":
-      entityName = " TAX INVOICE";
+      entityName = "TAX INVOICE";
       break;
     case "quotations":
-      entityName = "QUOTATION BILL";
+      entityName = "QUOTATION";
       break;
     case "purchases":
       entityName = "PURCHASE ORDER";

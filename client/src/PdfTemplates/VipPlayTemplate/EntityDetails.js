@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     container: {
         display: "flex",
         flexDirection: "column",
-        borderBottom: "1px solid #ddd",
+        borderBottom: "1px solid #000",
     },
     entityName: {
         textAlign: "center",
@@ -60,12 +60,13 @@ const styles = StyleSheet.create({
     },
 });
 
-const EntityDetails = ({ data, entityName }) => {
+const EntityDetails = ({ data,entity }) => {
     // Determine how many sections to show based on the data length
     const sections = data.slice(0, Math.min(data.length, 3)); // Limit to max 3 sections
+    if(entity ==="quotations") return null;
+
     return (
         <View style={styles.container}>
-            <Text style={styles.entityName}>{entityName}</Text>
             <View style={styles.group}>
                 {sections.map((group, index) => (
                     <View

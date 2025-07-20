@@ -112,121 +112,131 @@ const QuotationForm = ({ form,entity }) => {
 
     useEffect(() => {}, []);
     return (
-      <div>
-        <FormItemCol
-          label={"Select Customer"}
-          name={"customer"}
-          labelAlign="left"
-          labelCol={{ span: 8 }}
-          type="options"
-          width={"30vw"}
-          entity={"customers"}
-          fieldName="name" // filed name form customer modal
-          onlyShippingAddress={true}
-          updateInForm={(value) => {
-            handleItemsUpdate(value, "customer");
-          }}
-          form={form}
-          preFillValue={form.getFieldValue("customer")?.name}
-        />
-         <FormItemCol
-          name={"prefix"}
-          labelAlign="left"
-          hidden={true}
-          labelCol={{ span: 8 }}
-          width={"30vw"}
-        
-        />
-        <FormItemCol
-          label={"#Quote"}
-          name={"no"}
-          labelAlign="left"
-          required={true}
-          labelCol={{ span: 8 }}
-          width={"30vw"}
-          type={"counters"}
-          rules={[
-            {
-              required: "true",
-              message: "Please Provide Quote No",
-            },
-          ]}
-          updateInForm={(value) => {
-            handleItemsUpdate(value, "no");
-          }}
-          parentForm={form}
-          entity={entity}
-          preFillValue={form.getFieldValue("no")}
-        />
-          <FormItemCol
-          name={"suffix"}
-          labelAlign="left"
-          hidden={true}
-          labelCol={{ span: 8 }}
-          width={"30vw"}
-        
-        />
-        <FormItemCol
-          label={"Quote Date"}
-          name={"quoteDate"}
-          required={true}
-          labelCol={{ span: 8 }}
-          width={"30vw"}
-          rules={[
-            {
-              required: true,
-              message: "Please Select Quote Date",
-            },
-          ]}
-          labelAlign="left"
-          type={"date"}
-          preFillValue={form.getFieldValue("quoteDate")}
-          updateInForm={(value) => {
-            handleItemsUpdate(value, "quoteDate");
-          }}
-        />
-        <FormItemCol
-          label={"Expiry Date"}
-          name={"expiryDate"}
-          width={"30vw"}
-          labelAlign="left"
-          labelCol={{ span: 8 }}
-          type={"date"}
-          preFillValue={form.getFieldValue("expiryDate")}
-          updateInForm={(value) => {
-            handleItemsUpdate(value, "expiryDate");
-          }}
-        />
-        <FormItemCol
-          label={"Sub"}
-          name={"sub"}
-          type={"select"}
-          tooltip={"Let your customer know what this quote is for"}
-          width={"30vw"}
-          entity={"Quotation Sub"}
-          labelCol={{ span: 8 }}
-          entityName="sub"
-          updateInForm={(value) => {
-            handleItemsUpdate(value, "sub");
-          }}
-          preFillValue={form.getFieldValue("sub")}
-        />
-        <FormItemCol
-          label={"Sales Person"}
-          name={"salesPerson"}
-          type={"select"}
-          entity={"Sales Person"}
-          entityName="salesPerson"
-          width={"30vw"}
-          labelCol={{ span: 8 }}
-          updateInForm={(value) => {
-            handleItemsUpdate(value, "salesPerson");
-          }}
-          preFillValue={form.getFieldValue("salesPerson")}
-        />
-        <CustomFormTableList form={form} />
-        <PaymentLayoutComponent form={form} />
-      </div>
+        <div>
+            <FormItemCol
+                label={"Select Customer"}
+                name={"customer"}
+                labelAlign="left"
+                labelCol={{ span: 8 }}
+                type="options"
+                width={"30vw"}
+                entity={"customers"}
+                fieldName="name" // filed name form customer modal
+                onlyShippingAddress={true}
+                updateInForm={(value) => {
+                    handleItemsUpdate(value, "customer");
+                }}
+                form={form}
+                preFillValue={form.getFieldValue("customer")?.name}
+            />
+            <FormItemCol
+                name={"prefix"}
+                labelAlign="left"
+                hidden={true}
+                labelCol={{ span: 8 }}
+                width={"30vw"}
+            />
+            <FormItemCol
+                label={"#Quote"}
+                name={"no"}
+                labelAlign="left"
+                required={true}
+                labelCol={{ span: 8 }}
+                width={"30vw"}
+                type={"counters"}
+                rules={[
+                    {
+                        required: "true",
+                        message: "Please Provide Quote No",
+                    },
+                ]}
+                updateInForm={(value) => {
+                    handleItemsUpdate(value, "no");
+                }}
+                parentForm={form}
+                entity={entity}
+                preFillValue={form.getFieldValue("no")}
+            />
+            <FormItemCol
+                name={"suffix"}
+                labelAlign="left"
+                hidden={true}
+                labelCol={{ span: 8 }}
+                width={"30vw"}
+            />
+            <FormItemCol
+                label={"Quote Date"}
+                name={"quoteDate"}
+                required={true}
+                labelCol={{ span: 8 }}
+                width={"30vw"}
+                rules={[
+                    {
+                        required: true,
+                        message: "Please Select Quote Date",
+                    },
+                ]}
+                labelAlign="left"
+                type={"date"}
+                preFillValue={form.getFieldValue("quoteDate")}
+                updateInForm={(value) => {
+                    handleItemsUpdate(value, "quoteDate");
+                }}
+            />
+            <FormItemCol
+                label={"Sub"}
+                name={"sub"}
+                type={"select"}
+                tooltip={"Let your customer know what this quote is for"}
+                width={"30vw"}
+                entity={"Quotation Sub"}
+                labelCol={{ span: 8 }}
+                entityName="sub"
+                updateInForm={(value) => {
+                    handleItemsUpdate(value, "sub");
+                }}
+                preFillValue={form.getFieldValue("sub")}
+            />
+            <FormItemCol
+                label={"Attn"}
+                name={"attn"}
+                type={"text"}
+                width={"30vw"}
+                labelCol={{ span: 8 }}
+                entityName="attn"
+                updateInForm={(value) => {
+                    handleItemsUpdate(value, "attn");
+                }}
+                preFillValue={form.getFieldValue("attn")}
+            />
+            <FormItemCol
+                label={"Sales Person"}
+                name={"salesPerson"}
+                type={"select"}
+                entity={"Sales Person"}
+                entityName="salesPerson"
+                width={"30vw"}
+                labelCol={{ span: 8 }}
+                updateInForm={(value) => {
+                    handleItemsUpdate(value, "salesPerson");
+                }}
+                preFillValue={form.getFieldValue("salesPerson")}
+            />
+            <FormItemCol
+                label={"Message"}
+                name={"message"}
+                type={"textArea"}
+                width={"30vw"}
+                labelCol={{ span: 8 }}
+                updateInForm={(value) => {
+                    handleItemsUpdate(value, "message");
+                }}
+                preFillValue={form.getFieldValue("message")}
+              
+            />
+            <CustomFormTableList form={form} />
+            <PaymentLayoutComponent form={form} />
+        </div>
     );
 };
 
