@@ -124,10 +124,12 @@ const style = StyleSheet.create({
         overflowwrap: "break-word",
     },
     detailsItem: {
-        fontSize: 12, // Increased font size for better readability
+        fontSize: 14, // Increased font size for better readability
         color: "#000000",
         marginBottom: 5,
         wordWrap: "break-word",
+        fontFamily: "Helvetica-Bold",
+        fontWeight: "heavy",
     },
 });
 

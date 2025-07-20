@@ -94,7 +94,7 @@ export default function MoreActionDropDown({ entity, items = [], rowData }) {
       <PreviewModal
         open={open}
         onClose={closePreviewModal}
-        width={50}
+        width={80}
         entity={entity}
         id={rowData?._id}
         no={rowData?.no}

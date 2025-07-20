@@ -343,17 +343,17 @@ export const getTableHeaders2 = (entity, preCol = []) => {
     { title: "HSN", property: "hsnCode", width: 40 },
     { title: "DIS%", property: "discountPercent", width: 35 },
     { title: "DIS AMT", property: "discountAmount", width: 50 },
-    { title: "TAX AMT", property: "taxAmount", width: 40 },
+    { title: "TAX AMT", property: "taxAmount", width: 55 },
   ];
 
   // Default headers
   const allHeaders = [
     { title: "#", property: "srNo", width: 20 },
-    { title: "DESCRIPTION", property: "description", width: 435 }, // Initial width of description column
-    { title: "RATE", property: "rate", width: 50 },
+    { title: "DESCRIPTION", property: "description", width: 395 }, // Initial width of description column
+    { title: "RATE", property: "rate", width: 55 },
     { title: "QTY", property: "qty", width: 30 },
     { title: "TAX%", property: "gstPercent", width: 40 },
-    { title: "TOTAL AMOUNT", property: "finalAmount", width: 50 },
+    { title: "TOTAL AMOUNT", property: "finalAmount", width: 70 },
   ];
 
   // Create a map from preCol to handle status true columns
