@@ -22,12 +22,12 @@ const styles = StyleSheet.create({
     wordBreak: "break-word",
   },
   header: {
-    fontSize: 6,
+    fontSize: 10,
     fontWeight: "bold",
     backgroundColor: "#f0f0f0",
   },
   cellText: {
-    fontSize: 8,
+    fontSize: 12,
     flexWrap: "wrap",
     fontWeight:"bold",
     fontStyle:"Helvetica-Bold"

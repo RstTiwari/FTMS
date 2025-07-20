@@ -20,8 +20,8 @@ import {
 } from "PdfTemplates/helper/detailsFormatter";
 import EntityDetails from "./EntityDetails";
 import ItemsTable from "./ItemTable";
-import AmountsAndNotes from "./AmoutNotes";
-import TermsAndConditions from "./TermsandCondition";
+import AmountsAndNotes from "./AmountAndBank";
+import TermsAndConditions from "./TermAndNotes";
 import BankDetails from "./BankDetails";
 import MultilevelWorkOrder from "./MultileveWorkOrder";
 

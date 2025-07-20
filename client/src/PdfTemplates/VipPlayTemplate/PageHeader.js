@@ -8,46 +8,50 @@ const style = StyleSheet.create({
         borderBottomColor: "#000000",
     },
     titleDiv: {
-        display: "flex",
         flexDirection: "row",
-        justifyContent: "center",
+        width: "100%",
+        alignItems: "center",
+        paddingVertical: 5,
         borderBottom: 1,
         borderBottomColor: "#000000",
-        width: "100%", // Ensure full width usage
     },
     imageDiv: {
-        flex: 0.2, // 25% width
-        alignItems: "center", // Center the image horizontally
-        justifyContent: "center", // Center the image vertically
+        width: "20%",
+        alignItems: "flex-start",
+        paddingLeft: 10,
     },
     titleContainer: {
-        flex: 0.8, // 75% width
-        display: "flex",
-        flexDirection: "column",
-        fontSize: 10,
-        textAlign: "left", //Adjusted to left-align text
-        overflow: "hidden", // Prevent overflow
-        paddingLeft: 10, // Add some padding to separate text from the edge
+        width: "80%",
+        textAlign: "center",
+        alignItems: "center",
+        justifyContent: "center",
+        paddingRight: 10,
     },
     reportTitle: {
         color: "#42cbf5",
         fontSize: 20,
-        lineHeight: 1,
-        textAlign: "left", // Left-align the title
         fontFamily: "Helvetica-Bold",
         fontWeight: "bold",
+        marginBottom: 2,
     },
     tagLine: {
         fontSize: 12,
-        lineHeight: 1, // Control vertical rhythm
         fontFamily: "Helvetica-Bold",
         fontWeight: "bold",
+        marginBottom: 3,
+    },
+    add: {
+        fontSize: 9,
+        color: "#000000",
+        textAlign: "center",
+    },
+    contactText: {
+        fontSize: 9,
+        textAlign: "center",
     },
     logo: {
         width: 100,
         height: 66,
-        marginLeft: "auto",
-        marginRight: "auto",
     },
     add: {
         fontSize: 9,
@@ -146,25 +150,26 @@ const PageHeader = ({ organization, entityData }) => {
                 <View style={style.imageDiv}>
                     <Image style={style.logo} src={logo || ""} />
                 </View>
+
                 <View style={style.titleContainer}>
                     <Text style={style.reportTitle}>
-                        {companyName.toUpperCase() || ""}
+                        {companyName?.toUpperCase() || ""}
                     </Text>
 
-                    {
-                        //Render tag line if available
-                        tagLine && <Text style={style.tagLine}>{tagLine}</Text>
-                    }
+                    {tagLine && <Text style={style.tagLine}>{tagLine}</Text>}
+
                     <Text style={style.add}>
                         {`${street1} ${street2} ${city} ${state} ${pincode}`}
                     </Text>
-                    <Text>
+
+                    <Text style={style.contactText}>
                         MOB - {phone}{" "}
-                        {alternatePhone ? `/ ${alternatePhone}` : ""} , EMAIL-{" "}
+                        {alternatePhone ? `/ ${alternatePhone}` : ""} , EMAIL -{" "}
                         <Link>{email?.toUpperCase()}</Link>
                     </Text>
                 </View>
             </View>
+
             <View style={style.headerContainer}>
                 <View style={style.leftSide}>
                     <Text style={style.billto}>COMPANY DETAILS</Text>
@@ -176,14 +181,15 @@ const PageHeader = ({ organization, entityData }) => {
                     <Text>STATE : {state?.toUpperCase()}</Text>
                 </View>
                 <View style={style.rightSide}>
-                    {entityData && entityData.map((item, index) => (
-                        <Text key={index} style={style.detailsItem}>
-                            <Text style={{ fontWeight: "bold" }}>
-                                {item.label}:{" "}
+                    {entityData &&
+                        entityData.map((item, index) => (
+                            <Text key={index} style={style.detailsItem}>
+                                <Text style={{ fontWeight: "bold" }}>
+                                    {item.label}:{" "}
+                                </Text>
+                                {item.value}
                             </Text>
-                            {item.value}
-                        </Text>
-                    ))}
+                        ))}
                 </View>
             </View>
         </View>

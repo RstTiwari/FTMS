@@ -338,6 +338,30 @@ const OrganizationForm = ({ form }) => {
                                                         ]}
                                                         width={"30vw"}
                                                     />
+                                                                  <FormItemCol
+                                                        label={"Branch Name"}
+                                                        required={true}
+                                                        name={[
+                                                            name,
+                                                            "branchName",
+                                                        ]}
+                                                        fieldKey={[
+                                                            fieldKey,
+                                                            "branchName",
+                                                        ]}
+                                                        type={"text"}
+                                                        labelCol={{
+                                                            span: 8,
+                                                        }}
+                                                        rules={[
+                                                            {
+                                                                required: true,
+                                                                message:
+                                                                    " Bank Name is Required",
+                                                            },
+                                                        ]}
+                                                        width={"30vw"}
+                                                    />
                                                     <FormItemCol
                                                         label={"Account No"}
                                                         required={true}
@@ -384,19 +408,6 @@ const OrganizationForm = ({ form }) => {
                                                                     "IFSC code Required",
                                                             },
                                                         ]}
-                                                        width={"30vw"}
-                                                    />
-                                                    <FormItemCol
-                                                        label={"UPI Details"}
-                                                        name={[name, "upi"]}
-                                                        fieldKey={[
-                                                            fieldKey,
-                                                            "upi",
-                                                        ]}
-                                                        type={"text"}
-                                                        labelCol={{
-                                                            span: 8,
-                                                        }}
                                                         width={"30vw"}
                                                     />
                                                 </Col>

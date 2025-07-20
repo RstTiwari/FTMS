@@ -15,14 +15,18 @@ import {
     grandAndOtherChargesFormatter,
     entityNameFormatter,
     workOrderTable,
+    numberToWordsIndian,
 } from "PdfTemplates/helper/detailsFormatter";
 import InvoiceData from "../data.json";
 import PageHeader from "./PageHeader";
 import EntityDetails from "PdfTemplates/VipPlayTemplate/EntityDetails";
 import ItemsTable from "./ItemTable";
-import AmountsAndNotes from "PdfTemplates/Myfac8ryDefault/AmoutNotes";
-import TermsAndConditions from "PdfTemplates/Myfac8ryDefault/TermsandCondition";
+import AmountsAndNotes from "PdfTemplates/Myfac8ryDefault/AmountAndBank";
+import TermsAndConditions from "PdfTemplates/Myfac8ryDefault/TermAndNotes";
 import BankDetails from "PdfTemplates/Myfac8ryDefault/BankDetails";
+import TermsAndNotes from "PdfTemplates/Myfac8ryDefault/TermAndNotes";
+import SignatureBlock from "PdfTemplates/Myfac8ryDefault/SignatureBlock";
+import AmountInWords from "PdfTemplates/Myfac8ryDefault/AmountInWords";
 
 let borderColor = "#000000";
 const styles = StyleSheet.create({
@@ -48,6 +52,7 @@ const styles = StyleSheet.create({
         height: 66,
         marginLeft: "auto",
         marginRight: "auto",
+        borderRadius:5
     },
     section: {
         margin: 10,
@@ -66,9 +71,9 @@ const Index = ({ entity, data }) => {
     );
 
     let amounts = grandAndOtherChargesFormatter(entity, entityData);
+    let amountInWords = numberToWordsIndian(entityData.grandTotal)
     let headers = getTableHeaders2(entity, selectColumns);
-    console.log(headers,"==")
-    let bankDetails = bankDetailsFormatter(entity, organization?.bankDetails);
+    let bankDetails = bankDetailsFormatter(entity, organization?.bankDetails, organization.panNo);
     let entityName = entityNameFormatter(entity);
     return (
         <Document>
@@ -82,21 +87,12 @@ const Index = ({ entity, data }) => {
                     <ItemsTable columns={headers} items={entityData?.items} />
                     <AmountsAndNotes
                         amounts={amounts}
-                        notes={entityData?.notes}
+                        bankDetails={bankDetails}
+                       
                     />
-                    <BankDetails entity={entity} bankDetails={bankDetails} />
-                    <TermsAndConditions terms={entityData?.terms} />
-                    <Text
-                        style={{
-                            color: "#42cbf5",
-                            fontSize: 12,
-                            fontFamily: "Helvetica-Bold",
-                            textAlign: "center",
-                            marginTop: 10,
-                        }}
-                    >
-                        Thank You For Business
-                    </Text>
+                    <AmountInWords amount={amountInWords}/>
+                    <TermsAndNotes terms={entityData?.terms} notes={entityData.notes}/>
+                    <SignatureBlock  companyName ={organization.companyName}/>
                 </View>
             </Page>
         </Document>

@@ -80,15 +80,15 @@ const tenantSchema = new mongoose.Schema(
                 isPrimary: {
                     type: Boolean,
                 },
+                branchName: {
+                    type: String,
+                },
                 accountNo: {
                     type: String,
                 },
                 ifscCode: {
                     type: String,
-                },
-                upi: {
-                    type: String,
-                },
+            }
             },
         ],
         email: {

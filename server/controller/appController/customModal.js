@@ -17,14 +17,15 @@ const fetchCustomModalData = async (req, res, next) => {
         let query = { tenantId: tenantId };
         if(char){
             query = {
-                fieldName: { $regex: char, $options: "i" },
+                [fieldName]: { $regex: char, $options: "i" },
                 tenantId: tenantId,
-            };mon
+            };
         }
         let data = await dataBase
             .find(query)
             .sort({ _id: -1 })
             .limit(limit);
+        console.log(data,"data")
         const modifiedData = data
         .filter((item) => item[fieldName] !== undefined && item[fieldName] !== null) // Filter objects with the specific field
         .map((item) => {

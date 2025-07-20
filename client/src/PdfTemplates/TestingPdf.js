@@ -10,8 +10,8 @@ import {
 } from "PdfTemplates/helper/detailsFormatter";
 import EntityDetails from "./Myfac8ryDefault/EntityDetails";
 import ItemsTable from "./Myfac8ryDefault/ItemTable";
-import AmountsAndNotes from "./Myfac8ryDefault/AmoutNotes";
-import TermsAndConditions from "./Myfac8ryDefault/TermsandCondition";
+import AmountsAndNotes from "./Myfac8ryDefault/AmountAndBank";
+import TermsAndConditions from "./Myfac8ryDefault/TermAndNotes";
 
 // Common styles
 const commonStyles = StyleSheet.create({

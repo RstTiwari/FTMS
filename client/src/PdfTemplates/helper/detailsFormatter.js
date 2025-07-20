@@ -338,10 +338,10 @@ export const entityDetailsFormatter = (entity, data, organization) => {
 export const getTableHeaders2 = (entity, preCol = []) => {
   // Define the additional columns that may be added based on preCol
   let toAddColumn = [
-    { title: "CODE", property: "code", width: 40 },
+    { title: "CODE", property: "code", width: 40},
     { title: "IMAGE", property: "image", width: 80 },
-    { title: "HSN", property: "hsnCode", width: 30 },
-    { title: "DIS%", property: "discountPercent", width: 25 },
+    { title: "HSN", property: "hsnCode", width: 40 },
+    { title: "DIS%", property: "discountPercent", width: 35 },
     { title: "DIS AMT", property: "discountAmount", width: 50 },
     { title: "TAX AMT", property: "taxAmount", width: 40 },
   ];
@@ -349,10 +349,10 @@ export const getTableHeaders2 = (entity, preCol = []) => {
   // Default headers
   const allHeaders = [
     { title: "#", property: "srNo", width: 20 },
-    { title: "DESCRIPTION", property: "description", width: 450 }, // Initial width of description column
+    { title: "DESCRIPTION", property: "description", width: 435 }, // Initial width of description column
     { title: "RATE", property: "rate", width: 50 },
-    { title: "QTY", property: "qty", width: 25 },
-    { title: "TAX%", property: "gstPercent", width: 30 },
+    { title: "QTY", property: "qty", width: 30 },
+    { title: "TAX%", property: "gstPercent", width: 40 },
     { title: "TOTAL AMOUNT", property: "finalAmount", width: 50 },
   ];
 
@@ -458,16 +458,17 @@ export const grandAndOtherChargesFormatter = (entity, data) => {
   return array;
 };
 
-export const bankDetailsFormatter = (entity, bankDetails) => {
-  // Find the bank detail object where isPrimary is true
-  const primaryBankDetail = bankDetails.find((detail) => detail.isPrimary);
-  let obj = {
-    "Bank Name": primaryBankDetail["bankName"],
-    "Account No": primaryBankDetail["accountNo"],
-    "IFSC CODE": primaryBankDetail["ifscCode"],
-    Upi: primaryBankDetail["upi"],
-  };
-  return obj;
+export const bankDetailsFormatter = (entity, bankDetails,panNo) => {
+    // Find the bank detail object where isPrimary is true
+    const primaryBankDetail = bankDetails.find((detail) => detail.isPrimary);
+    let obj = {
+        "Bank Name": primaryBankDetail["bankName"],
+        "Branch Name": primaryBankDetail["branchName"],
+        "Account No": primaryBankDetail["accountNo"],
+        "IFSC CODE": primaryBankDetail["ifscCode"],
+        "PAN NO": panNo ? panNo:"",
+    };
+    return obj;
 };
 
 export const entityNameFormatter = (entity) => {
@@ -576,3 +577,63 @@ export const workOrderTable = (entity, data) => {
 
 export const vipPlayPageHeader = (entity,data,organization)=>{
 }
+
+// numberToWordsIndian.js
+export const numberToWordsIndian = (amount) => {
+  if (typeof amount !== "number") {
+    amount = parseFloat(amount);
+    if (isNaN(amount)) return "Invalid amount";
+  }
+
+  const a = [
+    "", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX",
+    "SEVEN", "EIGHT", "NINE", "TEN", "ELEVEN", "TWELVE",
+    "THIRTEEN", "FOURTEEN", "FIFTEEN", "SIXTEEN", "SEVENTEEN",
+    "EIGHTEEN", "NINETEEN"
+  ];
+
+  const b = [
+    "", "", "TWENTY", "THIRTY", "FORTY", "FIFTY",
+    "SIXTY", "SEVENTY", "EIGHTY", "NINETY"
+  ];
+
+  const getWords = (num) => {
+    if (num < 20) return a[num];
+    const tens = Math.floor(num / 10);
+    const units = num % 10;
+    return b[tens] + (units ? " " + a[units] : "");
+  };
+
+  const numberToWords = (num) => {
+    if (num === 0) return "ZERO";
+
+    let result = "";
+
+    const crore = Math.floor(num / 10000000);
+    num %= 10000000;
+
+    const lakh = Math.floor(num / 100000);
+    num %= 100000;
+
+    const thousand = Math.floor(num / 1000);
+    num %= 1000;
+
+    const hundred = Math.floor(num / 100);
+    const remainder = num % 100;
+
+    if (crore > 0) result += getWords(crore) + " CRORE ";
+    if (lakh > 0) result += getWords(lakh) + " LAKH ";
+    if (thousand > 0) result += getWords(thousand) + " THOUSAND ";
+    if (hundred > 0) result += getWords(hundred) + " HUNDRED ";
+
+    if (remainder > 0) {
+      result += (result !== "" ? "AND " : "") + getWords(remainder) + " ";
+    }
+
+    return result.trim();
+  };
+
+  return numberToWords(amount) + " RUPEES ONLY";
+};
+
+
