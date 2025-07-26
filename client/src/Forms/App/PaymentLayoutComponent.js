@@ -27,6 +27,21 @@ import TermsAndConditionsForm from "./TermsAndCondition";
 const PaymentLayoutComponent = ({ form,widthOfTerm="75vw",widthOfNotes ="75vw" }) => {
     // Capitalize the first letter of a string
     const { entity } = useParams();
+    const watchedTaxValues = Form.useWatch([], form)
+    const allFormValues = form.getFieldsValue();
+    console.log(allFormValues,"===all formValues")
+const taxFields = Object.keys(allFormValues).filter((key) =>
+    /^(cgstAndSgst|igst)\d+$/.test(key)
+);
+
+const labelMap = {
+    cgstAndSgst28: "CGST + SGST (28%)",
+    cgstAndSgst12: "CGST + SGST (12%)",
+    cgstAndSgst18: "CGST + SGST (18%)",
+    igst28: "IGST (28%)",
+    igst12: "IGST (12%)",
+    igst18: "IGST (18%)",
+};
     
     const [showOtherCharges, setShowOtherCharges] = useState();
     const capitalizeFirstLetter = (string) => {
@@ -102,19 +117,27 @@ const PaymentLayoutComponent = ({ form,widthOfTerm="75vw",widthOfNotes ="75vw" }
                         disabled={true}
                     />
                 </Row>
-                <Row span={24} justify={"end"}>
-                    <FormItemCol
-                        label="Tax Amount"
-                        name={"taxAmount"}
-                        labelCol={{ span: 15 }}
-                        labelAlign="left"
-                        tooltip={"Tax Amount on total + transport"}
-                        type={"number"}
-                        entity={"Tax Percent"}
-                        disabled={true}
-                        width={125}
-                    />
-                </Row>
+                {[
+                    "cgstAndSgst12",
+                    "cgstAndSgst18",
+                    "cgstAndSgst28",
+                    "igst12",
+                    "igst18",
+                    "igst28",
+                ].map((key) => (
+                    <Row span={24} justify={"end"}>
+                        <FormItemCol
+                            key={key}
+                            name={key}
+                            label={labelMap[key]}
+                            labelCol={{ span: 15 }}
+                            type="number"
+                            width={125}
+                            disabled
+                            hidden={!watchedTaxValues?.[key]} // Hide if value not set
+                        />
+                    </Row>
+                ))}
                 <Row span={24} justify={"end"}>
                     <FormItemCol
                         label="Total (After Tax)"

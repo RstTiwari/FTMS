@@ -262,13 +262,17 @@ const CustomProductSelect = ({
                 onClick={handelClick}
                 onSelect={handleChange}
                 onSearch={(text) => {
-                  setValue(text);
-                  setSearchText(text);
+                    setValue(text);
+                    setSearchText(text);
                 }}
                 onBlur={handleBlur} // ✅ now doesn’t cause data mutation
                 style={{ width }}
                 getPopupContainer={(trigger) => document.body}
-                dropdownStyle={{ position: "fixed", zIndex: 1000000 }}
+                dropdownStyle={{
+                    position: "fixed",
+                    zIndex: 1000000,
+                    width:500,
+                }}
                 filterOption={(input, option) =>
                     (option?.label ?? "")
                         .toLowerCase()

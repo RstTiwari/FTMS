@@ -1,8 +1,9 @@
 // CustomTable.js
 
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
+import { Space, Table,Input } from "antd";
 import { useParams } from "react-router-dom";
+const { Search } = Input;
 
 const CustomTable = ({
     columns,
@@ -52,13 +53,14 @@ const CustomTable = ({
 
     return (
         <div>
+       
             <Table
                 columns={columns}
                 dataSource={dataSource}
                 size="small"
                 loading={isLoading}
                 rowClassName={rowClassName}
-                pagination={pagination ? tableParams.pagination : ""}
+                pagination={pagination ? tableParams.pagination : false}
                 onChange={handleTableChange}
                 // onRow={(record) => ({
                 //     onClick: () => onRowClick(record),

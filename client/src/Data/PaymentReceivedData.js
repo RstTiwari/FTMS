@@ -128,18 +128,7 @@ export const paymentMode = [
   },
 ];
 export const taxPercent = [
-    {
-        label: "Tax:0%",
-        value: 0,
-    },
-    {
-        label: "Tax:3%",
-        value: 3,
-    },
-    {
-        label: "Tax:5%",
-        value: 5,
-    },
+
     {
         label: "Tax:12%",
         value: 12,

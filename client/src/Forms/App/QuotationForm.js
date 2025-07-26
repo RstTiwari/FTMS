@@ -23,6 +23,7 @@ import { jsDateIntoDayjsDate } from "Helper/EpochConveter";
 import TaxPercent from "components/Comman/TaxPercent";
 import CustomFormTableList from "./CustomFormTableList";
 import PaymentLayoutComponent from "./PaymentLayoutComponent";
+import CoustomerData from "Data/CoustomerData";
 
 const QuotationForm = ({ form,entity }) => {
     const handleItemsUpdate = (value, filedName, rowName) => {
@@ -144,7 +145,7 @@ const QuotationForm = ({ form,entity }) => {
                 labelCol={{ span: 8 }}
                 width={"30vw"}
                 type={"counters"}
-                rules={[
+            rules={[
                     {
                         required: "true",
                         message: "Please Provide Quote No",

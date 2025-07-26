@@ -69,11 +69,7 @@ const CustomInput = ({
                         readOnly={readOnly}
                         {...restProps}
                         style={{ width: width }}
-                        value={
-                            preFillValue
-                                ? preFillValue
-                                : "Respected Sir / Madam Kindly find attached Quote for the Play Equipments / Outdoor Gym Equipments / Rubber Flooring / Benches /Dustbins.Terms & Conditions for Supply, Installation, Services and Warranty are as follows"
-                        }
+                       
                     />
                 );
         case "option":

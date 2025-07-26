@@ -2,16 +2,44 @@ import React, { useEffect, useState } from "react";
 import FormItemCol from "components/Comman/FormItemCol";
 import CustomFormTableList from "./CustomFormTableList";
 import PaymentLayoutComponent from "./PaymentLayoutComponent";
-import { Button, Typography } from "antd";
+import { Button, Typography, Checkbox, Select, Form, Divider } from "antd"; // Use AntD Checkbox instead of MUI for consistency
+import CoustomerData from "Data/CoustomerData";
+import CustomLabel from "components/Comman/CustomLabel";
+
 const { Title } = Typography;
 
 const QuotationForm = ({ form, entity }) => {
     const [customerSelected, setCustomerSelected] = useState(false);
+    const [disabled, setDisabled] = useState(false);
+    const [sameAsBilling, setSameAsBilling] = useState(false);
 
     useEffect(() => {
         const customer = form.getFieldValue("customer");
         setCustomerSelected(!!customer);
     }, [form.getFieldValue("customer")]);
+
+    const handleSameAsBillingChange = (e) => {
+        const isChecked = e.target.checked;
+        setSameAsBilling(isChecked);
+        setDisabled(isChecked);
+
+        if (isChecked) {
+            // Set shippingAddress as null
+            form.setFieldsValue({ shippingAddress: null });
+        } else {
+            // Reset shippingAddress fields for manual input
+            const currentAddress = form.getFieldValue("shippingAddress") || {};
+            form.setFieldsValue({
+                shippingAddress: {
+                    street1: currentAddress.street1 || "",
+                    street2: currentAddress.street2 || "",
+                    city: currentAddress.city || "",
+                    state: currentAddress.state || [],
+                    pincode: currentAddress.pincode || "",
+                },
+            });
+        }
+    };
 
     const handleItemsUpdate = (value, fieldName, rowName) => {
         const items = form.getFieldValue("items") || [];
@@ -19,8 +47,7 @@ const QuotationForm = ({ form, entity }) => {
 
         if (fieldName === "customer") {
             form.setFieldsValue({ customer: value });
-            console.log(value,"===")
-            setCustomerSelected(true); // trigger UI update
+            setCustomerSelected(true);
             return;
         }
 
@@ -85,109 +112,117 @@ const QuotationForm = ({ form, entity }) => {
             });
         }
     };
-
+    console.log(form.getFieldsValue(),"==")
     return (
         <div>
             {/* CUSTOMER SELECTION */}
             <FormItemCol
-                label={"Select Customer"}
-                name={"customer"}
+                label="Select Customer"
+                name="customer"
                 labelAlign="left"
                 labelCol={{ span: 8 }}
-                required={true}
+                required
                 rules={[{ required: true, message: "Please Select Customer" }]}
                 type="options"
                 entity="customers"
-                width={"30vw"}
-                fieldName={"name"}
+                width="30vw"
+                fieldName="name"
                 updateInForm={(value) => handleItemsUpdate(value, "customer")}
                 preFillValue={form.getFieldValue("customer")?.name}
             />
-            {/* CONDITIONAL SHIPPING ADDRESS - JUST AFTER CUSTOMER */}
+
             {customerSelected && (
                 <>
-                    <Title level={5} style={{ marginBottom: 0, marginTop: 20 }}>
+                    <Title
+                        level={5}
+                        style={{ marginBottom: 12, marginTop: 20 }}
+                    >
                         Shipping Address
                     </Title>
-
-                    {true && (
-                        <div style={{ marginBottom: 16 }}>
-                            <Button
-                                type="primary"
-                                onClick={() => {
-                                    const billing = true;
-                                    form.setFieldsValue({
-                                        shippingAddress: {
-                                            street1: billing.street1 || "",
-                                            street2: billing.street2 || "",
-                                            city: billing.city || "",
-                                            state: billing.state || [],
-                                            pincode: billing.pincode || "",
-                                        },
-                                    });
-                                }}
-                            >
-                                Same as Billing Address
-                            </Button>
-                        </div>
-                    )}
-
                     <FormItemCol
-                        name={["shippingAddress", "street1"]}
-                        label={"Street 1"}
+                        name={["shippingAddress", "name"]}
+                        label="Company Name"
                         type="text"
                         required
                         labelAlign="left"
                         labelCol={{ span: 8 }}
-                        width={"30vw"}
+                        width="30vw"
+                        disabled={disabled}
+                    />
+                    <FormItemCol
+                        name={["shippingAddress", "street1"]}
+                        label="Street 1"
+                        type="text"
+                        required
+                        labelAlign="left"
+                        labelCol={{ span: 8 }}
+                        width="30vw"
+                        disabled={disabled}
                     />
                     <FormItemCol
                         name={["shippingAddress", "street2"]}
-                        label={"Street 2"}
+                        label="Street 2"
                         type="text"
                         labelAlign="left"
                         labelCol={{ span: 8 }}
-                        width={"30vw"}
+                        width="30vw"
+                        disabled={disabled}
                     />
                     <FormItemCol
                         name={["shippingAddress", "city"]}
-                        label={"City"}
+                        label="City"
                         type="text"
                         required
                         labelAlign="left"
                         labelCol={{ span: 8 }}
-                        width={"30vw"}
+                        width="30vw"
+                        disabled={disabled}
                     />
                     <FormItemCol
                         name={["shippingAddress", "pincode"]}
-                        label={"Pincode"}
+                        label="Pincode"
                         type="number"
                         required
                         labelAlign="left"
                         labelCol={{ span: 8 }}
-                        width={"30vw"}
+                        width="30vw"
+                        disabled={disabled}
                     />
-                    <FormItemCol
+
+                    <Form.Item
+                        label={<CustomLabel label="State" required={true} />}
                         name={["shippingAddress", "state"]}
-                        label={"State"}
-                        type="multiSelect"
-                        entity="states"
-                        fieldName="name"
-                        required
                         labelAlign="left"
-                        labelCol={{ span: 8 }}
-                        width={"30vw"}
-                    />
+                        labelCol={{ span: 4 }}
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please select a state",
+                            },
+                        ]}
+                        style={{ marginBottom: 16 }}
+                    >
+                        <Select
+                            options={CoustomerData.states}
+                            style={{ width: "30vw" }}
+                            disabled={disabled}
+                            onSelect={(value) =>
+                                form.setFieldsValue({
+                                    shippingAddress: { state: value },
+                                })
+                            }
+                        />
+                    </Form.Item>
+
+                    <Divider style={{ marginTop: 20, marginBottom: 10 }} />
                 </>
             )}
-            {/* Hidden Prefix/Suffix */}
-            <FormItemCol name="prefix" hidden type="text" />
-            <FormItemCol name="suffix" hidden type="text" />
+
             {/* INVOICE INFO */}
             <FormItemCol
                 label={"Invoice#"}
                 name={"no"}
-                required={true}
+                required
                 type={"counters"}
                 labelAlign="left"
                 labelCol={{ span: 8 }}
@@ -201,7 +236,7 @@ const QuotationForm = ({ form, entity }) => {
             <FormItemCol
                 label={"Invoice Date"}
                 name={"invoiceDate"}
-                required={true}
+                required
                 labelCol={{ span: 8 }}
                 width={"30vw"}
                 type={"date"}
@@ -217,7 +252,7 @@ const QuotationForm = ({ form, entity }) => {
             <FormItemCol
                 label={"Due Date"}
                 name={"dueDate"}
-                required={true}
+                required
                 labelAlign="left"
                 labelCol={{ span: 8 }}
                 width={"30vw"}
@@ -231,6 +266,7 @@ const QuotationForm = ({ form, entity }) => {
                 preFillValue={form.getFieldValue("dueDate")}
                 updateInForm={(value) => handleItemsUpdate(value, "dueDate")}
             />
+
             <CustomFormTableList form={form} />
             <PaymentLayoutComponent form={form} />
         </div>

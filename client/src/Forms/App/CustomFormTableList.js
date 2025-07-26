@@ -35,7 +35,7 @@ const CustomFormTableList = ({ form }) => {
         return Math.ceil(taxAmount * qty);
     };
 
-    const handleItemsUpdate = (value, filedName, rowName) => {
+    const handleItemsUpdate = (value, filedName, rowName) => {    
         const items = form.getFieldValue("items");
         let temObj = items[rowName];
         if (filedName === "code" || filedName === "description") {
@@ -60,11 +60,11 @@ const CustomFormTableList = ({ form }) => {
             temObj.hsnCode = value;
         } else if (filedName === "qty") {
             temObj.qty = value;
-               temObj.taxAmount = calculateTaxAmount(
-                 temObj?.gstPercent || 0,
-                 temObj?.rate,
-                 temObj?.qty || 0
-               );
+            temObj.taxAmount = calculateTaxAmount(
+                temObj?.gstPercent || 0,
+                temObj?.rate,
+                temObj?.qty || 0
+            );
             temObj.finalAmount = Math.ceil(value * temObj.rate);
         } else if (filedName === "rate") {
             temObj.rate = value;
@@ -74,18 +74,18 @@ const CustomFormTableList = ({ form }) => {
             );
             temObj.discountAmount = finalAmount;
             temObj.taxAmount = calculateTaxAmount(
-              temObj?.gstPercent || 0,
-              temObj?.discountAmount || temObj?.rate,
-              temObj?.qty || 0
+                temObj?.gstPercent || 0,
+                temObj?.discountAmount || temObj?.rate,
+                temObj?.qty || 0
             );
             temObj.finalAmount = Math.ceil(temObj.discountAmount * temObj.qty);
         } else if (filedName === "gstPercent") {
             value = Number(value);
             temObj.gstPercent = value;
             temObj.taxAmount = calculateTaxAmount(
-              temObj?.gstPercent || 0,
-              temObj?.discountAmount || temObj?.rate,
-              temObj?.qty || 0
+                temObj?.gstPercent || 0,
+                temObj?.discountAmount || temObj?.rate,
+                temObj?.qty || 0
             );
         } else if (filedName === "discountPercent") {
             value = Number(value);
@@ -96,9 +96,9 @@ const CustomFormTableList = ({ form }) => {
                 temObj.rate
             );
             temObj.taxAmount = calculateTaxAmount(
-              temObj?.gstPercent || 0,
-              finalAmount,
-              temObj?.qty || 0
+                temObj?.gstPercent || 0,
+                finalAmount,
+                temObj?.qty || 0
             );
             temObj.discountAmount = finalAmount;
             temObj.finalAmount = temObj.discountAmount * temObj.qty;
@@ -106,6 +106,41 @@ const CustomFormTableList = ({ form }) => {
 
         items[rowName] = temObj;
         form.setFieldsValue({ items: items });
+        const shippingState = form.getFieldValue(["shippingAddress", "state"]);
+        const isIntraState = shippingState?.toLowerCase() === "maharashtra";
+        // Initialize tax field values
+        let cgstAndSgst12 = 0,
+            cgstAndSgst18 = 0,
+            cgstAndSgst28 = 0;
+        let igst12 = 0,
+            igst18 = 0,
+            igst28 = 0;
+
+            items.forEach((item) => {
+            const taxAmount = item.taxAmount || 0;
+
+            if (isIntraState) {
+                if (item.gstPercent === 12) cgstAndSgst12 += taxAmount;
+                else if (item.gstPercent === 18) cgstAndSgst18 += taxAmount;
+                else if (item.gstPercent === 28) cgstAndSgst28 += taxAmount;
+            } else {
+                if (item.gstPercent === 12) igst12 += taxAmount;
+                else if (item.gstPercent === 18) igst18 += taxAmount;
+                else if (item.gstPercent === 28) igst28 += taxAmount;
+            }
+        });
+
+        // Add tax breakdown into for
+        console.log("values","===","code till here",isIntraState)
+        form.setFieldsValue({
+            cgstAndSgst12: Math.ceil(cgstAndSgst12),
+            cgstAndSgst18: Math.ceil(cgstAndSgst18),
+            cgstAndSgst28: Math.ceil(cgstAndSgst28),
+            igst12: Math.ceil(igst12),
+            igst18: Math.ceil(igst18),
+            igst28: Math.ceil(igst28),
+        });
+         console.log(form.getFieldsValue(),"fieldvalues")
         // Tax Calculator
         let grossTotal = items.reduce((a, b) => a + b.finalAmount, 0);
         const temItems = items.map((item) => ({
@@ -127,30 +162,62 @@ const CustomFormTableList = ({ form }) => {
         });
     };
 
-     const handleDelete = (rowIndex) => {
-       const items = form.getFieldValue("items");
-       items.splice(rowIndex,1)
-       let grossTotal = items.reduce((a, b) => a + b.finalAmount, 0);
-       const temItems = items.map((item) => ({
-         ...item,
-         taxAmount: item.taxAmount,
-       }));
-
-       let taxAmount = temItems.reduce(
-         (acc, item) => acc + (item.taxAmount || 0),
-         0
-       );
-       let totalWithTax = grossTotal + taxAmount;
-       let grandTotal = totalWithTax;
-       console.log(rowIndex,"+==",items);
-       form.setFieldsValue({
-         grossTotal: Math.ceil(grossTotal),
-         taxAmount: Math.ceil(taxAmount),
-         totalWithTax: Math.ceil(totalWithTax),
-         grandTotal: Math.ceil(grandTotal),
-       });
-       form.setFieldsValue({ items: items });
-     };
+    const handleDelete = (rowIndex) => {
+        const items = form.getFieldValue("items") || [];
+        items.splice(rowIndex, 1); // Remove the item
+    
+        // Recalculate totals
+        let grossTotal = items.reduce((a, b) => a + (b.finalAmount || 0), 0);
+    
+        let taxAmount = items.reduce(
+            (acc, item) => acc + (item.taxAmount || 0),
+            0
+        );
+    
+        let totalWithTax = grossTotal + taxAmount;
+        let grandTotal = totalWithTax;
+    
+        // Determine intra/inter state
+        const shippingState = form.getFieldValue(["shippingAddress", "state"]);
+        const isIntraState = shippingState?.toLowerCase() === "maharashtra";
+    
+        // Recalculate tax field breakdowns
+        let cgstAndSgst12 = 0,
+            cgstAndSgst18 = 0,
+            cgstAndSgst28 = 0;
+        let igst12 = 0,
+            igst18 = 0,
+            igst28 = 0;
+    
+        items.forEach((item) => {
+            const tax = item.taxAmount || 0;
+            if (isIntraState) {
+                if (item.gstPercent === 12) cgstAndSgst12 += tax;
+                else if (item.gstPercent === 18) cgstAndSgst18 += tax;
+                else if (item.gstPercent === 28) cgstAndSgst28 += tax;
+            } else {
+                if (item.gstPercent === 12) igst12 += tax;
+                else if (item.gstPercent === 18) igst18 += tax;
+                else if (item.gstPercent === 28) igst28 += tax;
+            }
+        });
+    
+        // Set all updated values
+        form.setFieldsValue({
+            items,
+            grossTotal: Math.ceil(grossTotal),
+            taxAmount: Math.ceil(taxAmount),
+            totalWithTax: Math.ceil(totalWithTax),
+            grandTotal: Math.ceil(grandTotal),
+            cgstAndSgst12: isIntraState ? Math.ceil(cgstAndSgst12) : 0,
+            cgstAndSgst18: isIntraState ? Math.ceil(cgstAndSgst18) : 0,
+            cgstAndSgst28: isIntraState ? Math.ceil(cgstAndSgst28) : 0,
+            igst12: !isIntraState ? Math.ceil(igst12) : 0,
+            igst18: !isIntraState ? Math.ceil(igst18) : 0,
+            igst28: !isIntraState ? Math.ceil(igst28) : 0,
+        });
+    };
+    
 
     // State to store selected columns
     const [selectedColumns, setSelectedColumns] = useState([]);
@@ -327,7 +394,43 @@ const CustomFormTableList = ({ form }) => {
         }
     };
 
+    const shippingState = Form.useWatch(["shippingAddress", "state"], form);
 
+    useEffect(() => {
+        const isIntraState = shippingState?.toLowerCase() === "maharashtra";
+        const items = form.getFieldValue("items") || [];
+
+        let cgstAndSgst12 = 0,
+            cgstAndSgst18 = 0,
+            cgstAndSgst28 = 0;
+        let igst12 = 0,
+            igst18 = 0,
+            igst28 = 0;
+
+        items.forEach((item) => {
+            const taxAmount = item.taxAmount || 0;
+
+            if (isIntraState) {
+                if (item.gstPercent === 12) cgstAndSgst12 += taxAmount;
+                else if (item.gstPercent === 18) cgstAndSgst18 += taxAmount;
+                else if (item.gstPercent === 28) cgstAndSgst28 += taxAmount;
+            } else {
+                if (item.gstPercent === 12) igst12 += taxAmount;
+                else if (item.gstPercent === 18) igst18 += taxAmount;
+                else if (item.gstPercent === 28) igst28 += taxAmount;
+            }
+        });
+
+        form.setFieldsValue({
+            cgstAndSgst12: isIntraState ? Math.ceil(cgstAndSgst12) : 0,
+            cgstAndSgst18: isIntraState ? Math.ceil(cgstAndSgst18) : 0,
+            cgstAndSgst28: isIntraState ? Math.ceil(cgstAndSgst28) : 0,
+            igst12: !isIntraState ? Math.ceil(igst12) : 0,
+            igst18: !isIntraState ? Math.ceil(igst18) : 0,
+            igst28: !isIntraState ? Math.ceil(igst28) : 0,
+        });
+    }, [shippingState]);
+    
     useEffect(() => {
         getColumnPre();
     }, []);

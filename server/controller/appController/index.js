@@ -16,6 +16,7 @@ import recordPayment from "./recordPayment.js";
 import updatePayment from "./updatePayment.js";
 import totalReciveables from "./totalReciveables.js";
 import script from "../../Script/Script.js"
+import search from "./search.js";
 import { emailData, sendEmail } from "./sendEmail.js";
 import {
     getOrCreateColumnPreferences,
@@ -88,6 +89,9 @@ const appRoutes = {
     },
     script:async (req,res,next)=>{
         script(req,res,next)
+    },
+    search:async(req,res,next)=>{
+        search(req,res,next)
     }
 
     // challan: async (req, res, next) => {

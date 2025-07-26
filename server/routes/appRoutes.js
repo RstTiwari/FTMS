@@ -101,6 +101,7 @@ router.post(
 );
 router.get("/getLedger", authMethod.isValidAuthtoken, appRoutes.getLeadger);
 router.post("/script", appRoutes.script);
+router.get("/search", authMethod.isValidAuthtoken,appRoutes.search);
 
 
 // //just for app Data

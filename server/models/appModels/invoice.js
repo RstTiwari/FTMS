@@ -20,9 +20,9 @@ const invoiceSchema = new mongoose.Schema(
             default: "INV",
         },
         suffix: {
-          type: String,
-          default: "",
-      },
+            type: String,
+            default: "",
+        },
         status: {
             type: String,
             enum: [
@@ -99,6 +99,22 @@ const invoiceSchema = new mongoose.Schema(
         grandTotal: {
             type: Number,
         },
+        shippingAddress: {
+          name:{ type: String, required: true },
+          street1: { type: String, required: true },
+          street2: { type: String },
+          city: { type: String, required: true },
+          state: { type: String, required: true },
+          pincode: { type: String, required: true },
+        },
+        
+        // Detailed Tax Fields
+        cgstAndSgst12: Number,
+        cgstAndSgst18: Number,
+        cgstAndSgst28: Number,
+        igst12: Number,
+        igst18: Number,
+        igst28: Number,
         notes: [],
         terms: [],
         tenantId: {

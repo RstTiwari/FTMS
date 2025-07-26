@@ -2,7 +2,7 @@ import checkDbForEntity from "../../Helper/databaseSelector.js";
 const read = async (req, res, next) => {
     try {
         let { entity, pageNo, pageSize, select } = req.body;
-        let { id } = req.query;
+        let { id ,text} = req.query;
         let tenantId = req.tenantId;
 
         if (!entity || !pageNo || !pageSize || !tenantId) {

@@ -67,38 +67,46 @@ const styles = StyleSheet.create({
 const AmountAndBank = ({ amounts = [], bankDetails = {}, panNo = "" }) => {
 
   return (
-    <View wrap={true}>
-      <View style={styles.container}>
-        {/* Left: Bank Info */}
-        <View style={styles.leftSection}>
-          <View style={styles.subLeftSection}>
-            {Object.entries(bankDetails).map(([label, value], index) => (
-              <View key={index}>
-                <Text style={styles.bankItemLabel}>{label}:{value || "-"}</Text>
-              </View>
-            ))}
-          </View>
-        </View>
-
-        {/* Right: Amounts */}
-        {amounts.length > 0 && (
-          <View style={styles.rightSection}>
-            <View style={styles.subRightSection}>
-              {amounts.map((amount, index) => (
-                <View key={index}>
-                  <View style={styles.amountRow}>
-                    <Text style={styles.amountLabel}>
-                      {amount.label.toUpperCase()}
-                    </Text>
-                    <Text style={styles.amountValue}>{amount.value}</Text>
+      <View wrap={true}>
+          <View style={styles.container}>
+              {/* Left: Bank Info */}
+              <View style={styles.leftSection}>
+                  <View style={styles.subLeftSection}>
+                      {Object.entries(bankDetails).map(
+                          ([label, value], index) => (
+                              <View key={index}>
+                                  <Text style={styles.bankItemLabel}>
+                                      {label}:{value || "-"}
+                                  </Text>
+                              </View>
+                          )
+                      )}
                   </View>
-                </View>
-              ))}
-            </View>
+              </View>
+
+              {/* Right: Amounts */}
+              {amounts.length > 0 && (
+                  <View style={styles.rightSection}>
+                      <View style={styles.subRightSection}>
+                          {amounts.map((amount, index) =>
+                              amount.value > 0 ? (
+                                  <View key={index}>
+                                      <View style={styles.amountRow}>
+                                          <Text style={styles.amountLabel}>
+                                              {amount.label.toUpperCase()}
+                                          </Text>
+                                          <Text style={styles.amountValue}>
+                                              {amount.value}
+                                          </Text>
+                                      </View>
+                                  </View>
+                              ) : null
+                          )}
+                      </View>
+                  </View>
+              )}
           </View>
-        )}
       </View>
-    </View>
   );
 };
 
