@@ -126,7 +126,7 @@ export const AuthProvider = ({ children }) => {
       no,
       action = "display",
       tenantId,
-      callApi = true,
+      callApi = false,
       localData
   ) => {
       const token = cookies["token"];
@@ -137,23 +137,21 @@ export const AuthProvider = ({ children }) => {
               token: token ? token : "",
           };
 
-          let response = undefined;
-          if (callApi) {
-              response = await appApiCall(
-                  "get",
-                  "pdf",
-                  {},
-                  { entity, id, tenantId }
-              );
+          let response = await appApiCall(
+              "get",
+              "pdf",
+              {},
+              { entity, id, tenantId }
+          );
 
-              // let response = TestData
-
-              if (!response.success) {
-                  throw new Error("Network response was not ok");
-              }
-          } else {
-              response = localData;
+          if (!response.success) {
+              throw new Error("Network response was not ok");
           }
+          
+          if (callApi) {
+            response.data.entityData = localData
+          }
+          console.log(response,"==response",localData)
 
           // Generate the blob from the document
           const blob = await pdf(

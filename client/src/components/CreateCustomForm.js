@@ -31,6 +31,7 @@ const CustomForm = ({
     const [unfilledField, setUnfilledField] = useState(null);
     const [isFormChanged, setIsFormChanged] = useState(false); // Track form changes
     const [open, setOpen] = useState(false);
+    const [data,setData] = useState(null)
     const closePreviewModal = () => setOpen(false);
 
 
@@ -59,9 +60,7 @@ const CustomForm = ({
         fetchData();
     }, []);
 
-    // isAdmin to check whether the API to call is an Admin API
     let isAdmin = entity === "user" ? true : false;
-
     const handleFormFinish = async (values) => {
         if (values.hasOwnProperty("image")) {
             let image = values?.image;
@@ -120,13 +119,32 @@ const CustomForm = ({
         setIsFormChanged(true);
     };
 
-
+    const openPreviewModal =()=>{
+        setData(form.getFieldsValue())
+        setOpen(true)
+    }
+    console.log(data,"===formData")
 
     useEffect(() => {
         form.resetFields();
     }, [entity]);
 
     useEffect(() => {}, [form]);
+
+    if (open) {
+        return (
+            <PreviewModal
+                open={open}
+                onClose={() => setOpen(!open)}
+                entity={entity}
+                id={null}
+                no={null}
+                tenantId={tenantId}
+                callApi={true}
+                localData={data}
+            />
+        );
+    }
 
     return (
         <Form
@@ -135,7 +153,7 @@ const CustomForm = ({
             initialValues={{}}
             onFinish={handleFormFinish}
             onFinishFailed={validateFields}
-            onValuesChange={handleValuesChange} // Track form changes
+            onValuesChange={handleValuesChange}
             validateTrigger={unfilledField}
             requiredMark={false}
             layout={"horizontal"}
@@ -145,7 +163,7 @@ const CustomForm = ({
                     <h3>{`NEW ${fetchTitleName(entity)?.toUpperCase()}`}</h3>
                 </Col>
                 <Col span={12} style={{ textAlign: "right" }}>
-                    {/* {[
+                    {[
                         "purchases",
                         "invoices",
                         "quotations",
@@ -158,11 +176,11 @@ const CustomForm = ({
                                 cursor: "pointer",
                                 margin: "10px",
                             }}
-                            onClick={()=>{}}
+                            onClick={openPreviewModal}
                         >
                             VIEW PDF
                         </Button>
-                    )} */}
+                    )}
 
                     <Button
                         htmlType="submit"

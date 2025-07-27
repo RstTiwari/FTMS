@@ -12,19 +12,19 @@ const PreviewModal = ({ open, onClose, width = 70, entity, id, no, tenantId ,cal
         const fetchPdfUrl = async () => {
             try {
                 const url = await pdfGenerate(entity, id, no, "display", tenantId,callApi,localData);
-                setPdfUrl(url); // Set the generated PDF URL
-                setLoading(false); // Stop loading once URL is available
+                setPdfUrl(url); 
+                setLoading(false);
             } catch (error) {
                 console.error("Failed to generate PDF:", error);
-                setLoading(false); // Handle errors and stop loading
+                setLoading(false);
             }
         };
 
-        if (open) { // Only generate the PDF when the modal is open
-            setLoading(true); // Reset loading when opening the modal
+        if (open) {
+            setLoading(true); 
             fetchPdfUrl();
         }
-    }, [open, entity, id, no, tenantId, pdfGenerate]);
+    }, [open,entity,id,no,tenantId,pdfGenerate]);
 
     return (
         <Modal
