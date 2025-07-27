@@ -151,7 +151,7 @@ export const entityDetailsFormatter = (entity, data, organization) => {
                     },
                     {
                         label: "",
-                        value: name?.toUpperCase(),
+                        value:customer &&  name?.toUpperCase(),
                         type: "subheading",
                     },
                     {
@@ -161,12 +161,12 @@ export const entityDetailsFormatter = (entity, data, organization) => {
                     },
                     {
                         label: "",
-                        value: `GST NO: ${customer["gstNo"] || ""} `,
+                        value: `GST NO: ${(customer && customer["gstNo"] )|| ""} `,
                         type: "value",
                     },
                     {
                         label: "",
-                        value: `PAN NO: ${customer["panNo"] || ""}`,
+                        value: `PAN NO: ${(customer && customer["panNo"] )|| ""}`,
                         type: "value",
                     },
                 ],
@@ -178,7 +178,7 @@ export const entityDetailsFormatter = (entity, data, organization) => {
                     },
                     {
                         label: "",
-                        value: shippingAddress["name"]?.toUpperCase(),
+                        value: (shippingAddress && shippingAddress["name"]?.toUpperCase())|| "",
                         type: "subheading",
                     },
                     {
@@ -188,12 +188,12 @@ export const entityDetailsFormatter = (entity, data, organization) => {
                     },
                     {
                         label: "",
-                        value: `GST NO : ${customer["gstNo"] || ""}`,
+                        value: `GST NO : ${(customer && customer["gstNo"]) || ""}`,
                         type: "value",
                     },
                     {
                         label: "",
-                        value: `PAN NO : ${customer["panNo"] || ""}`,
+                        value: `PAN NO : ${(customer && customer["panNo"]) || ""}`,
                         type: "value",
                     },
                 ],
@@ -238,9 +238,9 @@ export const entityDetailsFormatter = (entity, data, organization) => {
             const vendorComBillingAddress = `${vendorBillingAddress?.street1} ${vendorBillingAddress?.street2}, ${vendorBillingAddress?.city},${vendorBillingAddress?.state} - ${vendorBillingAddress?.pincode}`;
             const orgComBillingAddress = `${orgBillingAddress?.street1} ${orgBillingAddress?.street2}, ${orgBillingAddress?.city},${orgBillingAddress?.state} - ${orgBillingAddress?.pincode}`;
             console.log(entity, data, organization);
-            let deliveryAddress = data["delivery"]["address"];
+            let deliveryAddress = data && data["delivery"] && data["delivery"]["address"];
             const delComAddress = `${deliveryAddress?.street1} ${deliveryAddress?.street2}, ${deliveryAddress?.city},${deliveryAddress?.state} - ${deliveryAddress?.pincode}`;
-            let deliverTo = data["delivery"]["to"];
+            let deliverTo = data  && data["delivery"] &&data["delivery"]["to"];
 
             array = [
                 [
@@ -250,7 +250,7 @@ export const entityDetailsFormatter = (entity, data, organization) => {
                     },
                     {
                         type: "subheading",
-                        value: vendorName?.toUpperCase(),
+                        value: (vendor && vendorName?.toUpperCase()) || "",
                     },
                     {
                         label: "",
@@ -279,11 +279,11 @@ export const entityDetailsFormatter = (entity, data, organization) => {
                     },
                     {
                         type: "subheading",
-                        value: deliverTo?.toUpperCase(),
+                        value: (deliverTo && deliverTo?.toUpperCase()) || "",
                     },
                     {
                         label: "",
-                        value: delComAddress,
+                        value: (delComAddress &&delComAddress) ||"",
                         type: "value",
                     },
                 ],
@@ -293,9 +293,10 @@ export const entityDetailsFormatter = (entity, data, organization) => {
 
         case "challans":
             const challanBillingAddress = `${orgBillingAddress?.street1} ${orgBillingAddress?.street2}, ${orgBillingAddress?.city},${orgBillingAddress?.state} - ${orgBillingAddress?.pincode}`;
-            let address = data["delivery"]["address"];
+            let address =
+                data && data["delivery"] && data["delivery"]["address"];
             const challanShippingAddress = `${address?.street1} ${address?.street2}, ${address?.city},${address?.state} - ${address?.pincode}`;
-            let challanTo = data["delivery"]["to"];
+            let challanTo = data && data["delivery"] && data["delivery"]["to"];
 
             array = [
                 [
@@ -306,20 +307,20 @@ export const entityDetailsFormatter = (entity, data, organization) => {
                     },
                     {
                         label: "",
-                        value: orgName?.toUpperCase(),
+                        value: (orgName && orgName?.toUpperCase())||"",
                         type: "subheading",
                     },
                     {
                         labe: "",
-                        value: challanBillingAddress,
+                        value: (challanBillingAddress &&challanBillingAddress) ||"",
                     },
                     {
-                        label: `Vehicle No : ${data["vehicleNo"] || ""}`,
+                        label: `Vehicle No : ${(data && data["vehicleNo"]) || ""}`,
                         value: "",
                         type: "subheading",
                     },
                     {
-                        label: `Contact No : ${data["contactNo"] || ""}`,
+                        label: `Contact No : ${(data && data["contactNo"]) || ""}`,
                         value: "",
                         type: "subheading",
                     },
@@ -332,12 +333,12 @@ export const entityDetailsFormatter = (entity, data, organization) => {
                     },
                     {
                         label: "",
-                        value: challanTo?.toUpperCase(),
+                        value: (challanTo && challanTo?.toUpperCase())|| "",
                         type: "subheading",
                     },
                     {
                         label: "",
-                        value: challanShippingAddress,
+                        value: (challanBillingAddress && challanShippingAddress)||"",
                     },
                 ],
             ];

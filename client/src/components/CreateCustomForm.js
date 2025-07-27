@@ -168,6 +168,7 @@ const CustomForm = ({
                         "invoices",
                         "quotations",
                         "challans",
+                        "workorders",
                     ].includes(entity) && (
                         <Button
                             type="primary"
