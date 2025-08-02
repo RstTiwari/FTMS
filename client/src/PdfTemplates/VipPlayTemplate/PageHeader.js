@@ -6,90 +6,95 @@ let borderColor = "#000000";
 const style = StyleSheet.create({
     container: {
         borderBottom: 1,
-        borderBottomColor: "#000000",
+        borderBottomColor: borderColor,
     },
     titleDiv: {
         flexDirection: "row",
         width: "100%",
         alignItems: "center",
-        paddingVertical: 5,
-        borderBottom: 1,
-        borderBottomColor: "#000000",
+        paddingVertical: 4,
     },
     imageDiv: {
-        width: "20%",
+        width: "25%", // increased width for more logo space
         alignItems: "flex-start",
-        paddingLeft: 10,
+        justifyContent: "center",
+        paddingLeft: 5,
     },
     titleContainer: {
-        width: "80%",
-        textAlign: "center",
-        alignItems: "center",
+        width: "75%",
         justifyContent: "center",
-        paddingRight: 10,
+        alignItems: "flex-start",
+        paddingRight: 5,
     },
     reportTitle: {
         color: "#42cbf5",
-        fontSize: 20,
+        fontSize: 24, // increased font size
         fontFamily: "Helvetica-Bold",
         fontWeight: "bold",
-        marginBottom: 2,
+        textAlign: "center",
     },
     tagLine: {
-        fontSize: 12,
+        fontSize: 10,
         fontFamily: "Helvetica-Bold",
         fontWeight: "bold",
         marginBottom: 3,
+        textAlign: "center",
     },
     add: {
         fontSize: 9,
         color: "#000000",
         textAlign: "center",
+        marginBottom: 2,
     },
     contactText: {
         fontSize: 9,
         textAlign: "center",
     },
     logo: {
-        width: 100,
-        height: 66,
+        width: 120, // increased width
+        height: 80,  // increased height
     },
     headerContainer: {
         fontSize: 10,
-        display: "flex",
         flexDirection: "row",
-        alignItems: "flex-start",
+        alignItems: "stretch", 
         borderTop: 1,
-        height: "auto",
         borderTopColor: borderColor,
-    },
+        paddingVertical: 0, 
+        marginTop: 6, 
+    },    
     leftSideBase: {
-        paddingTop: 3,
-        paddingLeft: 3,
+        padding: 6,
         justifyContent: "flex-start",
-        height: "auto",
-        borderRight: 0.5,
-        borderRightColor: borderColor,
-    },
+        flexGrow: 1,
+    },    
     rightSideBase: {
-        paddingTop: 3,
-        paddingLeft: 3,
+        paddingHorizontal: 6,
         justifyContent: "flex-start",
         borderLeft: 0.5,
         borderLeftColor: borderColor,
+        flexGrow: 1, 
     },
     billto: {
-        fontSize: 14,
+        fontSize: 12,
         fontFamily: "Helvetica-Bold",
-        fontWeight: "heavy",
+        fontWeight: "bold",
+        marginBottom: 4,
     },
     detailsItem: {
         color: "#000000",
-        marginBottom: 5,
-        wordWrap: "break-word",
+        marginBottom: 4,
         fontFamily: "Helvetica-Bold",
-        fontWeight: "heavy",
+        fontWeight: "bold",
         textTransform: "uppercase",
+        lineHeight: 1.2,
+    },
+    detailsItem2: {
+        color: "#000000",
+        marginBottom: 4,
+        fontWeight: "bold",
+        textTransform: "uppercase",
+        lineHeight: 1.2,
     },
 });
 
@@ -107,52 +112,42 @@ const PageHeader = ({ organization, entityData, entityDetails, entity }) => {
     } = organization;
     const { street1, street2, city, state, pincode } = billingAddress;
 
-    // Dynamic styles
     const isQuotation = entity === "quotations";
     const leftFlex = isQuotation ? 0.65 : 0.5;
     const rightFlex = isQuotation ? 0.35 : 0.5;
-    const fontSize = isQuotation ? 10 : 12;
+    const fontSize = isQuotation ? 10 : 10;
 
     return (
         <View style={style.container}>
+            {/* Top Section with Logo and Company Info */}
             <View style={style.titleDiv}>
                 <View style={style.imageDiv}>
                     <Image style={style.logo} src={logo || ""} />
                 </View>
-
                 <View style={style.titleContainer}>
                     <Text style={style.reportTitle}>
                         {companyName?.toUpperCase() || ""}
                     </Text>
-
                     {tagLine && <Text style={style.tagLine}>{tagLine}</Text>}
-
                     <Text style={style.add}>
                         {`${street1} ${street2} ${city} ${state} ${pincode}`}
                     </Text>
-
                     <Text style={style.contactText}>
-                        MOB - {phone}{" "}
-                        {alternatePhone ? `/ ${alternatePhone}` : ""} , EMAIL -{" "}
+                        MOB - {phone}
+                        {alternatePhone ? ` / ${alternatePhone}` : ""} , EMAIL -{" "}
                         <Link>{email?.toUpperCase()}</Link>
                     </Text>
                 </View>
             </View>
 
+            {/* Bottom Section with Billing/Entity Details */}
             <View style={style.headerContainer}>
-                {/* Left Side */}
                 <View style={{ ...style.leftSideBase, flex: leftFlex }}>
                     {isQuotation && entityDetails ? (
                         entityDetails.map((group, idx) => (
                             <View key={idx} style={{ marginBottom: 5 }}>
                                 {group.map((item, i) => (
-                                    <Text
-                                        key={i}
-                                        style={{
-                                            ...style.detailsItem,
-                                            fontSize,
-                                        }}
-                                    >
+                                    <Text key={i} style={{ ...style.detailsItem, fontSize }}>
                                         {item.label?.toUpperCase()}
                                     </Text>
                                 ))}
@@ -160,37 +155,23 @@ const PageHeader = ({ organization, entityData, entityDetails, entity }) => {
                         ))
                     ) : (
                         <>
-                            <Text style={style.billto}>COMPANY DETAILS</Text>
-                            <Text
-                                style={{
-                                    fontWeight: "1000",
-                                    fontSize,
-                                    fontFamily: "Helvetica-Bold",
-                                }}
-                            >
+                            <Text style={{ fontSize, fontFamily: "Helvetica-Bold" }}>
                                 {companyName.toUpperCase()}
                             </Text>
-                            <Text style={{ fontSize }}>GSTIN : {gstNo}</Text>
-                            <Text style={{ fontSize }}>PAN-NO : {panNo}</Text>
+                            <Text style={{ fontSize }}>GSTIN: {gstNo}</Text>
+                            <Text style={{ fontSize }}>PAN-NO: {panNo}</Text>
                             <Text style={{ fontSize }}>
-                                STATE : {state?.toUpperCase()}
+                                STATE: {state?.toUpperCase()}
                             </Text>
                         </>
                     )}
                 </View>
 
-                {/* Right Side */}
                 <View style={{ ...style.rightSideBase, flex: rightFlex }}>
                     {entityData &&
                         entityData.map((item, index) => (
-                            <Text
-                                key={index}
-                                style={{
-                                    ...style.detailsItem,
-                                    fontSize,
-                                }}
-                            >
-                                <Text style={{ fontWeight: "bold" }}>
+                            <Text key={index} style={{ ...style.detailsItem2, fontSize }}>
+                                <Text>
                                     {item.label?.toUpperCase()}:{" "}
                                 </Text>
                                 {item.value?.toUpperCase()}

@@ -47,6 +47,12 @@ const invoiceSchema = new mongoose.Schema(
             type: Date,
             required: true,
         },
+        vehicleNo:{
+          type:String
+        },
+        deriverContactNo:{
+          type: String,
+        },
         items: [
             {
                 code: {

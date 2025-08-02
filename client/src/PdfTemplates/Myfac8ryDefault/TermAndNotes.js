@@ -20,15 +20,22 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: "Helvetica-Bold",
     fontWeight: 1000,
-    marginBottom: 6,
+    marginBottom:1,
     textTransform: "uppercase",
+    textAlign: "center", // Center title text
+  },
+  itemBox: {
+    borderWidth: 1,
+    borderColor: borderColor,
+    borderRadius: 2,
+    padding:1,
+    marginBottom:1,
   },
   itemText: {
     fontSize: 10,
     fontFamily: "Helvetica",
     textAlign: "left",
     lineHeight: 1.4,
-    marginBottom: 4,
   },
   itemBullet: {
     fontWeight: "bold",
@@ -37,11 +44,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const TermsAndNotes = ({ terms = [], notes = [] }) => {
+const TermsAndNotes = ({ terms = [], notes = [], specification = [] }) => {
   const hasTerms = terms.length > 0;
   const hasNotes = notes.length > 0;
+  const hasSpecification = specification.length > 0;
 
-  if (!hasTerms && !hasNotes) return null;
+  if (!hasTerms && !hasNotes && !hasSpecification) return null;
 
   return (
     <View style={styles.container}>
@@ -50,10 +58,27 @@ const TermsAndNotes = ({ terms = [], notes = [] }) => {
         <View style={styles.sectionWrapper}>
           <Text style={styles.sectionTitle}>Terms and Conditions</Text>
           {terms.map((term, index) => (
-            <Text key={index} style={styles.itemText}>
-              <Text style={styles.itemBullet}>{`${index + 1}. `}</Text>
-              {term?.value}
-            </Text>
+            <View key={index} style={styles.itemBox}>
+              <Text style={styles.itemText}>
+                <Text style={styles.itemBullet}>{`${index + 1}. `}</Text>
+                {term?.value}
+              </Text>
+            </View>
+          ))}
+        </View>
+      )}
+
+      {/* Specification Section */}
+      {hasSpecification && (
+        <View style={styles.sectionWrapper}>
+          <Text style={styles.sectionTitle}>Technical Specification</Text>
+          {specification.map((spec, index) => (
+            <View key={index} style={styles.itemBox}>
+              <Text style={styles.itemText}>
+                <Text style={styles.itemBullet}>{`${index + 1}. `}</Text>
+                {spec?.value}
+              </Text>
+            </View>
           ))}
         </View>
       )}
@@ -63,10 +88,12 @@ const TermsAndNotes = ({ terms = [], notes = [] }) => {
         <View style={styles.sectionWrapper}>
           <Text style={styles.sectionTitle}>Notes</Text>
           {notes.map((note, index) => (
-            <Text key={index} style={styles.itemText}>
-              <Text style={styles.itemBullet}>{`${index + 1}. `}</Text>
-              {note}
-            </Text>
+            <View key={index} style={styles.itemBox}>
+              <Text style={styles.itemText}>
+                <Text style={styles.itemBullet}>{`${index + 1}. `}</Text>
+                {note}
+              </Text>
+            </View>
           ))}
         </View>
       )}

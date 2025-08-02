@@ -107,6 +107,7 @@ const quotationSchema = new mongoose.Schema(
         },
         terms: [],
         notes: [],
+        specification:[],
         tenantId: {
             type: String,
             required: true,

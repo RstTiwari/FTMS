@@ -147,11 +147,19 @@ export const AuthProvider = ({ children }) => {
           if (!response.success) {
               throw new Error("Network response was not ok");
           }
-          
+          console.log(callApi,"callApi")
           if (callApi) {
-            response.data.entityData = localData
+              if (entity === "invoices") {
+                  let response = await appApiCall(
+                      "get",
+                      "get",
+                      {},
+                      { entity: "customers", id: localData["customer"] }
+                  );
+                  localData["customer"] = response.result;
+              }
+              response.data.entityData = localData;
           }
-          console.log(response,"==response",localData)
 
           // Generate the blob from the document
           const blob = await pdf(

@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
 });
 const Index = ({ entity, data }) => {
     let { entityData, organization, selectColumns, entityPrefix } = data;
-  const pageHeaderDetail = customPageHeader(entity, entityData, entityPrefix);
+  const pageHeaderDetail = customPageHeader(entity, entityData, entityPrefix,organization);
 
     const entityDetails = entityDetailsFormatter(
         entity,
@@ -99,10 +99,11 @@ const Index = ({ entity, data }) => {
                     <AmountsAndNotes
                         amounts={amounts}
                         bankDetails={bankDetails}
+                        entity={entity}
                        
                     />
                     <AmountInWords amount={amountInWords}/>
-                    <TermsAndNotes terms={entityData?.terms} notes={entityData.notes}/>
+                    <TermsAndNotes terms={entityData?.terms} notes={entityData.notes} specification={entityData.specification}/>
                     <SignatureBlock  companyName ={organization.companyName}/>
                 </View>
             </Page>

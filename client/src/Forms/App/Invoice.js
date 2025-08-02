@@ -266,6 +266,27 @@ const QuotationForm = ({ form, entity }) => {
                 preFillValue={form.getFieldValue("dueDate")}
                 updateInForm={(value) => handleItemsUpdate(value, "dueDate")}
             />
+        <FormItemCol
+                label={"Driver Phone No"}
+                name={"deriverContactNo"}
+                labelAlign="left"
+                labelCol={{ span: 8 }}
+                width={"30vw"}
+                type={"text"}
+                preFillValue={form.getFieldValue("deriverContactNo")}
+                updateInForm={(value) => handleItemsUpdate(value, "deriverContactNo")}
+            />
+        <FormItemCol
+                label={"Vehicle No"}
+                name={"vehicleNo"}
+                labelAlign="left"
+                labelCol={{ span: 8 }}
+                width={"30vw"}
+                type={"text"}
+                preFillValue={form.getFieldValue("vehicleNo")}
+                updateInForm={(value) => handleItemsUpdate(value, "vehicleNo")}
+            />
+
 
             <CustomFormTableList form={form} />
             <PaymentLayoutComponent form={form} />

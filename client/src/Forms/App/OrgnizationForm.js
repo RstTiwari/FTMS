@@ -28,6 +28,7 @@ import TabPane from "antd/es/tabs/TabPane";
 import CoustomButton from "components/Comman/CoustomButton";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import TermsAndConditionsForm from "./TermsAndCondition";
+import TechnicalSpecification from "./TechnicalSpecification";
 
 const { Dragger } = Upload;
 const { Text, Title } = Typography;
@@ -658,6 +659,7 @@ const OrganizationForm = ({ form }) => {
                     </TabPane>
                     <TabPane tab="Other Details" key={"3"}>
                     <TermsAndConditionsForm form={form} width={"50vw"} />
+                    <TechnicalSpecification  form={form} width={"50vw"}/>
                     </TabPane>
                 </Tabs>
             </Col>

@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   },
   messageText: {
     fontSize: 10,
-    fontFamily: "Helvetica-Bold",
+    fontFamily: "Helvetica",
     textAlign: "left",
     lineHeight: 1.5,
   },

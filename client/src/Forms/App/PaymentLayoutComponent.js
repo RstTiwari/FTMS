@@ -22,6 +22,7 @@ import FormItemCol from "../../components/Comman/FormItemCol";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import NotesForm from "./NoteForm";
 import TermsAndConditionsForm from "./TermsAndCondition";
+import TechnicalSpecification from "./TechnicalSpecification";
 
 
 const PaymentLayoutComponent = ({ form,widthOfTerm="75vw",widthOfNotes ="75vw" }) => {
@@ -29,7 +30,6 @@ const PaymentLayoutComponent = ({ form,widthOfTerm="75vw",widthOfNotes ="75vw" }
     const { entity } = useParams();
     const watchedTaxValues = Form.useWatch([], form)
     const allFormValues = form.getFieldsValue();
-    console.log(allFormValues,"===all formValues")
 const taxFields = Object.keys(allFormValues).filter((key) =>
     /^(cgstAndSgst|igst)\d+$/.test(key)
 );
@@ -81,7 +81,6 @@ const labelMap = {
 
   
 
-
     useEffect(()=>{
 
     },[form])
@@ -96,6 +95,10 @@ const labelMap = {
                 {["quotations", "challans"].includes(entity) && (
                     <Row style={{ marginTop: "20px" }}>
                         <TermsAndConditionsForm
+                            form={form}
+                            width={widthOfTerm}
+                        />
+                        <TechnicalSpecification
                             form={form}
                             width={widthOfTerm}
                         />
@@ -117,27 +120,47 @@ const labelMap = {
                         disabled={true}
                     />
                 </Row>
-                {[
-                    "cgstAndSgst12",
-                    "cgstAndSgst18",
-                    "cgstAndSgst28",
-                    "igst12",
-                    "igst18",
-                    "igst28",
-                ].map((key) => (
+                {["invoices", "challans"].includes(entity) ? (
+                    [
+                        "cgstAndSgst12",
+                        "cgstAndSgst18",
+                        "cgstAndSgst28",
+                        "igst12",
+                        "igst18",
+                        "igst28",
+                    ].map((key) => (
+                        <Row span={24} justify={"end"}>
+                            <FormItemCol
+                                key={key}
+                                name={key}
+                                label={labelMap[key]}
+                                labelCol={{ span: 15 }}
+                                type="number"
+                                width={125}
+                                disabled
+                                hidden={!watchedTaxValues?.[key]} // Hide if value not set
+                            />
+                        </Row>
+                    ))
+                ) : (
                     <Row span={24} justify={"end"}>
                         <FormItemCol
-                            key={key}
-                            name={key}
-                            label={labelMap[key]}
+                            label="Tax Amount"
+                            name={"taxAmount"}
                             labelCol={{ span: 15 }}
-                            type="number"
+                            labelAlign="left"
+                            tooltip={"Total Tax  Amount"}
+                            type={"number"}
+                            disabled={true}
                             width={125}
-                            disabled
-                            hidden={!watchedTaxValues?.[key]} // Hide if value not set
+                            preFillValue={
+                                form.getFieldValue("totalWithTax") -
+                                form.getFieldValue("grossTotal")
+                            }
                         />
                     </Row>
-                ))}
+                )}
+
                 <Row span={24} justify={"end"}>
                     <FormItemCol
                         label="Total (After Tax)"

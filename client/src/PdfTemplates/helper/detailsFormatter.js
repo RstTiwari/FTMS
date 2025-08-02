@@ -2,7 +2,7 @@ import {
     jsDateIntoDayjsDate,
     currentFinancialYear,
 } from "Helper/EpochConveter";
-export const customPageHeader = (entity, data, entityPrefix) => {
+export const customPageHeader = (entity, data, entityPrefix, organization) => {
     let array = [];
     switch (entity) {
         case "invoices":
@@ -19,7 +19,17 @@ export const customPageHeader = (entity, data, entityPrefix) => {
                 },
                 {
                     label: "Due Date",
-                    value: jsDateIntoDayjsDate(data["invoiceDate"]),
+                    value: jsDateIntoDayjsDate(data["dueDate"]),
+                },
+                {
+                    label: "Driver Phone No",
+                    value: data["deriverContactNo"]
+                        ? data["deriverContactNo"]
+                        : "",
+                },
+                {
+                    label: "Vehicle No",
+                    value: data["vehicleNo"] ? data["vehicleNo"] : "",
                 },
             ];
             break;
@@ -38,6 +48,14 @@ export const customPageHeader = (entity, data, entityPrefix) => {
                 {
                     label: "Due Date",
                     value: jsDateIntoDayjsDate(data["expiryDate"]),
+                },
+                {
+                    label: "PAN NO",
+                    value: organization["panNo"],
+                },
+                {
+                    label: "GST NO",
+                    value: organization["gstNo"],
                 },
             ];
             break;
@@ -151,7 +169,7 @@ export const entityDetailsFormatter = (entity, data, organization) => {
                     },
                     {
                         label: "",
-                        value:customer &&  name?.toUpperCase(),
+                        value: customer && name?.toUpperCase(),
                         type: "subheading",
                     },
                     {
@@ -161,12 +179,16 @@ export const entityDetailsFormatter = (entity, data, organization) => {
                     },
                     {
                         label: "",
-                        value: `GST NO: ${(customer && customer["gstNo"] )|| ""} `,
+                        value: `GST NO: ${
+                            (customer && customer["gstNo"]) || ""
+                        } `,
                         type: "value",
                     },
                     {
                         label: "",
-                        value: `PAN NO: ${(customer && customer["panNo"] )|| ""}`,
+                        value: `PAN NO: ${
+                            (customer && customer["panNo"]) || ""
+                        }`,
                         type: "value",
                     },
                 ],
@@ -178,7 +200,10 @@ export const entityDetailsFormatter = (entity, data, organization) => {
                     },
                     {
                         label: "",
-                        value: (shippingAddress && shippingAddress["name"]?.toUpperCase())|| "",
+                        value:
+                            (shippingAddress &&
+                                shippingAddress["name"]?.toUpperCase()) ||
+                            "",
                         type: "subheading",
                     },
                     {
@@ -188,12 +213,16 @@ export const entityDetailsFormatter = (entity, data, organization) => {
                     },
                     {
                         label: "",
-                        value: `GST NO : ${(customer && customer["gstNo"]) || ""}`,
+                        value: `GST NO : ${
+                            (customer && customer["gstNo"]) || ""
+                        }`,
                         type: "value",
                     },
                     {
                         label: "",
-                        value: `PAN NO : ${(customer && customer["panNo"]) || ""}`,
+                        value: `PAN NO : ${
+                            (customer && customer["panNo"]) || ""
+                        }`,
                         type: "value",
                     },
                 ],
@@ -238,9 +267,10 @@ export const entityDetailsFormatter = (entity, data, organization) => {
             const vendorComBillingAddress = `${vendorBillingAddress?.street1} ${vendorBillingAddress?.street2}, ${vendorBillingAddress?.city},${vendorBillingAddress?.state} - ${vendorBillingAddress?.pincode}`;
             const orgComBillingAddress = `${orgBillingAddress?.street1} ${orgBillingAddress?.street2}, ${orgBillingAddress?.city},${orgBillingAddress?.state} - ${orgBillingAddress?.pincode}`;
             console.log(entity, data, organization);
-            let deliveryAddress = data && data["delivery"] && data["delivery"]["address"];
+            let deliveryAddress =
+                data && data["delivery"] && data["delivery"]["address"];
             const delComAddress = `${deliveryAddress?.street1} ${deliveryAddress?.street2}, ${deliveryAddress?.city},${deliveryAddress?.state} - ${deliveryAddress?.pincode}`;
-            let deliverTo = data  && data["delivery"] &&data["delivery"]["to"];
+            let deliverTo = data && data["delivery"] && data["delivery"]["to"];
 
             array = [
                 [
@@ -283,7 +313,7 @@ export const entityDetailsFormatter = (entity, data, organization) => {
                     },
                     {
                         label: "",
-                        value: (delComAddress &&delComAddress) ||"",
+                        value: (delComAddress && delComAddress) || "",
                         type: "value",
                     },
                 ],
@@ -307,20 +337,26 @@ export const entityDetailsFormatter = (entity, data, organization) => {
                     },
                     {
                         label: "",
-                        value: (orgName && orgName?.toUpperCase())||"",
+                        value: (orgName && orgName?.toUpperCase()) || "",
                         type: "subheading",
                     },
                     {
                         labe: "",
-                        value: (challanBillingAddress &&challanBillingAddress) ||"",
+                        value:
+                            (challanBillingAddress && challanBillingAddress) ||
+                            "",
                     },
                     {
-                        label: `Vehicle No : ${(data && data["vehicleNo"]) || ""}`,
+                        label: `Vehicle No : ${
+                            (data && data["vehicleNo"]) || ""
+                        }`,
                         value: "",
                         type: "subheading",
                     },
                     {
-                        label: `Contact No : ${(data && data["contactNo"]) || ""}`,
+                        label: `Contact No : ${
+                            (data && data["contactNo"]) || ""
+                        }`,
                         value: "",
                         type: "subheading",
                     },
@@ -333,12 +369,14 @@ export const entityDetailsFormatter = (entity, data, organization) => {
                     },
                     {
                         label: "",
-                        value: (challanTo && challanTo?.toUpperCase())|| "",
+                        value: (challanTo && challanTo?.toUpperCase()) || "",
                         type: "subheading",
                     },
                     {
                         label: "",
-                        value: (challanBillingAddress && challanShippingAddress)||"",
+                        value:
+                            (challanBillingAddress && challanShippingAddress) ||
+                            "",
                     },
                 ],
             ];
@@ -480,6 +518,19 @@ export const grandAndOtherChargesFormatter = (entity, data) => {
             value: data["igst28"],
         },
     ];
+
+    if (entity === "quotations") {
+        array = [
+            {
+                label: "GROSS TOTAL",
+                value: data["grossTotal"],
+            },
+            {
+                label: "TAX  AMOUNT",
+                value: Math.floor(data["totalWithTax"] - data["grossTotal"]),
+            },
+        ];
+    }
 
     if (data.otherCharges && data.otherCharges.length >= 0) {
         data.otherCharges.forEach((element) => {

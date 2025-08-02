@@ -52,8 +52,12 @@ const CustomForm = ({
             { entity: "tenant", tenantId: tenantId }
         );
         
-        form.setFieldsValue({ terms: result.terms,message:`Respected Sir/Madam,
-                                     Kindly find attached Quote for the Play Equipments / Outdoor Gym Equipments / Rubber Flooring / Benches /Dustbins.Terms & Conditions for Supply, Installation, Services and Warranty are as follows` });
+        form.setFieldsValue({
+            terms: result.terms,
+            specification: result.specification,
+            message: `Respected Sir/Madam,
+                                     Kindly find attached Quote for the Play Equipments / Outdoor Gym Equipments / Rubber Flooring / Benches /Dustbins.Terms & Conditions for Supply, Installation, Services and Warranty are as follows`,
+        });
     };
 
     useEffect(() => {
@@ -120,10 +124,12 @@ const CustomForm = ({
     };
 
     const openPreviewModal =()=>{
+        if(!form.getFieldValue("customer") && entity ==="invoices"){
+            return NotificationHandler.error("Please Select customer to see pdf")
+          }
         setData(form.getFieldsValue())
         setOpen(true)
     }
-    console.log(data,"===formData")
 
     useEffect(() => {
         form.resetFields();

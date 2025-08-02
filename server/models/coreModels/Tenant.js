@@ -88,7 +88,7 @@ const tenantSchema = new mongoose.Schema(
                 },
                 ifscCode: {
                     type: String,
-            }
+                },
             },
         ],
         email: {
@@ -111,9 +111,8 @@ const tenantSchema = new mongoose.Schema(
         tagLine: {
             type: String,
         },
-        terms:[
-            
-        ]
+        terms: [],
+        specification: [],
     },
     { timestamps: true }
 );

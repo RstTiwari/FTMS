@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Row, Button, Col, Modal } from "antd";
 import "../App.css";
 import { useAuth } from "state/AuthProvider";
+import { useParams } from "react-router-dom";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import useFormActions from "Hook/useFormAction";
 import useInitialFormValues from "Hook/useIntialFormValues";
@@ -10,8 +11,8 @@ import PageLoader from "pages/PageLoader";
 import { fetchTitleName } from "Helper/PageTitle";
 
 const UpdateCustomForm = ({ isModal = false, entity, id, closeModal }) => {
-    // const { entity, id } = useParams();
-    const { appApiCall } = useAuth();
+     const { tenantId } = useParams()
+    const { appApiCall ,adminApiCall} = useAuth();
     const [form] = Form.useForm();
     const [unfilledField, setUnfilledField] = useState(null);
     const [changedField, setChangedField] = useState({});
@@ -27,6 +28,33 @@ const UpdateCustomForm = ({ isModal = false, entity, id, closeModal }) => {
         id,
         closeModal
     );
+        const fetchData = async () => {
+            const payload = {};
+            const params = { entity: "tenant" };
+            const { success, result, message } = await adminApiCall(
+                "get",
+                "read",
+                payload,
+                { entity: "tenant", tenantId: tenantId }
+            );
+            if(!form.getFieldValue("terms") || form.getFieldValue("terms").length <1){
+                form.setFieldValue("terms",result.terms)
+            }
+            if(!form.getFieldValue("specification") || form.getFieldValue("specification").length < 1){
+                form.setFieldValue("specification",result.specification)
+            }
+            if (!form.getFieldValue("message") || form.getFieldValue("message").length < 1) {
+                form.setFieldValue(
+                    "message",
+                    `Respected Sir/Madam,
+                                         Kindly find attached Quote for the Play Equipments / Outdoor Gym Equipments / Rubber Flooring / Benches /Dustbins.Terms & Conditions for Supply, Installation, Services and Warranty are as follows`
+                );
+            }
+        };
+    
+        useEffect(() => {
+            fetchData();
+        }, []);
 
     useEffect(() => {
         const fetchAndSetInitialValues = async () => {
