@@ -56,7 +56,7 @@ const CustomForm = ({
             terms: result.terms,
             specification: result.specification,
             message: `Respected Sir/Madam,
-                                     Kindly find attached Quote for the Play Equipments / Outdoor Gym Equipments / Rubber Flooring / Benches /Dustbins.Terms & Conditions for Supply, Installation, Services and Warranty are as follows`,
+                            Kindly find attached Quote for the Play Equipments/Indoor Equipments/ Soft Play Equipments / Outdoor Gym Equipments / Rubber Flooring / Benches /Dustbins.Terms & Conditions for Supply, Installation, Services and Warranty are as follows`,
         });
     };
 

@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     },
     entityName: {
         textAlign: "center",
-        fontSize: 12,
+        fontSize: 14,
         fontFamily: "Helvetica-Bold",
         color: "#000",
         fontWeight: 1000,
@@ -89,8 +89,9 @@ const Index = ({ entity, data }) => {
             <Page size="A4" break={true} style={styles.page} >
                 <View style={styles.invoice}>
                     <PageHeader organization = {organization} entityData={pageHeaderDetail}  entityDetails ={entityDetails} entity={entity}/>
-                    <QuotationMessage  entity={entity} message={entityData["message"]}/>
                     <Text style={styles.entityName}>{entityName}</Text>
+                    <QuotationMessage  entity={entity} message={entityData["message"]}/>
+
                     <EntityDetails
                         data={entityDetails}
                         entity={entity}

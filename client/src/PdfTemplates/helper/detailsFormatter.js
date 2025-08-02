@@ -46,16 +46,16 @@ export const customPageHeader = (entity, data, entityPrefix, organization) => {
                     value: jsDateIntoDayjsDate(data["quoteDate"]),
                 },
                 {
-                    label: "Due Date",
-                    value: jsDateIntoDayjsDate(data["expiryDate"]),
-                },
-                {
                     label: "PAN NO",
                     value: organization["panNo"],
                 },
                 {
                     label: "GST NO",
                     value: organization["gstNo"],
+                },
+                {
+                    label: "Sales Executive",
+                    value: data["salesPerson"],
                 },
             ];
             break;
@@ -230,33 +230,27 @@ export const entityDetailsFormatter = (entity, data, organization) => {
             break;
 
         case "quotations":
-            let sub = data.sub ? `Sub : ${data["sub"]}` : "";
-            let executive = data["salesPerson"]
-                ? `Sales Executive : ${data["salesPerson"]}`
-                : "";
+            let sub = data.sub ? `${data["sub"]}` : "";
+            let location = customer && customer["billingAddress"]? customer['billingAddress']['state']:data.address ?data.address:""
             let buyer =
                 customer && customer.name
-                    ? `Buyer : ${customer["name"].toUpperCase()}`
+                    ? `${customer["name"].toUpperCase()}`
                     : "";
-            let attn =
-                data && data.attn ? `Kindly Attn :- ${data["attn"]}` : "";
+            let attn = data && data.attn ? `${data["attn"]}` : "";
 
             array = [
                 [
                     {
-                        label: buyer,
-                        type: "subheading",
+                        label: "Customer",
+                        type: "heading",
+                        value: buyer,
                     },
+                    { label: "Kindly Attn", value: attn, type: "subheading" },
+                    { label: "Address", value: location, type: "subheading" },
+
                     {
-                        label: sub,
-                        type: "subheading",
-                    },
-                    {
-                        label: executive,
-                        type: "subheading",
-                    },
-                    {
-                        label: attn,
+                        label: "Sub",
+                        value: sub,
                         type: "subheading",
                     },
                 ],
@@ -517,6 +511,11 @@ export const grandAndOtherChargesFormatter = (entity, data) => {
             label: " Tax IGST (28%)",
             value: data["igst28"],
         },
+        {
+            label: "Total Tax  Amount",
+            value: Math.floor(data["totalWithTax"] - data["grossTotal"]),
+        },
+    
     ];
 
     if (entity === "quotations") {
@@ -526,7 +525,7 @@ export const grandAndOtherChargesFormatter = (entity, data) => {
                 value: data["grossTotal"],
             },
             {
-                label: "TAX  AMOUNT",
+                label: "Total Tax  Amount",
                 value: Math.floor(data["totalWithTax"] - data["grossTotal"]),
             },
         ];

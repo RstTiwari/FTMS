@@ -5,7 +5,6 @@ import { useAuth } from "state/AuthProvider";
 import CoustomButton from "./Comman/CoustomButton";
 import CustomForm from "./CreateCustomForm";
 import NotificationHandler from "EventHandler/NotificationHandler";
-import AddressDetails from "./Comman/AddressDetails";
 import CustomDialog from "./CustomDialog";
 import { LoadingOutlined } from "@ant-design/icons";
 
@@ -265,7 +264,7 @@ const CustomProductSelect = ({
                     setValue(text);
                     setSearchText(text);
                 }}
-                onBlur={handleBlur} // ✅ now doesn’t cause data mutation
+                onBlur={handleBlur} 
                 style={{ width }}
                 getPopupContainer={(trigger) => document.body}
                 dropdownStyle={{

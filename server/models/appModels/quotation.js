@@ -12,14 +12,17 @@ const quotationSchema = new mongoose.Schema(
                 strictPopulate: false,
             },
         },
+        address:{
+            type:String
+        },
         status: {
             type: String,
             enum: ["DRAFT", "SEND", "CANCELLED", "ON HOLD"],
             default: "DRAFT",
         },
-        prefix:{
-            type:String,
-            default:"QOU",
+        prefix: {
+            type: String,
+            default: "QOU",
         },
         no: {
             type: Number,
@@ -27,17 +30,17 @@ const quotationSchema = new mongoose.Schema(
         },
         suffix: {
             type: String,
-            default:""
+            default: "",
         },
         quoteDate: {
             type: Date,
             required: true,
         },
-        attn:{
-            type: String,  
+        attn: {
+            type: String,
         },
-        message:{
-            type: String,  
+        message: {
+            type: String,
         },
         expiryDate: {
             type: Date,
@@ -107,7 +110,7 @@ const quotationSchema = new mongoose.Schema(
         },
         terms: [],
         notes: [],
-        specification:[],
+        specification: [],
         tenantId: {
             type: String,
             required: true,
@@ -115,7 +118,6 @@ const quotationSchema = new mongoose.Schema(
     },
     { timestamps: true, strictQuery: false }
 );
-
 
 quotationSchema.index(
     { tenantId: 1, no: 1, prefix: 1, suffix: 1 },

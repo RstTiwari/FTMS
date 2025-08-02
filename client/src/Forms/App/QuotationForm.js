@@ -1,29 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import {
-    Form,
-    Select,
-    Divider,
-    Space,
-    Input,
-    Button,
-    Row,
-    Col,
-    DatePicker,
-    InputNumber,
-    Typography,
-} from "antd";
-
-import { PlusOutlined, CloseOutlined, DeleteOutlined } from "@ant-design/icons";
-import { useMediaQuery } from "@mui/material";
-import { useAuth } from "state/AuthProvider";
-import CustomModal from "components/CustomProductSelect";
 import FormItemCol from "components/Comman/FormItemCol";
-import Taglabel from "components/Comman/Taglabel";
-import { jsDateIntoDayjsDate } from "Helper/EpochConveter";
-import TaxPercent from "components/Comman/TaxPercent";
 import CustomFormTableList from "./CustomFormTableList";
 import PaymentLayoutComponent from "./PaymentLayoutComponent";
-import CoustomerData from "Data/CoustomerData";
 
 const QuotationForm = ({ form,entity }) => {
     const handleItemsUpdate = (value, filedName, rowName) => {
@@ -129,6 +107,19 @@ const QuotationForm = ({ form,entity }) => {
                 }}
                 form={form}
                 preFillValue={form.getFieldValue("customer")?.name}
+            /> 
+
+            <FormItemCol
+                label={"Address"}
+                name={"address"}
+                type={"text"}
+                width={"30vw"}
+                labelCol={{ span: 8 }}
+                entityName="attn"
+                updateInForm={(value) => {
+                    handleItemsUpdate(value, "address");
+                }}
+                preFillValue={form.getFieldValue("address")}
             />
             <FormItemCol
                 name={"prefix"}
@@ -145,7 +136,7 @@ const QuotationForm = ({ form,entity }) => {
                 labelCol={{ span: 8 }}
                 width={"30vw"}
                 type={"counters"}
-            rules={[
+                rules={[
                     {
                         required: "true",
                         message: "Please Provide Quote No",
@@ -184,6 +175,21 @@ const QuotationForm = ({ form,entity }) => {
                     handleItemsUpdate(value, "quoteDate");
                 }}
             />
+
+   
+
+            <FormItemCol
+                label={"Attn"}
+                name={"attn"}
+                type={"text"}
+                width={"30vw"}
+                labelCol={{ span: 8 }}
+                entityName="attn"
+                updateInForm={(value) => {
+                    handleItemsUpdate(value, "attn");
+                }}
+                preFillValue={form.getFieldValue("attn")}
+            />
             <FormItemCol
                 label={"Sub"}
                 name={"sub"}
@@ -197,18 +203,6 @@ const QuotationForm = ({ form,entity }) => {
                     handleItemsUpdate(value, "sub");
                 }}
                 preFillValue={form.getFieldValue("sub")}
-            />
-            <FormItemCol
-                label={"Attn"}
-                name={"attn"}
-                type={"text"}
-                width={"30vw"}
-                labelCol={{ span: 8 }}
-                entityName="attn"
-                updateInForm={(value) => {
-                    handleItemsUpdate(value, "attn");
-                }}
-                preFillValue={form.getFieldValue("attn")}
             />
             <FormItemCol
                 label={"Sales Person"}
@@ -233,7 +227,6 @@ const QuotationForm = ({ form,entity }) => {
                     handleItemsUpdate(value, "message");
                 }}
                 preFillValue={form.getFieldValue("message")}
-              
             />
             <CustomFormTableList form={form} />
             <PaymentLayoutComponent form={form} />

@@ -143,9 +143,11 @@ const labelMap = {
                         </Row>
                     ))
                 ) : (
-                    <Row span={24} justify={"end"}>
+                   ""
+                )}
+                 <Row span={24} justify={"end"}>
                         <FormItemCol
-                            label="Tax Amount"
+                            label="Total Tax Amount"
                             name={"taxAmount"}
                             labelCol={{ span: 15 }}
                             labelAlign="left"
@@ -159,7 +161,6 @@ const labelMap = {
                             }
                         />
                     </Row>
-                )}
 
                 <Row span={24} justify={"end"}>
                     <FormItemCol

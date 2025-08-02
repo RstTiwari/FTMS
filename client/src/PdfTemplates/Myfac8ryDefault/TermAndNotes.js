@@ -6,36 +6,38 @@ const borderColor = "#ddd";
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 10,
-    paddingHorizontal: 5,
+    marginTop: 8,
+    paddingHorizontal: 4,
   },
   sectionWrapper: {
     borderWidth: 1,
     borderColor: borderColor,
     borderRadius: 3,
-    padding: 8,
-    marginBottom: 10,
+    paddingVertical: 4,
+    paddingHorizontal: 0, // remove side padding
+    marginBottom: 6,
   },
   sectionTitle: {
-    fontSize: 12,
+    fontSize: 9,
     fontFamily: "Helvetica-Bold",
     fontWeight: 1000,
-    marginBottom:1,
+    paddingVertical: 3,
+    paddingHorizontal: 4,
+    backgroundColor: "#f0f0f0", // Background color added
     textTransform: "uppercase",
-    textAlign: "center", // Center title text
+    textAlign: "center",
+    marginBottom: 2,
   },
   itemBox: {
-    borderWidth: 1,
+    borderTopWidth: 1,
     borderColor: borderColor,
-    borderRadius: 2,
-    padding:1,
-    marginBottom:1,
+    paddingVertical: 2,
+    paddingHorizontal: 4,
   },
   itemText: {
-    fontSize: 10,
+    fontSize: 9.5,
     fontFamily: "Helvetica",
-    textAlign: "left",
-    lineHeight: 1.4,
+    lineHeight: 1.3,
   },
   itemBullet: {
     fontWeight: "bold",

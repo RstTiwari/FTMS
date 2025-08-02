@@ -17,14 +17,18 @@ const styles = StyleSheet.create({
         borderRight: 1,
         borderColor: borderColor,
         padding: 8,
-        fontSize: 9,
+        fontSize: 6,
         textTransform: "uppercase",
+        justifyContent: "flex-start",
     },
     lastCell: {
         borderRight: 0,
+        justifyContent: "center",
+        alignItems: "center",
+        textAlign: "center",
     },
     line: {
-        marginTop: 10,
+        marginTop: 5,
         fontSize: 8,
         fontFamily: "Helvetica",
         textTransform: "capitalize",
@@ -36,26 +40,39 @@ const styles = StyleSheet.create({
         textAlign: "right",
         textTransform: "capitalize",
     },
+    companyName: {
+        fontFamily: "Helvetica-Bold",
+        fontSize: 9,
+    },
 });
 
 const SignatureBlock = ({ companyName = "Myfac8ry.com" }) => (
-    <View style={styles.container}>
+    <View
+        style={styles.container}
+        wrap={false} // This ensures it won't break mid-section
+        minPresenceAhead={80} // Prevents it from rendering unless there's space
+    >
         {/* Left Block */}
         <View style={styles.cell}>
             <Text>
-                CERTIFY THAT PARTICULAR GIVEN ABOVE ARE TRUE AND CORRECT
+                CERTIFY THAT THE PARTICULARS GIVEN ABOVE ARE TRUE AND CORRECT.
             </Text>
             <Text>
-                THE AMOUNT INDICATED REPRESENT THE PRICE ACTUAL CHARGED AND THAT
-                THERE IS NO ADDITIONAL CHARGES
+                THE AMOUNT INDICATED REPRESENTS THE PRICE ACTUALLY CHARGED AND
+                THAT THERE ARE NO ADDITIONAL CHARGES. WE HEREBY DECLARE THAT THE
+                TAX CHARGED IN THIS INVOICE IS PAYABLE UNDER THE APPLICABLE
+                LAWS.
             </Text>
-            <Text>JURISDICTION - VASAI</Text>
+            <Text>
+                JURISDICTION – VASAI. E. & O. E. THIS IS A COMPUTER-GENERATED
+                DOCUMENT AND DOES NOT REQUIRE A PHYSICAL SIGNATURE.
+            </Text>
             <Text style={styles.signatoryText}>(Receiver Signatory)</Text>
         </View>
 
-        {/* Right Block */}
+        {/* Right Block (Centered Content) */}
         <View style={[styles.cell, styles.lastCell]}>
-            <Text>{companyName}</Text>
+            <Text style={styles.companyName}>{companyName}</Text>
             <Text style={styles.line}>(Authorised Signatory)</Text>
         </View>
     </View>
