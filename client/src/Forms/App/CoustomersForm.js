@@ -48,6 +48,7 @@ const CoustomersForm = ({ form, disabled, isModal, style }) => {
                       labelAlign="left"
                       width={"30vw"}
                       name="phone"
+                    required
                       labelCol={{ span: isModal ? 18 : 8 }}
                       maxLength={10}
                       type={"number"}
@@ -68,7 +69,7 @@ const CoustomersForm = ({ form, disabled, isModal, style }) => {
                       width={"30vw"}
                       type={"text"}
                   />
-                       <FormItemCol
+                  <FormItemCol
                       label={"Pan No"}
                       labelAlign="left"
                       tooltip="this data  will be Encrypted then stored not visible to other people  accept access given  "
@@ -190,7 +191,19 @@ const CoustomersForm = ({ form, disabled, isModal, style }) => {
                           </Row>
                           <Row>
                               <Col xs={24} sm={24} lg={24} xl={24}>
-                     
+                                  <Form.Item
+                                      label={<CustomLabel label={"State"} />}
+                                      name={["billingAddress", "state"]}
+                                      labelAlign="left"
+                                      labelCol={{ span: isModal ? 8 : 5 }}
+                                  >
+                                      <Select
+                                          options={CustomerData.states}
+                                          style={{
+                                              width: isModal ? "100%" : "100%",
+                                          }}
+                                      />
+                                  </Form.Item>
                               </Col>
                           </Row>
                       </Col>
@@ -273,7 +286,6 @@ const CoustomersForm = ({ form, disabled, isModal, style }) => {
                   </Row>
               </TabPane>
               <TabPane tab="Other Details" key={3}>
-             
                   <FormItemCol
                       label={"MFG No"}
                       labelAlign="left"

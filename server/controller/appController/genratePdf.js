@@ -19,8 +19,8 @@ const generatePdf = async (req, res, next, forEmail) => {
             .populate([
                 {
                     path: "customer",
-                    select: "name billingAddress shippingAddress phone",
                     options: { strictPopulate: false },
+        
                 },
                 {
                     path: "vendor",
@@ -71,6 +71,7 @@ const generatePdf = async (req, res, next, forEmail) => {
         let entityPrefix = prefix?.prefix
             ? prefix.prefix
             : entity.slice(0, 2).toUpperCase();
+        console.log(entityData.customer)
 
         const templateId = "vipplay";
         let data = {}

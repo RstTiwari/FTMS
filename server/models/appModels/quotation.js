@@ -8,7 +8,7 @@ const quotationSchema = new mongoose.Schema(
             type: mongoose.Schema.ObjectId,
             ref: "customer",
             autopopulate: {
-                select: "name", // Specify fields to populate
+                select: "name billingAddress shippingAddress phone", // Specify fields to populate
                 strictPopulate: false,
             },
         },

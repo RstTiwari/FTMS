@@ -9,11 +9,11 @@ const TechnicalSpecification = ({ form, width = "75vw" }) => {
     // Handle input value change
     const handleItemUpdate = (e, fieldName, row) => {
         const value = e.target.value;
-        let terms = form.getFieldValue("specification") || [];
-        let tempObj = terms[row] || {};
+        let specification = form.getFieldValue("specification") || [];
+        let tempObj = specification[row] || {};
         tempObj[fieldName] = value;
-        terms[row] = tempObj;
-        form.setFieldsValue({ terms });
+        specification[row] = tempObj;
+        form.setFieldsValue({ specification });
     };
 
     return (
@@ -40,7 +40,7 @@ const TechnicalSpecification = ({ form, width = "75vw" }) => {
                                         onClick={() => add()}
                                         icon={<PlusOutlined />}
                                     >
-                                        Add TechnicalSpecification
+                                        Add Technical Specification
                                     </Button>
                                 </Row>
                                 {fields.map(

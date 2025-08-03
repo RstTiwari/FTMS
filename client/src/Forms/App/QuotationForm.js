@@ -97,6 +97,7 @@ const QuotationForm = ({ form,entity }) => {
                 name={"customer"}
                 labelAlign="left"
                 labelCol={{ span: 8 }}
+                required
                 type="options"
                 width={"30vw"}
                 entity={"customers"}
@@ -109,18 +110,6 @@ const QuotationForm = ({ form,entity }) => {
                 preFillValue={form.getFieldValue("customer")?.name}
             /> 
 
-            <FormItemCol
-                label={"Address"}
-                name={"address"}
-                type={"text"}
-                width={"30vw"}
-                labelCol={{ span: 8 }}
-                entityName="attn"
-                updateInForm={(value) => {
-                    handleItemsUpdate(value, "address");
-                }}
-                preFillValue={form.getFieldValue("address")}
-            />
             <FormItemCol
                 name={"prefix"}
                 labelAlign="left"

@@ -110,6 +110,7 @@ const PageHeader = ({ organization, entityData,entityDetails=[] ,entity}) => {
     tagLine,
     gstNo,
     panNo,
+    website,
   } = organization;
   const { street1, street2, city, state, pincode } = billingAddress;
      const isQuotation = entity === "quotations";
@@ -136,7 +137,8 @@ const PageHeader = ({ organization, entityData,entityDetails=[] ,entity}) => {
                   <Text style={styles.contactText}>
                       MOB - {phone}
                       {alternatePhone ? ` / ${alternatePhone}` : ""}, EMAIL -{" "}
-                      <Link>{email?.toUpperCase()}</Link>
+                      <Link>{email?.toUpperCase()}</Link> 
+                      {website ? (<Link>{website?.toUpperCase()}</Link> ):""}
                   </Text>
               </View>
           </View>

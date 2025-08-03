@@ -231,11 +231,15 @@ export const entityDetailsFormatter = (entity, data, organization) => {
 
         case "quotations":
             let sub = data.sub ? `${data["sub"]}` : "";
-            let location = customer && customer["billingAddress"]? customer['billingAddress']['state']:data.address ?data.address:""
+            let location = customer["billingAddress"] ? customer['billingAddress']['state']:""
             let buyer =
                 customer && customer.name
                     ? `${customer["name"].toUpperCase()}`
                     : "";
+            let contactNo =
+                    customer && customer.phone
+                        ? `${customer["phone"]}`
+                        : "";
             let attn = data && data.attn ? `${data["attn"]}` : "";
 
             array = [
@@ -245,14 +249,18 @@ export const entityDetailsFormatter = (entity, data, organization) => {
                         type: "heading",
                         value: buyer,
                     },
-                    { label: "Kindly Attn", value: attn, type: "subheading" },
-                    { label: "Address", value: location, type: "subheading" },
-
+                    {
+                        label: "Contact No ",
+                        type: "heading",
+                        value: contactNo,
+                    },
                     {
                         label: "Sub",
                         value: sub,
                         type: "subheading",
                     },
+                    { label: "Kindly Attn", value: attn, type: "subheading" },
+                    { label: "Address", value: location, type: "subheading" },
                 ],
             ];
             break;
