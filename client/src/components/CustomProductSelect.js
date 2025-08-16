@@ -264,7 +264,6 @@ const CustomProductSelect = ({
                     setValue(text);
                     setSearchText(text);
                 }}
-                onBlur={handleBlur} 
                 style={{ width }}
                 getPopupContainer={(trigger) => document.body}
                 dropdownStyle={{

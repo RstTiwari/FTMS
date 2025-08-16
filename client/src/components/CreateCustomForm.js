@@ -37,7 +37,6 @@ const CustomForm = ({
     const [loading, setLoading] = useState(false); // Track loading state
 
        const fetchPdfUrl = async (data) => {
-        setLoading(false)
         // let get the customer of vendor data
         let checkFilterKey = ["quotations","invoices","challans"].includes(entity) ? "customer":"vendor"
     
@@ -149,7 +148,7 @@ const CustomForm = ({
     };
 
     const openPreviewModal = () => {
-        if (!form.getFieldValue("customer")) {
+        if (!form.getFieldValue("customer") &&entity !== "workorders") {
             return NotificationHandler.error(
                 "Please Select customer to see pdf"
             );
@@ -166,9 +165,7 @@ const CustomForm = ({
     const defaultMessage = `Respected Sir/Madam,
 Kindly find attached Quote for the Play Equipments/Indoor Equipments/ Soft Play Equipments / Outdoor Gym Equipments / Rubber Flooring / Benches /Dustbins. Terms & Conditions for Supply, Installation, Services and Warranty are as follows`;
 
-if(loading){
-    return <PageLoader  text={"Please Wait for Preview"} isLoading={loading}/>
-}
+
   
 
     return (

@@ -64,21 +64,27 @@ const styles = StyleSheet.create({
 });
 
 const AmountAndBank = ({ amounts = [], bankDetails = {}, panNo = "", entity }) => {
+  const allowedEntities = ["invoices", "quotations", "purchase", "challans"];
+
+  const shouldShowBankDetails = allowedEntities.includes(entity);
+
   return (
     <View wrap={true}>
       <View style={styles.container}>
-        {/* Left: Bank Info */}
-        <View style={styles.leftSection}>
-          <View style={styles.subLeftSection}>
-            {Object.entries(bankDetails).map(([label, value], index) => (
-              <View key={index}>
-                <Text style={styles.bankItemLabel}>
-                  {label}:{value || "-"}
-                </Text>
-              </View>
-            ))}
+        {/* ✅ Conditionally render Left: Bank Info */}
+        {shouldShowBankDetails && (
+          <View style={styles.leftSection}>
+            <View style={styles.subLeftSection}>
+              {Object.entries(bankDetails).map(([label, value], index) => (
+                <View key={index}>
+                  <Text style={styles.bankItemLabel}>
+                    {label}: {value || "-"}
+                  </Text>
+                </View>
+              ))}
+            </View>
           </View>
-        </View>
+        )}
 
         {/* Right: Amounts */}
         {amounts.length > 0 && (

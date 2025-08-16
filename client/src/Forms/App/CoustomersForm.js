@@ -137,6 +137,14 @@ const CoustomersForm = ({ form, disabled, isModal, style }) => {
                           maxLength={10}
                           type={"number"}
                       />
+                        <FormItemCol
+                          width={"30vw"}
+                          name="isDemo"
+                          labelCol={{ span: 8 }}
+                          maxLength={10}
+                          hidden
+                          type={"number"}
+                      />
                       <FormItemCol
                           label={"Email"}
                           labelAlign="left"

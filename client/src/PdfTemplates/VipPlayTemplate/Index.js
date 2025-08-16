@@ -103,7 +103,7 @@ const Index = ({ entity, data }) => {
                         entity={entity}
                        
                     />
-                    <AmountInWords amount={amountInWords}/>
+                    <AmountInWords amount={amountInWords} entity={entity}/>
                     <TermsAndNotes terms={entityData?.terms} notes={entityData.notes} specification={entityData.specification}/>
                     <SignatureBlock  companyName ={organization.companyName}/>
                 </View>

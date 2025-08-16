@@ -174,8 +174,18 @@ const CustomCustomerSelect = ({
 
     const handleModalClose = (result) => {
         setValue(result?.name);
+      
+        const key = ["invoices", "quotations", "challans","customers"].includes(entity)
+          ? "customer"
+          : "vendor";
+      
+        form.setFieldsValue({
+          [key]: result._id,
+        });
+      
         setOpen(false);
-    };
+      };
+      
 
     useEffect(() => {
         if (preFillValue) {
