@@ -1,25 +1,48 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, Row, Col, Button, Input, Collapse } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { DeleteOutline } from "@mui/icons-material";
+import { useAuth } from "state/AuthProvider";
+import { useParams } from "react-router-dom";
+
+
+
 
 const { Panel } = Collapse;
 
 const TechnicalSpecification = ({ form, width = "75vw" }) => {
-    // Handle input value change
-    const handleItemUpdate = (e, fieldName, row) => {
-        const value = e.target.value;
-        let specification = form.getFieldValue("specification") || [];
-        let tempObj = specification[row] || {};
-        tempObj[fieldName] = value;
-        specification[row] = tempObj;
-        form.setFieldsValue({ specification });
-    };
+        const { adminApiCall } = useAuth();
+            const { tenantId } = useParams();
+        
+
+        const handleItemUpdate = (e, fieldName, row) => {
+            const value = e.target.value;
+            let specification = form.getFieldValue("specification") || [];
+            let tempObj = specification[row] || {};
+            tempObj[fieldName] = value;
+            specification[row] = tempObj;
+            form.setFieldsValue({ specification });
+        };
+        const fetchData = async () => {
+            const payload = {};
+            const params = { entity: "tenant" };
+            const { success, result, message } = await adminApiCall(
+                "get",
+                "read",
+                payload,
+                { entity: "tenant", tenantId: tenantId }
+            );
+            form.setFieldsValue({ specification: result.specification });
+        };
+
+        useEffect(() => {
+            fetchData();
+        });
 
     return (
         <Col style={{ width: width }}>
             <Collapse
-                defaultActiveKey={["2"]}
+                defaultActiveKey={["1"]}
                 expandIconPosition="right"
                 style={{ backgroundColor: "#fff", marginBottom: 16 }}
             >

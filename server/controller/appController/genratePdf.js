@@ -5,11 +5,10 @@ import tenantDb from "../../models/coreModels/Tenant.js";
 import colPreDb from "../../models/appModels/columnPrefrence.js";
 import checkDbForEntity from "../../Helper/databaseSelector.js";
 import countersDb from "../../models/appModels/counters.js";
-import pdftem2 from "../../template/pdfTemplate/pdftempalte2.js";
 
 const generatePdf = async (req, res, next, forEmail) => {
     try {
-        const { entity, id, tenantId } = req.query;
+        const { entity, id, tenantId,customer } = req.query;
         let dataBase = checkDbForEntity(entity);
         let entityData = await dataBase
             .findOne({
@@ -71,7 +70,6 @@ const generatePdf = async (req, res, next, forEmail) => {
         let entityPrefix = prefix?.prefix
             ? prefix.prefix
             : entity.slice(0, 2).toUpperCase();
-        console.log(entityData.customer)
 
         const templateId = "vipplay";
         let data = {}

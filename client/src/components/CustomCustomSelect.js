@@ -108,7 +108,7 @@ const CustomCustomerSelect = ({
     };
 
     const handleChange = (value, label) => {
-        setValue(value);
+        setValue(label.label);
         if (entity === "customers") {
             if (!initialRender) {
                 setInitialRender(true);
@@ -173,19 +173,7 @@ const CustomCustomerSelect = ({
     };
 
     const handleModalClose = (result) => {
-        fetchUpdatedOptions(); // Fetch updated options after adding new
-        if (entity === "products") {
-            let product = {
-                item: result,
-                label: result.productName,
-                value: result._id,
-            };
-            setValue(result?._id);
-            setOpen(false);
-            return handleChange(result?._id, product);
-        }
-        handleChange(result?._id);
-        setValue(result?._id);
+        setValue(result?.name);
         setOpen(false);
     };
 
@@ -198,7 +186,7 @@ const CustomCustomerSelect = ({
 
     return (
         <>
-            <Select
+            <AutoComplete
                 options={options}
                 value={value || ""}
                 disabled={disabled}
@@ -223,7 +211,7 @@ const CustomCustomerSelect = ({
                                     }}
                                 >
                                     {menu}
-                                </div>
+                                </div>.
                                 <Divider style={{ margin: "8px 0" }} />
                                 <Space style={{ padding: "0 8px 4px" }}>
                                     <CoustomButton

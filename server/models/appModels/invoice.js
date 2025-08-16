@@ -104,16 +104,7 @@ const invoiceSchema = new mongoose.Schema(
         otherCharges: [],
         grandTotal: {
             type: Number,
-        },
-        shippingAddress: {
-          name:{ type: String, required: true },
-          street1: { type: String, required: true },
-          street2: { type: String },
-          city: { type: String, required: true },
-          state: { type: String, required: true },
-          pincode: { type: String, required: true },
-        },
-        
+        },      
         // Detailed Tax Fields
         cgstAndSgst12: Number,
         cgstAndSgst18: Number,

@@ -72,6 +72,14 @@ const CustomInput = ({
                        
                     />
                 );
+            case "message":
+                    return (
+                        <TextArea
+                            readOnly={readOnly}
+                            {...restProps}
+                            style={{ width: width }}
+                        />
+                    );
         case "option":
             return (
               <ProductCategory

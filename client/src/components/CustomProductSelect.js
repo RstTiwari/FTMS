@@ -135,7 +135,7 @@ const CustomProductSelect = ({
     };
 
     const handleChange = (value, label) => {
-        setValue(value);
+        console.log(value,label)
         if (entity === "customers") {
             if (!initialRender) {
                 setInitialRender(true);

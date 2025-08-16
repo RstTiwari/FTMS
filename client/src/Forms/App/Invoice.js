@@ -5,6 +5,7 @@ import PaymentLayoutComponent from "./PaymentLayoutComponent";
 import { Button, Typography, Checkbox, Select, Form, Divider } from "antd"; // Use AntD Checkbox instead of MUI for consistency
 import CoustomerData from "Data/CoustomerData";
 import CustomLabel from "components/Comman/CustomLabel";
+import AddressComponent from "components/Comman/AddressComponent";
 
 const { Title } = Typography;
 
@@ -47,7 +48,7 @@ const QuotationForm = ({ form, entity }) => {
 
         if (fieldName === "customer") {
             form.setFieldsValue({ customer: value });
-            setCustomerSelected(true);
+            setCustomerSelected(value);
             return;
         }
 
@@ -112,7 +113,6 @@ const QuotationForm = ({ form, entity }) => {
             });
         }
     };
-    console.log(form.getFieldsValue(),"==")
     return (
         <div>
             {/* CUSTOMER SELECTION */}
@@ -133,7 +133,9 @@ const QuotationForm = ({ form, entity }) => {
 
             {customerSelected && (
                 <>
-                    <Title
+                   <AddressComponent  id={form.getFieldValue("customer")} 
+                   key={customerSelected?.id || customerSelected?.name} />
+                    {/* <Title
                         level={5}
                         style={{ marginBottom: 12, marginTop: 20 }}
                     >
@@ -214,7 +216,7 @@ const QuotationForm = ({ form, entity }) => {
                         />
                     </Form.Item>
 
-                    <Divider style={{ marginTop: 20, marginBottom: 10 }} />
+                    <Divider style={{ marginTop: 20, marginBottom: 10 }} /> */}
                 </>
             )}
 

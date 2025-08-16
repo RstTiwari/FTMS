@@ -10,12 +10,10 @@ const coustomerSchema = new mongoose.Schema(
         contactPerson: {
             type: String,
             sparse: true,
-
         },
         phone: {
             type: Number,
             sparse: true,
-
         },
         email: {
             type: String,
@@ -38,6 +36,13 @@ const coustomerSchema = new mongoose.Schema(
         msmebNo: {
             type: String,
         },
+
+        isDemo: {
+            type: Boolean,
+        },
+        address:{
+            type:String
+        },
         billingAddress: {
             street1: String,
             street2: String,
@@ -46,6 +51,7 @@ const coustomerSchema = new mongoose.Schema(
             pincode: Number,
         },
         shippingAddress: {
+            name:String,
             street1: String,
             street2: String,
             city: String,

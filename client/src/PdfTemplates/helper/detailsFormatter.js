@@ -130,18 +130,17 @@ export const customPageHeader = (entity, data, entityPrefix, organization) => {
 export const entityDetailsFormatter = (entity, data, organization) => {
     let array = [];
     let { customer, vendor } = data;
-    let billingAddress, shippingAddress, name;
+    let billingAddress, shippingAddress, billingName,shippingName;
     let vendorBillingAddress, vendorShippingAddress, vendorName;
     let orgBillingAddress, orgShippingAddress, orgName;
 
     if (customer) {
         billingAddress = customer["billingAddress"];
         shippingAddress = customer["shippingAddress"];
-        name = customer["name"];
+        billingName = customer["name"];
+        shippingName = shippingAddress && shippingAddress["name"]
     }
-    if (entity === "invoices") {
-        shippingAddress = data["shippingAddress"];
-    }
+   
 
     if (vendor) {
         vendorBillingAddress = vendor["billingAddress"];
@@ -157,8 +156,25 @@ export const entityDetailsFormatter = (entity, data, organization) => {
 
     switch (entity) {
         case "invoices":
-            const mergedBillingAddress = `${billingAddress?.street1} ${billingAddress?.street2}, ${billingAddress?.city},${billingAddress?.state} - ${billingAddress?.pincode}`;
-            const mergedShippingAddress = `${shippingAddress?.street1} ${shippingAddress?.street2}, ${shippingAddress?.city},${shippingAddress?.state} - ${shippingAddress?.pincode}`;
+            const mergedBillingAddress = [
+                billingAddress?.street1,
+                billingAddress?.street2,
+                billingAddress?.city,
+                billingAddress?.state,
+                billingAddress?.pincode,
+            ]
+                .filter(Boolean) // Removes falsy values
+                .join(", ");
+
+            const mergedShippingAddress = [
+                shippingAddress?.street1,
+                shippingAddress?.street2,
+                shippingAddress?.city,
+                shippingAddress?.state,
+                shippingAddress?.pincode,
+            ]
+                .filter(Boolean)
+                .join(", ");
 
             array = [
                 [
@@ -169,7 +185,7 @@ export const entityDetailsFormatter = (entity, data, organization) => {
                     },
                     {
                         label: "",
-                        value: customer && name?.toUpperCase(),
+                        value: billingName.toUpperCase(),
                         type: "subheading",
                     },
                     {
@@ -200,10 +216,7 @@ export const entityDetailsFormatter = (entity, data, organization) => {
                     },
                     {
                         label: "",
-                        value:
-                            (shippingAddress &&
-                                shippingAddress["name"]?.toUpperCase()) ||
-                            "",
+                        value: shippingName,
                         type: "subheading",
                     },
                     {
@@ -231,15 +244,30 @@ export const entityDetailsFormatter = (entity, data, organization) => {
 
         case "quotations":
             let sub = data.sub ? `${data["sub"]}` : "";
-            let location = customer["billingAddress"] ? customer['billingAddress']['state']:""
+            let location = customer?.billingAddress
+            ? [
+                customer.billingAddress.street1,
+                customer.billingAddress.street2,
+                customer.billingAddress.city,
+                customer.billingAddress.state,
+                customer.billingAddress.pincode,
+              ]
+                .filter(Boolean)
+                .join(", ")
+            : customer?.address || "";
+          
+          // Trim to 50 characters if too long
+          if (location.length > 50) {
+            location = location.slice(0, 47) + "...";
+          }
+          
+
             let buyer =
                 customer && customer.name
                     ? `${customer["name"].toUpperCase()}`
                     : "";
             let contactNo =
-                    customer && customer.phone
-                        ? `${customer["phone"]}`
-                        : "";
+                customer && customer.phone ? `${customer["phone"]}` : "";
             let attn = data && data.attn ? `${data["attn"]}` : "";
 
             array = [
@@ -249,11 +277,7 @@ export const entityDetailsFormatter = (entity, data, organization) => {
                         type: "heading",
                         value: buyer,
                     },
-                    {
-                        label: "Contact No ",
-                        type: "heading",
-                        value: contactNo,
-                    },
+
                     {
                         label: "Sub",
                         value: sub,
@@ -261,6 +285,11 @@ export const entityDetailsFormatter = (entity, data, organization) => {
                     },
                     { label: "Kindly Attn", value: attn, type: "subheading" },
                     { label: "Address", value: location, type: "subheading" },
+                    {
+                        label: "Contact No ",
+                        type: "heading",
+                        value: contactNo,
+                    },
                 ],
             ];
             break;

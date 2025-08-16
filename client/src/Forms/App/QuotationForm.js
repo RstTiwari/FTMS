@@ -109,9 +109,8 @@ const QuotationForm = ({ form,entity }) => {
                 form={form}
                 preFillValue={form.getFieldValue("customer")?.name}
             /> 
-
             <FormItemCol
-                name={"prefix"}
+                name={"value"}
                 labelAlign="left"
                 hidden={true}
                 labelCol={{ span: 8 }}
@@ -209,13 +208,14 @@ const QuotationForm = ({ form,entity }) => {
             <FormItemCol
                 label={"Message"}
                 name={"message"}
-                type={"textArea"}
+                type={"message"}
                 width={"30vw"}
                 labelCol={{ span: 8 }}
                 updateInForm={(value) => {
                     handleItemsUpdate(value, "message");
                 }}
                 preFillValue={form.getFieldValue("message")}
+                form ={form}
             />
             <CustomFormTableList form={form} />
             <PaymentLayoutComponent form={form} />

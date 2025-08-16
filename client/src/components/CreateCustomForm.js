@@ -9,6 +9,7 @@ import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import PageLoader from "pages/PageLoader";
 import { fetchTitleName } from "Helper/PageTitle";
+
 import PreviewModal from "./Comman/PDFPreviewModal";
 
 const CustomForm = ({
@@ -32,8 +33,34 @@ const CustomForm = ({
     const [isFormChanged, setIsFormChanged] = useState(false); // Track form changes
     const [open, setOpen] = useState(false);
     const [data,setData] = useState(null)
-    const closePreviewModal = () => setOpen(false);
+    const { pdfGenerate } = useAuth();
+    const [loading, setLoading] = useState(false); // Track loading state
 
+       const fetchPdfUrl = async (data) => {
+        setLoading(false)
+        // let get the customer of vendor data
+        let checkFilterKey = ["quotations","invoices","challans"].includes(entity) ? "customer":"vendor"
+    
+        let cusOrVenData = await appApiCall("get","get",{},{id:data[checkFilterKey],entity:`${checkFilterKey}s`})
+        data[checkFilterKey] = cusOrVenData.result
+           try {
+               const url = await pdfGenerate(
+                   entity,
+                   id,
+                   null,
+                   "display",
+                   tenantId,
+                   true,
+                   data
+               );
+               return window.open(url, "_blank");
+           } catch (error) {
+               console.error("Failed to generate PDF:", error);
+               setLoading(false);
+           }
+       };
+
+      
 
     const { isLoading, error, handleFormSubmit } = useFormActions(
         entity,
@@ -55,8 +82,6 @@ const CustomForm = ({
         form.setFieldsValue({
             terms: result.terms,
             specification: result.specification,
-            message: `Respected Sir/Madam,
-                            Kindly find attached Quote for the Play Equipments/Indoor Equipments/ Soft Play Equipments / Outdoor Gym Equipments / Rubber Flooring / Benches /Dustbins.Terms & Conditions for Supply, Installation, Services and Warranty are as follows`,
         });
     };
 
@@ -123,40 +148,36 @@ const CustomForm = ({
         setIsFormChanged(true);
     };
 
-    const openPreviewModal =()=>{
-        if(!form.getFieldValue("customer") && entity ==="invoices"){
-            return NotificationHandler.error("Please Select customer to see pdf")
-          }
-        setData(form.getFieldsValue())
-        setOpen(true)
-    }
+    const openPreviewModal = () => {
+        if (!form.getFieldValue("customer")) {
+            return NotificationHandler.error(
+                "Please Select customer to see pdf"
+            );
+        }
+        setData(form.getFieldsValue());
+        fetchPdfUrl(form.getFieldsValue());
+    };
 
     useEffect(() => {
         form.resetFields();
     }, [entity]);
 
     useEffect(() => {}, [form]);
+    const defaultMessage = `Respected Sir/Madam,
+Kindly find attached Quote for the Play Equipments/Indoor Equipments/ Soft Play Equipments / Outdoor Gym Equipments / Rubber Flooring / Benches /Dustbins. Terms & Conditions for Supply, Installation, Services and Warranty are as follows`;
 
-    if (open) {
-        return (
-            <PreviewModal
-                open={open}
-                onClose={() => setOpen(!open)}
-                entity={entity}
-                id={null}
-                no={null}
-                tenantId={tenantId}
-                callApi={true}
-                localData={data}
-            />
-        );
-    }
+if(loading){
+    return <PageLoader  text={"Please Wait for Preview"} isLoading={loading}/>
+}
+  
 
     return (
         <Form
             name={`${entity}Form`}
             form={form}
-            initialValues={{}}
+            initialValues={{
+                message:defaultMessage
+            }}
             onFinish={handleFormFinish}
             onFinishFailed={validateFields}
             onValuesChange={handleValuesChange}
@@ -202,11 +223,10 @@ const CustomForm = ({
                         SAVE
                     </Button>
                     <Button onClick={handleCloseModal}>CLOSE</Button>
-                    {/* Trigger custom close logic */}
                 </Col>
             </Row>
 
-            <CustomFormItem entity={entity} form={form} />
+            <CustomFormItem entity={entity} form={form}  isModal={isModal}/>
         </Form>
     );
 };

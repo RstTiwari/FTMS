@@ -16,9 +16,10 @@ const update = async (req, res, next) => {
 
         // Now let compare the data in both coming existing
         let modifiedObj = Object.assign(existingObj, values);
+        console.log(values,"===modified====")
         let updatedData = await database.updateOne(
             filter,
-            { $set: modifiedObj },
+            { $set: values },
             { req }
         );
         if (updatedData.modifiedCount === 0) {

@@ -147,7 +147,6 @@ export const AuthProvider = ({ children }) => {
           if (!response.success) {
               throw new Error("Network response was not ok");
           }
-          console.log(callApi,"callApi")
           if (callApi) {
               if (entity === "invoices") {
                   let response = await appApiCall(

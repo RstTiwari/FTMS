@@ -43,7 +43,6 @@ const labelMap = {
     igst18: "IGST (18%)",
 };
     
-    const [showOtherCharges, setShowOtherCharges] = useState();
     const capitalizeFirstLetter = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     };
