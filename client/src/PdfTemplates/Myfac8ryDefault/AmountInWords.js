@@ -37,3 +37,4 @@ const AmountInWords = ({ amount, entity }) => {
 };
 
 export default AmountInWords;
+// ####Kamatera2024####

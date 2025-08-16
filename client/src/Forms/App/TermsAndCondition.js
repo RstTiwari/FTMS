@@ -36,14 +36,13 @@ const TermsAndConditionsForm = ({ form, width = "75vw" }) => {
 
     useEffect(() => {
         fetchData();
-    },[form]);
+    });
 
     return (
         <Col style={{ width: width }}>
             <Collapse
                 defaultActiveKey={["1"]}
                 expandIconPosition="right"
-                destroyInactivePanel={false}
                 style={{ backgroundColor: "#fff", marginBottom: 16 }}
             >
                 <Panel header="Terms and Conditions" key="1">
