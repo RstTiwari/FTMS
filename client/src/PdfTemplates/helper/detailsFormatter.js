@@ -246,8 +246,6 @@ export const entityDetailsFormatter = (entity, data, organization) => {
             let sub = data.sub ? `${data["sub"]}` : "";
             let location = customer?.billingAddress
             ? [
-                customer.billingAddress.street1,
-                customer.billingAddress.street2,
                 customer.billingAddress.city,
                 customer.billingAddress.state,
                 customer.billingAddress.pincode,
@@ -257,8 +255,8 @@ export const entityDetailsFormatter = (entity, data, organization) => {
             : customer?.address || "";
           
           // Trim to 50 characters if too long
-          if (location.length > 50) {
-            location = location.slice(0, 47) + "...";
+          if (location.length >35) {
+            location = location.slice(0, 35) + "...";
           }
           
 
@@ -269,6 +267,11 @@ export const entityDetailsFormatter = (entity, data, organization) => {
             let contactNo =
                 customer && customer.phone ? `${customer["phone"]}` : "";
             let attn = data && data.attn ? `${data["attn"]}` : "";
+            if (buyer.length >35) {
+                buyer = buyer.slice(0, 35) + "...";
+              }
+              
+
 
             array = [
                 [

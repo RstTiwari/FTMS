@@ -41,7 +41,7 @@ const CustomFormTableList = ({ form }) => {
         if (filedName === "code" || filedName === "description") {
             let { details } = value;
             temObj.code = details?.code || "";
-            temObj.description = details?.name;
+            // temObj.description = details?.name;
             temObj.image = details?.image;
             temObj.hsnCode = details?.hsnCode || "";
             temObj.rate = details?.rate || 0;

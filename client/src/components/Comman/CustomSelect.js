@@ -16,7 +16,7 @@ import PageLoader from "pages/PageLoader";
 import { TagOutlined } from "@ant-design/icons";
 
 const 
-CustomSelect = ({
+CustomerSelect = ({
   entity,
   entityName,
   width = "15vw",
@@ -94,7 +94,7 @@ CustomSelect = ({
   return (
     <>
       {!open ? (
-        <Select
+        <AutoComplete
           value={value ? value : ""}
           options={options}
           onChange={handleChange}
@@ -182,4 +182,4 @@ CustomSelect = ({
   );
 };
 
-export default CustomSelect;
+export default CustomerSelect;

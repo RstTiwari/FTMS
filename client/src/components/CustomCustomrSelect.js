@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Modal, Select, Divider, Button, Row, Space, AutoComplete } from "antd";
 import { useAuth } from "state/AuthProvider";
+import { debounce } from "lodash";
 import CoustomButton from "./Comman/CoustomButton";
 import CustomForm from "./CreateCustomForm";
 import NotificationHandler from "EventHandler/NotificationHandler";
@@ -24,6 +25,8 @@ const CustomCustomerSelect = ({
     form,
 }) => {
     const [open, setOpen] = useState(false);
+    const [selectedValue, setSelectedValue] = useState("");
+    const [searchText, setSearchText] = useState("");
     const { appApiCall } = useAuth();
     const [value, setValue] = useState("");
     const [options, setOptions] = useState([]);
@@ -33,15 +36,14 @@ const CustomCustomerSelect = ({
     const [initialRender, setInitialRender] = useState(false);
     const [dataFetched, setDataFetched] = useState(false);
 
-    const [char, setChar] = useState("");
     const [dropdownVisible, setDropdownVisible] = useState(false);
 
-    // Close dropdown when the modal opens
     useEffect(() => {
         if (open) {
             setDropdownVisible(false);
         }
     }, [open]);
+    console.log(form.getFieldsValue(), "form in quotation");
 
     const handelClick = useCallback(async () => {
         if (!dataFetched) {
@@ -63,129 +65,82 @@ const CustomCustomerSelect = ({
         }
     }, [appApiCall, dataFetched, entity, fieldName]);
 
-    const fetchUpdatedOptions = async () => {
-        setIsLoading(true);
-        let response = await appApiCall(
-            "post",
-            "fetchCustomModalData",
-            {},
-            { entity, fieldName }
-        );
-        setIsLoading(false);
-        if (response.success) {
-            setOptions(response?.result);
-            setValue(response?.result?.[0]?.value || ""); // Update pre-selected value
-        } else {
-            NotificationHandler.error(response.message);
-        }
-    };
-
-    const debounce = (fun, delay) => {
-        let debounceTimer;
-        return function (...args) {
-            let context = this;
-            clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(() => fun.apply(context, args), delay);
-        };
-    };
-
-    const handelSearch = async (char) => {
-        setChar(char);
-        setIsLoading(true);
-        let response = await appApiCall(
-            "post",
-            "fetchSelectData",
-            {},
-            { entity, fieldName, char }
-        );
-        setIsLoading(false);
-        if (response.success) {
-            setOptions(response?.result);
-        } else {
-            setOptions([]);
-            NotificationHandler.error(response.message);
-        }
-    };
+    const debouncedFetch = useCallback(
+        debounce(async (char) => {
+            setIsLoading(true);
+            try {
+                setIsLoading(true);
+                let response = await appApiCall(
+                    "post",
+                    "fetchCustomModalData",
+                    {},
+                    { entity, fieldName, char }
+                );
+                setIsLoading(false);
+                if (response.success) {
+                    setOptions(response?.result);
+                }
+            } catch (error) {
+                console.error("Error fetching products", error);
+            } finally {
+                setIsLoading(false);
+            }
+        }, 500),
+        [] // will persist across renders
+    );
 
     const handleChange = (value, label) => {
-        setValue(label.label);
-        if (entity === "customers") {
-            if (!initialRender) {
-                setInitialRender(true);
-            }
-            if (label?.item?.billingAddress || !label?.item?.shippingAddress) {
-                setAddress({ billingAddress: null, shippingAddress: null });
-            }
-            setAddress({
-                billingAddress: label?.item?.billingAddress,
-                shippingAddress: label?.item?.shippingAddress,
-            });
-            setId(label?.item?._id);
-            // Updating in Purchase Order Forms
-            if (forDeliveryAddress) {
-                return updateInForm({
-                    to: label?.item?.name,
-                    address: label?.item?.shippingAddress,
-                    type: "customer",
-                });
-            }
-            return updateInForm(value);
-        } else if (entity === "products") {
-            return updateInForm({
-                description: label?.label,
-                rate: label?.item?.rate,
-                hsnCode: label?.item?.hsnCode,
-                details: label?.item,
-            });
-        } else if (entity === "vendors") {
-            if (!initialRender) {
-                setInitialRender(true);
-            }
-            if (label?.item?.billingAddress || !label?.item?.shippingAddress) {
-                setAddress({ billingAddress: null, shippingAddress: null });
-            }
-            setAddress({
-                billingAddress: label?.item?.billingAddress,
-                shippingAddress: label?.item?.shippingAddress,
-            });
-            setId(label?.item?._id);
-            // Updating in Purchase Order Forms
-            if (forDeliveryAddress) {
-                return updateInForm({
-                    to: label?.item?.name,
-                    address: label?.item?.shippingAddress,
-                    type: "vendor",
-                });
-            }
-
-            return updateInForm(value);
+        let address = undefined;
+        if (label.item && label.item.billingAddress) {
+            let { city, state, pincode } = label.item.billingAddress;
+            address = `${city},${state},${pincode}`;
         }
+        setSelectedValue(label.label);
+        form.setFieldsValue({
+            customer: value,
+            temCustomerName: null,
+            address: address,
+        });
+    };
+
+    const handleSearch = (v) => {
+        setSelectedValue(v);
+        setSearchText(v);
+        form.setFieldsValue({
+            customer: null,
+            temCustomerName: v,
+            address: null,
+        });
     };
     const openModal = () => {
         setOpen(true);
     };
 
-    const onCancel = () => {
-        setOpen(false);
-        if (preFillValue) {
-            setValue(preFillValue);
-        }
-    };
-
     const handleModalClose = (result) => {
-        setValue(result?.name);
-      
-        const key = ["invoices", "quotations", "challans","customers"].includes(entity)
-          ? "customer"
-          : "vendor";
-      
+        setSelectedValue(result?.name);
+
+        const key = [
+            "invoices",
+            "quotations",
+            "challans",
+            "customers",
+        ].includes(entity)
+            ? "customer"
+            : "vendor";
+        let address = undefined;
+        if (result && result.billingAddress) {
+            let { city, state, pincode } = result.billingAddress;
+            address = `${city}.${state},${pincode}`;
+        }
+
         form.setFieldsValue({
-          [key]: result._id,
+            [key]: result._id,
+            temCustomerName: null,
+            address: address,
         });
-      
+
         setOpen(false);
-      };
-      
+    };
 
     useEffect(() => {
         if (preFillValue) {
@@ -194,13 +149,23 @@ const CustomCustomerSelect = ({
         }
     }, [preFillValue]);
 
+    useEffect(() => {
+        if (searchText) {
+            debouncedFetch(searchText);
+        }
+    }, [searchText]);
+
     return (
         <>
             <AutoComplete
                 options={options}
-                value={value || ""}
+                value={selectedValue || ""}
                 disabled={disabled}
                 onClick={handelClick}
+                onSelect={handleChange}
+                onChange={(v) => {
+                    handleSearch(v);
+                }}
                 showSearch
                 style={{ width: width }}
                 getPopupContainer={(trigger) => document.body}
@@ -221,7 +186,8 @@ const CustomCustomerSelect = ({
                                     }}
                                 >
                                     {menu}
-                                </div>.
+                                </div>
+                                .
                                 <Divider style={{ margin: "8px 0" }} />
                                 <Space style={{ padding: "0 8px 4px" }}>
                                     <CoustomButton
@@ -240,14 +206,11 @@ const CustomCustomerSelect = ({
                         )}
                     </>
                 )}
-                onChange={handleChange}
                 onDropdownVisibleChange={(open) => {
                     setDropdownVisible(open);
                 }}
             />
 
-            {/* Customer/Vendor Address Details */}
-            {/* Add other components as needed */}
             <CustomDialog
                 entity={entity}
                 show={open}

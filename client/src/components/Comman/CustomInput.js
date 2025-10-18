@@ -15,7 +15,7 @@ import UserRole from "./UserRole";
 import UserPermission from "Forms/App/UserPermissionForm";
 import CoustomButton from "./CoustomButton";
 import { DeleteOutlined } from "@mui/icons-material";
-import CustomCustomerSelect from "components/CustomCustomSelect";
+import CustomCustomerSelect from "components/CustomCustomrSelect";
 import CustomProductSelect from "components/CustomProductSelect";
 import TextArea from "antd/es/input/TextArea";
 
@@ -147,7 +147,7 @@ const CustomInput = ({
                 <CustomCustomerSelect
                     entity={entity}
                     fieldName={fieldName}
-                    
+                    form={ form}
                     width={width}
                     preFillValue={preFillValue}
                     {...restProps}

@@ -88,8 +88,8 @@ const QuotationForm = ({ form,entity }) => {
             grandTotal: Math.ceil(grandTotal),
         });
     };
+    const [hideAddress,setHideAddress] = useState(false)
 
-    useEffect(() => {}, []);
     return (
         <div>
             <FormItemCol
@@ -97,7 +97,6 @@ const QuotationForm = ({ form,entity }) => {
                 name={"customer"}
                 labelAlign="left"
                 labelCol={{ span: 8 }}
-                required
                 type="options"
                 width={"30vw"}
                 entity={"customers"}
@@ -108,13 +107,28 @@ const QuotationForm = ({ form,entity }) => {
                 }}
                 form={form}
                 preFillValue={form.getFieldValue("customer")?.name}
-            /> 
-            <FormItemCol
-                name={"value"}
+            />
+              <FormItemCol
+                name={"temCustomerName"}
                 labelAlign="left"
+                labelCol={{ span: 8 }}
                 hidden={true}
+                width={"30vw"}
+            />
+            <FormItemCol
+                label={"Address"}
+                name={"address"}
+                labelAlign="left"
+                type={"text"}
+                required ={true}
                 labelCol={{ span: 8 }}
                 width={"30vw"}
+                rules={[
+                    {
+                        required: "true",
+                        message: "Please Provide  Address",
+                    },
+                ]}
             />
             <FormItemCol
                 label={"#Quote"}
@@ -164,8 +178,6 @@ const QuotationForm = ({ form,entity }) => {
                 }}
             />
 
-   
-
             <FormItemCol
                 label={"Attn"}
                 name={"attn"}
@@ -178,6 +190,7 @@ const QuotationForm = ({ form,entity }) => {
                 }}
                 preFillValue={form.getFieldValue("attn")}
             />
+
             <FormItemCol
                 label={"Sub"}
                 name={"sub"}
@@ -215,7 +228,7 @@ const QuotationForm = ({ form,entity }) => {
                     handleItemsUpdate(value, "message");
                 }}
                 preFillValue={form.getFieldValue("message")}
-                form ={form}
+                form={form}
             />
             <CustomFormTableList form={form} />
             <PaymentLayoutComponent form={form} />

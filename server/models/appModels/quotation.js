@@ -12,6 +12,9 @@ const quotationSchema = new mongoose.Schema(
                 strictPopulate: false,
             },
         },
+        temCustomerName:{
+            type:String
+        },
         address:{
             type:String
         },

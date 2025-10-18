@@ -7,6 +7,7 @@ import CustomForm from "./CreateCustomForm";
 import NotificationHandler from "EventHandler/NotificationHandler";
 import CustomDialog from "./CustomDialog";
 import { LoadingOutlined } from "@ant-design/icons";
+import { items } from "Data/LeadData";
 
 const CustomProductSelect = ({
     entity,
@@ -24,7 +25,7 @@ const CustomProductSelect = ({
 }) => {
     const [open, setOpen] = useState(false);
     const { appApiCall } = useAuth();
-    const [value, setValue] = useState("");
+    const [selectedValue, setSelectedValue] = useState("");
     const [options, setOptions] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [id, setId] = useState("");
@@ -86,108 +87,33 @@ const CustomProductSelect = ({
         [] // will persist across renders
     );
 
-    const handleSearch = (text) => {
-        setSearchText(text);
-    };
-    const handleBlur = (e) => {
-        const inputText = e.target.value;
-        setSearchText(inputText);
-        const items = form.getFieldValue("items");
-        let temObj = items[row];
-
-        // Preserve existing fields and just update description
-        const updatedItem = {
-            ...temObj,
-            description: inputText,
-        };
-
-        // Recalculate amounts
-        updatedItem.discountAmount = calculateDiscount(
-            updatedItem?.discountPercent || 0,
-            updatedItem?.rate || 0
-        );
-        updatedItem.taxAmount = calculateTaxAmount(
-            updatedItem?.gstPercent || 0,
-            updatedItem?.discountAmount || updatedItem.rate,
-            updatedItem?.qty || 0
-        );
-        updatedItem.finalAmount = updatedItem.discountAmount * updatedItem.qty;
-
-        items[row] = updatedItem;
-        form.setFieldsValue({ items });
-    };
-
-    const fetchUpdatedOptions = async () => {
-        setIsLoading(true);
-        let response = await appApiCall(
-            "post",
-            "fetchCustomModalData",
-            {},
-            { entity, fieldName }
-        );
-        if (response.success) {
-            setOptions(response?.result);
-            setValue(response?.result?.[0]?.value || ""); // Update pre-selected value
-        } else {
-            NotificationHandler.error(response.message);
-        }
-        setIsLoading(false);
-    };
-
     const handleChange = (value, label) => {
-        console.log(value,label)
-        if (entity === "customers") {
-            if (!initialRender) {
-                setInitialRender(true);
-            }
-            if (label?.item?.billingAddress || !label?.item?.shippingAddress) {
-                setAddress({ billingAddress: null, shippingAddress: null });
-            }
-            setAddress({
-                billingAddress: label?.item?.billingAddress,
-                shippingAddress: label?.item?.shippingAddress,
-            });
-            setId(label?.item?._id);
-            // Updating in Purchase Order Forms
-            if (forDeliveryAddress) {
-                return updateInForm({
-                    to: label?.item?.name,
-                    address: label?.item?.shippingAddress,
-                    type: "customer",
-                });
-            }
-            return updateInForm(value);
-        } else if (entity === "products") {
-            return updateInForm({
-                description: label?.label,
-                rate: label?.item?.rate,
-                hsnCode: label?.item?.hsnCode,
-                details: label?.item,
-            });
-        } else if (entity === "vendors") {
-            if (!initialRender) {
-                setInitialRender(true);
-            }
-            if (label?.item?.billingAddress || !label?.item?.shippingAddress) {
-                setAddress({ billingAddress: null, shippingAddress: null });
-            }
-            setAddress({
-                billingAddress: label?.item?.billingAddress,
-                shippingAddress: label?.item?.shippingAddress,
-            });
-            setId(label?.item?._id);
-            // Updating in Purchase Order Forms
-            if (forDeliveryAddress) {
-                return updateInForm({
-                    to: label?.item?.name,
-                    address: label?.item?.shippingAddress,
-                    type: "vendor",
-                });
-            }
-
-            return updateInForm(value);
-        }
+        console.log(row, form.getFieldsValue(), "forms",label);
+        const item = label.item;
+        const description = label.label;
+        setSelectedValue(label.label);
+        return updateInForm({
+            description: description,
+            rate: item?.rate,
+            hsnCode: item?.hsnCode,
+            details: item,
+        });
     };
+
+    const handleSearch = (text) => {
+        setSelectedValue(text);
+        setSearchText(text);
+        console.log("in update",text)
+        form.setFieldsValue({
+            items: {
+                [row]: {
+                    description: text,
+                },
+            },
+        });
+
+    };
+
     const openModal = () => {
         setOpen(true);
     };
@@ -213,22 +139,6 @@ const CustomProductSelect = ({
         temObj.finalAmount = temObj.discountAmount * temObj.qty;
         form.setFieldsValue({ items: items });
         setOpen(false);
-
-        // fetchUpdatedOptions(); // Fetch updated options after adding new
-        // console.log(entity,"entity" ,"===")
-        // if (entity === "products") {
-        //     let product = {
-        //         item: result,
-        //         label: result.productName,
-        //         value: result._id,
-        //     };
-        //     setValue(result?.name);
-        //     setOpen(false);
-        //     return handleChange(result?._id, product);
-        // }
-        // handleChange(result?._id);
-        // setValue(result?._id);
-        // setOpen(false);
     };
     const calculateTaxAmount = (taxPercent, rate, qty) => {
         let taxAmount = (rate * taxPercent) / 100;
@@ -247,7 +157,7 @@ const CustomProductSelect = ({
 
     useEffect(() => {
         if (preFillValue) {
-            setValue(preFillValue);
+            setSelectedValue(preFillValue);
             setAddress({ shippingAddress: preFillAddress, billingAddress: "" });
         }
     }, [preFillValue]);
@@ -256,14 +166,11 @@ const CustomProductSelect = ({
         <>
             <AutoComplete
                 options={options}
-                value={value}
+                value={selectedValue}
                 disabled={disabled}
                 onClick={handelClick}
                 onSelect={handleChange}
-                onSearch={(text) => {
-                    setValue(text);
-                    setSearchText(text);
-                }}
+                onSearch={handleSearch}
                 style={{ width }}
                 getPopupContainer={(trigger) => document.body}
                 dropdownStyle={{
