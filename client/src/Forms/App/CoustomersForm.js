@@ -27,7 +27,7 @@ const CoustomersForm = ({ form, disabled, isModal, style }) => {
 
     return (
         <div>
-            {isModal && (
+            
                 <Tabs>
                     <TabPane tab="General Info" key={1}>
                         <FormItemCol
@@ -402,7 +402,7 @@ const CoustomersForm = ({ form, disabled, isModal, style }) => {
                         />
                     </TabPane>
                 </Tabs>
-            )}
+            
         </div>
     );
 };

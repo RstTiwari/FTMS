@@ -17,6 +17,7 @@ const purchaseOrderSchema = new mongoose.Schema({
     no: {
         type: Number,
         required: true,
+        sparse:true
     },
     suffix: {
         type: String,

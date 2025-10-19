@@ -263,7 +263,7 @@ export const entityDetailsFormatter = (entity, data, organization) => {
             let buyer =
                 customer && customer.name
                     ? `${customer["name"].toUpperCase()}`
-                    : "";
+                    : data['temCustomerName'];
             let contactNo =
                 customer && customer.phone ? `${customer["phone"]}` : "";
             let attn = data && data.attn ? `${data["attn"]}` : "";

@@ -27,6 +27,7 @@ import useInitialFormValues from "Hook/useIntialFormValues";
 import TaxPercent from "components/Comman/TaxPercent";
 import CustomFormTableList from "./CustomFormTableList";
 import PaymentLayoutComponent from "./PaymentLayoutComponent";
+import AddressComponent from "components/Comman/AddressComponent";
 
 const PurchaseOrder = ({ form, value, disabled, isUpdate,entity }) => {
   const [isOrganizationChecked, setIsOrganizationChecked] = useState(false);
@@ -199,6 +200,7 @@ const PurchaseOrder = ({ form, value, disabled, isUpdate,entity }) => {
                   handleItemsUpdate(value, "vendorName");
               }}
               preFillValue={form.getFieldValue("vendor")?.name}
+              form = {form}
           />
           <FormItemCol
               label={"#PURCHASE"}
@@ -314,27 +316,6 @@ const PurchaseOrder = ({ form, value, disabled, isUpdate,entity }) => {
                   </Col>
               </Row>
               <Row>
-                  {isOrganizationChecked && (
-                      <Col
-                          xs={24}
-                          sm={24}
-                          md={{ span: 8 }}
-                          lg={{ span: 8 }}
-                          xl={{ span: 8 }}
-                      >
-                          <AddressDetails
-                              id={tenantId}
-                              initialRender={true}
-                              entityName={"Delivery Address"}
-                              address={delivery?.address}
-                              to={delivery?.to}
-                              keyName={"deliveryAddress"}
-                              entity={"tenant"}
-                              updateInForm={updateDeliveryAddress}
-                          />
-                      </Col>
-                  )}
-
                   {isCustomerChecked && (
                       <Col
                           xs={24}
@@ -357,6 +338,7 @@ const PurchaseOrder = ({ form, value, disabled, isUpdate,entity }) => {
                                   form.getFieldValue("delivery")?.address
                               }
                               forDeliveryAddress={true}
+                              form ={form}
                               xl={6}
                               lg={6}
                           />
@@ -384,11 +366,28 @@ const PurchaseOrder = ({ form, value, disabled, isUpdate,entity }) => {
                                   form.getFieldValue("delivery")?.address
                               }
                               forDeliveryAddress={true}
+                              form ={form}
+
                               xl={6}
                               lg={6}
                           />
                       </Col>
                   )}
+                     {isOrganizationChecked && (
+                      <Col
+                          xs={24}
+                          sm={24}
+                          md={{ span: 8 }}
+                          lg={{ span: 24 }}
+                          xl={{ span: 24}}
+                      >
+                          <AddressComponent
+                              id={tenantId}
+                              entity={"tenant"}
+                          />
+                      </Col>
+                  )}
+
               </Row>{" "}
           </div>
 

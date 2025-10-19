@@ -129,94 +129,14 @@ const QuotationForm = ({ form, entity }) => {
                 fieldName="name"
                 updateInForm={(value) => handleItemsUpdate(value, "customer")}
                 preFillValue={form.getFieldValue("customer")?.name}
+                form ={form}
             />
 
             {customerSelected && (
                 <>
-                   <AddressComponent  id={form.getFieldValue("customer")} 
+                   <AddressComponent  id={form.getFieldValue("customer")}  entity={"customers"}
                    key={customerSelected?.id || customerSelected?.name} />
-                    {/* <Title
-                        level={5}
-                        style={{ marginBottom: 12, marginTop: 20 }}
-                    >
-                        Shipping Address
-                    </Title>
-                    <FormItemCol
-                        name={["shippingAddress", "name"]}
-                        label="Company Name"
-                        type="text"
-                        required
-                        labelAlign="left"
-                        labelCol={{ span: 8 }}
-                        width="30vw"
-                        disabled={disabled}
-                    />
-                    <FormItemCol
-                        name={["shippingAddress", "street1"]}
-                        label="Street 1"
-                        type="text"
-                        required
-                        labelAlign="left"
-                        labelCol={{ span: 8 }}
-                        width="30vw"
-                        disabled={disabled}
-                    />
-                    <FormItemCol
-                        name={["shippingAddress", "street2"]}
-                        label="Street 2"
-                        type="text"
-                        labelAlign="left"
-                        labelCol={{ span: 8 }}
-                        width="30vw"
-                        disabled={disabled}
-                    />
-                    <FormItemCol
-                        name={["shippingAddress", "city"]}
-                        label="City"
-                        type="text"
-                        required
-                        labelAlign="left"
-                        labelCol={{ span: 8 }}
-                        width="30vw"
-                        disabled={disabled}
-                    />
-                    <FormItemCol
-                        name={["shippingAddress", "pincode"]}
-                        label="Pincode"
-                        type="number"
-                        required
-                        labelAlign="left"
-                        labelCol={{ span: 8 }}
-                        width="30vw"
-                        disabled={disabled}
-                    />
-
-                    <Form.Item
-                        label={<CustomLabel label="State" required={true} />}
-                        name={["shippingAddress", "state"]}
-                        labelAlign="left"
-                        labelCol={{ span: 4 }}
-                        rules={[
-                            {
-                                required: true,
-                                message: "Please select a state",
-                            },
-                        ]}
-                        style={{ marginBottom: 16 }}
-                    >
-                        <Select
-                            options={CoustomerData.states}
-                            style={{ width: "30vw" }}
-                            disabled={disabled}
-                            onSelect={(value) =>
-                                form.setFieldsValue({
-                                    shippingAddress: { state: value },
-                                })
-                            }
-                        />
-                    </Form.Item>
-
-                    <Divider style={{ marginTop: 20, marginBottom: 10 }} /> */}
+               
                 </>
             )}
 

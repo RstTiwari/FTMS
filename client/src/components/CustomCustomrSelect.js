@@ -43,7 +43,6 @@ const CustomCustomerSelect = ({
             setDropdownVisible(false);
         }
     }, [open]);
-    console.log(form.getFieldsValue(), "form in quotation");
 
     const handelClick = useCallback(async () => {
         if (!dataFetched) {
@@ -98,9 +97,10 @@ const CustomCustomerSelect = ({
         setSelectedValue(label.label);
         form.setFieldsValue({
             customer: value,
-            temCustomerName: null,
+            temCustomerName: null, // only for quotation
             address: address,
         });
+        return updateInForm(value)
     };
 
     const handleSearch = (v) => {
@@ -144,7 +144,7 @@ const CustomCustomerSelect = ({
 
     useEffect(() => {
         if (preFillValue) {
-            setValue(preFillValue);
+            setSelectedValue(preFillValue);
             setAddress({ shippingAddress: preFillAddress, billingAddress: "" });
         }
     }, [preFillValue]);
@@ -163,9 +163,7 @@ const CustomCustomerSelect = ({
                 disabled={disabled}
                 onClick={handelClick}
                 onSelect={handleChange}
-                onChange={(v) => {
-                    handleSearch(v);
-                }}
+                onChange={handleSearch}
                 showSearch
                 style={{ width: width }}
                 getPopupContainer={(trigger) => document.body}

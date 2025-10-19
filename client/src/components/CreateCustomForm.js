@@ -7,10 +7,8 @@ import "../App.css";
 import CustomFormItem from "../module/Create/CreateModule";
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
-import PageLoader from "pages/PageLoader";
 import { fetchTitleName } from "Helper/PageTitle";
 
-import PreviewModal from "./Comman/PDFPreviewModal";
 
 const CustomForm = ({
     entityOfModal,
@@ -148,11 +146,6 @@ const CustomForm = ({
     };
 
     const openPreviewModal = () => {
-        if (!form.getFieldValue("customer") &&entity !== "workorders") {
-            return NotificationHandler.error(
-                "Please Select customer to see pdf"
-            );
-        }
         setData(form.getFieldsValue());
         fetchPdfUrl(form.getFieldsValue());
     };

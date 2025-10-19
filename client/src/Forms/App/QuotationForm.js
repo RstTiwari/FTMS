@@ -106,7 +106,7 @@ const QuotationForm = ({ form,entity }) => {
                     handleItemsUpdate(value, "customer");
                 }}
                 form={form}
-                preFillValue={form.getFieldValue("customer")?.name}
+                preFillValue={form.getFieldValue("customer")?.name || form.getFieldValue("temCustomerName")}
             />
               <FormItemCol
                 name={"temCustomerName"}

@@ -144,11 +144,18 @@ const VendorsForm = ({ form, disabled, isModal }) => {
                                 <Col xs={24} sm={24} lg={24} xl={24}>
                                     <Form.Item
                                         label={
-                                            <CustomLabel label={"Street1"} />
+                                            <CustomLabel label={"Street1"}required={true} />
                                         }
                                         name={["billingAddress", "street1"]}
                                         labelAlign="left"
                                         labelCol={{ span: isModal ? 8 : 5 }}
+                                        required={true}
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "Please Provide Stree1 In Address Details",
+                                            },
+                                        ]}
                                     >
                                         <Input />
                                     </Form.Item>
@@ -171,10 +178,17 @@ const VendorsForm = ({ form, disabled, isModal }) => {
                             <Row>
                                 <Col xs={24} sm={24} lg={24} xl={24}>
                                     <Form.Item
-                                        label={<CustomLabel label={"City"} />}
+                                        label={<CustomLabel label={"City"} required={true} />}
                                         name={["billingAddress", "city"]}
                                         labelAlign="left"
                                         labelCol={{ span: isModal ? 8 : 5 }}
+                                        required
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "Please Provide City In Address Details",
+                                            },
+                                        ]}
                                     >
                                         <Input />
                                     </Form.Item>
@@ -184,11 +198,18 @@ const VendorsForm = ({ form, disabled, isModal }) => {
                                 <Col xs={24} sm={24} lg={24} xl={24}>
                                     <Form.Item
                                         label={
-                                            <CustomLabel label={"Pincode"} />
+                                            <CustomLabel label={"Pincode"} required={true} />
                                         }
                                         name={["billingAddress", "pincode"]}
                                         labelAlign="left"
                                         labelCol={{ span: isModal ? 8 : 5 }}
+                                        required ={true}
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "Please Provide Pincode In Address Details",
+                                            },
+                                        ]}
                                     >
                                         <Input />
                                     </Form.Item>
