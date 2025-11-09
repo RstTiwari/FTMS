@@ -38,10 +38,10 @@ const UpdateCustomForm = ({ isModal = false, entity, id, closeModal }) => {
                 { entity: "tenant", tenantId: tenantId }
             );
             if(!form.getFieldValue("terms") || form.getFieldValue("terms").length <1){
-                form.setFieldValue("terms",result.terms)
+                form.setFieldValue("terms",result?.terms)
             }
             if(!form.getFieldValue("specification") || form.getFieldValue("specification").length < 1){
-                form.setFieldValue("specification",result.specification)
+                form.setFieldValue("specification",result?.specification)
             }
             if (!form.getFieldValue("message") || form.getFieldValue("message").length < 1) {
                 form.setFieldValue(

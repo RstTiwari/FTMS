@@ -4,7 +4,7 @@ import { taxPercent } from "../../Data/PaymentReceivedData";
 const TaxPercent = ({
     entity,
     entityName,
-    width = "15vw",
+    width = "100%",
     updateInForm,
     preFillValue,
 }) => {

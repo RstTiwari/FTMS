@@ -77,8 +77,8 @@ const CustomForm = ({
         );
         
         form.setFieldsValue({
-            terms: result.terms,
-            specification: result.specification,
+            terms: result?.terms,
+            specification: result?.specification,
         });
     };
 
@@ -180,7 +180,7 @@ Kindly find attached Quote for the Play Equipments/Indoor Equipments/ Soft Play 
                     <h3>{`NEW ${fetchTitleName(entity)?.toUpperCase()}`}</h3>
                 </Col>
                 <Col span={12} style={{ textAlign: "right" }}>
-                    {[
+                    {/* {[
                         "purchases",
                         "invoices",
                         "quotations",
@@ -198,7 +198,7 @@ Kindly find attached Quote for the Play Equipments/Indoor Equipments/ Soft Play 
                         >
                             VIEW PDF
                         </Button>
-                    )}
+                    )} */}
 
                     <Button
                         htmlType="submit"

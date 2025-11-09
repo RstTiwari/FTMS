@@ -298,12 +298,9 @@ export const entityDetailsFormatter = (entity, data, organization) => {
             break;
 
         case "purchases":
-            const vendorComBillingAddress = `${vendorBillingAddress?.street1} ${vendorBillingAddress?.street2}, ${vendorBillingAddress?.city},${vendorBillingAddress?.state} - ${vendorBillingAddress?.pincode}`;
-            const orgComBillingAddress = `${orgBillingAddress?.street1} ${orgBillingAddress?.street2}, ${orgBillingAddress?.city},${orgBillingAddress?.state} - ${orgBillingAddress?.pincode}`;
-            console.log(entity, data, organization);
-            let deliveryAddress =
-                data && data["delivery"] && data["delivery"]["address"];
-            const delComAddress = `${deliveryAddress?.street1} ${deliveryAddress?.street2}, ${deliveryAddress?.city},${deliveryAddress?.state} - ${deliveryAddress?.pincode}`;
+            const vendorComBillingAddress = formatAddress(vendorBillingAddress);
+            const orgComBillingAddress = formatAddress(orgBillingAddress);
+            let delComAddress = formatAddress(data["delivery"])
             let deliverTo = data && data["delivery"] && data["delivery"]["to"];
 
             array = [
@@ -356,10 +353,8 @@ export const entityDetailsFormatter = (entity, data, organization) => {
             break;
 
         case "challans":
-            const challanBillingAddress = `${orgBillingAddress?.street1} ${orgBillingAddress?.street2}, ${orgBillingAddress?.city},${orgBillingAddress?.state} - ${orgBillingAddress?.pincode}`;
-            let address =
-                data && data["delivery"] && data["delivery"]["address"];
-            const challanShippingAddress = `${address?.street1} ${address?.street2}, ${address?.city},${address?.state} - ${address?.pincode}`;
+            const challanBillingAddress = formatAddress(orgBillingAddress)
+            let challanShippingAddress = formatAddress(data["delivery"])
             let challanTo = data && data["delivery"] && data["delivery"]["to"];
 
             array = [
@@ -787,3 +782,20 @@ export const numberToWordsIndian = (amount) => {
 
     return numberToWords(amount) + " RUPEES ONLY";
 };
+
+
+const formatAddress = (addr) => {
+  if (!addr) return "";
+
+  const parts = [
+    addr.street1,
+    addr.street2,
+    addr.city,
+    addr.state && addr.state.trim() ? `${addr.state}` : "",
+    addr.pincode ? `- ${addr.pincode}` : "",
+  ];
+
+  // Filter out falsy values like undefined, null, empty strings
+  return parts.filter(Boolean).join(", ").replace(/\s+,/g, ",");
+};
+

@@ -8,6 +8,7 @@ import useInitialFormValues from "Hook/useIntialFormValues";
 import { Row,Col,Checkbox ,Form} from "antd";
 import Taglabel from "components/Comman/Taglabel";
 import AddressDetails from "components/Comman/AddressDetails";
+import DeliveryAddressDropdown from "components/Comman/DeliveryAdress";
 
 const DeliveryChallan = ({ form,isUpdate,entity }) => {
   const isLaptop = useMediaQuery("(min-width:1000px)");
@@ -220,7 +221,7 @@ const DeliveryChallan = ({ form,isUpdate,entity }) => {
                       <Form.Item
                           label={
                               <Taglabel
-                                  text={"Delivery To"}
+                                  text={"Delivery Address"}
                                   type={"forFormField"}
                               />
                           }
@@ -235,77 +236,11 @@ const DeliveryChallan = ({ form,isUpdate,entity }) => {
                               },
                           ]}
                       >
-                          <Checkbox
-                              checked={isCustomerChecked}
-                              onChange={() => handleCheckboxChange("customer")}
-                          >
-                              CUSTOMER
-                          </Checkbox>
-                          <Checkbox
-                              checked={isVendorChecked}
-                              onChange={() => handleCheckboxChange("vendor")}
-                          >
-                              VENDOR
-                          </Checkbox>
+                       <DeliveryAddressDropdown />
                       </Form.Item>
                   </Col>
               </Row>
-              <Row>
-                  {isCustomerChecked && (
-                      <Col
-                          xs={24}
-                          sm={24}
-                          md={{ span: 24 }}
-                          lg={{ span: 24 }}
-                          xl={{ span: 24 }}
-                      >
-                          <FormItemCol
-                              name={"customer"}
-                              labelAlign="left"
-                              type={"options"}
-                              entity={"customers"}
-                              width={"25vw"}
-                              fieldName={"name"}
-                              onlyShippingAddress={true}
-                              updateInForm={updateDeliveryAddress}
-                              preFillValue={form.getFieldValue("delivery")?.to}
-                              preFillAddress={
-                                  form.getFieldValue("delivery")?.address
-                              }
-                              forDeliveryAddress={true}
-                              xl={6}
-                              lg={6}
-                          />
-                      </Col>
-                  )}
-                  {isVendorChecked && (
-                      <Col
-                          xs={24}
-                          sm={24}
-                          md={{ span: 24 }}
-                          lg={{ span: 24 }}
-                          xl={{ span: 24 }}
-                      >
-                          <FormItemCol
-                              name={"vendor"}
-                              labelAlign="left"
-                              type={"modal"}
-                              entity={"vendors"}
-                              width={"25vw"}
-                              fieldName={"name"}
-                              updateInForm={updateDeliveryAddress}
-                              onlyShippingAddress={true}
-                              preFillValue={form.getFieldValue("delivery")?.to}
-                              preFillAddress={
-                                  form.getFieldValue("delivery")?.address
-                              }
-                              forDeliveryAddress={true}
-                              xl={6}
-                              lg={6}
-                          />
-                      </Col>
-                  )}
-              </Row>{" "}
+             
           </div>
 
           <CustomFormTableList form={form} />

@@ -30,7 +30,7 @@ const TermsAndConditionsForm = ({ form, width = "75vw" }) => {
             payload,
             { entity: "tenant", tenantId: tenantId }
         );
-        form.setFieldsValue({terms:result.terms})
+        form.setFieldsValue({terms:result?.terms})
 
     };
 

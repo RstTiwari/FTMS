@@ -1,7 +1,7 @@
-import data from "../Script/vipplaymyfac8ry.customer.json" assert { type: "json" };
-import productData from "../Script/vipplaymyfac8ry.product.json" assert { type: "json" };
-import invoiceData from "../Script/vipplaymyfac8ry.invoice.json" assert { type: "json" };
-import quoteData from "../Script/vipplaymyfac8ry.quotation.json" assert { type: "json" };
+import data from "../Script/vipplaymyfac8ry.customer.json" with { type: "json" };
+import productData from "../Script/vipplaymyfac8ry.product.json" with { type: "json" };
+import invoiceData from "../Script/vipplaymyfac8ry.invoice.json" with { type: "json" };
+import quoteData from "../Script/vipplaymyfac8ry.quotation.json" with { type: "json" };
 
 import checkDbForEntity from "../Helper/databaseSelector.js";
 import Fuse from "fuse.js";

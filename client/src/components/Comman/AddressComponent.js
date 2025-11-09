@@ -15,7 +15,7 @@ import FormItemCol from "./FormItemCol";
 import CustomLabel from "./CustomLabel";
 import CoustomerData from "Data/CoustomerData";
 
-const AddressComponent = ({ id, entity }) => {
+const AddressComponent = ({ id, entity,showShipping }) => {
     const { appApiCall } = useAuth();
     const [form] = Form.useForm();
 
@@ -150,7 +150,10 @@ const AddressComponent = ({ id, entity }) => {
         <div>
             {data && (
                 <Row gutter={24} style={{ marginBottom: 16 }}>
-                    {renderAddressBlock("billing")}
+                    {
+                        !showShipping && renderAddressBlock("billing")
+
+                    }
                     {renderAddressBlock("shipping")}
                 </Row>
             )}

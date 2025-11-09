@@ -120,11 +120,15 @@ const tenantSpecificData = {
             label: "HSN",
             value: "hsnCode",
         },
+         {
+            label: "GST%",
+            value: "gstPercent",
+        },
         {
             label: "DIS%",
             value: "discountPercent",
         },
-  {
+        {
             label: "DIS AMT",
             value: "discountAmount",
         },

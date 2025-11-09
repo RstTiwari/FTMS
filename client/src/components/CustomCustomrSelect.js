@@ -22,6 +22,7 @@ const CustomCustomerSelect = ({
     onlyShippingAddress,
     forDeliveryAddress,
     subEntity,
+    addressFor,
     form,
 }) => {
     const [open, setOpen] = useState(false);
@@ -89,6 +90,7 @@ const CustomCustomerSelect = ({
     );
 
     const handleChange = (value, label) => {
+        console.log(subEntity,"==",addressFor)
         let address = undefined;
         if (label.item && label.item.billingAddress) {
             let { city, state, pincode } = label.item.billingAddress;
@@ -99,8 +101,8 @@ const CustomCustomerSelect = ({
             customer: value,
             temCustomerName: null, // only for quotation
             address: address,
-        });
-        return updateInForm(value)
+        });       
+        return updateInForm(value,label)
     };
 
     const handleSearch = (v) => {
@@ -111,6 +113,7 @@ const CustomCustomerSelect = ({
             temCustomerName: v,
             address: null,
         });
+       
     };
     const openModal = () => {
         setOpen(true);

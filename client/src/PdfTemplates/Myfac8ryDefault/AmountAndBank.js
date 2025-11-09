@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
 });
 
 const AmountAndBank = ({ amounts = [], bankDetails = {}, panNo = "", entity }) => {
-  const allowedEntities = ["invoices", "quotations", "purchase", "challans"];
+  const allowedEntities = ["invoices", "quotations", "challans"];
 
   const shouldShowBankDetails = allowedEntities.includes(entity);
 
@@ -72,7 +72,7 @@ const AmountAndBank = ({ amounts = [], bankDetails = {}, panNo = "", entity }) =
     <View wrap={true}>
       <View style={styles.container}>
         {/* ✅ Conditionally render Left: Bank Info */}
-        {shouldShowBankDetails && (
+        {shouldShowBankDetails ? (
           <View style={styles.leftSection}>
             <View style={styles.subLeftSection}>
               {Object.entries(bankDetails).map(([label, value], index) => (
@@ -83,6 +83,12 @@ const AmountAndBank = ({ amounts = [], bankDetails = {}, panNo = "", entity }) =
                 </View>
               ))}
             </View>
+          </View>
+        ) : (
+          <View style={styles.leftSection}>
+            {
+              //Empty space
+            }
           </View>
         )}
 

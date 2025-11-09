@@ -37,6 +37,7 @@ const CustomFormTableList = ({ form }) => {
 
     const handleItemsUpdate = (value, filedName, rowName) => {    
         const items = form.getFieldValue("items");
+        console.log(items,"===")
         let temObj = items[rowName];
         if (filedName === "code" || filedName === "description") {
             let { details } = value;
@@ -131,7 +132,6 @@ const CustomFormTableList = ({ form }) => {
         });
 
         // Add tax breakdown into for
-        console.log("values","===","code till here",isIntraState)
         form.setFieldsValue({
             cgstAndSgst12: Math.ceil(cgstAndSgst12),
             cgstAndSgst18: Math.ceil(cgstAndSgst18),
@@ -140,7 +140,6 @@ const CustomFormTableList = ({ form }) => {
             igst18: Math.ceil(igst18),
             igst28: Math.ceil(igst28),
         });
-         console.log(form.getFieldsValue(),"fieldvalues")
         // Tax Calculator
         let grossTotal = items.reduce((a, b) => a + b.finalAmount, 0);
         const temItems = items.map((item) => ({
@@ -306,6 +305,9 @@ const CustomFormTableList = ({ form }) => {
                 case "hsnCode":
                     dynamicSpans.itemDetails -= 2;
                     break;
+                case "getPercent":
+                    dynamicSpans.itemDetails -= 2;
+                    break;
                 case "discountPercent":
                     dynamicSpans.itemDetails -= 1;
                     dynamicSpans.qty -= 1;
@@ -358,19 +360,46 @@ const CustomFormTableList = ({ form }) => {
         await updateColumnStatus(value, true);
         setSelectedColumns([...selectedColumns, value]);
     };
+
     const handleDeSelect = async (value, options) => {
-        // before de slectiong check if the value is in item talble
-        let items = form.getFieldValue("items");
-        console.log(items.length, "items");
-        if (items.length > 0) {
-            return NotificationHandler.info({
-                content: "Item tabel sholud be empty to De Select columns",
-            });
-        }
+        // before de-selection check if the value is in item table
+        console.log(value, options);
         await updateColumnStatus(value, false);
+
         let filter = selectedColumns.filter((v) => v !== value);
         setSelectedColumns(filter);
+
+        const items = form.getFieldValue("items") || [];
+
+        if (value === "discountPercent") {
+            // Set all discountAmount to 0 and update finalAmount
+            const updatedItems = items.map((item) => {
+                const discountAmount = 0;
+                const finalAmount = (item.qty * item.rate);
+                return {
+                    ...item,
+                    discountAmount,
+                    finalAmount,
+                };
+            });
+            form.setFieldsValue({ items: updatedItems });
+        }
+
+        if (value === "gstPercent") {
+            // Set all gstPercent to 0 and recalculate taxAmount
+            const updatedItems = items.map((item) => {
+                const gstPercent = 0;
+                const taxAmount = 0;
+                return {
+                    ...item,
+                    gstPercent,
+                    taxAmount,
+                };
+            });
+            form.setFieldsValue({ items: updatedItems,taxAmount:0});
+        }
     };
+
 
     const updateColumnStatus = async (value, status) => {
         try {
@@ -488,7 +517,6 @@ const CustomFormTableList = ({ form }) => {
             >
                 <div
                     style={{
-                        minWidth: 1100,
                         overflow: "auto",
                     }}
                 >
@@ -534,17 +562,8 @@ const CustomFormTableList = ({ form }) => {
                         </Col>
                         {renderColumnHeader("discountPercent", "DIS%", 2)}
                         {renderColumnHeader("discountAmount", "DIS AMT", 2)}
-
-                        <Col
-                            className="gutter-row"
-                            span={dynamicSpan.gst}
-                            style={{
-                                borderRight: "1px solid #bfbfbb",
-                                textAlign: "center",
-                            }}
-                        >
-                            <Taglabel text="GST%" />
-                        </Col>
+                        {renderColumnHeader("gstPercent","GST%",2)}
+                        
                         {renderColumnHeader(
                             "taxAmount",
                             "TAX AMT",
@@ -596,7 +615,6 @@ const CustomFormTableList = ({ form }) => {
                                 style={{
                                     overflowX: "auto",
                                     overflow: "auto",
-                                    minWidth: 1100,
                                 }}
                             >
                                 {subFields.map(
@@ -852,41 +870,42 @@ const CustomFormTableList = ({ form }) => {
                                                 restField
                                             )}
 
-                                            <Col
-                                                className="gutter-row"
-                                                span={dynamicSpan.gst}
-                                            >
-                                                <Form.Item
-                                                    {...restField}
-                                                    name={[name, "gstPercent"]}
-                                                >
-                                                    <TaxPercent
-                                                        updateInForm={(value) =>
-                                                            handleItemsUpdate(
-                                                                value,
-                                                                "gstPercent",
-                                                                name
-                                                            )
-                                                        }
-                                                        min={false}
-                                                        controls={false}
-                                                        width="100%"
-                                                        style={{
-                                                            width: "100%",
-                                                            textAlign: "center",
-                                                        }}
-                                                        preFillValue={
-                                                            form.getFieldValue(
-                                                                "items"
-                                                            )?.[name]
-                                                                ?.gstPercent
-                                                        }
-                                                        onPressEnter={(e) => {
-                                                            e.preventDefault();
-                                                        }}
-                                                    />
-                                                </Form.Item>
-                                            </Col>
+                                            {
+                                                renderColumnValue(
+                                                    "gstPercent",
+                                                 
+
+                                                        <TaxPercent
+                                                            updateInForm={(value) =>
+                                                                handleItemsUpdate(
+                                                                    value,
+                                                                    "gstPercent",
+                                                                    name
+                                                                )
+                                                            }
+                                                            min={false}
+                                                            controls={false}
+                                                            width="100%"
+                                                            style={{
+                                                                width: "100%",
+                                                                textAlign: "center",
+                                                            }}
+                                                            preFillValue={
+                                                                form.getFieldValue(
+                                                                    "items"
+                                                                )?.[name]
+                                                                    ?.gstPercent
+                                                            }
+                                                            onPressEnter={(e) => {
+                                                                e.preventDefault();
+                                                            }}
+                                                        />
+                                                    ,
+                                                    2,
+                                                    name,
+                                                    restField
+                                                )
+                                            }
                                             {renderColumnValue(
                                                 "taxAmount",
                                                 <InputNumber

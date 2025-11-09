@@ -32,7 +32,7 @@ const TechnicalSpecification = ({ form, width = "75vw" }) => {
                 payload,
                 { entity: "tenant", tenantId: tenantId }
             );
-            form.setFieldsValue({ specification: result.specification });
+            form.setFieldsValue({ specification: result?.specification });
         };
 
         useEffect(() => {

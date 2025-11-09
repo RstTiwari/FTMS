@@ -5,15 +5,12 @@ import { commentSaveHandler } from "../../Helper/CommentHelper.js";
 const challanSchema = new mongoose.Schema(
   {
     delivery: {
-      type: { type: String },
       to: { type: String },
-      address: {
-        street1: String,
-        street2: String,
-        city: String,
-        state: String,
-        pincode: Number,
-      },
+      street1: String,
+      street2: String,
+      city: String,
+      state: String,
+      pincode: Number,
     },
     prefix: {
       type: String,

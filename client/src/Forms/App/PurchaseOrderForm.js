@@ -28,61 +28,15 @@ import TaxPercent from "components/Comman/TaxPercent";
 import CustomFormTableList from "./CustomFormTableList";
 import PaymentLayoutComponent from "./PaymentLayoutComponent";
 import AddressComponent from "components/Comman/AddressComponent";
+import DeliveryAddressForm from "components/Comman/DeliveryAdress";
 
 const PurchaseOrder = ({ form, value, disabled, isUpdate,entity }) => {
-  const [isOrganizationChecked, setIsOrganizationChecked] = useState(false);
-  const [isCustomerChecked, setIsCustomerChecked] = useState(false);
-  const [isVendorChecked, setIsVendorChecked] = useState(false);
 
-  const [delivery, setDelivery] = useState("");
   const { tenantId, id } = useParams();
-  const { initialValues, isFetching, fetchInitialValues } =
-    useInitialFormValues("tenant", "get", tenantId);
+ 
 
-  const updateDeliveryAddress = (values) => {
-    form.setFieldsValue({
-      delivery: {
-        type: values?.type,
-        to: values?.to,
-        address: values?.address,
-      },
-    });
-  };
 
-  const handleCheckboxChange = async (type) => {
-    if (type === "organization") {
-      // Probally call the api and get the Organization Data
-      if (!initialValues) {
-        await fetchInitialValues();
-      }
-
-      setDelivery({
-        ...delivery,
-        type: "organization",
-        to: initialValues?.companyName,
-        address: initialValues?.deliveryAddress,
-      });
-
-      updateDeliveryAddress({
-        type: "organization",
-        to: initialValues?.companyName,
-        address: initialValues?.deliveryAddress,
-      });
-      setIsCustomerChecked(false);
-      setIsVendorChecked(false);
-      setIsOrganizationChecked(true);
-    } else if (type === "customer") {
-      form.setFieldsValue({ delivery: "" });
-      setIsOrganizationChecked(false);
-      setIsVendorChecked(false);
-      setIsCustomerChecked(true);
-    } else if (type === "vendor") {
-      form.setFieldsValue({ delivery: "" });
-      setIsOrganizationChecked(false);
-      setIsCustomerChecked(false);
-      setIsVendorChecked(true);
-    }
-  };
+ 
 
   // Updating Form Item Values
   const handleItemsUpdate = (value, fieldName, rowName) => {
@@ -159,25 +113,26 @@ const PurchaseOrder = ({ form, value, disabled, isUpdate,entity }) => {
     });
   };
 
-  useEffect(() => {
-    //Checking delivery Address Type
-        let delivery = form.getFieldValue("delivery");
-        if(delivery){
-     delivery?.type === "customer"
-          ? setIsCustomerChecked(true)
-          : delivery?.type === "vendor"
-          ? setIsVendorChecked(true)
-          : setIsOrganizationChecked(true);
-        setDelivery({
-          ...delivery,
-          to: delivery?.to,
-          address: delivery?.address,
-        });
-        }
+useEffect(() => {
+  const delivery = form.getFieldValue("delivery");
+  if (delivery) {
+    form.setFieldsValue({
+      delivery: {
+        to: delivery.to,
+        street1: delivery.street1,
+        street2: delivery.street2,
+        city: delivery.city,
+        pincode: delivery.pincode,
+        state: delivery.state,
+      },
+    });
+  }
+}, [form]);
 
-  }, []);
+
 
   useEffect(() => {}, [form]);
+  console.log(form.getFieldsValue(),"got the value")
   return (
       <div>
           <FormItemCol
@@ -285,6 +240,7 @@ const PurchaseOrder = ({ form, value, disabled, isUpdate,entity }) => {
                           labelCol={{ span: 8 }}
                           labelAlign="left"
                           name={"delivery"}
+                          
                           rules={[
                               {
                                   required: true,
@@ -292,103 +248,11 @@ const PurchaseOrder = ({ form, value, disabled, isUpdate,entity }) => {
                               },
                           ]}
                       >
-                          <Checkbox
-                              checked={isOrganizationChecked}
-                              onChange={() =>
-                                  handleCheckboxChange("organization")
-                              }
-                          >
-                              SELF
-                          </Checkbox>
-                          <Checkbox
-                              checked={isCustomerChecked}
-                              onChange={() => handleCheckboxChange("customer")}
-                          >
-                              CUSTOMER
-                          </Checkbox>
-                          <Checkbox
-                              checked={isVendorChecked}
-                              onChange={() => handleCheckboxChange("vendor")}
-                          >
-                              VENDOR
-                          </Checkbox>
+                    
+                          <DeliveryAddressForm />
                       </Form.Item>
                   </Col>
               </Row>
-              <Row>
-                  {isCustomerChecked && (
-                      <Col
-                          xs={24}
-                          sm={24}
-                          md={{ span: 24 }}
-                          lg={{ span: 24 }}
-                          xl={{ span: 24 }}
-                      >
-                          <FormItemCol
-                              name={"customer"}
-                              labelAlign="left"
-                              type={"modal"}
-                              entity={"customers"}
-                              width={"25vw"}
-                              fieldName={"name"}
-                              onlyShippingAddress={true}
-                              updateInForm={updateDeliveryAddress}
-                              preFillValue={form.getFieldValue("delivery")?.to}
-                              preFillAddress={
-                                  form.getFieldValue("delivery")?.address
-                              }
-                              forDeliveryAddress={true}
-                              form ={form}
-                              xl={6}
-                              lg={6}
-                          />
-                      </Col>
-                  )}
-                  {isVendorChecked && (
-                      <Col
-                          xs={24}
-                          sm={24}
-                          md={{ span: 24 }}
-                          lg={{ span: 24 }}
-                          xl={{ span: 24 }}
-                      >
-                          <FormItemCol
-                              name={"vendor"}
-                              labelAlign="left"
-                              type={"modal"}
-                              entity={"vendors"}
-                              width={"25vw"}
-                              fieldName={"name"}
-                              updateInForm={updateDeliveryAddress}
-                              onlyShippingAddress={true}
-                              preFillValue={form.getFieldValue("delivery")?.to}
-                              preFillAddress={
-                                  form.getFieldValue("delivery")?.address
-                              }
-                              forDeliveryAddress={true}
-                              form ={form}
-
-                              xl={6}
-                              lg={6}
-                          />
-                      </Col>
-                  )}
-                     {isOrganizationChecked && (
-                      <Col
-                          xs={24}
-                          sm={24}
-                          md={{ span: 8 }}
-                          lg={{ span: 24 }}
-                          xl={{ span: 24}}
-                      >
-                          <AddressComponent
-                              id={tenantId}
-                              entity={"tenant"}
-                          />
-                      </Col>
-                  )}
-
-              </Row>{" "}
           </div>
 
           <CustomFormTableList form={form} />

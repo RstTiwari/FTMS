@@ -91,7 +91,7 @@ const labelMap = {
                     <NotesForm form={form} width={widthOfNotes} />
                 </Row>
                 <Divider />
-                {["quotations", "challans"].includes(entity) && (
+                {["quotations"].includes(entity) && (
                     <Row style={{ marginTop: "20px" }}>
                         <TermsAndConditionsForm
                             form={form}
