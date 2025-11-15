@@ -12,6 +12,6 @@ router.get("/read", adminRoutes.read);
 router.post("/update", autherization, adminRoutes.update);
 router.get("/permissionData", autherization, adminRoutes.permissionsData);
 router.post("/create", autherization, adminRoutes.create);
-router.post("/delete", autherization, adminRoutes.delete);
+router.post("/delete",  adminRoutes.delete);
 
 export default router;

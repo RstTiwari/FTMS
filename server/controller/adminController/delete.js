@@ -2,17 +2,18 @@ import checkDbForEntity from "../../Helper/databaseSelector.js";
 
 const deleteRoute = async (req, res, next) => {
   try {
-    const { entity, tenantId ,_id} = req.query;
+    const { entity, tenantId ,deleteRowKeys} = req.query;
     const { userId, role, email } = req;
-    let filter = { _id:_id, tenantId: tenantId };
+    let filter = { _id:{$in:deleteRowKeys}, tenantId: tenantId };
 
     if (entity === "tenant") {
       filter = { _id: tenantId };
     }
     console.log(entity,filter)
     const dataBase = checkDbForEntity(entity);
-    const data = await dataBase.deleteOne(filter)
-    if (data.deletedCount !== 1) {
+    const data = await dataBase.deleteMany(filter)
+    console.log(data)
+    if (data.deletedCount <= 0) {
       return res.status(400).json({
         success: 0,
         result: null,

@@ -5,7 +5,7 @@ const get = async (req, res, next) => {
         let tenantId = req.tenantId;
 
         if (!entity || !tenantId || !id) {
-            throw new Error(`Invalid Payload for ${entity}`);
+            throw  new Error(`Invalid Payload for ${entity}`);
         }
 
         let filter = { tenantId: tenantId, _id: id };

@@ -1,7 +1,7 @@
 import { Row, Col } from "antd";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Outlet } from "react-router-dom";
-import { Space, Table, Input } from "antd";
+import { Space, Table, Input, Button } from "antd";
 
 import CustomTable from "components/CustomTable";
 import useDataFetching from "Hook/useDataFetching";
@@ -13,6 +13,9 @@ import CustomDialog from "components/CustomDialog";
 import CustomForm from "components/CreateCustomForm";
 import useDebounce from "Hook/useDebounce";
 import useSearch from "Hook/useSearch";
+import { useAuth } from "state/AuthProvider";
+import NotificationHandler from "EventHandler/NotificationHandler";
+
 const { Search } = Input;
 
 const DetailsLayout = () => {
@@ -23,6 +26,10 @@ const DetailsLayout = () => {
     const [searchInput, setSearchInput] = useState("");
     const debouncedSearch = useDebounce(searchInput, 300);
     const dataForTable = ListModule(entity);
+    const [deleteRowKeys, setDeleteRowKeys] = useState([]);
+    const { adminApiCall } = useAuth();
+    
+
     const [show, setShow] = useState(false);
     const openModal = () => {
         setShow(true);
@@ -54,24 +61,33 @@ const DetailsLayout = () => {
         const { current: pageNo, pageSize } = pagination;
         navigate(`/app/${tenantId}/${entity}/${pageNo}/${pageSize}`);
     };
-    // const handleRowClick = (record) => {
-    //     let innerWidth = window.innerWidth;
-    //     if (innerWidth < 1200) {
-    //         return NotificationHandler.error(
-    //             "To See Details Open in Laptop/Desktop"
-    //         );
-    //     }
-    //     setSelectedRowKey(record._id);
-    //     setDetails(true);
-    //     navigate(
-    //         `/app/${tenantId}/${entity}/${pageNo}/${pageSize}/details/${record._id}`
-    //     );
-    // };
+    const rowSelection = {
+        deleteRowKeys,
+        onChange: (keys) => setDeleteRowKeys(keys),
+    };
 
+    const onDeleteSelected = async () => {
+        let { success, result, message } = await adminApiCall(
+            "post",
+            "delete",
+            {},
+            { entity, tenantId,deleteRowKeys }
+        );
+        if (success) {
+            NotificationHandler.success(message);
+            fetchData();
+            setDeleteRowKeys([])
+        } else {
+            return NotificationHandler.error(message);
+        }
+
+    }
+   
     useEffect(() => {
         setDetails(window.location.pathname.includes("details"));
         setSelectedRowKey(id);
     }, [id]);
+    console.log(deleteRowKeys,"deleteRowKeys")
 
     const rowClassName = (record) => {
         return record._id === selectedRowKey
@@ -123,15 +139,37 @@ const DetailsLayout = () => {
                         />
                     </Col>
                 </Row>
-                <Space style={{ marginBottom: 16 }}>
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginBottom: 16,
+                    }}
+                >
+                    {/* LEFT SIDE: Search Box */}
                     <Input.Search
                         placeholder="Search..."
                         style={{ width: 300 }}
                         value={searchInput}
-                        onChange={(e) => setSearchInput(e.target.value)} // update temp input
+                        onChange={(e) => setSearchInput(e.target.value)}
                         allowClear
                     />
-                </Space>
+
+                    {/* RIGHT SIDE: Delete Button (shown only if rows selected) */}
+                    {deleteRowKeys.length > 0 && (
+                        <Button
+                            danger
+                            type="primary"
+                            onClick={() => onDeleteSelected(deleteRowKeys)}
+                            style={{marginRight:100}}
+                            size="small"
+                        >
+                            Delete
+                        </Button>
+                    )}
+                </div>
+
                 <CustomTable
                     columns={dataForTable.getColumns(details)}
                     dataSource={debouncedSearch.trim() ? searchResults : data}
@@ -146,7 +184,8 @@ const DetailsLayout = () => {
                         debouncedSearch.trim()
                             ? false
                             : true
-                  }
+                    }
+                    rowSelection={rowSelection}
                 />
             </Col>
             <CustomDialog

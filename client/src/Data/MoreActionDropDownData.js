@@ -75,15 +75,6 @@ export default function MoreActionDropDownData(entity) {
       //   ),
       //   icon: <MailOutlined style={{ color: "black", fontSize: "10px" }} />,
       // },
-      {
-        key: "delete",
-        label: (
-          <span style={{ color: "red", fontWeight: "bold", fontSize: "10px" }}>
-            DELETE
-          </span>
-        ),
-        icon: <DeleteOutlined style={{ color: "green", fontSize: "10px" }} />,
-      },
     ];
   } else if (entity === "customers" || entity === "vendors") {
     data = [
@@ -137,15 +128,7 @@ export default function MoreActionDropDownData(entity) {
           <MoneyCollectOutlined style={{ color: "black", fontSize: "10px" }} />
         ),
       },
-      {
-        key: "delete",
-        label: (
-          <span style={{ color: "red", fontWeight: "bold", fontSize: "10px" }}>
-            DELETE
-          </span>
-        ),
-        icon: <DeleteOutlined style={{ color: "green", fontSize: "10px" }} />,
-      },
+  
     ];
   } else if (
     entity === "paymentsreceived" ||
@@ -178,18 +161,7 @@ export default function MoreActionDropDownData(entity) {
         ),
         icon: <EditOutlined style={{ color: "blue", fontSize: "10px" }} />,
       },
-      entity === "expenses" ||
-        (entity === "products" && {
-          key: "delete",
-          label: (
-            <span
-              style={{ color: "red", fontWeight: "bold", fontSize: "10px" }}
-            >
-              DELETE
-            </span>
-          ),
-          icon: <DeleteOutlined style={{ color: "green", fontSize: "10px" }} />,
-        }),
+
     ];
   } else if (entity === "workorders") {
     data = [
@@ -214,16 +186,7 @@ export default function MoreActionDropDownData(entity) {
           </span>
         ),
         icon: <EditOutlined style={{ color: "blue", fontSize: "10px" }} />,
-      },
-      {
-        key: "delete",
-        label: (
-          <span style={{ color: "red", fontWeight: "bold", fontSize: "10px" }}>
-            DELETE
-          </span>
-        ),
-        icon: <DeleteOutlined style={{ color: "green", fontSize: "10px" }} />,
-      },
+      }
     ];
   }else if (entity === "user"){
     data = [
@@ -237,16 +200,7 @@ export default function MoreActionDropDownData(entity) {
           </span>
         ),
         icon: <EditOutlined style={{ color: "blue", fontSize: "10px" }} />,
-      },
-       {
-        key: "delete",
-        label: (
-          <span style={{ color: "red", fontWeight: "bold", fontSize: "10px" }}>
-            DELETE
-          </span>
-        ),
-        icon: <DeleteOutlined style={{ color: "green", fontSize: "10px" }} />,
-      },
+      }
     ];
   }
   return data;

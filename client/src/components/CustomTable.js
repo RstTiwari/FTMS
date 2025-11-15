@@ -14,6 +14,7 @@ const CustomTable = ({
     rowClassName,
     totalCount,
     pagination = true,
+    rowSelection
 }) => {
     let { pageSize, pageNo, entity } = useParams();
     const [total, setTotal] = useState(totalCount || 0);
@@ -38,7 +39,7 @@ const CustomTable = ({
         });
         onTableChange(pagination); 
     };
-
+  
     useEffect(() => {
         setTableParams((prevParams) => ({
             ...prevParams,
@@ -55,8 +56,10 @@ const CustomTable = ({
         <div>
        
             <Table
+                rowKey={"_id"}
                 columns={columns}
                 dataSource={dataSource}
+                rowSelection={rowSelection}
                 size="small"
                 loading={isLoading}
                 rowClassName={rowClassName}
