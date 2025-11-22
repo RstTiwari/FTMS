@@ -111,7 +111,7 @@ const PageHeader = ({ organization, detailsData }) => {
         {detailsData.map((item, index) => (
           <Text key={index} style={pageHeaderStyles.detailsItem}>
             <Text style={{ fontWeight: "bold" }}>{item.label}: </Text>
-            {item.value}
+            {item.value},
           </Text>
         ))}
       </View>

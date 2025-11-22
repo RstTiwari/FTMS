@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   },
 
   headerContainer: {
-    fontSize: 10,
+    fontSize: 8,
     flexDirection: "row",
     alignItems: "flex-start",
   },
@@ -135,10 +135,10 @@ const PageHeader = ({ organization, entityData,entityDetails=[] ,entity}) => {
                       } ${pincode || ""}`}
                   </Text>
                   <Text style={styles.contactText}>
-                      MOB - {phone}
-                      {alternatePhone ? ` / ${alternatePhone}` : ""}, EMAIL -{" "}
-                      <Link>{email?.toUpperCase()}</Link> 
-                      {website ? (<Link>{website?.toUpperCase()}</Link> ):""}
+                      MOB-{phone}
+                      {alternatePhone ? `/${alternatePhone}` : ""}, EMAIL-{" "}
+                      <Link>{email?.toUpperCase()}</Link>,
+                      WEB-{website ? (<Link>{website?.toUpperCase()}</Link> ):""}
                   </Text>
               </View>
           </View>
