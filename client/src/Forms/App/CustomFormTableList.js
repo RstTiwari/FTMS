@@ -561,7 +561,7 @@ const CustomFormTableList = ({ form }) => {
                             <Taglabel text="RATE" />
                         </Col>
                         {renderColumnHeader("discountPercent", "DIS%", 2)}
-                        {renderColumnHeader("discountAmount", "DIS AMT", 2)}
+                        {renderColumnHeader("discountAmount", "Best Offer", 2)}
                         {renderColumnHeader("gstPercent","GST%",2)}
                         
                         {renderColumnHeader(

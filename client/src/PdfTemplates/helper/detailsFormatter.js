@@ -244,6 +244,7 @@ export const entityDetailsFormatter = (entity, data, organization) => {
 
         case "quotations":
             let sub = data.sub ? `${data["sub"]}` : "";
+            console.log(customer.billingAddress,"===")
             let location = customer?.billingAddress
             ? [
                 customer.billingAddress.city,
@@ -251,8 +252,8 @@ export const entityDetailsFormatter = (entity, data, organization) => {
                 customer.billingAddress.pincode,
               ]
                 .filter(Boolean)
-                .join(", ")
-            : customer?.address || "";
+                .join(",")
+            : data?.address || "";
           
           // Trim to 50 characters if too long
           if (location.length >35) {
@@ -424,8 +425,8 @@ export const getTableHeaders2 = (entity, preCol = []) => {
         { title: "IMAGE", property: "image", width: 80 },
         { title: "HSN", property: "hsnCode", width: 40 },
         { title: "GST%", property: "gstPercent", width: 35 },
-        { title: "DIS%", property: "discountPercent", width: 35 },
-        { title: "DIS AMT", property: "discountAmount", width: 50 },
+        { title: "Offer%", property: "discountPercent", width: 35 },
+        { title: "Best Offer", property: "discountAmount", width: 50 },
         { title: "TAX AMT", property: "taxAmount", width: 55 },
     ];
 
