@@ -423,6 +423,7 @@ export const getTableHeaders2 = (entity, preCol = []) => {
         { title: "CODE", property: "code", width: 40 },
         { title: "IMAGE", property: "image", width: 80 },
         { title: "HSN", property: "hsnCode", width: 40 },
+        { title: "GST%", property: "gstPercent", width: 35 },
         { title: "DIS%", property: "discountPercent", width: 35 },
         { title: "DIS AMT", property: "discountAmount", width: 50 },
         { title: "TAX AMT", property: "taxAmount", width: 55 },
