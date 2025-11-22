@@ -56,10 +56,7 @@ const VendorsForm = ({ form, disabled, isModal }) => {
                                 required: "true",
                                 message: "Please Write Phone Name",
                             },
-                            {
-                                pattern: "/^[0-9]{10}$/",
-                                message: "Phone number must be 10 digits",
-                            },
+                           
                         ]}
                         type={"text"}
                     />
