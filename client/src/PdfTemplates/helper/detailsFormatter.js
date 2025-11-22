@@ -244,7 +244,6 @@ export const entityDetailsFormatter = (entity, data, organization) => {
 
         case "quotations":
             let sub = data.sub ? `${data["sub"]}` : "";
-            console.log(customer.billingAddress,"===")
             let location = customer?.billingAddress
             ? [
                 customer.billingAddress.city,
