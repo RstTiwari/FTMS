@@ -52,6 +52,7 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate,entity }) => {
                         preFillValue={form.getFieldValue("customer")?.name}
                         type={"options"}
                         disabled={form.getFieldValue("customer")?.name || ""} // if value availbel mark as disabled
+                        form= {form}
                     />
                 </Col>
                 <Col span={24}>
@@ -79,6 +80,7 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate,entity }) => {
                         parentForm = {form}
                         type={"counters"}
                         disabled={form.getFieldValue("no")?.name}
+                        form ={form}
                     />
                     <FormItemCol name="suffix" hidden={true} />
                 </Col>
@@ -101,6 +103,7 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate,entity }) => {
                             handleItemUpdate(value, "paymentDate")
                         }
                         preFillValue={form.getFieldValue("paymentDate")}
+                        form ={form}
                     />
                 </Col>
                 <Col span={24}>

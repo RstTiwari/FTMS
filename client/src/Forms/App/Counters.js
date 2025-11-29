@@ -15,7 +15,8 @@ const FormRow = () => {
                     labelCol={{ span: 18 }}
                     required
                     labelAlign="left"
-                    r   rules={[
+                
+                    rules={[
                         { required: true, message: "Please input Prefix" },
                         {
                             pattern: onlyTextRegex,

@@ -104,7 +104,9 @@ const Index = ({ entity, data }) => {
 
   let headers = getTableHeaders2(entity, selectColumns);
   let bankDetails = bankDetailsFormatter(entity, organization?.bankDetails);
-  let entityName = entityNameFormatter(entity);
+  let type  = entityData && entityData.type ? entityData.type : entity
+  console.log(type,"======")
+  let entityName = entityNameFormatter(type);
   return (
     <Document>
       <Page size="A4" break={true} style={commonStyles.page}>

@@ -82,8 +82,9 @@ const Index = ({ entity, data }) => {
     let amounts = grandAndOtherChargesFormatter(entity, entityData);
     let amountInWords = numberToWordsIndian(entityData.grandTotal)
     let headers = getTableHeaders2(entity, selectColumns);
-    let bankDetails = bankDetailsFormatter(entity, organization?.bankDetails, organization.panNo);
-    let entityName = entityNameFormatter(entity);
+     let type  = entityData && entityData.type  ? entityData.type : entity
+    let bankDetails = bankDetailsFormatter(type, organization?.bankDetails, organization.panNo);
+    let entityName = entityNameFormatter(type);
     return (
         <Document>
             <Page size="A4" break={true} style={styles.page} >

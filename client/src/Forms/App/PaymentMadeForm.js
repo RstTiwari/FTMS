@@ -56,6 +56,7 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate, entity }) => {
                       preFillValue={form.getFieldValue("vendor")?.name || ""}
                       type={"options"}
                       disabled={form.getFieldValue("vendor")?.name} // if value availbel mark as disabled
+                      form={form}
                   />
               </Col>
               <Col span={24}>

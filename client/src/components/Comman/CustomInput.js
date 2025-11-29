@@ -18,6 +18,7 @@ import { DeleteOutlined } from "@mui/icons-material";
 import CustomCustomerSelect from "components/CustomCustomrSelect";
 import CustomProductSelect from "components/CustomProductSelect";
 import TextArea from "antd/es/input/TextArea";
+import SelectComponent from "./SelectComponent";
 
 const CustomInput = ({
     type,
@@ -98,6 +99,7 @@ const CustomInput = ({
                     format={"DD/MM/YYYY"}
                     onChange={handleDateChange}
                     style={{ width: width }}
+                    allowClear ={false}
                 />
             );
         case "number":
@@ -243,6 +245,10 @@ const CustomInput = ({
                     style={{ color: "red" }}
                     onClick={updateInForm}
                 />
+            );
+        case "selectcomponent":
+            return (
+               <SelectComponent  form={form} name={fieldName} options ={options} entity={entity}/>
             );
         default:
             return (

@@ -152,6 +152,35 @@ const QuotationForm = ({ form,entity }) => {
                 preFillValue={form.getFieldValue("no")}
             />
             <FormItemCol
+                labelAlign="left"
+                required={true}
+                name={'type'}
+                labelCol={{ span: 8 }}
+                rules={[
+                    {
+                        required: "true",
+                        message: "Plese Select Type",
+                    },
+                ]}
+                label={"TYPE"}
+                type={"selectcomponent"}
+                width={"30vw"}
+                fieldName={"type"}
+                entity={entity}
+                form={form}
+                options={
+                    [{ label: "QUOTATION", value: "QUOTATION" }, { label: "PROFORMA INVOICE", value: "PROFORMA INVOICE" }]
+                }
+            />
+            <FormItemCol
+                name={"prefix"}
+                labelAlign="left"
+                hidden={true}
+                labelCol={{ span: 8 }}
+                width={"30vw"}
+            />
+             
+            <FormItemCol
                 name={"suffix"}
                 labelAlign="left"
                 hidden={true}

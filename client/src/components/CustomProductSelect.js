@@ -88,7 +88,6 @@ const CustomProductSelect = ({
     );
 
     const handleChange = (value, label) => {
-        console.log(row, form.getFieldsValue(), "forms",label);
         const item = label.item;
         const description = label.label;
         setSelectedValue(label.label);
@@ -111,6 +110,7 @@ const CustomProductSelect = ({
                 },
             },
         });
+        console.log(form.getFieldsValue(),"====")
 
     };
 
