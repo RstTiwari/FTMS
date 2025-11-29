@@ -15,6 +15,7 @@ const quotationSchema = new mongoose.Schema(
         temCustomerName:{
             type:String
         },
+        type:{type:String},
         address:{
             type:String
         },

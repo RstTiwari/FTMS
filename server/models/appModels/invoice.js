@@ -10,6 +10,7 @@ const invoiceSchema = new mongoose.Schema(
             autopopulate: true,
             required: true,
         },
+        type:{type:String},
         no: {
             type: Number,
             required: true,
@@ -17,7 +18,6 @@ const invoiceSchema = new mongoose.Schema(
         prefix: {
             type: String,
             required: true,
-            default: "INV",
         },
         suffix: {
             type: String,

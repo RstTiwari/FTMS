@@ -20,6 +20,7 @@ import CustomFormTableList from "./CustomFormTableList";
 const WorkOrderForm = ({ form, entity }) => {
   const handleItemsUpdate = (value, fieldName, rowName) => {
     const items = form.getFieldValue("items");
+    console.log(value,fieldName,rowName,"==")
     let tempObj = items[rowName];
     console.log(value, "value", fieldName);
     if (fieldName === "product") {
@@ -294,6 +295,8 @@ const WorkOrderForm = ({ form, entity }) => {
                                                       )?.[name]?.description
                                                   }
                                                   width={"100%"}
+                                                  form={form}
+                                                  row={name}
                                               />
                                           </Form.Item>
                                       </Col>

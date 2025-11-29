@@ -36,13 +36,13 @@ export const customPageHeader = (entity, data, entityPrefix, organization) => {
         case "quotations":
             array = [
                 {
-                    label: "Quotation No",
+                    label:data && data.type =="PROFORMA INVOICE" ? "PROFROMA INOVICE NO": "QUOTATION NO",
                     value: `${entityPrefix}/${currentFinancialYear(
                         data?.quoteDate
                     )}/${data["no"]}`,
                 },
                 {
-                    label: "Quotation Date",
+                    label: data && data.type =="PROFORMA INVOICE" ?  "PROFROMA DATE":"QUOTATION DATE",
                     value: jsDateIntoDayjsDate(data["quoteDate"]),
                 },
                 {
@@ -585,7 +585,10 @@ export const grandAndOtherChargesFormatter = (entity, data) => {
 
 export const bankDetailsFormatter = (entity, bankDetails, panNo) => {
     // Find the bank detail object where isPrimary is true
-    const primaryBankDetail = bankDetails.find((detail) => detail.isPrimary);
+    let primaryBankDetail = bankDetails.find((detail) => detail.isPrimary);
+    if(entity ==="CASH INVOICE"){
+        primaryBankDetail = bankDetails[1]
+    }
     let obj = {
         "Bank Name": primaryBankDetail["bankName"],
         "Branch Name": primaryBankDetail["branchName"],
@@ -599,8 +602,14 @@ export const bankDetailsFormatter = (entity, bankDetails, panNo) => {
 export const entityNameFormatter = (entity) => {
     let entityName;
     switch (entity) {
+        case "INVOICE":
+            entityName = "TAX INVOICE";
+            break;
         case "invoices":
             entityName = "TAX INVOICE";
+            break;
+        case "QUOTATION":
+            entityName = "QUOTATION";
             break;
         case "quotations":
             entityName = "QUOTATION";
@@ -613,6 +622,12 @@ export const entityNameFormatter = (entity) => {
             break;
         case "workorders":
             entityName = "WORK ORDER";
+            break;
+        case "PROFORMA INVOICE":
+            entityName = "PROFORMA INVOICE"
+            break
+        case "CASH INVOICE":
+            entityName ="CASH INVOICE"
             break;
         default:
             break;

@@ -156,6 +156,27 @@ const QuotationForm = ({ form, entity }) => {
                 preFillValue={form.getFieldValue("no")}
             />
             <FormItemCol
+                labelAlign="left"
+                required={true}
+                name={'type'}
+                labelCol={{ span: 8 }}
+                rules={[
+                    {
+                        required: "true",
+                        message: "Plese Select Type",
+                    },
+                ]}
+                label={"TYPE"}
+                type={"selectcomponent"}
+                width={"30vw"}
+                fieldName={"type"}
+                entity={entity}
+                form={form}
+                options={
+                    [{ label: "INVOICE", value: "INVOICE" }, { label: "CASH INVOICE", value: "CASH INVOICE" }]
+                }
+            />
+            <FormItemCol
                 label={"Invoice Date"}
                 name={"invoiceDate"}
                 required
@@ -170,6 +191,21 @@ const QuotationForm = ({ form, entity }) => {
                 updateInForm={(value) =>
                     handleItemsUpdate(value, "invoiceDate")
                 }
+            />
+                  <FormItemCol
+                name={"prefix"}
+                labelAlign="left"
+                hidden={true}
+                labelCol={{ span: 8 }}
+                width={"30vw"}
+            />
+             
+            <FormItemCol
+                name={"suffix"}
+                labelAlign="left"
+                hidden={true}
+                labelCol={{ span: 8 }}
+                width={"30vw"}
             />
             <FormItemCol
                 label={"Due Date"}

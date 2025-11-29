@@ -37,7 +37,6 @@ const CustomFormTableList = ({ form }) => {
 
     const handleItemsUpdate = (value, filedName, rowName) => {    
         const items = form.getFieldValue("items");
-        console.log(items,"===")
         let temObj = items[rowName];
         if (filedName === "code" || filedName === "description") {
             let { details } = value;
