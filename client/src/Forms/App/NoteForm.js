@@ -13,6 +13,7 @@ const NotesForm = ({ form, width = "35vw" }) => {
         notes[row] = value;
         form.setFieldsValue({ notes });
     };
+    console.log("form value in workorder",form.getFieldValue(),'From')
 
     return (
         <Col style={{ width: width }}>

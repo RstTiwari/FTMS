@@ -111,6 +111,8 @@ const CustomInput = ({
                     controls={false} // Remove the up/down controls
                     min={0} // Prevent value from being less than 0
                     disabled={disabled}
+                    value={preFillValue}
+                    
                 />
             );
         case "othercharges":

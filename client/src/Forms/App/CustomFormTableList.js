@@ -32,12 +32,15 @@ const CustomFormTableList = ({ form }) => {
 
     const calculateTaxAmount = (taxPercent, rate, qty) => {
         let taxAmount = (rate * taxPercent) / 100;
-        return Math.ceil(taxAmount * qty);
+        return taxAmount * qty;
     };
 
-    const handleItemsUpdate = (value, filedName, rowName) => {    
+    const handleItemsUpdate = (value, filedName, rowName, options) => {
         const items = form.getFieldValue("items");
         let temObj = items[rowName];
+        if(options){
+            temObj.gstType = options.type
+        }
         if (filedName === "code" || filedName === "description") {
             let { details } = value;
             temObj.code = details?.code || "";
@@ -80,7 +83,7 @@ const CustomFormTableList = ({ form }) => {
             );
             temObj.finalAmount = Math.ceil(temObj.discountAmount * temObj.qty);
         } else if (filedName === "gstPercent") {
-            value = Number(value);
+            value = options.rate;
             temObj.gstPercent = value;
             temObj.taxAmount = calculateTaxAmount(
                 temObj?.gstPercent || 0,
@@ -106,39 +109,47 @@ const CustomFormTableList = ({ form }) => {
 
         items[rowName] = temObj;
         form.setFieldsValue({ items: items });
-        const shippingState = form.getFieldValue(["shippingAddress", "state"]);
-        const isIntraState = shippingState?.toLowerCase() === "maharashtra";
-        // Initialize tax field values
-        let cgstAndSgst12 = 0,
-            cgstAndSgst18 = 0,
-            cgstAndSgst28 = 0;
-        let igst12 = 0,
-            igst18 = 0,
-            igst28 = 0;
+       
 
-            items.forEach((item) => {
-            const taxAmount = item.taxAmount || 0;
+        const taxValues = [];
 
-            if (isIntraState) {
-                if (item.gstPercent === 12) cgstAndSgst12 += taxAmount;
-                else if (item.gstPercent === 18) cgstAndSgst18 += taxAmount;
-                else if (item.gstPercent === 28) cgstAndSgst28 += taxAmount;
+        items.forEach((item) => {
+            if (!item.gstPercent || !item.taxAmount) return; 
+
+            const gstValue = item.gstPercent;
+            const taxAmount = item.taxAmount;
+
+            const addOrUpdate = (taxName, rate,type, amount) => {
+                const existing = taxValues.find(
+                    (t) => t.type === type && t.rate === rate
+                );
+                if (existing) {
+                    existing.amount += Math.ceil(amount);
+                } else {
+                    taxValues.push({
+                        taxName,
+                        rate,
+                        type,
+                        amount: Math.ceil(amount),
+                    });
+                }
+            };
+
+            if (item.gstType === "IGST") {
+                addOrUpdate(`IGST@${gstValue}`, gstValue,"IGST", taxAmount);
             } else {
-                if (item.gstPercent === 12) igst12 += taxAmount;
-                else if (item.gstPercent === 18) igst18 += taxAmount;
-                else if (item.gstPercent === 28) igst28 += taxAmount;
+                const halfRate = gstValue / 2;
+                const halfAmount = taxAmount / 2;
+                addOrUpdate(`CGST@${halfRate}`, halfRate,"CGST", halfAmount);
+                addOrUpdate(`SGST@${halfRate}`, halfRate,"SGST", halfAmount) 
             }
         });
+        taxValues.sort((a,b)=>a.rate -b.rate)
+        form.setFieldsValue({taxValues:taxValues})
 
-        // Add tax breakdown into for
-        form.setFieldsValue({
-            cgstAndSgst12: Math.ceil(cgstAndSgst12),
-            cgstAndSgst18: Math.ceil(cgstAndSgst18),
-            cgstAndSgst28: Math.ceil(cgstAndSgst28),
-            igst12: Math.ceil(igst12),
-            igst18: Math.ceil(igst18),
-            igst28: Math.ceil(igst28),
-        });
+
+
+
         // Tax Calculator
         let grossTotal = items.reduce((a, b) => a + b.finalAmount, 0);
         const temItems = items.map((item) => ({
@@ -160,6 +171,8 @@ const CustomFormTableList = ({ form }) => {
         });
     };
 
+
+
     const handleDelete = (rowIndex) => {
         const items = form.getFieldValue("items") || [];
         items.splice(rowIndex, 1); // Remove the item
@@ -176,43 +189,53 @@ const CustomFormTableList = ({ form }) => {
         let grandTotal = totalWithTax;
     
         // Determine intra/inter state
-        const shippingState = form.getFieldValue(["shippingAddress", "state"]);
-        const isIntraState = shippingState?.toLowerCase() === "maharashtra";
     
-        // Recalculate tax field breakdowns
-        let cgstAndSgst12 = 0,
-            cgstAndSgst18 = 0,
-            cgstAndSgst28 = 0;
-        let igst12 = 0,
-            igst18 = 0,
-            igst28 = 0;
-    
+           const taxValues = [];
+
         items.forEach((item) => {
-            const tax = item.taxAmount || 0;
-            if (isIntraState) {
-                if (item.gstPercent === 12) cgstAndSgst12 += tax;
-                else if (item.gstPercent === 18) cgstAndSgst18 += tax;
-                else if (item.gstPercent === 28) cgstAndSgst28 += tax;
+            if (!item.gstPercent || !item.taxAmount) return; // Skip if no GST or taxAmount
+
+            const gstValue = item.gstPercent;
+            const taxAmount = item.taxAmount;
+
+            const addOrUpdate = (taxName, rate, type,amount) => {
+                const existing = taxValues.find(
+                    (t) => t.type === type && t.rate === rate
+                );
+                if (existing) {
+                    existing.amount += Math.ceil(amount);
+                } else {
+                    taxValues.push({
+                        taxName,
+                        type,
+                        rate,
+                        amount: Math.ceil(amount),
+                    });
+                }
+            };
+
+            if (item.gstType === "IGST") {
+                // For IGST, add as a separate tax type
+                addOrUpdate(`IGST@${gstValue}`, gstValue,"IGST", taxAmount);
             } else {
-                if (item.gstPercent === 12) igst12 += tax;
-                else if (item.gstPercent === 18) igst18 += tax;
-                else if (item.gstPercent === 28) igst28 += tax;
+                // For intra-state, split between CGST and SGST
+                const halfRate = gstValue / 2;
+                const halfAmount = taxAmount / 2;
+                addOrUpdate(`CGST@${halfRate}`, gstValue, "CGST", halfAmount);
+                addOrUpdate(`SGST@${halfRate}`, gstValue, "SGST", halfAmount)
             }
         });
-    
+        taxValues.sort((a,b)=>a.rate -b.rate)
+        form.setFieldsValue({taxValues:taxValues})
+
+
         // Set all updated values
         form.setFieldsValue({
             items,
             grossTotal: Math.ceil(grossTotal),
             taxAmount: Math.ceil(taxAmount),
             totalWithTax: Math.ceil(totalWithTax),
-            grandTotal: Math.ceil(grandTotal),
-            cgstAndSgst12: isIntraState ? Math.ceil(cgstAndSgst12) : 0,
-            cgstAndSgst18: isIntraState ? Math.ceil(cgstAndSgst18) : 0,
-            cgstAndSgst28: isIntraState ? Math.ceil(cgstAndSgst28) : 0,
-            igst12: !isIntraState ? Math.ceil(igst12) : 0,
-            igst18: !isIntraState ? Math.ceil(igst18) : 0,
-            igst28: !isIntraState ? Math.ceil(igst28) : 0,
+            grandTotal: Math.ceil(grandTotal)
         });
     };
     
@@ -361,7 +384,6 @@ const CustomFormTableList = ({ form }) => {
     };
 
     const handleDeSelect = async (value, options) => {
-        // before de-selection check if the value is in item table
         console.log(value, options);
         await updateColumnStatus(value, false);
 
@@ -375,9 +397,13 @@ const CustomFormTableList = ({ form }) => {
             const updatedItems = items.map((item) => {
                 const discountAmount = 0;
                 const finalAmount = (item.qty * item.rate);
+                let discountPercent =0
+                let taxAmount = calculateTaxAmount(item.gstPercent,item.rate,item.qty)
                 return {
                     ...item,
+                    discountPercent,
                     discountAmount,
+                    taxAmount,
                     finalAmount,
                 };
             });
@@ -395,7 +421,7 @@ const CustomFormTableList = ({ form }) => {
                     taxAmount,
                 };
             });
-            form.setFieldsValue({ items: updatedItems,taxAmount:0});
+            form.setFieldsValue({ items: updatedItems,taxAmount:0,taxValues:[]});
         }
     };
 
@@ -605,6 +631,7 @@ const CustomFormTableList = ({ form }) => {
                             gstPercent: 0,
                             finalAmount: 0,
                             description: "",
+                            gstType:"EXMEPT"
                         },
                     ]}
                 >
@@ -630,11 +657,11 @@ const CustomFormTableList = ({ form }) => {
                                                 <CustomModel
                                                     entity={"products"}
                                                     fieldName={"code"}
-                                                    updateInForm={(value) => {
+                                                    updateInForm={(value,options) => {
                                                         handleItemsUpdate(
                                                             value,
                                                             "code",
-                                                            name
+                                                            name,options
                                                         );
                                                     }}
                                                     preFillValue={
@@ -671,12 +698,12 @@ const CustomFormTableList = ({ form }) => {
                                                         entity={"products"}
                                                         fieldName={"name"}
                                                         updateInForm={(
-                                                            value
+                                                            value,options
                                                         ) => {
                                                             handleItemsUpdate(
                                                                 value,
                                                                 "description",
-                                                                name
+                                                                name,options
                                                             );
                                                         }}
                                                         preFillValue={
@@ -789,11 +816,11 @@ const CustomFormTableList = ({ form }) => {
                                                         style={{
                                                             width: "100%",
                                                         }}
-                                                        onChange={(value) =>
+                                                        onChange={(value,options) =>
                                                             handleItemsUpdate(
                                                                 value,
                                                                 "rate",
-                                                                name
+                                                                name,options
                                                             )
                                                         }
                                                         onPressEnter={(e) => {
@@ -838,11 +865,11 @@ const CustomFormTableList = ({ form }) => {
                                             {renderColumnValue(
                                                 "discountAmount",
                                                 <InputNumber
-                                                    updateInForm={(value) =>
+                                                    updateInForm={(value,options) =>
                                                         handleItemsUpdate(
                                                             value,
                                                             "discountAmount",
-                                                            name
+                                                            name,options
                                                         )
                                                     }
                                                     min={false}
@@ -875,11 +902,11 @@ const CustomFormTableList = ({ form }) => {
                                                  
 
                                                         <TaxPercent
-                                                            updateInForm={(value) =>
+                                                            updateInForm={(value,options) =>
                                                                 handleItemsUpdate(
                                                                     value,
                                                                     "gstPercent",
-                                                                    name
+                                                                    name,options
                                                                 )
                                                             }
                                                             min={false}
@@ -890,10 +917,13 @@ const CustomFormTableList = ({ form }) => {
                                                                 textAlign: "center",
                                                             }}
                                                             preFillValue={
-                                                                form.getFieldValue(
+                                                                `${form.getFieldValue(
                                                                     "items"
                                                                 )?.[name]
-                                                                    ?.gstPercent
+                                                                    ?.gstType}@${form.getFieldValue(
+                                                                        "items"
+                                                                    )?.[name]
+                                                                        ?.gstPercent}`
                                                             }
                                                             onPressEnter={(e) => {
                                                                 e.preventDefault();
@@ -908,11 +938,11 @@ const CustomFormTableList = ({ form }) => {
                                             {renderColumnValue(
                                                 "taxAmount",
                                                 <InputNumber
-                                                    updateInForm={(value) =>
+                                                    updateInForm={(value,options) =>
                                                         handleItemsUpdate(
                                                             value,
                                                             "taxAmount",
-                                                            name
+                                                            name,options
                                                         )
                                                     }
                                                     min={false}
@@ -999,6 +1029,7 @@ const CustomFormTableList = ({ form }) => {
                                             rate: 0,
                                             discountPercent: 0,
                                             gstPercent: 0,
+                                            gstType:"EXMEPT"
                                         });
                                     }}
                                     details={true}

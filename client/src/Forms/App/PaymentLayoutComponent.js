@@ -23,26 +23,20 @@ import NotificationHandler from "EventHandler/NotificationHandler";
 import NotesForm from "./NoteForm";
 import TermsAndConditionsForm from "./TermsAndCondition";
 import TechnicalSpecification from "./TechnicalSpecification";
+import { type } from "@testing-library/user-event/dist/type";
 
 
-const PaymentLayoutComponent = ({ form,widthOfTerm="75vw",widthOfNotes ="75vw" }) => {
+const PaymentLayoutComponent = ({ form, widthOfTerm = "75vw", widthOfNotes = "75vw" }) => {
     // Capitalize the first letter of a string
     const { entity } = useParams();
     const watchedTaxValues = Form.useWatch([], form)
     const allFormValues = form.getFieldsValue();
-const taxFields = Object.keys(allFormValues).filter((key) =>
-    /^(cgstAndSgst|igst)\d+$/.test(key)
-);
+    const taxFields = Object.keys(allFormValues).filter((key) =>
+        /^(cgstAndSgst|igst)\d+$/.test(key)
+    );
 
-const labelMap = {
-    cgstAndSgst28: "CGST + SGST (28%)",
-    cgstAndSgst12: "CGST + SGST (12%)",
-    cgstAndSgst18: "CGST + SGST (18%)",
-    igst28: "IGST (28%)",
-    igst12: "IGST (12%)",
-    igst18: "IGST (18%)",
-};
-    
+
+
     const capitalizeFirstLetter = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     };
@@ -77,12 +71,20 @@ const labelMap = {
         });
         form.setFieldsValue({ grandTotal: Math.ceil(grandTotal) });
     };
+    const taxValues = form.getFieldValue("taxValues") || []
+    const rates = [
+        ...new Set(
+            ["CGST", "SGST", "IGST"].flatMap(
+                t => taxValues[t]?.map(i => i.rate) || []
+            )
+        ),
+    ].sort((a, b) => a - b);
 
-  
+    const hasIGST = taxValues.IGST?.length > 0;
 
-    useEffect(()=>{
+    useEffect(() => {
 
-    },[form])
+    }, [form])
     return (
         <Row justify={"end"}>
             {/* Left Column */}
@@ -106,6 +108,9 @@ const labelMap = {
             </Col>
 
             {/* Right Column */}
+            {
+                ["quotations",]
+            }
             <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ right: 50 }}>
                 <Row span={24} justify={"end"}>
                     <FormItemCol
@@ -117,49 +122,25 @@ const labelMap = {
                         type={"number"}
                         width={125}
                         disabled={true}
+                        preFillValue={form.getFieldValue("grossTotal")}
                     />
                 </Row>
-                {["invoices", "challans"].includes(entity) ? (
-                    [
-                        "cgstAndSgst12",
-                        "cgstAndSgst18",
-                        "cgstAndSgst28",
-                        "igst12",
-                        "igst18",
-                        "igst28",
-                    ].map((key) => (
-                        <Row span={24} justify={"end"}>
-                            <FormItemCol
-                                key={key}
-                                name={key}
-                                label={labelMap[key]}
-                                labelCol={{ span: 15 }}
-                                type="number"
-                                width={125}
-                                disabled
-                                hidden={!watchedTaxValues?.[key]} // Hide if value not set
-                            />
-                        </Row>
-                    ))
-                ) : (
-                   ""
-                )}
-                 <Row span={24} justify={"end"}>
-                        <FormItemCol
-                            label="Total Tax Amount"
-                            name={"taxAmount"}
-                            labelCol={{ span: 15 }}
-                            labelAlign="left"
-                            tooltip={"Total Tax  Amount"}
-                            type={"number"}
-                            disabled={true}
-                            width={125}
-                            preFillValue={
-                                form.getFieldValue("totalWithTax") -
-                                form.getFieldValue("grossTotal")
-                            }
-                        />
-                    </Row>
+                <Row span={24} justify={"end"}>
+                    <FormItemCol
+                        label="Total Tax Amount"
+                        name={"taxAmount"}
+                        labelCol={{ span: 15 }}
+                        labelAlign="left"
+                        tooltip={"Total Tax  Amount"}
+                        type={"number"}
+                        disabled={true}
+                        width={125}
+                        preFillValue={
+                            form.getFieldValue("totalWithTax") -
+                            form.getFieldValue("grossTotal")
+                        }
+                    />
+                </Row>
 
                 <Row span={24} justify={"end"}>
                     <FormItemCol
@@ -171,12 +152,10 @@ const labelMap = {
                         type={"number"}
                         width={125}
                         disabled={true}
+                        preFillValue={form.getFieldValue("totalWithTax")}
                     />
                 </Row>
-
-                {/* Toggle Button for Other Charges */}
                 <Row justify={"end"}></Row>
-
                 <Row justify={"end"}>
                     <Form.List name="otherCharges">
                         {(fields, { add, remove }) => (
@@ -391,7 +370,6 @@ const labelMap = {
                         )}
                     </Form.List>
                 </Row>
-
                 <Row justify={"end"}>
                     <FormItemCol
                         label="Grand Total"
@@ -402,6 +380,7 @@ const labelMap = {
                         type={"number"}
                         disabled={true}
                         width={125}
+                        preFillValue={form.getFieldValue("grandTotal")}
                     />
                 </Row>
             </Col>

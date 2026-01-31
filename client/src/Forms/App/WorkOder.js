@@ -16,6 +16,8 @@ import FormItemCol from "components/Comman/FormItemCol";
 import Taglabel from "components/Comman/Taglabel";
 import CoustomButton from "components/Comman/CoustomButton";
 import CustomFormTableList from "./CustomFormTableList";
+import NotesForm from "./NoteForm";
+import PaymentLayoutComponent from "./PaymentLayoutComponent";
 
 const WorkOrderForm = ({ form, entity }) => {
   const handleItemsUpdate = (value, fieldName, rowName) => {
@@ -368,6 +370,8 @@ const WorkOrderForm = ({ form, entity }) => {
                       </div>
                   )}
               </Form.List>
+              <NotesForm form={ form} width="50vw" />
+
           </div>
       </div>
   );

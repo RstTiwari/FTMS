@@ -1,61 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { Select, Button, Divider, Modal, Input, Row, Space } from "antd";
+import React from "react";
+import { Select } from "antd";
 import { taxPercent } from "../../Data/PaymentReceivedData";
+
 const TaxPercent = ({
-    entity,
-    entityName,
-    width = "100%",
-    updateInForm,
-    preFillValue,
+  entity,
+  entityName,
+  width = "100%",
+  updateInForm,
+  preFillValue = "", // default empty string
 }) => {
-    const [value, setValue] = useState(preFillValue);
 
-    useEffect(() => {
-        if (preFillValue) {
-            setValue(preFillValue);
-        }
-    }, [preFillValue]);
+  // Handle change and pass selected option to parent
+  const handleChange = (value, option) => {
+    updateInForm(value, option); // parent gets both value and selected option
+  };
 
-    const handleChange = (value) => {
-        setValue(value);
-        updateInForm(value);
-    };
-    return (
-        <>
-            <Select
-                value={value ? value : ""}
-                options={taxPercent}
-                onChange={handleChange}
-                style={{ width: width }}
-                getPopupContainer={(trigger) => document.body}
-                dropdownStyle={{ position: "fixed", zIndex: 20000000 }}
-                dropdownRender={(menu) => {
-                    return (
-                        <>
-                            <div
-                                style={{
-                                    maxHeight: "200px",
-                                    overflow: "auto",
-                                }}
-                            >
-                                {menu}
-                            </div>
-                            <Divider
-                                style={{
-                                    margin: "8px 0",
-                                }}
-                            />
-                            <Space
-                                style={{
-                                    padding: "0 8px 4px",
-                                }}
-                            ></Space>
-                        </>
-                    );
-                }}
-            />
-        </>
-    );
+  return (
+    <Select
+      value={preFillValue || ""} // fully controlled by parent
+      options={taxPercent}       // your options array
+      onChange={handleChange}
+      style={{ width }}
+      getPopupContainer={() => document.body}
+      dropdownStyle={{ position: "fixed", zIndex: 20000000 }}
+      placeholder="Select Tax Percent"
+    />
+  );
 };
 
 export default TaxPercent;

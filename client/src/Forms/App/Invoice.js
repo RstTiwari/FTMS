@@ -244,6 +244,14 @@ const QuotationForm = ({ form, entity }) => {
                 preFillValue={form.getFieldValue("vehicleNo")}
                 updateInForm={(value) => handleItemsUpdate(value, "vehicleNo")}
             />
+        <FormItemCol
+                name={"taxValues"}
+                labelAlign="left"
+                labelCol={{ span: 8 }}
+                width={"30vw"}
+                type={"text"}
+                hidden={true}
+            />
 
 
             <CustomFormTableList form={form} />

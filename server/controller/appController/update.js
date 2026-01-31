@@ -16,12 +16,13 @@ const update = async (req, res, next) => {
 
         // Now let compare the data in both coming existing
         let modifiedObj = Object.assign(existingObj, values);
-        console.log(values,"===modified====")
+        console.log(values,database)
         let updatedData = await database.updateOne(
             filter,
             { $set: values },
             { req }
         );
+        console.log(updatedData)
         if (updatedData.modifiedCount === 0) {
             throw new Error(`Nothing to Update ${entity}`);
         }

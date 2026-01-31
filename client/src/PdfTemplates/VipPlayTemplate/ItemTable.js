@@ -61,6 +61,8 @@ const ItemsTable = ({ items, columns }) => {
           {/* Render table rows */}
           {items.map((item, itemIndex) => (
               <View key={item._id || itemIndex} style={styles.tableRow}>
+              {console.log(item,"item")}
+
                   {columns.map((col, colIndex) => (
                       <View
                           key={colIndex}
@@ -82,7 +84,12 @@ const ItemsTable = ({ items, columns }) => {
                                   style={{ width: 60, height: 60 }}
                                   src={item.image}
                               />
-                          ) : (
+                          ) : col.property ==="gstPercent" ? (
+                            <Text style={{fontSize:12}}>
+                                 {item.gstType?`${item.gstPercent}%`:item[col.property]}
+                              </Text>
+                          ):
+                           (
                               <Text style={styles.cellText} wrap>
                                   {item[col.property]}
                               </Text>

@@ -11,7 +11,7 @@ import ShowEntityNo from "components/Comman/ShowEntityNo";
 const { Text } = Typography;
 const getColumns = (details) => [
     {
-        title: <Taglabel text={"#No"} type={"heading"} details={details} />,
+        type: <Taglabel text={"#No"} type={"heading"} details={details} />,
         dataIndex: "no",
         key: "no",
         render: (_, record) => (
@@ -23,7 +23,7 @@ const getColumns = (details) => [
         ),
     },
     {
-        title: (
+        type: (
             <Taglabel text={"CUSTOMER"} type={"heading"} details={details} />
         ),
         dataIndex: "customer",
@@ -37,7 +37,7 @@ const getColumns = (details) => [
         ),
     },
     {
-        title: <Taglabel text={"DATE"} type={"heading"} details={details} />,
+        type: <Taglabel text={"DATE"} type={"heading"} details={details} />,
         dataIndex: "paymentDate",
         key: "paymentDate",
         render: (_, record) => (
@@ -49,7 +49,7 @@ const getColumns = (details) => [
         ),
     },
     {
-        title: <Taglabel text={"AMOUNT"} type={"heading"} details={details} />,
+        type: <Taglabel text={"AMOUNT"} type={"heading"} details={details} />,
         dataIndex: "amount",
         key: "amount",
         render: (_, record) => (
@@ -61,7 +61,7 @@ const getColumns = (details) => [
         ),
     },
     {
-        title: (
+        type: (
             <Taglabel
                 text={"PAYMENT MODE"}
                 type={"heading"}
@@ -79,7 +79,7 @@ const getColumns = (details) => [
         ),
     },
     {
-        title: <Taglabel text={"NOTE"} type={"heading"} details={details} />,
+        type: <Taglabel text={"NOTE"} type={"heading"} details={details} />,
         dataIndex: "note",
         key: "note",
         render: (_, record) => (
@@ -128,26 +128,88 @@ export const paymentMode = [
   },
 ];
 export const taxPercent = [
-    {
-        label: "Tax:2.5%",
-        value: 2.5,
-    },
-    {
-        label: "Tax:5%",
-        value: 5,
-    },
+  {
+    label: "GST@3%",
+    type: "GST",
+    value: "gst_3",
+    rate: 3,
+  },
+  {
+    label: "IGST@3%",
+    type: "IGST",
+    value: "igst_3",
+    rate: 3,
+  },
 
-    {
-        label: "Tax:12%",
-        value: 12,
-    },
+  {
+    label: "GST@5%",
+    type: "GST",
+    value: "gst_5",
+    rate: 5,
+  },
+  {
+    label: "IGST@5%",
+    type: "IGST",
+    value: "igst_5",
+    rate: 5,
+  },
 
-    {
-        label: "Tax:18%",
-        value: 18,
-    },
-    {
-        label: "Tax:28%",
-        value: 28,
-    },
+  {
+    label: "CGST@12%",
+    type: "GST",
+    value: "cgst_12",
+    rate: 12,
+  },
+  {
+    label: "IGST@12%",
+    type: "IGST",
+    value: "igst_12",
+    rate: 12,
+  },
+
+  {
+    label: "CGST@18%",
+    type: "GST",
+    value: "cgst_18",
+    rate: 18,
+  },
+  {
+    label: "IGST@18%",
+    type: "IGST",
+    value: "igst_18",
+    rate: 18,
+  },
+
+  {
+    label: "CGST@28%",
+    type: "GST",
+    value: "cgst_28",
+    rate: 28,
+  },
+  {
+    label: "IGST@28%",
+    type: "IGST",
+    value: "igst_28",
+    rate: 28,
+  },
+
+  {
+    label: "CGST@40%",
+    type: "GST",
+    value: "cgst_40",
+    rate: 40,
+  },
+  {
+    label: "IGST@40%",
+    type: "IGST",
+    value: "igst_40",
+    rate: 40,
+  },
+
+  {
+    label: "EXEMPT",
+    type: "EXEMPT",
+    value: "exempt",
+    rate: 0,
+  },
 ];

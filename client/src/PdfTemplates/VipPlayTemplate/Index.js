@@ -16,6 +16,7 @@ import {
     entityNameFormatter,
     workOrderTable,
     numberToWordsIndian,
+    taxValuesForCgstAndSgst,
 } from "PdfTemplates/helper/detailsFormatter";
 import InvoiceData from "../data.json";
 import PageHeader from "./PageHeader";
@@ -85,6 +86,10 @@ const Index = ({ entity, data }) => {
      let type  = entityData && entityData.type  ? entityData.type : entity
     let bankDetails = bankDetailsFormatter(type, organization?.bankDetails, organization.panNo);
     let entityName = entityNameFormatter(type);
+    let taxValues = taxValuesForCgstAndSgst(entity, entityData);
+    let showBankDetailsAndTax = ["quotations","invoices","challans"].includes(entity)
+ 
+
     return (
         <Document>
             <Page size="A4" break={true} style={styles.page} >
@@ -98,12 +103,17 @@ const Index = ({ entity, data }) => {
                         entity={entity}
                     />
                     <ItemsTable columns={headers} items={entityData?.items} />
-                    <AmountsAndNotes
-                        amounts={amounts}
-                        bankDetails={bankDetails}
-                        entity={entity}
-                       
-                    />
+                    
+                    {
+                        showBankDetailsAndTax &&
+                        <AmountsAndNotes
+                            amounts={amounts}
+                            bankDetails={bankDetails}
+                            entity={entity}
+                            taxValues={taxValues}
+                        />
+                    }
+                    
                     <AmountInWords amount={amountInWords} entity={entity}/>
                     <TermsAndNotes terms={entityData?.terms} notes={entityData.notes} specification={entityData.specification}/>
                     <SignatureBlock  companyName ={organization.companyName}/>

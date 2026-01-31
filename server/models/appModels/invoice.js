@@ -77,6 +77,9 @@ const invoiceSchema = new mongoose.Schema(
                 discountAmount: {
                     type: Number,
                 },
+                gstType:{
+                    type:String
+                },
 
                 gstPercent: {
                     type: Number,
@@ -105,14 +108,7 @@ const invoiceSchema = new mongoose.Schema(
         grandTotal: {
             type: Number,
         },      
-        // Detailed Tax Fields
-        cgstAndSgst12: Number,
-        cgstAndSgst18: Number,
-        cgstAndSgst28: Number,
-        igst12: Number,
-        igst18: Number,
-        igst28: Number,
-        notes: [],
+        taxValues:[],
         terms: [],
         tenantId: {
             type: String,

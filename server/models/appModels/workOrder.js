@@ -36,6 +36,10 @@ const workOrderSchema = new mongoose.Schema({
     enum: ["DRAFT", "SEND", "CANCELLED", "ON_HOLD", "COMPLETED", "IN_PROGRESS"],
     default: "DRAFT",
   },
+  quotationNo:{type:String},
+  notes:[
+
+  ],
   items: [
     {
       code: { type: String },

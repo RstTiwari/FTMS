@@ -2,6 +2,7 @@ import {
     jsDateIntoDayjsDate,
     currentFinancialYear,
 } from "Helper/EpochConveter";
+import { last } from "lodash";
 export const customPageHeader = (entity, data, entityPrefix, organization) => {
     let array = [];
     switch (entity) {
@@ -118,6 +119,10 @@ export const customPageHeader = (entity, data, entityPrefix, organization) => {
                 {
                     label: "Incharge",
                     value: data["incharge"],
+                },
+                  {
+                    label: "Quotation No",
+                    value: data["quotationNo"],
                 },
             ];
             break;
@@ -503,10 +508,12 @@ export const getTableHeaders2 = (entity, preCol = []) => {
     switch (entity.toLowerCase()) {
         case "workorders":
             return [
+                { title: "#", property: "srNo", width: 20 },
+
                 {
                     title: "PRODUCT DETAILS",
                     property: "description",
-                    width: 350,
+                    width: 330,
                 },
                 { title: "IMAGE", property: "image", width: 100 },
                 { title: "TOTAL QTY", property: "qty", width: 100 },
@@ -518,41 +525,17 @@ export const getTableHeaders2 = (entity, preCol = []) => {
 
 export const grandAndOtherChargesFormatter = (entity, data) => {
     if (entity === "workorders") return []; // Don't display amount table when entity is workorders
-    let array = [
-        {
+    let array = []
+    array.push({
             label: "GROSS TOTAL",
             value: data["grossTotal"],
-        },
-        {
-            label: "Tax CGST + SGST (12%)",
-            value: data["cgstAndSgst12"],
-        },
-        {
-            label: " Tax CGST + SGST (18%)",
-            value: data["cgstAndSgst18"],
-        },
-        {
-            label: " Tax CGST + SGST (28%)",
-            value: data["cgstAndSgst28"],
-        },
-        {
-            label: "Tax IGST (12%)",
-            value: data["igst12"],
-        },
-        {
-            label: "Tax IGST (18%)",
-            value: data["igst18"],
-        },
-        {
-            label: " Tax IGST (28%)",
-            value: data["igst28"],
-        },
-        {
-            label: "Total Tax  Amount",
-            value: Math.floor(data["totalWithTax"] - data["grossTotal"]),
-        },
-    
-    ];
+        })
+
+
+    array.push({
+        label: "Total Tax  Amount",
+        value: Math.floor(data["totalWithTax"] - data["grossTotal"]),
+    },)
 
     if (entity === "quotations") {
         array = [
@@ -582,6 +565,25 @@ export const grandAndOtherChargesFormatter = (entity, data) => {
 
     return array;
 };
+
+export const taxValuesForCgstAndSgst = (entity, data) => {
+    const result = {
+        CGST: [],
+        SGST: [],
+        IGST: []
+    };
+    data?.taxValues?.forEach(({ type, rate, amount }) => {
+        const bucket = result[type] || [];
+        const existing = bucket?.find(item => item.rate === rate);
+
+        if (existing) {
+            existing.amount += amount;
+        } else {
+            bucket.push({ rate, amount });
+        }
+    });
+    return result
+}
 
 export const bankDetailsFormatter = (entity, bankDetails, panNo) => {
     // Find the bank detail object where isPrimary is true
