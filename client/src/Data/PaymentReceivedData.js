@@ -155,7 +155,7 @@ export const taxPercent = [
   },
 
   {
-    label: "CGST@12%",
+    label: "GST@12%",
     type: "GST",
     value: "cgst_12",
     rate: 12,
@@ -168,7 +168,7 @@ export const taxPercent = [
   },
 
   {
-    label: "CGST@18%",
+    label: "GST@18%",
     type: "GST",
     value: "cgst_18",
     rate: 18,
@@ -181,7 +181,7 @@ export const taxPercent = [
   },
 
   {
-    label: "CGST@28%",
+    label: "GST@28%",
     type: "GST",
     value: "cgst_28",
     rate: 28,
@@ -194,7 +194,7 @@ export const taxPercent = [
   },
 
   {
-    label: "CGST@40%",
+    label: "GST@40%",
     type: "GST",
     value: "cgst_40",
     rate: 40,
