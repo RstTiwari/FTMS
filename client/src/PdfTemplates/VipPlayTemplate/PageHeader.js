@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
   reportTitle: {
     color: "#42cbf5",
-    fontSize: 20,
+    fontSize: 12,
     textAlign: "center",
     fontFamily: "Helvetica-Bold",
     fontWeight: "heavy",
@@ -40,19 +40,19 @@ const styles = StyleSheet.create({
     marginBottom:1,
   },
   subtitle: {
-    fontSize: 12,
+    fontSize: 8,
     fontFamily: "Helvetica-Bold",
     fontWeight: "heavy",
     textAlign: "center",
     marginBottom: 2,
   },
   add: {
-    fontSize: 9,
+    fontSize: 8,
     textAlign: "center",
     marginBottom: 2,
   },
   contactText: {
-    fontSize: 9,
+    fontSize: 8,
     textAlign: "center",
   },
   logo: {
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     borderColor: "black",
     margin: "2.5px", // Only right margin
     borderRadius: "10px",
-    height: 100,
+    height: 70,
   },
   
   rightSideBase: {
@@ -86,11 +86,11 @@ const styles = StyleSheet.create({
     borderColor: "black",
     margin: "2.5px", // Only left margin
     borderRadius: "10px",
-    height: 100,
+    height: 70,
   },
   
   detailLabel: {
-    fontSize: 10,
+    fontSize: 8,
     fontFamily: "Helvetica-Bold",
     fontWeight: "heavy",
   },
@@ -116,7 +116,7 @@ const PageHeader = ({ organization, entityData,entityDetails=[] ,entity}) => {
      const isQuotation = entity === "quotations";
      const leftFlex = isQuotation ? 0.65 : 0.5;
      const rightFlex = isQuotation ? 0.45 : 0.5;
-     const fontSize = isQuotation ? 10 : 12;
+     const fontSize = isQuotation ? 8 : 8;
   return (
       <View style={styles.container}>
           {/* TOP SECTION — Updated as per InvoiceTitle */}

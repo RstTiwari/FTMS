@@ -15,19 +15,19 @@ const styles = StyleSheet.create({
     borderColor: "#ddd",
   },
   tableCell: {
-    padding: 5,
+    padding: 1,
     borderRightWidth: 1,
     borderColor: "#ddd",
     flexGrow: 1,
     wordBreak: "break-word",
   },
   header: {
-    fontSize: 10,
+    fontSize: 8,
     fontWeight: "bold",
     backgroundColor: "#f0f0f0",
   },
   cellText: {
-    fontSize: 12,
+    fontSize: 8,
     flexWrap: "wrap",
     fontWeight:"bold",
     fontStyle:"Helvetica-Bold"
@@ -85,7 +85,7 @@ const ItemsTable = ({ items, columns }) => {
                                   src={item.image}
                               />
                           ) : col.property ==="gstPercent" ? (
-                            <Text style={{fontSize:12}}>
+                            <Text style={{fontSize:8}}>
                                  {item.gstType?`${item.gstPercent}%`:item[col.property]}
                               </Text>
                           ):

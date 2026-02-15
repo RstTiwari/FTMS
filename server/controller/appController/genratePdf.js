@@ -55,7 +55,7 @@ const generatePdf = async (req, res, next, forEmail) => {
                     path: "items.product",
                     options: { strictPopulate: false },
                 },
-            ]);
+            ]);   
         let organization = await tenantDb.findOne({ _id: tenantId });
         let columns = await colPreDb.findOne({
             tenantId: tenantId,

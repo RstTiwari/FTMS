@@ -188,10 +188,7 @@ const CustomProductSelect = ({
                         {!isLoading ? (
                             <>
                                 <div
-                                    style={{
-                                        maxHeight: "200px",
-                                        overflow: "auto",
-                                    }}
+                                 
                                 >
                                     {menu}
                                 </div>

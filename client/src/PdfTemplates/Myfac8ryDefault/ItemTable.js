@@ -1,61 +1,71 @@
 import React from "react";
 import { StyleSheet, Text, View, Image } from "@react-pdf/renderer";
 
-// Define styles for the table
 const styles = StyleSheet.create({
   table: {
     flexDirection: "column",
     width: "100%",
     marginBottom: 10,
     borderWidth: 1,
+    borderColor: "#000",
   },
+
   tableRow: {
     flexDirection: "row",
     borderBottomWidth: 1,
     borderColor: "#ddd",
   },
+
   tableCell: {
-    padding: 5,
+    padding: 4,
     borderRightWidth: 1,
     borderColor: "#ddd",
-    flexGrow: 1, // Allow cells to grow and wrap content
-    wordBreak: "break-word", // Ensure long words are broken
+    flexGrow: 1,
   },
-  header: {
-    fontSize: 6,
-    fontWeight: "bold",
-    backgroundColor: "#f0f0f0",
+
+  /* HEADER TEXT STYLE */
+  headerText: {
+    fontSize: 6,                     
+    fontFamily: "Helvetica-Bold",   
   },
+
+  /* CELL TEXT STYLE */
   cellText: {
-    fontSize: 8,
-    flexWrap: "wrap", // Enable text wrapping
+    fontSize: 6,                   
+    fontFamily: "Helvetica",
+  },
+
+  headerRow: {
+    backgroundColor: "#f0f0f0",
   },
 });
 
-// Component to display items in a table format with wrapping
 const ItemsTable = ({ items, columns }) => {
   return (
-    <>
-      {/* Render table headers */}
-      <View style={[styles.tableRow, styles.header] } >
+    <View style={styles.table}>
+      
+      {/* HEADER */}
+      <View style={[styles.tableRow, styles.headerRow]}>
         {columns.map((col, index) => (
-          <Text
+          <View
             key={index}
             style={[
               styles.tableCell,
               {
                 width: col.width,
-                borderRightWidth: index === columns.length - 1 ? 0 : 1,
+                borderRightWidth:
+                  index === columns.length - 1 ? 0 : 1,
               },
             ]}
-            wrap
           >
-            {col.title}
-          </Text>
+            <Text style={styles.headerText}>
+              {col.title}
+            </Text>
+          </View>
         ))}
       </View>
 
-      {/* Render table rows */}
+      {/* BODY */}
       {items.map((item, itemIndex) => (
         <View key={item._id || itemIndex} style={styles.tableRow}>
           {columns.map((col, colIndex) => (
@@ -65,14 +75,20 @@ const ItemsTable = ({ items, columns }) => {
                 styles.tableCell,
                 {
                   width: col.width,
-                  borderRightWidth: colIndex === columns.length - 1 ? 0 : 1,
+                  borderRightWidth:
+                    colIndex === columns.length - 1 ? 0 : 1,
                 },
               ]}
             >
               {col.property === "srNo" ? (
-                <Text style={styles.cellText}>{itemIndex + 1}</Text>
+                <Text style={styles.cellText}>
+                  {itemIndex + 1}
+                </Text>
               ) : col.property === "image" && item.image ? (
-                <Image style={{ width: 25, height: 25 }} src={item.image} />
+                <Image
+                  style={{ width: 25, height: 25 }}
+                  src={item.image}
+                />
               ) : (
                 <Text style={styles.cellText} wrap>
                   {item[col.property]}
@@ -82,7 +98,7 @@ const ItemsTable = ({ items, columns }) => {
           ))}
         </View>
       ))}
-    </>
+    </View>
   );
 };
 

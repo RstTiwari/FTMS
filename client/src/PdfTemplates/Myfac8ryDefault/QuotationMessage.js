@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#000000",
   },
   messageText: {
-    fontSize: 10,
+    fontSize: 8,
     fontFamily: "Helvetica",
     textAlign: "left",
     lineHeight: 1.5,

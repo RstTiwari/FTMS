@@ -102,6 +102,9 @@ const quotationSchema = new mongoose.Schema(
         grossTotal: {
             type: Number,
         },
+        taxValues:[
+
+        ],
         taxAmount: {
             type: Number,
         },

@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     },
     entityName: {
         textAlign: "center",
-        fontSize: 14,
+        fontSize: 10,
         fontFamily: "Helvetica-Bold",
         color: "#000",
         fontWeight: 1000,
@@ -87,7 +87,7 @@ const Index = ({ entity, data }) => {
     let bankDetails = bankDetailsFormatter(type, organization?.bankDetails, organization.panNo);
     let entityName = entityNameFormatter(type);
     let taxValues = taxValuesForCgstAndSgst(entity, entityData);
-    let showBankDetailsAndTax = ["quotations","invoices","challans"].includes(entity)
+    let showBankDetailsAndTax = ["quotations","invoices","challans","purchases"].includes(entity)
  
 
     return (
@@ -111,6 +111,7 @@ const Index = ({ entity, data }) => {
                             bankDetails={bankDetails}
                             entity={entity}
                             taxValues={taxValues}
+                            amountInWords = {amountInWords}
                         />
                     }
                     

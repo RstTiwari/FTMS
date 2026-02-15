@@ -15,7 +15,7 @@ import FormItemCol from "./FormItemCol";
 import CustomLabel from "./CustomLabel";
 import CoustomerData from "Data/CoustomerData";
 
-const AddressComponent = ({ id, entity,showShipping }) => {
+const AddressComponent = ({ id, entity, showShipping }) => {
     const { appApiCall } = useAuth();
     const [form] = Form.useForm();
 
@@ -78,7 +78,6 @@ const AddressComponent = ({ id, entity,showShipping }) => {
                 [`${editType}Address`]: updatedAddress,
             };
 
-            // Sync customer name back to data if editing billing
             if (editType === "billing" && updatedAddress.name) {
                 payload.name = updatedAddress.name;
             }
@@ -102,39 +101,84 @@ const AddressComponent = ({ id, entity,showShipping }) => {
         }
     };
 
+    // ✅ New function to copy billing to shipping directly
+    const handleSameAsBillingDirect = async () => {
+        if (!data?.billingAddress) {
+            message.warning("No billing address found.");
+            return;
+        }
+
+        try {
+            setLoading(true);
+
+            const payload = {
+                ...data,
+                shippingAddress: { ...data.billingAddress },
+            };
+
+            await appApiCall(
+                "post",
+                "update",
+                { values: payload },
+                { id, entity }
+            );
+
+            setData(payload); // update UI immediately
+
+            message.success("Shipping address updated same as Billing address.");
+        } catch (error) {
+            message.error("Failed to update shipping address.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const renderAddressBlock = (type) => {
         const address = data?.[`${type}Address`];
         const title = type === "billing" ? "Billing Address" : "Shipping Address";
-    
+
         let name;
-    
+
         if (entity === "tenant") {
-            // Use companyName for both billing and shipping if entity is tenant
             name = data?.companyName;
         } else {
-            // For non-tenant, use name inside the address (if any)
             name = address?.name;
         }
-        
+
         return (
             <Col span={6}>
                 <Card
                     title={title}
                     extra={
-                        <Button type="link" onClick={() => handleEditClick(type)}>
-                            Edit
-                        </Button>
+                        <>
+                            {type === "shipping" && (
+                                <Button
+                                    type="link"
+                                    onClick={handleSameAsBillingDirect}
+                                    loading={loading}
+                                    style={{ padding: 0, marginRight: 8 }}
+                                >
+                                    Same as Billing
+                                </Button>
+                            )}
+                            <Button
+                                type="link"
+                                onClick={() => handleEditClick(type)}
+                            >
+                                Edit
+                            </Button>
+                        </>
                     }
                 >
                     {address ? (
                         <>
                             {name && <b>NAME: {name}</b>}
                             <div>{address.street1 || ""}</div>
-                            <div>{address.street2 ||""}</div>
+                            <div>{address.street2 || ""}</div>
                             <div>
                                 {address.city || ""},{" "}
                                 {address.state || ""} -{" "}
-                                {address.pincode ||""}
+                                {address.pincode || ""}
                             </div>
                         </>
                     ) : (
@@ -144,16 +188,12 @@ const AddressComponent = ({ id, entity,showShipping }) => {
             </Col>
         );
     };
-    
 
     return (
         <div>
             {data && (
                 <Row gutter={24} style={{ marginBottom: 16 }}>
-                    {
-                        !showShipping && renderAddressBlock("billing")
-
-                    }
+                    {!showShipping && renderAddressBlock("billing")}
                     {renderAddressBlock("shipping")}
                 </Row>
             )}
@@ -172,12 +212,7 @@ const AddressComponent = ({ id, entity,showShipping }) => {
                 <Form form={form} layout="vertical">
                     {editType && (
                         <>
-                            <Divider orientation="left">
-                                {editType === "billing"
-                                    ? "Billing Address"
-                                    : "Shipping Address"}
-                            </Divider>
-
+                       
                             <FormItemCol
                                 name={[`${editType}Address`, "name"]}
                                 label="Name"
@@ -220,7 +255,7 @@ const AddressComponent = ({ id, entity,showShipping }) => {
                             <FormItemCol
                                 name={[`${editType}Address`, "pincode"]}
                                 label="Pincode"
-                                type="number"
+                                type="text"
                                 required
                                 labelAlign="left"
                                 width="30vw"

@@ -101,11 +101,11 @@ const Index = ({ entity, data }) => {
   );
 
   let amounts = grandAndOtherChargesFormatter(entity, entityData);
+  console.log(amounts,"amounts-amounts")
 
   let headers = getTableHeaders2(entity, selectColumns);
   let bankDetails = bankDetailsFormatter(entity, organization?.bankDetails);
   let type  = entityData && entityData.type ? entityData.type : entity
-  console.log(type,"======")
   let entityName = entityNameFormatter(type);
   return (
     <Document>

@@ -86,7 +86,7 @@ const PaymentLayoutComponent = ({ form, widthOfTerm = "75vw", widthOfNotes = "75
 
     }, [form])
     return (
-        <Row justify={"end"}>
+        <Row justify={"start"}>
             {/* Left Column */}
             <Col xs={24} sm={24} md={12} lg={12} xl={12}>
                 <Row>
@@ -107,10 +107,7 @@ const PaymentLayoutComponent = ({ form, widthOfTerm = "75vw", widthOfNotes = "75
                 )}
             </Col>
 
-            {/* Right Column */}
-            {
-                ["quotations",]
-            }
+         
             <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ right: 50 }}>
                 <Row span={24} justify={"end"}>
                     <FormItemCol

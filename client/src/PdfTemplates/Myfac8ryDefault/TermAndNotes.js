@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   sectionTitle: {
-    fontSize: 9,
+    fontSize: 8,
     fontFamily: "Helvetica-Bold",
     fontWeight: 1000,
     paddingVertical: 3,
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
   },
   itemText: {
-    fontSize: 9.5,
+    fontSize: 8,
     fontFamily: "Helvetica",
     lineHeight: 1.3,
   },

@@ -229,20 +229,20 @@ export const entityDetailsFormatter = (entity, data, organization) => {
                         value: mergedShippingAddress,
                         type: "value",
                     },
-                    {
-                        label: "",
-                        value: `GST NO : ${
-                            (customer && customer["gstNo"]) || ""
-                        }`,
-                        type: "value",
-                    },
-                    {
-                        label: "",
-                        value: `PAN NO : ${
-                            (customer && customer["panNo"]) || ""
-                        }`,
-                        type: "value",
-                    },
+                    // {
+                    //     label: "",
+                    //     value: `GST NO : ${
+                    //         (customer && customer["gstNo"]) || ""
+                    //     }`,
+                    //     type: "value",
+                    // },
+                    // {
+                    //     label: "",
+                    //     value: `PAN NO : ${
+                    //         (customer && customer["panNo"]) || ""
+                    //     }`,
+                    //     type: "value",
+                    // },
                 ],
             ];
             break;
@@ -431,16 +431,16 @@ export const getTableHeaders2 = (entity, preCol = []) => {
         { title: "GST%", property: "gstPercent", width: 35 },
         { title: "Offer%", property: "discountPercent", width: 35 },
         { title: "Best Offer", property: "discountAmount", width: 50 },
+        { title: "TAX%", property: "gstPercent", width: 40 },
         { title: "TAX AMT", property: "taxAmount", width: 55 },
     ];
 
     // Default headers
     const allHeaders = [
         { title: "#", property: "srNo", width: 20 },
-        { title: "DESCRIPTION", property: "description", width: 395 }, // Initial width of description column
+        { title: "DESCRIPTION", property: "description", width: 375 }, // Initial width of description column
         { title: "RATE", property: "rate", width: 55 },
-        { title: "QTY", property: "qty", width: 30 },
-        { title: "TAX%", property: "gstPercent", width: 40 },
+        { title: "QTY", property: "qty", width: 50 },
         { title: "TOTAL AMOUNT", property: "finalAmount", width: 70 },
     ];
 
@@ -531,24 +531,34 @@ export const grandAndOtherChargesFormatter = (entity, data) => {
             value: data["grossTotal"],
         })
 
+    if (entity === "invoices" || entity ==="quotations") {
+        let taxValues = data["taxValues"]
+        taxValues.map((item) => {
+            array.push({ label: item["taxName"], value: item["amount"] })
+        })
+    }
+
 
     array.push({
-        label: "Total Tax  Amount",
+        label: "TOTAL TAX  AMOUNT",
         value: Math.floor(data["totalWithTax"] - data["grossTotal"]),
     },)
 
-    if (entity === "quotations") {
-        array = [
-            {
-                label: "GROSS TOTAL",
-                value: data["grossTotal"],
-            },
-            {
-                label: "Total Tax  Amount",
-                value: Math.floor(data["totalWithTax"] - data["grossTotal"]),
-            },
-        ];
-    }
+
+
+    // if (entity === "quotations") {
+    //     array = [
+    //         {
+    //             label: "GROSS TOTAL",
+    //             value: data["grossTotal"],
+    //         },
+    //         {
+    //             label: "TOTAL TAX  AMOUNT",
+    //             value: Math.floor(data["totalWithTax"] - data["grossTotal"]),
+    //         },
+    //     ];
+    // }
+
 
     if (data.otherCharges && data.otherCharges.length >= 0) {
         data.otherCharges.forEach((element) => {
@@ -558,6 +568,7 @@ export const grandAndOtherChargesFormatter = (entity, data) => {
             });
         });
     }
+
     array.push({
         label: "GRAND TOTAL",
         value: data["grandTotal"],

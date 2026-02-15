@@ -21,7 +21,8 @@ const upload = async (req, res, next) => {
         const uploadImage = await Cloudinary.uploader.upload(file, {
             public_id: cloudName,
         });
-
+        console.log(uploadImage)
+            
         if (!uploadImage.public_id) {
             throw new Error("Failed to upload image on the cloud");
         }

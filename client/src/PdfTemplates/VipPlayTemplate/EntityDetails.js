@@ -32,25 +32,25 @@ const styles = StyleSheet.create({
         marginRight:2
     },
     heading: {
-        fontSize: 12,
+        fontSize: 8,
         color: "#000000",
         fontFamily: "Helvetica-Bold",
         fontWeight: "heavy",
     },
     subheading: {
-        fontSize: 12,
+        fontSize: 8,
         fontFamily: "Helvetica-Bold",
         fontWeight: "heavy",
         color: "#000000",
     },
     label: {
-        fontSize: 12,
+        fontSize: 8,
         color: "#000000",
         wordWrap: "break-word", // Ensures label text wraps within the div
         fontFamily: "Helvetica-Bold",
     },
     value: {
-        fontSize: 10,
+        fontSize: 8,
         color: "#000",
         wordWrap: "break-word", // Ensures label text wraps within the div
     },

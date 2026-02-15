@@ -259,6 +259,15 @@ const QuotationForm = ({ form,entity }) => {
                 preFillValue={form.getFieldValue("message")}
                 form={form}
             />
+            <FormItemCol
+                name={"taxValues"}
+                labelAlign="left"
+                labelCol={{ span: 8 }}
+                width={"30vw"}
+                type={"text"}
+                hidden={true}
+            />
+
             <CustomFormTableList form={form} />
             <PaymentLayoutComponent form={form} />
         </div>
