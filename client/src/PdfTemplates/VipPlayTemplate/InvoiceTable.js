@@ -100,15 +100,12 @@ const InvoiceTable = ({ items }) => {
                 <Cell width={50}></Cell>
                 <Cell width={40}></Cell>
 
-                {/* CGST split into % and Amt */}
                 <Cell width={25}>%</Cell>
                 <Cell width={50}>Amt</Cell>
 
-                {/* SGST split */}
                 <Cell width={25}>%</Cell>
                 <Cell width={50}>Amt</Cell>
 
-                {/* IGST split */}
                 <Cell width={25}>%</Cell>
                 <Cell width={50}>Amt</Cell>
 
@@ -137,13 +134,13 @@ const InvoiceTable = ({ items }) => {
                         <Cell width={40}>{item.qty}</Cell>
 
                         <Cell width={25}>{cgstPercent !== "" ? `${cgstPercent}%` : ""}</Cell>
-                        <Cell width={50}>{cgstAmount}</Cell>
+                        <Cell width={50}>{Math.round(cgstAmount)}</Cell>
 
                         <Cell width={25}>{sgstPercent !== "" ? `${sgstPercent}%` : ""}</Cell>
-                        <Cell width={50}>{sgstAmount}</Cell>
+                        <Cell width={50}>{Math.round(sgstAmount)}</Cell>
 
                         <Cell width={25}>{igstPercent !== "" ? `${igstPercent}%` : ""}</Cell>
-                        <Cell width={50}>{igstAmount}</Cell>
+                        <Cell width={50}>{Math.round(igstAmount)}</Cell>
 
                         <Cell width={75} isLast>{item.finalAmount}</Cell>
                     </View>
@@ -156,23 +153,19 @@ const InvoiceTable = ({ items }) => {
                 <Cell width={175} bold>TOTAL</Cell>
                 <Cell width={50}></Cell>
                 <Cell width={50}></Cell>
-                <Cell width={40}></Cell>
+                <Cell width={40} bold>{totals.qty}</Cell> {/* ✅ Total QTY */}
 
-                {/* CGST */}
                 <Cell width={25}></Cell>
-                <Cell width={50} bold>{totals.cgst}</Cell>
+                <Cell width={50} bold>{Math.round(totals.cgst)}</Cell>
 
-                {/* SGST */}
                 <Cell width={25}></Cell>
-                <Cell width={50} bold>{totals.sgst}</Cell>
+                <Cell width={50} bold>{Math.round(totals.sgst)}</Cell>
 
-                {/* IGST */}
                 <Cell width={25}></Cell>
-                <Cell width={50} bold>{totals.igst}</Cell>
+                <Cell width={50} bold>{Math.round(totals.igst)}</Cell>
 
                 <Cell width={75} isLast bold>{totals.final}</Cell>
             </View>
-
         </View>
     );
 };

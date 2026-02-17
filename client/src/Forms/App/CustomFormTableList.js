@@ -165,9 +165,9 @@ const CustomFormTableList = ({ form }) => {
         let totalWithTax = grossTotal + taxAmount;
         let grandTotal = totalWithTax;
         form.setFieldsValue({
-            grossTotal: Math.ceil(grossTotal),
-            taxAmount: Math.ceil(taxAmount),
-            totalWithTax: Math.ceil(totalWithTax),
+            grossTotal: Math.round(grossTotal),
+            taxAmount: Math.round(taxAmount),
+            totalWithTax: Math.round(totalWithTax),
             grandTotal: Math.ceil(grandTotal),
         });
     };
