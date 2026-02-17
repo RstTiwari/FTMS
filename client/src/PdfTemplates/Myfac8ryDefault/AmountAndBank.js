@@ -81,7 +81,7 @@ const AmountAndBank = ({
   amountInWords
 }) => {
   return (
-    <View wrap style={styles.container}>
+    <View wrap ={false} style={styles.container}>
       
       {/* LEFT BANK */}
       <View style={styles.leftSection}>

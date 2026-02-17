@@ -51,18 +51,18 @@ const styles = StyleSheet.create({
         wordBreak: "normal",
     },
     add: {
-        fontSize: 9,
+        fontSize: 7,
         textAlign: "center",
         marginBottom: 2,
         wordBreak: "normal",
     },
     contactText: {
-        fontSize: 8,
+        fontSize: 7,
         textAlign: "center",
     },
     logo: {
         width: 100,
-        height: 80,
+        height: 70,
         marginLeft: "auto",
         marginRight: "auto",
     },

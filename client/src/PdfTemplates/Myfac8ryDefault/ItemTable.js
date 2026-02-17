@@ -1,105 +1,171 @@
 import React from "react";
-import { StyleSheet, Text, View, Image } from "@react-pdf/renderer";
+import { StyleSheet, Text, View } from "@react-pdf/renderer";
 
 const styles = StyleSheet.create({
   table: {
-    flexDirection: "column",
     width: "100%",
     marginBottom: 10,
     borderWidth: 1,
-    borderColor: "#000",
+    borderColor: "#ddd",
   },
 
-  tableRow: {
+  row: {
     flexDirection: "row",
     borderBottomWidth: 1,
-    borderColor: "#ddd",
+    borderBottomColor: "#ddd",
   },
 
-  tableCell: {
+  lastRow: {
+    borderBottomWidth: 0,
+  },
+
+  cell: {
     padding: 4,
-    borderRightWidth: 1,
-    borderColor: "#ddd",
-    flexGrow: 1,
-  },
-
-  /* HEADER TEXT STYLE */
-  headerText: {
-    fontSize: 6,                     
-    fontFamily: "Helvetica-Bold",   
-  },
-
-  /* CELL TEXT STYLE */
-  cellText: {
-    fontSize: 6,                   
+    fontSize: 6,
     fontFamily: "Helvetica",
+    borderRightWidth: 1,
+    borderRightColor: "#ddd",
+    textAlign: "center",
+  },
+
+  lastCell: {
+    borderRightWidth: 0,
   },
 
   headerRow: {
     backgroundColor: "#f0f0f0",
   },
+
+  headerText: {
+    fontSize: 6,
+    fontFamily: "Helvetica-Bold",
+  },
+
+  boldText: {
+    fontFamily: "Helvetica-Bold",
+  },
 });
 
-const ItemsTable = ({ items, columns }) => {
+const InvoiceTable = ({ items }) => {
+  const totals = items.reduce(
+    (acc, item) => {
+      acc.qty += Number(item.qty || 0);
+      acc.rate += Number(item.rate || 0);
+      acc.final += Number(item.finalAmount || 0);
+
+      if (item.gstType === "GST") {
+        acc.cgst += item.taxAmount / 2;
+        acc.sgst += item.taxAmount / 2;
+      } else if (item.gstType === "IGST") {
+        acc.igst += item.taxAmount;
+      }
+
+      return acc;
+    },
+    { qty: 0, rate: 0, cgst: 0, sgst: 0, igst: 0, final: 0 }
+  );
+
+  const Cell = ({ children, width, isLast, bold }) => (
+    <Text
+      style={[
+        styles.cell,
+        { width },
+        isLast && styles.lastCell,
+        bold && styles.boldText,
+      ]}
+    >
+      {children}
+    </Text>
+  );
+
   return (
     <View style={styles.table}>
-      
-      {/* HEADER */}
-      <View style={[styles.tableRow, styles.headerRow]}>
-        {columns.map((col, index) => (
-          <View
-            key={index}
-            style={[
-              styles.tableCell,
-              {
-                width: col.width,
-                borderRightWidth:
-                  index === columns.length - 1 ? 0 : 1,
-              },
-            ]}
-          >
-            <Text style={styles.headerText}>
-              {col.title}
-            </Text>
-          </View>
-        ))}
+      {/* HEADER ROW 1 */}
+      <View style={[styles.row, styles.headerRow]}>
+        <Cell width={25} bold>#</Cell>
+        <Cell width={220} bold>DESCRIPTION</Cell>
+        <Cell width={50} bold>RATE</Cell>
+        <Cell width={40} bold>QTY</Cell>
+        <Cell width={80} bold>CGST</Cell>
+        <Cell width={80} bold>SGST</Cell>
+        <Cell width={80} bold>IGST</Cell>
+        <Cell width={80} isLast bold>TOTAL</Cell>
       </View>
 
-      {/* BODY */}
-      {items.map((item, itemIndex) => (
-        <View key={item._id || itemIndex} style={styles.tableRow}>
-          {columns.map((col, colIndex) => (
-            <View
-              key={colIndex}
-              style={[
-                styles.tableCell,
-                {
-                  width: col.width,
-                  borderRightWidth:
-                    colIndex === columns.length - 1 ? 0 : 1,
-                },
-              ]}
-            >
-              {col.property === "srNo" ? (
-                <Text style={styles.cellText}>
-                  {itemIndex + 1}
-                </Text>
-              ) : col.property === "image" && item.image ? (
-                <Image
-                  style={{ width: 25, height: 25 }}
-                  src={item.image}
-                />
-              ) : (
-                <Text style={styles.cellText} wrap>
-                  {item[col.property]}
-                </Text>
-              )}
-            </View>
-          ))}
-        </View>
-      ))}
+      {/* HEADER ROW 2 */}
+      <View style={styles.row}>
+        <Cell width={25}></Cell>
+        <Cell width={220}></Cell>
+        <Cell width={50}></Cell>
+        <Cell width={40}></Cell>
+
+        <Cell width={40}>%</Cell>
+        <Cell width={40}>Amt</Cell>
+
+        <Cell width={40}>%</Cell>
+        <Cell width={40}>Amt</Cell>
+
+        <Cell width={40}>%</Cell>
+        <Cell width={40}>Amt</Cell>
+
+        <Cell width={80} isLast></Cell>
+      </View>
+
+      {/* ITEMS */}
+      {items.map((item, index) => {
+        const isGST = item.gstType === "GST";
+        const isIGST = item.gstType === "IGST";
+
+        const cgstPercent = isGST ? item.gstPercent / 2 : "";
+        const sgstPercent = isGST ? item.gstPercent / 2 : "";
+        const igstPercent = isIGST ? item.gstPercent : "";
+
+        const cgstAmount = isGST ? item.taxAmount / 2 : "";
+        const sgstAmount = isGST ? item.taxAmount / 2 : "";
+        const igstAmount = isIGST ? item.taxAmount : "";
+
+        return (
+          <View key={item._id || index} style={styles.row}>
+            <Cell width={25}>{index + 1}</Cell>
+            <Cell width={220}>{item.description}</Cell>
+            <Cell width={50}>{item.rate}</Cell>
+            <Cell width={40}>{item.qty}</Cell>
+
+            <Cell width={40}>{cgstPercent && `${cgstPercent}%`}</Cell>
+            <Cell width={40}>{cgstAmount}</Cell>
+
+            <Cell width={40}>{sgstPercent && `${sgstPercent}%`}</Cell>
+            <Cell width={40}>{sgstAmount}</Cell>
+
+            <Cell width={40}>{igstPercent && `${igstPercent}%`}</Cell>
+            <Cell width={40}>{igstAmount}</Cell>
+
+            <Cell width={80} isLast>{item.finalAmount}</Cell>
+          </View>
+        );
+      })}
+
+      {/* TOTAL ROW */}
+      <View style={[styles.row, styles.lastRow]}>
+        <Cell width={245} bold>TOTAL</Cell>
+        <Cell width={50} bold>{totals.rate}</Cell>
+        <Cell width={40} bold>{totals.qty}</Cell>
+
+        <Cell width={40}></Cell>
+        <Cell width={40} bold>{totals.cgst}</Cell>
+
+        <Cell width={40}></Cell>
+        <Cell width={40} bold>{totals.sgst}</Cell>
+
+        <Cell width={40}></Cell>
+        <Cell width={40} bold>{totals.igst}</Cell>
+
+        <Cell width={80} isLast bold>
+          {totals.final}
+        </Cell>
+      </View>
     </View>
   );
 };
 
-export default ItemsTable;
+export default InvoiceTable;

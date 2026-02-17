@@ -29,6 +29,7 @@ import TermsAndNotes from "PdfTemplates/Myfac8ryDefault/TermAndNotes";
 import SignatureBlock from "PdfTemplates/Myfac8ryDefault/SignatureBlock";
 import AmountInWords from "PdfTemplates/Myfac8ryDefault/AmountInWords";
 import QuotationMessage from "PdfTemplates/Myfac8ryDefault/QuotationMessage";
+import InvoiceTable from "./InvoiceTable";
 
 let borderColor = "#000000";
 const styles = StyleSheet.create({
@@ -88,6 +89,8 @@ const Index = ({ entity, data }) => {
     let entityName = entityNameFormatter(type);
     let taxValues = taxValuesForCgstAndSgst(entity, entityData);
     let showBankDetailsAndTax = ["quotations","invoices","challans","purchases"].includes(entity)
+    let showInvoiceTable = entity == "invoices" ? true:false
+    console.log(showInvoiceTable,"====",entity)
  
 
     return (
@@ -102,8 +105,12 @@ const Index = ({ entity, data }) => {
                         data={entityDetails}
                         entity={entity}
                     />
-                    <ItemsTable columns={headers} items={entityData?.items} />
-                    
+                    {
+                        showInvoiceTable ? (<InvoiceTable columns={headers} items={entityData?.items} /> ):
+                            (<ItemsTable columns={headers} items={entityData?.items} />)
+
+                    }
+
                     {
                         showBankDetailsAndTax &&
                         <AmountsAndNotes

@@ -272,7 +272,7 @@ export const entityDetailsFormatter = (entity, data, organization) => {
             let contactNo =
                 customer && customer.phone ? `${customer["phone"]}` : "";
             let attn = data && data.attn ? `${data["attn"]}` : "";
-            if (buyer.length >35) {
+            if (buyer && buyer.length >35) {
                 buyer = buyer.slice(0, 35) + "...";
               }
               
@@ -426,7 +426,7 @@ export const getTableHeaders2 = (entity, preCol = []) => {
     // Define the additional columns that may be added based on preCol
     let toAddColumn = [
         { title: "CODE", property: "code", width: 40 },
-        { title: "IMAGE", property: "image", width: 80 },
+        { title: "IMAGE", property: "image", width: 65 },
         { title: "HSN", property: "hsnCode", width: 40 },
         { title: "GST%", property: "gstPercent", width: 35 },
         { title: "Offer%", property: "discountPercent", width: 35 },
@@ -438,7 +438,7 @@ export const getTableHeaders2 = (entity, preCol = []) => {
     // Default headers
     const allHeaders = [
         { title: "#", property: "srNo", width: 20 },
-        { title: "DESCRIPTION", property: "description", width: 375 }, // Initial width of description column
+        { title: "DESCRIPTION", property: "description", width: 390 }, // Initial width of description column
         { title: "RATE", property: "rate", width: 55 },
         { title: "QTY", property: "qty", width: 50 },
         { title: "TOTAL AMOUNT", property: "finalAmount", width: 70 },
@@ -518,9 +518,25 @@ export const getTableHeaders2 = (entity, preCol = []) => {
                 { title: "IMAGE", property: "image", width: 100 },
                 { title: "TOTAL QTY", property: "qty", width: 100 },
             ];
+        case "invoices":
+            return [
+                { title: "#", property: "srNo", width: 20 },
+                { title: "DESCRIPTION", property: "description", width: 350 }, // Initial width of description column
+                { title: "HSN", property: "hsnCode", width: 40 },
+                { title: "QTY", property: "qty", width: 50 },
+                { title: "RATE", property: "rate", width: 55 },
+                {title:"CGST",property:"gstPercent",width:50},
+                {title:"SGST",property:"gstPercent",width:50},
+                {title:"IGST",property:"gstPercent",width:50},
+                { title: "TOTAL AMOUNT", property: "finalAmount", width: 70 },
+
+            ]
+
         default:
             return finalHeaders;
     }
+
+   
 };
 
 export const grandAndOtherChargesFormatter = (entity, data) => {

@@ -137,11 +137,11 @@ const CustomFormTableList = ({ form }) => {
 
 
             if (item.gstType === "IGST") {
-                addOrUpdate(`IGST@${gstValue}`, gstValue,"IGST", taxAmount);
+                addOrUpdate(`IGST%${gstValue}`, gstValue,"IGST", taxAmount);
             } else {
                 const halfRate = gstValue / 2;
                 const halfAmount = taxAmount / 2;
-                addOrUpdate(`CGST@${halfRate}+SGST@${halfRate}`, halfRate,"CGST", taxAmount);
+                addOrUpdate(`CGST%${halfRate}+SGST%${halfRate}`, halfRate,"CGST", taxAmount);
                 // addOrUpdate(`SGST@${halfRate}`, halfRate,"SGST", halfAmount) 
             }
         });
