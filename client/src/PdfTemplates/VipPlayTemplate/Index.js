@@ -73,7 +73,9 @@ const styles = StyleSheet.create({
 });
 const Index = ({ entity, data }) => {
     let { entityData, organization, selectColumns, entityPrefix } = data;
-  const pageHeaderDetail = customPageHeader(entity, entityData, entityPrefix,organization);
+    let Prefix = entityData['prefix'] || "entityPrefix"
+    console.log(entityPrefix,data,"---")
+  const pageHeaderDetail = customPageHeader(entity, entityData, Prefix,organization);
 
     const entityDetails = entityDetailsFormatter(
         entity,

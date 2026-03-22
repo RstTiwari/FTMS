@@ -323,21 +323,21 @@ export const entityDetailsFormatter = (entity, data, organization) => {
                         value: vendorComBillingAddress,
                     },
                 ],
-                [
-                    {
-                        label: "Buyer Details",
-                        type: "heading",
-                    },
-                    {
-                        type: "subheading",
-                        value: orgName?.toUpperCase(),
-                    },
-                    {
-                        label: "",
-                        value: orgComBillingAddress,
-                        type: "value",
-                    },
-                ],
+                // [
+                //     {
+                //         label: "Buyer Details",
+                //         type: "heading",
+                //     },
+                //     {
+                //         type: "subheading",
+                //         value: orgName?.toUpperCase(),
+                //     },
+                //     {
+                //         label: "",
+                //         value: orgComBillingAddress,
+                //         type: "value",
+                //     },
+                // ],
                 [
                     {
                         label: "Delivery Address",

@@ -1,104 +1,109 @@
 import React from "react";
 import { StyleSheet, Text, View, Image } from "@react-pdf/renderer";
 
-// Define styles for the table
+// ✅ Updated styles
 const styles = StyleSheet.create({
   table: {
     flexDirection: "column",
     width: "100%",
     marginBottom: 10,
     borderWidth: 1,
+    borderColor: "#000", // ✅ black border
   },
   tableRow: {
     flexDirection: "row",
     borderBottomWidth: 1,
-    borderColor: "#ddd",
+    borderColor: "#000", // ✅ black
   },
   tableCell: {
-    padding: 1,
+    padding: 2,
     borderRightWidth: 1,
-    borderColor: "#ddd",
+    borderColor: "#000", // ✅ black
     flexGrow: 1,
     wordBreak: "break-word",
   },
+
+  // ✅ MATCHED with InvoiceTable
   header: {
     fontSize: 8,
-    fontWeight: "bold",
-    backgroundColor: "#f0f0f0",
+    fontFamily: "Helvetica-Bold",
+    backgroundColor: "#42cbf5", // ✅ same blue
   },
+
   cellText: {
     fontSize: 8,
     flexWrap: "wrap",
-    fontWeight:"bold",
-    fontStyle:"Helvetica-Bold"
+    fontFamily: "Helvetica", // ✅ correct font (fix from fontStyle)
   },
 });
 
-// Component to display items in a table format with wrapping
 const ItemsTable = ({ items, columns }) => {
   return (
-      <>
-          {/* Render table headers */}
-          <View style={[styles.tableRow, styles.header]}>
-              {columns.map((col, index) => (
-                  <Text
-                      key={index}
-                      style={[
-                          styles.tableCell,
-                          {
-                              width: col.width,
-                              borderRightWidth:
-                                  index === columns.length - 1 ? 0 : 1,
-                          },
-                      ]}
-                      wrap
-                  >
-                      {col.title}
-                  </Text>
-              ))}
-          </View>
+    <>
+      {/* ✅ HEADER */}
+      <View style={[styles.tableRow, styles.header]}>
+        {columns.map((col, index) => (
+          <Text
+            key={index}
+            style={[
+              styles.tableCell,
+              {
+                width: col.width,
+                borderRightWidth:
+                  index === columns.length - 1 ? 0 : 1,
+              },
+            ]}
+            wrap
+          >
+            {col.title}
+          </Text>
+        ))}
+      </View>
 
-          {/* Render table rows */}
-          {items.map((item, itemIndex) => (
-              <View key={item._id || itemIndex} style={styles.tableRow}>
-              {console.log(item,"item")}
+      {/* ✅ ROWS */}
+      {items.map((item, itemIndex) => (
+        <View key={item._id || itemIndex} style={styles.tableRow}>
+          
+          {columns.map((col, colIndex) => (
+            <View
+              key={colIndex}
+              style={[
+                styles.tableCell,
+                {
+                  width: col.width,
+                  borderRightWidth:
+                    colIndex === columns.length - 1 ? 0 : 1,
+                },
+              ]}
+            >
+              {col.property === "srNo" ? (
+                <Text style={styles.cellText}>
+                  {itemIndex + 1}
+                </Text>
 
-                  {columns.map((col, colIndex) => (
-                      <View
-                          key={colIndex}
-                          style={[
-                              styles.tableCell,
-                              {
-                                  width: col.width,
-                                  borderRightWidth:
-                                      colIndex === columns.length - 1 ? 0 : 1,
-                              },
-                          ]}
-                      >
-                          {col.property === "srNo" ? (
-                              <Text style={styles.cellText}>
-                                  {itemIndex + 1}
-                              </Text>
-                          ) : col.property === "image" && item.image ? (
-                              <Image
-                                  style={{ width: 60, height: 60 }}
-                                  src={item.image}
-                              />
-                          ) : col.property ==="gstPercent" ? (
-                            <Text style={{fontSize:8}}>
-                                 {item.gstType?`${item.gstPercent}%`:item[col.property]}
-                              </Text>
-                          ):
-                           (
-                              <Text style={styles.cellText} wrap>
-                                  {item[col.property]}
-                              </Text>
-                          )}
-                      </View>
-                  ))}
-              </View>
+              ) : col.property === "image" && item.image ? (
+                <Image
+                  style={{ width: 60, height: 60 }}
+                  src={item.image}
+                />
+
+              ) : col.property === "gstPercent" ? (
+                <Text style={{ fontSize: 8 }}>
+                  {item.gstType
+                    ? `${item.gstPercent}%`
+                    : item[col.property]}
+                </Text>
+
+              ) : (
+                <Text style={styles.cellText} wrap>
+                  {item[col.property]}
+                </Text>
+              )}
+            </View>
           ))}
-      </>
+        </View>
+      ))}
+    </>
   );
 };
 
