@@ -32,7 +32,8 @@ const styles = StyleSheet.create({
     },
 
     header: {
-        backgroundColor: "#42cbf5",
+        backgroundColor: "#BFF0FD",
+        fontWeight: "heavy",
     },
 
     boldText: {

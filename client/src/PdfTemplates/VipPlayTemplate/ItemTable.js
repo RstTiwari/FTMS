@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 8,
     fontFamily: "Helvetica-Bold",
-    backgroundColor: "#42cbf5", // ✅ same blue
+    backgroundColor: "#BFF0FD", // ✅ same blue
   },
 
   cellText: {
