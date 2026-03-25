@@ -5,7 +5,6 @@ import { Text, View, StyleSheet } from "@react-pdf/renderer";
 const styles = StyleSheet.create({
   messageContainer: {
     marginTop: 5,
-    marginBottom: 5,
     padding: 5,
     borderBottom:1,
     borderBottomColor: "#000000",
