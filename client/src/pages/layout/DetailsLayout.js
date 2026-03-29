@@ -1,7 +1,6 @@
-import { Row, Col } from "antd";
+import { Row, Col, Select, Input, Button } from "antd";
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate, Outlet } from "react-router-dom";
-import { Space, Table, Input, Button } from "antd";
+import { useParams, useNavigate } from "react-router-dom";
 
 import CustomTable from "components/CustomTable";
 import useDataFetching from "Hook/useDataFetching";
@@ -16,188 +15,197 @@ import useSearch from "Hook/useSearch";
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
 
-const { Search } = Input;
-
 const DetailsLayout = () => {
     const { tenantId, entity, id, pageNo, pageSize } = useParams();
+
     const [selectedRowKey, setSelectedRowKey] = useState(null);
     const [details, setDetails] = useState(false);
-    const [searchText, setSearchText] = useState("");
+
     const [searchInput, setSearchInput] = useState("");
+    const [selectedFY, setSelectedFY] = useState("");
+    const [selectedStatus, setSelectedStatus] = useState("");
+
     const debouncedSearch = useDebounce(searchInput, 300);
+
     const dataForTable = ListModule(entity);
     const [deleteRowKeys, setDeleteRowKeys] = useState([]);
     const { adminApiCall } = useAuth();
-    
 
     const [show, setShow] = useState(false);
-    const openModal = () => {
-        setShow(true);
-    };
-    const closeModal = (reload) => {
-        if (reload) {
-            setShow(false);
-            fetchData();
-        } else {
-            setShow(false);
-        }
-    };
 
     const navigate = useNavigate();
+
     const { data, total, isLoading, fetchData } = useDataFetching(
         entity,
         dataForTable.select,
         pageNo,
         pageSize
     );
-    const { data: searchResults, isLoading: searchLoading } = useSearch(
+
+    // ✅ SEARCH HOOK
+    const {
+        data: searchResults,
+        isLoading: searchLoading,
+        refetch: refetchSearch,
+    } = useSearch(
         entity,
         debouncedSearch,
+        selectedFY,
+        selectedStatus,
         dataForTable.select
     );
-    console.log(searchResults);
+
+    const isFiltering =
+        debouncedSearch.trim() || selectedFY || selectedStatus;
+
+    const getFinancialYears = () => {
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth();
+
+        let startYear = currentMonth >= 3 ? currentYear : currentYear - 1;
+
+        const years = [];
+        for (let i = 0; i < 5; i++) {
+            const from = startYear - i;
+            const to = from + 1;
+            years.push(`${from}-${to}`);
+        }
+        return years;
+    };
+
+    const statusOptions = ["DRAFT", "PARTIAL PAID", "FULLY PAID"];
 
     const onTableChange = (pagination) => {
         const { current: pageNo, pageSize } = pagination;
         navigate(`/app/${tenantId}/${entity}/${pageNo}/${pageSize}`);
     };
+
     const rowSelection = {
         deleteRowKeys,
         onChange: (keys) => setDeleteRowKeys(keys),
     };
 
+    // ✅ FIXED DELETE
     const onDeleteSelected = async () => {
-        let { success, result, message } = await adminApiCall(
+        let { success, message } = await adminApiCall(
             "post",
             "delete",
             {},
-            { entity, tenantId,deleteRowKeys }
+            { entity, tenantId, deleteRowKeys }
         );
+
         if (success) {
             NotificationHandler.success(message);
-            fetchData();
-            setDeleteRowKeys([])
-        } else {
-            return NotificationHandler.error(message);
-        }
 
-    }
-   
+            if (isFiltering) {
+                await refetchSearch(); // ✅ refresh filtered data
+            } else {
+                fetchData();
+            }
+
+            setDeleteRowKeys([]);
+        } else {
+            NotificationHandler.error(message);
+        }
+    };
+
     useEffect(() => {
         setDetails(window.location.pathname.includes("details"));
         setSelectedRowKey(id);
     }, [id]);
-    console.log(deleteRowKeys,"deleteRowKeys")
 
-    const rowClassName = (record) => {
-        return record._id === selectedRowKey
+    const rowClassName = (record) =>
+        record._id === selectedRowKey
             ? "custom-row selected-row"
             : "custom-row";
-    };
 
     return (
         <Row style={{ margin: "30px" }}>
-            <Col
-                xs={details ? 12 : 24}
-                sm={details ? 12 : 24}
-                md={details ? 6 : 24}
-                lg={details ? 6 : 24}
-                xl={details ? 6 : 24}
-            >
+            <Col xs={24} md={details ? 6 : 24}>
+
+                {/* HEADER */}
                 <Row>
-                    <Col
-                        xs={12}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        style={{
-                            color: "black",
-                            fontSize: details ? "12px" : "1rem",
-                            color: "#22b378",
-                        }}
-                    >
+                    <Col xs={12} style={{ color: "#22b378" }}>
                         ALL {fetchTitleName(entity)?.toUpperCase()}
                     </Col>
-                    <Col
-                        xs={12}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        style={{
-                            textAlign: "right",
-                            fontSize: details ? "0.55rem" : "1rem",
-                            right: 20,
-                        }}
-                    >
-                        <CoustomButton
-                            isCancel={false}
-                            text={"NEW"}
-                            onClick={openModal}
-                            withIcon
-                            details={true}
-                            isLoading={isLoading}
-                        />
+                    <Col xs={12} style={{ textAlign: "right" }}>
+                        <CoustomButton text="NEW" onClick={() => setShow(true)} />
                     </Col>
                 </Row>
-                <div
-                    style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        marginBottom: 16,
-                    }}
-                >
-                    {/* LEFT SIDE: Search Box */}
-                    <Input.Search
+
+                {/* FILTER BAR */}
+                <div style={{ display: "flex", gap: 10, marginBottom: 16 }}>
+
+                    <Input
                         placeholder="Search..."
-                        style={{ width: 300 }}
+                        style={{ width: 150 }}
                         value={searchInput}
                         onChange={(e) => setSearchInput(e.target.value)}
                         allowClear
                     />
 
-                    {/* RIGHT SIDE: Delete Button (shown only if rows selected) */}
+                    <Select
+                        placeholder="FY"
+                        style={{ width: 150 }}
+                        allowClear
+                        value={selectedFY || undefined}
+                        onChange={setSelectedFY}
+                        options={getFinancialYears().map((fy) => ({
+                            label: fy,
+                            value: fy,
+                        }))}
+                    />
+
+                    {entity === "invoices" && (
+                        <Select
+                            placeholder="Status"
+                            style={{ width: 180 }}
+                            allowClear
+                            value={selectedStatus || undefined}
+                            onChange={setSelectedStatus}
+                            options={statusOptions.map((s) => ({
+                                label: s,
+                                value: s,
+                            }))}
+                        />
+                    )}
+
                     {deleteRowKeys.length > 0 && (
-                        <Button
-                            danger
-                            type="primary"
-                            onClick={() => onDeleteSelected(deleteRowKeys)}
-                            style={{marginRight:100}}
-                            size="small"
-                        >
+                        <Button danger onClick={onDeleteSelected}>
                             Delete
                         </Button>
                     )}
                 </div>
 
+                {/* TABLE */}
                 <CustomTable
                     columns={dataForTable.getColumns(details)}
-                    dataSource={debouncedSearch.trim() ? searchResults : data}
-                    isLoading={
-                        debouncedSearch.trim() ? searchLoading : isLoading
-                    }
+                    dataSource={isFiltering ? searchResults : data}
+                    isLoading={isFiltering ? searchLoading : isLoading}
                     onTableChange={onTableChange}
                     rowClassName={rowClassName}
-                    totalCount={debouncedSearch.trim() ? 0 : total}
-                    currentPage={debouncedSearch.trim() ? 0 : pageNo}
-                    pagination={
-                        debouncedSearch.trim()
-                            ? false
-                            : true
-                    }
+                    pagination={!isFiltering}
+                    totalCount={isFiltering ? 0 : total}
+                    currentPage={isFiltering ? 0 : pageNo}
                     rowSelection={rowSelection}
                 />
+
+                {/* MODAL */}
+                <CustomDialog
+                    show={show}
+                    setShow={setShow}
+                    children={
+                        <CustomForm
+                            entityOfModal={entity}
+                            closeModal={(reload) => {
+                                setShow(false);
+                                if (reload) fetchData();
+                            }}
+                        />
+                    }
+                />
             </Col>
-            <CustomDialog
-                show={show}
-                setShow={setShow}
-                children={
-                    <CustomForm
-                        entityOfModal={entity}
-                        closeModal={(realod) => closeModal(realod)}
-                    />
-                }
-            />
         </Row>
     );
 };

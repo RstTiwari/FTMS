@@ -29,4 +29,17 @@ export function localDateString(dateString) {
   
     return `${day}-${month}-${year}`;
   }
+
+  export const getFinancialYearRange = (fy) => {
+    if (!fy) return null;
+
+    const [startYear, endYear] = fy.split("-").map(Number);
+
+    if (!startYear || !endYear) return null;
+
+    return {
+        startDate: new Date(startYear, 3, 1),   // April 1
+        endDate: new Date(endYear, 2, 31, 23, 59, 59), // March 31
+    };
+};
   

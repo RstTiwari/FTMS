@@ -1,23 +1,48 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import NotificationHandler from "EventHandler/NotificationHandler";
+import useDebounce from "./useDebounce";
 import { useAuth } from "state/AuthProvider";
 
-const useSearch = (entity ,searchText,select={}) => {
+const useSearch = (entity, searchText, date, status, select = {}) => {
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+
+    const debouncedSearch = useDebounce(searchText, 300);
+    const debouncedDate = useDebounce(date, 300);
+    const debouncedStatus = useDebounce(status, 300);
+
     const { appApiCall } = useAuth();
 
-    const searchData = useCallback(async () => {
-        if (!searchText?.trim()) return;
+    const fetchSearch = async () => {
+        const hasFilter =
+            debouncedSearch?.trim() || debouncedDate || debouncedStatus;
+
+        if (!hasFilter) {
+            setData([]);
+            return;
+        }
 
         setIsLoading(true);
+
         try {
-            const response = await appApiCall("get", "search",{}, {
-                entity,
-                search: searchText,
-                select,
+            console.log("🔥 API CALL:", {
+                search: debouncedSearch,
+                date: debouncedDate,
+                status: debouncedStatus,
             });
-            console.log(response,"response")
+
+            const response = await appApiCall(
+                "get",
+                "search",
+                {},
+                {
+                    entity,
+                    search: debouncedSearch || "",
+                    date: debouncedDate || "",
+                    status: debouncedStatus || "",
+                    select,
+                }
+            );
 
             if (response.success) {
                 setData(response.data || []);
@@ -29,17 +54,16 @@ const useSearch = (entity ,searchText,select={}) => {
         } finally {
             setIsLoading(false);
         }
-    }, [appApiCall, entity, searchText]);
+    };
 
     useEffect(() => {
-        if (searchText?.trim()) {
-            searchData();
-        }
-    }, [searchText, searchData]);
+        fetchSearch();
+    }, [entity, debouncedSearch, debouncedDate, debouncedStatus]);
 
     return {
         data,
         isLoading,
+        refetch: fetchSearch, 
     };
 };
 
