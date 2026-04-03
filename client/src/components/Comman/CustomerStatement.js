@@ -7,7 +7,9 @@ import {
 } from "Helper/EpochConveter";
 import CustomTable from "components/CustomTable";
 import LeadgerData from "Data/LeadgerData";
-const CustomerStatement = ({ result }) => {    let customerData  = result.customerData
+const CustomerStatement = ({ result }) => {    
+    console.log(result,"result")
+    let customerData  = result.partyData
     let  {billingAddress,gstNo,panNo ,name} = customerData
     let address = `${billingAddress?.stree1 ? billingAddress?.stree1 : ""}${
         billingAddress?.street2 ? billingAddress.street2 : ""

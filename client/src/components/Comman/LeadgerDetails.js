@@ -43,7 +43,9 @@ const LeadgerDetails = ({ id, type }) => {
                 endOfPeriod: endOfPeriod,
             }
         );
-        setData(response.result);
+    console.log(response,"response")
+
+        setData(response?.result?.data);
     };
 
     const handleSelectChange = (value) => {
@@ -98,7 +100,7 @@ const LeadgerDetails = ({ id, type }) => {
                     <Row justify={"end"}>
                         <PDFDownloadLink
                             document={<CustomerStatementPDF result={data} />}
-                            fileName={`${data.customerData.name}_statement.pdf`}
+                            fileName={`${data?.partyData?.name}_statement.pdf`}
                         >
                             {({ loading }) =>
                                 loading ? "Loading..." : "Download PDF"

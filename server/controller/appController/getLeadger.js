@@ -1,4 +1,5 @@
 import checkDbForEntity from "../../Helper/databaseSelector.js";
+import { localDateString } from "../../Helper/timehelper.js";
 
 
 const getLeadger = async (req, res, next) => {
@@ -77,7 +78,9 @@ const getLeadger = async (req, res, next) => {
         const openingAdvanceAmount =
             openingNet < 0 ? Math.abs(openingNet) : 0;
 
-
+        // =========================
+        // 🔹 IN-RANGE DATA
+        // =========================
 
         const inRangeEntities = await sourceDb
             .find({
@@ -113,7 +116,10 @@ const getLeadger = async (req, res, next) => {
             0
         );
 
-   
+        // =========================
+        // 🔹 COMBINE DATA
+        // =========================
+
         const combinedData = [
             ...inRangeEntities.map((item) => ({
                 date: new Date(item[entityDateKey]),
@@ -138,6 +144,10 @@ const getLeadger = async (req, res, next) => {
             })),
         ].sort((a, b) => a.date - b.date);
 
+        // =========================
+        // 🔹 RUNNING BALANCE
+        // =========================
+
         let running = openingBalanceAmount - openingAdvanceAmount;
 
         const ledgerData = combinedData.map((item) => {
@@ -154,6 +164,10 @@ const getLeadger = async (req, res, next) => {
             };
         });
 
+        // =========================
+        // 🔹 ADD OPENING ROW
+        // =========================
+
         ledgerData.unshift({
             date: start,
             type: "**** Opening Balance ****",
@@ -162,7 +176,10 @@ const getLeadger = async (req, res, next) => {
             advance: openingAdvanceAmount,
         });
 
-      
+        // =========================
+        // 🔹 FINAL TOTALS
+        // =========================
+
         const netFinal =
             openingBalanceAmount +
             totalEntityAmount -
