@@ -33,10 +33,7 @@ const tenantSpecificData = {
                     key: "paymentsreceived",
                     label: "Payments Received",
                 },
-                {
-                    key: "paymentsmade",
-                    label: "Payments Made",
-                },
+              
                 {
                     key: "expenses",
                     label: "Expenses",
@@ -55,6 +52,10 @@ const tenantSpecificData = {
                 {
                     key: "purchases",
                     label: "Purchase Orders",
+                },
+                {
+                    key: "paymentsmade",
+                    label: "Payments Made",
                 },
             ],
         },

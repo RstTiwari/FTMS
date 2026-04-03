@@ -29,7 +29,6 @@ const search = async (req, res) => {
 
         if (date) {
             const range = getFinancialYearRange(date);
-            console.log(range,"range")
             if (range) {
                 query.createdAt = {
                     $gte: range.startDate,
@@ -59,12 +58,21 @@ const search = async (req, res) => {
 
         if (searchText) {
             data = data.filter((item) => {
-                const customerName = item.customer?.name?.toLowerCase() || "";
-                const vendorName = item.vendor?.name?.toLowerCase() || "";
+                let data1 = ""
+                let data2 = ""
+                if (entity === "customers" || entity === "vendors") {
+                    data1 = item?.name?.toLowerCase() || "";
+                    data2 = item?.name?.toLowerCase() || "";
+                } else {
+                    data1 = item.customer?.name?.toLowerCase() || "";
+                    data2 = item.vendor?.name?.toLowerCase() || "";
+
+                }
+
 
                 if (
-                    customerName.includes(searchText) ||
-                    vendorName.includes(searchText)
+                    data1.includes(searchText) ||
+                    data2.includes(searchText)
                 ) {
                     return true;
                 }

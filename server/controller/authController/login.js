@@ -127,7 +127,7 @@ const login = async (
         console.log(tenantId,"---")
         const tenantData = await tenantDb.findOne({ _id: tenantId });
         console.log(tenantData)
-        let sidebar = tenSpecificData.sidebar;
+        let sidebar = await tenSpecificData.sidebar;
         if (user.role == "custom") {
             sidebar = customizeSidebar(tenSpecificData.sidebar, user.permissions);
         }

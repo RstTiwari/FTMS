@@ -56,7 +56,18 @@ const manageTableChange = (value)=>{
                     {result.totalAmount}
                 </Row>
                 <Row justify={"end"}>
-                    <strong>Total Received:</strong> {result.totalReceived}
+                    {
+                        result.type === "customers" ? (
+                            <>
+                                <strong>Total Received:</strong> {result.totalReceived}
+                            </>
+                        ) : (
+                            <>
+                                <strong>Total Paid:</strong> {result.totalReceived}
+                            </>
+                        )
+                    }
+
                 </Row>
             </div>
 

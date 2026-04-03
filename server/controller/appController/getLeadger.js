@@ -1,26 +1,25 @@
 import checkDbForEntity from "../../Helper/databaseSelector.js";
-import { localDateString } from "../../Helper/timehelper.js";
+
 
 const getLeadger = async (req, res, next) => {
     try {
         const { id, type, startOfPeriod, endOfPeriod } = req.query;
-        let tenantId = req.tenantId;
+        const tenantId = req.tenantId;
+
         if (!tenantId || !id || !type || !startOfPeriod || !endOfPeriod) {
-            return res
-                .status(400)
-                .json({ message: "Missing required query parameters." });
+            return res.status(400).json({
+                message: "Missing required query parameters.",
+            });
         }
 
         const start = new Date(startOfPeriod);
         const end = new Date(endOfPeriod);
 
         const isCustomer = type === "customers";
+
         const matchKey = isCustomer ? "customer" : "vendor";
-        const entityDateMatchKey = isCustomer ? "invoiceDate" : "purchaseDate";
-        const paymentDateMatchKey = "paymentDate";
-        const customerDb = checkDbForEntity( isCustomer ? "customers":"vendors")
-        const customerData = await customerDb.findOne({_id:id});
-        let tenantDb = checkDbForEntity("tenant")
+        const entityDateKey = isCustomer ? "invoiceDate" : "purchaseDate";
+        const paymentDateKey = "paymentDate";
 
         const sourceDb = isCustomer
             ? checkDbForEntity("invoices")
@@ -30,155 +29,183 @@ const getLeadger = async (req, res, next) => {
             ? checkDbForEntity("paymentsreceived")
             : checkDbForEntity("paymentsmade");
 
-        const openingEntityData = await sourceDb
-            .find(
-                {
-                    tenantId: tenantId,
-                    [matchKey]: id,
-                    [entityDateMatchKey]: { $lt: start },
-                },
-                { grandTotal: 1 }
-            )
+        const partyDb = checkDbForEntity(
+            isCustomer ? "customers" : "vendors"
+        );
+        const tenantDb = checkDbForEntity("tenant");
+
+        const partyData = await partyDb.findOne({ _id: id });
+
+        // =========================
+        // 🔹 OPENING CALCULATION
+        // =========================
+
+        const openingEntities = await sourceDb
+            .find({
+                tenantId,
+                [matchKey]: id,
+                [entityDateKey]: { $lt: start },
+            })
+            .select("grandTotal")
             .lean();
 
-        const openingPaymentsData = await paymentDb
-            .find(
-                {
-                    tenantId: tenantId,
-                    [matchKey]: id,
-                    [paymentDateMatchKey]: { $lt: startOfPeriod },
-                },
-                { amount: 1 }
-            )
+        const openingPayments = await paymentDb
+            .find({
+                tenantId,
+                [matchKey]: id,
+                [paymentDateKey]: { $lt: start },
+            })
+            .select("amount")
             .lean();
 
-        let openingEntityAmount = openingEntityData.reduce(
-            (cur, acc) => cur + acc.grandTotal,
+        const openingEntityAmount = openingEntities.reduce(
+            (sum, item) => sum + (item.grandTotal || 0),
             0
         );
-        let openingPaymentAmount = openingPaymentsData.reduce(
-            (cur, acc) => cur + acc.amount,
+
+        const openingPaymentAmount = openingPayments.reduce(
+            (sum, item) => sum + (item.amount || 0),
             0
         );
+
+        // ✅ Net Opening
+        const openingNet = openingEntityAmount - openingPaymentAmount;
+
         const openingBalanceAmount =
-            openingEntityAmount > openingPaymentAmount
-                ? openingEntityAmount - openingPaymentAmount
-                : 0;
-        const openingExtraAmount =
-            openingPaymentAmount > openingEntityAmount
-                ? openingPaymentAmount - openingEntityAmount
-                : 0;
+            openingNet > 0 ? openingNet : 0;
 
-        const inRangeEntity = await sourceDb
-            .find(
-                {
-                    tenantId: tenantId,
-                    [matchKey]: id,
-                    [entityDateMatchKey]: { $gte: start, $lte: end },
-                },
-                {
-                    [entityDateMatchKey]: 1,
-                    grandTotal: 1,
-                    prefix: 1,
-                    no: 1,
-                    suffix: 1,
-                }
+        const openingAdvanceAmount =
+            openingNet < 0 ? Math.abs(openingNet) : 0;
+
+
+
+        const inRangeEntities = await sourceDb
+            .find({
+                tenantId,
+                [matchKey]: id,
+                [entityDateKey]: { $gte: start, $lte: end },
+            })
+            .select(
+                `${entityDateKey} grandTotal prefix no suffix`
             )
-            .sort({ [entityDateMatchKey]: 1 })
+            .sort({ [entityDateKey]: 1 })
             .lean();
 
         const inRangePayments = await paymentDb
-            .find(
-                {
-                    tenantId: tenantId,
-                    [matchKey]: id,
-                    [paymentDateMatchKey]: { $gte: start, $lte: end },
-                },
-                {
-                    [paymentDateMatchKey]: 1,
-                    amount: 1,
-                    prefix: 1,
-                    no: 1,
-                    suffix: 1,
-                }
+            .find({
+                tenantId,
+                [matchKey]: id,
+                [paymentDateKey]: { $gte: start, $lte: end },
+            })
+            .select(
+                `${paymentDateKey} amount prefix no suffix`
             )
-            .sort({ [paymentDateMatchKey]: 1 })
+            .sort({ [paymentDateKey]: 1 })
             .lean();
 
-        let inRangeEntityAmount = inRangeEntity.reduce(
-            (cur, acc) => cur + acc.grandTotal,
+        const totalEntityAmount = inRangeEntities.reduce(
+            (sum, item) => sum + (item.grandTotal || 0),
             0
         );
 
-        let inRangePaymentAmount = inRangePayments.reduce(
-            (cur, acc) => cur + acc.amount,
+        const totalPaymentAmount = inRangePayments.reduce(
+            (sum, item) => sum + (item.amount || 0),
             0
         );
-        let totalBalanceDue =  (openingBalanceAmount+inRangeEntityAmount) - inRangePaymentAmount
 
+   
         const combinedData = [
-            ...inRangeEntity.map((item) => ({
-                ...item,
-                type: type === "customers" ? "Invoice" : "Purchase",
-                amount: item?.grandTotal,
-                date: new Date(item[entityDateMatchKey]),
-                details: ` ${type == "customers" ? "Invoice for No " :"Purchase of No "}${item.prefix ? item.prefix:""}${item.no}${
-                    item.suffix ? item.suffix:""
-                } `,
+            ...inRangeEntities.map((item) => ({
+                date: new Date(item[entityDateKey]),
+                type: isCustomer ? "Invoice" : "Purchase",
+                nature: "DEBIT",
+                amount: item.grandTotal,
+                details: `${
+                    isCustomer ? "Invoice No " : "Purchase No "
+                }${item.prefix || ""}${item.no}${item.suffix || ""}`,
             })),
+
             ...inRangePayments.map((item) => ({
-                ...item,
-                payment: item?.amount,
-                type:
-                    type === "customers" ? "Payment Received" : "Payment Made",
-                date: new Date(item[paymentDateMatchKey]),
-                details: `${item.amount} for payment of ${
-                    item.prefix ? item.prefix : ""
-                }${item.no}${item.suffix ? item.suffix : ""}`,
+                date: new Date(item[paymentDateKey]),
+                type: isCustomer
+                    ? "Payment Received"
+                    : "Payment Made",
+                nature: "CREDIT",
+                amount: item.amount,
+                details: `Payment ${item.prefix || ""}${item.no}${
+                    item.suffix || ""
+                }`,
             })),
         ].sort((a, b) => a.date - b.date);
-        let balance = openingBalanceAmount;
-        let updateCombinedData = combinedData.map((item) => {
-            if (item.type == "Invoice" || item.type == "Purchase") {
-                balance += item.amount;
-            } else if (
-                item.type === "Payment Received" || item.type === "Payment Made"
-            ) {
-                balance -= item.amount;
-            }
-            return { ...item, balance: balance };
-        });
-        
-        updateCombinedData.unshift({
-            date:startOfPeriod,
-            type:"****Opening Balance****",
-            amount:openingBalanceAmount,
-            balance:openingBalanceAmount
-        })
 
-        let organization = await tenantDb.findOne({ _id: tenantId });
-        
-        const response = {
+        let running = openingBalanceAmount - openingAdvanceAmount;
+
+        const ledgerData = combinedData.map((item) => {
+            if (item.nature === "DEBIT") {
+                running += item.amount;
+            } else {
+                running -= item.amount;
+            }
+
+            return {
+                ...item,
+                balance: running > 0 ? running : 0,
+                advance: running < 0 ? Math.abs(running) : 0,
+            };
+        });
+
+        ledgerData.unshift({
+            date: start,
+            type: "**** Opening Balance ****",
+            amount: openingBalanceAmount,
+            balance: openingBalanceAmount,
+            advance: openingAdvanceAmount,
+        });
+
+      
+        const netFinal =
+            openingBalanceAmount +
+            totalEntityAmount -
+            totalPaymentAmount;
+
+        const totalBalanceDue = netFinal > 0 ? netFinal : 0;
+        const totalAdvance = netFinal < 0 ? Math.abs(netFinal) : 0;
+
+        const organization = await tenantDb.findOne({
+            _id: tenantId,
+        });
+
+        // =========================
+        // 🔹 RESPONSE
+        // =========================
+
+        return res.json({
             success: 1,
-            message: "Fetched Data successfully",
+            message: "Fetched Ledger Successfully",
             result: {
+                type,
+                partyData,
+                organization,
+
+                startOfPeriod,
+                endOfPeriod,
+
                 openingBalanceAmount,
-                openingExtraAmount,
-                totalAmount: inRangeEntityAmount,
-                totalReceived: inRangePaymentAmount,
-                type: type,
-                data: updateCombinedData,
-                startOfPeriod: startOfPeriod,
-                endOfPeriod: endOfPeriod,
-                customerData: customerData,
-                totalBalanceDue: totalBalanceDue,
-                organization: organization,
+                openingAdvanceAmount,
+
+                totalAmount: totalEntityAmount,
+                totalPayment: totalPaymentAmount,
+
+                totalBalanceDue,
+                totalAdvance,
+
+                data: ledgerData,
             },
-        };
-        return res.json(response);
+        });
     } catch (error) {
         next(error);
     }
 };
 
 export default getLeadger;
+

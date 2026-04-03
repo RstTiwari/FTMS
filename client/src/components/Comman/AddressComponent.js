@@ -208,6 +208,8 @@ const AddressComponent = ({ id, entity, showShipping }) => {
                 confirmLoading={loading}
                 destroyOnClose
                 width={600}
+                maskClosable={false}
+               
             >
                 <Form form={form} layout="vertical">
                     {editType && (
