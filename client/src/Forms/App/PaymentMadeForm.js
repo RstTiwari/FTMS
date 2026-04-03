@@ -118,19 +118,23 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate, entity }) => {
                       }}
                       preFillValue={form.getFieldValue("paymentMode")}
                   />
-              </Col>
-              <Col span={24}>
+                  </Col>
+              <Col span ={24}>
                   <FormItemCol
-                      label="Reference"
-                      name="ref"
-                      tooltip={"Check No or UPI Transaction No"}
+                      label="Select bank"
+                      name="bank"
                       labelAlign="left"
                       width={"25vw"}
+                      required={true}
+                      form={form}
+                      rules={[{ required: true, message: "Bank Selection is Required" }]}
                       labelCol={{ span: 12 }}
-                      type={"input"}
+                      updateInForm={(val) => (form.setFieldValue("bank", val))}
+                      preFillValue={form.getFieldValue("bank")}
+                      type={"bank"}
                   />
               </Col>
-              <Col span={24}>
+               <Col span={24}>
                   <FormItemCol
                       label="Paid Amount(Rs)"
                       name="amount"
@@ -147,7 +151,18 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate, entity }) => {
                       ]}
                   />
               </Col>
-
+              <Col span={24}>
+                  <FormItemCol
+                      label="Reference"
+                      name="ref"
+                      tooltip={"Check No or UPI Transaction No"}
+                      labelAlign="left"
+                      width={"25vw"}
+                      labelCol={{ span: 12 }}
+                      type={"input"}
+                  />
+              </Col>
+             
               <Col span={24}>
                   <FormItemCol
                       label={"NOTE"}

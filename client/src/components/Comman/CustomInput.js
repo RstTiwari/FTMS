@@ -19,6 +19,7 @@ import CustomCustomerSelect from "components/CustomCustomrSelect";
 import CustomProductSelect from "components/CustomProductSelect";
 import TextArea from "antd/es/input/TextArea";
 import SelectComponent from "./SelectComponent";
+import BankSelect from "./BankSelect";
 
 const CustomInput = ({
     type,
@@ -252,6 +253,14 @@ const CustomInput = ({
             return (
                <SelectComponent  form={form} name={fieldName} options ={options} entity={entity}/>
             );
+        case "bank":
+            return (
+                <BankSelect 
+                    width={width}
+                    updateInForm={updateInForm}
+                    preFillValue={preFillValue}
+                />
+            )
         default:
             return (
                 <Input

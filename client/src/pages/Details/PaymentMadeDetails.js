@@ -10,7 +10,7 @@ const PaymentMade = ({ values }) => {
         <Card bordered={false}>
             <Descriptions column={1} bordered>
                 <Descriptions.Item label="Transaction No">
-                    {values?.no || ""}
+                    {values?.prefix+values?.no+values?.suffix || ""}
                 </Descriptions.Item>
                 <Descriptions.Item label="Payee Name">
                     {values?.vendor?.name || ""}

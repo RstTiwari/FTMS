@@ -60,8 +60,7 @@ const styles = StyleSheet.create({
 
 // Main PDF component
 const CustomerStatementPDF = ({ result }) => {
-    let customerData  = result.customerData
-    console.log(customerData,"--")
+    let customerData  = result.partyData
     let  {billingAddress,gstNo,panNo ,name} = customerData
     let address = `${billingAddress?.stree1 ? billingAddress?.stree1 : ""}${
         billingAddress?.street2 ? billingAddress.street2 : ""
@@ -109,7 +108,7 @@ const CustomerStatementPDF = ({ result }) => {
                     </Text>
                     <Text style={styles.underline}>
                         <Text style={styles.label}>Total Received: </Text>
-                        {result.totalReceived}
+                        {result.totalReceived ||0}
                     </Text>
                 </View>
 

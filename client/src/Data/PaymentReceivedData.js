@@ -98,11 +98,11 @@ const getColumns = (details) => [
         ),
       },
 ];
-const paymentData = {
+const paymentRecivedData = {
     getColumns,
 };
 
-export default paymentData;
+export default paymentRecivedData;
 
 export const paymentMode = [
   {

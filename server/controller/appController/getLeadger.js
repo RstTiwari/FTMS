@@ -36,6 +36,7 @@ const getLeadger = async (req, res, next) => {
         const tenantDb = checkDbForEntity("tenant");
 
         const partyData = await partyDb.findOne({ _id: id });
+        console.log(partyData,"partyData")
 
         // =========================
         // 🔹 OPENING CALCULATION

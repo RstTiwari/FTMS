@@ -62,7 +62,7 @@ const CustomInputWithModal = ({ parentForm,preFillValue,updateInForm,width ,enti
                 "get",
                 "fetchCountersNumber",
                 {},
-                { entityName: entity } // entityName is name of entity like invoice ,quoations, paymentsreceived
+                { entityName: entity } 
             );
             if (response.success) {
                 const { prefix, nextNumber } = response.result;

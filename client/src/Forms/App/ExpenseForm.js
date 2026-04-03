@@ -30,6 +30,7 @@ const ExpenseForm = ({ form }) => {
         form.setFieldsValue({ image: file });
     };
 
+
     return (
         <div>
             <Row>
@@ -96,6 +97,21 @@ const ExpenseForm = ({ form }) => {
                 rules={[{ required: true, message: "Amount is Required" }]}
                 labelCol={{ span: 8 }}
                 type={"number"}
+                preFillValue={form.getFieldValue("amount")}
+
+            />
+            <FormItemCol
+                label="Select bank"
+                name="bank"
+                labelAlign="left"
+                width={"30vw"}
+                required={true}
+                form ={form}
+                rules={[{ required: true, message: "Bank Selection is Required" }]}
+                labelCol={{ span: 8 }}
+                updateInForm={(val) => (form.setFieldValue("bank", val),console.log(val,"vallll"))}
+                preFillValue={form.getFieldValue("bank")}
+                type={"bank"}
             />
             <FormItemCol
                 labelAlign="left"

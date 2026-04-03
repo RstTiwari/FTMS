@@ -151,6 +151,21 @@ const PaymentForm = ({ form, initialValue = {}, isUpdate,entity }) => {
                         disabled={isUpdate}
                     />
                 </Col>
+                <Col span={24}>
+                    <FormItemCol
+                        label="Select bank"
+                        name="bank"
+                        labelAlign="left"
+                        width={"25vw"}
+                        required={true}
+                        form={form}
+                        rules={[{ required: true, message: "Bank Selection is Required" }]}
+                        labelCol={{ span: 12 }}
+                        updateInForm={(val) => (form.setFieldValue("bank", val), console.log(val, "vallll"))}
+                        preFillValue={form.getFieldValue("bank")}
+                        type={"bank"}
+                    />
+                </Col>
 
                 <Col span={24}>
                     <FormItemCol

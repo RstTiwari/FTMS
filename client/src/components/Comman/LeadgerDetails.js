@@ -43,10 +43,10 @@ const LeadgerDetails = ({ id, type }) => {
                 endOfPeriod: endOfPeriod,
             }
         );
-    console.log(response,"response")
 
-        setData(response?.result?.data);
+        setData(response?.result);
     };
+    console.log(data,'data frm the response')
 
     const handleSelectChange = (value) => {
         setSelectedPeriod(value);

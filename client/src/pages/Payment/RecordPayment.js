@@ -41,8 +41,8 @@ const RecordPayment = ({ entity, id, tenantId, closeModal }) => {
     handleFormSubmit(values);
   };
   const handleClose = () => {
-    form.resetFields(); // Reset form fields when closing the modal
-    closeModal(); // Trigger custom close logic
+    form.resetFields(); 
+    closeModal(); 
   };
 
   return (

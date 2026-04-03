@@ -61,11 +61,11 @@ const manageTableChange = (value)=>{
                     {
                         result.type === "customers" ? (
                             <>
-                                <strong>Total Received:</strong> {result.totalReceived}
+                                <strong>Total Received:</strong> {result.totalReceived ||0}
                             </>
                         ) : (
                             <>
-                                <strong>Total Paid:</strong> {result.totalReceived}
+                                <strong>Total Paid:</strong> {result.totalReceived || 0}
                             </>
                         )
                     }

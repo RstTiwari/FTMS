@@ -19,6 +19,7 @@ const purchaseOrderSchema = new mongoose.Schema({
         required: true,
         sparse:true
     },
+   
     suffix: {
         type: String,
         default: "",

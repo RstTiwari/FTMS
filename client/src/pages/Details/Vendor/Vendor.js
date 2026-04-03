@@ -42,7 +42,7 @@ const VendorDetails = ({ values, loading,entity,id ,closeModal }) => {
                 }
                 key="2"
             >
-                <TransectionTab   />
+                <TransectionTab  id={id} />
             </TabPane>
             <TabPane
                 tab={<Taglabel text={"Statement"} weight={200} type={"text"} />}

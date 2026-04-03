@@ -47,6 +47,8 @@ const CollapsibleTable = ({ columns, panelHeader, entity ,id}) => {
         }
     };
 
+    console.log(columns,"columns--")
+
     return (
         <Collapse onChange={onPanelChange}>
             <Panel

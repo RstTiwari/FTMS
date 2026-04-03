@@ -37,12 +37,15 @@ const paymentsSchema = new mongoose.Schema(
         },
         prefix: {
             type: String,
-            unique: true, // Ensure the incremented field is unique
-            default: "PMNO",
+            default: "",
         },
         no: {
             type: Number,
-            unique: true, // Ensure the incremented field is unique
+            unique: true, 
+        },
+        bank:{
+            type:String,
+            required:true
         },
         suffix: {
             type: String,

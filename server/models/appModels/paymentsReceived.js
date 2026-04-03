@@ -48,6 +48,10 @@ const paymentsSchema = new mongoose.Schema(
             type: Number,
             default: "",
         },
+          bank:{
+            type:String,
+            required:true
+        },
     },
     { timestamps: true }
 );
