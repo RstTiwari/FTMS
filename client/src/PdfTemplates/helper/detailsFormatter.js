@@ -140,9 +140,9 @@ export const entityDetailsFormatter = (entity, data, organization) => {
     let orgBillingAddress, orgShippingAddress, orgName;
 
     if (customer) {
-        billingAddress = customer["billingAddress"];
-        shippingAddress = customer["shippingAddress"];
-        billingName = customer["name"];
+        billingAddress = data["billingAddress"] ? data["billingAddress"] : customer["billingAddress"];
+        shippingAddress =  data["shippingAddress"] ? data["shippingAddress"] : customer["shippingAddress"];
+        billingName = data["billingAddress"] && data["billingAddress"]["name"] ? data["billingAddress"]["name"] : customer["name"];
         shippingName = shippingAddress && shippingAddress["name"]
     }
    

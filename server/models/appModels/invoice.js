@@ -11,6 +11,23 @@ const invoiceSchema = new mongoose.Schema(
             required: true,
         },
         type:{type:String},
+        shippingAddress:{
+            name:String,
+            street1: String,
+            street2: String,
+            city: String,
+            state: String,
+            pincode: Number,
+
+        },
+        billingAddress:{
+            name:String,
+            street1: String,
+            street2: String,
+            city: String,
+            state: String,
+            pincode: Number,
+        },
         no: {
             type: Number,
             required: true,

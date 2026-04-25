@@ -3,8 +3,6 @@ import FormItemCol from "components/Comman/FormItemCol";
 import CustomFormTableList from "./CustomFormTableList";
 import PaymentLayoutComponent from "./PaymentLayoutComponent";
 import { Button, Typography, Checkbox, Select, Form, Divider } from "antd"; // Use AntD Checkbox instead of MUI for consistency
-import CoustomerData from "Data/CoustomerData";
-import CustomLabel from "components/Comman/CustomLabel";
 import AddressComponent from "components/Comman/AddressComponent";
 
 const { Title } = Typography;
@@ -45,7 +43,7 @@ const QuotationForm = ({ form, entity }) => {
     const handleItemsUpdate = (value, fieldName, rowName) => {
         const items = form.getFieldValue("items") || [];
         let temObj = items[rowName];
-
+       
         if (fieldName === "customer") {
             form.setFieldsValue({ customer: value });
             setCustomerSelected(value);
@@ -113,6 +111,7 @@ const QuotationForm = ({ form, entity }) => {
             });
         }
     };
+
     return (
         <div>
             {/* CUSTOMER SELECTION */}
@@ -129,12 +128,13 @@ const QuotationForm = ({ form, entity }) => {
                 fieldName="name"
                 updateInForm={(value) => handleItemsUpdate(value, "customer")}
                 preFillValue={form.getFieldValue("customer")?.name}
-                form ={form}
+                form={form}
             />
-
+            <FormItemCol name={"billingAddress"} hidden />
+            <FormItemCol name={"shippingAddress"} hidden />
             {customerSelected && (
                 <>
-                   <AddressComponent  id={form.getFieldValue("customer")}  entity={"customers"}
+                   <AddressComponent  id={form.getFieldValue("customer")}  entity={"customers"} form={form}
                    key={customerSelected?.id || customerSelected?.name} />
                
                 </>
@@ -155,6 +155,7 @@ const QuotationForm = ({ form, entity }) => {
                 parentForm={form}
                 preFillValue={form.getFieldValue("no")}
             />
+
             <FormItemCol
                 labelAlign="left"
                 required={true}
@@ -173,7 +174,7 @@ const QuotationForm = ({ form, entity }) => {
                 entity={entity}
                 form={form}
                 options={
-                    [{ label: "INVOICE", value: "INVOICE" }, { label: "CASH INVOICE", value: "CASH INVOICE" }]
+                    [{ label: "INVOICE", value: "INVOICE" }]
                 }
             />
             <FormItemCol

@@ -69,7 +69,7 @@ const PaymentLayoutComponent = ({ form, widthOfTerm = "75vw", widthOfNotes = "75
                 }
             }
         });
-        form.setFieldsValue({ grandTotal: Math.ceil(grandTotal) });
+        form.setFieldsValue({ grandTotal: Math.round(grandTotal) });
     };
     const taxValues = form.getFieldValue("taxValues") || []
     const rates = [

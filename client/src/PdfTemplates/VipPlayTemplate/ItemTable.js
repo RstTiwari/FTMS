@@ -1,46 +1,45 @@
 import React from "react";
 import { StyleSheet, Text, View, Image } from "@react-pdf/renderer";
 
-// ✅ Updated styles
+
 const styles = StyleSheet.create({
   table: {
     flexDirection: "column",
     width: "100%",
     marginBottom: 10,
     borderWidth: 1,
-    borderColor: "#000", // ✅ black border
+    borderColor: "#000",
   },
   tableRow: {
     flexDirection: "row",
     borderBottomWidth: 1,
-    borderColor: "#000", // ✅ black
+    borderColor: "#000",
   },
   tableCell: {
     padding: 2,
     borderRightWidth: 1,
-    borderColor: "#000", // ✅ black
+    borderColor: "#000",
     flexGrow: 1,
     wordBreak: "break-word",
   },
 
-  // ✅ MATCHED with InvoiceTable
+
   header: {
     fontSize: 8,
     fontFamily: "Helvetica-Bold",
-    backgroundColor: "#BFF0FD", // ✅ same blue
+    backgroundColor: "#BFF0FD",
   },
 
   cellText: {
     fontSize: 8,
     flexWrap: "wrap",
-    fontFamily: "Helvetica", // ✅ correct font (fix from fontStyle)
+    fontFamily: "Helvetica",
   },
 });
 
 const ItemsTable = ({ items, columns }) => {
   return (
     <>
-      {/* ✅ HEADER */}
       <View style={[styles.tableRow, styles.header]}>
         {columns.map((col, index) => (
           <Text
@@ -60,10 +59,12 @@ const ItemsTable = ({ items, columns }) => {
         ))}
       </View>
 
-      {/* ✅ ROWS */}
       {items.map((item, itemIndex) => (
-        <View key={item._id || itemIndex} style={styles.tableRow}>
-          
+        <View
+          key={item._id || itemIndex}
+          style={styles.tableRow}
+          wrap={false}   // ✅ prevent row breaking
+        >
           {columns.map((col, colIndex) => (
             <View
               key={colIndex}

@@ -7,6 +7,7 @@ const update = async (req, res, next) => {
         const { entity, id } = req.query;
         let filter = { _id: id, tenantId: tenantId };
         const database = checkDbForEntity(entity);
+        console.log(values)
 
         //Fist find the Document You want to update .
         let existingObj = await database.findOne(filter);
@@ -15,7 +16,6 @@ const update = async (req, res, next) => {
         }
 
         // Now let compare the data in both coming existing
-        let modifiedObj = Object.assign(existingObj, values);
         console.log(values,database)
         let updatedData = await database.updateOne(
             filter,

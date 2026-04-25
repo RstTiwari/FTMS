@@ -15,17 +15,18 @@ import FormItemCol from "./FormItemCol";
 import CustomLabel from "./CustomLabel";
 import CoustomerData from "Data/CoustomerData";
 
-const AddressComponent = ({ id, entity, showShipping }) => {
+const AddressComponent = ({ id, entity, form, showShipping }) => {
     const { appApiCall } = useAuth();
-    const [form] = Form.useForm();
+    const [localForm] = Form.useForm();
 
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState(undefined);
     const [open, setOpen] = useState(false);
-    const [editType, setEditType] = useState(null); // "billing" or "shipping"
+    const [editType, setEditType] = useState(null);
+    const [prevCustomerId, setPrevCustomerId] = useState(null);
 
-    // Fetch Data
-    const fetchData = async () => {
+    // 🔥 Fetch Data + smart prefill
+    const fetchData = async (forceReset = false) => {
         setLoading(true);
         try {
             const res = await appApiCall(
@@ -34,8 +35,34 @@ const AddressComponent = ({ id, entity, showShipping }) => {
                 {},
                 { id, entity }
             );
+
             if (res?.result) {
-                setData(res.result);
+                const customerData = res.result;
+                setData(customerData);
+
+                const formBilling = form?.getFieldValue("billingAddress");
+                const formShipping = form?.getFieldValue("shippingAddress");
+
+                const finalBilling = forceReset
+                    ? customerData.billingAddress || {}
+                    : (formBilling && Object.keys(formBilling).length
+                        ? formBilling
+                        : customerData.billingAddress || {});
+
+                const finalShipping = forceReset
+                    ? (customerData.shippingAddress ||
+                       customerData.billingAddress ||
+                       {})
+                    : (formShipping && Object.keys(formShipping).length
+                        ? formShipping
+                        : customerData.shippingAddress ||
+                          customerData.billingAddress ||
+                          {});
+
+                form?.setFieldsValue({
+                    billingAddress: finalBilling,
+                    shippingAddress: finalShipping,
+                });
             }
         } catch (error) {
             message.error("Failed to fetch address data.");
@@ -43,12 +70,25 @@ const AddressComponent = ({ id, entity, showShipping }) => {
         setLoading(false);
     };
 
+    // 🔥 Detect customer change
     useEffect(() => {
         if (id) {
+            const isCustomerChanged =
+                prevCustomerId && prevCustomerId !== id;
+
+            setPrevCustomerId(id);
             setOpen(false);
             setEditType(null);
-            form.resetFields();
-            fetchData();
+            localForm.resetFields();
+
+            if (isCustomerChanged) {
+                form?.setFieldsValue({
+                    billingAddress: {},
+                    shippingAddress: {},
+                });
+            }
+
+            fetchData(isCustomerChanged);
         }
     }, [id]);
 
@@ -57,12 +97,15 @@ const AddressComponent = ({ id, entity, showShipping }) => {
 
         setEditType(type);
 
-        const addressData =
-            type === "billing"
-                ? { ...data.billingAddress, name: data.name }
-                : data.shippingAddress;
+        const invoiceAddress = form?.getFieldValue(`${type}Address`);
+        const fallbackAddress = data?.[`${type}Address`];
 
-        form.setFieldsValue({
+        const addressData =
+            invoiceAddress && Object.keys(invoiceAddress).length
+                ? invoiceAddress
+                : fallbackAddress;
+
+        localForm.setFieldsValue({
             [`${type}Address`]: addressData || {},
         });
 
@@ -71,8 +114,9 @@ const AddressComponent = ({ id, entity, showShipping }) => {
 
     const handleUpdate = async () => {
         try {
-            const values = await form.validateFields();
+            const values = await localForm.validateFields();
             const updatedAddress = values[`${editType}Address`];
+
             const payload = {
                 ...data,
                 [`${editType}Address`]: updatedAddress,
@@ -94,6 +138,12 @@ const AddressComponent = ({ id, entity, showShipping }) => {
             );
 
             setData(payload);
+
+            // ✅ sync invoice form
+            form?.setFieldsValue({
+                [`${editType}Address`]: updatedAddress,
+            });
+
             setOpen(false);
             setEditType(null);
         } catch (error) {
@@ -101,9 +151,12 @@ const AddressComponent = ({ id, entity, showShipping }) => {
         }
     };
 
-    // ✅ New function to copy billing to shipping directly
     const handleSameAsBillingDirect = async () => {
-        if (!data?.billingAddress) {
+        const billing =
+            form?.getFieldValue("billingAddress") ||
+            data?.billingAddress;
+
+        if (!billing) {
             message.warning("No billing address found.");
             return;
         }
@@ -113,7 +166,7 @@ const AddressComponent = ({ id, entity, showShipping }) => {
 
             const payload = {
                 ...data,
-                shippingAddress: { ...data.billingAddress },
+                shippingAddress: { ...billing },
             };
 
             await appApiCall(
@@ -123,7 +176,12 @@ const AddressComponent = ({ id, entity, showShipping }) => {
                 { id, entity }
             );
 
-            setData(payload); // update UI immediately
+            setData(payload);
+
+            // ✅ sync invoice form
+            form?.setFieldsValue({
+                shippingAddress: { ...billing },
+            });
 
             message.success("Shipping address updated same as Billing address.");
         } catch (error) {
@@ -134,8 +192,16 @@ const AddressComponent = ({ id, entity, showShipping }) => {
     };
 
     const renderAddressBlock = (type) => {
-        const address = data?.[`${type}Address`];
-        const title = type === "billing" ? "Billing Address" : "Shipping Address";
+        const invoiceAddress = form?.getFieldValue(`${type}Address`);
+        const fallbackAddress = data?.[`${type}Address`];
+
+        const address =
+            invoiceAddress && Object.keys(invoiceAddress || {}).length
+                ? invoiceAddress
+                : fallbackAddress;
+
+        const title =
+            type === "billing" ? "Billing Address" : "Shipping Address";
 
         let name;
 
@@ -198,7 +264,7 @@ const AddressComponent = ({ id, entity, showShipping }) => {
                 </Row>
             )}
 
-            {/* Modal for editing selected address */}
+            {/* ✅ Modal UI EXACT SAME */}
             <Modal
                 title={`Edit ${editType === "billing" ? "Billing" : "Shipping"} Address`}
                 open={open}
@@ -209,12 +275,10 @@ const AddressComponent = ({ id, entity, showShipping }) => {
                 destroyOnClose
                 width={600}
                 maskClosable={false}
-               
             >
-                <Form form={form} layout="vertical">
+                <Form form={localForm} layout="vertical">
                     {editType && (
                         <>
-                       
                             <FormItemCol
                                 name={[`${editType}Address`, "name"]}
                                 label="Name"

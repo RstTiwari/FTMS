@@ -36,8 +36,6 @@ const PurchaseOrder = ({ form, value, disabled, isUpdate,entity }) => {
  
 
 
- 
-
   // Updating Form Item Values
   const handleItemsUpdate = (value, fieldName, rowName) => {
     const items = form.getFieldValue("items");
