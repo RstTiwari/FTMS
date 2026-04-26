@@ -16,6 +16,7 @@ import OrganizationForm from "Forms/App/OrgnizationForm";
 import PaymentMadeForm from "Forms/App/PaymentMadeForm";
 import WorkOrderForm from "Forms/App/WorkOder";
 import SubUserForm from "Forms/App/UserForm";
+import CashInvoice from "Forms/App/CashInvoice";
 
 const CoustomFormItem = ({ entity, form, isModal, isUpdate }) => {
   // const { entity: entityFromRouter } = useParams();
@@ -31,6 +32,9 @@ const CoustomFormItem = ({ entity, form, isModal, isUpdate }) => {
       break;
     case "invoices":
       componentToRender = <InvoicesFormItems form={form} entity={entity} />;
+      break;
+    case "cashinvoice":
+      componentToRender = <CashInvoice form={form} entity={entity} />;
       break;
     case "leads":
       componentToRender = <LeadFormItem form={form}  entity={entity}/>;

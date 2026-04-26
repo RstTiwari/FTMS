@@ -30,6 +30,10 @@ const ListModule = (entity) => {
         case "invoices":
             data = invoiceData;
             break;
+        case "cashinvoice":
+            data = invoiceData;
+            break;
+
 
         case "challans":
             data = challanData;

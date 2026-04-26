@@ -1,0 +1,264 @@
+import React, { useEffect, useState } from "react";
+import FormItemCol from "components/Comman/FormItemCol";
+import CustomFormTableList from "./CustomFormTableList";
+import PaymentLayoutComponent from "./PaymentLayoutComponent";
+import { Button, Typography, Checkbox, Select, Form, Divider } from "antd"; // Use AntD Checkbox instead of MUI for consistency
+import AddressComponent from "components/Comman/AddressComponent";
+
+const { Title } = Typography;
+
+const CashInvoice = ({ form, entity }) => {
+    const [customerSelected, setCustomerSelected] = useState(false);
+    const [disabled, setDisabled] = useState(false);
+    const [sameAsBilling, setSameAsBilling] = useState(false);
+
+    useEffect(() => {
+        const customer = form.getFieldValue("customer");
+        setCustomerSelected(!!customer);
+    }, [form.getFieldValue("customer")]);
+
+    const handleSameAsBillingChange = (e) => {
+        const isChecked = e.target.checked;
+        setSameAsBilling(isChecked);
+        setDisabled(isChecked);
+
+        if (isChecked) {
+            // Set shippingAddress as null
+            form.setFieldsValue({ shippingAddress: null });
+        } else {
+            // Reset shippingAddress fields for manual input
+            const currentAddress = form.getFieldValue("shippingAddress") || {};
+            form.setFieldsValue({
+                shippingAddress: {
+                    street1: currentAddress.street1 || "",
+                    street2: currentAddress.street2 || "",
+                    city: currentAddress.city || "",
+                    state: currentAddress.state || [],
+                    pincode: currentAddress.pincode || "",
+                },
+            });
+        }
+    };
+
+    const handleItemsUpdate = (value, fieldName, rowName) => {
+        const items = form.getFieldValue("items") || [];
+        let temObj = items[rowName];
+
+        if (fieldName === "customer") {
+            form.setFieldsValue({ customer: value });
+            setCustomerSelected(value);
+            return;
+        }
+
+        if (["no", "invoiceDate", "dueDate"].includes(fieldName)) {
+            form.setFieldsValue({ [fieldName]: value });
+            return;
+        }
+
+        if (["description", "qty", "rate", "gstPercent"].includes(fieldName)) {
+            if (!temObj) return;
+            if (fieldName === "description") {
+                let { description, rate, hsnCode } = value;
+                temObj.description = description;
+                temObj.hsnCode = hsnCode;
+                temObj.rate = rate;
+                temObj.finalAmount = temObj.rate * temObj.qty;
+            } else if (fieldName === "qty") {
+                temObj.qty = value;
+                temObj.finalAmount = temObj.rate * value;
+            } else if (fieldName === "rate") {
+                temObj.rate = value;
+                temObj.finalAmount = temObj.qty * value;
+            } else if (fieldName === "gstPercent") {
+                temObj.gstPercent = Number(value);
+            }
+
+            items[rowName] = temObj;
+
+            let grossTotal = items.reduce(
+                (acc, item) => acc + (item.finalAmount || 0),
+                0
+            );
+
+            const temItems = items.map((item) => ({
+                ...item,
+                taxAmount: item.finalAmount * (item.gstPercent / 100),
+            }));
+
+            let taxAmount = temItems.reduce(
+                (acc, item) => acc + (item.taxAmount || 0),
+                0
+            );
+            let totalWithTax = grossTotal + taxAmount;
+            let grandTotal = totalWithTax;
+
+            let otherCharges = form.getFieldValue("otherCharges") || [];
+            otherCharges.forEach((charge) => {
+                const amountToAdjust =
+                    charge.rsOrPercent === "percent"
+                        ? (totalWithTax * (charge.amount || 0)) / 100
+                        : charge.amount || 0;
+
+                grandTotal +=
+                    charge.action === "add" ? amountToAdjust : -amountToAdjust;
+            });
+
+            form.setFieldsValue({
+                grossTotal: Math.ceil(grossTotal),
+                taxAmount: Math.ceil(taxAmount),
+                totalWithTax: Math.ceil(totalWithTax),
+                grandTotal: Math.ceil(grandTotal),
+            });
+        }
+    };
+
+    return (
+        <div>
+            {/* CUSTOMER SELECTION */}
+            <FormItemCol
+                label="Select Customer"
+                name="customer"
+                labelAlign="left"
+                labelCol={{ span: 8 }}
+                required
+                rules={[{ required: true, message: "Please Select Customer" }]}
+                type="options"
+                entity="customers"
+                width="30vw"
+                fieldName="name"
+                updateInForm={(value) => handleItemsUpdate(value, "customer")}
+                preFillValue={form.getFieldValue("customer")?.name}
+                form={form}
+            />
+            <FormItemCol name={"billingAddress"} hidden />
+            <FormItemCol name={"shippingAddress"} hidden />
+            {customerSelected && (
+                <>
+                    <AddressComponent id={form.getFieldValue("customer")} entity={"customers"} form={form}
+                        key={customerSelected?.id || customerSelected?.name} />
+
+                </>
+            )}
+
+            {/* INVOICE INFO */}
+            <FormItemCol
+                label={"Invoice#"}
+                name={"no"}
+                required
+                type={"counters"}
+                labelAlign="left"
+                labelCol={{ span: 8 }}
+                width={"30vw"}
+                rules={[{ required: true, message: "Please Provide Quote No" }]}
+                entity={entity}
+                updateInForm={(value) => handleItemsUpdate(value, "no")}
+                parentForm={form}
+                preFillValue={form.getFieldValue("no")}
+            />
+
+            <FormItemCol
+                labelAlign="left"
+                required={true}
+                name={'type'}
+                labelCol={{ span: 8 }}
+                rules={[
+                    {
+                        required: "true",
+                        message: "Plese Select Type",
+                    },
+                ]}
+                label={"TYPE"}
+                type={"selectcomponent"}
+                width={"30vw"}
+                fieldName={"type"}
+                entity={entity}
+                form={form}
+                options={
+                    [{ label: " CASH INVOICE", value: " CASH INVOICE" }]
+                }
+            />
+            <FormItemCol
+                label={"Invoice Date"}
+                name={"invoiceDate"}
+                required
+                labelCol={{ span: 8 }}
+                width={"30vw"}
+                type={"date"}
+                labelAlign="left"
+                rules={[
+                    { required: true, message: "Please Select Quote Date" },
+                ]}
+                preFillValue={form.getFieldValue("invoiceDate")}
+                updateInForm={(value) =>
+                    handleItemsUpdate(value, "invoiceDate")
+                }
+            />
+            <FormItemCol
+                name={"prefix"}
+                labelAlign="left"
+                hidden={true}
+                labelCol={{ span: 8 }}
+                width={"30vw"}
+            />
+
+            <FormItemCol
+                name={"suffix"}
+                labelAlign="left"
+                hidden={true}
+                labelCol={{ span: 8 }}
+                width={"30vw"}
+            />
+            <FormItemCol
+                label={"Due Date"}
+                name={"dueDate"}
+                required
+                labelAlign="left"
+                labelCol={{ span: 8 }}
+                width={"30vw"}
+                type={"date"}
+                rules={[
+                    {
+                        required: true,
+                        message: "Please Select Quote Expiry Date",
+                    },
+                ]}
+                preFillValue={form.getFieldValue("dueDate")}
+                updateInForm={(value) => handleItemsUpdate(value, "dueDate")}
+            />
+            <FormItemCol
+                label={"Driver Phone No"}
+                name={"deriverContactNo"}
+                labelAlign="left"
+                labelCol={{ span: 8 }}
+                width={"30vw"}
+                type={"text"}
+                preFillValue={form.getFieldValue("deriverContactNo")}
+                updateInForm={(value) => handleItemsUpdate(value, "deriverContactNo")}
+            />
+            <FormItemCol
+                label={"Vehicle No"}
+                name={"vehicleNo"}
+                labelAlign="left"
+                labelCol={{ span: 8 }}
+                width={"30vw"}
+                type={"text"}
+                preFillValue={form.getFieldValue("vehicleNo")}
+                updateInForm={(value) => handleItemsUpdate(value, "vehicleNo")}
+            />
+            <FormItemCol
+                name={"taxValues"}
+                labelAlign="left"
+                labelCol={{ span: 8 }}
+                width={"30vw"}
+                type={"text"}
+                hidden={true}
+            />
+
+
+            <CustomFormTableList form={form} />
+            <PaymentLayoutComponent form={form} />
+        </div>
+    );
+};
+
+export default CashInvoice;

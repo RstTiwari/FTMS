@@ -75,7 +75,8 @@ const Index = ({ entity, data }) => {
     let { entityData, organization, selectColumns, entityPrefix } = data;
     let Prefix = entityData['prefix'] || "entityPrefix"
     console.log(entityPrefix,data,"---")
-  const pageHeaderDetail = customPageHeader(entity, entityData, Prefix,organization);
+
+    const pageHeaderDetail = customPageHeader(entity, entityData, Prefix,organization);
 
     const entityDetails = entityDetailsFormatter(
         entity,

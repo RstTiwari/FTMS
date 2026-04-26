@@ -17,6 +17,7 @@ import workorders from "../models/appModels/workOrder.js";
 import User from "../models/coreModels/User.js";
 import Comment from "../models/appModels/comment.js";
 import columnPrefrence from "../models/appModels/columnPrefrence.js";
+import cashInvoice from "../models/appModels/cashInvoice.js";
 
 const dbMapping = {
     customers: customerDb,
@@ -24,6 +25,8 @@ const dbMapping = {
     products: productDb,
     quotations: quoteDb,
     invoices: invoiceDb,
+    cashinvoice: cashInvoice,
+
     paymentsreceived: paymentDb,
     paymentsmade: paymentsMade,
     expenses: expensesDb,

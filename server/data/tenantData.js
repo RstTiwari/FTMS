@@ -29,6 +29,10 @@ const tenantSpecificData = {
                     key: "invoices",
                     label: "Invoices",
                 },
+                  {
+                    key: "cashinvoice",
+                    label: "cash invoice",
+                },
                 {
                     key: "paymentsreceived",
                     label: "Payments Received",
