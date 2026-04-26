@@ -176,7 +176,6 @@ const DetailsLayout = () => {
                     )}
                 </div>
 
-                {console.log("details",dataForTable.getColumns())}
                 <CustomTable
                     columns={dataForTable.getColumns(details)}
                     dataSource={isFiltering ? searchResults : data}
