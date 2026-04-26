@@ -36,6 +36,10 @@ const invoiceSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        bank:{
+            type:String,
+            required:true
+        },
         suffix: {
             type: String,
             default: "",

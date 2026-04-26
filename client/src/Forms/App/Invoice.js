@@ -225,6 +225,7 @@ const QuotationForm = ({ form, entity }) => {
                 preFillValue={form.getFieldValue("dueDate")}
                 updateInForm={(value) => handleItemsUpdate(value, "dueDate")}
             />
+
         <FormItemCol
                 label={"Driver Phone No"}
                 name={"deriverContactNo"}

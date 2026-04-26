@@ -42,7 +42,6 @@ const DetailsLayout = () => {
         pageSize
     );
 
-    // ✅ SEARCH HOOK
     const {
         data: searchResults,
         isLoading: searchLoading,
@@ -86,7 +85,6 @@ const DetailsLayout = () => {
         onChange: (keys) => setDeleteRowKeys(keys),
     };
 
-    // ✅ FIXED DELETE
     const onDeleteSelected = async () => {
         let { success, message } = await adminApiCall(
             "post",
@@ -99,7 +97,7 @@ const DetailsLayout = () => {
             NotificationHandler.success(message);
 
             if (isFiltering) {
-                await refetchSearch(); // ✅ refresh filtered data
+                await refetchSearch(); 
             } else {
                 fetchData();
             }
@@ -178,7 +176,6 @@ const DetailsLayout = () => {
                     )}
                 </div>
 
-                {/* TABLE */}
                 {console.log("details",dataForTable.getColumns())}
                 <CustomTable
                     columns={dataForTable.getColumns(details)}

@@ -130,6 +130,7 @@ export const AuthProvider = ({ children }) => {
       localData
   ) => {
       const token = cookies["token"];
+      console.log(entity,"entity--there are many thing that might help in ups and down")
       try {
           const headers = {
               "Content-Type": "Content-Type: application/pdf",

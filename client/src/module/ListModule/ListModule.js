@@ -14,6 +14,7 @@ import workOrderData from "Data/WorkOrder";
 import SubUserData from "Data/UserData";
 import UserData from "Data/UserData";
 import enquiryData from "Data/EnquiryData";
+import CashInvoiceData from "Data/CashInvoiceData";
 
 const ListModule = (entity) => {
     let data = null;
@@ -30,10 +31,9 @@ const ListModule = (entity) => {
         case "invoices":
             data = invoiceData;
             break;
-        case "cashinvoice":
-            data = invoiceData;
+        case "cashinvoices":
+            data = CashInvoiceData;
             break;
-
 
         case "challans":
             data = challanData;

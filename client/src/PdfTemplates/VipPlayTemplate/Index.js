@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
 const Index = ({ entity, data }) => {
     let { entityData, organization, selectColumns, entityPrefix } = data;
     let Prefix = entityData['prefix'] || "entityPrefix"
-    console.log(entityPrefix,data,"---")
 
     const pageHeaderDetail = customPageHeader(entity, entityData, Prefix,organization);
 
@@ -87,13 +86,12 @@ const Index = ({ entity, data }) => {
     let amounts = grandAndOtherChargesFormatter(entity, entityData);
     let amountInWords = numberToWordsIndian(entityData.grandTotal)
     let headers = getTableHeaders2(entity, selectColumns);
-     let type  = entityData && entityData.type  ? entityData.type : entity
-    let bankDetails = bankDetailsFormatter(type, organization?.bankDetails, organization.panNo);
+    let type  = entityData && entityData.type  ? entityData.type : entity
+    let bankDetails = bankDetailsFormatter(type, organization?.bankDetails, organization.panNo,entityData);
     let entityName = entityNameFormatter(type);
     let taxValues = taxValuesForCgstAndSgst(entity, entityData);
-    let showBankDetailsAndTax = ["quotations","invoices","challans","purchases"].includes(entity)
-    let showInvoiceTable = entity == "invoices" ? true:false
-    console.log(showInvoiceTable,"====",entity)
+    let showBankDetailsAndTax = ["quotations","invoices","cashinvoices","challans","purchases"].includes(entity)
+    let showInvoiceTable = entity == "invoices" || 'cashinvoices' ? true:false
  
 
     return (

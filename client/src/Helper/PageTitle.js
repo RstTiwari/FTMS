@@ -2,6 +2,7 @@ const hederTitleMap = {
     customers: "Customer",
     quotations: "Quotation",
     invoices: "Invoice",
+    cashinvoices:"Cash Invoice",
     paymentsreceived: "Payment Received",
     paymentsmade: "Payment Made",
     expenses: "Expense",

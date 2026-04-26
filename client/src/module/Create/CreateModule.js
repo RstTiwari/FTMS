@@ -33,7 +33,7 @@ const CoustomFormItem = ({ entity, form, isModal, isUpdate }) => {
     case "invoices":
       componentToRender = <InvoicesFormItems form={form} entity={entity} />;
       break;
-    case "cashinvoice":
+    case "cashinvoices":
       componentToRender = <CashInvoice form={form} entity={entity} />;
       break;
     case "leads":

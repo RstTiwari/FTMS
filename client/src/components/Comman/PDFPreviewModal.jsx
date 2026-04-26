@@ -4,6 +4,7 @@ import { CloseCircleOutlined } from "@ant-design/icons";
 import { useAuth } from "state/AuthProvider"; // Assuming your hook is here
 
 const PreviewModal = ({ open, onClose, width = 70, entity, id, no, tenantId ,callApi,localData,newTab = false}) => {
+    console.log(entity,"entity--entity")
     const { pdfGenerate } = useAuth();
     const [loading, setLoading] = useState(true); // Track loading state
     const [pdfUrl, setPdfUrl] = useState(null);

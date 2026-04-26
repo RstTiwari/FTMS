@@ -15,6 +15,7 @@ export default function MoreActionDropDownData(entity) {
   let data = [];
   if (
     entity === "invoices" ||
+    entity ==="cashinvoices"||
     entity === "purchases" ||
     entity === "challans" ||
     entity === "quotations"

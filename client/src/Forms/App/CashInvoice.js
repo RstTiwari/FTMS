@@ -174,7 +174,7 @@ const CashInvoice = ({ form, entity }) => {
                 entity={entity}
                 form={form}
                 options={
-                    [{ label: " CASH INVOICE", value: " CASH INVOICE" }]
+                    [{ label: "CASH INVOICE", value: "CASH INVOICE" }]
                 }
             />
             <FormItemCol
@@ -224,6 +224,19 @@ const CashInvoice = ({ form, entity }) => {
                 ]}
                 preFillValue={form.getFieldValue("dueDate")}
                 updateInForm={(value) => handleItemsUpdate(value, "dueDate")}
+            />
+            <FormItemCol
+                label="Select bank"
+                name="bank"
+                labelAlign="left"
+                width={"30vw"}
+                required={true}
+                form={form}
+                rules={[{ required: true, message: "Bank Selection is Required" }]}
+                labelCol={{ span: 8 }}
+                updateInForm={(val) => (form.setFieldValue("bank", val), console.log(val, "vallll"))}
+                preFillValue={form.getFieldValue("bank")}
+                type={"bank"}
             />
             <FormItemCol
                 label={"Driver Phone No"}

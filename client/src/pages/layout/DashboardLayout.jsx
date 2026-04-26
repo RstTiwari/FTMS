@@ -21,8 +21,8 @@ const CustomLayout = ({ profile }) => {
             {/* Sidebar */}
             <Sidebar
                 drawerWidth="200px"
-                isSideBarClosed={isSideBarClosed} // Pass current state to Sidebar
-                setIsSidebarClosed={setIsSidebarClosed} // Pass setter function to Sidebar
+                isSideBarClosed={isSideBarClosed} 
+                setIsSidebarClosed={setIsSidebarClosed}
                 isLaptop={isLaptop}
                 sidebar={profile?.tenant?.sidebar}
                 tenantId={profile?.tenant?.tenantId}

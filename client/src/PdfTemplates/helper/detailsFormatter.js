@@ -34,6 +34,34 @@ export const customPageHeader = (entity, data, entityPrefix, organization) => {
                 },
             ];
             break;
+            case "cashinvoices":
+            array = [
+                {
+                    label: "Cash Invoice No",
+                    value: `${entityPrefix}/${currentFinancialYear(
+                        data.invoiceDate
+                    )}/${data["no"]}`, // This would be dynamic
+                },
+                {
+                    label: "Cash Invoice Date",
+                    value: jsDateIntoDayjsDate(data["invoiceDate"]),
+                },
+                {
+                    label: "Due Date",
+                    value: jsDateIntoDayjsDate(data["dueDate"]),
+                },
+                {
+                    label: "Driver Phone No",
+                    value: data["deriverContactNo"]
+                        ? data["deriverContactNo"]
+                        : "",
+                },
+                {
+                    label: "Vehicle No",
+                    value: data["vehicleNo"] ? data["vehicleNo"] : "",
+                },
+            ];
+            break;
         case "quotations":
             array = [
                 {
@@ -160,7 +188,7 @@ export const entityDetailsFormatter = (entity, data, organization) => {
     }
 
     switch (entity) {
-        case "invoices":
+        case "invoices" :
             const mergedBillingAddress = [
                 billingAddress?.street1,
                 billingAddress?.street2,
@@ -246,6 +274,78 @@ export const entityDetailsFormatter = (entity, data, organization) => {
                 ],
             ];
             break;
+        case "cashinvoices":
+                 const cashInvmergedBillingAddress = [
+                billingAddress?.street1,
+                billingAddress?.street2,
+                billingAddress?.city,
+                billingAddress?.state,
+                billingAddress?.pincode,
+            ]
+                .filter(Boolean) // Removes falsy values
+                .join(", ");
+
+            const cashInvmergedShippingAddress = [
+                shippingAddress?.street1,
+                shippingAddress?.street2,
+                shippingAddress?.city,
+                shippingAddress?.state,
+                shippingAddress?.pincode,
+            ]
+                .filter(Boolean)
+                .join(", ");
+
+            array = [
+                [
+                    {
+                        label: "BILLING TO :",
+                        value: "",
+                        type: "heading",
+                    },
+                    {
+                        label: "",
+                        value: billingName.toUpperCase(),
+                        type: "subheading",
+                    },
+                    {
+                        label: "",
+                        value:cashInvmergedBillingAddress ,
+                        type: "value",
+                    },
+                    {
+                        label: "",
+                        value: `GST NO: ${
+                            (customer && customer["gstNo"]) || ""
+                        } `,
+                        type: "value",
+                    },
+                    {
+                        label: "",
+                        value: `PAN NO: ${
+                            (customer && customer["panNo"]) || ""
+                        }`,
+                        type: "value",
+                    },
+                ],
+                [
+                    {
+                        label: "SHIPPING TO :",
+                        value: "",
+                        type: "heading",
+                    },
+                    {
+                        label: "",
+                        value: shippingName,
+                        type: "subheading",
+                    },
+                    {
+                        label: "",
+                        value: cashInvmergedShippingAddress,
+                        type: "value",
+                    }
+                ],
+            ];
+            break
 
         case "quotations":
             let sub = data.sub ? `${data["sub"]}` : "";
@@ -612,12 +712,20 @@ export const taxValuesForCgstAndSgst = (entity, data) => {
     return result
 }
 
-export const bankDetailsFormatter = (entity, bankDetails, panNo) => {
+export const bankDetailsFormatter = (entity, bankDetails, panNo,entityData) => {
+    console.log(entityData,"====entityData",bankDetails)
     // Find the bank detail object where isPrimary is true
     let primaryBankDetail = bankDetails.find((detail) => detail.isPrimary);
-    if(entity ==="CASH INVOICE"){
-        primaryBankDetail = bankDetails[1]
+
+    let bank = entityData['bank']
+
+    if (bank) {
+        primaryBankDetail = bankDetails.find((detail) => detail.bankName == bank)
     }
+    if(bank == "CASH"){
+        primaryBankDetail ={}
+    }
+
     let obj = {
         "Bank Name": primaryBankDetail["bankName"],
         "Branch Name": primaryBankDetail["branchName"],
@@ -633,9 +741,17 @@ export const entityNameFormatter = (entity) => {
     switch (entity) {
         case "INVOICE":
             entityName = "TAX INVOICE";
+        case "INVOICE":
+            entityName = "TAX INVOICE";
             break;
         case "invoices":
             entityName = "TAX INVOICE";
+            break;
+        case "cashinvoices":
+            entityName = "CASH INVOICE";
+            break;
+        case "CASH INVOICE":
+            entityName = "CASH INVOICE";
             break;
         case "QUOTATION":
             entityName = "QUOTATION";
