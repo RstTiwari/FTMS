@@ -27,7 +27,7 @@ const vendorLeadgerData = [
             <>
                 <Taglabel
                     type="text"
-                    text={record.voucherNo  && record.voucherType + "-"+ record.voucherNo}
+                    text={record.voucherNo && record.voucherType + "-" + record.voucherNo}
                 />
             </>
         ),
@@ -62,7 +62,14 @@ const vendorLeadgerData = [
         key: "total",
         render: (_, record) => (
             <>
-                <Taglabel type="text" text={record.advance} />
+                <Taglabel
+                    type="text"
+                    text={
+                        Number(record.balance) < 0
+                            ? `${Math.abs(Number(record.balance))} Advance Paid`
+                            : record.balance
+                    }
+                />
             </>
         ),
     },

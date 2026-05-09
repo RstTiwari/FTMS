@@ -54,12 +54,19 @@ const LeadgerData = [
             </>
         ),
     },
-    {
+   {
         title: <Taglabel text={"BALANCE"} />,
         key: "total",
         render: (_, record) => (
             <>
-                <Taglabel type="text" text={record.balance} />
+                <Taglabel
+                    type="text"
+                    text={
+                        Number(record.balance) < 0
+                            ? `${Math.abs(Number(record.balance))} Advance Recived`
+                            : record.balance
+                    }
+                />
             </>
         ),
     },

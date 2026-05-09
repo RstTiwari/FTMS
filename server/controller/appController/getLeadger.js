@@ -224,6 +224,8 @@ const getLeadger = async (req, res, next) => {
 
         // OPENING ROW
 
+        // OPENING ROW
+
         ledgerData.push({
 
             date: start,
@@ -244,15 +246,7 @@ const getLeadger = async (req, res, next) => {
                     ? Math.abs(openingNet)
                     : 0,
 
-            balance:
-                runningBalance > 0
-                    ? runningBalance
-                    : 0,
-
-            advance:
-                runningBalance < 0
-                    ? Math.abs(runningBalance)
-                    : 0,
+            balance: runningBalance,
 
         });
 
@@ -264,19 +258,8 @@ const getLeadger = async (req, res, next) => {
             runningBalance -= item.credit;
 
             ledgerData.push({
-
                 ...item,
-
-                balance:
-                    runningBalance > 0
-                        ? runningBalance
-                        : 0,
-
-                advance:
-                    runningBalance < 0
-                        ? Math.abs(runningBalance)
-                        : 0,
-
+                balance: runningBalance,
             });
         }
 
@@ -298,15 +281,7 @@ const getLeadger = async (req, res, next) => {
             0
         );
 
-        const closingBalance =
-            runningBalance > 0
-                ? runningBalance
-                : 0;
-
-        const closingAdvance =
-            runningBalance < 0
-                ? Math.abs(runningBalance)
-                : 0;
+       const closingBalance = runningBalance;
 
         // =========================================
         // RESPONSE
@@ -341,13 +316,8 @@ const getLeadger = async (req, res, next) => {
                         : 0,
 
                 totalDebit,
-
                 totalCredit,
-
                 closingBalance,
-
-                closingAdvance,
-
                 data: ledgerData,
 
             },
