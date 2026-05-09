@@ -68,6 +68,19 @@ const getColumns = (details) => [
             <Taglabel type={"text"} text={record.status} details={details} />
         ),
     },
+      {
+        title: <Taglabel text={"BANK"} type={"heading"} />,
+        dataIndex: "invoiceExpiredDate",
+        key: "customer",
+          responsive: details ? [] : ["lg"],
+          render: (_, record) => (
+              <Taglabel
+                  type="text"
+                  text={record.bank ? record.bank : ""}
+                  details={details}
+              />
+          ),
+    },
     {
         title: (
             <Taglabel text={"GROSS TOTAL"} type={"heading"} details={details} />

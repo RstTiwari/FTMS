@@ -1,8 +1,11 @@
+
 import { Typography } from "antd";
 import { localDateString } from "Helper/EpochConveter";
 import Taglabel from "components/Comman/Taglabel";
 
-const LeadgerData = [
+
+
+const vendorLeadgerData = [
     {
         title: <Taglabel text={"DATE"} />,
         dataIndex: "date",
@@ -30,7 +33,7 @@ const LeadgerData = [
         ),
     },
     {
-        title: <Taglabel text={"INVOICE AMOUNT"} />,
+        title: <Taglabel text={"PURCHASE AMOUNT"} />,
         dataIndex: "amount",
         key: "total",
         render: (_, record) => (
@@ -43,7 +46,7 @@ const LeadgerData = [
         ),
     },
     {
-        title: <Taglabel text={"PAYMENT RECIVED"} />,
+        title: <Taglabel text={"PAYMENT MADE"} />,
         key: "total",
         render: (_, record) => (
             <>
@@ -59,12 +62,9 @@ const LeadgerData = [
         key: "total",
         render: (_, record) => (
             <>
-                <Taglabel type="text" text={record.balance} />
+                <Taglabel type="text" text={record.advance} />
             </>
         ),
     },
 ];
-
-
-
-export default LeadgerData;
+export default vendorLeadgerData

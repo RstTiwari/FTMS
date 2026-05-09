@@ -165,7 +165,9 @@ const PageHeader = ({ organization, entityData, entityDetails = [], entity }) =>
 
 
             {/* Bottom: Details (conditional) */}
-            <View style={styles.headerContainer}>
+            {
+                entityData &&
+                  <View style={styles.headerContainer}>
                 <View style={{ ...styles.leftSideBase, flex: leftFlex }}>
                     {isQuotation ? (
                         entityDetails.map((group, groupIndex) => (
@@ -229,6 +231,8 @@ const PageHeader = ({ organization, entityData, entityDetails = [], entity }) =>
                     ))}
                 </View>
             </View>
+            }
+          
         </View>
     );
 };

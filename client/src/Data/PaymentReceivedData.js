@@ -7,11 +7,12 @@ import Taglabel from "components/Comman/Taglabel";
 import MoreActionDropDown from "components/Comman/MoreActionDropDown";
 import MoreActionDropDownData from "./MoreActionDropDownData";
 import ShowEntityNo from "components/Comman/ShowEntityNo";
+import { times } from "lodash";
 
 const { Text } = Typography;
 const getColumns = (details) => [
     {
-        type: <Taglabel text={"#No"} type={"heading"} details={details} />,
+        title: <Taglabel text={"#No"} type={"heading"} details={details} />,
         dataIndex: "no",
         key: "no",
         render: (_, record) => (
@@ -23,7 +24,7 @@ const getColumns = (details) => [
         ),
     },
     {
-        type: (
+        title: (
             <Taglabel text={"CUSTOMER"} type={"heading"} details={details} />
         ),
         dataIndex: "customer",
@@ -37,7 +38,7 @@ const getColumns = (details) => [
         ),
     },
     {
-        type: <Taglabel text={"DATE"} type={"heading"} details={details} />,
+        title: <Taglabel text={"DATE"} type={"heading"} details={details} />,
         dataIndex: "paymentDate",
         key: "paymentDate",
         render: (_, record) => (
@@ -49,7 +50,7 @@ const getColumns = (details) => [
         ),
     },
     {
-        type: <Taglabel text={"AMOUNT"} type={"heading"} details={details} />,
+        title: <Taglabel text={"AMOUNT"} type={"heading"} details={details} />,
         dataIndex: "amount",
         key: "amount",
         render: (_, record) => (
@@ -60,8 +61,21 @@ const getColumns = (details) => [
             />
         ),
     },
+          {
+        title: <Taglabel text={"BANK"} type={"heading"} />,
+        dataIndex: "invoiceExpiredDate",
+        key: "customer",
+          responsive: details ? [] : ["lg"],
+          render: (_, record) => (
+              <Taglabel
+                  type="text"
+                  text={record.bank ? record.bank : ""}
+                  details={details}
+              />
+          ),
+    },
     {
-        type: (
+        title: (
             <Taglabel
                 text={"PAYMENT MODE"}
                 type={"heading"}
@@ -79,7 +93,7 @@ const getColumns = (details) => [
         ),
     },
     {
-        type: <Taglabel text={"NOTE"} type={"heading"} details={details} />,
+        title: <Taglabel text={"NOTE"} type={"heading"} details={details} />,
         dataIndex: "note",
         key: "note",
         render: (_, record) => (

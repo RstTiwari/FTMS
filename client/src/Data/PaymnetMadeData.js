@@ -8,7 +8,7 @@ import MoreActionDropDown from "components/Comman/MoreActionDropDown";
 import MoreActionDropDownData from "./MoreActionDropDownData";
 import ShowEntityNo from "components/Comman/ShowEntityNo";
 
-const { Text } = Typography;
+
 const getColumns = (details) => [
     {
         title: (
@@ -62,6 +62,19 @@ const getColumns = (details) => [
                 details={details}
             />
         ),
+    },
+          {
+        title: <Taglabel text={"BANK"} type={"heading"} />,
+        dataIndex: "invoiceExpiredDate",
+        key: "customer",
+          responsive: details ? [] : ["lg"],
+          render: (_, record) => (
+              <Taglabel
+                  type="text"
+                  text={record.bank ? record.bank : ""}
+                  details={details}
+              />
+          ),
     },
     {
         title: (

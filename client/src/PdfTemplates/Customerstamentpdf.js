@@ -1,119 +1,208 @@
 import React from "react";
-import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import {
+    Document,
+    Page,
+    Text,
+    View,
+    StyleSheet,
+} from "@react-pdf/renderer";
+
 import { localDateString } from "../Helper/EpochConveter";
 import PageHeader from "./VipPlayTemplate/PageHeader";
 
 // Styles
 const styles = StyleSheet.create({
+
     page: {
         padding: 30,
         fontFamily: "Helvetica",
         fontSize: 12,
     },
+
     section: {
         marginBottom: 12,
     },
+
     title: {
         textAlign: "center",
         fontSize: 18,
-    },
-    label: {
+        marginBottom: 6,
         fontWeight: "bold",
-    },
-    row: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-    },
-    tableHeader: {
-        flexDirection: "row",
-        backgroundColor: "#333",
-        color: "#fff",
-        padding: 5,
-    },
-    tableRow: {
-        flexDirection: "row",
-        borderBottom: 0.5,
-        borderColor: "#ccc",
-        padding: 5,
-    },
-    cell: {
-        flex: 1,
-        fontSize: 10,
-    },
-    headerText: {
-        color: "#fff",
-        fontWeight: "bold",
-        fontSize: 10,
-    },
-    centerText: {
-        textAlign: "center",
-        marginBottom: 10,
-        fontSize: 12,
     },
 
+    centerText: {
+        textAlign: "center",
+        fontSize: 11,
+    },
+
+    // CUSTOMER BLOCK
+
+ 
     customerName: {
         fontWeight: "bold",
         textTransform: "uppercase",
         fontSize: 12,
     },
+
+    customerDetails: {
+        fontSize: 10,
+        textTransform: "uppercase",
+        marginBottom: 0,
+        paddingBottom: 0,
+        lineHeight: 1.1,
+    },
+
+    // TABLE
+
+    tableHeader: {
+        flexDirection: "row",
+        backgroundColor: "#333",
+        color: "#fff",
+        padding: 6,
+        alignItems: "center",
+    },
+
+    tableRow: {
+        flexDirection: "row",
+        borderBottomWidth: 0.5,
+        borderBottomColor: "#ccc",
+        paddingVertical: 5,
+        paddingHorizontal: 4,
+        alignItems: "center",
+    },
+
+    cell: {
+        flex: 1,
+        fontSize: 9,
+    },
+
+    headerText: {
+        color: "#fff",
+        fontWeight: "bold",
+        fontSize: 8,
+    },
+
+    amountText: {
+        textAlign: "center",
+    },
+
+    // SUMMARY
+
+    summaryContainer: {
+        marginTop: 20,
+        alignSelf: "flex-end",
+        width: "48%",
+        borderWidth: 1,
+        borderColor: "#ccc",
+    },
+
+    summaryRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        paddingVertical: 6,
+        paddingHorizontal: 10,
+        borderBottomWidth: 0.5,
+        borderBottomColor: "#ddd",
+    },
+
+    summaryLabel: {
+        fontWeight: "bold",
+        fontSize: 10,
+        textTransform: "uppercase",
+    },
+
+    summaryValue: {
+        fontSize: 10,
+        fontWeight: "bold",
+    },
+
+    // FINAL BALANCE
+
+    finalBalanceBox: {
+        marginTop: 12,
+        borderWidth: 1,
+        borderColor: "#000",
+        padding: 10,
+        alignSelf: "flex-end",
+        width: "48%",
+    },
+
+    finalBalanceText: {
+        fontWeight: "bold",
+        fontSize: 12,
+        textAlign: "right",
+        textTransform: "uppercase",
+    },
 });
 
-// Main PDF component
+// Main PDF Component
+
 const CustomerStatementPDF = ({ result }) => {
-    let customerData  = result.partyData
-    let  {billingAddress,gstNo,panNo ,name} = customerData
-    let address = `${billingAddress?.stree1 ? billingAddress?.stree1 : ""}${
-        billingAddress?.street2 ? billingAddress.street2 : ""
-    } ${billingAddress?.city ? billingAddress.city:""} ${
-        billingAddress?.state ? billingAddress.state : ""
-    } ${billingAddress?.pincode ? billingAddress.pincode : ""}`;
+
+    const customerData = result.partyData;
+
+    const {
+        billingAddress,
+        gstNo,
+        panNo,
+        name,
+    } = customerData;
+
+    const address = `
+        ${billingAddress?.stree1 || ""}
+        ${billingAddress?.street2 || ""}
+        ${billingAddress?.city || ""}
+        ${billingAddress?.state || ""}
+        ${billingAddress?.pincode || ""}
+    `;
+
     return (
+
         <Document>
-            <Page size="A4" style={styles.page}>
-                <Text style={styles.title}>LEDGER STATEMENT</Text>
+
+            <Page
+                size="A4"
+                style={styles.page}
+            >
+                <PageHeader
+                    organization={result.organization}
+                />
+
+                <Text style={styles.title}>
+                    LEDGER STATEMENT    
+                </Text>
 
                 <Text style={styles.centerText}>
-                    FROM {localDateString(result?.startOfPeriod)} -{" "}
+                    FROM {localDateString(result?.startOfPeriod)}
+                    {" "}TO{" "}
                     {localDateString(result?.endOfPeriod)}
                 </Text>
-                <>
-                    <Text style={[styles.customerName]}>To</Text>
-                    <Text style={[styles.customerName, styles.underline]}>
+                <View style={styles.customerBlock}>
+
+                    <Text
+                        style={{
+                            fontSize: 14,
+                            fontWeight: "bold",
+                            marginBottom: 2,
+                        }}
+                    >
+                        TO
+                    </Text>
+
+                    <Text style={styles.customerName}>
                         {name ? name.toUpperCase() : ""}
                     </Text>
-                    <>
-                        <Text style={[styles.customerName,{fontSize:10}]}>
-                            {address}
-                        </Text>
-                        <Text style={[styles.customerName,{fontSize:10}]}>
-                            {gstNo ? `GST NO:${gstNo}  ` : ""}{" "}
-                            {panNo ? `PAN NO:${panNo}` : ""}
-                        </Text>
-                    </>
-                </>
 
-                <View style={[styles.section, { alignItems: "flex-end" }]}>
-                    <Text style={styles.underline}>
-                        <Text style={styles.label}>Opening Balance: </Text>
-                        {result.openingBalanceAmount}
-                    </Text>
-                    <Text style={styles.underline}>
-                        <Text style={styles.label}>
-                            {result.type === "customers"
-                                ? "Invoice Amount"
-                                : "Purchase Amount"}
-                            :
-                        </Text>{" "}
-                        {result.totalAmount}
-                    </Text>
-                    <Text style={styles.underline}>
-                        <Text style={styles.label}>Total Received: </Text>
-                        {result.totalReceived ||0}
-                    </Text>
+                    {
+                        gstNo &&
+                        <Text style={[styles.customerDetails,{marginBottom:5}]}>
+                            GST NO : {gstNo}
+                        </Text>
+                    }
+
+                
                 </View>
-
                 <View style={styles.section}>
-                    {/* Table Header */}
                     <View style={styles.tableHeader}>
                         <Text
                             style={[
@@ -122,7 +211,7 @@ const CustomerStatementPDF = ({ result }) => {
                                 { flex: 1.5 },
                             ]}
                         >
-                            Date
+                            DATE
                         </Text>
                         <Text
                             style={[
@@ -131,7 +220,7 @@ const CustomerStatementPDF = ({ result }) => {
                                 { flex: 3 },
                             ]}
                         >
-                            Transactions
+                            TRANSACTION
                         </Text>
                         <Text
                             style={[
@@ -140,68 +229,216 @@ const CustomerStatementPDF = ({ result }) => {
                                 { flex: 3 },
                             ]}
                         >
-                            Details
+                            DETAILS
                         </Text>
                         <Text
                             style={[
                                 styles.cell,
                                 styles.headerText,
-                                { flex: 1 },
+                                styles.amountText,
+                                { flex: 2 },
                             ]}
                         >
-                            Amount
+                            {
+                                result.type === "customers"
+                                    ? "INVOICE AMOUNT"
+                                    : "PURCHASE AMOUNT"
+                            }
                         </Text>
                         <Text
                             style={[
                                 styles.cell,
                                 styles.headerText,
-                                { flex: 1 },
+                                styles.amountText,
+                                { flex: 2 },
                             ]}
                         >
-                            Payment
+                            {
+                                result.type === "customers"
+                                    ? "AMOUNT RECEIVED"
+                                    : "AMOUNT PAID"
+                            }
                         </Text>
                         <Text
                             style={[
                                 styles.cell,
                                 styles.headerText,
-                                { flex: 1 },
+                                styles.amountText,
+                                { flex: 1.2 },
                             ]}
                         >
-                            Balance
+                            BALANCE
                         </Text>
+
+                    </View>
+                    {result.data.map((row, rowIndex) => (
+
+                        <View
+                            style={styles.tableRow}
+                            key={rowIndex}
+                        >
+                            <Text
+                                style={[
+                                    styles.cell,
+                                    { flex: 1.5 },
+                                ]}
+                            >
+                                {
+                                    row.date
+                                        ? localDateString(row.date)
+                                        : ""
+                                }
+                            </Text>
+
+                            <Text
+                                style={[
+                                    styles.cell,
+                                    { flex: 3 },
+                                ]}
+                            >
+                                {row.particulars || ""}
+                            </Text>
+
+                            {/* DETAILS */}
+
+                            <Text
+                                style={[
+                                    styles.cell,
+                                    { flex: 3 },
+                                ]}
+                            >
+                                {
+                                    row.voucherType
+                                        ? `${row.voucherType} - ${row.voucherNo}`
+                                        : ""
+                                }
+                            </Text>
+
+                            {/* DEBIT */}
+
+                            <Text
+                                style={[
+                                    styles.cell,
+                                    styles.amountText,
+                                    { flex: 2 },
+                                ]}
+                            >
+                                {row.debit || ""}
+                            </Text>
+
+                            {/* CREDIT */}
+
+                            <Text
+                                style={[
+                                    styles.cell,
+                                    styles.amountText,
+                                    { flex: 2 },
+                                ]}
+                            >
+                                {row.credit || ""}
+                            </Text>
+
+                            {/* BALANCE */}
+
+                            <Text
+                                style={[
+                                    styles.cell,
+                                    styles.amountText,
+                                    { flex: 1.2 },
+                                ]}
+                            >
+                                {row.balance || 0}
+                            </Text>
+
+                        </View>
+
+                    ))}
+
+                </View>
+                <View style={styles.summaryContainer}>
+                    <View style={styles.summaryRow}>
+
+                        <Text style={styles.summaryLabel}>
+                            OPENING BALANCE
+                        </Text>
+
+                        <Text style={styles.summaryValue}>
+                            {result.openingBalance || 0}
+                        </Text>
+
                     </View>
 
-                    {/* Table Rows */}
-                    {result.data.map((row, rowIndex) => (
-                        <View style={styles.tableRow} key={rowIndex}>
-                            <Text style={[styles.cell, { flex: 1.5 }]}>
-                                {row.date ? localDateString(row.date) : ""}
+                    {
+                        result.openingAdvance > 0 &&
+                        <View style={styles.summaryRow}>
+
+                            <Text style={styles.summaryLabel}>
+                                OPENING ADVANCE
                             </Text>
-                            <Text style={[styles.cell, { flex: 3 }]}>
-                                {row.type || ""}
+
+                            <Text style={styles.summaryValue}>
+                                {result.openingAdvance}
                             </Text>
-                            <Text style={[styles.cell, { flex: 3 }]}>
-                                {row.details || ""}
-                            </Text>
-                            <Text style={[styles.cell, { flex: 1 }]}>
-                                {row.amount ? String(row.amount) : ""}
-                            </Text>
-                            <Text style={[styles.cell, { flex: 1 }]}>
-                                {row.payment ? String(row.payment) : ""}
-                            </Text>
-                            <Text style={[styles.cell, { flex: 1 }]}>
-                                {row.balance ? String(row.balance) : 0}
-                            </Text>
+
                         </View>
-                    ))}
+                    }
+
+                    {/* TOTAL DEBIT */}
+
+                    <View style={styles.summaryRow}>
+
+                        <Text style={styles.summaryLabel}>
+                            {
+                                result.type === "customers"
+                                    ? "TOTAL INVOICE AMOUNT"
+                                    : "TOTAL PURCHASE AMOUNT"
+                            }
+                        </Text>
+
+                        <Text style={styles.summaryValue}>
+                            {result.totalDebit || 0}
+                        </Text>
+
+                    </View>
+
+                    {/* TOTAL CREDIT */}
+
+                    <View style={styles.summaryRow}>
+
+                        <Text style={styles.summaryLabel}>
+                            {
+                                result.type === "customers"
+                                    ? "TOTAL AMOUNT RECEIVED"
+                                    : "TOTAL AMOUNT PAID"
+                            }
+                        </Text>
+
+                        <Text style={styles.summaryValue}>
+                            {result.totalCredit || 0}
+                        </Text>
+
+                    </View>
+
                 </View>
 
-                <View style={{ alignItems: "flex-end" }}>
-                    <Text style={styles.label}>
-                        BALANCE DUE: {result.totalBalanceDue}
+                <View style={styles.finalBalanceBox}>
+
+                    <Text style={styles.finalBalanceText}>
+
+                        {
+                            result.type === "customers"
+                                ? "TOTAL BALANCE DUE : "
+                                : "TOTAL PAYABLE : "
+                        }
+
+                        {result.closingBalance || 0}
+
                     </Text>
+
                 </View>
+
             </Page>
+
         </Document>
     );
 };

@@ -7,6 +7,7 @@ import {
 } from "Helper/EpochConveter";
 import CustomTable from "components/CustomTable";
 import LeadgerData from "Data/LeadgerData";
+import vendorLeadgerData from "Data/VendorLeadgerData";
 const CustomerStatement = ({ result }) => {    
     console.log(result,"result")
     let customerData  = result.partyData
@@ -17,6 +18,7 @@ const CustomerStatement = ({ result }) => {
         billingAddress?.state ? billingAddress.state : ""
 } ${billingAddress?.pincode ? billingAddress.pincode : ""}`;
 
+let data = result.type  =="customers"   ? LeadgerData:vendorLeadgerData
 const manageTableChange = (value)=>{
 }
 
@@ -46,7 +48,7 @@ const manageTableChange = (value)=>{
                 </Row>
                 <Row justify={"end"}>
                     <strong>Opening Balance :</strong>{" "}
-                    {result.openingBalanceAmount}
+                    {result.openingBalance}
                 </Row>
                 <Row justify={"end"}>
                     <strong>
@@ -55,31 +57,31 @@ const manageTableChange = (value)=>{
                             : "Purchase Amount"}
                         :
                     </strong>
-                    {result.totalAmount}
+                    {result.totalDebit}
                 </Row>
                 <Row justify={"end"}>
                     {
                         result.type === "customers" ? (
                             <>
-                                <strong>Total Received:</strong> {result.totalReceived ||0}
+                                <strong>Total Received:</strong> {result.totalCredit ||0}
                             </>
                         ) : (
                             <>
-                                <strong>Total Paid:</strong> {result.totalReceived || 0}
+                                <strong>Total Paid:</strong> {result.totalCredit || 0}
                             </>
                         )
                     }
 
                 </Row>
             </div>
-
+        
             <CustomTable
-                columns={LeadgerData}
+                columns={data}
                 dataSource={result.data}
                 totalCount={result.data.length}
                 onTableChange = {manageTableChange}
             />
-            <Row justify={"end"}>BALANCE DUE : {result.totalBalanceDue}</Row>
+            <Row justify={"end"}>BALANCE DUE : {result.closingBalance}</Row>
         </div>
     );
 };

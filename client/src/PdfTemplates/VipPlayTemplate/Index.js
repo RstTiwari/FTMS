@@ -91,7 +91,7 @@ const Index = ({ entity, data }) => {
     let entityName = entityNameFormatter(type);
     let taxValues = taxValuesForCgstAndSgst(entity, entityData);
     let showBankDetailsAndTax = ["quotations","invoices","cashinvoices","challans","purchases"].includes(entity)
-    let showInvoiceTable = entity == "invoices" || 'cashinvoices' ? true:false
+    let showInvoiceTable = entity == "invoices"  ? true: entity === 'cashinvoices' ?true:false
  
 
     return (

@@ -124,7 +124,11 @@ const invoiceSchema = new mongoose.Schema(
         otherCharges: [],
         grandTotal: {
             type: Number,
-        },      
+        },   
+        bank:{
+          type: String,
+
+        } ,  
         taxValues:[],
         terms: [],
         tenantId: {
