@@ -10,145 +10,173 @@ import {
 import { localDateString } from "../Helper/EpochConveter";
 import PageHeader from "./VipPlayTemplate/PageHeader";
 
-// ==============================
+// =====================================
 // STYLES
-// ==============================
+// =====================================
 
 const styles = StyleSheet.create({
 
     page: {
-        paddingTop: 24,
-        paddingBottom: 30,
-        paddingHorizontal: 28,
+        paddingTop: 18,
+        paddingBottom: 22,
+        paddingHorizontal: 18,
         fontFamily: "Helvetica",
-        fontSize: 11,
+        fontSize: 9,
         color: "#222",
     },
 
     title: {
         textAlign: "center",
-        fontSize: 20,
+        fontSize: 11,
         fontWeight: "bold",
         letterSpacing: 1,
-        marginTop: 6,
+        marginTop: 2,
     },
 
     centerText: {
         textAlign: "center",
-        fontSize: 10,
+        fontSize: 8,
         color: "#555",
-        marginTop: 3,
-        marginBottom: 18,
+        marginTop: 2,
+        marginBottom: 10,
     },
 
-    // ==========================
+    // =================================
     // PARTY BLOCK
-    // ==========================
+    // =================================
 
     customerBlock: {
-        marginBottom: 14,
-        paddingBottom: 8,
-        borderBottomWidth: 1,
-        borderBottomColor: "#e5e5e5",
+        marginBottom: 10,
+        paddingBottom: 6,
+        borderBottomWidth: 0.8,
+        borderBottomColor: "#dcdcdc",
     },
 
     toText: {
-        fontSize: 11,
+        fontSize: 9,
         fontWeight: "bold",
-        marginBottom: 3,
+        marginBottom: 2,
         color: "#666",
         letterSpacing: 1,
     },
 
     customerName: {
-        fontSize: 14,
+        fontSize: 11,
         fontWeight: "bold",
         textTransform: "uppercase",
-        marginBottom: 2,
+        marginBottom: 1,
     },
 
     customerDetails: {
-        fontSize: 9,
+        fontSize: 7.8,
         color: "#555",
-        lineHeight: 1.4,
+        lineHeight: 1.2,
         marginBottom: 1,
         textTransform: "uppercase",
     },
 
-    // ==========================
+    // =================================
     // TABLE
-    // ==========================
+    // =================================
 
     tableWrapper: {
-        borderWidth: 1,
-        borderColor: "#d9d9d9",
+        borderWidth: 0.8,
+        borderColor: "#cfcfcf",
     },
 
     tableHeader: {
         flexDirection: "row",
         backgroundColor: "#1f2937",
-        paddingVertical: 8,
-        paddingHorizontal: 5,
+        paddingVertical: 5,
+        paddingHorizontal: 3,
         alignItems: "center",
     },
 
     tableRow: {
         flexDirection: "row",
-        borderBottomWidth: 0.5,
-        borderBottomColor: "#e5e5e5",
-        paddingVertical: 7,
-        paddingHorizontal: 5,
+        borderBottomWidth: 0.4,
+        borderBottomColor: "#ececec",
+        paddingVertical: 4,
+        paddingHorizontal: 3,
         alignItems: "center",
+        minHeight: 24,
     },
 
     cell: {
-        fontSize: 8.7,
-        paddingRight: 4,
+        fontSize: 7.5,
+        paddingHorizontal: 2,
+        justifyContent: "center",
     },
 
     headerText: {
         color: "#fff",
         fontWeight: "bold",
-        fontSize: 8,
+        fontSize: 7,
         textTransform: "uppercase",
     },
 
-    amountText: {
+    // =================================
+    // ALIGNMENTS
+    // =================================
+
+    leftText: {
+        textAlign: "left",
+    },
+
+    centerAlign: {
         textAlign: "center",
     },
 
+    rightAlign: {
+        textAlign: "right",
+    },
+
+    amountText: {
+        textAlign: "right",
+        fontFamily: "Helvetica-Bold",
+    },
+
     balanceNegative: {
-        color: "#c2410c",
+        color: "#dc2626",
         fontWeight: "bold",
+        textAlign: "right",
+        lineHeight: 1.2,
     },
 
     balancePositive: {
         color: "#166534",
         fontWeight: "bold",
+        textAlign: "right",
     },
 
-    // ==========================
+    advanceText: {
+        fontSize: 6.5,
+        color: "#dc2626",
+        marginTop: 1,
+    },
+
+    // =================================
     // SUMMARY
-    // ==========================
+    // =================================
 
     summaryContainer: {
-        marginTop: 18,
-        width: "48%",
+        marginTop: 12,
+        width: "44%",
         alignSelf: "flex-end",
-        borderWidth: 1,
+        borderWidth: 0.8,
         borderColor: "#d9d9d9",
     },
 
     summaryHeader: {
         backgroundColor: "#f3f4f6",
-        paddingVertical: 7,
-        paddingHorizontal: 10,
-        borderBottomWidth: 1,
+        paddingVertical: 5,
+        paddingHorizontal: 8,
+        borderBottomWidth: 0.8,
         borderBottomColor: "#ddd",
     },
 
     summaryHeaderText: {
-        fontSize: 10,
+        fontSize: 8,
         fontWeight: "bold",
         textTransform: "uppercase",
     },
@@ -156,48 +184,49 @@ const styles = StyleSheet.create({
     summaryRow: {
         flexDirection: "row",
         justifyContent: "space-between",
-        paddingVertical: 7,
-        paddingHorizontal: 10,
-        borderBottomWidth: 0.5,
+        paddingVertical: 5,
+        paddingHorizontal: 8,
+        borderBottomWidth: 0.4,
         borderBottomColor: "#e5e5e5",
     },
 
     summaryLabel: {
-        fontSize: 9,
+        fontSize: 7.5,
         fontWeight: "bold",
         textTransform: "uppercase",
     },
 
     summaryValue: {
-        fontSize: 9,
+        fontSize: 7.5,
         fontWeight: "bold",
     },
 
-    // ==========================
+    // =================================
     // FINAL BOX
-    // ==========================
+    // =================================
 
     finalBalanceBox: {
-        marginTop: 14,
+        marginTop: 10,
         alignSelf: "flex-end",
-        width: "48%",
+        width: "44%",
         backgroundColor: "#111827",
-        paddingVertical: 10,
-        paddingHorizontal: 12,
+        paddingVertical: 8,
+        paddingHorizontal: 10,
     },
 
     finalBalanceText: {
         color: "#fff",
         fontWeight: "bold",
-        fontSize: 12,
+        fontSize: 9,
         textAlign: "right",
         textTransform: "uppercase",
+        lineHeight: 1.3,
     },
 });
 
-// ==============================
+// =====================================
 // COMPONENT
-// ==============================
+// =====================================
 
 const CustomerStatementPDF = ({ result }) => {
 
@@ -216,7 +245,9 @@ const CustomerStatementPDF = ({ result }) => {
         ${billingAddress?.city || ""}
         ${billingAddress?.state || ""}
         ${billingAddress?.pincode || ""}
-    `.replace(/\s+/g, " ").trim();
+    `
+        .replace(/\s+/g, " ")
+        .trim();
 
     const isCustomer =
         result.type === "customers";
@@ -246,7 +277,7 @@ const CustomerStatementPDF = ({ result }) => {
                     {localDateString(result?.endOfPeriod)}
                 </Text>
 
-                {/* CUSTOMER */}
+                {/* PARTY DETAILS */}
 
                 <View style={styles.customerBlock}>
 
@@ -293,7 +324,8 @@ const CustomerStatementPDF = ({ result }) => {
                             style={[
                                 styles.cell,
                                 styles.headerText,
-                                { flex: 1.5 },
+                                styles.centerAlign,
+                                { flex: 1.6 },
                             ]}
                         >
                             Date
@@ -303,58 +335,63 @@ const CustomerStatementPDF = ({ result }) => {
                             style={[
                                 styles.cell,
                                 styles.headerText,
-                                { flex: 2.7 },
+                                styles.leftText,
+                                { flex: 3.2 },
                             ]}
                         >
-                            Transaction
+                            Particulars
                         </Text>
 
                         <Text
                             style={[
                                 styles.cell,
                                 styles.headerText,
-                                { flex: 3 },
+                                styles.centerAlign,
+                                { flex: 1.8 },
                             ]}
                         >
-                            Details
+                            Vch Type
                         </Text>
 
                         <Text
                             style={[
                                 styles.cell,
                                 styles.headerText,
-                                styles.amountText,
-                                { flex: 2.5 },
+                                styles.centerAlign,
+                                { flex: 1.5 },
                             ]}
                         >
-                            {
-                                isCustomer
-                                    ? "Invoice Amount"
-                                    : "Purchase Amount"
-                            }
+                            Vch No
                         </Text>
 
                         <Text
                             style={[
                                 styles.cell,
                                 styles.headerText,
-                                styles.amountText,
+                                styles.rightAlign,
                                 { flex: 2 },
                             ]}
                         >
-                            {
-                                isCustomer
-                                    ? "Amount Received"
-                                    : "Amount Paid"
-                            }
+                            Debit
                         </Text>
 
                         <Text
                             style={[
                                 styles.cell,
                                 styles.headerText,
-                                styles.amountText,
-                                { flex: 1.5 },
+                                styles.rightAlign,
+                                { flex: 2 },
+                            ]}
+                        >
+                            Credit
+                        </Text>
+
+                        <Text
+                            style={[
+                                styles.cell,
+                                styles.headerText,
+                                styles.rightAlign,
+                                { flex: 2.2 },
                             ]}
                         >
                             Balance
@@ -377,10 +414,13 @@ const CustomerStatementPDF = ({ result }) => {
                                     style={styles.tableRow}
                                 >
 
+                                    {/* DATE */}
+
                                     <Text
                                         style={[
                                             styles.cell,
-                                            { flex: 1.5 },
+                                            styles.centerAlign,
+                                            { flex: 1.6 },
                                         ]}
                                     >
                                         {
@@ -390,37 +430,59 @@ const CustomerStatementPDF = ({ result }) => {
                                         }
                                     </Text>
 
+                                    {/* PARTICULARS */}
+
                                     <Text
                                         style={[
                                             styles.cell,
-                                            { flex: 2.7 },
+                                            styles.leftText,
+                                            { flex: 3.2 },
                                         ]}
                                     >
                                         {row.particulars || ""}
                                     </Text>
 
+                                    {/* VCH TYPE */}
+
                                     <Text
                                         style={[
                                             styles.cell,
-                                            { flex: 3 },
+                                            styles.centerAlign,
+                                            { flex: 1.8 },
+                                        ]}
+                                    >
+                                        {row.voucherType || ""}
+                                    </Text>
+
+                                    {/* VCH NO */}
+
+                                    <Text
+                                        style={[
+                                            styles.cell,
+                                            styles.centerAlign,
+                                            { flex: 1.5 },
+                                        ]}
+                                    >
+                                        {row.voucherNo || ""}
+                                    </Text>
+
+                                    {/* DEBIT */}
+
+                                    <Text
+                                        style={[
+                                            styles.cell,
+                                            styles.amountText,
+                                            { flex: 2 },
                                         ]}
                                     >
                                         {
-                                            row.voucherType
-                                                ? `${row.voucherType} - ${row.voucherNo}`
-                                                : ""
+                                            isCustomer
+                                                ? row.debit || ""
+                                                : row.credit || ""
                                         }
                                     </Text>
 
-                                    <Text
-                                        style={[
-                                            styles.cell,
-                                            styles.amountText,
-                                            { flex: 2 },
-                                        ]}
-                                    >
-                                        {row.debit || ""}
-                                    </Text>
+                                    {/* CREDIT */}
 
                                     <Text
                                         style={[
@@ -429,27 +491,33 @@ const CustomerStatementPDF = ({ result }) => {
                                             { flex: 2 },
                                         ]}
                                     >
-                                        {row.credit || ""}
+                                        {
+                                            isCustomer
+                                                ? row.credit || ""
+                                                : row.debit || ""
+                                        }
                                     </Text>
-                                    <Text
+
+                                    {/* BALANCE */}
+
+                                    <View
                                         style={[
                                             styles.cell,
-                                            styles.amountText,
                                             {
-                                                flex: 1.5,
+                                                flex: 2.2,
+                                                alignItems: "flex-end",
                                             },
-                                            isAdvance
-                                                ? styles.balanceNegative
-                                                : styles.balancePositive,
                                         ]}
                                     >
 
                                         {
-                                            isAdvance
-                                                ? (
-                                                    <>
+                                            isAdvance ? (
+                                                <>
+                                                    <Text style={styles.balanceNegative}>
                                                         {Math.abs(row.balance)}
-                                                        {"\n"}
+                                                    </Text>
+
+                                                    <Text style={styles.advanceText}>
                                                         (
                                                         {
                                                             isCustomer
@@ -457,12 +525,16 @@ const CustomerStatementPDF = ({ result }) => {
                                                                 : "Advance Paid"
                                                         }
                                                         )
-                                                    </>
-                                                )
-                                                : row.balance
+                                                    </Text>
+                                                </>
+                                            ) : (
+                                                <Text style={styles.balancePositive}>
+                                                    {row.balance}
+                                                </Text>
+                                            )
                                         }
 
-                                    </Text>
+                                    </View>
 
                                 </View>
                             );
@@ -482,16 +554,19 @@ const CustomerStatementPDF = ({ result }) => {
                     </View>
 
                     <View style={styles.summaryRow}>
+
                         <Text style={styles.summaryLabel}>
-                            Opening Balance
+                            Total Bought
                         </Text>
 
                         <Text style={styles.summaryValue}>
                             {result.openingBalance || 0}
                         </Text>
+
                     </View>
 
                     <View style={styles.summaryRow}>
+
                         <Text style={styles.summaryLabel}>
                             {
                                 isCustomer
@@ -503,9 +578,11 @@ const CustomerStatementPDF = ({ result }) => {
                         <Text style={styles.summaryValue}>
                             {result.totalDebit || 0}
                         </Text>
+
                     </View>
 
                     <View style={styles.summaryRow}>
+
                         <Text style={styles.summaryLabel}>
                             {
                                 isCustomer
@@ -517,11 +594,12 @@ const CustomerStatementPDF = ({ result }) => {
                         <Text style={styles.summaryValue}>
                             {result.totalCredit || 0}
                         </Text>
+
                     </View>
 
                 </View>
 
-                {/* FINAL */}
+                {/* FINAL BOX */}
 
                 <View style={styles.finalBalanceBox}>
 

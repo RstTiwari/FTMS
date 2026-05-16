@@ -171,8 +171,22 @@ const PaymentLayoutComponent = ({ form, widthOfTerm = "75vw", widthOfNotes = "75
                                             <Col span={1}>
                                                 <Form.Item>
                                                     <DeleteOutline
-                                                        onClick={() =>
+                                                        onClick={() => {
+                                                            let deletedValue = form.getFieldValue("otherCharges") && form.getFieldValue("otherCharges")[name]
+                                                            if( deletedValue && deletedValue.action == "add"){
+                                                                let amount = deletedValue["amount"]
+                                                                let grandTotal = form.getFieldValue("grandTotal") - amount
+                                                                form.setFieldsValue({"grandTotal":grandTotal})
+                                                            }else{
+                                                                let amount = deletedValue["amount"]
+                                                                let grandTotal = form.getFieldValue("grandTotal") + amount
+                                                                form.setFieldsValue({"grandTotal":grandTotal})
+
+                                                            }
                                                             remove(name)
+                                                            console.log(form.getFieldValue("otherCharges"))
+
+                                                        }
                                                         }
                                                         style={{
                                                             color: "red",
@@ -317,29 +331,9 @@ const PaymentLayoutComponent = ({ form, widthOfTerm = "75vw", widthOfNotes = "75
                                                                 "Select Rs or %",
                                                         },
                                                     ]}
-                                                    initialValue={
-                                                        form.getFieldValue(
-                                                            "otherCharges"
-                                                        )?.[name]
-                                                            ?.rsOrPercent ||
-                                                        "rupee"
-                                                    }
+                                                
                                                 >
-                                                    <Select
-                                                        onChange={
-                                                            handleItemsUpdate
-                                                        }
-                                                        options={[
-                                                            {
-                                                                label: "%",
-                                                                value: "percent",
-                                                            },
-                                                            {
-                                                                label: "₹",
-                                                                value: "rupee",
-                                                            },
-                                                        ]}
-                                                    />
+                                                  ₹
                                                 </Form.Item>
                                             </Col>
                                         </Row>

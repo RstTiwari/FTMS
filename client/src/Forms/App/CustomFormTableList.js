@@ -163,7 +163,18 @@ const CustomFormTableList = ({ form }) => {
             0
         );
         let totalWithTax = grossTotal + taxAmount;
-        let grandTotal = totalWithTax;
+        let otherChargesAmount = 0
+        let otherCharges = form.getFieldValue("otherCharges") || [];
+                otherCharges.forEach((charge) => {
+                  
+                        if (charge.action === "add") {
+                            otherChargesAmount += charge.amount || 0;
+                        } else {
+                            otherChargesAmount -= charge.amount || 0;
+                        }
+                });
+
+        let grandTotal = totalWithTax+ otherChargesAmount;
         form.setFieldsValue({
             grossTotal: Math.round(grossTotal),
             taxAmount: Math.round(taxAmount),

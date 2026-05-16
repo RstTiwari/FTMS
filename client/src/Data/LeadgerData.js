@@ -12,12 +12,12 @@ const LeadgerData = [
         ),
     },
     {
-        title: <Taglabel text={"TRANSACTIONS"} />,
+        title: <Taglabel text={"Particulars"} />,
         dataIndex: "",
         render: (_, record) => <Taglabel text={record.particulars} type={"text"} />,
     },
     {
-        title: <Taglabel text={"DETAILS"} />,
+        title: <Taglabel text={"Vch Type"} />,
         dataIndex: "category",
         key: "category",
         render: (_, record) => (
@@ -29,8 +29,21 @@ const LeadgerData = [
             </>
         ),
     },
+     {
+        title: <Taglabel text={"Vch No"} />,
+        dataIndex: "category",
+        key: "category",
+        render: (_, record) => (
+            <>
+                <Taglabel
+                    type="text"
+                    text={record.voucherNo}
+                />
+            </>
+        ),
+    },
     {
-        title: <Taglabel text={"INVOICE AMOUNT"} />,
+        title: <Taglabel text={"Debit"} />,
         dataIndex: "amount",
         key: "total",
         render: (_, record) => (
@@ -43,7 +56,7 @@ const LeadgerData = [
         ),
     },
     {
-        title: <Taglabel text={"PAYMENT RECIVED"} />,
+        title: <Taglabel text={"Credit"} />,
         key: "total",
         render: (_, record) => (
             <>

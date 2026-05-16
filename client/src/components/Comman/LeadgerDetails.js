@@ -12,17 +12,8 @@ import CustomerStatementPDF from "../../PdfTemplates/Customerstamentpdf";
 const { RangePicker } = DatePicker;
 
 const periodOptions = [
-    { label: "Today", value: "today" },
-    { label: "Yesterday", value: "yesterday" },
-    { label: "This Week", value: "this_week" },
-    { label: "Last Week", value: "last_week" },
-    { label: "This Month", value: "this_month" },
-    { label: "Last Month", value: "last_month" },
-    { label: "Last 3 Months", value: "last_three_month" },
     { label: "Last 6 Months", value: "last_six_month" },
     { label: "This Year", value: "this_year" },
-    { label: "Previous Year", value: "previous_year" },
-    { label: "Custom", value: "custom" },
 ];
 
 const LeadgerDetails = ({ id, type }) => {

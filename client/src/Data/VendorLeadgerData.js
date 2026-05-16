@@ -15,48 +15,62 @@ const vendorLeadgerData = [
         ),
     },
     {
-        title: <Taglabel text={"TRANSACTIONS"} />,
+        title: <Taglabel text={"Particulars"} />,
         dataIndex: "",
         render: (_, record) => <Taglabel text={record.particulars} type={"text"} />,
     },
     {
-        title: <Taglabel text={"DETAILS"} />,
+        title: <Taglabel text={"Vch Type"} />,
         dataIndex: "category",
         key: "category",
         render: (_, record) => (
             <>
                 <Taglabel
                     type="text"
-                    text={record.voucherNo && record.voucherType + "-" + record.voucherNo}
+                    text={record.voucherType}
                 />
             </>
         ),
     },
-    {
-        title: <Taglabel text={"PURCHASE AMOUNT"} />,
-        dataIndex: "amount",
+       {
+        title: <Taglabel text={"Vch No"} />,
+        dataIndex: "category",
+        key: "category",
+        render: (_, record) => (
+            <>
+                <Taglabel
+                    type="text"
+                    text={record.voucherNo}
+                />
+            </>
+        ),
+    },
+        {
+        title: <Taglabel text={"Debit"} />,
         key: "total",
         render: (_, record) => (
             <>
                 <Taglabel
-                    type={"amount"}
+                    type="text"
                     text={record.debit ? record.debit : ""}
                 />
             </>
         ),
     },
     {
-        title: <Taglabel text={"PAYMENT MADE"} />,
+        title: <Taglabel text={"Credit"} />,
+        dataIndex: "amount",
         key: "total",
         render: (_, record) => (
             <>
                 <Taglabel
-                    type="text"
+                    type={"amount"}
                     text={record.credit ? record.credit : ""}
                 />
             </>
         ),
     },
+
     {
         title: <Taglabel text={"BALANCE"} />,
         key: "total",

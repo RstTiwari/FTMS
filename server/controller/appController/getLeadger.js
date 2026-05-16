@@ -1,6 +1,7 @@
 import checkDbForEntity from "../../Helper/databaseSelector.js";
 
 const getLeadger = async (req, res, next) => {
+
     try {
 
         const {
@@ -28,11 +29,12 @@ const getLeadger = async (req, res, next) => {
         const start = new Date(startOfPeriod);
         const end = new Date(endOfPeriod);
 
-        const isCustomer = type === "customers";
+        const isCustomer =
+            type === "customers";
 
-        // =========================================
+        // =====================================
         // DATABASES
-        // =========================================
+        // =====================================
 
         const sourceDb = isCustomer
             ? checkDbForEntity("invoices")
@@ -43,14 +45,17 @@ const getLeadger = async (req, res, next) => {
             : checkDbForEntity("paymentsmade");
 
         const partyDb = checkDbForEntity(
-            isCustomer ? "customers" : "vendors"
+            isCustomer
+                ? "customers"
+                : "vendors"
         );
 
-        const tenantDb = checkDbForEntity("tenant");
+        const tenantDb =
+            checkDbForEntity("tenant");
 
-        // =========================================
+        // =====================================
         // DYNAMIC KEYS
-        // =========================================
+        // =====================================
 
         const matchKey = isCustomer
             ? "customer"
@@ -60,181 +65,270 @@ const getLeadger = async (req, res, next) => {
             ? "invoiceDate"
             : "purchaseDate";
 
-        const paymentDateKey = "paymentDate";
+        const paymentDateKey =
+            "paymentDate";
 
-        // =========================================
-        // PARTY + ORGANIZATION
-        // =========================================
+        // =====================================
+        // PARTY + ORG
+        // =====================================
 
-        const partyData = await partyDb.findOne({
-            _id: id,
-        });
+        const partyData =
+            await partyDb.findOne({
+                _id: id,
+            });
 
-        const organization = await tenantDb.findOne({
-            _id: tenantId,
-        });
+        const organization =
+            await tenantDb.findOne({
+                _id: tenantId,
+            });
 
-        // =========================================
+        // =====================================
         // OPENING ENTRIES
-        // =========================================
+        // =====================================
 
-        const openingEntities = await sourceDb
-            .find({
-                tenantId,
-                [matchKey]: id,
-                [entityDateKey]: { $lt: start },
-            })
-            .select(
-                `${entityDateKey} grandTotal prefix no suffix`
-            )
-            .lean();
+        const openingEntities =
+            await sourceDb
+                .find({
+                    tenantId,
+                    [matchKey]: id,
+                    [entityDateKey]: {
+                        $lt: start,
+                    },
+                })
+                .select(
+                    `${entityDateKey} grandTotal prefix no suffix`
+                )
+                .lean();
 
-        const openingPayments = await paymentDb
-            .find({
-                tenantId,
-                [matchKey]: id,
-                [paymentDateKey]: { $lt: start },
-            })
-            .select(
-                `${paymentDateKey} amount prefix no suffix`
-            )
-            .lean();
+        const openingPayments =
+            await paymentDb
+                .find({
+                    tenantId,
+                    [matchKey]: id,
+                    [paymentDateKey]: {
+                        $lt: start,
+                    },
+                })
+                .select(
+                    `${paymentDateKey} amount prefix no suffix`
+                )
+                .lean();
 
-        // =========================================
+        // =====================================
         // OPENING TOTALS
-        // =========================================
+        // =====================================
 
-        const openingDebit = openingEntities.reduce(
-            (sum, item) => {
-                return sum + (item.grandTotal || 0);
-            },
-            0
-        );
+        const openingDebit =
+            openingEntities.reduce(
+                (sum, item) => {
+                    return (
+                        sum +
+                        (item.grandTotal || 0)
+                    );
+                },
+                0
+            );
 
-        const openingCredit = openingPayments.reduce(
-            (sum, item) => {
-                return sum + (item.amount || 0);
-            },
-            0
-        );
+        const openingCredit =
+            openingPayments.reduce(
+                (sum, item) => {
+                    return (
+                        sum +
+                        (item.amount || 0)
+                    );
+                },
+                0
+            );
 
-        // +ve means due
-        // -ve means advance
+        // =====================================
+        // IMPORTANT ACCOUNTING LOGIC
+        // =====================================
 
-        const openingNet =
-            openingDebit - openingCredit;
+        // CUSTOMER:
+        // Invoice  -> Debit
+        // Payment  -> Credit
 
-        // =========================================
+        // VENDOR:
+        // Purchase -> Credit
+        // Payment  -> Debit
+
+        let openingNet = 0;
+
+        if (isCustomer) {
+
+            openingNet =
+                openingDebit -
+                openingCredit;
+
+        } else {
+
+            openingNet =
+                openingCredit -
+                openingDebit;
+        }
+
+        // =====================================
         // CURRENT PERIOD ENTRIES
-        // =========================================
+        // =====================================
 
-        const inRangeEntities = await sourceDb
-            .find({
-                tenantId,
-                [matchKey]: id,
-                [entityDateKey]: {
-                    $gte: start,
-                    $lte: end,
-                },
-            })
-            .select(
-                `${entityDateKey} grandTotal prefix no suffix`
-            )
-            .sort({
-                [entityDateKey]: 1,
-            })
-            .lean();
+        const inRangeEntities =
+            await sourceDb
+                .find({
+                    tenantId,
+                    [matchKey]: id,
+                    [entityDateKey]: {
+                        $gte: start,
+                        $lte: end,
+                    },
+                })
+                .select(
+                    `${entityDateKey} grandTotal prefix no suffix`
+                )
+                .sort({
+                    [entityDateKey]: 1,
+                })
+                .lean();
 
-        const inRangePayments = await paymentDb
-            .find({
-                tenantId,
-                [matchKey]: id,
-                [paymentDateKey]: {
-                    $gte: start,
-                    $lte: end,
-                },
-            })
-            .select(
-                `${paymentDateKey} amount prefix no suffix`
-            )
-            .sort({
-                [paymentDateKey]: 1,
-            })
-            .lean();
+        const inRangePayments =
+            await paymentDb
+                .find({
+                    tenantId,
+                    [matchKey]: id,
+                    [paymentDateKey]: {
+                        $gte: start,
+                        $lte: end,
+                    },
+                })
+                .select(
+                    `${paymentDateKey} amount prefix no suffix`
+                )
+                .sort({
+                    [paymentDateKey]: 1,
+                })
+                .lean();
 
-        // =========================================
-        // NORMALIZED LEDGER ENTRIES
-        // =========================================
+        // =====================================
+        // NORMALIZED LEDGER DATA
+        // =====================================
 
         const combinedData = [
 
+            // =================================
             // INVOICE / PURCHASE
-            ...inRangeEntities.map((item) => ({
+            // =================================
 
-                date: new Date(item[entityDateKey]),
+            ...inRangeEntities.map(
+                (item) => {
 
-                voucherType: isCustomer
-                    ? "Invoice"
-                    : "Purchase",
+                    const amount =
+                        item.grandTotal || 0;
 
-                voucherNo:
-                    `${item.prefix || ""}${item.no}${item.suffix || ""}`,
+                    return {
 
-                particulars: isCustomer
-                    ? "Invoice Created"
-                    : "Purchase Bill Created",
+                        date: new Date(
+                            item[
+                                entityDateKey
+                            ]
+                        ),
 
-                debit: item.grandTotal || 0,
+                        voucherType:
+                            isCustomer
+                                ? "Sales"
+                                : "Purchase",
 
-                credit: 0,
+                        voucherNo:
+                            `${item.prefix || ""}${item.no}${item.suffix || ""}`,
 
-            })),
+                        particulars:
+                            isCustomer
+                                ? "To SALES"
+                                : "By PURCHASE",
 
-            // PAYMENT RECEIVED / PAYMENT MADE
-            ...inRangePayments.map((item) => ({
+                        debit:
+                            isCustomer
+                                ? amount
+                                : 0,
 
-                date: new Date(item[paymentDateKey]),
+                        credit:
+                            isCustomer
+                                ? 0
+                                : amount,
+                    };
+                }
+            ),
 
-                voucherType: isCustomer
-                    ? "Payment Received"
-                    : "Payment Made",
+            // =================================
+            // PAYMENTS
+            // =================================
 
-                voucherNo:
-                    `${item.prefix || ""}${item.no}${item.suffix || ""}`,
+            ...inRangePayments.map(
+                (item) => {
 
-                particulars: isCustomer
-                    ? "Payment Received"
-                    : "Payment Made",
+                    const amount =
+                        item.amount || 0;
 
-                debit: 0,
+                    return {
 
-                credit: item.amount || 0,
+                        date: new Date(
+                            item[
+                                paymentDateKey
+                            ]
+                        ),
 
-            })),
+                        voucherType:
+                            isCustomer
+                                ? "Receipt"
+                                : "Payment",
 
-        ].sort((a, b) => a.date - b.date);
+                        voucherNo:
+                            `${item.prefix || ""}${item.no}${item.suffix || ""}`,
 
-        // =========================================
+                        particulars:
+                            isCustomer
+                                ? "By BANK"
+                                : "To BANK",
+
+                        debit:
+                            isCustomer
+                                ? 0
+                                : amount,
+
+                        credit:
+                            isCustomer
+                                ? amount
+                                : 0,
+                    };
+                }
+            ),
+
+        ].sort(
+            (a, b) =>
+                a.date - b.date
+        );
+
+        // =====================================
         // RUNNING BALANCE
-        // =========================================
+        // =====================================
 
-        let runningBalance = openingNet;
+        let runningBalance =
+            openingNet;
 
         const ledgerData = [];
 
+        // =====================================
         // OPENING ROW
-
-        // OPENING ROW
+        // =====================================
 
         ledgerData.push({
 
             date: start,
 
-            voucherType: "Opening",
+            voucherType: "",
 
             voucherNo: "-",
 
-            particulars: "Opening Balance",
+            particulars:
+                "Brought Forward",
 
             debit:
                 openingNet > 0
@@ -243,55 +337,74 @@ const getLeadger = async (req, res, next) => {
 
             credit:
                 openingNet < 0
-                    ? Math.abs(openingNet)
+                    ? Math.abs(
+                          openingNet
+                      )
                     : 0,
 
             balance: runningBalance,
-
         });
 
-        // TRANSACTION ROWS
+        // =====================================
+        // TRANSACTIONS
+        // =====================================
 
         for (const item of combinedData) {
 
-            runningBalance += item.debit;
-            runningBalance -= item.credit;
+            runningBalance +=
+                item.debit;
+
+            runningBalance -=
+                item.credit;
 
             ledgerData.push({
+
                 ...item,
-                balance: runningBalance,
+
+                balance:
+                    runningBalance,
             });
         }
 
-        // =========================================
+        // =====================================
         // TOTALS
-        // =========================================
+        // =====================================
 
-        const totalDebit = combinedData.reduce(
-            (sum, item) => {
-                return sum + item.debit;
-            },
-            0
-        );
+        const totalDebit =
+            combinedData.reduce(
+                (sum, item) => {
+                    return (
+                        sum +
+                        item.debit
+                    );
+                },
+                0
+            );
 
-        const totalCredit = combinedData.reduce(
-            (sum, item) => {
-                return sum + item.credit;
-            },
-            0
-        );
+        const totalCredit =
+            combinedData.reduce(
+                (sum, item) => {
+                    return (
+                        sum +
+                        item.credit
+                    );
+                },
+                0
+            );
 
-       const closingBalance = runningBalance;
+        const closingBalance =
+            runningBalance;
 
-        // =========================================
+        // =====================================
         // RESPONSE
-        // =========================================
+        // =====================================
 
         return res.json({
 
             success: 1,
 
-            message: "Fetched Ledger Successfully",
+            message:
+                "Fetched Ledger Successfully",
 
             result: {
 
@@ -306,20 +419,15 @@ const getLeadger = async (req, res, next) => {
                 endOfPeriod,
 
                 openingBalance:
-                    openingNet > 0
-                        ? openingNet
-                        : 0,
-
-                openingAdvance:
-                    openingNet < 0
-                        ? Math.abs(openingNet)
-                        : 0,
+                    openingNet,
 
                 totalDebit,
-                totalCredit,
-                closingBalance,
-                data: ledgerData,
 
+                totalCredit,
+
+                closingBalance,
+
+                data: ledgerData,
             },
         });
 
