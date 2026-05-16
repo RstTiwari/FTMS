@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
         height: 66,
         marginLeft: "auto",
         marginRight: "auto",
-        borderRadius:5
+        borderRadius: 5
     },
     section: {
         margin: 10,
@@ -75,7 +75,7 @@ const Index = ({ entity, data }) => {
     let { entityData, organization, selectColumns, entityPrefix } = data;
     let Prefix = entityData['prefix'] || "entityPrefix"
 
-    const pageHeaderDetail = customPageHeader(entity, entityData, Prefix,organization);
+    const pageHeaderDetail = customPageHeader(entity, entityData, Prefix, organization);
 
     const entityDetails = entityDetailsFormatter(
         entity,
@@ -86,28 +86,28 @@ const Index = ({ entity, data }) => {
     let amounts = grandAndOtherChargesFormatter(entity, entityData);
     let amountInWords = numberToWordsIndian(entityData.grandTotal)
     let headers = getTableHeaders2(entity, selectColumns);
-    let type  = entityData && entityData.type  ? entityData.type : entity
-    let bankDetails = bankDetailsFormatter(type, organization?.bankDetails, organization.panNo,entityData);
+    let type = entityData && entityData.type ? entityData.type : entity
+    let bankDetails = bankDetailsFormatter(type, organization?.bankDetails, organization.panNo, entityData);
     let entityName = entityNameFormatter(type);
     let taxValues = taxValuesForCgstAndSgst(entity, entityData);
-    let showBankDetailsAndTax = ["quotations","invoices","cashinvoices","challans","purchases"].includes(entity)
-    let showInvoiceTable = entity == "invoices"  ? true: entity === 'cashinvoices' ?true:false
- 
+    let showBankDetailsAndTax = ["quotations", "invoices", "cashinvoices", "purchases"].includes(entity)
+    let showInvoiceTable = entity == "invoices" ? true : entity === 'cashinvoices' ? true : false
+
 
     return (
         <Document>
             <Page size="A4" break={true} style={styles.page} >
                 <View style={styles.invoice}>
-                    <PageHeader organization = {organization} entityData={pageHeaderDetail}  entityDetails ={entityDetails} entity={entity}/>
+                    <PageHeader organization={organization} entityData={pageHeaderDetail} entityDetails={entityDetails} entity={entity} />
                     <Text style={styles.entityName}>{entityName}</Text>
-                    <QuotationMessage  entity={entity} message={entityData["message"]}/>
+                    <QuotationMessage entity={entity} message={entityData["message"]} />
 
                     <EntityDetails
                         data={entityDetails}
                         entity={entity}
                     />
                     {
-                        showInvoiceTable ? (<InvoiceTable columns={headers} items={entityData?.items} /> ):
+                        showInvoiceTable ? (<InvoiceTable columns={headers} items={entityData?.items} />) :
                             (<ItemsTable columns={headers} items={entityData?.items} />)
 
                     }
@@ -119,13 +119,15 @@ const Index = ({ entity, data }) => {
                             bankDetails={bankDetails}
                             entity={entity}
                             taxValues={taxValues}
-                            amountInWords = {amountInWords}
+                            amountInWords={amountInWords}
                         />
                     }
-                    
-                    <AmountInWords amount={amountInWords} entity={entity}/>
-                    <TermsAndNotes terms={entityData?.terms} notes={entityData.notes} specification={entityData.specification}/>
-                    <SignatureBlock  companyName ={organization.companyName}/>
+                    {
+                        showBankDetailsAndTax && <AmountInWords amount={amountInWords} entity={entity} />
+                    }
+
+                    <TermsAndNotes terms={entityData?.terms} notes={entityData.notes} specification={entityData.specification} />
+                    <SignatureBlock companyName={organization.companyName} />
                 </View>
             </Page>
         </Document>

@@ -10,6 +10,7 @@ const search = async (req, res) => {
             search,
             date,
             status,
+            bank
         } = req.query;
 
         const tenantId = req.tenantId;
@@ -95,6 +96,10 @@ const search = async (req, res) => {
 
         if (status) {
             query.status = status;
+        }
+        
+        if(bank){
+            query.bank= bank;
         }
 
         let data = await Model.find(query)

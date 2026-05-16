@@ -41,61 +41,32 @@ const challanSchema = new mongoose.Schema(
     },
     items: [
       {
-        code: {
-          type: String,
-        },
+      
         description: {
           type: String,
           required: true,
         },
-        image: {
-          type: String,
-        },
+    
         hsnCode: {
           type: String,
         },
-        rate: {
-          type: Number,
-        },
-        discountPercent: {
-          type: Number,
-        },
-        discountAmount: {
-          type: Number,
+  
+        unit: {
+          type: String,
         },
 
-        gstPercent: {
-          type: Number,
-        },
+      
         qty: {
           type: Number,
         },
-        taxAmount: {
-          type: Number,
-        },
-        finalAmount: {
-          type: Number,
-        },
+      
       },
     ],
     grossTotal: {
       type: Number,
       default: 0,
     },
-    taxAmount: {
-      type: Number,
-      default: 0,
-    },
-    totalWithTax: {
-      type: Number,
-    },
-    otherCharges: [],
-    grandTotal: {
-      type: Number,
-      default: 0,
-    },
     notes: [],
-    terms: [],
     tenantId: {
       type: String,
       required: true,

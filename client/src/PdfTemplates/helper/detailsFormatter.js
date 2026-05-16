@@ -631,6 +631,22 @@ export const getTableHeaders2 = (entity, preCol = []) => {
                 { title: "TOTAL AMOUNT", property: "finalAmount", width: 70 },
 
             ]
+        
+        case "challans":
+            return [
+                { title: "#", property: "srNo", width: 20 },
+
+                {
+                    title: "PRODUCT DETAILS",
+                    property: "description",
+                    width: 330,
+                },
+                { title: "HSN CODE", property: "hsnCode", width: 100 },
+                { title: "UNIT", property: "unit", width: 100 },
+                { title: "QTY", property: "qty", width: 100 },
+
+            ];
+
 
         default:
             return finalHeaders;
@@ -763,7 +779,7 @@ export const entityNameFormatter = (entity) => {
             entityName = "PURCHASE ORDER";
             break;
         case "challans":
-            entityName = "CHALAAN BILL";
+            entityName = " DELIVERY CHALAAN";
             break;
         case "workorders":
             entityName = "WORK ORDER";

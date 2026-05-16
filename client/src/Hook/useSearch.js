@@ -3,19 +3,20 @@ import NotificationHandler from "EventHandler/NotificationHandler";
 import useDebounce from "./useDebounce";
 import { useAuth } from "state/AuthProvider";
 
-const useSearch = (entity, searchText, date, status, select = {}) => {
+const useSearch = (entity, searchText, date, status,bank, select = {}) => {
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
     const debouncedSearch = useDebounce(searchText, 300);
     const debouncedDate = useDebounce(date, 300);
     const debouncedStatus = useDebounce(status, 300);
+    const debounceBank  = useDebounce(bank,300)
 
     const { appApiCall } = useAuth();
 
     const fetchSearch = async () => {
         const hasFilter =
-            debouncedSearch?.trim() || debouncedDate || debouncedStatus;
+            debouncedSearch?.trim() || debouncedDate || debouncedStatus || debounceBank;
 
         if (!hasFilter) {
             setData([]);
@@ -40,6 +41,7 @@ const useSearch = (entity, searchText, date, status, select = {}) => {
                     search: debouncedSearch || "",
                     date: debouncedDate || "",
                     status: debouncedStatus || "",
+                    bank:debounceBank,
                     select,
                 }
             );
@@ -58,7 +60,7 @@ const useSearch = (entity, searchText, date, status, select = {}) => {
 
     useEffect(() => {
         fetchSearch();
-    }, [entity, debouncedSearch, debouncedDate, debouncedStatus]);
+    }, [entity, debouncedSearch, debouncedDate, debouncedStatus,debounceBank]);
 
     return {
         data,

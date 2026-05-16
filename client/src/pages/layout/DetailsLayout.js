@@ -1,6 +1,6 @@
 import { Row, Col, Select, Input, Button } from "antd";
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 import CustomTable from "components/CustomTable";
 import useDataFetching from "Hook/useDataFetching";
@@ -14,6 +14,7 @@ import useDebounce from "Hook/useDebounce";
 import useSearch from "Hook/useSearch";
 import { useAuth } from "state/AuthProvider";
 import NotificationHandler from "EventHandler/NotificationHandler";
+import BankSelect from "components/Comman/BankSelect";
 
 const DetailsLayout = () => {
     const { tenantId, entity, id, pageNo, pageSize } = useParams();
@@ -24,6 +25,8 @@ const DetailsLayout = () => {
     const [searchInput, setSearchInput] = useState("");
     const [selectedFY, setSelectedFY] = useState("");
     const [selectedStatus, setSelectedStatus] = useState("");
+    const [bank ,setBank] = useState("")
+    const [formKey, setFormKey] = useState(Date.now());
 
     const debouncedSearch = useDebounce(searchInput, 300);
 
@@ -32,6 +35,7 @@ const DetailsLayout = () => {
     const { adminApiCall } = useAuth();
 
     const [show, setShow] = useState(false);
+    const location = useLocation();
 
     const navigate = useNavigate();
 
@@ -51,11 +55,12 @@ const DetailsLayout = () => {
         debouncedSearch,
         selectedFY,
         selectedStatus,
+        bank,
         dataForTable.select
     );
 
     const isFiltering =
-        debouncedSearch.trim() || selectedFY || selectedStatus;
+        debouncedSearch.trim() || selectedFY || selectedStatus || bank;
 
     const getFinancialYears = () => {
         const currentDate = new Date();
@@ -72,6 +77,11 @@ const DetailsLayout = () => {
         }
         return years;
     };
+    const openNewModal = () => {
+        setSelectedRowKey(null);
+        setFormKey(Date.now());
+        setShow(true);
+    };
 
     const statusOptions = ["DRAFT", "PARTIAL PAID", "FULLY PAID"];
 
@@ -79,6 +89,42 @@ const DetailsLayout = () => {
         const { current: pageNo, pageSize } = pagination;
         navigate(`/app/${tenantId}/${entity}/${pageNo}/${pageSize}`);
     };
+    const resetFilters = () => {
+
+    setSearchInput("");
+    setSelectedFY("");
+    setSelectedStatus("");
+    setBank("");
+
+};
+
+const handleSearchChange = (e) => {
+
+    resetFilters();
+
+    setSearchInput(e.target.value);
+};
+
+const handleFYChange = (value) => {
+
+    resetFilters();
+
+    setSelectedFY(value || "");
+};
+
+const handleStatusChange = (value) => {
+
+    resetFilters();
+
+    setSelectedStatus(value || "");
+};
+
+const handleBankChange = (value) => {
+
+    resetFilters();
+
+    setBank(value || "");
+};
 
     const rowSelection = {
         deleteRowKeys,
@@ -118,6 +164,14 @@ const DetailsLayout = () => {
             ? "custom-row selected-row"
             : "custom-row";
 
+    useEffect(() => {
+
+        setSearchInput("");
+        setSelectedFY("");
+        setSelectedStatus("");
+
+    }, [location.pathname]);
+
     return (
         <Row style={{ margin: "30px" }}>
             <Col xs={24} md={details ? 6 : 24}>
@@ -128,7 +182,10 @@ const DetailsLayout = () => {
                         ALL {fetchTitleName(entity)?.toUpperCase()}
                     </Col>
                     <Col xs={12} style={{ textAlign: "right" }}>
-                        <CoustomButton text="NEW" onClick={() => setShow(true)} />
+                        <CoustomButton
+                            text="NEW"
+                            onClick={openNewModal}
+                        />
                     </Col>
                 </Row>
 
@@ -139,7 +196,7 @@ const DetailsLayout = () => {
                         placeholder="Search..."
                         style={{ width: 150 }}
                         value={searchInput}
-                        onChange={(e) => setSearchInput(e.target.value)}
+                        onChange={handleSearchChange}
                         allowClear
                     />
 
@@ -148,7 +205,7 @@ const DetailsLayout = () => {
                         style={{ width: 150 }}
                         allowClear
                         value={selectedFY || undefined}
-                        onChange={setSelectedFY}
+                       onChange={handleFYChange}
                         options={getFinancialYears().map((fy) => ({
                             label: fy,
                             value: fy,
@@ -161,13 +218,27 @@ const DetailsLayout = () => {
                             style={{ width: 180 }}
                             allowClear
                             value={selectedStatus || undefined}
-                            onChange={setSelectedStatus}
+                            onChange={handleStatusChange}
                             options={statusOptions.map((s) => ({
                                 label: s,
                                 value: s,
                             }))}
                         />
                     )}
+                    {
+                        ["expenses","paymentsreceived","paymentsmade","invoices"].includes(entity) && (
+                            <BankSelect width="10vw"  updateInForm={handleBankChange} preFillValue={""}/>
+                        )
+                    }
+
+                    <Button
+                        onClick={() => {
+                            resetFilters();
+                            fetchData();
+                        }}
+                    >
+                        Refresh
+                    </Button>
 
                     {deleteRowKeys.length > 0 && (
                         <Button danger onClick={onDeleteSelected}>
@@ -194,6 +265,7 @@ const DetailsLayout = () => {
                     setShow={setShow}
                     children={
                         <CustomForm
+                            key={formKey}
                             entityOfModal={entity}
                             closeModal={(reload) => {
                                 setShow(false);
