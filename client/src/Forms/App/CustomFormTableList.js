@@ -1,4 +1,4 @@
-import React, { useEffect, useState ,useRef} from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
     Form,
     Table,
@@ -38,7 +38,7 @@ const CustomFormTableList = ({ form }) => {
     const handleItemsUpdate = (value, filedName, rowName, options) => {
         const items = form.getFieldValue("items");
         let temObj = items[rowName];
-        if(options){
+        if (options) {
             temObj.gstType = options.type
         }
         if (filedName === "code" || filedName === "description") {
@@ -109,17 +109,17 @@ const CustomFormTableList = ({ form }) => {
 
         items[rowName] = temObj;
         form.setFieldsValue({ items: items });
-       
+
 
         const taxValues = [];
 
         items.forEach((item) => {
-            if (!item.gstPercent || !item.taxAmount) return; 
+            if (!item.gstPercent || !item.taxAmount) return;
 
             const gstValue = item.gstPercent;
             const taxAmount = item.taxAmount;
 
-            const addOrUpdate = (taxName, rate,type, amount) => {
+            const addOrUpdate = (taxName, rate, type, amount) => {
                 const existing = taxValues.find(
                     (t) => t.type === type && t.rate === rate
                 );
@@ -137,16 +137,16 @@ const CustomFormTableList = ({ form }) => {
 
 
             if (item.gstType === "IGST") {
-                addOrUpdate(`IGST%${gstValue}`, gstValue,"IGST", taxAmount);
+                addOrUpdate(`IGST%${gstValue}`, gstValue, "IGST", taxAmount);
             } else {
                 const halfRate = gstValue / 2;
                 const halfAmount = taxAmount / 2;
-                addOrUpdate(`CGST%${halfRate}+SGST%${halfRate}`, halfRate,"CGST", taxAmount);
+                addOrUpdate(`CGST%${halfRate}+SGST%${halfRate}`, halfRate, "CGST", taxAmount);
                 // addOrUpdate(`SGST@${halfRate}`, halfRate,"SGST", halfAmount) 
             }
         });
-        taxValues.sort((a,b)=>a.rate -b.rate)
-        form.setFieldsValue({taxValues:taxValues})
+        taxValues.sort((a, b) => a.rate - b.rate)
+        form.setFieldsValue({ taxValues: taxValues })
 
 
 
@@ -165,21 +165,21 @@ const CustomFormTableList = ({ form }) => {
         let totalWithTax = grossTotal + taxAmount;
         let otherChargesAmount = 0
         let otherCharges = form.getFieldValue("otherCharges") || [];
-                otherCharges.forEach((charge) => {
-                  
-                        if (charge.action === "add") {
-                            otherChargesAmount += charge.amount || 0;
-                        } else {
-                            otherChargesAmount -= charge.amount || 0;
-                        }
-                });
+        otherCharges.forEach((charge) => {
 
-        let grandTotal = totalWithTax+ otherChargesAmount;
+            if (charge.action === "add") {
+                otherChargesAmount += charge.amount || 0;
+            } else {
+                otherChargesAmount -= charge.amount || 0;
+            }
+        });
+
+        let grandTotal = totalWithTax + otherChargesAmount;
         form.setFieldsValue({
             grossTotal: Math.round(grossTotal),
             taxAmount: Math.round(taxAmount),
             totalWithTax: Math.round(totalWithTax),
-            grandTotal: Math.ceil(grandTotal),
+            grandTotal: Math.round(grandTotal),
         });
     };
 
@@ -188,21 +188,21 @@ const CustomFormTableList = ({ form }) => {
     const handleDelete = (rowIndex) => {
         const items = form.getFieldValue("items") || [];
         items.splice(rowIndex, 1); // Remove the item
-    
+
         // Recalculate totals
         let grossTotal = items.reduce((a, b) => a + (b.finalAmount || 0), 0);
-    
+
         let taxAmount = items.reduce(
             (acc, item) => acc + (item.taxAmount || 0),
             0
         );
-    
+
         let totalWithTax = grossTotal + taxAmount;
         let grandTotal = totalWithTax;
-    
+
         // Determine intra/inter state
-    
-           const taxValues = [];
+
+        const taxValues = [];
 
         items.forEach((item) => {
             if (!item.gstPercent || !item.taxAmount) return; // Skip if no GST or taxAmount
@@ -210,7 +210,7 @@ const CustomFormTableList = ({ form }) => {
             const gstValue = item.gstPercent;
             const taxAmount = item.taxAmount;
 
-            const addOrUpdate = (taxName, rate, type,amount) => {
+            const addOrUpdate = (taxName, rate, type, amount) => {
                 const existing = taxValues.find(
                     (t) => t.type === type && t.rate === rate
                 );
@@ -228,7 +228,7 @@ const CustomFormTableList = ({ form }) => {
 
             if (item.gstType === "IGST") {
                 // For IGST, add as a separate tax type
-                addOrUpdate(`IGST@${gstValue}`, gstValue,"IGST", taxAmount);
+                addOrUpdate(`IGST@${gstValue}`, gstValue, "IGST", taxAmount);
             } else {
                 // For intra-state, split between CGST and SGST
                 const halfRate = gstValue / 2;
@@ -237,8 +237,8 @@ const CustomFormTableList = ({ form }) => {
                 addOrUpdate(`SGST@${halfRate}`, gstValue, "SGST", halfAmount)
             }
         });
-        taxValues.sort((a,b)=>a.rate -b.rate)
-        form.setFieldsValue({taxValues:taxValues})
+        taxValues.sort((a, b) => a.rate - b.rate)
+        form.setFieldsValue({ taxValues: taxValues })
 
 
         // Set all updated values
@@ -250,43 +250,43 @@ const CustomFormTableList = ({ form }) => {
             grandTotal: Math.ceil(grandTotal)
         });
     };
-    
+
 
     // State to store selected columns
     const [selectedColumns, setSelectedColumns] = useState([]);
     const [columnOptions, setColumnOptions] = useState([]);
 
-    const renderColumnHeader = (columnKey, label, spanValue,tooltip) => {
+    const renderColumnHeader = (columnKey, label, spanValue, tooltip) => {
         return selectedColumns.includes(columnKey) ? (
-          <Col
-            className="gutter-row"
-            span={spanValue}
-            style={{
-              borderRight: "1px solid #bfbfbb",
-              textAlign: "center",
-            }}
-            key={columnKey}
-          >
-            <Taglabel text={label} />
-            {tooltip && (
-              <Tooltip title={tooltip}>
-                <span
-                  style={{
-                    cursor: "pointer",
-                    color: "red   ",
-                    fontSize: "1rem",
-                  }}
-                >
-                  {" "}
-                  *
-                </span>
-              </Tooltip>
-            )}
-          </Col>
+            <Col
+                className="gutter-row"
+                span={spanValue}
+                style={{
+                    borderRight: "1px solid #bfbfbb",
+                    textAlign: "center",
+                }}
+                key={columnKey}
+            >
+                <Taglabel text={label} />
+                {tooltip && (
+                    <Tooltip title={tooltip}>
+                        <span
+                            style={{
+                                cursor: "pointer",
+                                color: "red   ",
+                                fontSize: "1rem",
+                            }}
+                        >
+                            {" "}
+                            *
+                        </span>
+                    </Tooltip>
+                )}
+            </Col>
         ) : null;
     };
     // Render Discount Amount only if Discount% is selected
- 
+
     // A function to dynamically render columns with input components
     const renderColumnValue = (
         columnKey,
@@ -349,7 +349,7 @@ const CustomFormTableList = ({ form }) => {
                 case "discountAmount":
                     dynamicSpans.rate -= 1;
                     dynamicSpans.gst -= 1;
-                  
+
                     break;
                 case "taxAmount":
                     dynamicSpans.itemDetails -= 1;
@@ -409,8 +409,8 @@ const CustomFormTableList = ({ form }) => {
             const updatedItems = items.map((item) => {
                 const discountAmount = 0;
                 const finalAmount = (item.qty * item.rate);
-                let discountPercent =0
-                let taxAmount = calculateTaxAmount(item.gstPercent,item.rate,item.qty)
+                let discountPercent = 0
+                let taxAmount = calculateTaxAmount(item.gstPercent, item.rate, item.qty)
                 return {
                     ...item,
                     discountPercent,
@@ -433,7 +433,7 @@ const CustomFormTableList = ({ form }) => {
                     taxAmount,
                 };
             });
-            form.setFieldsValue({ items: updatedItems,taxAmount:0,taxValues:[]});
+            form.setFieldsValue({ items: updatedItems, taxAmount: 0, taxValues: [] });
         }
     };
 
@@ -496,7 +496,7 @@ const CustomFormTableList = ({ form }) => {
             igst28: !isIntraState ? Math.ceil(igst28) : 0,
         });
     }, [shippingState]);
-    
+
     useEffect(() => {
         getColumnPre();
     }, []);
@@ -599,8 +599,8 @@ const CustomFormTableList = ({ form }) => {
                         </Col>
                         {renderColumnHeader("discountPercent", "DIS%", 2)}
                         {renderColumnHeader("discountAmount", "Best Offer", 2)}
-                        {renderColumnHeader("gstPercent","GST%",2)}
-                        
+                        {renderColumnHeader("gstPercent", "GST%", 2)}
+
                         {renderColumnHeader(
                             "taxAmount",
                             "TAX AMT",
@@ -643,7 +643,7 @@ const CustomFormTableList = ({ form }) => {
                             gstPercent: 0,
                             finalAmount: 0,
                             description: "",
-                            gstType:"EXMEPT"
+                            gstType: "EXMEPT"
                         },
                     ]}
                 >
@@ -669,11 +669,11 @@ const CustomFormTableList = ({ form }) => {
                                                 <CustomModel
                                                     entity={"products"}
                                                     fieldName={"code"}
-                                                    updateInForm={(value,options) => {
+                                                    updateInForm={(value, options) => {
                                                         handleItemsUpdate(
                                                             value,
                                                             "code",
-                                                            name,options
+                                                            name, options
                                                         );
                                                     }}
                                                     preFillValue={
@@ -710,12 +710,12 @@ const CustomFormTableList = ({ form }) => {
                                                         entity={"products"}
                                                         fieldName={"name"}
                                                         updateInForm={(
-                                                            value,options
+                                                            value, options
                                                         ) => {
                                                             handleItemsUpdate(
                                                                 value,
                                                                 "description",
-                                                                name,options
+                                                                name, options
                                                             );
                                                         }}
                                                         preFillValue={
@@ -828,11 +828,11 @@ const CustomFormTableList = ({ form }) => {
                                                         style={{
                                                             width: "100%",
                                                         }}
-                                                        onChange={(value,options) =>
+                                                        onChange={(value, options) =>
                                                             handleItemsUpdate(
                                                                 value,
                                                                 "rate",
-                                                                name,options
+                                                                name, options
                                                             )
                                                         }
                                                         onPressEnter={(e) => {
@@ -877,11 +877,11 @@ const CustomFormTableList = ({ form }) => {
                                             {renderColumnValue(
                                                 "discountAmount",
                                                 <InputNumber
-                                                    updateInForm={(value,options) =>
+                                                    updateInForm={(value, options) =>
                                                         handleItemsUpdate(
                                                             value,
                                                             "discountAmount",
-                                                            name,options
+                                                            name, options
                                                         )
                                                     }
                                                     min={false}
@@ -911,36 +911,36 @@ const CustomFormTableList = ({ form }) => {
                                             {
                                                 renderColumnValue(
                                                     "gstPercent",
-                                                 
 
-                                                        <TaxPercent
-                                                            updateInForm={(value,options) =>
-                                                                handleItemsUpdate(
-                                                                    value,
-                                                                    "gstPercent",
-                                                                    name,options
-                                                                )
-                                                            }
-                                                            min={false}
-                                                            controls={false}
-                                                            width="100%"
-                                                            style={{
-                                                                width: "100%",
-                                                                textAlign: "center",
-                                                            }}
-                                                            preFillValue={
-                                                                `${form.getFieldValue(
+
+                                                    <TaxPercent
+                                                        updateInForm={(value, options) =>
+                                                            handleItemsUpdate(
+                                                                value,
+                                                                "gstPercent",
+                                                                name, options
+                                                            )
+                                                        }
+                                                        min={false}
+                                                        controls={false}
+                                                        width="100%"
+                                                        style={{
+                                                            width: "100%",
+                                                            textAlign: "center",
+                                                        }}
+                                                        preFillValue={
+                                                            `${form.getFieldValue(
+                                                                "items"
+                                                            )?.[name]
+                                                                ?.gstType}@${form.getFieldValue(
                                                                     "items"
                                                                 )?.[name]
-                                                                    ?.gstType}@${form.getFieldValue(
-                                                                        "items"
-                                                                    )?.[name]
-                                                                        ?.gstPercent}`
-                                                            }
-                                                            onPressEnter={(e) => {
-                                                                e.preventDefault();
-                                                            }}
-                                                        />
+                                                                    ?.gstPercent}`
+                                                        }
+                                                        onPressEnter={(e) => {
+                                                            e.preventDefault();
+                                                        }}
+                                                    />
                                                     ,
                                                     2,
                                                     name,
@@ -950,11 +950,11 @@ const CustomFormTableList = ({ form }) => {
                                             {renderColumnValue(
                                                 "taxAmount",
                                                 <InputNumber
-                                                    updateInForm={(value,options) =>
+                                                    updateInForm={(value, options) =>
                                                         handleItemsUpdate(
                                                             value,
                                                             "taxAmount",
-                                                            name,options
+                                                            name, options
                                                         )
                                                     }
                                                     min={false}
@@ -1041,7 +1041,7 @@ const CustomFormTableList = ({ form }) => {
                                             rate: 0,
                                             discountPercent: 0,
                                             gstPercent: 0,
-                                            gstType:"EXMEPT"
+                                            gstType: "EXMEPT"
                                         });
                                     }}
                                     details={true}

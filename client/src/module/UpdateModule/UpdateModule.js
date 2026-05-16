@@ -18,7 +18,7 @@ import PaymentMadeForm from "Forms/App/PaymentMadeForm";
 import UserForm from "Forms/App/UserForm";
 import CashInvoice from "Forms/App/CashInvoice";
 
-const UpdateModule = ({ entity, form }) => {
+const UpdateModule = ({ entity, form,tenantDefaults }) => {
     // const { entity: entityFromRouter } = useParams();
     let componentToRender = <NotFound />;
     // const entity = entityOfForm || entityFromRouter;
@@ -28,7 +28,7 @@ const UpdateModule = ({ entity, form }) => {
             componentToRender = <CoustomerItem form={form}  entity={entity}/>;
             break;
         case "quotations":
-            componentToRender = <QuotesFormItems form={form}  entity={entity}/>;
+            componentToRender = <QuotesFormItems form={form}  entity={entity} tenantDefaults ={tenantDefaults}/>;
             break;
         case "invoices":
             componentToRender = <InvoicesFormItems form={form} entity={entity} />;

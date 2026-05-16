@@ -3,7 +3,7 @@ import FormItemCol from "components/Comman/FormItemCol";
 import CustomFormTableList from "./CustomFormTableList";
 import PaymentLayoutComponent from "./PaymentLayoutComponent";
 
-const QuotationForm = ({ form,entity }) => {
+const QuotationForm = ({ form,entity,tenantDefaults }) => {
     const handleItemsUpdate = (value, filedName, rowName) => {
         const items = form.getFieldValue("items");
         let temObj = items[rowName];
@@ -269,7 +269,7 @@ const QuotationForm = ({ form,entity }) => {
             />
 
             <CustomFormTableList form={form} />
-            <PaymentLayoutComponent form={form} />
+            <PaymentLayoutComponent form={form}  tenantDefaults= {tenantDefaults}/>
         </div>
     );
 };

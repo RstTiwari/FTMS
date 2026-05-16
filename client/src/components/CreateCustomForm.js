@@ -33,6 +33,10 @@ const CustomForm = ({
     const [data,setData] = useState(null)
     const { pdfGenerate } = useAuth();
     const [loading, setLoading] = useState(false); // Track loading state
+       const [tenantDefaults, setTenantDefaults] = useState({
+            terms: [],
+            specification: [],
+        });
 
        const fetchPdfUrl = async (data) => {
         // let get the customer of vendor data
@@ -75,11 +79,13 @@ const CustomForm = ({
             payload,
             { entity: "tenant", tenantId: tenantId }
         );
-        
-        form.setFieldsValue({
-            terms: result?.terms,
-            specification: result?.specification,
+
+          setTenantDefaults({
+            terms: result?.terms || [],
+            specification: result?.specification || [],
         });
+        
+      
     };
 
     useEffect(() => {
@@ -216,7 +222,7 @@ Kindly find attached Quote for the Play Equipments/Indoor Equipments/ Soft Play 
                 </Col>
             </Row>
 
-            <CustomFormItem entity={entity} form={form}  isModal={isModal}/>
+            <CustomFormItem entity={entity} form={form}  isModal={isModal}  tenantDefaults ={tenantDefaults}/>
         </Form>
     );
 };

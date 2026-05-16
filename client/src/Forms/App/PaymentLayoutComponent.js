@@ -26,7 +26,7 @@ import TechnicalSpecification from "./TechnicalSpecification";
 import { type } from "@testing-library/user-event/dist/type";
 
 
-const PaymentLayoutComponent = ({ form, widthOfTerm = "75vw", widthOfNotes = "75vw" }) => {
+const PaymentLayoutComponent = ({ form, widthOfTerm = "75vw", widthOfNotes = "75vw",tenantDefaults }) => {
     // Capitalize the first letter of a string
     const { entity } = useParams();
     const watchedTaxValues = Form.useWatch([], form)
@@ -98,10 +98,13 @@ const PaymentLayoutComponent = ({ form, widthOfTerm = "75vw", widthOfNotes = "75
                         <TermsAndConditionsForm
                             form={form}
                             width={widthOfTerm}
+                            options={tenantDefaults?.terms || []}
                         />
                         <TechnicalSpecification
                             form={form}
                             width={widthOfTerm}
+                             options={tenantDefaults?.specification || []}
+
                         />
                     </Row>
                 )}

@@ -130,7 +130,7 @@ const invoiceSchema = new mongoose.Schema(
 
         } ,  
         taxValues:[],
-        terms: [],
+        notes: [],
         tenantId: {
             type: String,
             required: true,

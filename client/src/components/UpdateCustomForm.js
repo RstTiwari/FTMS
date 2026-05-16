@@ -11,14 +11,18 @@ import PageLoader from "pages/PageLoader";
 import { fetchTitleName } from "Helper/PageTitle";
 
 const UpdateCustomForm = ({ isModal = false, entity, id, closeModal }) => {
-     const { tenantId } = useParams()
-    const { appApiCall ,adminApiCall} = useAuth();
+    const { tenantId } = useParams()
+    const { appApiCall, adminApiCall } = useAuth();
     const [form] = Form.useForm();
     const [unfilledField, setUnfilledField] = useState(null);
     const [changedField, setChangedField] = useState({});
     const [isFormChanged, setIsFormChanged] = useState(false); // Track form changes
     const { isFetching, initialValues, fetchInitialValues } =
         useInitialFormValues(entity, "get", id);
+    const [tenantDefaults, setTenantDefaults] = useState({
+        terms: [],
+        specification: [],
+    });
 
     let isAdmin = entity === "user" ? true : false;
 
@@ -28,33 +32,28 @@ const UpdateCustomForm = ({ isModal = false, entity, id, closeModal }) => {
         id,
         closeModal
     );
-        const fetchData = async () => {
-            const payload = {};
-            const params = { entity: "tenant" };
-            const { success, result, message } = await adminApiCall(
-                "get",
-                "read",
-                payload,
-                { entity: "tenant", tenantId: tenantId }
-            );
-            if(!form.getFieldValue("terms") || form.getFieldValue("terms").length <1){
-                form.setFieldValue("terms",result?.terms)
+    const fetchData = async () => {
+
+        const { result } = await adminApiCall(
+            "get",
+            "read",
+            {},
+            {
+                entity: "tenant",
+                tenantId,
             }
-            if(!form.getFieldValue("specification") || form.getFieldValue("specification").length < 1){
-                form.setFieldValue("specification",result?.specification)
-            }
-            if (!form.getFieldValue("message") || form.getFieldValue("message").length < 1) {
-                form.setFieldValue(
-                    "message",
-                    `Respected Sir/Madam,
-                                         Kindly find attached Quote for the Play Equipments / Outdoor Gym Equipments / Rubber Flooring / Benches /Dustbins.Terms & Conditions for Supply, Installation, Services and Warranty are as follows`
-                );
-            }
-        };
-    
-        useEffect(() => {
-            fetchData();
-        }, []);
+        );
+
+        setTenantDefaults({
+            terms: result?.terms || [],
+            specification: result?.specification || [],
+        });
+
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     useEffect(() => {
         const fetchAndSetInitialValues = async () => {
@@ -134,7 +133,7 @@ const UpdateCustomForm = ({ isModal = false, entity, id, closeModal }) => {
     }
 
     return (
-      <Form
+        <Form
             name={`${entity}Form`}
             form={form}
             initialValues={initialValues}
@@ -170,7 +169,7 @@ const UpdateCustomForm = ({ isModal = false, entity, id, closeModal }) => {
                 </Col>
             </Row>
 
-            <UpdateModule entity={entity} form={form} />
+            <UpdateModule entity={entity} form={form} tenantDefaults={tenantDefaults} />
         </Form>
     );
 };

@@ -18,7 +18,7 @@ import WorkOrderForm from "Forms/App/WorkOder";
 import SubUserForm from "Forms/App/UserForm";
 import CashInvoice from "Forms/App/CashInvoice";
 
-const CoustomFormItem = ({ entity, form, isModal, isUpdate }) => {
+const CoustomFormItem = ({ entity, form, isModal, isUpdate ,tenantDefaults}) => {
   // const { entity: entityFromRouter } = useParams();
   let componentToRender = <NotFound />;
   // const entity = entityOfForm || entityFromRouter;
@@ -28,7 +28,7 @@ const CoustomFormItem = ({ entity, form, isModal, isUpdate }) => {
       componentToRender = <CoustomerItem form={form} isModal={isModal} />;
       break;
     case "quotations":
-      componentToRender = <QuotesFormItems form={form}  entity={entity}/>;
+      componentToRender = <QuotesFormItems form={form}  entity={entity} tenantDefaults ={tenantDefaults}/>;
       break;
     case "invoices":
       componentToRender = <InvoicesFormItems form={form} entity={entity} />;
