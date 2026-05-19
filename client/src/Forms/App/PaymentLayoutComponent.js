@@ -319,7 +319,7 @@ const PaymentLayoutComponent = ({ form, widthOfTerm = "75vw", widthOfNotes = "75
                                                     />
                                                 </Form.Item>
                                             </Col>
-                                            <Col span={2}>
+                                            {/* <Col span={2}>
                                                 <Form.Item
                                                     {...restField}
                                                     name={[name, "rsOrPercent"]}
@@ -338,7 +338,7 @@ const PaymentLayoutComponent = ({ form, widthOfTerm = "75vw", widthOfNotes = "75
                                                 >
                                                   ₹
                                                 </Form.Item>
-                                            </Col>
+                                            </Col> */}
                                         </Row>
                                     )
                                 )}
