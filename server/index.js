@@ -59,10 +59,10 @@ cloudinary.config({
 });
 
 const MDURLSTRING = process.env.MDURL;
+console.log("MDURLSTRING", MDURLSTRING);
 
 mongoose
     .connect(MDURLSTRING, {
-        useUnifiedTopology: true,
     })
     .then(() => {
         // Create HTTP or HTTPS server based on environment
@@ -87,7 +87,10 @@ mongoose
                 );
             });
         }
-    })
-    .catch((e) => {
-        console.log("Database connection failed" + e);
-    });
+    }).catch((e) => {
+    console.error("===== Mongo Error =====");
+    console.error(e);
+    console.dir(e.reason, { depth: null });
+    console.dir(e.cause, { depth: null });
+    console.dir(e, { depth: null });
+});;
